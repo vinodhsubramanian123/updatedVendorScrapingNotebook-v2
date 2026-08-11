@@ -1,0 +1,47 @@
+name: CI — Offline Pipeline Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Syntax check eval_boq.js
+        run: node --check scripts/eval_boq.js
+
+      - name: Run dashboard linter
+        run: npm --workspace dashboard run lint
+
+      - name: Run offline pipeline tests
+        run: node tests/test_offline_pipeline.js
+
+      - name: Run SKU regex & category tests
+        run: node scripts/test_all_aspects.js
+
+      - name: Run conflict graph tests
+        run: node tests/test_conflict_graph.js
+
+      - name: Run end-to-end scenarios tests
+        run: node tests/test_end_to_end_scenarios.js
+
+      - name: Run vendor portal BOM verification tests
+        run: node tests/test_vendor_bom_verifier.js

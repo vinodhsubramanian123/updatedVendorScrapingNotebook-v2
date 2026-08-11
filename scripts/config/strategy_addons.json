@@ -1,0 +1,103 @@
+{
+  "dl380": {
+    "rank2": [
+      {
+        "sku": "P76471-B21",
+        "description": "HPE DL380 Gen12 Standard Factory Cable/Rail Kit",
+        "quantity": 1,
+        "unitPriceUsd": 250,
+        "category": "Factory CTO Standard"
+      }
+    ],
+    "rank3": [
+      {
+        "sku": "P01366-B21",
+        "description": "HPE Smart Storage Hybrid Capacitor Battery with 145mm Cable",
+        "quantity": 1,
+        "unitPriceUsd": 350,
+        "category": "Storage Performance"
+      },
+      {
+        "sku": "P49025-B21",
+        "description": "HPE 4GB Cache High-IOPS Controller Cache Expansion",
+        "quantity": 1,
+        "unitPriceUsd": 500,
+        "category": "Storage Performance"
+      }
+    ],
+    "rank4": [
+      {
+        "sku": "P76453-B21",
+        "description": "HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Kit",
+        "quantity": 1,
+        "unitPriceUsd": 1200,
+        "category": "Scalability Expansion"
+      },
+      {
+        "sku": "P40502-B21",
+        "description": "HPE High Performance Fan Kit (6 Fans)",
+        "quantity": 1,
+        "unitPriceUsd": 650,
+        "category": "Scalability Expansion"
+      }
+    ]
+  },
+  "alletra": {
+    "rank2": [
+      {
+        "sku": "R0Q21A",
+        "description": "HPE Alletra Storage Drive Blank Kit",
+        "quantity": 1,
+        "unitPriceUsd": 150,
+        "category": "Factory CTO Standard"
+      }
+    ],
+    "rank3": [
+      {
+        "sku": "R0Q25A",
+        "description": "HPE Alletra Storage Controller Cache Upgrade",
+        "quantity": 1,
+        "unitPriceUsd": 800,
+        "category": "Storage Performance"
+      }
+    ],
+    "rank4": [
+      {
+        "sku": "R0Q28A",
+        "description": "HPE Alletra High Performance Storage Expansion Kit",
+        "quantity": 1,
+        "unitPriceUsd": 1500,
+        "category": "Scalability Expansion"
+      }
+    ]
+  },
+  "default": {
+    "rank2": [
+      {
+        "sku": "HPE-STANDARD-RAIL",
+        "description": "HPE Standard Factory Cable/Rail Kit",
+        "quantity": 1,
+        "unitPriceUsd": 250,
+        "category": "Factory CTO Standard"
+      }
+    ],
+    "rank3": [
+      {
+        "sku": "HPE-CACHE-BATTERY",
+        "description": "HPE Standard Smart Storage Capacitor Battery",
+        "quantity": 1,
+        "unitPriceUsd": 350,
+        "category": "Storage Performance"
+      }
+    ],
+    "rank4": [
+      {
+        "sku": "HPE-PCIE-RISER",
+        "description": "HPE Standard Full PCIe x16 Riser Kit",
+        "quantity": 1,
+        "unitPriceUsd": 900,
+        "category": "Scalability Expansion"
+      }
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "P73282-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 5584,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 3500,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 5584
+    }
+  ],
+  "P73283-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 5980,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 3800,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 5980
+    }
+  ],
+  "P73284-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 6350,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 6350,
+      "status": "REMOVED"
+    }
+  ],
+  "P73285-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 6890,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 6890,
+      "status": "REMOVED"
+    }
+  ],
+  "P73286-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 7120,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 7120,
+      "status": "REMOVED"
+    }
+  ],
+  "P73287-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 7450,
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 7450,
+      "status": "REMOVED"
+    }
+  ],
+  "P74573-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 10516,
+      "status": "ADDED"
+    }
+  ],
+  "P74574-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 22485,
+      "status": "ADDED"
+    }
+  ],
+  "P69728-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 551,
+      "status": "ADDED"
+    }
+  ],
+  "P69729-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 271,
+      "status": "ADDED"
+    }
+  ],
+  "P47777-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 249,
+      "status": "ADDED"
+    }
+  ],
+  "P17023-B21": [
+    {
+      "date": "2026-08-11",
+      "price": 780.5,
+      "status": "ADDED"
+    }
+  ],
+  "H7J34A3": [
+    {
+      "date": "2026-08-11",
+      "price": 1200,
+      "status": "ADDED"
+    }
+  ],
+  "HA114A1": [
+    {
+      "date": "2026-08-11",
+      "price": 600,
+      "status": "ADDED"
+    }
+  ]
+}

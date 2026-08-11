@@ -1,0 +1,39 @@
+# Architecture & Design
+
+## 1. Hybrid Dual-Brain Architecture
+The application employs a **Hybrid Dual-Brain Architecture** designed for maximum resilience, auditability, and execution speed:
+
+```mermaid
+graph TD
+    subgraph "Phase 1: Ingestion"
+        A[Input BOQ - Excel/CSV/Image] --> B[Multimodal OCR Extraction]
+    end
+    subgraph "Phase 2: Local Rule Engine (Deterministic)"
+        B --> C[BOQ Parsing & Multi-Node Cleansing]
+        C --> D[6-Aspect Math: Thermal, Power, Memory, PCIe, Storage, Network]
+    end
+    subgraph "Phase 3: Agentic Guardrail (Probabilistic)"
+        D -->|If Confidence < 1.0| E[Agentic Guardrail Loop via MCP]
+        E <--> F[NotebookLM RAG Grounding]
+        E <--> G[Local Catalog DB Search]
+    end
+    subgraph "Phase 4: Synthesis & Output"
+        E --> H[5-Tier Strategic Resolution Matrix]
+        D -->|If Confidence == 1.0| H
+        H --> I[Dashboard & Telemetry]
+    end
+```
+
+## 2. Core Architectural Decisions
+- **Deterministic Rule Engine Primacy**: The local engine (e.g., `boq_evaluator.js`) executes fast, hardcoded physical hardware math without relying on external LLMs. This ensures a 100% functional fallback if APIs go offline.
+- **Agentic MCP Guardrail**: Instead of brittle LLM single-pass prompting, the system uses a stateful Model Context Protocol (MCP) tool-calling loop (`agentic_guardrail.js`). The LLM actively hypothesizes fixes, calls the local rule engine via `simulate_build`, and checks NotebookLM before committing.
+- **Decoupled Data Architecture**: SKUs are strictly classified (e.g., base chassis vs. options). Atomic JSON writes (`safeWriteJsonAtomic`) ensure database files are never corrupted.
+
+## 3. Data Dictionary & Key Schemas
+- **KnowledgeDelta**: Captures learned physical dependency rules. Used to train the local rule engine.
+- **ConflictGraph**: Directed Acyclic Graph tracking SKU dependencies, mutually exclusive items, and capacity bounds.
+- **ResolutionMatrix**: 5-Tier layout of hardware builds (Rank 1: Intent Preserving, Rank 5: Budget Minimized). Includes itemized price data.
+
+## 4. UI/UX Design System
+- **Real-Time Telemetry Dashboard**: Utilizes SSE (Server-Sent Events) to stream evaluation logs.
+- **Component Design**: Tailwind-based, responsive, visually polished using high-contrast themes and sophisticated layouts (e.g., `TelemetryCard.jsx`, `ResolutionMatrix.jsx`).

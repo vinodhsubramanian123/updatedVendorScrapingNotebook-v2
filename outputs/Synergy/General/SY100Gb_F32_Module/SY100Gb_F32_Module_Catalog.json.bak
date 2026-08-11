@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "chassis": "SY100Gb F32 Module",
+    "scrapeDate": "2026-08-10T10:45:45.892Z",
+    "totalSubcategories": 1,
+    "totalUniqueSKUs": 3,
+    "totalTables": 1,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 3,
+      "discontinuedTotal": 0
+    },
+    "source": "Excel Master Recovery",
+    "historySnapshot": "catalog_2026-08-10.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-08-10",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 3,
+          "totalPrice": 17100,
+          "minPrice": 3200,
+          "maxPrice": 8500,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 3,
+              "totalPrice": 17100,
+              "avgPrice": 5700
+            }
+          },
+          "avgPrice": 5700
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1,
+      "rules": [
+        "Mandatory base chassis selection required for solution build"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "rows": [
+        [
+          "P25902-B21",
+          "HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis",
+          "$3,200.00",
+          "1",
+          "2026-08-07"
+        ],
+        [
+          "797740-B21",
+          "HPE Synergy 12000 Configure-to-order Frame Chassis",
+          "$8,500.00",
+          "1",
+          "2026-08-07"
+        ],
+        [
+          "P06584-B21",
+          "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+          "$5,400.00",
+          "1",
+          "2026-08-07"
+        ]
+      ],
+      "skus": [
+        {
+          "Product #": "P25902-B21",
+          "Description": "HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis",
+          "Unit Price (USD)": "3200.00",
+          "Price (USD)": "3200.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-07",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P25902-B21",
+          "description": "HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis",
+          "listPrice": 3200,
+          "listPriceFormatted": "$3,200.00",
+          "qty": 1,
+          "Previous List Price (USD)": "3200.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-07: $3200.00 → 2026-08-10: $3200.00"
+        },
+        {
+          "Product #": "797740-B21",
+          "Description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+          "Unit Price (USD)": "8500.00",
+          "Price (USD)": "8500.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-07",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "797740-B21",
+          "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+          "listPrice": 8500,
+          "listPriceFormatted": "$8,500.00",
+          "qty": 1,
+          "Previous List Price (USD)": "8500.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-07: $8500.00 → 2026-08-10: $8500.00"
+        },
+        {
+          "Product #": "P06584-B21",
+          "Description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+          "Unit Price (USD)": "5400.00",
+          "Price (USD)": "5400.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-07",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P06584-B21",
+          "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+          "listPrice": 5400,
+          "listPriceFormatted": "$5,400.00",
+          "qty": 1,
+          "Previous List Price (USD)": "5400.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-07: $5400.00 → 2026-08-10: $5400.00"
+        }
+      ],
+      "skuCount": 3
+    }
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "chassis_base_skus_by_family_gen": {
+    "ProLiant_Gen12": {
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "modelFamily": "DL380 Gen12",
+      "skus": {
+        "P73282-B21": {
+          "model": "DL380 Gen12 8SFF",
+          "formFactor": "8SFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "listPrice": 5584,
+          "optionType": "CTO"
+        },
+        "P73283-B21": {
+          "model": "DL380 Gen12 24SFF",
+          "formFactor": "24SFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "listPrice": 5980,
+          "optionType": "CTO"
+        },
+        "P73284-B21": {
+          "model": "DL380 Gen12 12LFF",
+          "formFactor": "12LFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "listPrice": 6350,
+          "optionType": "CTO"
+        },
+        "P73285-B21": {
+          "model": "DL380 Gen12 8LFF",
+          "formFactor": "8LFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "listPrice": 6890,
+          "optionType": "CTO"
+        },
+        "P73286-B21": {
+          "model": "DL380 Gen12 16EDSFF",
+          "formFactor": "16EDSFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "listPrice": 7120,
+          "optionType": "CTO"
+        },
+        "P73287-B21": {
+          "model": "DL380 Gen12 High Power / Telco",
+          "formFactor": "High Power",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "listPrice": 7450,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "ProLiant_Gen11": {
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "modelFamily": "DL380 Gen11",
+      "skus": {
+        "P52534-B21": {
+          "model": "DL380 Gen11 8SFF",
+          "formFactor": "8SFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
+          "listPrice": 1650,
+          "optionType": "CTO"
+        },
+        "P52535-B21": {
+          "model": "DL380 Gen11 12LFF",
+          "formFactor": "12LFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+          "listPrice": 1900,
+          "optionType": "CTO"
+        },
+        "P52536-B21": {
+          "model": "DL380 Gen11 24EDSFF",
+          "formFactor": "24EDSFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
+          "listPrice": 2250,
+          "optionType": "CTO"
+        },
+        "P52537-B21": {
+          "model": "DL380 Gen11 8SFF NVMe",
+          "formFactor": "8SFF NVMe",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
+          "listPrice": 2050,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Alletra_Storage": {
+      "family": "Alletra",
+      "gen": "Storage",
+      "modelFamily": "Alletra Storage System",
+      "skus": {
+        "R0Q35A": {
+          "model": "Alletra 6000 NVMe System",
+          "formFactor": "Storage Chassis",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis",
+          "listPrice": 12500,
+          "optionType": "CTO"
+        },
+        "R0Q36A": {
+          "model": "Alletra 9000 NVMe System",
+          "formFactor": "Storage Chassis",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO",
+          "listPrice": 18900,
+          "optionType": "CTO"
+        },
+        "R0Q37A": {
+          "model": "Alletra MP Dual-Node System",
+          "formFactor": "Storage Controller",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis",
+          "listPrice": 15200,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Cray_General": {
+      "family": "Cray",
+      "gen": "General",
+      "modelFamily": "GX5000 General RACK",
+      "skus": {
+        "P48820-B21": {
+          "model": "GX5000 Liquid-Cooled Node",
+          "formFactor": "Blade",
+          "family": "Cray",
+          "gen": "General",
+          "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "listPrice": 18000,
+          "optionType": "CTO"
+        },
+        "P48821-B21": {
+          "model": "GX5000 Air-Cooled Node",
+          "formFactor": "4U Rack",
+          "family": "Cray",
+          "gen": "General",
+          "description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
+          "listPrice": 14500,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "StoreEver_Tape": {
+      "family": "StoreEver",
+      "gen": "Tape",
+      "modelFamily": "MSL3040 Tape",
+      "skus": {
+        "Q2R41A": {
+          "model": "MSL3040 Base Module",
+          "formFactor": "Base Module",
+          "family": "StoreEver",
+          "gen": "Tape",
+          "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+          "listPrice": 4500,
+          "optionType": "CTO"
+        },
+        "Q2R42A": {
+          "model": "MSL3040 Expansion Module",
+          "formFactor": "Expansion Module",
+          "family": "StoreEver",
+          "gen": "Tape",
+          "description": "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+          "listPrice": 2800,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Synergy_General": {
+      "family": "Synergy",
+      "gen": "General",
+      "modelFamily": "SY100Gb F32 Module",
+      "skus": {
+        "P25902-B21": {
+          "model": "SY480 Gen10 Plus",
+          "formFactor": "Compute Module",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis",
+          "listPrice": 3200,
+          "optionType": "CTO"
+        },
+        "797740-B21": {
+          "model": "Synergy 12000 Frame",
+          "formFactor": "Frame Chassis",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+          "listPrice": 8500,
+          "optionType": "CTO"
+        },
+        "P06584-B21": {
+          "model": "SY100Gb F32 Module",
+          "formFactor": "Interconnect Module",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+          "listPrice": 5400,
+          "optionType": "CTO"
+        }
+      }
+    }
+  },
+  "chassis_base_skus": {
+    "P73282-B21": {
+      "model": "DL380 Gen12 8SFF",
+      "formFactor": "8SFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+      "listPrice": 5584,
+      "optionType": "CTO"
+    },
+    "P73283-B21": {
+      "model": "DL380 Gen12 24SFF",
+      "formFactor": "24SFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+      "listPrice": 5980,
+      "optionType": "CTO"
+    },
+    "P73284-B21": {
+      "model": "DL380 Gen12 12LFF",
+      "formFactor": "12LFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+      "listPrice": 6350,
+      "optionType": "CTO"
+    },
+    "P73285-B21": {
+      "model": "DL380 Gen12 8LFF",
+      "formFactor": "8LFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+      "listPrice": 6890,
+      "optionType": "CTO"
+    },
+    "P73286-B21": {
+      "model": "DL380 Gen12 16EDSFF",
+      "formFactor": "16EDSFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+      "listPrice": 7120,
+      "optionType": "CTO"
+    },
+    "P73287-B21": {
+      "model": "DL380 Gen12 High Power / Telco",
+      "formFactor": "High Power",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+      "listPrice": 7450,
+      "optionType": "CTO"
+    },
+    "P52534-B21": {
+      "model": "DL380 Gen11 8SFF",
+      "formFactor": "8SFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
+      "listPrice": 1650,
+      "optionType": "CTO"
+    },
+    "P52535-B21": {
+      "model": "DL380 Gen11 12LFF",
+      "formFactor": "12LFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+      "listPrice": 1900,
+      "optionType": "CTO"
+    },
+    "P52536-B21": {
+      "model": "DL380 Gen11 24EDSFF",
+      "formFactor": "24EDSFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
+      "listPrice": 2250,
+      "optionType": "CTO"
+    },
+    "P52537-B21": {
+      "model": "DL380 Gen11 8SFF NVMe",
+      "formFactor": "8SFF NVMe",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
+      "listPrice": 2050,
+      "optionType": "CTO"
+    },
+    "R0Q35A": {
+      "model": "Alletra 6000 NVMe System",
+      "formFactor": "Storage Chassis",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis",
+      "listPrice": 12500,
+      "optionType": "CTO"
+    },
+    "R0Q36A": {
+      "model": "Alletra 9000 NVMe System",
+      "formFactor": "Storage Chassis",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO",
+      "listPrice": 18900,
+      "optionType": "CTO"
+    },
+    "R0Q37A": {
+      "model": "Alletra MP Dual-Node System",
+      "formFactor": "Storage Controller",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis",
+      "listPrice": 15200,
+      "optionType": "CTO"
+    },
+    "P48820-B21": {
+      "model": "GX5000 Liquid-Cooled Node",
+      "formFactor": "Blade",
+      "family": "Cray",
+      "gen": "General",
+      "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+      "listPrice": 18000,
+      "optionType": "CTO"
+    },
+    "P48821-B21": {
+      "model": "GX5000 Air-Cooled Node",
+      "formFactor": "4U Rack",
+      "family": "Cray",
+      "gen": "General",
+      "description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
+      "listPrice": 14500,
+      "optionType": "CTO"
+    },
+    "Q2R41A": {
+      "model": "MSL3040 Base Module",
+      "formFactor": "Base Module",
+      "family": "StoreEver",
+      "gen": "Tape",
+      "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+      "listPrice": 4500,
+      "optionType": "CTO"
+    },
+    "Q2R42A": {
+      "model": "MSL3040 Expansion Module",
+      "formFactor": "Expansion Module",
+      "family": "StoreEver",
+      "gen": "Tape",
+      "description": "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+      "listPrice": 2800,
+      "optionType": "CTO"
+    },
+    "P25902-B21": {
+      "model": "SY480 Gen10 Plus",
+      "formFactor": "Compute Module",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis",
+      "listPrice": 3200,
+      "optionType": "CTO"
+    },
+    "797740-B21": {
+      "model": "Synergy 12000 Frame",
+      "formFactor": "Frame Chassis",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+      "listPrice": 8500,
+      "optionType": "CTO"
+    },
+    "P06584-B21": {
+      "model": "SY100Gb F32 Module",
+      "formFactor": "Interconnect Module",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+      "listPrice": 5400,
+      "optionType": "CTO"
+    }
+  }
+}

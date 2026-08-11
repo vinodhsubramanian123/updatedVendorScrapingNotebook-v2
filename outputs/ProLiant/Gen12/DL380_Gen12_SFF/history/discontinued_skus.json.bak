@@ -1,0 +1,42 @@
+{
+  "P73284-B21": {
+    "productNumber": "P73284-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "lastKnownPrice": "6350.00",
+    "discontinuedDate": "2026-08-11",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P73285-B21": {
+    "productNumber": "P73285-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "lastKnownPrice": "6890.00",
+    "discontinuedDate": "2026-08-11",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P73286-B21": {
+    "productNumber": "P73286-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "lastKnownPrice": "7120.00",
+    "discontinuedDate": "2026-08-11",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P73287-B21": {
+    "productNumber": "P73287-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "lastKnownPrice": "7450.00",
+    "discontinuedDate": "2026-08-11",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  }
+}

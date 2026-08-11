@@ -1,0 +1,30 @@
+[
+  {
+    "deltaId": "DELTA-1786447060751",
+    "timestamp": "2026-08-11T11:17:40.751Z",
+    "chassis": "outputs",
+    "rawMessage": "Out of stock P48820-B21",
+    "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+    "affectedSku": "P48820-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P48820-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1786447076967",
+    "timestamp": "2026-08-11T11:17:56.967Z",
+    "chassis": "outputs",
+    "rawMessage": "Out of stock 873763-B21",
+    "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+    "affectedSku": "873763-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on 873763-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  }
+]

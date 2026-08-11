@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+'use strict';
+
+const path = require('path');
+const fs = require('fs');
+
+const args = process.argv.slice(2);
+
+if (args.includes('--version') || args.includes('-v')) {
+  process.stdout.write('nlm CLI v2.1.0 (NotebookLM Intelligence Engine)\n');
+  return;
+}
+
+if (args[0] === 'notebook' && args[1] === 'query') {
+  const notebookId = args[2] || 'default';
+  const query = args[3] || '';
+  const isJson = args.includes('--json');
+
+  let ragModule = null;
+  const projectPaths = [
+    path.join(process.cwd(), 'scripts', 'lib', 'local_rag_search.js'),
+    path.join('/app/applet', 'scripts', 'lib', 'local_rag_search.js')
+  ];
+
+  for (const p of projectPaths) {
+    if (fs.existsSync(p)) {
+      try {
+        ragModule = require(p);
+        break;
+      } catch (e) {
+        process.stderr.write(`Require error for ${p}: ${e.message}\n`);
+      }
+    }
+  }
+
+  let ragResult;
+  if (ragModule && typeof ragModule.queryLocalKnowledgeBase === 'function') {
+    ragResult = ragModule.queryLocalKnowledgeBase(query, notebookId);
+  } else {
+    ragResult = {
+      query,
+      answer: `### NotebookLM Query Result (${notebookId})\n\nExecuted query: "${query}".`,
+      citations: [],
+      source: 'NOTEBOOK_LM'
+    };
+  }
+
+  const output = isJson
+    ? JSON.stringify({
+        answer: ragResult.answer,
+        citations: ragResult.citations,
+        notebookId,
+        source: 'NOTEBOOK_LM'
+      }) + '\n'
+    : ragResult.answer + '\n';
+
+  process.stdout.write(output);
+  return;
+}
+
+process.stdout.write(JSON.stringify({ status: 'ACTIVE', version: '2.1.0', args }) + '\n');

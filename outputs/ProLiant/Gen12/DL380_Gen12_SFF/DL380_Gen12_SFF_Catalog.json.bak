@@ -1,0 +1,469 @@
+{
+  "metadata": {
+    "chassis": "DL380 Gen12 SFF",
+    "scrapeDate": "2026-08-11T07:36:25.752Z",
+    "totalSubcategories": 5,
+    "totalUniqueSKUs": 10,
+    "totalTables": 5,
+    "diffSummary": {
+      "added": 8,
+      "removed": 4,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 2,
+      "unchanged": 0,
+      "discontinuedTotal": 4
+    },
+    "historySnapshot": "catalog_2026-08-11.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-08-11",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 35110,
+          "minPrice": 3500,
+          "maxPrice": 7450,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 35110,
+              "avgPrice": 5851.666666666667
+            }
+          },
+          "avgPrice": 5851.666666666667
+        },
+        "Processor": {
+          "totalSKUs": 2,
+          "totalPrice": 33001,
+          "minPrice": 10516,
+          "maxPrice": 22485,
+          "subcategories": {
+            "Intel Xeon 6730P Processors": {
+              "totalSKUs": 2,
+              "totalPrice": 33001,
+              "avgPrice": 16500.5
+            }
+          },
+          "avgPrice": 16500.5
+        },
+        "Memory": {
+          "totalSKUs": 2,
+          "totalPrice": 822,
+          "minPrice": 271,
+          "maxPrice": 551,
+          "subcategories": {
+            "Smart Memory Kits": {
+              "totalSKUs": 2,
+              "totalPrice": 822,
+              "avgPrice": 411
+            }
+          },
+          "avgPrice": 411
+        },
+        "Power Supplies": {
+          "totalSKUs": 2,
+          "totalPrice": 1029.5,
+          "minPrice": 249,
+          "maxPrice": 780.5,
+          "subcategories": {
+            "Flex Slot Power Supplies": {
+              "totalSKUs": 2,
+              "totalPrice": 1029.5,
+              "avgPrice": 514.75
+            }
+          },
+          "avgPrice": 514.75
+        },
+        "Services": {
+          "totalSKUs": 2,
+          "totalPrice": 1800,
+          "minPrice": 600,
+          "maxPrice": 1200,
+          "subcategories": {
+            "Support Services": {
+              "totalSKUs": 2,
+              "totalPrice": 1800,
+              "avgPrice": 900
+            }
+          },
+          "avgPrice": 900
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "max 1",
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Processor",
+      "name": "Intel Xeon 6730P Processors",
+      "constraint": "max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "Smart Memory Kits",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "Flex Slot Power Supplies",
+      "constraint": "max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Services",
+      "name": "Support Services",
+      "constraint": "required",
+      "maxQty": -2
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rules": [],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "skuCount": 6,
+      "skus": [
+        {
+          "Product #": "P73282-B21",
+          "Description": "HPE ProLiant DL380 Gen12 SFF CTO Server",
+          "Unit Price (USD)": "3500.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "CTO",
+          "Current Qty": "0",
+          "Previous List Price (USD)": "5584.00",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server\" → \"HPE ProLiant DL380 Gen12 SFF CTO Server\" | Constraint: \"System Standard (Max 1)\" → \"(None)\" | Max Qty: \"1\" → \"(None)\" | Component Role: \"Base Chassis\" → \"(None)\" | Start Date: \"2026-08-10\" → \"2025-06-01\"",
+          "Diff Status": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "Price Change (USD)": "$-2084.00",
+          "Price Change (%)": "-37.32%",
+          "Price History Trail": "2026-08-10: 5584.00 → 2026-08-11: 3500.00 (▼)"
+        },
+        {
+          "Product #": "P73283-B21",
+          "Description": "HPE ProLiant DL380 Gen12 LFF CTO Server",
+          "Unit Price (USD)": "3800.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "CTO",
+          "Current Qty": "0",
+          "Previous List Price (USD)": "5980.00",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server\" → \"HPE ProLiant DL380 Gen12 LFF CTO Server\" | Constraint: \"System Standard (Max 1)\" → \"(None)\" | Max Qty: \"1\" → \"(None)\" | Component Role: \"Base Chassis\" → \"(None)\" | Start Date: \"2026-08-10\" → \"2025-06-01\"",
+          "Diff Status": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "Price Change (USD)": "$-2180.00",
+          "Price Change (%)": "-36.45%",
+          "Price History Trail": "2026-08-10: 5980.00 → 2026-08-11: 3800.00 (▼)"
+        },
+        {
+          "Main Category": "Chassis",
+          "Sub-Category": "Variants",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Base Chassis",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "CTO",
+          "Product #": "P73284-B21",
+          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "Current Qty": "0",
+          "Unit Price (USD)": "6350.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "2026-08-11",
+          "Diff Status": "REMOVED",
+          "Previous List Price (USD)": "6350.00",
+          "Price Change (USD)": "-$6350.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-10: $6350.00 → 2026-08-11: $6350.00 → [REMOVED]"
+        },
+        {
+          "Main Category": "Chassis",
+          "Sub-Category": "Variants",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Base Chassis",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "CTO",
+          "Product #": "P73285-B21",
+          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "Current Qty": "0",
+          "Unit Price (USD)": "6890.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "2026-08-11",
+          "Diff Status": "REMOVED",
+          "Previous List Price (USD)": "6890.00",
+          "Price Change (USD)": "-$6890.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-10: $6890.00 → 2026-08-11: $6890.00 → [REMOVED]"
+        },
+        {
+          "Main Category": "Chassis",
+          "Sub-Category": "Variants",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Base Chassis",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "CTO",
+          "Product #": "P73286-B21",
+          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "Current Qty": "0",
+          "Unit Price (USD)": "7120.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "2026-08-11",
+          "Diff Status": "REMOVED",
+          "Previous List Price (USD)": "7120.00",
+          "Price Change (USD)": "-$7120.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-10: $7120.00 → 2026-08-11: $7120.00 → [REMOVED]"
+        },
+        {
+          "Main Category": "Chassis",
+          "Sub-Category": "Variants",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Base Chassis",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "CTO",
+          "Product #": "P73287-B21",
+          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "Current Qty": "0",
+          "Unit Price (USD)": "7450.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "2026-08-11",
+          "Diff Status": "REMOVED",
+          "Previous List Price (USD)": "7450.00",
+          "Price Change (USD)": "-$7450.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-10: $7450.00 → 2026-08-11: $7450.00 → [REMOVED]"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "Intel Xeon 6730P Processors",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rules": [],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "skuCount": 2,
+      "skus": [
+        {
+          "Product #": "P74573-B21",
+          "Description": "Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE",
+          "Unit Price (USD)": "10516.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$10516.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 10516.00"
+        },
+        {
+          "Product #": "P74574-B21",
+          "Description": "Intel Xeon 6767P 2.4GHz 50-core 350W Processor for HPE",
+          "Unit Price (USD)": "22485.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$22485.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 22485.00"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Smart Memory Kits",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rules": [],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "skuCount": 2,
+      "skus": [
+        {
+          "Product #": "P69728-B21",
+          "Description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+          "Unit Price (USD)": "551.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$551.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 551.00"
+        },
+        {
+          "Product #": "P69729-B21",
+          "Description": "HPE 32GB (1x32GB) Single Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+          "Unit Price (USD)": "271.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$271.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 271.00"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "Flex Slot Power Supplies",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rules": [
+        "Mixing different power supply types is not supported."
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "skuCount": 2,
+      "skus": [
+        {
+          "Product #": "P47777-B21",
+          "Description": "HPE 800W Flex Slot Platinum Hot Plug Power Supply Kit",
+          "Unit Price (USD)": "249.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$249.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 249.00"
+        },
+        {
+          "Product #": "P17023-B21",
+          "Description": "HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
+          "Unit Price (USD)": "780.50",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$780.50",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 780.50"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Services",
+      "subCategory": "Support Services",
+      "constraint": "required",
+      "maxQty": -2,
+      "rules": [],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "skuCount": 2,
+      "skus": [
+        {
+          "Product #": "H7J34A3",
+          "Description": "HPE 3Y Tech Care Essential Hardware Only Support DL380 Gen12",
+          "Unit Price (USD)": "1200.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Service",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$1200.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 1200.00"
+        },
+        {
+          "Product #": "HA114A1",
+          "Description": "HPE Installation Startup ProLiant DL Service",
+          "Unit Price (USD)": "600.00",
+          "Qty": "0",
+          "Start Date": "2025-06-01",
+          "Option Type": "Service",
+          "Current Qty": "0",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$600.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-08-11: 600.00"
+        }
+      ]
+    }
+  ]
+}

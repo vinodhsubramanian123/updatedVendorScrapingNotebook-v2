@@ -1,0 +1,1018 @@
+
+> dashboard@0.0.0 lint
+> oxlint
+
+
+  ! eslint(no-unused-vars): Identifier 'Download' is imported but never used.
+   ,-[src/components/ScrapingHistorySection.jsx:8:3]
+ 7 |   Database, 
+ 8 |   Download, 
+   :   ^^^^|^^^
+   :       `-- 'Download' is imported here
+ 9 |   FileCode, 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Filter' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:11:3]
+ 10 |   FileSpreadsheet, 
+ 11 |   Filter, 
+    :   ^^^|^^
+    :      `-- 'Filter' is imported here
+ 12 |   Layers, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Layers' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:12:3]
+ 11 |   Filter, 
+ 12 |   Layers, 
+    :   ^^^|^^
+    :      `-- 'Layers' is imported here
+ 13 |   Loader2, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Play' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:14:3]
+ 13 |   Loader2, 
+ 14 |   Play, 
+    :   ^^|^
+    :     `-- 'Play' is imported here
+ 15 |   RefreshCw, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Sparkles' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:18:3]
+ 17 |   Server, 
+ 18 |   Sparkles, 
+    :   ^^^^|^^^
+    :       `-- 'Sparkles' is imported here
+ 19 |   Terminal, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'XCircle' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:21:3]
+ 20 |   X, 
+ 21 |   XCircle,
+    :   ^^^|^^^
+    :      `-- 'XCircle' is imported here
+ 22 |   ChevronRight,
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'ChevronRight' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:22:3]
+ 21 |   XCircle,
+ 22 |   ChevronRight,
+    :   ^^^^^^|^^^^^
+    :         `-- 'ChevronRight' is imported here
+ 23 |   ExternalLink,
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'ExternalLink' is imported but never used.
+    ,-[src/components/ScrapingHistorySection.jsx:23:3]
+ 22 |   ChevronRight,
+ 23 |   ExternalLink,
+    :   ^^^^^^|^^^^^
+    :         `-- 'ExternalLink' is imported here
+ 24 |   Activity,
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Parameter 'onTriggerScrape' is declared but never used. Unused parameters should start with a '_'.
+    ,-[src/components/ScrapingHistorySection.jsx:29:3]
+ 28 | export default function ScrapingHistorySection({ 
+ 29 |   onTriggerScrape, 
+    :   ^^^^^^^|^^^^^^^
+    :          `-- 'onTriggerScrape' is declared here
+ 30 |   onTriggerRebuild, 
+    `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Parameter 'onTriggerRebuild' is declared but never used. Unused parameters should start with a '_'.
+    ,-[src/components/ScrapingHistorySection.jsx:30:3]
+ 29 |   onTriggerScrape, 
+ 30 |   onTriggerRebuild, 
+    :   ^^^^^^^^|^^^^^^^
+    :           `-- 'onTriggerRebuild' is declared here
+ 31 |   isTaskRunning = false,
+    `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Identifier 'Database' is imported but never used.
+   ,-[src/components/VendorScraperProgress.jsx:7:3]
+ 6 |   Clock, 
+ 7 |   Database, 
+   :   ^^^^|^^^
+   :       `-- 'Database' is imported here
+ 8 |   Layers, 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Layers' is imported but never used.
+   ,-[src/components/VendorScraperProgress.jsx:8:3]
+ 7 |   Database, 
+ 8 |   Layers, 
+   :   ^^^|^^
+   :      `-- 'Layers' is imported here
+ 9 |   Loader2, 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Play' is imported but never used.
+    ,-[src/components/VendorScraperProgress.jsx:10:3]
+  9 |   Loader2, 
+ 10 |   Play, 
+    :   ^^|^
+    :     `-- 'Play' is imported here
+ 11 |   RefreshCw, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'RefreshCw' is imported but never used.
+    ,-[src/components/VendorScraperProgress.jsx:11:3]
+ 10 |   Play, 
+ 11 |   RefreshCw, 
+    :   ^^^^|^^^^
+    :       `-- 'RefreshCw' is imported here
+ 12 |   Server, 
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Cpu' is imported but never used.
+    ,-[src/components/VendorScraperProgress.jsx:19:3]
+ 18 |   ChevronUp,
+ 19 |   Cpu
+    :   ^|^
+    :    `-- 'Cpu' is imported here
+ 20 | } from 'lucide-react';
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Variable 'currentCategory' is declared but never used. Unused variables should start with a '_'.
+    ,-[src/components/VendorScraperProgress.jsx:64:5]
+ 63 |     scrapedItems, 
+ 64 |     currentCategory, 
+    :     ^^^^^^^|^^^^^^^
+    :            `-- 'currentCategory' is declared here
+ 65 |     currentSku,
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Variable 'currentSku' is declared but never used. Unused variables should start with a '_'.
+    ,-[src/components/VendorScraperProgress.jsx:65:5]
+ 64 |     currentCategory, 
+ 65 |     currentSku,
+    :     ^^^^^|^^^^
+    :          `-- 'currentSku' is declared here
+ 66 |     recentLogEntries,
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Catch parameter '_' is caught but never used.
+    ,-[src/components/VendorScraperProgress.jsx:98:16]
+ 97 |         }
+ 98 |       } catch (_) {}
+    :                |
+    :                `-- '_' is declared here
+ 99 | 
+    `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Identifier 'Cpu' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:3:50]
+ 2 | import { 
+ 3 |   GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
+   :                                                  ^|^
+   :                                                   `-- 'Cpu' is imported here
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'HardDrive' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:3:55]
+ 2 | import { 
+ 3 |   GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
+   :                                                       ^^^^|^^^^
+   :                                                           `-- 'HardDrive' is imported here
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Zap' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:4:3]
+ 3 |   GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+   :   ^|^
+   :    `-- 'Zap' is imported here
+ 5 |   XCircle, Box, Server, Award, Sliders
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Power' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:4:8]
+ 3 |   GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+   :        ^^|^^
+   :          `-- 'Power' is imported here
+ 5 |   XCircle, Box, Server, Award, Sliders
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Filter' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:4:15]
+ 3 |   GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+   :               ^^^|^^
+   :                  `-- 'Filter' is imported here
+ 5 |   XCircle, Box, Server, Award, Sliders
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'XCircle' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:5:3]
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+ 5 |   XCircle, Box, Server, Award, Sliders
+   :   ^^^|^^^
+   :      `-- 'XCircle' is imported here
+ 6 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Box' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:5:12]
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+ 5 |   XCircle, Box, Server, Award, Sliders
+   :            ^|^
+   :             `-- 'Box' is imported here
+ 6 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Server' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:5:17]
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+ 5 |   XCircle, Box, Server, Award, Sliders
+   :                 ^^^|^^
+   :                    `-- 'Server' is imported here
+ 6 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Award' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:5:25]
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+ 5 |   XCircle, Box, Server, Award, Sliders
+   :                         ^^|^^
+   :                           `-- 'Award' is imported here
+ 6 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Sliders' is imported but never used.
+   ,-[src/components/RuleLogicVisualizer.jsx:5:32]
+ 4 |   Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
+ 5 |   XCircle, Box, Server, Award, Sliders
+   :                                ^^^|^^^
+   :                                   `-- 'Sliders' is imported here
+ 6 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'BookOpen' is imported but never used.
+   ,-[src/components/NotebookLmHealthBadge.jsx:2:10]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { BookOpen, CheckCircle, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
+   :          ^^^^|^^^
+   :              `-- 'BookOpen' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Variable 'http' is declared but never used. Unused variables should start with a '_'.
+    ,-[server.cjs:14:7]
+ 13 | const fs = require('fs');
+ 14 | const http = require('http');
+    :       ^^|^
+    :         `-- 'http' is declared here
+ 15 | const { spawn, exec, execFile } = require('child_process');
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Variable 'exec' is declared but never used. Unused variables should start with a '_'.
+    ,-[server.cjs:15:16]
+ 14 | const http = require('http');
+ 15 | const { spawn, exec, execFile } = require('child_process');
+    :                ^^|^
+    :                  `-- 'exec' is declared here
+ 16 | 
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Variable 'postProcessNotebookResult' is declared but never used. Unused variables should start with a '_'.
+    ,-[server.cjs:40:54]
+ 39 | const feedbackQueue = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'feedback_queue.js'));
+ 40 | const { executeNotebookQuery, sanitizeNotebookQuery, postProcessNotebookResult } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'notebook_query_utils.js'));
+    :                                                      ^^^^^^^^^^^^|^^^^^^^^^^^^
+    :                                                                  `-- 'postProcessNotebookResult' is declared here
+ 41 | const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'boq_preprocessor.js'));
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Variable 'registryFile' is declared but never used. Unused variables should start with a '_'.
+     ,-[server.cjs:210:9]
+ 209 | app.get('/api/available-catalogs', (req, res) => {
+ 210 |   const registryFile = path.join(OUTPUTS_DIR, 'SCRAPED_CATALOGS.md');
+     :         ^^^^^^|^^^^^
+     :               `-- 'registryFile' is declared here
+ 211 |   const catalogs = [];
+     `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Catch parameter '_' is caught but never used.
+     ,-[server.cjs:525:81]
+ 524 |     if (fs.existsSync(deltasFile)) {
+ 525 |       try { deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (_) {}
+     :                                                                                 |
+     :                                                                                 `-- '_' is declared here
+ 526 |     }
+     `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Catch parameter 'e' is caught but never used.
+     ,-[server.cjs:641:49]
+ 640 |     if (targetPath && targetPath.includes(TEMP_DIR) && fs.existsSync(targetPath)) {
+ 641 |       try { fs.unlinkSync(targetPath); } catch (e) {}
+     :                                                 |
+     :                                                 `-- 'e' is declared here
+ 642 |     }
+     `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Catch parameter '_' is caught but never used.
+     ,-[server.cjs:657:18]
+ 656 |           }
+ 657 |         } catch (_) {}
+     :                  |
+     :                  `-- '_' is declared here
+ 658 |       }
+     `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Parameter 'stderr' is declared but never used. Unused parameters should start with a '_'.
+     ,-[server.cjs:798:71]
+ 797 | 
+ 798 |   execFile('node', [testScript], { cwd: PROJECT_ROOT }, (err, stdout, stderr) => {
+     :                                                                       ^^^|^^
+     :                                                                          `-- 'stderr' is declared here
+ 799 |     try {
+     `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Variable 'chassisId' is declared but never used. Unused variables should start with a '_'.
+     ,-[server.cjs:868:11]
+ 867 | 
+ 868 |   const { chassisId } = req.body;
+     :           ^^^^|^^^^
+     :               `-- 'chassisId' is declared here
+ 869 |   const pdfScript = path.join(PROJECT_ROOT, 'scripts', 'download_quickspecs_pdf.js');
+     `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Catch parameter 'err' is caught but never used.
+    ,-[src/components/ScraperTriggerCard.jsx:21:16]
+ 20 |         setCdpState(data);
+ 21 |       } catch (err) {
+    :                ^|^
+    :                 `-- 'err' is declared here
+ 22 |         setCdpState({ status: 'DISCONNECTED', error: 'Backend unreachable' });
+    `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Variable 'progressPercent' is assigned a value but never used. Unused variables should start with a '_'.
+    ,-[src/components/ScraperTriggerCard.jsx:43:7]
+ 42 | 
+ 43 |   let progressPercent = null;
+    :       ^^^^^^^|^^^^^^^
+    :              `-- 'progressPercent' is declared here
+ 44 |   let progressStage = 'IDLE';
+ 45 | 
+ 46 |   if (latestProgressLog) {
+ 47 |     try {
+ 48 |       const p = JSON.parse(latestProgressLog.text);
+ 49 |       progressPercent = typeof p.percent === 'number' ? p.percent : null;
+ 50 |       progressStage = p.stage || 'PROCESSING';
+ 51 |     } catch {}
+ 52 |   } else if (isTaskRunning) {
+ 53 |     progressPercent = null;
+    :     ^^^^^^^|^^^^^^^
+    :            `-- it was last assigned here
+ 54 |     progressStage = 'IN_PROGRESS';
+    `----
+  help: Did you mean to use this variable?
+
+  ! eslint(no-unused-vars): Variable 'progressStage' is assigned a value but never used. Unused variables should start with a '_'.
+    ,-[src/components/ScraperTriggerCard.jsx:44:7]
+ 43 |   let progressPercent = null;
+ 44 |   let progressStage = 'IDLE';
+    :       ^^^^^^|^^^^^^
+    :             `-- 'progressStage' is declared here
+ 45 | 
+ 46 |   if (latestProgressLog) {
+ 47 |     try {
+ 48 |       const p = JSON.parse(latestProgressLog.text);
+ 49 |       progressPercent = typeof p.percent === 'number' ? p.percent : null;
+ 50 |       progressStage = p.stage || 'PROCESSING';
+ 51 |     } catch {}
+ 52 |   } else if (isTaskRunning) {
+ 53 |     progressPercent = null;
+ 54 |     progressStage = 'IN_PROGRESS';
+    :     ^^^^^^|^^^^^^
+    :           `-- it was last assigned here
+ 55 |   }
+    `----
+  help: Did you mean to use this variable?
+
+  ! eslint(no-unused-vars): Variable 'isInfo' is declared but never used. Unused variables should start with a '_'.
+     ,-[src/components/ScraperTriggerCard.jsx:318:23]
+ 317 |                 const isErr = log.level === 'error' || log.stream === 'stderr' || /\b(FAIL|ERROR|FAILED)\b/.test(text) || text.includes('❌');
+ 318 |                 const isInfo = log.level === 'info' || /\b(NAV|STEP|BUILD|AUDIT)\b/.test(text) || text.includes('⚡') || text.includes('⏳');
+     :                       ^^^|^^
+     :                          `-- 'isInfo' is declared here
+ 319 |                 
+     `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Identifier 'Cpu' is imported but never used.
+   ,-[src/components/TelemetryCard.jsx:2:33]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { Activity, ShieldCheck, Cpu, Clock, RefreshCw, BarChart2, AlertTriangle, CheckCircle2, Sparkles, Server, X } from 'lucide-react';
+   :                                 ^|^
+   :                                  `-- 'Cpu' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'fetchAvailableCatalogs'
+    ,-[src/App.jsx:87:6]
+ 84 |   useEffect(() => {
+ 85 |     fetchAvailableCatalogs();
+    :     ^^^^^^^^^^^|^^^^^^^^^^
+    :                `-- useEffect uses `fetchAvailableCatalogs` here
+ 86 |     fetchRunHistory();
+ 87 |   }, []);
+    :      ^^
+ 88 | 
+    `----
+  help: Either include it or remove the dependency array.
+
+  ! react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'selectedChassis', and 'fetchAvailableCatalogs'
+     ,-[src/App.jsx:201:6]
+ 117 |           setActiveProgress(null);
+ 118 |           fetchAvailableCatalogs(); // Refresh catalog registry after scrape/rebuild
+     :           ^^^^^^^^^^^^^^^^^^^^^^
+ 119 |           setTaskHistory(prev => [{
+ 120 |             type: payload.task || 'PIPELINE_ACTION',
+ 121 |             status: payload.code === 0 ? 'COMPLETED' : 'FAILED',
+ 122 |             timestamp: new Date().toISOString()
+ 123 |           }, ...prev.slice(0, 15)]);
+ 124 |           if (payload.task?.includes('SCRAPE') || payload.task?.includes('REBUILD')) {
+ 125 |             setActiveTab('catalog'); // G2+G3: Auto-navigate to Master Catalog tab
+ 126 |           }
+ 127 |         } else if (payload.type === 'PROGRESS') {
+ 128 |           setActiveProgress({
+ 129 |             task: payload.task || 'RUNNING',
+ 130 |             currentStep: payload.step,
+ 131 |             totalSteps: payload.total,
+ 132 |             action: payload.action,
+ 133 |             status: payload.status,
+ 134 |             detail: payload.detail
+ 135 |           });
+ 136 |           setLogStream(prev => [...prev.slice(-200), payload]);
+ 137 |         } else if (payload.type === 'LOG') {
+ 138 |           setLogStream(prev => [...prev.slice(-200), payload]);
+ 139 |         } else if (payload.type === 'EVAL_RESULT') {
+ 140 |           // The async BOQ evaluation completed successfully!
+ 141 |           setIsTaskRunning(false);
+ 142 |           setActiveProgress(null);
+ 143 |           
+ 144 |           if (payload.data) {
+ 145 |             setEvalResults(payload.data);
+ 146 |             setActiveTab('boq'); // Keep user on BOQ tab to view full seamless workflow
+ 147 |             
+ 148 |             // Decoupled RAG: Dispatch parallel RAG query now that matrix is rendered
+ 149 |             if (payload.data.notebookPayload) {
+ 150 |               fetch('/api/notebook-query-async', {
+ 151 |                 method: 'POST',
+ 152 |                 headers: { 'Content-Type': 'application/json' },
+ 153 |                 body: JSON.stringify({ query: payload.data.notebookPayload, chassis: selectedChassis })
+     :                                                                                      ^^^^^^^^^^^^^^^
+ 154 |               })
+ 155 |               .then(res => res.json())
+ 156 |               .then(jobInfo => {
+ 157 |                 if (jobInfo.status === 'COMPLETED') {
+ 158 |                   const finalAns = jobInfo.result?.answer || jobInfo.answer;
+ 159 |                   setEvalResults(prev => ({...prev, ragAnswer: finalAns, ragData: typeof stData !== "undefined" ? stData.result || stData : jobInfo.result || jobInfo}));
+ 160 |                 } else if (jobInfo.jobId) {
+ 161 |                   // Poll for matrix RAG result
+ 162 |                   let polls = 0;
+ 163 |                   const maxPolls = 60; // 120 seconds max
+ 164 |                   const matrixPoll = setInterval(async () => {
+ 165 |                     polls++;
+ 166 |                     if (polls > maxPolls) {
+ 167 |                       clearInterval(matrixPoll);
+ 168 |                       setEvalResults(prev => ({...prev, ragAnswer: '⚠️ NotebookLM Query Timeout: RAG verification took too long.'}));
+ 169 |                       return;
+ 170 |                     }
+ 171 |                     try {
+ 172 |                       const stRes = await fetch(`/api/notebook-query-status/${jobInfo.jobId}`);
+ 173 |                       const stData = await stRes.json();
+ 174 |                       if (stData.status === 'COMPLETED') {
+ 175 |                         clearInterval(matrixPoll);
+ 176 |                         const finalAns = stData.result?.answer || stData.answer;
+ 177 |                         setEvalResults(prev => ({...prev, ragAnswer: finalAns, ragData: typeof stData !== "undefined" ? stData.result || stData : jobInfo.result || jobInfo}));
+ 178 |                       } else if (stData.status === 'FAILED') {
+ 179 |                         clearInterval(matrixPoll);
+ 180 |                         setEvalResults(prev => ({...prev, ragAnswer: `⚠️ NotebookLM Query Failed: ${stData.error}`}));
+ 181 |                       }
+ 182 |                     } catch (e) {
+ 183 |                       console.error('Matrix RAG poll error:', e);
+ 184 |                     }
+ 185 |                   }, 2000);
+ 186 |                 }
+ 187 |               })
+ 188 |               .catch(err => console.error('Failed to dispatch background RAG query:', err));
+ 189 |             }
+ 190 |             
+ 191 |           } else if (payload.error) {
+ 192 |             setEvalResults({ status: 'ERROR', error: payload.error.error || 'Evaluation failed' });
+ 193 |           }
+ 194 |         }
+ 195 |       } catch (err) {
+ 196 |         console.error('SSE Error:', err);
+ 197 |       }
+ 198 |     };
+ 199 | 
+ 200 |     return () => eventSource.close();
+ 201 |   }, []);
+     :      ^^
+ 202 | 
+     `----
+  help: Either include it or remove the dependency array.
+
+  ! eslint(no-unused-vars): Identifier 'Clock' is imported but never used.
+   ,-[src/components/UserFeedbackDrawer.jsx:2:48]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { MessageSquare, X, Send, CheckCircle2, Clock } from 'lucide-react';
+   :                                                ^^|^^
+   :                                                  `-- 'Clock' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Parameter 'selectedChassis' is declared but never used. Unused parameters should start with a '_'.
+   ,-[src/components/PriceAnalyticsCard.jsx:5:46]
+ 4 | 
+ 5 | export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
+   :                                              ^^^^^^^|^^^^^^^
+   :                                                     `-- 'selectedChassis' is declared here
+ 6 |   const [analyticsData, setAnalyticsData] = useState(null);
+   `----
+  help: Consider removing this parameter.
+
+  x react-hooks(rules-of-hooks): React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.
+    ,-[src/components/PriceAnalyticsCard.jsx:71:21]
+ 70 |       // Prepare chart data for selected category across all snapshots
+ 71 | ,->   const chartData = useMemo(() => {
+ 72 | |       return analyticsData.snapshots.map(snap => {
+ 73 | |         const dateStr = new Date(snap.scrapeDate).toISOString().split('T')[0];
+ 74 | |         const point = { date: dateStr };
+ 75 | |         const catBreakdown = snap.priceAnalytics?.categoryBreakdown || {};
+ 76 | |         
+ 77 | |         if (selectedCategory === 'ALL') {
+ 78 | |           // Average across all categories
+ 79 | |           let sum = 0, count = 0;
+ 80 | |           Object.values(catBreakdown).forEach(c => {
+ 81 | |             if (c.avgPrice) { sum += c.avgPrice; count++; }
+ 82 | |           });
+ 83 | |           point.avgPrice = count > 0 ? (sum / count) : 0;
+ 84 | |         } else {
+ 85 | |           point.avgPrice = catBreakdown[selectedCategory]?.avgPrice || 0;
+ 86 | |         }
+ 87 | |         return point;
+ 88 | |       });
+ 89 | |->   }, [analyticsData.snapshots, selectedCategory]);
+    : `---- This Hook call is not reachable on every render path.
+ 90 |     
+    `----
+  help: Move the Hook call before the condition, or call it unconditionally and branch inside the Hook/effect instead.
+
+  ! eslint(no-unused-vars): Identifier 'ArrowRight' is imported but never used.
+   ,-[src/components/VendorBomVerificationModal.jsx:2:74]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, X, ArrowRight, FileText, UploadCloud, FileImage } from 'lucide-react';
+   :                                                                          ^^^^^|^^^^
+   :                                                                               `-- 'ArrowRight' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'FileText' is imported but never used.
+   ,-[src/components/VendorBomVerificationModal.jsx:2:86]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, X, ArrowRight, FileText, UploadCloud, FileImage } from 'lucide-react';
+   :                                                                                      ^^^^|^^^
+   :                                                                                          `-- 'FileText' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'FileImage' is imported but never used.
+   ,-[src/components/VendorBomVerificationModal.jsx:2:109]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, X, ArrowRight, FileText, UploadCloud, FileImage } from 'lucide-react';
+   :                                                                                                             ^^^^|^^^^
+   :                                                                                                                 `-- 'FileImage' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Catch parameter '_' is caught but never used.
+    ,-[src/components/VendorBomVerificationModal.jsx:60:16]
+ 59 |         items = JSON.parse(vendorText);
+ 60 |       } catch (_) {
+    :                |
+    :                `-- '_' is declared here
+ 61 |         const lines = vendorText.split('\n');
+    `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Variable 'data' is declared but never used. Unused variables should start with a '_'.
+     ,-[src/components/VendorBomVerificationModal.jsx:115:13]
+ 114 |       });
+ 115 |       const data = await res.json();
+     :             ^^|^
+     :               `-- 'data' is declared here
+ 116 |       alert(`Fresh CDP catalog scrape initiated for ${selectedChassis}. Watch logs in Dashboard timeline.`);
+     `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Identifier 'CheckCircle' is imported but never used.
+   ,-[src/components/CdpHealthBadge.jsx:2:17]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { Radio, CheckCircle, AlertTriangle, Info, X } from 'lucide-react';
+   :                 ^^^^^|^^^^^
+   :                      `-- 'CheckCircle' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'AlertTriangle' is imported but never used.
+   ,-[src/components/CdpHealthBadge.jsx:2:30]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { Radio, CheckCircle, AlertTriangle, Info, X } from 'lucide-react';
+   :                              ^^^^^^|^^^^^^
+   :                                    `-- 'AlertTriangle' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Activity' is imported but never used.
+   ,-[src/components/BoqUploader.jsx:2:165]
+ 1 | import React, { useState, useEffect, useRef } from 'react';
+ 2 | import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, XCircle, Terminal, Sliders, Layers, GitCompare, Check, ShieldCheck, Calculator, HelpCircle, Activity } from 'lucide-react';
+   :                                                                                                                                                                     ^^^^|^^^
+   :                                                                                                                                                                         `-- 'Activity' is imported here
+ 3 | import WorkflowStepper from './WorkflowStepper';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'WorkflowStepper' is imported but never used.
+   ,-[src/components/BoqUploader.jsx:3:8]
+ 2 | import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, XCircle, Terminal, Sliders, Layers, GitCompare, Check, ShieldCheck, Calculator, HelpCircle, Activity } from 'lucide-react';
+ 3 | import WorkflowStepper from './WorkflowStepper';
+   :        ^^^^^^^|^^^^^^^
+   :               `-- 'WorkflowStepper' is imported here
+ 4 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Parameter 'i' is declared but never used. Unused parameters should start with a '_'.
+     ,-[src/components/BoqUploader.jsx:269:47]
+ 268 |           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+ 269 |             {preflightData.variations.map((v, i) => (
+     :                                               |
+     :                                               `-- 'i' is declared here
+ 270 |               <div key={v.configId} className="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
+     `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Identifier 'Filter' is imported but never used.
+   ,-[src/components/CatalogExplorer.jsx:2:50]
+ 1 | import React, { useState, useEffect } from 'react';
+ 2 | import { Search, TrendingUp, FileSpreadsheet, X, Filter } from 'lucide-react';
+   :                                                  ^^^|^^
+   :                                                     `-- 'Filter' is imported here
+ 3 | import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Variable 'setActiveType' is declared but never used. Unused variables should start with a '_'.
+    ,-[src/components/CatalogExplorer.jsx:15:22]
+ 14 |   const [activeSubCategory, setActiveSubCategory] = useState('ALL');
+ 15 |   const [activeType, setActiveType] = useState('ALL');
+    :                      ^^^^^^|^^^^^^
+    :                            `-- 'setActiveType' is declared here
+ 16 | 
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Variable 'types' is declared but never used. Unused variables should start with a '_'.
+    ,-[src/components/CatalogExplorer.jsx:77:9]
+ 76 | 
+ 77 |   const types = ['ALL', 'CTO', 'BTO', 'FIO', 'Service'];
+    :         ^^|^^
+    :           `-- 'types' is declared here
+ 78 | 
+    `----
+  help: Consider removing this declaration.
+
+  x react-hooks(rules-of-hooks): React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.
+    ,-[src/components/CatalogExplorer.jsx:79:35]
+ 78 | 
+ 79 |   const [viewMode, setViewMode] = useState('table'); // 'table', 'analytics', 'services'
+    :                                   ^^^^^^^^|^^^^^^^^
+    :                                           `-- This Hook call is not reachable on every render path.
+ 80 | 
+    `----
+  help: Move the Hook call before the condition, or call it unconditionally and branch inside the Hook/effect instead.
+
+  x react-hooks(rules-of-hooks): React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.
+     ,-[src/components/CatalogExplorer.jsx:108:47]
+ 107 | 
+ 108 |   const [realPriceTrail, setRealPriceTrail] = useState([]);
+     :                                               ^^^^^^|^^^^^
+     :                                                     `-- This Hook call is not reachable on every render path.
+ 109 |   const [loadingHistory, setLoadingHistory] = useState(false);
+     `----
+  help: Move the Hook call before the condition, or call it unconditionally and branch inside the Hook/effect instead.
+
+  x react-hooks(rules-of-hooks): React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.
+     ,-[src/components/CatalogExplorer.jsx:109:47]
+ 108 |   const [realPriceTrail, setRealPriceTrail] = useState([]);
+ 109 |   const [loadingHistory, setLoadingHistory] = useState(false);
+     :                                               ^^^^^^^|^^^^^^^
+     :                                                      `-- This Hook call is not reachable on every render path.
+ 110 | 
+     `----
+  help: Move the Hook call before the condition, or call it unconditionally and branch inside the Hook/effect instead.
+
+  ! eslint(no-unused-vars): Parameter 'activeTab' is declared but never used. Unused parameters should start with a '_'.
+    ,-[src/components/WorkflowStepper.jsx:15:3]
+ 14 |   selectedChassis,
+ 15 |   activeTab,
+    :   ^^^^|^^^^
+    :       `-- 'activeTab' is declared here
+ 16 |   onNavigateTab,
+    `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Identifier 'AlertTriangle' is imported but never used.
+   ,-[src/components/FeedbackModal.jsx:2:34]
+ 1 | import React, { useState } from 'react';
+ 2 | import { MessageSquare, X, Send, AlertTriangle } from 'lucide-react';
+   :                                  ^^^^^^|^^^^^^
+   :                                        `-- 'AlertTriangle' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'CheckCircle2' is imported but never used.
+   ,-[src/components/TaskHistoryCard.jsx:3:17]
+ 2 | import TaskStatusBadge from './TaskStatusBadge';
+ 3 | import { Clock, CheckCircle2, RefreshCw, Server, FileText, Sparkles, Terminal, ChevronRight, XCircle } from 'lucide-react';
+   :                 ^^^^^^|^^^^^
+   :                       `-- 'CheckCircle2' is imported here
+ 4 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Catch parameter 'err' is caught but never used.
+    ,-[src/components/TaskHistoryCard.jsx:27:14]
+ 26 |       setTraceLogs(data.logs || []);
+ 27 |     } catch (err) {
+    :              ^|^
+    :               `-- 'err' is declared here
+ 28 |       setTraceLogs([{ text: 'Error loading trace logs.', stream: 'stderr' }]);
+    `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Identifier 'ArrowRight' is imported but never used.
+   ,-[src/components/PartnerReconciliationView.jsx:2:71]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, ArrowRight, FileText, Sparkles, Database, Layers } from 'lucide-react';
+   :                                                                       ^^^^^|^^^^
+   :                                                                            `-- 'ArrowRight' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Database' is imported but never used.
+   ,-[src/components/PartnerReconciliationView.jsx:2:103]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, ArrowRight, FileText, Sparkles, Database, Layers } from 'lucide-react';
+   :                                                                                                       ^^^^|^^^
+   :                                                                                                           `-- 'Database' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Layers' is imported but never used.
+   ,-[src/components/PartnerReconciliationView.jsx:2:113]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, ArrowRight, FileText, Sparkles, Database, Layers } from 'lucide-react';
+   :                                                                                                                 ^^^|^^
+   :                                                                                                                    `-- 'Layers' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Catch parameter '_' is caught but never used.
+    ,-[src/components/PartnerReconciliationView.jsx:29:16]
+ 28 |         items = JSON.parse(vendorText);
+ 29 |       } catch (_) {
+    :                |
+    :                `-- '_' is declared here
+ 30 |         const lines = vendorText.split('\n');
+    `----
+  help: Consider handling this error.
+
+  ! eslint(no-unused-vars): Identifier 'Award' is imported but never used.
+   ,-[src/components/Header.jsx:4:50]
+ 3 |   Cpu, Search, Sparkles, Server, RefreshCw, MessageSquare, Settings,
+ 4 |   LayoutDashboard, Table, FileText, ShieldAlert, Award, FileSpreadsheet, Activity, Terminal, ShieldCheck
+   :                                                  ^^|^^
+   :                                                    `-- 'Award' is imported here
+ 5 | } from 'lucide-react';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Variable 'isToolActive' is declared but never used. Unused variables should start with a '_'.
+    ,-[src/components/Header.jsx:45:9]
+ 44 |   const toolTabs = navTabs.filter(t => !t.primary);
+ 45 |   const isToolActive = toolTabs.some(t => t.id === activeTab);
+    :         ^^^^^^|^^^^^
+    :               `-- 'isToolActive' is declared here
+ 46 | 
+    `----
+  help: Consider removing this declaration.
+
+  ! eslint(no-unused-vars): Identifier 'Info' is imported but never used.
+   ,-[src/components/ConflictGraphInspector.jsx:2:61]
+ 1 | import React, { useState } from 'react';
+ 2 | import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle, Info, X, Zap, Cpu, HardDrive, Power, Award, Layers } from 'lucide-react';
+   :                                                             ^^|^
+   :                                                               `-- 'Info' is imported here
+ 3 | import RuleLogicVisualizer from './RuleLogicVisualizer';
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Variable 'passed' is assigned a value but never used. Unused variables should start with a '_'.
+    ,-[src/components/ConflictGraphInspector.jsx:28:9]
+ 27 |     const isEvaluated = !!evalResults;
+ 28 |     let passed = def.status === 'PASS';
+    :         ^^^|^^
+    :            `-- 'passed' is declared here
+ 29 |     let detail = def.detail || def.defaultRule;
+ 30 |     let status = def.status || (!isEvaluated ? 'PENDING' : 'PASS');
+ 31 | 
+ 32 |     // If using default aspects (no backend payload), try to fallback to mathDeductions mapping
+ 33 |     if (isEvaluated && !rawAspects && evalResults.mathDeductions) {
+ 34 |       const keyword = def.name.split(' ')[0]; // e.g., "Thermal", "Memory", "Storage", "PCIe", "Power", "Vendor"
+ 35 |       const matchedDeduction = evalResults.mathDeductions.find(d => 
+ 36 |         d.includes(keyword) || 
+ 37 |         (keyword === 'Thermal' && d.includes('Compute')) ||
+ 38 |         (keyword === 'Vendor' && d.includes('Support')) ||
+ 39 |         (keyword === 'PCIe' && d.includes('PCIe'))
+ 40 |       );
+ 41 | 
+ 42 |       if (matchedDeduction) {
+ 43 |         passed = false;
+    :         ^^^|^^
+    :            `-- it was last assigned here
+ 44 |         status = 'FAIL';
+    `----
+  help: Did you mean to use this variable?
+
+  ! eslint(no-unused-vars): Identifier 'FileSpreadsheet' is imported but never used.
+   ,-[src/components/CatalogOverviewCard.jsx:2:10]
+ 1 | import React, { useState } from 'react';
+ 2 | import { FileSpreadsheet, TrendingUp, PlusCircle, MinusCircle, AlertCircle, FileText, Download, Sparkles, Server, RefreshCw } from 'lucide-react';
+   :          ^^^^^^^|^^^^^^^
+   :                 `-- 'FileSpreadsheet' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Sparkles' is imported but never used.
+   ,-[src/components/CatalogOverviewCard.jsx:2:97]
+ 1 | import React, { useState } from 'react';
+ 2 | import { FileSpreadsheet, TrendingUp, PlusCircle, MinusCircle, AlertCircle, FileText, Download, Sparkles, Server, RefreshCw } from 'lucide-react';
+   :                                                                                                 ^^^^|^^^
+   :                                                                                                     `-- 'Sparkles' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-useless-escape): Unnecessary escape character '$'
+    ,-[src/components/CatalogOverviewCard.jsx:47:106]
+ 46 |         const rawPrice = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || sku.listPrice || '0';
+ 47 |         const priceNum = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice).replace(/[\$,]/g, '')) || 0;
+    :                                                                                                          ^^
+ 48 |         const skuId = sku['Product #'] || sku.sku || sku.partNumber;
+    `----
+  help: Replace `\$` with `$`.
+
+  ! eslint(no-unused-vars): Identifier 'Filter' is imported but never used.
+   ,-[src/components/RulesConfiguration.jsx:2:23]
+ 1 | import React from 'react';
+ 2 | import { ShieldCheck, Filter } from 'lucide-react';
+   :                       ^^^|^^
+   :                          `-- 'Filter' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Parameter 'onAuditCatalog' is declared but never used. Unused parameters should start with a '_'.
+   ,-[src/components/ArtifactInspector.jsx:4:61]
+ 3 | 
+ 4 | export default function ArtifactInspector({ currentCatalog, onAuditCatalog }) {
+   :                                                             ^^^^^^^|^^^^^^
+   :                                                                    `-- 'onAuditCatalog' is declared here
+ 5 |   const [auditResult, setAuditResult] = useState(null);
+   `----
+  help: Consider removing this parameter.
+
+  ! eslint(no-unused-vars): Identifier 'AlertCircle' is imported but never used.
+   ,-[src/components/TaskStatusBadge.jsx:2:49]
+ 1 | import React from 'react';
+ 2 | import { CheckCircle2, XCircle, Clock, Loader2, AlertCircle } from 'lucide-react';
+   :                                                 ^^^^^|^^^^^
+   :                                                      `-- 'AlertCircle' is imported here
+ 3 | 
+   `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'RefreshCw' is imported but never used.
+    ,-[src/components/GlobalLoadingState.jsx:9:3]
+  8 |   Zap, 
+  9 |   RefreshCw,
+    :   ^^^^|^^^^
+    :       `-- 'RefreshCw' is imported here
+ 10 |   Activity,
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Activity' is imported but never used.
+    ,-[src/components/GlobalLoadingState.jsx:10:3]
+  9 |   RefreshCw,
+ 10 |   Activity,
+    :   ^^^^|^^^
+    :       `-- 'Activity' is imported here
+ 11 |   Layers,
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'Layers' is imported but never used.
+    ,-[src/components/GlobalLoadingState.jsx:11:3]
+ 10 |   Activity,
+ 11 |   Layers,
+    :   ^^^|^^
+    :      `-- 'Layers' is imported here
+ 12 |   FileSearch
+    `----
+  help: Consider removing this import.
+
+  ! eslint(no-unused-vars): Identifier 'FileSearch' is imported but never used.
+    ,-[src/components/GlobalLoadingState.jsx:12:3]
+ 11 |   Layers,
+ 12 |   FileSearch
+    :   ^^^^^|^^^^
+    :        `-- 'FileSearch' is imported here
+ 13 | } from 'lucide-react';
+    `----
+  help: Consider removing this import.
+
+Found 82 warnings and 4 errors.
+Finished in 22ms on 34 files with 92 rules using 2 threads.
+npm error Lifecycle script `lint` failed with error:
+npm error code 1
+npm error path /app/applet/dashboard
+npm error workspace dashboard@0.0.0
+npm error location /app/applet/dashboard
+npm error command failed
+npm error command sh -c oxlint

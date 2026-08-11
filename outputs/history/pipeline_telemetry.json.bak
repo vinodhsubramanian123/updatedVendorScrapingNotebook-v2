@@ -1,0 +1,865 @@
+{
+  "version": "1.2.0",
+  "lastUpdated": "2026-08-11T12:13:21.079Z",
+  "evaluationsCount": 22,
+  "totalDeltasLearned": 19,
+  "totalRulesEvaluated": 0,
+  "avgConfidenceScore": 0.3,
+  "totalExports": 1,
+  "history": [
+    {
+      "id": "EVAL-1786450022269",
+      "timestamp": "2026-08-11T12:07:02.269Z",
+      "boqFile": "BENCH-05-PSU-REDUNDANCY-SINGLE.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.55,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 1,
+      "warningsCount": 2,
+      "missingDependenciesCount": 4,
+      "graphRulesEvaluated": 10,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 0,
+        "stage2AspectMathMs": 1,
+        "stage3RAGConsultationMs": 1,
+        "stage4GeminiVerificationMs": 1,
+        "stage5ResolutionMatrixMs": 0
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 0,
+        "STORAGE_CACHE_BATTERY": 0,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 1,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 3
+    },
+    {
+      "id": "EVAL-1786450022265",
+      "timestamp": "2026-08-11T12:07:02.265Z",
+      "boqFile": "BENCH-04-MULTI-CHASSIS-CTO-DIVISION.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.9,
+      "isHitlTriggered": false,
+      "criticalViolationsCount": 0,
+      "warningsCount": 2,
+      "missingDependenciesCount": 2,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 0,
+        "stage2AspectMathMs": 1,
+        "stage3RAGConsultationMs": 1,
+        "stage4GeminiVerificationMs": 1,
+        "stage5ResolutionMatrixMs": 0
+      },
+      "domainMap": {
+        "THERMAL": 0,
+        "ELECTRICAL": 0,
+        "STORAGE_CACHE_BATTERY": 0,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 3
+    },
+    {
+      "id": "EVAL-1786450022262",
+      "timestamp": "2026-08-11T12:07:02.262Z",
+      "boqFile": "BENCH-03-STORAGE-CACHE-BATTERY.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.8,
+      "isHitlTriggered": false,
+      "criticalViolationsCount": 0,
+      "warningsCount": 3,
+      "missingDependenciesCount": 3,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 0,
+        "stage2AspectMathMs": 1,
+        "stage3RAGConsultationMs": 1,
+        "stage4GeminiVerificationMs": 1,
+        "stage5ResolutionMatrixMs": 0
+      },
+      "domainMap": {
+        "THERMAL": 0,
+        "ELECTRICAL": 0,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 3
+    },
+    {
+      "id": "EVAL-1786450022258",
+      "timestamp": "2026-08-11T12:07:02.258Z",
+      "boqFile": "BENCH-02-TELCO-DC-LUG-KIT.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.3,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 2,
+      "missingDependenciesCount": 4,
+      "graphRulesEvaluated": 10,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 0,
+        "stage2AspectMathMs": 1,
+        "stage3RAGConsultationMs": 1,
+        "stage4GeminiVerificationMs": 1,
+        "stage5ResolutionMatrixMs": 0
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 0,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 3
+    },
+    {
+      "id": "EVAL-1786450022252",
+      "timestamp": "2026-08-11T12:07:02.252Z",
+      "boqFile": "BENCH-01-HIGH-TDP-THERMAL.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.55,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 1,
+      "warningsCount": 2,
+      "missingDependenciesCount": 3,
+      "graphRulesEvaluated": 9,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 9,
+        "stage3RAGConsultationMs": 7,
+        "stage4GeminiVerificationMs": 9,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 0,
+        "STORAGE_CACHE_BATTERY": 0,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 37
+    },
+    {
+      "id": "EVAL-1786448369778",
+      "timestamp": "2026-08-11T11:39:29.778Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 11,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 13555,
+        "stage2AspectMathMs": 22592,
+        "stage3RAGConsultationMs": 18073,
+        "stage4GeminiVerificationMs": 22592,
+        "stage5ResolutionMatrixMs": 13555
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 90366
+    },
+    {
+      "id": "EVAL-1786448261816",
+      "timestamp": "2026-08-11T11:37:41.816Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 11,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 36,
+        "stage2AspectMathMs": 61,
+        "stage3RAGConsultationMs": 49,
+        "stage4GeminiVerificationMs": 61,
+        "stage5ResolutionMatrixMs": 36
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 243
+    },
+    {
+      "id": "EVAL-1786447123206",
+      "timestamp": "2026-08-11T11:18:43.206Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 11,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 7,
+        "stage2AspectMathMs": 12,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 12,
+        "stage5ResolutionMatrixMs": 7
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 47
+    },
+    {
+      "id": "EVAL-1786447043621",
+      "timestamp": "2026-08-11T11:17:23.621Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 7,
+        "stage2AspectMathMs": 12,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 12,
+        "stage5ResolutionMatrixMs": 7
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 47
+    },
+    {
+      "id": "EVAL-1786447035524",
+      "timestamp": "2026-08-11T11:17:15.524Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 8,
+        "stage2AspectMathMs": 13,
+        "stage3RAGConsultationMs": 11,
+        "stage4GeminiVerificationMs": 13,
+        "stage5ResolutionMatrixMs": 8
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 53
+    },
+    {
+      "id": "EVAL-1786447028707",
+      "timestamp": "2026-08-11T11:17:08.707Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 10,
+        "stage3RAGConsultationMs": 8,
+        "stage4GeminiVerificationMs": 10,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 41
+    },
+    {
+      "id": "EVAL-1786447020047",
+      "timestamp": "2026-08-11T11:17:00.047Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 11,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 11,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 43
+    },
+    {
+      "id": "EVAL-1786447014325",
+      "timestamp": "2026-08-11T11:16:54.325Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 11,
+        "stage3RAGConsultationMs": 8,
+        "stage4GeminiVerificationMs": 11,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 42
+    },
+    {
+      "id": "EVAL-1786446996636",
+      "timestamp": "2026-08-11T11:16:36.636Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 8,
+        "stage2AspectMathMs": 13,
+        "stage3RAGConsultationMs": 10,
+        "stage4GeminiVerificationMs": 13,
+        "stage5ResolutionMatrixMs": 8
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 50
+    },
+    {
+      "id": "EVAL-1786446990089",
+      "timestamp": "2026-08-11T11:16:30.089Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 8,
+        "stage2AspectMathMs": 13,
+        "stage3RAGConsultationMs": 10,
+        "stage4GeminiVerificationMs": 13,
+        "stage5ResolutionMatrixMs": 8
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 50
+    },
+    {
+      "id": "EVAL-1786446983978",
+      "timestamp": "2026-08-11T11:16:23.978Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 8,
+        "stage2AspectMathMs": 13,
+        "stage3RAGConsultationMs": 10,
+        "stage4GeminiVerificationMs": 13,
+        "stage5ResolutionMatrixMs": 8
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 50
+    },
+    {
+      "id": "EVAL-1786446974484",
+      "timestamp": "2026-08-11T11:16:14.484Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 10,
+        "stage3RAGConsultationMs": 8,
+        "stage4GeminiVerificationMs": 10,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 38
+    },
+    {
+      "id": "EVAL-1786446967396",
+      "timestamp": "2026-08-11T11:16:07.396Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 10,
+        "stage3RAGConsultationMs": 8,
+        "stage4GeminiVerificationMs": 10,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 39
+    },
+    {
+      "id": "EVAL-1786446897835",
+      "timestamp": "2026-08-11T11:14:57.835Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 6,
+        "stage2AspectMathMs": 9,
+        "stage3RAGConsultationMs": 7,
+        "stage4GeminiVerificationMs": 9,
+        "stage5ResolutionMatrixMs": 6
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 37
+    },
+    {
+      "id": "EVAL-1786446892256",
+      "timestamp": "2026-08-11T11:14:52.256Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 7,
+        "stage2AspectMathMs": 11,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 11,
+        "stage5ResolutionMatrixMs": 7
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 44
+    },
+    {
+      "id": "EVAL-1786446114274",
+      "timestamp": "2026-08-11T11:01:54.274Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 7,
+        "stage2AspectMathMs": 11,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 11,
+        "stage5ResolutionMatrixMs": 7
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 44
+    },
+    {
+      "id": "EVAL-1786445685924",
+      "timestamp": "2026-08-11T10:54:45.924Z",
+      "boqFile": "test_boq_dl380_gen12.csv",
+      "chassisModel": "DL380 Gen12 8SFF",
+      "confidenceScore": 0.2,
+      "isHitlTriggered": true,
+      "criticalViolationsCount": 2,
+      "warningsCount": 3,
+      "missingDependenciesCount": 5,
+      "graphRulesEvaluated": 8,
+      "graphWholeSolutionValid": true,
+      "stageBreakdown": {
+        "stage1ParsingMs": 7,
+        "stage2AspectMathMs": 12,
+        "stage3RAGConsultationMs": 9,
+        "stage4GeminiVerificationMs": 12,
+        "stage5ResolutionMatrixMs": 7
+      },
+      "domainMap": {
+        "THERMAL": 1,
+        "ELECTRICAL": 1,
+        "STORAGE_CACHE_BATTERY": 1,
+        "MEMORY_CHANNEL": 0,
+        "POWER_REDUNDANCY": 0,
+        "ACCESSORY_CABLE": 2
+      },
+      "ragFallbackUsed": false,
+      "durationMs": 46
+    }
+  ],
+  "exportHistory": [
+    {
+      "id": "1786445142999-1",
+      "timestamp": "2026-08-11T10:45:42.999Z",
+      "filename": "corrected_boq_rank1_TestChassis_1786445142999.xlsx",
+      "chassisId": "TestChassis",
+      "rank": 1,
+      "solutionName": "Test Solution",
+      "estimatedCostUsd": 0
+    }
+  ],
+  "ragFallbackRatio": 0,
+  "evalAccuracyScore": 4.5,
+  "learnedDeltas": [
+    {
+      "id": "DELTA-1786450401077",
+      "timestamp": "2026-08-11T12:13:21.076Z",
+      "chassis": "edge-test-4YsI1q",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "UNKNOWN_SKU",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on UNKNOWN_SKU."
+    },
+    {
+      "id": "DELTA-1786450390230",
+      "timestamp": "2026-08-11T12:13:10.230Z",
+      "chassis": "edge-test-etB1ls",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "UNKNOWN_SKU",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on UNKNOWN_SKU."
+    },
+    {
+      "id": "DELTA-1786450368888",
+      "timestamp": "2026-08-11T12:12:48.887Z",
+      "chassis": "edge-test-hFBusH",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "UNKNOWN_SKU",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on UNKNOWN_SKU."
+    },
+    {
+      "id": "DELTA-1786450365533",
+      "timestamp": "2026-08-11T12:12:45.533Z",
+      "chassis": "edge-test-nvCpVL",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "UNKNOWN_SKU",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on UNKNOWN_SKU."
+    },
+    {
+      "id": "DELTA-1786450338601",
+      "timestamp": "2026-08-11T12:12:18.601Z",
+      "chassis": "tmp_test_feedback",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P72203-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P72203-B21."
+    },
+    {
+      "id": "DELTA-1786450326465",
+      "timestamp": "2026-08-11T12:12:06.464Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "id": "DELTA-1786450324865",
+      "timestamp": "2026-08-11T12:12:04.865Z",
+      "chassis": "tmp_test_feedback",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P72203-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P72203-B21."
+    },
+    {
+      "id": "DELTA-1786450062765",
+      "timestamp": "2026-08-11T12:07:42.764Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "id": "DELTA-1786450009722",
+      "timestamp": "2026-08-11T12:06:49.722Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "id": "DELTA-1786450008162",
+      "timestamp": "2026-08-11T12:06:48.162Z",
+      "chassis": "tmp_test_feedback",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P72203-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P72203-B21."
+    },
+    {
+      "id": "DELTA-1786449452029",
+      "timestamp": "2026-08-11T11:57:32.029Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "id": "DELTA-1786449450344",
+      "timestamp": "2026-08-11T11:57:30.344Z",
+      "chassis": "tmp_test_feedback",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P72203-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P72203-B21."
+    },
+    {
+      "id": "DELTA-1786449302819",
+      "timestamp": "2026-08-11T11:55:02.819Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P99999-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P99999-B21."
+    },
+    {
+      "id": "DELTA-1786449302786",
+      "timestamp": "2026-08-11T11:55:02.786Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P38997-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P38997-B21."
+    },
+    {
+      "id": "DELTA-1786449302299",
+      "timestamp": "2026-08-11T11:55:02.298Z",
+      "chassis": "tmp_test_feedback",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P72203-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P72203-B21."
+    },
+    {
+      "id": "DELTA-1786449301331",
+      "timestamp": "2026-08-11T11:55:01.331Z",
+      "chassis": "DL380_Gen12_SFF",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "id": "DELTA-1786447120855",
+      "timestamp": "2026-08-11T11:18:40.855Z",
+      "chassis": "outputs",
+      "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+      "affectedSku": "873763-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on 873763-B21."
+    },
+    {
+      "id": "DELTA-1786447076967",
+      "timestamp": "2026-08-11T11:17:56.967Z",
+      "chassis": "outputs",
+      "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+      "affectedSku": "873763-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on 873763-B21."
+    },
+    {
+      "id": "DELTA-1786447060751",
+      "timestamp": "2026-08-11T11:17:40.751Z",
+      "chassis": "outputs",
+      "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+      "affectedSku": "P48820-B21",
+      "requiredSku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P48820-B21."
+    }
+  ],
+  "adversarial": {
+    "totalRuns": 17,
+    "caughtRuns": 17,
+    "catchRate": 100,
+    "truePositives": 17,
+    "falsePositives": 0,
+    "precision": 100
+  }
+}
