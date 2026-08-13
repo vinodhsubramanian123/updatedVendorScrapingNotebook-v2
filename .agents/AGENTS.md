@@ -5,19 +5,19 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 
 ---
 
-## Pipeline State of Health (Last Updated: 2026-08-11)
+## Pipeline State of Health (Last Updated: 2026-08-12)
 
-### ✅ Certified Products (100% Audit Pass)
-| Product | Family | Output Prefix | SKUs | Excel Sheets | QuickSpecs PDF | Status |
-|---------|--------|---------------|------|-------------|----------------|--------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 951 | 30 | ✅ Verified (2.06 MB) | ✅ 100% PASS |
-| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 92 | 8 | ✅ Verified (2.06 MB) | ✅ 100% PASS |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 1,253 | 24 | ✅ Verified (2.06 MB) | ✅ 100% PASS |
-| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 85 | 11 | ✅ Verified (2.06 MB) | ✅ 100% PASS |
-| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 46 | 11 | ⚠️ Advisory (No DOM link) | ✅ 100% PASS |
-| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 141 | 8 | ✅ Verified (0.89 MB) | ✅ 100% PASS |
+### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-12)
+| Product | Family | Output Prefix | Unique SKUs | Entries | QuickSpecs PDF | Status |
+|---------|--------|---------------|-------------|---------|----------------|--------|
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 774 | 98 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline) |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
+| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
+| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline — full OCA scrape pending) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
+| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
+| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | — | — | ⏳ Configured in map, payload ready | ⏳ Scrape Pending |
 
-**Total Portfolio Intelligence**: **2,568 unique SKUs** across 6 product lines in 5 families. 81/81 Test Assertions 100% Certified.
+**Total Verified Portfolio Intelligence**: **785 unique SKUs** across 5 verified product lines. 1 product (Alletra) pending scrape. 34/34 Test Assertions + 5/5 Benchmarks Certified.
 
 ### ✅ Automated Evaluation Benchmark Suite (`scripts/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 5/5 Scenarios (100.0%)
@@ -30,7 +30,7 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 ## Canonical Directory Layout
 
 ```
-booktoSkill/
+vendorNotebookSolution/
 ├── .agents/
 │   ├── AGENTS.md                          ← project rules & state of health
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & contracts
@@ -42,30 +42,70 @@ booktoSkill/
 │       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration
 │       └── knowledge-sync-skill/          ← delta sync & knowledge registry skill
 ├── scripts/                               ← ALL Node.js scripts live here
+│   ├── config/
+│   │   └── profiles/                      ← dynamic JSON scraping profiles (default, proliant_gen12, etc.)
 │   ├── lib/
+│   │   ├── agentic_guardrail.js           ← LLM MCP tool loop & fallback
 │   │   ├── boq_evaluator.js               ← 6-aspect physical math engine
+│   │   ├── boq_preprocessor.js            ← BOQ text/CSV parser & grouper
+│   │   ├── budget_optimizer.js            ← Rank 5 budget optimization engine
+│   │   ├── catalog_discovery.js           ← auto-discover chassis dirs & metadata
+│   │   ├── catalog_formatter.js           ← SKU formatting & normalization
+│   │   ├── catalog_rules.js               ← aspect rule extractors
 │   │   ├── cdp.js                         ← shared CDP connection & command module
+│   │   ├── checksum_diff.js               ← SHA-256 hash diff engine
 │   │   ├── conflict_graph.js              ← 5-level conflict graph & strategy matrix
+│   │   ├── data_validator.js              ← schema & assertion validator
 │   │   ├── diff_catalog.js                ← catalog diff & price history engine
 │   │   ├── dom_extract.js                 ← DOM text & table extraction helpers
+│   │   ├── feedback_loop.js               ← HITL feedback capture & learning
+│   │   ├── feedback_queue.js              ← async feedback queue
 │   │   ├── fs_compat.js                   ← safe atomic file operations & backups
-│   │   ├── logger.js                      ← standardized console logger
-│   │   ├── navigate_oca.js                ← smart partner portal & oca auto-navigator
+│   │   ├── generate_boq_xlsx.js           ← XLSX exporter
+│   │   ├── index.js                       ← barrel re-export for common lib modules
+│   │   ├── knowledge_sync.js              ← NotebookLM sync payload builder
+│   │   ├── local_rag_search.js            ← dual-layer local fallback search
+│   │   ├── navigate_oca.js                ← smart partner portal auto-navigator
 │   │   ├── notebook_query_utils.js        ← natural language query pre/post-processor
+│   │   ├── ocr_service.js                 ← Gemini Vision OCR service
+│   │   ├── pipeline_logger.js             ← standardized logger
 │   │   ├── product_meta.js                ← universal product family & model parser
-│   │   ├── registry.js                    ← shared registry table updater (DRY)
+│   │   ├── progress.js                    ← task progress tracker
+│   │   ├── registry.js                    ← shared registry table updater
 │   │   ├── sku.js                         ← centralized HPE SKU regex & normalization
+│   │   ├── sku_versioning.js              ← SKU version history & diff audit
 │   │   ├── sync_registry.js               ← master registry auto-synchronizer
 │   │   ├── system/
 │   │   │   └── telemetry.js               ← pipeline telemetry & action ledger engine
+│   │   ├── telemetry.js                   ← re-export proxy for system/telemetry.js
 │   │   └── vendor_bom_verifier.js         ← vendor BOM cross-verification & scrape trigger
 │   ├── eval_boq.js                        ← primary BOQ evaluator CLI
 │   ├── test_boq_eval_benchmarks.js        ← automated BOQ evaluation benchmark suite
 │   ├── test_all_aspects.js                ← 34-test aspect math verification suite
 │   ├── verify_all.js                      ← portfolio audit suite (npm test)
 │   └── rebuild_all.js                     ← rebuild all catalogs from raw_data
+├── tests/                                 ← test suites
+│   ├── e2e_headless_ui_test.js            ← E2E headless browser UI test
+│   ├── test_end_to_end_scenarios.js       ← multi-scenario E2E validation
+│   ├── test_conflict_graph.js             ← conflict graph unit tests
+│   ├── test_offline_pipeline.js           ← offline/fallback mode tests
+│   ├── test_edge_cases.js                 ← edge case coverage
+│   ├── test_vendor_bom_verifier.js        ← BOM verification tests
+│   └── test_incremental_checksum.js       ← diff checksum logic tests
+├── dashboard/                             ← React + Vite UI dashboard
+│   ├── server.cjs                         ← Express backend (API routes + SSE)
+│   ├── src/
+│   │   ├── App.jsx                        ← main app shell with tab routing
+│   │   └── components/                    ← 33 React components
+│   └── package.json                       ← dashboard workspace config
+├── docs/                                  ← project documentation
+│   ├── ARCHITECTURE_AND_DESIGN.md         ← core architecture & Mermaid diagrams
+│   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines & agentic workflows
+│   └── DEVELOPER_GUIDE.md                 ← local dev, testing, API guide
+├── _archive_scripts/                      ← deprecated one-time fix/patch scripts
 ├── outputs/                               ← ALL scrape outputs live here
 │   ├── SCRAPED_CATALOGS.md                ← master registry of every scrape
+│   ├── history/                           ← telemetry, benchmarks, run logs
 │   └── {Family}/{Gen}/{Model}_{FormFactor}/
 ├── README.md                              ← project documentation & run commands
 └── package.json                           ← npm configuration & script targets

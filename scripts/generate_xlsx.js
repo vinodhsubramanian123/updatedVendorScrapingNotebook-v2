@@ -56,11 +56,15 @@ const scrapsDir = path.join(targetDir, 'intermittent_scraps');
 const xlsxBase   = path.basename(xlsxPath, '.xlsx');         // e.g. DL380_Gen12_SFF_OCA_Catalog
 const filePrefix = xlsxBase.replace(/_OCA_Catalog$/, '');    // e.g. DL380_Gen12_SFF
 
-// ── TSV parser ────────────────────────────────────────────────────────────────
-function parseTSV(filepath) {
+// ── TSV parser — required: exits on missing; optional: returns empty ─────────
+function parseTSV(filepath, { required = true } = {}) {
   if (!fs.existsSync(filepath)) {
-    console.error(`ERROR: TSV not found: ${filepath}`);
-    process.exit(1);
+    if (required) {
+      console.error(`ERROR: TSV not found: ${filepath}`);
+      process.exit(1);
+    }
+    console.warn(`⚠️  Optional TSV not found (skipping sheet): ${filepath}`);
+    return { headers: [], data: [] };
   }
   const lines   = fs.readFileSync(filepath, 'utf-8').split('\n');
   const headers = lines[0].split('\t');
@@ -73,10 +77,13 @@ function parseTSV(filepath) {
   return { headers, data };
 }
 
-// ── Load TSV files ────────────────────────────────────────────────────────────
-const skuData     = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`));
-const rulesData   = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`));
-const summaryData = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`));
+// ── Load TSV files ─────────────────────────────────────────────────────────
+// Hardware TSVs are required. Services TSV is optional (generated only when
+// service entries are present in the scrape).
+const skuData      = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`));
+const rulesData    = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`));
+const summaryData  = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`));
+const servicesData = parseTSV(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`), { required: false });
 
 // ── Build workbook ────────────────────────────────────────────────────────────
 const wb = XLSX.utils.book_new();
@@ -130,10 +137,25 @@ function applyDiffStyles(ws, data) {
         font: { name: 'Calibri', sz: 11, color: { rgb: 'C5221F' }, strike: true },
         fill: { fgColor: { rgb: 'FDE7E7' } }
       };
+    } else if (status === 'REINSTATED') {
+      style = {
+        font: { name: 'Calibri', sz: 11, color: { rgb: '7B4F00' }, bold: true },
+        fill: { fgColor: { rgb: 'FFF8E1' } }   // Gold/amber — returned from discontinuation
+      };
     } else if (status === 'PRICE_CHANGED') {
       style = {
         font: { name: 'Calibri', sz: 11, color: { rgb: 'B06000' }, bold: true },
         fill: { fgColor: { rgb: 'FFF3E0' } }
+      };
+    } else if (status === 'ATTRIBUTE_CHANGED') {
+      style = {
+        font: { name: 'Calibri', sz: 11, color: { rgb: '1A73E8' } },
+        fill: { fgColor: { rgb: 'E8F0FE' } }   // Blue — attribute change only
+      };
+    } else if (status === 'PRICE_AND_ATTRIBUTE_CHANGED') {
+      style = {
+        font: { name: 'Calibri', sz: 11, color: { rgb: '6B0080' }, bold: true },
+        fill: { fgColor: { rgb: 'F3E5F5' } }   // Purple — both changed
       };
     }
 
@@ -192,6 +214,19 @@ rulesWS['!cols'] = [
 ];
 enableSheetUsability(rulesWS);
 XLSX.utils.book_append_sheet(wb, rulesWS, 'Rules & Constraints');
+
+// Sheet 4: All Service SKUs (Pointnext, Tech Care, Support)
+// Isolated from hardware so service pricing is easy to audit and update.
+if (servicesData.data.length > 0) {
+  const servicesWS = XLSX.utils.json_to_sheet(servicesData.data);
+  servicesWS['!cols'] = SKU_COL_WIDTHS;
+  applyDiffStyles(servicesWS, servicesData.data);
+  enableSheetUsability(servicesWS);
+  XLSX.utils.book_append_sheet(wb, servicesWS, 'All Service SKUs');
+  console.log(`  ✅ Sheet 'All Service SKUs' — ${servicesData.data.length} service entries added.`);
+} else {
+  console.log(`  ℹ️  No service SKUs found in TSV — 'All Service SKUs' sheet skipped.`);
+}
 
 // Sheet 4: Catalog Diff (Dedicated diff sheet — ONLY when diffs exist)
 const diffRows = skuData.data.filter(r =>
@@ -263,6 +298,70 @@ for (const cat of orderedCategories) {
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
+// Sheet: Discontinued & Reinstated SKU Registry
+// Loaded directly from discontinued_skus.json — the single source of truth for
+// all SKUs ever removed from the HPE OCA portal for this chassis.
+const discontinuedJsonPath = path.join(targetDir, 'history', 'discontinued_skus.json');
+let discontinuedRows = [];
+if (fs.existsSync(discontinuedJsonPath)) {
+  try {
+    const discObj = JSON.parse(fs.readFileSync(discontinuedJsonPath, 'utf-8'));
+    discontinuedRows = Object.values(discObj).map(d => ({
+      'Product #':        d.productNumber    || '',
+      'Description':      d.description      || '',
+      'Main Category':    d.mainCategory     || '',
+      'Sub-Category':     d.subCategory      || '',
+      'Status':           d.status           || '',
+      'First Seen Date':  d.firstSeenDate    || '',
+      'Discontinued Date':d.discontinuedDate || '',
+      'Reinstated Date':  d.reinstatedDate   || '',
+      'Days Active':      String(d.daysActive || ''),
+      'Last Known Price': d.lastKnownPrice   || '',
+      'Full Price Trail': d.fullPriceTrail   || '',
+      'Reason':           d.reason           || ''
+    }));
+  } catch (e) { console.warn('Could not read discontinued_skus.json:', e.message); }
+}
+if (discontinuedRows.length > 0) {
+  const discWS = XLSX.utils.json_to_sheet(discontinuedRows);
+  discWS['!cols'] = [
+    { wch: 16 }, // Product #
+    { wch: 70 }, // Description
+    { wch: 28 }, // Main Category
+    { wch: 28 }, // Sub-Category
+    { wch: 14 }, // Status
+    { wch: 14 }, // First Seen Date
+    { wch: 16 }, // Discontinued Date
+    { wch: 16 }, // Reinstated Date
+    { wch: 12 }, // Days Active
+    { wch: 18 }, // Last Known Price
+    { wch: 100 },// Full Price Trail
+    { wch: 50 }, // Reason
+  ];
+  // Style rows by status
+  const discRange = XLSX.utils.decode_range(discWS['!ref']);
+  for (let r = 1; r <= discRange.e.r; r++) {
+    const row = discontinuedRows[r - 1];
+    if (!row) continue;
+    const isDiscontinued = row['Status'] === 'DISCONTINUED';
+    const isReinstated   = row['Status'] === 'REINSTATED';
+    const rowStyle = isDiscontinued
+      ? { font: { name: 'Calibri', sz: 11, color: { rgb: 'C5221F' }, strike: true }, fill: { fgColor: { rgb: 'FDE7E7' } } }
+      : isReinstated
+      ? { font: { name: 'Calibri', sz: 11, color: { rgb: '7B4F00' }, bold: true }, fill: { fgColor: { rgb: 'FFF8E1' } } }
+      : null;
+    if (rowStyle) {
+      for (let c = discRange.s.c; c <= discRange.e.c; c++) {
+        const ref = XLSX.utils.encode_cell({ r, c });
+        if (discWS[ref]) discWS[ref].s = rowStyle;
+      }
+    }
+  }
+  enableSheetUsability(discWS);
+  XLSX.utils.book_append_sheet(wb, discWS, 'Discontinued SKUs');
+  console.log(`  ✅ Sheet 'Discontinued SKUs' — ${discontinuedRows.length} entries (${discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length} discontinued, ${discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length} reinstated).`);
+}
+
 // Sheet: Metadata — all values derived dynamically
 const catalogJsonPath = path.join(targetDir, `${filePrefix}_Catalog.json`);
 let catalogMeta = {};
@@ -272,19 +371,30 @@ if (fs.existsSync(catalogJsonPath)) {
 
 const diffSummary = catalogMeta.diffSummary || {};
 
+const servicesJsonPath = path.join(targetDir, `${filePrefix}_Services.json`);
+let servicesMeta = {};
+if (fs.existsSync(servicesJsonPath)) {
+  try { servicesMeta = JSON.parse(fs.readFileSync(servicesJsonPath, 'utf-8')).metadata || {}; } catch (e) { /* suppress */ }
+}
+
 const metaData = [
-  { Field: 'Chassis',              Value: catalogMeta.chassis       || filePrefix.replace(/_/g, ' ') },
-  { Field: 'Scrape Date',          Value: catalogMeta.scrapeDate    || new Date().toISOString() },
-  { Field: 'Source',               Value: 'OCA (Online Configuration Application)' },
-  { Field: 'Total Sub-Categories', Value: String(summaryData.data.length) },
-  { Field: 'Total Unique SKUs',    Value: String(skuData.data.length) },
-  { Field: 'Total Rules',          Value: String(rulesData.data.length) },
-  { Field: 'Total Tables',         Value: String(catalogMeta.totalTables || '') },
-  { Field: 'Diff Added SKUs',      Value: String(diffSummary.added || 0) },
-  { Field: 'Diff Removed SKUs',    Value: String(diffSummary.removed || 0) },
-  { Field: 'Diff Price Changed',   Value: String(diffSummary.priceChanged || 0) },
-  { Field: 'Diff Unchanged SKUs',  Value: String(diffSummary.unchanged || skuData.data.length) },
-  { Field: 'Output Folder',        Value: targetDir },
+  { Field: 'Chassis',                Value: catalogMeta.chassis       || filePrefix.replace(/_/g, ' ') },
+  { Field: 'Scrape Date',            Value: catalogMeta.scrapeDate    || new Date().toISOString() },
+  { Field: 'Source',                 Value: 'OCA (Online Configuration Application)' },
+  { Field: 'Total Sub-Categories',   Value: String(summaryData.data.length) },
+  { Field: 'Total Hardware SKUs',    Value: String(skuData.data.length) },
+  { Field: 'Total Service SKUs',     Value: String(servicesData.data.length || servicesMeta.totalUniqueSKUs || 0) },
+  { Field: 'Total Rules',            Value: String(rulesData.data.length) },
+  { Field: 'Total Tables',           Value: String(catalogMeta.totalTables || '') },
+  { Field: 'Diff Added SKUs',        Value: String(diffSummary.added || 0) },
+  { Field: 'Diff Removed SKUs',      Value: String(diffSummary.removed || 0) },
+  { Field: 'Diff Price Changed',     Value: String(diffSummary.priceChanged || 0) },
+  { Field: 'Diff Attr Changed',      Value: String(diffSummary.attributeChanged || 0) },
+  { Field: 'Diff Unchanged SKUs',    Value: String(diffSummary.unchanged || skuData.data.length) },
+  { Field: 'Discontinued (All-Time)',Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length) },
+  { Field: 'Reinstated (All-Time)',  Value: String(discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length) },
+  { Field: 'Services JSON',          Value: fs.existsSync(servicesJsonPath) ? servicesJsonPath : '(Not yet generated)' },
+  { Field: 'Output Folder',          Value: targetDir },
 ];
 const metaWS = XLSX.utils.json_to_sheet(metaData);
 metaWS['!cols'] = [{ wch: 25 }, { wch: 80 }];
@@ -293,7 +403,8 @@ XLSX.utils.book_append_sheet(wb, metaWS, 'Metadata');
 // ── Write file ────────────────────────────────────────────────────────────────
 XLSX.writeFile(wb, xlsxPath);
 
-console.log('Excel workbook created: ' + xlsxPath);
+console.log('\n✅ Excel workbook saved: ' + xlsxPath);
+console.log(`   Hardware SKUs: ${skuData.data.length} | Service SKUs: ${servicesData.data.length} | Rules: ${rulesData.data.length}`);
 console.log('\nSheets:');
 wb.SheetNames.forEach((name, i) => {
   const ws    = wb.Sheets[name];

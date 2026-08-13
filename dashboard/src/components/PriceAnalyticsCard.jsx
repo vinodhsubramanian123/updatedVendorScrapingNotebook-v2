@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Layers, Activity, History } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 
-export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
+export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, chassisDir }) {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('ALL');

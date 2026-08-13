@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, FileDown, Settings, Server, FileText, CheckCircle2 } from 'lucide-react';
+import { Download, FileDown, Settings, Server, FileText } from 'lucide-react';
 
 export default function ExportHistoryCard() {
   const [exportsList, setExportsList] = useState([]);

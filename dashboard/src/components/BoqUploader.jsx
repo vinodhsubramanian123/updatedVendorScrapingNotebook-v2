@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, XCircle, Terminal, Sliders, Layers, GitCompare, Check, ShieldCheck, Calculator, HelpCircle } from 'lucide-react';
-import WorkflowStepper from './WorkflowStepper';
 
 export default function BoqUploader({ onEvaluateBoq, evalResults, logStream, chassisDir }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -266,7 +265,7 @@ export default function BoqUploader({ onEvaluateBoq, evalResults, logStream, cha
 
           {/* Configuration Variations Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {preflightData.variations.map((v, i) => (
+            {preflightData.variations.map((v, _i) => (
               <div key={v.configId} className="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-xs text-slate-800">{v.name}</span>

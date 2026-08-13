@@ -33,7 +33,6 @@ export default function ConflictGraphInspector({ evalResults, chassisName, selec
 
   const aspects = dataSource.map((def, idx) => {
     const isEvaluated = !!evalResults;
-    const passed = def.status === 'PASS';
     let detail = def.detail || def.defaultRule;
     let status = def.status || (!isEvaluated ? 'PENDING' : 'PASS');
 

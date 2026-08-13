@@ -72,6 +72,11 @@ const rawData  = JSON.parse(fs.readFileSync(rawInputPath, 'utf-8'));
 const fullText = rawData.fullText || rawData.bodyText || '';
 const tables   = rawData.tables || [];
 
+const { parseProductMeta } = require('./lib/product_meta');
+const { loadProfile } = require('./lib/profile_loader');
+const meta = parseProductMeta(chassisLabel);
+const profile = loadProfile(meta.family, meta.gen);
+
 console.log(`Loaded Raw Scrape Payload:`);
 console.log(`  Page Title:   "${rawData.pageTitle || 'N/A'}"`);
 console.log(`  Full Text:    ${fullText.length.toLocaleString()} chars`);
@@ -463,33 +468,74 @@ console.log(`Merged ${mergedSubtableCount} sub-tables into preceding parent subc
 console.log('\n--- Step 5: Catalog Diff Engine & Historical Price Tracking ---');
 
 const historyDir = path.join(targetDir, 'history');
-const catalogObj = {
-  metadata: {
-    chassis:            filePrefix.replace(/_/g, ' '),
-    scrapeDate:         new Date().toISOString(),
-    totalSubcategories: subcatList.length,
-    totalUniqueSKUs:    processedPNs.size,
-    totalTables:        tableEntries.length
-  },
-  subcategories: subcatList.map(sc => ({
-    parentCategory: sc.parentCategory,
-    name:           sc.name,
-    constraint:     sc.constraint,
-    maxQty:         sc.maxQty
-  })),
-  entries: orderedEntries.map(e => ({
-    parentCategory: e.parentCategory,
-    subCategory:    e.subCategory,
-    constraint:     e.constraint,
-    maxQty:         e.maxQty,
-    rules:          e.rules,
-    headers:        e.headers,
-    skuCount:       e.skuCount,
-    skus:           e.skus
-  }))
+
+function isServiceEntry(e) {
+  const pc = (e.parentCategory || '').toLowerCase();
+  if (pc.includes('service') || pc.includes('pointnext') || pc.includes('tech care') || pc.includes('support')) return true;
+  return (e.skus || []).some(s => {
+    return s.optionType === 'Service' || s['Option Type'] === 'Service' || isServiceSku(s.sku || s['Product #'] || '');
+  });
+}
+
+const hardwareEntries = [];
+const servicesEntries = [];
+orderedEntries.forEach(e => {
+  if (isServiceEntry(e)) {
+    servicesEntries.push(e);
+  } else {
+    hardwareEntries.push(e);
+  }
+});
+
+const getUniqueSkuCount = (entries) => {
+  const set = new Set();
+  entries.forEach(e => (e.skus || []).forEach(s => set.add(s.sku || s['Product #'])));
+  return set.size;
 };
 
+const buildCatalogObject = (entries) => {
+  return {
+    metadata: {
+      chassis:            filePrefix.replace(/_/g, ' '),
+      scrapeDate:         new Date().toISOString(),
+      totalSubcategories: new Set(entries.map(e => e.subCategory)).size,
+      totalUniqueSKUs:    getUniqueSkuCount(entries),
+      totalTables:        entries.length
+    },
+    subcategories: subcatList.filter(sc => entries.some(e => e.parentCategory === sc.parentCategory && e.subCategory === sc.name)).map(sc => ({
+      parentCategory: sc.parentCategory,
+      name:           sc.name,
+      constraint:     sc.constraint,
+      maxQty:         sc.maxQty
+    })),
+    entries: entries.map(e => ({
+      parentCategory: e.parentCategory,
+      subCategory:    e.subCategory,
+      constraint:     e.constraint,
+      maxQty:         e.maxQty,
+      rules:          e.rules,
+      headers:        e.headers,
+      skuCount:       e.skuCount,
+      skus:           e.skus
+    }))
+  };
+};
+
+const catalogObj = buildCatalogObject(hardwareEntries);
+const servicesCatalogObj = buildCatalogObject(servicesEntries);
+
+// Run diff engine on HARDWARE entries
 const { enrichedCatalog } = processCatalogDiff(catalogObj, historyDir);
+
+// Run diff engine on SERVICES entries independently
+// Uses separate snapshot prefix (services_catalog_YYYY-MM-DD.json) and
+// separate price_history, attribute_history, discontinued_skus files
+// so service pricing history never mingles with hardware history.
+const servicesHistoryDir = path.join(targetDir, 'services_history');
+const { enrichedCatalog: enrichedServicesCatalog } = processCatalogDiff(
+  servicesCatalogObj, servicesHistoryDir, 'services'
+);
+
 
 // Perform Incremental Checksum Differential against existing catalog
 let existingCatalogForDiff = null;
@@ -544,13 +590,19 @@ pipelineLogger.logStep('Pre-Commit Data Integrity Validation', validationResult.
   stats: validationResult.stats
 });
 
-const mainTSV    = generateMainSheet(enrichedCatalog.entries, chassisRoot);
+const mainTSV    = generateMainSheet(enrichedCatalog.entries, chassisRoot, profile);
 const rulesTSV   = generateRulesSheet(enrichedCatalog.entries, subcatList, fullText);
 const summaryTSV = generateSummarySheet(enrichedCatalog.entries, subcatList);
+const servicesTSV = generateMainSheet(enrichedServicesCatalog.entries, chassisRoot, profile);
 
+fs.mkdirSync(scrapsDir, { recursive: true });
 fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`),    mainTSV);
 fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`),   rulesTSV);
 fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`), summaryTSV);
+if (servicesTSV && servicesTSV.trim()) {
+  fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`), servicesTSV);
+}
+
 
 // Standalone Rules JSON (Dual Safety Net)
 const rulesJsonPath = path.join(targetDir, `${filePrefix}_Catalog_Rules.json`);
@@ -567,8 +619,18 @@ const rulesJsonData = {
 };
 safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
 
-// Atomic write catalog companion JSON with schema verification
+// Atomic write hardware catalog companion JSON with schema verification
 safeWriteJsonAtomic(jsonOutputPath, enrichedCatalog, { validateSchema: true, rejectInvalid: true });
+
+// Atomic write services catalog JSON — enriched with full diff annotations
+const servicesJsonOutputPath = jsonOutputPath.replace('_Catalog.json', '_Services.json');
+if (enrichedServicesCatalog.metadata.totalUniqueSKUs > 0) {
+  safeWriteJsonAtomic(servicesJsonOutputPath, enrichedServicesCatalog, { validateSchema: false, rejectInvalid: false });
+  console.log(`  📄 ${filePrefix}_Services.json  (${enrichedServicesCatalog.metadata.totalUniqueSKUs} service SKUs, diff-enriched)`);
+} else {
+  console.log(`  ℹ️  No service SKUs found in this scrape — _Services.json not written.`);
+}
+
 pipelineLogger.logStep('Step 6: Atomic Save Output JSON', 'SUCCESS', { path: jsonOutputPath });
 
 pipelineLogger.finalizeRun(validationResult.isValid ? 'COMPLETED' : 'PARTIAL_SUCCESS', {

@@ -1,6 +1,5 @@
-import Tooltip from './Tooltip';
 import React, { useState, useEffect } from 'react';
-import { BookOpen, CheckCircle, AlertTriangle, RefreshCw, Sparkles, Clock, ShieldCheck } from 'lucide-react';
+import { CheckCircle, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
 
 export default function NotebookLmHealthBadge({ onOpenRag }) {
   const [status, setStatus] = useState({ state: 'CHECKING', mode: 'LOCAL_RAG', raw: null });
@@ -54,6 +53,7 @@ export default function NotebookLmHealthBadge({ onOpenRag }) {
 
   return (
     <button
+      data-testid="notebooklm-btn"
       onClick={handleClick}
       title={tooltipText}
       className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all hover:shadow-sm ${

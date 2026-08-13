@@ -24,7 +24,7 @@ export default function TaskHistoryCard({ tasks = [], activeProgress = null, isT
       const res = await fetch(`/api/history/runs/${runId}`);
       const data = await res.json();
       setTraceLogs(data.logs || []);
-    } catch (e) {
+    } catch {
       setTraceLogs([{ text: 'Error loading trace logs.', stream: 'stderr' }]);
     } finally {
       setIsLoadingTrace(false);

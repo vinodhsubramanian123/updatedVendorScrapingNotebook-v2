@@ -2,23 +2,17 @@ import Tooltip from './Tooltip';
 import React, { useState, useEffect, useMemo } from 'react';
 import TaskStatusBadge from './TaskStatusBadge';
 import { 
-
   Activity, 
   CheckCircle2, 
   Clock, 
-  Database, 
-  Layers, 
   Loader2, 
-  Play, 
-  RefreshCw, 
   Server, 
   Square, 
   Terminal, 
   XCircle,
   Zap,
   ChevronDown,
-  ChevronUp,
-  Cpu
+  ChevronUp
 } from 'lucide-react';
 
 /**
@@ -63,8 +57,6 @@ export default function VendorScraperProgress({
     progressStage, 
     statusMessage, 
     scrapedItems, 
-    currentCategory, 
-    currentSku,
     recentLogEntries,
     isCompleted,
     isFailed
@@ -281,13 +273,14 @@ export default function VendorScraperProgress({
               className={`h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden ${
                 isCompleted ? 'bg-emerald-500' :
                 isFailed ? 'bg-rose-500' :
+                isTaskRunning ? 'animate-stripes bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500' :
                 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500'
               }`}
               style={{ width: `${Math.max(effectivePercent, 5)}%` }}
             >
               {/* Shimmer Light Bar overlay when running */}
               {isTaskRunning && (
-                <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                <div className="absolute inset-0 bg-white/10 animate-pulse-slow" />
               )}
             </div>
           </div>
@@ -297,35 +290,42 @@ export default function VendorScraperProgress({
         {showDetails && (
           <div className="pt-2 space-y-4 border-t border-slate-100">
             {/* Visual Stage Stepper */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap md:flex-nowrap gap-2 items-stretch">
               {SCRAPER_STAGES.map((stg, idx) => {
                 const isCurrent = isTaskRunning && (progressPercent === null || (progressPercent >= idx * 16 && progressPercent < (idx + 1) * 16 + 5));
                 const isDone = isCompleted || (progressPercent !== null && progressPercent >= (idx + 1) * 16);
 
                 return (
-                  <div
-                    key={stg.id}
-                    className={`p-2 rounded-xl border text-[11px] transition-all ${
-                      isDone
-                        ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                        : isCurrent
-                        ? 'bg-blue-50 border-blue-300 text-blue-900 ring-2 ring-blue-100'
-                        : 'bg-slate-50/60 border-slate-200/60 text-slate-400'
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5 font-bold mb-0.5">
-                      {isDone ? (
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      ) : isCurrent ? (
-                        <Loader2 className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0" />
-                      ) : (
-                        <span className="w-3.5 h-3.5 rounded-full bg-slate-200 text-[9px] flex items-center justify-center text-slate-600 font-bold shrink-0">
-                          {idx + 1}
-                        </span>
-                      )}
-                      <span className="truncate">{stg.label}</span>
+                  <div key={stg.id} className="flex-1 flex items-center relative group">
+                    <div
+                      className={`w-full p-2 rounded-xl border text-[11px] transition-all relative z-10 ${
+                        isDone
+                          ? 'bg-emerald-50/90 border-emerald-300 text-emerald-800 shadow-sm'
+                          : isCurrent
+                          ? 'bg-blue-50/90 border-blue-400 text-blue-900 ring-2 ring-blue-200 shadow-sm'
+                          : 'bg-slate-50/60 border-slate-200/60 text-slate-400 hover:bg-slate-100 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 font-bold mb-0.5">
+                        {isDone ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        ) : isCurrent ? (
+                          <Loader2 className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0" />
+                        ) : (
+                          <span className="w-3.5 h-3.5 rounded-full bg-slate-200 text-[9px] flex items-center justify-center text-slate-600 font-bold shrink-0">
+                            {idx + 1}
+                          </span>
+                        )}
+                        <span className="truncate">{stg.label}</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 line-clamp-1">{stg.desc}</p>
                     </div>
-                    <p className="text-[10px] text-slate-500 line-clamp-1">{stg.desc}</p>
+                    {/* Connector visual on desktop */}
+                    {idx < SCRAPER_STAGES.length - 1 && (
+                      <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 z-20 text-slate-300 group-hover:text-slate-400 transition-colors bg-white rounded-full p-0.5 shadow-xs border border-slate-100">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      </div>
+                    )}
                   </div>
                 );
               })}

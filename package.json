@@ -13,7 +13,7 @@
     "dev": "node dashboard/server.cjs",
     "start": "node dashboard/server.cjs",
     "build": "npm run build --workspace=dashboard",
-    "lint": "echo 'No lint errors'",
+    "lint": "npx oxlint dashboard/src",
     "test": "node scripts/verify_all.js",
     "scrape": "node scripts/scrape_oca_solution.js",
     "scrape:storage": "node scripts/scrape_oca_storage_solution.js",

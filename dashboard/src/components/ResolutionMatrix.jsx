@@ -1,4 +1,3 @@
-import Tooltip from './Tooltip';
 import React, { useState, useEffect } from 'react';
 import { Award, Check, MessageSquare, Download, AlertTriangle, X, Loader, Sparkles, ShieldCheck, Copy, CheckCircle } from 'lucide-react';
 import VendorBomVerificationModal from './VendorBomVerificationModal';

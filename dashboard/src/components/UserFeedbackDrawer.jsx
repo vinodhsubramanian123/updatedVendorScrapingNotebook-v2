@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Send, CheckCircle2, Clock } from 'lucide-react';
+import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
 
 export default function UserFeedbackDrawer({ isOpen, onClose }) {
   const [feedbackText, setFeedbackText] = useState('');

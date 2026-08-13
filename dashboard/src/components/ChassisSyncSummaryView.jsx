@@ -1,7 +1,6 @@
 import Tooltip from './Tooltip';
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -16,9 +15,6 @@ import {
   ShieldCheck,
   Zap,
   ArrowRight,
-  ExternalLink,
-  ChevronDown,
-  Info,
   X
 } from 'lucide-react';
 
@@ -36,7 +32,6 @@ export default function ChassisSyncSummaryView({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFamily, setSelectedFamily] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
-  const [inspectVariant, setInspectVariant] = useState(null);
 
   const fetchSummary = async () => {
     setIsLoading(true);
@@ -579,8 +574,8 @@ export default function ChassisSyncSummaryView({
                   </td>
                 </tr>
               ) : (
-                filteredVariants.map((v) => (
-                  <tr key={v.id} className="hover:bg-slate-50/80 transition-colors">
+                filteredVariants.map((v, idx) => (
+                  <tr key={`${v.id}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                     {/* Column 1: Chassis Variant & Family */}
                     <td className="px-6 py-4">
                       <div className="flex flex-col">

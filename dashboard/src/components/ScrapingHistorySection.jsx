@@ -5,32 +5,25 @@ import {
   CheckCircle2, 
   Clock, 
   Database, 
-  Download, 
   FileCode, 
   FileSpreadsheet, 
-  Filter, 
-  Layers, 
   Loader2, 
-  Play, 
   RefreshCw, 
   Search, 
   Server, 
-  Sparkles, 
   Terminal, 
   X, 
-  XCircle,
-  ChevronRight,
-  ExternalLink,
   Activity,
   Box
 } from 'lucide-react';
 
 export default function ScrapingHistorySection({ 
-  onTriggerScrape, 
-  onTriggerRebuild, 
+  onTriggerScrape: _onTriggerScrape, 
+  onTriggerRebuild: _onTriggerRebuild, 
   isTaskRunning = false,
   className = '' 
 }) {
+
   const [runs, setRuns] = useState([]);
   const [catalogs, setCatalogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

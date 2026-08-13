@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, CheckCircle, AlertTriangle, Info, X } from 'lucide-react';
+import { Radio, Info, X } from 'lucide-react';
 
 export default function CdpHealthBadge() {
   const [status, setStatus] = useState({ online: false, activeSession: false, target: null });

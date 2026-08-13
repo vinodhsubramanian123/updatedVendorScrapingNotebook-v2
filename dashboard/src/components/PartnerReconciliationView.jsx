@@ -26,7 +26,7 @@ export default function PartnerReconciliationView({ evalResults, selectedChassis
       let items = [];
       try {
         items = JSON.parse(vendorText);
-      } catch (e) {
+      } catch {
         const lines = vendorText.split('\n');
         lines.forEach(line => {
           const match = line.match(/\b([A-Z0-9]{5,6}-[A-Z0-9]{2,3})\b/i);

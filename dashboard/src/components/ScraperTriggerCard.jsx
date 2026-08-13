@@ -20,7 +20,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
         const res = await fetch('/api/cdp-status');
         const data = await res.json();
         setCdpState(data);
-      } catch (err) {
+      } catch {
         setCdpState({ status: 'DISCONNECTED', error: 'Backend unreachable' });
       }
     };
@@ -31,30 +31,6 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
     }
     return () => clearInterval(interval);
   }, [isTaskRunning]);
-
-  // Extract latest progress event if present
-  const latestProgressLog = logStream.slice().reverse().find(l => {
-    try {
-      const parsed = JSON.parse(l.text);
-      return parsed.type === 'PROGRESS';
-    } catch (e) { console.warn('Caught suppressed error in ScraperTriggerCard.jsx:', e);
-return false;
-    }
-  });
-
-  let progressPercent = null;
-  let progressStage = 'IDLE';
-
-  if (latestProgressLog) {
-    try {
-      const p = JSON.parse(latestProgressLog.text);
-      progressPercent = typeof p.percent === 'number' ? p.percent : null;
-      progressStage = p.stage || 'PROCESSING';
-    } catch (e) { console.warn('Caught suppressed error in ScraperTriggerCard.jsx:', e); }
-  } else if (isTaskRunning) {
-    progressPercent = null;
-    progressStage = 'IN_PROGRESS';
-  }
 
   // Determine Scrape button state based on CDP
   const canScrape = cdpState.status === 'READY';
@@ -331,7 +307,7 @@ return false;
                 
                 if (logFilter === 'ERROR' && !isErr) return false;
                 if (logFilter === 'PASS' && !isPass) return false;
-                if (logFilter === 'INFO' && isErr) return false; // Exclude errors from info
+                if (logFilter === 'INFO' && !isInfo) return false;
                 
                 return true;
               })

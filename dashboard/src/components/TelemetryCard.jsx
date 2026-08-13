@@ -1,6 +1,5 @@
-import Tooltip from './Tooltip';
 import React, { useState, useEffect } from 'react';
-import { Activity, ShieldCheck, Cpu, Clock, RefreshCw, BarChart2, AlertTriangle, CheckCircle2, Sparkles, Server, X } from 'lucide-react';
+import { Activity, ShieldCheck, Clock, RefreshCw, BarChart2, AlertTriangle, CheckCircle2, Sparkles, Server, X } from 'lucide-react';
 
 
 export default function TelemetryCard() {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  GitBranch, ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, 
-  Zap, Power, Filter, Search, ChevronRight, ChevronDown, CheckCircle2,
-  XCircle, Box, Server, Award, Sliders
+  GitBranch, ShieldCheck, AlertTriangle, Layers, 
+  Search, ChevronRight, ChevronDown, CheckCircle2,
+  X
 } from 'lucide-react';
 
 export default function RuleLogicVisualizer({ selectedChassis, evalResults, chassisName }) {

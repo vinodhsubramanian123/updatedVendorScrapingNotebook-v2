@@ -63,15 +63,27 @@ function parseProductMeta(rawText, pageTitle = '') {
 
 /**
  * Dynamically classify component role from category name and item description.
- * Zero hardcoding — pattern matches across HPE ProLiant, Synergy, Alletra, StoreEver, Cray, etc.
+ * Utilizes configuration profile for overrides, falls back to default logic.
  * @param {string} categoryName 
  * @param {string} itemDescription 
+ * @param {object} profile Optional profile object loaded from profile_loader.js
  * @returns {string} Dynamic component role
  */
-function classifyComponentRole(categoryName = '', itemDescription = '') {
+function classifyComponentRole(categoryName = '', itemDescription = '', profile = null) {
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
 
+  if (profile && profile.component_mapping) {
+    for (const [role, keywords] of Object.entries(profile.component_mapping)) {
+      for (const keyword of keywords) {
+        if (cat.includes(keyword) || desc.includes(keyword)) {
+          return role;
+        }
+      }
+    }
+  }
+
+  // Fallback heuristic if no profile provided (or no match in profile)
   if (cat.includes('processor') || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) return 'Processor';
   if (cat.includes('memory') || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) return 'Memory';
   if (cat.includes('power') || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('-48vdc')) return 'Power Supply';

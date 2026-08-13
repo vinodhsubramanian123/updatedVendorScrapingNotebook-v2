@@ -119,10 +119,10 @@ export default function GlobalLoadingState({
           <div className="mt-4 relative">
             <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700 p-0.5">
               <div 
-                className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 rounded-full transition-all duration-500 relative overflow-hidden"
+                className={`h-full rounded-full transition-all duration-500 relative overflow-hidden ${isProcessing ? 'animate-stripes bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400' : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400'}`}
                 style={{ width: `${Math.max(percent, 8)}%` }}
               >
-                <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                <div className="absolute inset-0 bg-white/10 animate-pulse-slow" />
               </div>
             </div>
           </div>

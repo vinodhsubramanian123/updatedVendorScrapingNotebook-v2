@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ShieldCheck, AlertTriangle, Layers, Cpu, HardDrive, Zap, 
-  Search, Sliders, Filter, Sparkles, CheckCircle, Database,
+  ShieldCheck, AlertTriangle, Layers, 
+  Search, Sliders, Sparkles, CheckCircle, Database,
   ChevronRight, RefreshCw, Bookmark, HelpCircle, X
 } from 'lucide-react';
 

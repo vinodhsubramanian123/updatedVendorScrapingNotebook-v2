@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Chassis**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-08-11T12:12:10.288Z  
-**Total Synced KnowledgeDeltas**: `8`  
+**Sync Timestamp**: 2026-08-13T12:35:22.198Z  
+**Total Synced KnowledgeDeltas**: `7`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, and learned vendor portal feedback.
 
@@ -32,9 +32,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Chassis Variant / Solution | Family | Gen | Total SKUs | Primary Scrape Date | Status |
 |----------------------------|--------|-----|------------|---------------------|--------|
+| `HPE Alletra Storage System` | Alletra | Storage | 3 | — | **ACTIVE** |
 | `GX5000 General RACK` | Cray | General | 2 | 2026-08-10 | **ACTIVE** |
 | `DL380 Gen11` | ProLiant | Gen11 | 4 | 2026-08-10 | **ACTIVE** |
-| `DL380 Gen12 SFF` | ProLiant | Gen12 | 14 | 2026-08-11 | **ACTIVE** |
+| `DL380 Gen12 SFF` | ProLiant | Gen12 | 787 | 2026-08-12 | **ACTIVE** |
 | `MSL3040 Tape` | StoreEver | Tape | 2 | 2026-08-10 | **ACTIVE** |
 | `SY100Gb F32 Module` | Synergy | General | 3 | 2026-08-10 | **ACTIVE** |
 
@@ -46,9 +47,9 @@ The following table details every valid SKU, its current list price, diff status
 
 | Product # | Description | Current Price (USD) | Diff Status | Attribute Deltas | Price History Trail |
 |-----------|-------------|---------------------|-------------|------------------|---------------------|
-| `P25902-B21` | HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis | $3200.00 | **UNCHANGED** | None | 2026-08-10: 3200.00 |
-| `797740-B21` | HPE Synergy 12000 Configure-to-order Frame Chassis | $8500.00 | **UNCHANGED** | None | 2026-08-10: 8500.00 |
-| `P06584-B21` | HPE Synergy VC 100Gb F32 Interconnect CTO Module | $5400.00 | **UNCHANGED** | None | 2026-08-10: 5400.00 |
+| `P25902-B21` | HPE Synergy 480 Gen10 Plus CTO Compute Module Chassis | $3200.00 | **BASELINE** | None | 2026-08-10: $3200.00 |
+| `797740-B21` | HPE Synergy 12000 Configure-to-order Frame Chassis | $8500.00 | **BASELINE** | None | 2026-08-10: $8500.00 |
+| `P06584-B21` | HPE Synergy VC 100Gb F32 Interconnect CTO Module | $5400.00 | **BASELINE** | None | 2026-08-10: $5400.00 |
 
 ---
 *Generated automatically by HPE Knowledge Sync Engine.*  

@@ -1,4 +1,3 @@
-import Tooltip from './Tooltip';
 import React from 'react';
 import { CheckCircle2, XCircle, Clock, Loader2 } from 'lucide-react';
 

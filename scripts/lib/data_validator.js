@@ -187,7 +187,7 @@ function parseUsdPrice(priceVal) {
     return { amount: priceVal, isNaN: isNaN(priceVal) };
   }
   const cleanStr = String(priceVal).replace(/[\$,\s]/g, '');
-  if (cleanStr === '' || cleanStr === 'N/A' || cleanStr === '-') {
+  if (cleanStr === '' || cleanStr.toUpperCase() === 'N/A' || cleanStr.toUpperCase() === 'NA' || cleanStr === '-') {
     return { amount: 0, isNaN: false };
   }
   const num = parseFloat(cleanStr);

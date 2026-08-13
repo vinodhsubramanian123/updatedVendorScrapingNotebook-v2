@@ -16,7 +16,8 @@ export default function WorkflowStepper({
   selectedChassis,
   logStream = [],
   onNavigateTab,
-  onTriggerSyncKnowledge
+  onTriggerSyncKnowledge,
+  onOpenTraceability
 }) {
   const [selectedStepId, setSelectedStepId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(!!evalResults || isTaskRunning);
@@ -225,7 +226,10 @@ export default function WorkflowStepper({
   // Selected Step Detail Object
   const selectedStep = allSteps.find(s => s.id === selectedStepId);
 
-  const logs = logStream.map((logStr, idx) => {
+  const logs = logStream.map((logObj, idx) => {
+    // Safely extract text from the log object
+    const logStr = typeof logObj === 'object' && logObj !== null ? (logObj.text || '') : String(logObj);
+    
     // Attempt to parse "[HH:MM:SS] Message"
     const match = logStr.match(/^\[(.*?)\]\s*(.*)$/);
     if (match) {
@@ -344,9 +348,9 @@ export default function WorkflowStepper({
           <div className="flex items-center gap-2 shrink-0">
             {/* Overall Progress Indicator */}
             <div className="flex items-center gap-2 bg-white/90 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-medium shadow-2xs">
-              <div className="w-20 bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200/60">
+              <div className="w-20 bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200/60">
                 <div 
-                  className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full transition-all duration-700 ease-out"
+                  className={`bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full transition-all duration-700 ease-out ${isTaskRunning ? 'animate-stripes' : ''}`}
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -380,9 +384,9 @@ export default function WorkflowStepper({
           <div className="space-y-4 animate-fade-in">
             
             {/* Overall Progress Track Line */}
-            <div className="relative w-full bg-slate-200/70 h-1.5 rounded-full overflow-hidden">
+            <div className="relative w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
               <div 
-                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full transition-all duration-700 ease-out"
+                className={`bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full transition-all duration-700 ease-out ${isTaskRunning ? 'animate-stripes' : ''}`}
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -400,64 +404,76 @@ export default function WorkflowStepper({
 
               {/* Grid of 6 Steps */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
-                {stepsPhase1.map((s) => {
+                {stepsPhase1.map((s, idx) => {
                   const isSelected = selectedStepId === s.id;
                   const StepIcon = s.icon;
 
                   return (
-                    <div
-                      key={s.id}
-                      onClick={() => setSelectedStepId(s.id)}
-                      className={`p-3 rounded-xl border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between group ${
-                        isSelected
-                          ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/80 shadow-md scale-[1.02]'
-                          : s.status === 'COMPLETED'
-                          ? 'border-emerald-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/30 shadow-2xs'
-                          : s.status === 'RUNNING'
-                          ? 'border-blue-400 bg-blue-50/60 shadow-xs animate-pulse'
-                          : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/80 shadow-2xs'
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
-                            0{s.number}
+                    <div key={s.id} className="relative group/step flex">
+                      <div
+                        onClick={() => setSelectedStepId(s.id)}
+                        className={`flex-1 p-3 rounded-xl border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between group relative z-10 ${
+                          isSelected
+                            ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/80 shadow-md scale-[1.02]'
+                            : s.status === 'COMPLETED'
+                            ? 'border-emerald-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/30 shadow-2xs'
+                            : s.status === 'RUNNING'
+                            ? 'border-blue-400 bg-blue-50/60 shadow-xs ring-2 ring-blue-100'
+                            : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/80 shadow-2xs'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
+                              0{s.number}
+                            </span>
+                            {renderStatusBadge(s.status)}
+                          </div>
+
+                          <div className="flex items-center gap-1.5 my-1">
+                            {s.status === 'RUNNING' ? (
+                              <RefreshCw className="w-4 h-4 text-blue-600 animate-spin shrink-0" />
+                            ) : (
+                              <StepIcon className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${s.status === 'COMPLETED' ? 'text-emerald-600' : 'text-indigo-600'}`} />
+                            )}
+                            <h4 className="text-xs font-bold text-slate-900 truncate">
+                              {s.title.replace(/^[0-9]+\.\s*/, '')}
+                            </h4>
+                          </div>
+
+                          <p className="text-[10.5px] text-slate-500 line-clamp-1 leading-tight">
+                            {s.subtitle}
+                          </p>
+                        </div>
+
+                        <div className="mt-2.5 text-[9.5px] font-mono text-slate-400 flex items-center justify-between pt-1.5 border-t border-slate-100">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-2.5 h-2.5 text-slate-400" /> {s.durationMs ? `${s.durationMs}ms` : 'Ready'}
                           </span>
-                          {renderStatusBadge(s.status)}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedStepId(s.id);
+                              if (s.actionHandler) {
+                                s.actionHandler();
+                              } else if (s.tabTarget && onNavigateTab) {
+                                onNavigateTab(s.tabTarget);
+                              }
+                            }}
+                            className="text-indigo-600 opacity-90 group-hover:opacity-100 font-bold hover:underline transition-opacity cursor-pointer"
+                          >
+                            View &rarr;
+                          </button>
                         </div>
-
-                        <div className="flex items-center gap-1.5 my-1">
-                          <StepIcon className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${s.status === 'COMPLETED' ? 'text-emerald-600' : 'text-indigo-600'}`} />
-                          <h4 className="text-xs font-bold text-slate-900 truncate">
-                            {s.title.replace(/^[0-9]+\.\s*/, '')}
-                          </h4>
+                      </div>
+                      
+                      {/* Desktop visual connector */}
+                      {idx < stepsPhase1.length - 1 && (
+                        <div className="hidden lg:block absolute -right-2 top-1/2 -translate-y-1/2 z-20 text-slate-300 bg-white rounded-full p-0.5 border border-slate-200 shadow-sm pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
-
-                        <p className="text-[10.5px] text-slate-500 line-clamp-1 leading-tight">
-                          {s.subtitle}
-                        </p>
-                      </div>
-
-                      <div className="mt-2.5 text-[9.5px] font-mono text-slate-400 flex items-center justify-between pt-1.5 border-t border-slate-100">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-2.5 h-2.5 text-slate-400" /> {s.durationMs ? `${s.durationMs}ms` : 'Ready'}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedStepId(s.id);
-                            if (s.actionHandler) {
-                              s.actionHandler();
-                            } else if (s.tabTarget && onNavigateTab) {
-                              onNavigateTab(s.tabTarget);
-                            }
-                          }}
-                          className="text-indigo-600 opacity-90 group-hover:opacity-100 font-bold hover:underline transition-opacity cursor-pointer"
-                        >
-                          View &rarr;
-                        </button>
-                      </div>
+                      )}
                     </div>
                   );
                 })}
@@ -541,64 +557,76 @@ export default function WorkflowStepper({
 
               {/* Grid of 3 Phase 2 Steps */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {stepsPhase2.map((s) => {
+                {stepsPhase2.map((s, idx) => {
                   const isSelected = selectedStepId === s.id;
                   const StepIcon = s.icon;
 
                   return (
-                    <div
-                      key={s.id}
-                      onClick={() => setSelectedStepId(s.id)}
-                      className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between group ${
-                        isSelected
-                          ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/80 shadow-md scale-[1.02]'
-                          : s.status === 'COMPLETED'
-                          ? 'border-emerald-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/30 shadow-2xs'
-                          : s.status === 'RUNNING'
-                          ? 'border-blue-400 bg-blue-50/60 shadow-xs animate-pulse'
-                          : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/80 shadow-2xs'
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
-                            0{s.number}
+                    <div key={s.id} className="relative group/step flex">
+                      <div
+                        onClick={() => setSelectedStepId(s.id)}
+                        className={`flex-1 p-3.5 rounded-xl border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between group relative z-10 ${
+                          isSelected
+                            ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/80 shadow-md scale-[1.02]'
+                            : s.status === 'COMPLETED'
+                            ? 'border-emerald-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/30 shadow-2xs'
+                            : s.status === 'RUNNING'
+                            ? 'border-blue-400 bg-blue-50/60 shadow-xs ring-2 ring-blue-100'
+                            : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/80 shadow-2xs'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
+                              0{s.number}
+                            </span>
+                            {renderStatusBadge(s.status)}
+                          </div>
+
+                          <div className="flex items-center gap-2 my-1">
+                            {s.status === 'RUNNING' ? (
+                              <RefreshCw className="w-4 h-4 text-blue-600 animate-spin shrink-0" />
+                            ) : (
+                              <StepIcon className={`w-4.5 h-4.5 shrink-0 transition-transform group-hover:scale-110 ${s.status === 'COMPLETED' ? 'text-emerald-600' : 'text-indigo-600'}`} />
+                            )}
+                            <h4 className="text-xs font-bold text-slate-900 truncate">
+                              {s.title.replace(/^[0-9]+\.\s*/, '')}
+                            </h4>
+                          </div>
+
+                          <p className="text-xs text-slate-500 line-clamp-1 leading-tight mt-0.5">
+                            {s.subtitle}
+                          </p>
+                        </div>
+
+                        <div className="mt-3 text-[10px] font-mono text-slate-400 flex items-center justify-between pt-2 border-t border-slate-100">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-slate-400" /> {s.durationMs ? `${s.durationMs}ms` : 'Pending'}
                           </span>
-                          {renderStatusBadge(s.status)}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedStepId(s.id);
+                              if (s.actionHandler) {
+                                s.actionHandler();
+                              } else if (s.tabTarget && onNavigateTab) {
+                                onNavigateTab(s.tabTarget);
+                              }
+                            }}
+                            className="text-indigo-600 font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
+                          >
+                            Inspect &rarr;
+                          </button>
                         </div>
-
-                        <div className="flex items-center gap-2 my-1">
-                          <StepIcon className={`w-4.5 h-4.5 shrink-0 transition-transform group-hover:scale-110 ${s.status === 'COMPLETED' ? 'text-emerald-600' : 'text-indigo-600'}`} />
-                          <h4 className="text-xs font-bold text-slate-900 truncate">
-                            {s.title.replace(/^[0-9]+\.\s*/, '')}
-                          </h4>
+                      </div>
+                      
+                      {/* Desktop visual connector */}
+                      {idx < stepsPhase2.length - 1 && (
+                        <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 z-20 text-slate-300 bg-white rounded-full p-0.5 border border-slate-200 shadow-sm pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
-
-                        <p className="text-xs text-slate-500 line-clamp-1 leading-tight mt-0.5">
-                          {s.subtitle}
-                        </p>
-                      </div>
-
-                      <div className="mt-3 text-[10px] font-mono text-slate-400 flex items-center justify-between pt-2 border-t border-slate-100">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-slate-400" /> {s.durationMs ? `${s.durationMs}ms` : 'Pending'}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedStepId(s.id);
-                            if (s.actionHandler) {
-                              s.actionHandler();
-                            } else if (s.tabTarget && onNavigateTab) {
-                              onNavigateTab(s.tabTarget);
-                            }
-                          }}
-                          className="text-indigo-600 font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
-                        >
-                          Inspect &rarr;
-                        </button>
-                      </div>
+                      )}
                     </div>
                   );
                 })}

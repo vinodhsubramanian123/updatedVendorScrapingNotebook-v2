@@ -66,3 +66,24 @@ STEPS EXECUTED:
   [2026-08-11T07:36:32.054Z] [SUCCESS ] Step 6: Atomic Save Output JSON
 ================================================================
 
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786519321692
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-12T07:22:01.692Z
+END TIME:     2026-08-12T07:22:01.962Z (0.27s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    796
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-12T07:22:01.692Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-12T07:22:01.919Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-12T07:22:01.933Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-12T07:22:01.961Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+

@@ -12,9 +12,10 @@ const { classifyComponentRole } = require('./product_meta');
  * Generate Main SKUs TSV content.
  * @param {Array<object>} entries 
  * @param {string} chassisRoot 
+ * @param {object} profile
  * @returns {string} TSV content string
  */
-function generateMainSheet(entries, chassisRoot) {
+function generateMainSheet(entries, chassisRoot, profile = null) {
   const rows = [[
     'Main Category', 'Sub-Category', 'Hierarchy Path', 'Component Role', 'Constraint Text',
     'Subcategory Max Qty', 'Table Rule/Note', 'Product #', 'Option Type', 'Description', 'Current Qty',
@@ -36,7 +37,7 @@ function generateMainSheet(entries, chassisRoot) {
     for (const sku of entry.skus) {
       const rawQty   = String(sku['Current Qty'] || sku.qty || '0').replace(/\n/g, '').trim();
       const cleanQty = /^\d+$/.test(rawQty) ? rawQty : '0';
-      const role     = sku['Component Role'] || classifyComponentRole(entry.parentCategory, sku['Description'] || sku.description);
+      const role     = sku['Component Role'] || classifyComponentRole(entry.parentCategory, sku['Description'] || sku.description, profile);
       const priceVal = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || (sku.listPrice !== undefined && sku.listPrice !== null ? String(sku.listPrice) : '');
       // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
       const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;

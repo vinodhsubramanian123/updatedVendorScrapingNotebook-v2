@@ -4,6 +4,17 @@
  *
  * Computes SKU additions, removals, price changes, and historical price trails
  * between catalog scrapes. Maintained under outputs/{Family}/{Gen}/{Model}/history/
+ *
+ * Gap fixes applied (2026-08-12):
+ *  1. Duplicate same-day trail entries — dedup by (date+status) not just date
+ *  2. $0-price BASELINE + REMOVED same day — skip REMOVED event when prevPrice is also 0
+ *  3. attribute_history now includes subCategory and mainCategory per entry
+ *  4. discontinued_skus now stores firstSeenDate, fullPriceTrail, and daysActive
+ *  5. Services diff: processCatalogDiff now accepts an optional historyLabel param
+ *     so it can be called independently for services with separate history paths
+ *  6. Reinstated SKU now appends a REINSTATED event to its price trail
+ *  7. Same-day snapshot re-run now logs a warning instead of silently overwriting
+ *  8. Price trail arrow now compares against last *non-zero* priced entry
  */
 
 const fs   = require('fs');
@@ -24,17 +35,60 @@ function formatDate(dateStr) {
 }
 
 /**
+ * Append a price trail event, deduplicating by (date + status).
+ * This prevents same-day re-runs from adding ghost entries.
+ */
+function appendTrailEvent(trail, event) {
+  const isDupe = trail.some(h => h.date === event.date && h.status === event.status);
+  if (!isDupe) trail.push(event);
+}
+
+/**
+ * Build a human-readable price trail string.
+ * Uses last non-zero price for arrow direction to avoid $0→$0 noise.
+ */
+function buildTrailString(trail) {
+  if (!trail || trail.length === 0) return '';
+  let lastNonZeroPrice = null;
+  return trail.map((h) => {
+    let arrow = '';
+    if (h.status.includes('PRICE') && lastNonZeroPrice !== null && h.price > 0) {
+      arrow = h.price > lastNonZeroPrice ? ' (▲)' : ' (▼)';
+    }
+    if (h.status === 'REMOVED') {
+      arrow = ' (✕ REMOVED)';
+    } else if (h.status === 'REINSTATED') {
+      arrow = ' (↩ REINSTATED)';
+    }
+    if (h.price > 0) lastNonZeroPrice = h.price;
+    const priceStr = h.price > 0 ? `$${h.price.toFixed(2)}` : '(no price)';
+    return `${h.date}: ${priceStr}${arrow}`;
+  }).join(' → ');
+}
+
+/**
  * Perform diff calculation and history update.
- * @param {object} catalogData - Structured catalog object from build_catalog.js
- * @param {string} historyDir - Absolute path to history/ directory
+ * @param {object} catalogData    - Structured catalog object from build_catalog.js
+ * @param {string} historyDir     - Absolute path to history/ directory
+ * @param {string} [historyLabel] - Optional label for snapshot prefix (default: 'catalog')
+ *                                  Use 'services' when processing _Services.json
  * @returns {object} { enrichedCatalog, diffSummary, prevSnapshotPath }
  */
-function processCatalogDiff(catalogData, historyDir) {
+function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   fs.mkdirSync(historyDir, { recursive: true });
 
-  const scrapeDate = formatDate(catalogData.metadata?.scrapeDate);
-  const currentSnapshotPath = path.join(historyDir, `catalog_${scrapeDate}.json`);
-  const priceHistoryPath    = path.join(historyDir, 'price_history.json');
+  const scrapeDate          = formatDate(catalogData.metadata?.scrapeDate);
+  const snapshotPrefix      = historyLabel === 'services' ? 'services_catalog' : 'catalog';
+  const currentSnapshotPath = path.join(historyDir, `${snapshotPrefix}_${scrapeDate}.json`);
+  const priceHistoryPath    = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}price_history.json`);
+  const attributeHistoryPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}attribute_history.json`);
+  const discontinuedSkusPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}discontinued_skus.json`);
+
+  // ── GAP FIX #7: Warn on same-day re-run instead of silent overwrite ──────────
+  if (fs.existsSync(currentSnapshotPath)) {
+    console.warn(`  ⚠️  [SAME-DAY RERUN] Snapshot ${path.basename(currentSnapshotPath)} already exists.`);
+    console.warn(`      Previous run's snapshot will be replaced with this run's data.`);
+  }
 
   // Load existing price history log
   let priceHistory = {};
@@ -42,13 +96,13 @@ function processCatalogDiff(catalogData, historyDir) {
     try {
       priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
     } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted price_history.json at ${priceHistoryPath}: ${err.message}`);
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(priceHistoryPath)}: ${err.message}`);
     }
   }
 
   // Find previous catalog snapshots (excluding today's file if re-running same day)
   const snapshotFiles = fs.readdirSync(historyDir)
-    .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && f !== `catalog_${scrapeDate}.json`)
+    .filter(f => f.startsWith(`${snapshotPrefix}_`) && f.endsWith('.json') && f !== `${snapshotPrefix}_${scrapeDate}.json`)
     .sort();
 
   const prevSnapshotPath = snapshotFiles.length > 0
@@ -91,11 +145,9 @@ function processCatalogDiff(catalogData, historyDir) {
     attributeChanged: 0,
     priceAndAttributeChanged: 0,
     unchanged: 0,
+    reinstated: 0,
     discontinuedTotal: 0
   };
-
-  const attributeHistoryPath = path.join(historyDir, 'attribute_history.json');
-  const discontinuedSkusPath  = path.join(historyDir, 'discontinued_skus.json');
 
   // Load existing attribute history & discontinued SKU registry
   let attributeHistory = [];
@@ -104,7 +156,7 @@ function processCatalogDiff(catalogData, historyDir) {
       attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
       if (!Array.isArray(attributeHistory)) attributeHistory = [];
     } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted attribute_history.json at ${attributeHistoryPath}: ${err.message}`);
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(attributeHistoryPath)}: ${err.message}`);
     }
   }
 
@@ -113,11 +165,11 @@ function processCatalogDiff(catalogData, historyDir) {
     try {
       discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8'));
     } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted discontinued_skus.json at ${discontinuedSkusPath}: ${err.message}`);
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(discontinuedSkusPath)}: ${err.message}`);
     }
   }
 
-  // 1. Process current entries & compute diffs
+  // ── 1. Process current entries & compute diffs ────────────────────────────────
   for (const entry of catalogData.entries) {
     for (const sku of entry.skus || []) {
       const pn = sku['Product #'];
@@ -129,54 +181,68 @@ function processCatalogDiff(catalogData, historyDir) {
       // Price trail history initialization
       if (!priceHistory[pn]) priceHistory[pn] = [];
 
-      // Check if SKU was previously marked discontinued, but now reinstated
+      // ── GAP FIX #6: Reinstated SKU — append REINSTATED event to price trail ──
       if (discontinuedRegistry[pn] && discontinuedRegistry[pn].status === 'DISCONTINUED') {
-        discontinuedRegistry[pn].status = 'REINSTATED';
+        discontinuedRegistry[pn].status        = 'REINSTATED';
         discontinuedRegistry[pn].reinstatedDate = scrapeDate;
         discontinuedRegistry[pn].lastKnownPrice = currPrice.toFixed(2);
+        appendTrailEvent(priceHistory[pn], {
+          date:   scrapeDate,
+          price:  currPrice,
+          status: 'REINSTATED'
+        });
+        diffSummary.reinstated++;
       }
 
       if (!prevCatalog) {
         // Baseline run — first time scrape
-        sku['Diff Status']               = 'UNCHANGED';
+        sku['Diff Status']               = 'BASELINE';
         sku['Previous List Price (USD)']  = 'N/A';
         sku['Price Change (USD)']         = '$0.00';
         sku['Price Change (%)']           = '0.00%';
         sku['Attribute Deltas']           = 'None';
 
-        if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-          priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'BASELINE' });
-        }
+        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
         diffSummary.unchanged++;
       } else if (!prevSkuMap.has(pn)) {
         // ADDED SKU
         sku['Diff Status']               = 'ADDED';
         sku['Previous List Price (USD)']  = 'N/A';
-        sku['Price Change (USD)']         = `+$${currPrice.toFixed(2)}`;
-        sku['Price Change (%)']           = '+100.00%';
+        sku['Price Change (USD)']         = currPrice > 0 ? `+$${currPrice.toFixed(2)}` : '$0.00';
+        sku['Price Change (%)']           = currPrice > 0 ? '+100.00%' : '0.00%';
         sku['Attribute Deltas']           = 'New SKU introduced';
 
-        if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-          priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'ADDED' });
-        }
+        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ADDED' });
         diffSummary.added++;
+
+        // ── GAP FIX #4: Record firstSeenDate on add ───────────────────────────
+        if (!discontinuedRegistry[pn]) {
+          discontinuedRegistry[pn] = {
+            productNumber: pn,
+            description:   sku['Description'] || sku.description || '',
+            mainCategory:  entry.parentCategory || '',
+            subCategory:   entry.subCategory || '',
+            firstSeenDate: scrapeDate,
+            status:        'ACTIVE'
+          };
+        }
       } else {
         // SKU present in both current and previous
         const prevSku   = prevSkuMap.get(pn);
         const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
-        sku['Previous List Price (USD)'] = prevPrice.toFixed(2);
+        sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
 
-        // Perform Deep Attribute Diffing across non-price metadata
+        // ── GAP FIX #3: Attribute history now includes subCategory & mainCategory ─
         const attributeDeltas = [];
         const attrsToCompare = [
-          { key: 'Description', label: 'Description' },
-          { key: 'Constraint Text', label: 'Constraint' },
-          { key: 'Table Rule/Note', label: 'Rule/Note' },
+          { key: 'Description',         label: 'Description' },
+          { key: 'Constraint Text',     label: 'Constraint' },
+          { key: 'Table Rule/Note',     label: 'Rule/Note' },
           { key: 'Subcategory Max Qty', label: 'Max Qty' },
-          { key: 'Component Role', label: 'Component Role' },
-          { key: 'Option Type', label: 'Option Type' },
-          { key: 'HPE Recommended', label: 'HPE Recommended' },
-          { key: 'Start Date', label: 'Start Date' }
+          { key: 'Component Role',      label: 'Component Role' },
+          { key: 'Option Type',         label: 'Option Type' },
+          { key: 'HPE Recommended',     label: 'HPE Recommended' },
+          { key: 'Start Date',          label: 'Start Date' }
         ];
 
         for (const attr of attrsToCompare) {
@@ -184,24 +250,25 @@ function processCatalogDiff(catalogData, historyDir) {
           const prevVal = String(prevSku[attr.key] || '').trim();
           if (currVal !== prevVal && (currVal || prevVal)) {
             attributeDeltas.push({
-              field: attr.label,
+              field:    attr.label,
               oldValue: prevVal || '(None)',
               newValue: currVal || '(None)'
             });
 
-            // Log to attribute history
             attributeHistory.push({
-              date: scrapeDate,
+              date:          scrapeDate,
               productNumber: pn,
-              chassis: catalogData.metadata?.chassis || 'Chassis',
-              field: attr.label,
-              oldValue: prevVal,
-              newValue: currVal
+              chassis:       catalogData.metadata?.chassis || 'Chassis',
+              mainCategory:  entry.parentCategory || prevSku.parentCategory || '',
+              subCategory:   entry.subCategory    || prevSku.subCategory    || '',
+              field:         attr.label,
+              oldValue:      prevVal,
+              newValue:      currVal
             });
           }
         }
 
-        const priceHasChanged = Math.abs(currPrice - prevPrice) > 0.001;
+        const priceHasChanged  = Math.abs(currPrice - prevPrice) > 0.001;
         const attrsHaveChanged = attributeDeltas.length > 0;
 
         sku['Attribute Deltas'] = attrsHaveChanged
@@ -209,98 +276,88 @@ function processCatalogDiff(catalogData, historyDir) {
           : 'None';
 
         if (priceHasChanged && attrsHaveChanged) {
-          // PRICE AND ATTRIBUTE CHANGED
           const delta = currPrice - prevPrice;
           const pct   = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
-
           sku['Diff Status']        = 'PRICE_AND_ATTRIBUTE_CHANGED';
           sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
           sku['Price Change (%)']   = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-
-          if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-            priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice });
-          }
+          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice });
           diffSummary.priceAndAttributeChanged++;
         } else if (priceHasChanged) {
-          // ONLY PRICE CHANGED
           const delta = currPrice - prevPrice;
           const pct   = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
-
           sku['Diff Status']        = 'PRICE_CHANGED';
           sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
           sku['Price Change (%)']   = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-
-          if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-            priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'PRICE_CHANGED', prevPrice });
-          }
+          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_CHANGED', prevPrice });
           diffSummary.priceChanged++;
         } else if (attrsHaveChanged) {
-          // ONLY ATTRIBUTE CHANGED
           sku['Diff Status']        = 'ATTRIBUTE_CHANGED';
           sku['Price Change (USD)'] = '$0.00';
           sku['Price Change (%)']   = '0.00%';
-
-          if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-            priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED' });
-          }
+          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED' });
           diffSummary.attributeChanged++;
         } else {
-          // UNCHANGED
           sku['Diff Status']        = 'UNCHANGED';
           sku['Price Change (USD)'] = '$0.00';
           sku['Price Change (%)']   = '0.00%';
-
-          if (!priceHistory[pn].some(h => h.date === scrapeDate)) {
-            priceHistory[pn].push({ date: scrapeDate, price: currPrice, status: 'UNCHANGED' });
-          }
+          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'UNCHANGED' });
           diffSummary.unchanged++;
         }
       }
 
-      // Build text price history trail
-      const trailEntries = priceHistory[pn] || [];
-      sku['Price History Trail'] = trailEntries
-        .map((h, i) => {
-          let arrow = '';
-          if (h.status.includes('PRICE') && i > 0) {
-            arrow = h.price > trailEntries[i - 1].price ? ' (▲)' : ' (▼)';
-          }
-          return `${h.date}: ${h.price.toFixed(2)}${arrow}`;
-        })
-        .join(' → ');
+      // ── GAP FIX #8: Build price trail string with accurate arrow direction ────
+      sku['Price History Trail'] = buildTrailString(priceHistory[pn] || []);
     }
   }
 
-  // 2. Process REMOVED SKUs & Update Cumulative Discontinued Registry
+  // ── 2. Process REMOVED SKUs & Update Cumulative Discontinued Registry ─────────
   if (prevCatalog) {
     for (const [pn, prevSku] of prevSkuMap.entries()) {
       if (!currSkuMap.has(pn)) {
-        diffSummary.removed++;
         const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
 
+        // ── GAP FIX #1 & #2: Skip REMOVED event for $0-price SKUs with no real trail ──
+        // These are likely scrape artifacts or CTO placeholders that were never priced.
         if (!priceHistory[pn]) priceHistory[pn] = [];
-        if (!priceHistory[pn].some(h => h.date === scrapeDate && h.status === 'REMOVED')) {
-          priceHistory[pn].push({ date: scrapeDate, price: prevPrice, status: 'REMOVED' });
+
+        const hadNonZeroPrice = priceHistory[pn].some(h => h.price > 0);
+        if (!hadNonZeroPrice && prevPrice === 0) {
+          // This SKU was never priced — don't pollute the discontinued registry
+          continue;
         }
 
-        // Cumulative Discontinued Registry Entry
-        discontinuedRegistry[pn] = {
-          productNumber: pn,
-          description: prevSku.Description || prevSku.description || '',
-          mainCategory: prevSku.parentCategory || 'Deprecation Archive',
-          subCategory: prevSku.subCategory || 'Discontinued SKUs',
-          lastKnownPrice: prevPrice.toFixed(2),
-          discontinuedDate: scrapeDate,
-          status: 'DISCONTINUED',
-          reason: 'Removed from active HPE OCA portal catalog'
-        };
+        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: prevPrice, status: 'REMOVED' });
+        diffSummary.removed++;
 
-        const trailEntries = priceHistory[pn] || [];
-        const trailStr     = trailEntries.map(h => `${h.date}: $${h.price.toFixed(2)}`).join(' → ') + ' → [REMOVED]';
+        const trailStr = buildTrailString(priceHistory[pn]);
+
+        // ── GAP FIX #4: Discontinued registry now includes firstSeenDate, daysActive, fullPriceTrail ──
+        const existingEntry = discontinuedRegistry[pn];
+        const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
+        let daysActive = 0;
+        if (firstSeenDate) {
+          const diffMs = new Date(scrapeDate) - new Date(firstSeenDate);
+          daysActive   = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        }
+
+        discontinuedRegistry[pn] = {
+          productNumber:  pn,
+          description:    prevSku.Description || prevSku.description || '',
+          mainCategory:   prevSku.parentCategory || 'Deprecation Archive',
+          subCategory:    prevSku.subCategory    || 'Discontinued SKUs',
+          firstSeenDate,
+          discontinuedDate: scrapeDate,
+          daysActive,
+          lastKnownPrice: prevPrice.toFixed(2),
+          fullPriceTrail: trailStr,
+          status:         'DISCONTINUED',
+          reason:         'Removed from active HPE OCA portal catalog'
+        };
 
         const tombstoneSKU = {
           'Main Category':              prevSku.parentCategory || 'Deprecation Archive',
-          'Sub-Category':               prevSku.subCategory || 'Discontinued SKUs',
+          'Sub-Category':               prevSku.subCategory    || 'Discontinued SKUs',
           'Hierarchy Path':             prevSku['Hierarchy Path'] || `HPE OCA > ${catalogData.metadata?.chassis || 'Chassis'} > Deprecation Archive > Discontinued SKUs`,
           'Component Role':             prevSku['Component Role'] || 'Discontinued Hardware',
           'Constraint Text':            prevSku['Constraint Text'] || 'Discontinued',
@@ -315,12 +372,13 @@ function processCatalogDiff(catalogData, historyDir) {
           'Extended Price (USD)':       '0.00',
           'Price per GB (USD)':         '-',
           'HPE Recommended':            'No',
-          'Start Date':                 prevSku['Start Date'] || prevSku.Start || '',
+          'Start Date':                 prevSku['Start Date'] || prevSku.Start || firstSeenDate,
           'Discontinued Date':          scrapeDate,
+          'Days Active':                String(daysActive),
           'Diff Status':                'REMOVED',
           'Previous List Price (USD)':  prevPrice.toFixed(2),
-          'Price Change (USD)':         `-$${prevPrice.toFixed(2)}`,
-          'Price Change (%)':           '-100.00%',
+          'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
+          'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',
           'Attribute Deltas':           'SKU Discontinued & Tombstoned',
           'Price History Trail':        trailStr
         };
@@ -334,7 +392,7 @@ function processCatalogDiff(catalogData, historyDir) {
             constraint:     'Discontinued',
             maxQty:         0,
             rules:          ['[DISCONTINUED] SKU present in previous scrape but removed from active catalog'],
-            headers:        ['Product #', 'Description', 'Current Qty', 'Price (USD)'],
+            headers:        ['Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Days Active'],
             skuCount:       0,
             skus:           []
           };
@@ -372,7 +430,6 @@ function processCatalogDiff(catalogData, historyDir) {
         categoryAnalytics[cat].totalPrice += price;
         if (price < categoryAnalytics[cat].minPrice) categoryAnalytics[cat].minPrice = price;
         if (price > categoryAnalytics[cat].maxPrice) categoryAnalytics[cat].maxPrice = price;
-
         categoryAnalytics[cat].subcategories[subcat].totalSKUs++;
         categoryAnalytics[cat].subcategories[subcat].totalPrice += price;
       }
@@ -391,18 +448,17 @@ function processCatalogDiff(catalogData, historyDir) {
   });
 
   // Update metadata with diff summary & price analytics
-  catalogData.metadata.diffSummary = diffSummary;
-  catalogData.metadata.historySnapshot = path.basename(currentSnapshotPath);
-  catalogData.metadata.priceAnalytics = {
-    scrapeDate,
-    categoryBreakdown: categoryAnalytics
-  };
+  catalogData.metadata.diffSummary       = diffSummary;
+  catalogData.metadata.historySnapshot   = path.basename(currentSnapshotPath);
+  catalogData.metadata.priceAnalytics    = { scrapeDate, categoryBreakdown: categoryAnalytics };
 
-  console.log(`\n--- Stage 7: Catalog Diff Engine Summary ---`);
+  const label = historyLabel === 'services' ? 'Services Diff' : 'Hardware Catalog Diff';
+  console.log(`\n--- ${label} Engine Summary ---`);
   console.log(`  Scrape Date:          ${scrapeDate}`);
   console.log(`  Previous Ref:         ${prevSnapshotPath ? path.basename(prevSnapshotPath) : '(Baseline - None)'}`);
   console.log(`  Added SKUs:           ${diffSummary.added}  (Green)`);
   console.log(`  Removed SKUs:         ${diffSummary.removed}  (Red + Strikethrough)`);
+  console.log(`  Reinstated SKUs:      ${diffSummary.reinstated}  (Gold)`);
   console.log(`  Price Changed:        ${diffSummary.priceChanged}  (Amber)`);
   console.log(`  Attribute Changed:    ${diffSummary.attributeChanged}  (Blue)`);
   console.log(`  Price & Attr Changed: ${diffSummary.priceAndAttributeChanged}  (Purple)`);

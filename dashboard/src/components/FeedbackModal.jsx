@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Send, AlertTriangle } from 'lucide-react';
+import { MessageSquare, X, Send } from 'lucide-react';
 
 export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
   const [feedback, setFeedback] = useState('');

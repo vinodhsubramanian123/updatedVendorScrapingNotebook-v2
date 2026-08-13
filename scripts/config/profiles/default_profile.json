@@ -1,0 +1,18 @@
+{
+  "description": "Default Global Scraping Profile fallback for any unknown chassis.",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 5000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|^bom$"
+  },
+  "component_mapping": {
+    "Processor": ["processor", "xeon", "epyc"],
+    "Memory": ["memory", "rdimm", "ddr5", "ddr4"],
+    "Power Supply": ["power", "power supply", "flex slot", "-48vdc"],
+    "Storage Controller": ["storage", "controller", "raid", "mr416i"],
+    "Network Adapter": ["network", "ethernet", "ocp", "adapter"],
+    "Drive Cage / Drive": ["drive", "cage", "hdd", "ssd"],
+    "Cooling / Thermal": ["fan", "cooling", "fan kit", "heatsink"],
+    "Service & Support": ["support", "service", "tech care"],
+    "Base Chassis": ["chassis", "base", "configure-to-order", "cto server", "base system", "frame", "enclosure", "compute module"]
+  }
+}

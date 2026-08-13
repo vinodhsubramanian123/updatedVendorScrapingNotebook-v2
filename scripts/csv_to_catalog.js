@@ -1,6 +1,6 @@
 'use strict';
 /**
- * csv_to_catalog.js — Converts Catalog_SKUs.csv to _Catalog.json
+ * scripts/csv_to_catalog.js — Converts Catalog_SKUs.csv to _Catalog.json
  * Enables full sync between GitHub CSV exports and AI Studio Dashboard.
  */
 

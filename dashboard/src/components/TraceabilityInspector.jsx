@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Activity, Search, ShieldCheck, Database, Cpu, ChevronRight, FileJson, Copy, CheckCircle2 } from 'lucide-react';
+import { X, Activity, Search, Database, Cpu, ChevronRight, FileJson, Copy, CheckCircle2 } from 'lucide-react';
 
 export default function TraceabilityInspector({ traces = [], isOpen, onClose }) {
   const [activeTraceIndex, setActiveTraceIndex] = useState(0);

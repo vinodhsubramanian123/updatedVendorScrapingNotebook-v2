@@ -1,0 +1,12 @@
+{
+  "description": "HPE ProLiant Gen 12 Configuration Overrides",
+  "family": "ProLiant",
+  "gen": "Gen12",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 15000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|^bom$"
+  },
+  "component_mapping": {
+    "Storage Controller": ["sr932i", "mr408i", "mr216i"]
+  }
+}
