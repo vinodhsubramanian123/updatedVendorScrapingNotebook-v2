@@ -14,6 +14,10 @@ const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const REGISTRY_FILE = path.join(OUTPUTS_DIR, 'SCRAPED_CATALOGS.md');
 const chassisMap = require('./config/chassis_map.json');
 
+const BLOCKED_CHASSIS = new Set([
+  'Chassis Dir', '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'outputs', 'General', '', 'Date', 'Product Name'
+]);
+
 function parseRegistryMD() {
   if (!fs.existsSync(REGISTRY_FILE)) return [];
   const content = fs.readFileSync(REGISTRY_FILE, 'utf-8');
@@ -21,7 +25,14 @@ function parseRegistryMD() {
   const products = [];
 
   for (const line of lines) {
-    if (!line.startsWith('|') || line.includes(':---') || line.includes('Solution / Quote') || line.includes('Solution Name')) {
+    if (
+      !line.startsWith('|') ||
+      line.includes('Product Name') ||
+      line.includes('Chassis Dir') ||
+      line.includes('---') ||
+      line.includes('Solution / Quote') ||
+      line.includes('Solution Name')
+    ) {
       continue;
     }
     const cols = line.split('|').map(c => c.trim());
@@ -35,6 +46,10 @@ function parseRegistryMD() {
     const skusStr = cols[6].replace(/\*/g, '').replace(/,/g, '');
     const totalSKUs = parseInt(skusStr, 10) || 0;
     const outputDirMatch = cols[10].replace(/`/g, '').trim();
+
+    if (!chassisShorthand || !outputDirMatch || BLOCKED_CHASSIS.has(chassisShorthand) || BLOCKED_CHASSIS.has(outputDirMatch)) {
+      continue;
+    }
 
     if (!chassisShorthand || !outputDirMatch) continue;
 

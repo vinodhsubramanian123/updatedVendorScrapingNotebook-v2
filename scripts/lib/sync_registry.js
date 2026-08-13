@@ -54,10 +54,11 @@ function findCatalogJsonFiles(dir, visitedInodes = new Set()) {
     if (dirStat.ino) visitedInodes.add(dirStat.ino);
   } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'sync_registry.js', e); }
 
+  const BLOCKED_DIRS = new Set(['Chassis Dir', '-------------', 'Output Path', 'root', 'temp', 'history', 'raw_data', 'intermittent_scraps']);
   const list = fs.readdirSync(dir);
 
   list.forEach(file => {
-    if (file.startsWith('.')) return; // Skip dotfiles (.DS_Store, etc)
+    if (file.startsWith('.') || BLOCKED_DIRS.has(file)) return; // Skip dotfiles and rogue/internal directories
     const filePath = path.join(dir, file);
     try {
       const stat = fs.lstatSync(filePath);
