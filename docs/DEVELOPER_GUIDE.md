@@ -82,7 +82,8 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 ## 4. UI/UX & Coding Standards
 - **Styling (Taste Skill)**: Enforce the `design-taste-frontend` rules. Use strictly Tailwind utility classes with Geist font and Emerald Green/Slate palettes. No generic "AI slop" gradients or heavy pure-black drop shadows.
 - **Accessibility**: Ensure high contrast, proper modal closures (Escape key/backdrop clicks), and no orphaned click handlers.
-- **Token Optimization & Auditing**: Before attempting to read or parse large codebases, AI Agents MUST use the `graphify` skill or read existing `graphify-out/GRAPH_REPORT.md` artifacts. This minimizes token usage and provides structural semantic graphs of the codebase.
+- **Agent Knowledge Policy (Token Optimization)**: Before attempting to read or parse codebases, AI Agents MUST read `graphify-out/GRAPH_REPORT.md` (e.g. using `view_file` or `cat`). To dynamically explore file paths and trace dependencies, you MUST use the `graphify` skill rather than brute-force `grep` or `ls -R`. 
+  - *Example:* Instead of reading all files in `scripts/lib/`, use `/graphify query "how does boq_evaluator work" --dfs` to trace the execution path and save tokens.
 - **React Hooks**: All hooks must be called unconditionally before any early returns. Use `useRef` for values needed inside closures without triggering re-renders.
 
 ---

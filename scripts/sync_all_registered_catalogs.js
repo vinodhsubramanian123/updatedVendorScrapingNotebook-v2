@@ -51,7 +51,9 @@ function parseRegistryMD() {
       continue;
     }
 
-    if (!chassisShorthand || !outputDirMatch) continue;
+    if (!outputDirMatch.startsWith('outputs/') && !outputDirMatch.startsWith('outputs\\')) {
+      continue;
+    }
 
     const fullOutputDir = path.join(PROJECT_ROOT, outputDirMatch);
     const jsonPath = path.join(fullOutputDir, `${chassisShorthand}_Catalog.json`);

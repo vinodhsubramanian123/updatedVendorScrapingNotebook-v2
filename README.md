@@ -27,9 +27,11 @@ Contains strict instructions on how to interact with the codebase:
 
 ---
 
-## 🤖 Agent System Instructions (AGENTS.md & GEMINI.md)
+## 🤖 For AI Agents (MANDATORY START)
 
-- **[.agents/AGENTS.md](.agents/AGENTS.md)**: Token-optimized root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
+Before reading any code or executing commands, **you MUST read `graphify-out/GRAPH_REPORT.md`**. This semantic graph prevents token waste and maps the architecture.
+
+- **[AGENTS.md](AGENTS.md)**: Token-optimized root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
 - **[GEMINI.md](GEMINI.md)**: Guidelines for Gemini LLM prompting, MCP context window management, API rate limit resilience, and NotebookLM RAG fallback.
 
 ## 🚀 Quick Start

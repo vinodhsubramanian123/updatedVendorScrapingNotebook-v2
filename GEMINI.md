@@ -13,3 +13,7 @@
 ## 3. Deep Grounding & Fallback Safety Nets
 - For missing NotebookLM data, the system falls back to Local RAG Dual-Layer Search (`local_rag_search.js`).
 - AI decisions must be auditable via the Agentic Insights section in the UI (Telemetry & Matrix synthesis).
+
+## 4. Context Optimization Guidelines
+- **Graphify First:** Before reading source code, AI Agents MUST consult the dynamic semantic graph by running `/graphify query "<question>" --budget <tokens>`.
+- **Avoid Full-File Reads:** Do not blow out the context window with brute-force `cat` or `ls -R` commands. Use Graphify to target the specific community or node of interest.
