@@ -144,8 +144,27 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
     throw new Error(`safeWriteJsonAtomic verification failed for ${tmpPath}: ${verifyErr.message}`);
   }
 
-  // Atomic move
+  // Atomic move: .tmp → final destination
   moveFile(tmpPath, destPath);
+
+  // Verify final file is valid JSON, then clean up .bak
+  const bakPath = `${destPath}.bak`;
+  try {
+    const finalRead = JSON.parse(fs.readFileSync(destPath, 'utf-8'));
+    if (!finalRead || typeof finalRead !== 'object') throw new Error('Final file is not a valid object');
+    // .bak verified no longer needed — clean it up
+    if (backupCreated && fs.existsSync(bakPath)) {
+      fs.unlinkSync(bakPath);
+    }
+  } catch (finalVerifyErr) {
+    const logger = require('./pipeline_logger');
+    logger.error('FS_COMPAT', `Final verification failed for ${destPath} — restoring from .bak`, finalVerifyErr);
+    if (backupCreated && fs.existsSync(bakPath)) {
+      fs.copyFileSync(bakPath, destPath);
+      logger.warn('FS_COMPAT', `Restored ${destPath} from backup`);
+    }
+    throw new Error(`safeWriteJsonAtomic: final verification failed, reverted from backup: ${finalVerifyErr.message}`);
+  }
 
   return { success: true, backupCreated, validation: validationResult };
 }
@@ -173,23 +192,26 @@ function copyDirRecursive(srcDir, destDir) {
 /**
  * Promote an isolated staging directory to live workspace output path.
  * Creates a temporary backup of liveTargetDir and restores it if promotion fails.
+ * Cleans up backup directory on success.
  * @param {string} stagingDir Path to temporary staging folder
  * @param {string} liveTargetDir Destination live workspace path
  * @returns {object} { success: boolean, liveTargetDir: string }
  */
 function promoteStagingDirectory(stagingDir, liveTargetDir) {
+  const logger = require('./pipeline_logger');
   if (!fs.existsSync(stagingDir)) {
     throw new Error(`Staging directory does not exist: ${stagingDir}`);
   }
-  const backupDir = `${liveTargetDir}_bak_${Date.now()}`;
+  const backupDir = `${liveTargetDir}_promotion_bak_${Date.now()}`;
   let backupCreated = false;
 
   if (fs.existsSync(liveTargetDir)) {
     try {
       copyDirRecursive(liveTargetDir, backupDir);
       backupCreated = true;
+      logger.info('FS_COMPAT', `Live workspace backed up to: ${path.basename(backupDir)}`);
     } catch (err) {
-      console.warn(`Warning: Could not create backup for live target ${liveTargetDir}: ${err.message}`);
+      logger.warn('FS_COMPAT', `Could not back up live target ${liveTargetDir}: ${err.message}`);
     }
   }
 
@@ -197,11 +219,12 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
     copyDirRecursive(stagingDir, liveTargetDir);
     if (backupCreated && fs.existsSync(backupDir)) {
       fs.rmSync(backupDir, { recursive: true, force: true });
+      logger.info('FS_COMPAT', `Promotion backup cleaned up — live workspace promoted successfully: ${path.basename(liveTargetDir)}`);
     }
     return { success: true, liveTargetDir };
   } catch (err) {
     if (backupCreated && fs.existsSync(backupDir)) {
-      console.warn(`Restoring live workspace directory from backup: ${liveTargetDir}`);
+      logger.warn('FS_COMPAT', `Promotion failed — restoring live workspace from backup: ${liveTargetDir}`);
       fs.rmSync(liveTargetDir, { recursive: true, force: true });
       copyDirRecursive(backupDir, liveTargetDir);
       fs.rmSync(backupDir, { recursive: true, force: true });
@@ -211,4 +234,3 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
 }
 
 module.exports = { moveFile, toForwardSlash, cleanStrayPDFs, safeWriteJsonAtomic, copyDirRecursive, promoteStagingDirectory };
-

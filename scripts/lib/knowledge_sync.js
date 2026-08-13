@@ -125,11 +125,27 @@ function buildMasterKnowledgeRegistry() {
 
 /**
  * Generate a clean Markdown payload for importing into Gemini NotebookLM.
+ * Guards against invalid/test chassis names creating garbage payload files.
  * @param {string} chassisName Optional target chassis filter
  * @param {boolean} autoUpload Whether to auto-upload to NLM via CLI. Defaults to false.
  * @returns {object} { payloadPath, markdownText, deltaCount, uploadResult }
  */
 function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false) {
+  const logger = require('./pipeline_logger');
+
+  // Guard: Refuse to generate payloads for invalid or garbage chassis names
+  const BLOCKED_CHASSIS = new Set([
+    'Unknown_Chassis', 'outputs', 'General', '', 'Chassis Dir', 'OCA Solution', '-------------', 'Output Path'
+  ]);
+  const cfg = loadNotebookConfig();
+  const isRegisteredChassis = cfg.notebooks && !!cfg.notebooks[chassisName];
+  const isValidFormat = chassisName && /^[A-Za-z0-9][A-Za-z0-9_\-]*$/.test(chassisName) && chassisName.length <= 80;
+
+  if (BLOCKED_CHASSIS.has(chassisName) || (!isRegisteredChassis && !isValidFormat)) {
+    logger.warn('KNOWLEDGE_SYNC', `Refusing to generate sync payload for invalid chassis: "${chassisName}"`);
+    return { payloadPath: null, markdownText: '', deltaCount: 0, uploadResult: null };
+  }
+
   const registry = buildMasterKnowledgeRegistry();
 
   // Find catalog path dynamically across all outputs/ directories
@@ -297,8 +313,8 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
 
   // Sync to Gemini NotebookLM if explicitly requested
   let uploadResult = null;
-  const cfg = loadNotebookConfig();
-  const notebookId = getNotebookIdForChassis(cfg, chassisName);
+  const notebookCfg = loadNotebookConfig();
+  const notebookId = getNotebookIdForChassis(notebookCfg, chassisName);
   if (autoUpload && notebookId) {
     uploadResult = syncToNotebookLM(notebookId, payloadPath, chassisName, registry.totalLearnedRules);
   }

@@ -36,3 +36,30 @@ Desktop.ini
 *~
 .nfs*
 
+
+# ── Ephemeral runtime files ──────────────────────────────────────────
+dashboard.pid
+
+# ── Atomic write backup files (created by safeWriteJsonAtomic) ──────
+*.bak
+*.tmp
+
+# ── Scrape staging dirs (ephemeral — deleted on success promotion) ──
+outputs/temp/
+
+# ── Benchmark fixture CSVs (moved to tests/fixtures/) ───────────────
+outputs/temp_benchmarks/
+
+# ── Root-level artifact / orphan files ──────────────────────────────
+implementation_plan.md
+
+# ── Rogue root directories (phantom chassis output paths) ────────────
+/root/
+/Output Path/
+/-------------/
+
+# ── Garbage notebook sync payloads from test/invalid chassis ────────
+outputs/history/notebook_sync_payload_edge-test-*.md
+outputs/history/notebook_sync_payload_Unknown_Chassis.md
+outputs/history/notebook_sync_payload_tmp_*.md
+outputs/history/notebook_sync_payload_outputs.md

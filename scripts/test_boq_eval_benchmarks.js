@@ -85,8 +85,9 @@ async function runBenchmarkSuite() {
   let totalTruePositives = 0;
   let totalFalsePositives = 0;
 
-  const tempDir = path.join(__dirname, '..', 'outputs', 'temp_benchmarks');
-  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  // Write benchmark CSVs to tests/fixtures/ — the canonical location for all test input files
+  const fixturesDir = path.join(__dirname, '..', 'tests', 'fixtures');
+  if (!fs.existsSync(fixturesDir)) fs.mkdirSync(fixturesDir, { recursive: true });
 
   const benchmarkResults = [];
 
@@ -94,7 +95,7 @@ async function runBenchmarkSuite() {
     const startTime = Date.now();
     console.log(`▶ Running [${bench.id}]: ${bench.name}`);
 
-    const filePath = path.join(tempDir, `${bench.id}.csv`);
+    const filePath = path.join(fixturesDir, `${bench.id}.csv`);
     fs.writeFileSync(filePath, bench.boqContent, 'utf-8');
 
     // Run Evaluator

@@ -22,9 +22,32 @@ const JSON_MODE     = process.argv.includes('--json');
 
 async function main() {
   const pipelineStart = Date.now();
+  const logger = require('./lib/pipeline_logger');
+
   console.log('================================================================');
   console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
   console.log('================================================================\n');
+
+  // ── Startup: Clean up stale staging directories from previous interrupted runs ──
+  const tempDir = path.join(OUTPUTS_ROOT, 'temp');
+  if (fs.existsSync(tempDir)) {
+    for (const entry of fs.readdirSync(tempDir)) {
+      if (!entry.startsWith('staging_')) continue;
+      const stagingPath = path.join(tempDir, entry);
+      try {
+        const stat = fs.statSync(stagingPath);
+        const ageHours = (Date.now() - stat.mtimeMs) / 3600000;
+        if (ageHours > 24) {
+          const failedPath = path.join(tempDir, entry.replace('staging_', 'failed_stale_'));
+          fs.renameSync(stagingPath, failedPath);
+          logger.warn('SCRAPE', `Stale staging dir (${ageHours.toFixed(1)}h old) renamed for inspection: ${path.basename(failedPath)}`);
+        }
+      } catch (e) {
+        logger.warn('SCRAPE', `Could not inspect staging dir ${entry}`, e);
+      }
+    }
+  }
+
 
   let pageTarget;
   try {
@@ -213,11 +236,21 @@ async function main() {
     const sections = await extractSectionHeaders(ws);
     console.log(`Extracted ${sections.length} DOM section headers.`);
 
-    const GENERIC_NAMES = ['External_OCA_Hewlett_Packard_Enterprise', 'General', ''];
-    if (GENERIC_NAMES.includes(meta.cleanName)) {
+    // ── Phantom Chassis Guard — prevents rogue directory creation at project root ──
+    const BLOCKED_CHASSIS_NAMES = new Set([
+      'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
+      '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'Chassis Dir'
+    ]);
+    if (
+      !meta.cleanName ||
+      BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
+      !/^[A-Za-z0-9][A-Za-z0-9_\-]+$/.test(meta.cleanName) ||
+      meta.cleanName.includes('..') ||
+      meta.cleanName.length > 80
+    ) {
       throw new Error(
-        `Cannot auto-detect chassis name from: "${pageHeading}".\n` +
-        `Ensure you are on the correct Product Node Menu tab in OCA.`
+        `Phantom chassis name rejected: "${meta.cleanName}" (parsed from: "${pageHeading}").\n` +
+        `Ensure you are on the correct Product Node Menu tab in OCA and the page heading contains a recognizable HPE product name.`
       );
     }
 
