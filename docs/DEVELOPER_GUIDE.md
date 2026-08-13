@@ -58,7 +58,20 @@ npm run dev
 
 ---
 
-## 3. Configuration Profiles
+## 3. Live CDP Scraping & SSO Workflow
+
+The dashboard features a "Zero-Touch" browser launcher for CDP scraping. However, due to HPE Enterprise security, a manual authentication step is strictly required.
+
+**The Hybrid Workflow:**
+1. **Launch Browser:** Click the "Launch Scraper Browser" button in the UI. The backend (`/api/launch-browser`) spins up Google Chrome bound to port 9222 using a persistent local profile (`.chrome_sso_profile`).
+2. **Manual SSO:** The browser opens `partner.hpe.com`. You **must** log in manually and click the **"OCA Configurator"** link. Direct URL navigation to `oca.ext.hpe.com` will fail because it bypasses SAML token generation.
+3. **Scrape:** Once the OCA configurator is fully loaded, return to the dashboard and click "Start Scrape".
+
+*Note for AI Agents:* Do not attempt to bypass this manual SSO step or hallucinate a fully automated login sequence for the HPE portal.
+
+---
+
+## 4. Configuration Profiles
 The OCA scraping engine relies on dynamic JSON profiles to dictate product-specific DOM rules without polluting core Node.js scripts.
 - **Location**: `scripts/config/profiles/`
 - **Fallback**: `default_profile.json` is used for any unknown product line.
@@ -67,9 +80,9 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 ---
 
 ## 4. UI/UX & Coding Standards
-- **Styling**: Use strictly Tailwind utility classes. No inline styles or custom CSS files.
+- **Styling (Taste Skill)**: Enforce the `design-taste-frontend` rules. Use strictly Tailwind utility classes with Geist font and Emerald Green/Slate palettes. No generic "AI slop" gradients or heavy pure-black drop shadows.
 - **Accessibility**: Ensure high contrast, proper modal closures (Escape key/backdrop clicks), and no orphaned click handlers.
-- **Token Optimization**: Log minimally but descriptively. Do not emit huge JSON blobs to standard out unless requested via `--json`.
+- **Token Optimization & Auditing**: Before attempting to read or parse large codebases, AI Agents MUST use the `graphify` skill or read existing `graphify-out/GRAPH_REPORT.md` artifacts. This minimizes token usage and provides structural semantic graphs of the codebase.
 - **React Hooks**: All hooks must be called unconditionally before any early returns. Use `useRef` for values needed inside closures without triggering re-renders.
 
 ---

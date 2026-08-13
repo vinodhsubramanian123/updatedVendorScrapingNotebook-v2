@@ -157,13 +157,9 @@ export default function Header({
   );
 
   const navTabs = [
-    { id: 'overview', label: 'Executive Dashboard', icon: LayoutDashboard, primary: true, color: 'text-blue-600' },
-    { id: 'sync-summary', label: 'Chassis Sync & Health', icon: ShieldCheck, primary: true, color: 'text-emerald-600' },
-    { id: 'boq', label: 'BOQ Evaluator & Matrix', icon: FileText, primary: true, color: 'text-emerald-600' },
-    { id: 'reconciliation', label: 'Partner Quote Reconciliation', icon: ShieldCheck, primary: true, color: 'text-indigo-600' },
+    { id: 'scraper', label: 'Data Ingestion & Scraping', icon: Server, primary: true, color: 'text-emerald-600' },
+    { id: 'orchestrator', label: 'BOQ Evaluation Engine', icon: LayoutDashboard, primary: true, color: 'text-blue-600' },
     { id: 'catalog', label: 'Master Excel Catalog', icon: Table, primary: true, color: 'text-purple-600' },
-    { id: 'scraper', label: 'Live CDP Scraper', icon: Terminal, primary: false, color: 'text-emerald-700' },
-    { id: 'conflict', label: 'Aspect Math & CLIC', icon: ShieldAlert, primary: false, color: 'text-amber-700' },
     { id: 'artifacts', label: 'Artifacts & Quality Audit', icon: FileSpreadsheet, primary: false, color: 'text-purple-700' },
     { id: 'telemetry', label: 'System Telemetry', icon: Activity, primary: false, color: 'text-blue-700' }
   ];

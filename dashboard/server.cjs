@@ -649,6 +649,27 @@ app.post('/api/navigate-oca', (req, res) => {
   startTask('NAVIGATE_OCA', proc, res);
 });
 
+app.post('/api/launch-browser', (req, res) => {
+  try {
+    const profileDir = path.join(PROJECT_ROOT, '.chrome_sso_profile');
+    if (!fs.existsSync(profileDir)) {
+      fs.mkdirSync(profileDir, { recursive: true });
+    }
+    const proc = spawn('google-chrome', [
+      '--remote-debugging-port=9222',
+      `--user-data-dir=${profileDir}`,
+      'https://partner.hpe.com'
+    ], { 
+      detached: true, 
+      stdio: 'ignore' 
+    });
+    proc.unref(); // Allow the node server to exit independently
+    res.json({ status: 'SUCCESS', message: 'Browser launched on port 9222' });
+  } catch (err) {
+    res.status(500).json({ error: `Failed to launch browser: ${err.message}` });
+  }
+});
+
 // -----------------------------------------------------------------------------
 // 5. BOQ Upload & Evaluation Engine
 // -----------------------------------------------------------------------------

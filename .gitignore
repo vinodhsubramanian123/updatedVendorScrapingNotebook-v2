@@ -16,6 +16,8 @@ outputs/**/*.tsv
 outputs/**/*.csv
 outputs/**/*.pdf
 outputs/**/*.html
+outputs/**/*.md
+outputs/**/*.log
 # Always keep the registry and directory structure
 !outputs/SCRAPED_CATALOGS.md
 
@@ -39,6 +41,10 @@ Desktop.ini
 
 # ── Ephemeral runtime files ──────────────────────────────────────────
 dashboard.pid
+.env
+.chrome_sso_profile/
+graphify-out/
+*/graphify-out/
 
 # ── Atomic write backup files (created by safeWriteJsonAtomic) ──────
 *.bak

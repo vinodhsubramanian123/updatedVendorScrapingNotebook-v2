@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Chassis**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-08-13T12:35:18.268Z  
-**Total Synced KnowledgeDeltas**: `7`  
+**Sync Timestamp**: 2026-08-13T20:01:03.237Z  
+**Total Synced KnowledgeDeltas**: `11`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, and learned vendor portal feedback.
 
@@ -35,7 +35,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `HPE Alletra Storage System` | Alletra | Storage | 3 | — | **ACTIVE** |
 | `GX5000 General RACK` | Cray | General | 2 | 2026-08-10 | **ACTIVE** |
 | `DL380 Gen11` | ProLiant | Gen11 | 4 | 2026-08-10 | **ACTIVE** |
-| `DL380 Gen12 SFF` | ProLiant | Gen12 | 787 | 2026-08-12 | **ACTIVE** |
+| `DL380 Gen12 SFF` | ProLiant | Gen12 | 277 | 2026-08-13 | **ACTIVE** |
 | `MSL3040 Tape` | StoreEver | Tape | 2 | 2026-08-10 | **ACTIVE** |
 | `SY100Gb F32 Module` | Synergy | General | 3 | 2026-08-10 | **ACTIVE** |
 

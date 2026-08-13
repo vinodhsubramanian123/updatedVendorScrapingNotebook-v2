@@ -2,9 +2,10 @@
 const fs = require('fs');
 const path = require('path');
 const { GoogleGenAI } = require('@google/genai');
-const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator.js');
-const { loadTelemetry } = require('./lib/system/telemetry.js');
-const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
+const lib = require('./lib/index.js');
+const { evaluateBOQMultiAspect } = lib.boq.evaluator;
+const { loadTelemetry } = lib.system.telemetry;
+const { safeWriteJsonAtomic } = lib.system.fsCompat;
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');

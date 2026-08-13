@@ -87,3 +87,45 @@ WARNINGS:
   ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
 ================================================================
 
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786629778638
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-13T14:02:58.637Z
+END TIME:     2026-08-13T14:02:59.239Z (0.60s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-13T14:02:58.642Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-13T14:02:59.140Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-13T14:02:59.151Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-13T14:02:59.239Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786630124742
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-13T14:08:44.741Z
+END TIME:     2026-08-13T14:08:45.388Z (0.65s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-13T14:08:44.742Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-13T14:08:45.306Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-13T14:08:45.327Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-13T14:08:45.388Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+

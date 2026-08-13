@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+/* Fonts loaded via @fontsource/geist-sans and @fontsource/geist-mono in main.jsx */
 
 :root {
   --bg-porcelain: #F8FAFC;
@@ -6,11 +6,11 @@
   --bg-card-hover: rgba(255, 255, 255, 0.98);
   
   --border-light: #E2E8F0;
-  --border-focus: #2563EB;
+  --border-focus: #01A781;
   
-  --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-  --shadow-glass: 0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-hover: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+  --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+  --shadow-glass: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
   
   --color-hpe-emerald: #01A781;
   --color-hpe-emerald-light: #E6F7F3;
@@ -25,9 +25,9 @@
   --text-secondary: #475569;
   --text-muted: #94A3B8;
   
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Geist Sans', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
 }
 
 * {
@@ -51,9 +51,9 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: var(--shadow-glass);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
@@ -101,7 +101,7 @@ body {
   border-radius: 9999px;
 }
 .scrollbar-nav::-webkit-scrollbar-thumb:hover {
-  background: #3B82F6;
+  background: #01A781;
 }
 
 /* Typography Helpers */
@@ -250,7 +250,7 @@ select:focus-visible,
 select:active {
   outline: none !important;
   border-color: var(--border-focus) !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(1, 167, 129, 0.2) !important;
   background-color: #ffffff !important;
 }
 

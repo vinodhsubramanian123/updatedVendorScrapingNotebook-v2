@@ -144,12 +144,33 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
               </label>
             </div>
 
-            {!canScrape && (
-              <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-[11px] text-rose-800 mb-2 leading-relaxed">
-                <strong className="block text-rose-900 font-bold mb-0.5">Chrome CDP Port 9222 Not Attached to HPE OCA</strong>
-                {cdpState.status === 'DISCONNECTED' 
-                  ? 'Start Chrome with --remote-debugging-port=9222 and navigate to HPE OCA.'
-                  : 'Browser is on a non-OCA page. Click Auto-Navigate to open HPE OCA.'}
+            {!canScrape && cdpState.status === 'DISCONNECTED' && (
+              <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg mb-2">
+                <strong className="block text-rose-900 text-[11px] font-bold mb-1.5">Chrome CDP Port 9222 Offline</strong>
+                <button
+                  onClick={async () => {
+                    try {
+                      await fetch('/api/launch-browser', { method: 'POST' });
+                    } catch (e) {
+                      console.error('Failed to launch browser', e);
+                    }
+                  }}
+                  className="w-full justify-center text-xs btn-primary bg-rose-600 hover:bg-rose-500 py-1.5 mb-1.5"
+                >
+                  <Server className="w-3.5 h-3.5 inline mr-1" /> Launch Scraper Browser
+                </button>
+                <div className="text-[10px] text-rose-700 leading-tight">
+                  Note: After launch, you must log in at partner.hpe.com and click the OCA Configurator link manually.
+                </div>
+              </div>
+            )}
+            
+            {!canScrape && cdpState.status !== 'DISCONNECTED' && (
+              <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-[11px] text-amber-800 mb-2 leading-relaxed">
+                <strong className="block text-amber-900 font-bold mb-0.5">Browser is on a non-OCA page.</strong>
+                1. Ensure you have completed SSO login.<br/>
+                2. Click the 'OCA Configurator' link manually in the browser.<br/>
+                3. Wait for the OCA portal to fully load.
               </div>
             )}
 

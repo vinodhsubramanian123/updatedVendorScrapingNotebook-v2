@@ -54,7 +54,8 @@ node scripts/lib/navigate_oca.js "Alletra 9000" && node scripts/scrape_oca_solut
 
 ## 🛡️ Exception Handling & SSO Auth Flow
 
-1. **If SSO Session Expired**: The navigator emits a warning log and prompts:
-   `🔒 Please log into https://partner.hpe.com in your browser window on port 9222.`
-2. **Once User Enters Credentials**: Session cookies are automatically stored in Chrome's `--user-data-dir=/tmp/chrome-debug`.
-3. **Subsequent Scrapes**: All subsequent navigation runs bypass login completely and reach the target chassis Menu components page in **< 10 seconds**!
+1. **Hybrid SSO Guardrail**: *DO NOT attempt to fully automate the SSO login phase or bypass the Partner Portal.* HPE's strict security requires a manual click on the "OCA Configurator" link from `partner.hpe.com` to generate SAML tokens.
+2. **If SSO Session Expired or Not Started**: The system spins up the browser using the Zero-Touch `/api/launch-browser` API.
+3. **Manual Human Step**: The human user MUST log into the browser and click the "OCA Configurator" link.
+4. **Session Persistence**: Session cookies are automatically stored in Chrome's `.chrome_sso_profile`.
+5. **Subsequent Scrapes**: Once the human has generated the SSO session in that window, subsequent scraping runs can attach to that CDP port headlessly without touching the terminal again.

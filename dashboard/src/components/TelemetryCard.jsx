@@ -134,63 +134,63 @@ export default function TelemetryCard() {
 
         {/* 6 Interactive KPI Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors w-full" onClick={() => setIsEvaluationsModalOpen(true)}>
-            <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-slate-400 transition-colors w-full shadow-sm" onClick={() => setIsEvaluationsModalOpen(true)}>
+            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
               <BarChart2 className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Total BOQ Evaluations</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Total Evaluations</p>
               <p className="text-xl font-bold text-slate-900">{telemetry.evaluationsCount > 0 ? telemetry.evaluationsCount : '—'}</p>
             </div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-colors w-full" onClick={() => setIsConfidenceModalOpen(true)}>
-            <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-emerald-400 transition-colors w-full shadow-sm" onClick={() => setIsConfidenceModalOpen(true)}>
+            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Avg Confidence Score</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Avg Confidence</p>
               <p className="text-xl font-bold text-slate-900 flex items-baseline gap-1">
                 {telemetry.evaluationsCount > 0 ? (telemetry.avgConfidenceScore * 100).toFixed(0) + '%' : '—'}
               </p>
             </div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-purple-50 hover:border-purple-200 transition-colors w-full" onClick={() => setIsDeltasModalOpen(true)}>
-            <div className="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-slate-400 transition-colors w-full shadow-sm" onClick={() => setIsDeltasModalOpen(true)}>
+            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Learned Rules (Deltas)</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Learned Rules</p>
               <p className="text-xl font-bold text-slate-900">{telemetry.totalDeltasLearned > 0 ? telemetry.totalDeltasLearned : '—'}</p>
             </div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-red-50 hover:border-red-200 transition-colors w-full" onClick={() => setIsViolationsModalOpen(true)}>
-            <div className="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-slate-400 transition-colors w-full shadow-sm" onClick={() => setIsViolationsModalOpen(true)}>
+            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Failed Evaluations</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Failed Evals</p>
               <p className="text-xl font-bold text-slate-900">
                 {history.filter(h => h.criticalViolationsCount > 0).length > 0 ? history.filter(h => h.criticalViolationsCount > 0).length : '—'}
               </p>
             </div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors w-full" onClick={() => setIsDurationModalOpen(true)}>
-            <div className="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-slate-400 transition-colors w-full shadow-sm" onClick={() => setIsDurationModalOpen(true)}>
+            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Avg Duration</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Avg Duration</p>
               <p className="text-xl font-bold text-slate-900">
                 {history.length > 0 ? (history.reduce((acc, curr) => acc + (curr.durationMs || 0), 0) / history.length / 1000).toFixed(1) + 's' : '—'}
               </p>
             </div>
           </div>
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-colors w-full">
-            <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-slate-400 transition-colors w-full shadow-sm">
+            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
               <Server className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-semibold uppercase">Workflow Exports</p>
+              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Workflow Exports</p>
               <p className="text-xl font-bold text-slate-900">
                 {telemetry.totalExports > 0 ? telemetry.totalExports : '—'}
               </p>
@@ -236,56 +236,62 @@ export default function TelemetryCard() {
 
         {/* Evals Accuracy & Pipeline Stage Profiler Panel */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white border border-slate-800 shadow-md space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" /> Evaluation Accuracy Index
-              </span>
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                High Precision
-              </span>
+          <div className="p-5 rounded-2xl bg-slate-950 text-white shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" /> Accuracy Index
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  High Precision
+                </span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold text-white">
+                  {telemetry.evalAccuracyScore ? `${telemetry.evalAccuracyScore}%` : '98.5%'}
+                </span>
+              </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-white">
-                {telemetry.evalAccuracyScore ? `${telemetry.evalAccuracyScore}%` : '98.5%'}
-              </span>
-              <span className="text-xs text-slate-400 font-medium">overall rule recall</span>
+            <div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-2">
+                <div
+                  className="bg-emerald-400 h-full rounded-full transition-all duration-500"
+                  style={{ width: `${telemetry.evalAccuracyScore || 98.5}%` }}
+                />
+              </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Calculated across synthetic and live customer BOQs.
+              </p>
             </div>
-            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-emerald-400 h-full rounded-full transition-all duration-500"
-                style={{ width: `${telemetry.evalAccuracyScore || 98.5}%` }}
-              />
-            </div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Calculated across synthetic and live customer BOQs. High confidence (&gt;85%) ensures 100% buildable hardware output.
-            </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-rose-950 text-white border border-slate-800 shadow-md space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-rose-400" /> Adversarial Catch Rate
-              </span>
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                Red-Team
-              </span>
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-slate-400" /> Adversarial Catch
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600 border border-slate-300">
+                  Red-Team
+                </span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold">
+                  {telemetry.adversarial?.catchRate ? `${telemetry.adversarial.catchRate}%` : '100%'}
+                </span>
+              </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-white">
-                {telemetry.adversarial?.catchRate ? `${telemetry.adversarial.catchRate}%` : '100%'}
-              </span>
-              <span className="text-xs text-slate-400 font-medium">precision: {telemetry.adversarial?.precision ? `${telemetry.adversarial.precision}%` : '100%'}</span>
+            <div>
+              <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mb-2">
+                <div
+                  className="bg-slate-800 h-full rounded-full transition-all duration-500"
+                  style={{ width: `${telemetry.adversarial?.catchRate || 100}%` }}
+                />
+              </div>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Continuous background adversarial benchmarks.
+              </p>
             </div>
-            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-rose-400 h-full rounded-full transition-all duration-500"
-                style={{ width: `${telemetry.adversarial?.catchRate || 100}%` }}
-              />
-            </div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Continuous background adversarial benchmarks. Engine defends against hallucinated complex BOQs to maintain reliability.
-            </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">

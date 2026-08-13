@@ -21,15 +21,36 @@ import PartnerReconciliationView from './components/PartnerReconciliationView';
 import WorkflowStepper from './components/WorkflowStepper';
 import GlobalLoadingState from './components/GlobalLoadingState';
 import ChassisSyncSummaryView from './components/ChassisSyncSummaryView';
-
+import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
+
+// Generic Modal Wrapper Component
+function ToolModal({ isOpen, onClose, title, children }) {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-xl shadow-xl overflow-hidden flex flex-col border border-slate-200">
+        <div className="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+          <h2 className="text-lg font-bold text-slate-800">{title}</h2>
+          <button onClick={onClose} className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-6">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   const [catalogs, setCatalogs] = useState([]);
   const [selectedChassis, setSelectedChassis] = useState('');
   const [catalogData, setCatalogData] = useState(null);
   const [isCatalogLoading, setIsCatalogLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('orchestrator');
+  const [activeModal, setActiveModal] = useState(null); // 'boqUploader', 'resolutionMatrix', 'reconciliation'
   const [showTraceabilityInspector, setShowTraceabilityInspector] = useState(false);
   
   // Real-time SSE Log Stream State
@@ -179,7 +200,7 @@ export default function App() {
           
           if (payload.data) {
             setEvalResults(payload.data);
-            setActiveTab('boq'); // Keep user on BOQ tab to view full seamless workflow
+            // Stay on orchestrator to view matrix
             
             // Decoupled RAG: Dispatch parallel RAG query now that matrix is rendered
             if (payload.data.notebookPayload) {
@@ -386,7 +407,6 @@ export default function App() {
   // Handler: Evaluate BOQ (Now Async SSE Driven)
   const handleEvaluateBoq = async (boqInput) => {
     setLogStream([]);
-    setActiveTab('boq'); // Stay in BOQ tab to view live pipeline logs and workflow stepper
     setEvalResults(null);
     try {
       const currentCat = catalogs.find(c => c.id === selectedChassis);
@@ -434,19 +454,30 @@ export default function App() {
       {/* Main Content Body */}
       <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
         
-        {/* Global BOQ Lifecycle & Knowledge Loop Progress Stepper */}
-        {activeTab === 'boq' && (
-          <WorkflowStepper
+        {/* The Macro Flow Engine (Default View) */}
+        {activeTab === 'orchestrator' && (
+          <MacroOrchestratorFlow
             evalResults={evalResults}
             auditReport={auditReport}
             isTaskRunning={isTaskRunning}
             activeProgress={activeProgress}
             selectedChassis={selectedChassis}
-            activeTab={activeTab}
-            onNavigateTab={setActiveTab}
-            onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
             logStream={logStream}
-            onOpenTraceability={() => setShowTraceabilityInspector(true)}
+            onOpenTool={setActiveModal}
+          />
+        )}
+
+        {/* Data Ingestion & Scraping Tab */}
+        {activeTab === 'scraper' && (
+          <ScraperTriggerCard
+            logStream={logStream}
+            isTaskRunning={isTaskRunning}
+            onTriggerScrape={handleTriggerScrape}
+            onTriggerRebuild={handleTriggerRebuild}
+            onTriggerDownloadPdf={handleTriggerDownloadPdf}
+            onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+            onTriggerKillTask={handleTriggerKillTask}
+            onTriggerNavigate={handleTriggerNavigate}
           />
         )}
 
@@ -458,152 +489,18 @@ export default function App() {
           mode="banner"
         />
 
-        {/* Executive Overview Tab */}
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            {currentCatObj && (
-              <CatalogOverviewCard
-                catalog={currentCatObj}
-                catalogData={catalogData}
-                onNavigate={setActiveTab}
-              />
-            )}
 
-            {/* Chassis Variants & Rules Health Summary View */}
-            <ChassisSyncSummaryView
-              selectedChassis={selectedChassis}
-              catalogData={catalogData}
-              onSelectChassis={setSelectedChassis}
-              onNavigateTab={setActiveTab}
-              isTaskRunning={isTaskRunning}
-              onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-            />
 
-            {evalResults ? (
-              <>
-                <AmbiguityInbox
-                  evalResults={evalResults}
-                  chassisContext={selectedChassis || 'Unknown Chassis'}
-                />
-                <WorkloadDnaCard dnaData={evalResults.workloadDna} />
-                <ResolutionMatrix
-                  evalResults={evalResults}
-                  onOpenPortalFeedback={setSelectedCardForFeedback}
-                  selectedChassis={selectedChassis}
-                />
-                <ConflictGraphInspector
-                  evalResults={evalResults}
-                  chassisName={currentCatObj?.chassis}
-                  selectedChassis={selectedChassis}
-                />
-              </>
-            ) : (
-              <div className="glass-card p-6 border-l-4 border-l-blue-500 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-blue-600" />
-                    Unlock Strategic Resolution Matrix &amp; Physical Aspect Verification
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Upload a customer BOQ quote (.xlsx, .csv, .json) or paste raw text to extract Workload DNA, audit physical rules, and rank buildable solutions.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setActiveTab('boq')}
-                  className="btn-primary text-xs shrink-0"
-                >
-                  Evaluate BOQ Quote &rarr;
-                </button>
-              </div>
-            )}
-
-            <TaskHistoryCard tasks={taskHistory} activeProgress={activeProgress} isTaskRunning={isTaskRunning} />
-            <ExportHistoryCard />
-          </div>
-        )}
-
-        {/* Chassis Sync & Health Summary Tab */}
-        {activeTab === 'sync-summary' && (
-          <ChassisSyncSummaryView
-            selectedChassis={selectedChassis}
-            catalogData={catalogData}
-            onSelectChassis={setSelectedChassis}
-            onNavigateTab={setActiveTab}
-            isTaskRunning={isTaskRunning}
-            onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-          />
-        )}
-
-        {/* Master Catalog Explorer Tab */}
+        {/* Master Excel Catalog Explorer */}
         {activeTab === 'catalog' && (
           <CatalogExplorer
             catalogData={catalogData}
-            chassisName={currentCatObj?.chassis}
-            chassisDir={currentCatObj?.chassisDir}
+            selectedChassis={selectedChassis}
             isCatalogLoading={isCatalogLoading}
-            initialSearchQuery={globalSearchTerm}
-          />
-        )}
-
-        {/* Partner Quote Reconciliation Tab */}
-        {activeTab === 'reconciliation' && (
-          <PartnerReconciliationView
-            evalResults={evalResults}
-            selectedChassis={selectedChassis}
-            onTriggerScrape={handleTriggerScrape}
-            auditReport={auditReport}
-            onAuditReportChange={setAuditReport}
-          />
-        )}
-
-        {/* BOQ Evaluator Tab */}
-        {activeTab === 'boq' && (
-          <div className="space-y-6">
-            <BoqUploader 
-              onEvaluateBoq={handleEvaluateBoq} 
-              evalResults={evalResults} 
-              logStream={logStream}
-              chassisDir={currentCatObj?.chassisDir}
-            />
-            {evalResults && (
-              <>
-                <AmbiguityInbox 
-                  evalResults={evalResults} 
-                  chassisContext={selectedChassis || 'Unknown Chassis'} 
-                />
-                <WorkloadDnaCard dnaData={evalResults.workloadDna} />
-              </>
-            )}
-            <ResolutionMatrix
-              evalResults={evalResults}
-              onOpenPortalFeedback={setSelectedCardForFeedback}
-              selectedChassis={selectedChassis}
-              onTriggerDemoBoq={handleEvaluateBoq}
-            />
-          </div>
-        )}
-
-        {/* 6-Aspect Math & CLIC Tab */}
-        {activeTab === 'conflict' && (
-          <div className="space-y-6">
-            <AmbiguityInbox 
-              evalResults={evalResults} 
-              chassisContext={evalResults?.chassisDetection?.chassisDir?.split('/').pop() || 'Unknown'} 
-            />
-            <ConflictGraphInspector
-              evalResults={evalResults}
-              chassisName={currentCatObj?.chassis}
-            />
-          </div>
-        )}
-
-        {/* 5-Tier Matrix Tab */}
-        {activeTab === 'matrix' && (
-          <ResolutionMatrix
-            evalResults={evalResults}
-            onOpenPortalFeedback={setSelectedCardForFeedback}
-            selectedChassis={selectedChassis}
-            onTriggerDemoBoq={handleEvaluateBoq}
+            globalSearchTerm={globalSearchTerm}
+            onClearSearch={() => setGlobalSearchTerm('')}
+            onOpenRag={() => setIsRagOpen(true)}
+            onRagQuery={handleSmartSearch}
           />
         )}
 
@@ -620,23 +517,59 @@ export default function App() {
           <TelemetryCard />
         )}
 
-        {/* Live Scraper & SSE Terminal Tab */}
-        {activeTab === 'scraper' && (
-          <ScraperTriggerCard
-            logStream={logStream}
-            isTaskRunning={isTaskRunning}
-            onTriggerScrape={handleTriggerScrape}
-            onTriggerRebuild={handleTriggerRebuild}
-            onTriggerDownloadPdf={handleTriggerDownloadPdf}
-            onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-            onTriggerKillTask={handleTriggerKillTask}
-            onTriggerNavigate={handleTriggerNavigate}
-          />
-        )}
-
       </main>
 
-      {/* Drawers & Modals */}
+      {/* Tool Modals triggered from Macro Flow */}
+      <ToolModal 
+        isOpen={activeModal === 'boqUploader'} 
+        onClose={() => setActiveModal(null)}
+        title="Stage 2: BOQ Quote Ingestion & Math Engine"
+      >
+        <BoqUploader 
+          onEvaluateBoq={handleEvaluateBoq} 
+          evalResults={evalResults} 
+          logStream={logStream}
+          chassisDir={currentCatObj?.chassisDir}
+        />
+        {evalResults && (
+          <div className="mt-6 space-y-6">
+            <AmbiguityInbox 
+              evalResults={evalResults} 
+              chassisContext={selectedChassis || 'Unknown Chassis'} 
+            />
+            <WorkloadDnaCard dnaData={evalResults.workloadDna} />
+          </div>
+        )}
+      </ToolModal>
+
+      <ToolModal 
+        isOpen={activeModal === 'resolutionMatrix'} 
+        onClose={() => setActiveModal(null)}
+        title="Stage 2.5: Strategic Resolution Matrix"
+      >
+        <ResolutionMatrix
+          evalResults={evalResults}
+          onOpenPortalFeedback={setSelectedCardForFeedback}
+          selectedChassis={selectedChassis}
+          onTriggerDemoBoq={handleEvaluateBoq}
+        />
+      </ToolModal>
+
+      <ToolModal 
+        isOpen={activeModal === 'reconciliation'} 
+        onClose={() => setActiveModal(null)}
+        title="Stage 3: Partner Quote Reconciliation"
+      >
+        <PartnerReconciliationView
+          evalResults={evalResults}
+          selectedChassis={selectedChassis}
+          onTriggerScrape={handleTriggerScrape}
+          auditReport={auditReport}
+          onAuditReportChange={setAuditReport}
+        />
+      </ToolModal>
+
+      {/* Drawers & General Modals */}
       <NotebookRagDrawer
         isOpen={isRagOpen}
         onClose={() => setIsRagOpen(false)}

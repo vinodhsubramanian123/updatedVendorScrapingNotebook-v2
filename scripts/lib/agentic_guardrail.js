@@ -6,6 +6,7 @@ const { processPortalFeedback } = require('./feedback_loop.js');
 const path = require('path');
 const fs = require('fs');
 const { emitProgress } = require('./progress');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 /**
  * Load notebook config to resolve chassis → notebookId mapping.
@@ -78,13 +79,14 @@ const evaluationTools = [
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function runAgenticGuardrail(items, chassisDir) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const apiKeys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
+  if (apiKeys.length === 0) {
     return { error: 'GEMINI_API_KEY environment variable is required.' };
   }
 
   const chassisId = path.basename(chassisDir);
-  const ai = new GoogleGenAI({ apiKey });
+  let currentKeyIndex = 0;
+  let ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
 
   const systemInstruction = `You are the HPE BOQ Evaluation Orchestrator (Intent Brain) with a Guardrail Loop.
 Your task is to analyze the user's BOQ configuration.
@@ -96,7 +98,7 @@ Guardrail Loop:
 5. Once you have a high confidence score, or after verifying the dependencies, provide a final summary of the BOQ's physical validity.
 Never output arbitrary JSON in your final answer, just clear markdown text.`;
 
-  const chat = ai.chats.create({
+  let chat = ai.chats.create({
     model: MODEL_NAME,
     config: {
       systemInstruction,
@@ -110,10 +112,31 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
   
   emitProgress(4, 10, 'Agentic AI Cross-Verification', 'in_progress', `Engaging Gemini LLM for Dual-Brain Verification Guardrail Loop.`);
   
-  try {
-    response = await chat.sendMessage({ message: `Please evaluate this BOQ configuration containing ${items.length} items. Chassis ID is ${chassisId}.\nItems JSON: ${initialItemsJson}` });
-  } catch (err) {
-    return { error: err.message };
+  let retryCountInitial = 0;
+  while (true) {
+    try {
+      response = await chat.sendMessage({ message: `Please evaluate this BOQ configuration containing ${items.length} items. Chassis ID is ${chassisId}.\nItems JSON: ${initialItemsJson}` });
+      break;
+    } catch (err) {
+      if (err.status === 429 && apiKeys.length > 1 && retryCountInitial < apiKeys.length) {
+        console.warn('⚠️ Rate limit hit on initial prompt.');
+        currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
+        console.warn(`🔄 Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+        
+        ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
+        chat = ai.chats.create({
+          model: MODEL_NAME,
+          config: {
+            systemInstruction,
+            tools: [{ functionDeclarations: evaluationTools }],
+            temperature: 0.1
+          }
+        });
+        retryCountInitial++;
+        continue; // Retry with new key
+      }
+      return { error: err.message };
+    }
   }
 
   let turns = 0;
@@ -134,7 +157,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
           }
           case 'query_notebooklm': {
             const cfg = loadNotebookConfig();
-            const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]) || cfg.defaultNotebookId;
+            const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]?.notebookId) || cfg.defaultNotebookId;
             result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
             break;
           }
@@ -144,8 +167,9 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
           }
           case 'record_knowledge_delta': {
             // Dynamically resolve chassis output directory instead of hardcoding ProLiant/Gen12
-            const { findChassisOutputDir } = require('./catalog_discovery');
-            let outputDir = findChassisOutputDir(args.chassis_id);
+            const { listAllCatalogs } = require('./catalog_discovery');
+            const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
+            let outputDir = cat ? cat.catalogDir : null;
             if (!outputDir) {
               // Fallback: create under outputs using chassis_id as folder name
               outputDir = path.join(__dirname, '..', '..', 'outputs', args.chassis_id);
@@ -181,6 +205,30 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
         response = await chat.sendMessage({ message: toolResponses });
         break;
       } catch (err) {
+        if (err.status === 429 && apiKeys.length > 1 && retryCount < apiKeys.length) {
+          console.warn('⚠️ Rate limit hit.');
+          currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
+          console.warn(`🔄 Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+          
+          try {
+            const oldHistory = await chat.getHistory();
+            ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
+            chat = ai.chats.create({
+              model: MODEL_NAME,
+              config: {
+                systemInstruction,
+                tools: [{ functionDeclarations: evaluationTools }],
+                temperature: 0.1,
+                history: oldHistory
+              }
+            });
+            retryCount++;
+            continue; // Immediately retry with the new key without sleeping
+          } catch (historyErr) {
+            console.error("Failed to rotate chat history:", historyErr);
+          }
+        }
+        
         if (err.status === 429 && retryCount < 3) {
           console.warn('⚠️ Rate limit hit. Waiting 15s before retrying...');
           await sleep(15000);

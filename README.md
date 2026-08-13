@@ -21,14 +21,15 @@ Contains operational clarity and execution pipelines:
 ### 3. [Developer Guide](docs/DEVELOPER_GUIDE.md)
 Contains strict instructions on how to interact with the codebase:
 - Setup, execution scripts, and dashboard launch commands
-- UI/UX standards (Tailwind, Accessibility)
+- **UI/UX standards**: Enforces the `design-taste-frontend` rules (Geist font, Emerald Green, Anti-Slop layout).
+- **Codebase Auditing**: Uses `graphify` semantic graphs for codebase comprehension and architecture validation to optimize agent tokens.
 - Continuous Benchmarking and Red-Teaming verification steps.
 
 ---
 
 ## 🤖 Agent System Instructions (AGENTS.md & GEMINI.md)
 
-- **[AGENTS.md](AGENTS.md)**: Token-optimized root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
+- **[.agents/AGENTS.md](.agents/AGENTS.md)**: Token-optimized root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
 - **[GEMINI.md](GEMINI.md)**: Guidelines for Gemini LLM prompting, MCP context window management, API rate limit resilience, and NotebookLM RAG fallback.
 
 ## 🚀 Quick Start

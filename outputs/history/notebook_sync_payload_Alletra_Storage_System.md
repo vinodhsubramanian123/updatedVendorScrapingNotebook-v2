@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Chassis**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-13T12:35:16.648Z  
-**Total Synced KnowledgeDeltas**: `7`  
+**Sync Timestamp**: 2026-08-13T20:01:01.538Z  
+**Total Synced KnowledgeDeltas**: `11`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, and learned vendor portal feedback.
 
@@ -35,7 +35,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `HPE Alletra Storage System` | Alletra | Storage | 3 | — | **ACTIVE** |
 | `GX5000 General RACK` | Cray | General | 2 | 2026-08-10 | **ACTIVE** |
 | `DL380 Gen11` | ProLiant | Gen11 | 4 | 2026-08-10 | **ACTIVE** |
-| `DL380 Gen12 SFF` | ProLiant | Gen12 | 787 | 2026-08-12 | **ACTIVE** |
+| `DL380 Gen12 SFF` | ProLiant | Gen12 | 277 | 2026-08-13 | **ACTIVE** |
 | `MSL3040 Tape` | StoreEver | Tape | 2 | 2026-08-10 | **ACTIVE** |
 | `SY100Gb F32 Module` | Synergy | General | 3 | 2026-08-10 | **ACTIVE** |
 
@@ -47,9 +47,9 @@ The following table details every valid SKU, its current list price, diff status
 
 | Product # | Description | Current Price (USD) | Diff Status | Attribute Deltas | Price History Trail |
 |-----------|-------------|---------------------|-------------|------------------|---------------------|
-| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **BASELINE** | None | 2026-08-12: $12500.00 |
-| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **BASELINE** | None | 2026-08-12: $18900.00 |
-| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **BASELINE** | None | 2026-08-12: $15200.00 |
+| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **UNCHANGED** | None | 2026-08-12: $12500.00 → 2026-08-13: $12500.00 |
+| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **UNCHANGED** | None | 2026-08-12: $18900.00 → 2026-08-13: $18900.00 |
+| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **UNCHANGED** | None | 2026-08-12: $15200.00 → 2026-08-13: $15200.00 |
 
 ---
 *Generated automatically by HPE Knowledge Sync Engine.*  

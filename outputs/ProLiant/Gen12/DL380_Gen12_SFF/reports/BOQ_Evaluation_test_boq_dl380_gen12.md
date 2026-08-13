@@ -2,7 +2,7 @@
 
 **Target BOQ File**: `tests/fixtures/test_boq_dl380_gen12.csv`  
 **Target Gemini Notebook**: `Dl 380 Spec Gen 12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`)  
-**Evaluation Date**: 2026-08-12T07:08:28.346Z  
+**Evaluation Date**: 2026-08-13T19:58:03.592Z  
 **Quantitative Confidence Score**: `0.2 / 1.00` (🚨 HITL Review Required)  
 
 ---
@@ -11,13 +11,13 @@
 
 | # | Product # (SKU) | Consolidated Qty | Description | Est. Unit Price (USD) | Extended Price (USD) |
 |---|---|---|---|---|---|
-| 1 | `P73282-B21` | 1 | HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server | $0 | $0 |
-| 2 | `P74573-B21` | 2 | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | $0 | $0 |
+| 1 | `P73282-B21` | 1 | HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server | $5,584 | $5,584 |
+| 2 | `P74573-B21` | 2 | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | $10,516 | $21,032 |
 | 3 | `P69728-B21` | 12 | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | $0 | $0 |
-| 4 | `P47777-B21` | 1 | HPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller | $0 | $0 |
-| 5 | `P17023-B21` | 2 | HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit | $0 | $0 |
+| 4 | `P47777-B21` | 1 | HPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller | $5,999 | $5,999 |
+| 5 | `P17023-B21` | 2 | HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit | $1,561 | $3,122 |
 
-**Current Baseline BOM Total**: `$0 USD`
+**Current Baseline BOM Total**: `$35,737 USD`
 
 ---
 
@@ -45,10 +45,20 @@
 - **Detected Chassis Variant**: `DL380 Gen12 8SFF`  
 - **Primary Workload DNA**: `In-Memory Database & Analytics (High Memory Footprint: 768GB RAM, 12GB/Core)`  
 - **Chassis Auto-Detection**: Match Type `EXPLICIT_CLI` (Confidence: 100%)  
-- **Rules Loaded Source**: `outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog_Rules.json.bak` (Fallback Safety Net)  
+- **Rules Loaded Source**: `outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog_Rules.json` (Dual Safety Net)  
 
 | Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |
 |---|---|---|---|
+| **CHASSIS** | Supported with EDSFF CTO Server only. | ✅ PASS | Compliant: No unsupported (Sub-table) items selected for 8SFF. |
+| **CHASSIS** | Supported with 8LFF and 12LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Supported with 8LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Nvme option not available with 8sff smart chassis choice. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Supported with EDSFF CTO Server only. | ✅ PASS | Compliant: No unsupported (Sub-table) items selected for 8SFF. |
+| **CHASSIS** | Supported with 8LFF and 12LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Supported with 8LFF CTO Server only and requires 2SFF SBS Cage. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Supported with 12EDSFF CTO Server only. | ✅ PASS | Compliant: No unsupported (Sub-table) items selected for 8SFF. |
+| **CHASSIS** | Supported with 8LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
+| **CHASSIS** | Supported with 12EDSFF CTO Server only. | ✅ PASS | Compliant: No unsupported (Sub-table) items selected for 8SFF. |
 | **CATEGORY** | Mixing of x4 and x8 memory is not allowed | ✅ PASS | All memory modules have uniform bit-width (x4). |
 | **CATEGORY** | 96GB Memory cannot be mixed with any other Memory. | ✅ PASS | No 96GB capacity mixing detected. |
 | **CATEGORY** | Mixing of Power supplies are not allowed. | ✅ PASS | Power supply selection is homogenous (all DC or all AC). |
@@ -79,7 +89,7 @@
 
 ℹ️ No budget constraint provided — showing mandatory buildable cost only.
 
-- **Mandatory Buildable Cost**: `$0 USD` (Includes all direct SKU fixes)
+- **Mandatory Buildable Cost**: `$36,968 USD` (Includes all direct SKU fixes)
 ---
 
 ## 🤖 4. Gemini Notebook RAG Status
