@@ -3,10 +3,10 @@
  * /scripts/lib/index.js — Master Loose-Coupling Barrel Export for HPE BOQ Evaluator Library
  *
  * Provides organized domain access to all system subsystems:
- * - System: Telemetry, FS Compatibility, Progress Tracking
+ * - System: Telemetry, FS Compatibility, Progress Tracking, Structured Logging
  * - BOQ Engine: Preprocessor, Evaluator, Conflict Graph, Budget Optimizer, Vendor BOM Verifier
  * - Catalog Engine: Rules, Discovery, Formatter, Diffing, Meta, Registry
- * - RAG & AI: Knowledge Sync, OCR Vision, Notebook Query, Local RAG
+ * - RAG & AI: Knowledge Sync, OCR Vision, Notebook Query, Local RAG, Post-Flow Sync Hook
  * - Scraper Engine: CDP Sessions, DOM Extraction, OCA Navigation
  * - Feedback Engine: Feedback Loop, Feedback Queue
  */
@@ -16,7 +16,8 @@ module.exports = {
   system: {
     telemetry: require('./system/telemetry.js'),
     fsCompat: require('./fs_compat.js'),
-    progress: require('./progress.js')
+    progress: require('./progress.js'),
+    logger: require('./pipeline_logger.js')
   },
 
   // BOQ Processing & Evaluation Subsystem
@@ -44,7 +45,8 @@ module.exports = {
     ocrService: require('./ocr_service.js'),
     knowledgeSync: require('./knowledge_sync.js'),
     notebookQuery: require('./notebook_query_utils.js'),
-    localSearch: require('./local_rag_search.js')
+    localSearch: require('./local_rag_search.js'),
+    postFlowSync: require('./post_flow_sync.js')
   },
 
   // Scraper Subsystem
