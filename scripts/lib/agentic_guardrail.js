@@ -7,6 +7,19 @@ const path = require('path');
 const fs = require('fs');
 const { emitProgress } = require('./progress');
 
+/**
+ * Load notebook config to resolve chassis → notebookId mapping.
+ */
+function loadNotebookConfig() {
+  const configPath = path.join(__dirname, '..', 'config', 'notebooks.json');
+  if (fs.existsSync(configPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    } catch (e) { /* fallback below */ }
+  }
+  return { defaultNotebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f', notebooks: {} };
+}
+
 const MODEL_NAME = 'gemini-3.5-flash';
 
 const evaluationTools = [
@@ -120,11 +133,9 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'query_notebooklm': {
-            const payload = {
-              messages: [{ role: 'user', content: args.query }],
-              metadata: { chassisId: args.chassis_id }
-            };
-            result = await executeNotebookQuery(payload);
+            const cfg = loadNotebookConfig();
+            const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]) || cfg.defaultNotebookId;
+            result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
             break;
           }
           case 'query_catalog_db': {
@@ -132,7 +143,13 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'record_knowledge_delta': {
-            const outputDir = path.join(__dirname, '..', '..', 'outputs', 'ProLiant', 'Gen12', args.chassis_id);
+            // Dynamically resolve chassis output directory instead of hardcoding ProLiant/Gen12
+            const { findChassisOutputDir } = require('./catalog_discovery');
+            let outputDir = findChassisOutputDir(args.chassis_id);
+            if (!outputDir) {
+              // Fallback: create under outputs using chassis_id as folder name
+              outputDir = path.join(__dirname, '..', '..', 'outputs', args.chassis_id);
+            }
             if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
             result = processPortalFeedback("Agentic rule update", outputDir, {
               affectedSku: args.affected_sku,

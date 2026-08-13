@@ -1,11 +1,53 @@
 {
   "defaultNotebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
   "notebooks": {
-    "DL380_Gen12_SFF": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
-    "DL380_Gen11": "",
-    "Alletra_Storage_System": "",
-    "MSL3040_Tape": "",
-    "GX5000_General_RACK": "",
-    "SY100Gb_F32_Module": ""
+    "DL380_Gen12_SFF": {
+      "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    },
+    "DL380_Gen11": {
+      "notebookId": "",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    },
+    "Alletra_Storage_System": {
+      "notebookId": "",
+      "family": "Alletra",
+      "gen": "Gen12",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    },
+    "MSL3040_Tape": {
+      "notebookId": "",
+      "family": "StoreEver",
+      "gen": "General",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    },
+    "GX5000_General_RACK": {
+      "notebookId": "",
+      "family": "Cray",
+      "gen": "General",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    },
+    "SY100Gb_F32_Module": {
+      "notebookId": "",
+      "family": "Synergy",
+      "gen": "General",
+      "lastSyncedAt": null,
+      "lastSyncDeltaCount": 0,
+      "isolationLevel": "CHASSIS_SPECIFIC"
+    }
   }
 }

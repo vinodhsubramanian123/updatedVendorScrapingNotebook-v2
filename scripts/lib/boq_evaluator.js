@@ -677,7 +677,7 @@ function formatNotebookQueryPayload(items, evalResults) {
   return prompt;
 }
 
-function evaluateBOQMultiAspect(filePathOrText, overrideVariant = '', targetDir = '') {
+function evaluateBOQMultiAspect(filePathOrText, options = {}) {
   let content = filePathOrText;
   let fileToPass = '';
   if (typeof filePathOrText === 'string' && fs.existsSync(filePathOrText)) {
@@ -685,7 +685,15 @@ function evaluateBOQMultiAspect(filePathOrText, overrideVariant = '', targetDir 
     content = fs.readFileSync(filePathOrText, 'utf-8');
   }
   const items = parseAndConsolidateBOQ(content, fileToPass);
-  return evaluatePhysicalMath(items, overrideVariant, targetDir);
+  let catalogData = null;
+  let targetDir = '';
+  if (typeof options === 'object' && options !== null) {
+    catalogData = options.catalogData || null;
+    targetDir = options.targetDir || options.chassis || '';
+  } else if (typeof options === 'string') {
+    targetDir = options;
+  }
+  return evaluatePhysicalMath(items, catalogData, targetDir);
 }
 
 module.exports = {
@@ -702,13 +710,6 @@ module.exports = {
   savePreprocessingRuleFeedback,
   evaluatePhysicalMath,
   formatNotebookQueryPayload,
-  getMandatorySkusForChassis,
-  evalComputeThermal,
-  evalMemoryChannel,
-  evalStorageTriMode,
-  evalNetworkingOcp,
-  evalPcieRiserSlots,
-  evalPowerEnvironment,
-  evalSupportManufacturing
+  getMandatorySkusForChassis
 };
 

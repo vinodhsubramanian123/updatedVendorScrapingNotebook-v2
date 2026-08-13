@@ -18,7 +18,7 @@ function loadTelemetry() {
   if (fs.existsSync(TELEMETRY_FILE)) {
     try {
       return JSON.parse(fs.readFileSync(TELEMETRY_FILE, 'utf-8'));
-    } catch (_) { console.warn('Caught suppressed error in telemetry.js:', _); }
+    } catch (_) { const _logger = require('../pipeline_logger'); _logger.warn('ERROR', 'telemetry.js', _); }
   }
   return {
     version: '1.2.0',

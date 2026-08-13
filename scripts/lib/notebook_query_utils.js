@@ -237,7 +237,7 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
     try {
       const inner = JSON.parse(result.answer);
       if (inner.answer) result.answer = inner.answer;
-    } catch (e) { console.warn('Caught suppressed error in notebook_query_utils.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'notebook_query_utils.js', e); }
   }
 
   return result;
@@ -415,7 +415,7 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}) {
             agreementScore: job.status === 'COMPLETED' ? 0.95 : 0.5,
             nextActionExecuted: job.status === 'COMPLETED' ? 'ASYNC_RAG_DOUBLE_PROOFED' : 'ASYNC_RAG_FAILED'
           });
-        } catch (_) { console.warn('Caught suppressed error in notebook_query_utils.js:', _); }
+        } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'notebook_query_utils.js', _); }
       })
       .catch((err) => {
         job.status = 'FAILED';

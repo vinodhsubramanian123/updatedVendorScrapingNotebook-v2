@@ -1,5 +1,5 @@
-const { getMandatorySkusForChassis } = require('./boq_evaluator');
 'use strict';
+const { getMandatorySkusForChassis } = require('./boq_evaluator');
 /**
  * scripts/lib/conflict_graph.js — Dependency Conflict Graph & Workload DNA Resolution Engine
  *

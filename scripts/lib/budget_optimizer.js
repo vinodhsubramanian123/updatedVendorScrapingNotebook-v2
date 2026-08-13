@@ -48,7 +48,7 @@ function loadUpgradeTemplates(family = 'ProLiant') {
       const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf-8'));
       const families = cfg.families || {};
       return families[family] || families['ProLiant'] || [];
-    } catch (e) { console.warn('Caught suppressed error in budget_optimizer.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'budget_optimizer.js', e); }
   }
   return [];
 }

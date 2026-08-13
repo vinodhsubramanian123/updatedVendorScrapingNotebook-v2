@@ -25,7 +25,7 @@ function findCatalogJsonFiles(dir) {
       } else if (file.endsWith('_Catalog.json') && !filePath.includes('raw_data')) {
         results.push(filePath);
       }
-    } catch (e) { console.warn('Caught suppressed error in rebuild_all.js:', e); }
+    } catch (e) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'rebuild_all.js', e); }
   });
 
   return results;

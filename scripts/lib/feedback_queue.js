@@ -23,7 +23,7 @@ function loadQueue() {
     try {
       const data = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
       if (Array.isArray(data)) return data;
-    } catch (e) { console.warn('Caught suppressed error in feedback_queue.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'feedback_queue.js', e); }
   }
   return [];
 }

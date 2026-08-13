@@ -4,6 +4,20 @@ const { CallToolRequestSchema, ListToolsRequestSchema } = require("@modelcontext
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Load notebook config to resolve chassis → notebookId mapping.
+ * @returns {object} { defaultNotebookId, notebooks }
+ */
+function loadNotebookConfig() {
+  const configPath = path.join(__dirname, 'config', 'notebooks.json');
+  if (fs.existsSync(configPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    } catch (e) { /* fallback below */ }
+  }
+  return { defaultNotebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f', notebooks: {} };
+}
+
 const {
   evalComputeThermal,
   evalMemoryChannel,
@@ -177,11 +191,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "query_notebooklm": {
-        const payload = {
-          messages: [{ role: 'user', content: args.query }],
-          metadata: { chassisId: args.chassis_id }
-        };
-        const result = await executeNotebookQuery(payload);
+        const cfg = loadNotebookConfig();
+        const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]) || cfg.defaultNotebookId;
+        const result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "query_catalog_db": {

@@ -38,14 +38,14 @@ async function main() {
   try {
     const { buildMasterKnowledgeRegistry } = require('./lib/knowledge_sync');
     knowledgeSyncState = buildMasterKnowledgeRegistry();
-  } catch (_) { console.warn('Caught suppressed error in observability_status.js:', _); }
+  } catch (_) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'observability_status.js', _); }
 
   // 3.5 Telemetry & Audit Observability
   let telemetryData = null;
   try {
     const { loadTelemetry } = require('./lib/telemetry');
     telemetryData = loadTelemetry();
-  } catch (_) { console.warn('Caught suppressed error in observability_status.js:', _); }
+  } catch (_) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'observability_status.js', _); }
 
   // 4. Script Wiring & package.json Registry
   let scripts = {};

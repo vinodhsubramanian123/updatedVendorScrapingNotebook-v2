@@ -187,4 +187,47 @@ class PipelineLogger {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Module-level structured logging interface
+// Usage: const logger = require('./pipeline_logger');
+//        logger.info('MODULE', 'message', optionalData)
+//        logger.warn('MODULE', 'message', optionalError)
+//        logger.error('MODULE', 'message', error)
+//        logger.debug('MODULE', 'message', optionalData)
+//
+// Control verbosity with LOG_LEVEL env var: error | warn | info | debug
+// ─────────────────────────────────────────────────────────────────────────────
+
+const LOG_LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
+const CURRENT_LEVEL = LOG_LEVELS[String(process.env.LOG_LEVEL || 'info').toLowerCase()] ?? 1;
+
+function formatLog(level, context, message, extra) {
+  const ts = new Date().toISOString();
+  const base = `[${ts}] [${level.toUpperCase().padEnd(5)}] [${context}] ${message}`;
+  if (extra instanceof Error) {
+    return `${base}\n  ↳ ${extra.constructor.name}: ${extra.message}${extra.stack ? '\n' + extra.stack.split('\n').slice(1, 4).join('\n') : ''}`;
+  }
+  if (extra !== undefined && extra !== null) {
+    return `${base} ${typeof extra === 'object' ? JSON.stringify(extra) : extra}`;
+  }
+  return base;
+}
+
+function log(level, context, message, extra) {
+  if (LOG_LEVELS[level] < CURRENT_LEVEL) return;
+  const formatted = formatLog(level, context, message, extra);
+  if (level === 'error') {
+    process.stderr.write(formatted + '\n');
+  } else if (level === 'warn') {
+    process.stderr.write(formatted + '\n');
+  } else {
+    process.stdout.write(formatted + '\n');
+  }
+}
+
+PipelineLogger.info  = (context, message, extra) => log('info',  context, message, extra);
+PipelineLogger.warn  = (context, message, extra) => log('warn',  context, message, extra);
+PipelineLogger.error = (context, message, extra) => log('error', context, message, extra);
+PipelineLogger.debug = (context, message, extra) => log('debug', context, message, extra);
+
 module.exports = PipelineLogger;

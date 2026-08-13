@@ -33,7 +33,7 @@ function getDefaultNotebookId() {
     try {
       const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       return cfg.defaultNotebookId || cfg.default || '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
-    } catch (e) { console.warn('Caught suppressed error in eval_boq.js:', e); }
+    } catch (e) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'eval_boq.js', e); }
   }
   return '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
 }
@@ -93,7 +93,6 @@ Examples:
 
   // Auto-detect chassis from BOQ items if --chassis not provided
   let chassisDetection = null;
-  const { autoDetectChassisDetailed } = require('./lib/catalog_discovery');
   
   if (!chassisDir) {
     chassisDetection = autoDetectChassisDetailed(items);
@@ -400,6 +399,12 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- тЪая
   // Record Pipeline Telemetry for Observability Dashboard
   const { recordEvaluationTelemetry } = require('./lib/telemetry');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
+
+  // Trigger post-flow knowledge sync hook
+  try {
+    const { triggerPostFlowSync } = require('./lib/post_flow_sync');
+    triggerPostFlowSync(chassisPrefix, 'EVALUATION');
+  } catch (_) {}
 
   // Transparent workflow steps summary for UI Pipeline Stepper
   const workflowSteps = [

@@ -51,18 +51,12 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
           });
         }
       }
-    } catch (e) { console.warn('Caught suppressed error in local_rag_search.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
   }
 
-  // 2. Search Catalogs
-  const catalogPaths = [
-    path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12_SFF'),
-    path.join(OUTPUTS_DIR, 'ProLiant', 'Gen11', 'DL380_Gen11'),
-    path.join(OUTPUTS_DIR, 'Alletra', 'Storage', 'Alletra_Storage_System'),
-    path.join(OUTPUTS_DIR, 'StoreEver', 'Tape', 'MSL3040_Tape'),
-    path.join(OUTPUTS_DIR, 'Cray', 'General', 'GX5000_General_RACK'),
-    path.join(OUTPUTS_DIR, 'Synergy', 'General', 'SY100Gb_F32_Module')
-  ];
+  // 2. Search Catalogs dynamically across outputs directory
+  const { listAllCatalogs } = require('./catalog_discovery');
+  const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
 
   const matchedProcessorSkus = [];
 
@@ -172,7 +166,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
             });
           }
         }
-      } catch (e) { console.warn('Caught suppressed error in local_rag_search.js:', e); }
+      } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
     }
 
     // Search Rules CSV
@@ -261,7 +255,7 @@ async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId 
           }
         }
       }
-    } catch (e) { console.warn('Caught suppressed error in local_rag_search.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
   }
   const localRes = queryLocalKnowledgeBase(query, resolvedChassis);
 
@@ -286,7 +280,7 @@ Instructions:
 3. Keep the citations accurate and professional.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
+      model: 'gemini-3.5-flash',
       contents: prompt
     });
 

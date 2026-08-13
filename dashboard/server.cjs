@@ -132,7 +132,7 @@ function startTask(type, proc, res) {
             broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
             return;
           }
-        } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+        } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
 
         broadcastSSE({ type: 'LOG', text: line, stream: streamType });
       }
@@ -237,12 +237,19 @@ app.get('/api/available-catalogs', (req, res) => {
   const catalogs = [];
 
   // Sync registered products from SCRAPED_CATALOGS.md and CSVs
-  const { convertCSVToCatalogJSON } = require('../scripts/csv_to_catalog.js');
-  const { syncAllProducts } = require('../scripts/sync_all_registered_catalogs.js');
+  let convertCSVToCatalogJSON = null;
+  let syncAllProducts = null;
   try {
-    syncAllProducts();
+    const csvMod = require('../scripts/csv_to_catalog.js');
+    convertCSVToCatalogJSON = csvMod.convertCSVToCatalogJSON;
+    const syncMod = require('../scripts/sync_all_registered_catalogs.js');
+    syncAllProducts = syncMod.syncAllProducts;
+    
+    if (syncAllProducts) {
+      syncAllProducts();
+    }
   } catch (err) {
-    console.error('Error in syncAllProducts:', err.message);
+    console.warn('Optional catalog sync modules not found, skipping auto-sync:', err.message);
   }
 
   function findCatalogs(dir) {
@@ -272,7 +279,9 @@ app.get('/api/available-catalogs', (req, res) => {
       }
       if (needsSync) {
         try {
-          convertCSVToCatalogJSON(csvPath, jsonPath);
+          if (convertCSVToCatalogJSON) {
+            convertCSVToCatalogJSON(csvPath, jsonPath);
+          }
         } catch (e) {
           console.error(`Error auto-converting ${csvFile.name}:`, e.message);
         }
@@ -297,7 +306,7 @@ app.get('/api/available-catalogs', (req, res) => {
           const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
           metadata = content.metadata || metadata;
           totalSKUs = metadata.totalUniqueSKUs || content.entries?.reduce((acc, e) => acc + (e.skuCount || 0), 0) || 0;
-        } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+        } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
 
         // Check for quickspecs PDF
         const pdfFile = fs.readdirSync(folderPath).find(f => f.endsWith('.pdf'));
@@ -728,7 +737,7 @@ app.post('/api/confirm-preflight-split', (req, res) => {
     const deltasFile = path.join(targetDir, 'history', 'catalog_deltas.json');
     let deltas = [];
     if (fs.existsSync(deltasFile)) {
-      try { deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (_) { console.warn("Caught suppressed error in server.cjs:", _); }
+      try { deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (_) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', _); }
     }
     deltas.push({
       deltaId: `PREPROC-DELTA-${Date.now()}`,
@@ -814,7 +823,7 @@ app.post('/api/eval-boq', (req, res) => {
             broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
             return;
           }
-        } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+        } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
         
         broadcastSSE({ type: 'LOG', text: line, stream: streamType });
       }
@@ -844,7 +853,7 @@ app.post('/api/eval-boq', (req, res) => {
 
     // Cleanup temp BOQ file if it was created from text
     if (targetPath && targetPath.includes(TEMP_DIR) && fs.existsSync(targetPath)) {
-      try { fs.unlinkSync(targetPath); } catch (e) { console.warn("Caught suppressed error in server.cjs:", e); }
+      try { fs.unlinkSync(targetPath); } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
     }
 
     try {
@@ -860,7 +869,7 @@ app.post('/api/eval-boq', (req, res) => {
             parsedData = obj;
             break;
           }
-        } catch (_) { console.warn("Caught suppressed error in server.cjs:", _); }
+        } catch (_) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', _); }
       }
 
       if (!parsedData) {
@@ -976,7 +985,7 @@ app.post('/api/notebook-query', async (req, res) => {
       if (chassisId && chassisId.trim()) {
         notebookId = chassisId.trim();
       }
-    } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+    } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
 
   if (!notebookId) {
@@ -1044,7 +1053,7 @@ app.post('/api/notebook-query-async', (req, res) => {
       if (chassisId && chassisId.trim()) {
         notebookId = chassisId.trim();
       }
-    } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+    } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
 
   const { startAsyncNotebookQueryJob, sanitizeNotebookQuery } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'notebook_query_utils.js'));
@@ -1393,7 +1402,7 @@ app.post('/api/ask-notebook', async (req, res) => {
       } else {
         notebookId = null;
       }
-    } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+    } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
 
   try {
@@ -1434,7 +1443,7 @@ const { safeWriteJsonAtomic } = require(path.join(PROJECT_ROOT, 'scripts', 'lib'
   // Append to catalog_deltas.json
   let deltas = [];
   if (fs.existsSync(deltaFile)) {
-    try { deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8')); } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+    try { deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8')); } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
   deltas.push(newDelta);
   safeWriteJsonAtomic(deltaFile, deltas);
@@ -1515,7 +1524,7 @@ app.post('/api/simulate-error', (req, res) => {
   const deltasFile = path.join(OUTPUTS_DIR, 'history', 'catalog_deltas.json');
   let deltas = [];
   if (fs.existsSync(deltasFile)) {
-    try { deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+    try { deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
   if (!Array.isArray(deltas)) deltas = [];
 
@@ -1714,7 +1723,7 @@ async function initAndStartServer() {
   // Graceful shutdown — Rule #42: prevent zombie processes on SIGTERM
   process.on('SIGTERM', () => {
     if (activeTask?.process) {
-      try { activeTask.process.kill('SIGTERM'); } catch (e) { console.warn("Caught suppressed error in test-notebooklm:", e); }
+      try { activeTask.process.kill('SIGTERM'); } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
     }
     server.close(() => {
       console.log('⚡ Dashboard server shut down cleanly.');

@@ -61,7 +61,7 @@ function findCatalogJsonFiles(dir) {
       } else if (file.endsWith('_Catalog.json') && !filePath.includes('raw_data')) {
         results.push(filePath);
       }
-    } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return results;
@@ -120,7 +120,7 @@ function listAllCatalogs(outputsRoot = OUTPUTS_ROOT) {
         pdf: pdfInfo,
         hasDiffHistory
       });
-    } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return catalogs;
@@ -161,9 +161,9 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
         try {
           const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
           if (Array.isArray(parsed)) deltas.push(...parsed);
-        } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e); }
+        } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
       }
-    } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return deltas;
@@ -225,7 +225,7 @@ function autoDetectChassisDetailed(boqItems = []) {
         };
       }
     }
-  } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e); }
+  } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
 
   // 4. Ultimate fallback (now triggers strict failure in eval_boq.js)
   return {

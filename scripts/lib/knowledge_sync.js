@@ -28,15 +28,32 @@ const CONFIG_NOTEBOOKS = path.join(__dirname, '..', 'config', 'notebooks.json');
 
 /**
  * Read notebook configuration mapping chassis/family to NotebookLM notebook IDs.
+ * Handles both string IDs and metadata objects seamlessly.
  * @returns {object} Notebook mapping
  */
 function loadNotebookConfig() {
   if (fs.existsSync(CONFIG_NOTEBOOKS)) {
     try {
       return JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
-    } catch (e) { console.warn('Caught suppressed error in knowledge_sync.js:', e); }
+    } catch (e) {
+      const logger = require('./pipeline_logger');
+      logger.warn('KNOWLEDGE_SYNC', 'Failed to load notebooks.json config', e);
+    }
   }
   return { defaultNotebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f', notebooks: {} };
+}
+
+/**
+ * Extract notebook ID string for a chassis from config
+ * @param {object} cfg 
+ * @param {string} chassisName 
+ * @returns {string} notebookId
+ */
+function getNotebookIdForChassis(cfg, chassisName) {
+  const entry = (cfg.notebooks && cfg.notebooks[chassisName]) || cfg.defaultNotebookId;
+  if (!entry) return cfg.defaultNotebookId || '';
+  if (typeof entry === 'string') return entry;
+  return entry.notebookId || cfg.defaultNotebookId || '';
 }
 
 /**
@@ -109,9 +126,10 @@ function buildMasterKnowledgeRegistry() {
 /**
  * Generate a clean Markdown payload for importing into Gemini NotebookLM.
  * @param {string} chassisName Optional target chassis filter
- * @returns {object} { payloadPath, markdownText, deltaCount }
+ * @param {boolean} autoUpload Whether to auto-upload to NLM via CLI. Defaults to false.
+ * @returns {object} { payloadPath, markdownText, deltaCount, uploadResult }
  */
-function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
+function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false) {
   const registry = buildMasterKnowledgeRegistry();
 
   // Find catalog path dynamically across all outputs/ directories
@@ -127,7 +145,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
       targetDir = path.dirname(catalogPath);
-    } catch (e) { console.warn('Caught suppressed error in knowledge_sync.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   const historyDir = path.join(targetDir, 'history');
@@ -138,7 +156,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
   if (fs.existsSync(discontinuedSkusPath)) {
     try {
       discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8'));
-    } catch (e) { console.warn('Caught suppressed error in knowledge_sync.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   let attributeHistory = [];
@@ -146,7 +164,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
     try {
       attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
       if (!Array.isArray(attributeHistory)) attributeHistory = [];
-    } catch (e) { console.warn('Caught suppressed error in knowledge_sync.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   let md = `# HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter\n\n`;
@@ -238,7 +256,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
       const meta = cData.metadata || {};
       const relDir = path.relative(OUTPUTS_ROOT, path.dirname(f));
       md += `| \`${meta.chassis || path.basename(f, '_Catalog.json')}\` | ${relDir.split(path.sep)[0] || 'ProLiant'} | ${relDir.split(path.sep)[1] || 'Gen12'} | ${meta.totalUniqueSKUs || 0} | ${meta.scrapeDate ? meta.scrapeDate.split('T')[0] : 'Active'} | **ACTIVE** |\n`;
-    } catch (e) { console.warn('Caught suppressed error in knowledge_sync.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   });
   md += `\n`;
 
@@ -277,12 +295,12 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
   const payloadPath = path.join(payloadDir, `notebook_sync_payload_${chassisName}.md`);
   fs.writeFileSync(payloadPath, md, 'utf-8');
 
-  // Real-Time Auto-Sync: Automatically sync to Gemini NotebookLM
+  // Sync to Gemini NotebookLM if explicitly requested
   let uploadResult = null;
   const cfg = loadNotebookConfig();
-  const notebookId = (cfg.notebooks && cfg.notebooks[chassisName]) || cfg.defaultNotebookId;
-  if (notebookId) {
-    uploadResult = syncToNotebookLM(notebookId, payloadPath);
+  const notebookId = getNotebookIdForChassis(cfg, chassisName);
+  if (autoUpload && notebookId) {
+    uploadResult = syncToNotebookLM(notebookId, payloadPath, chassisName, registry.totalLearnedRules);
   }
 
   return {
@@ -295,11 +313,15 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis') {
 
 /**
  * Synchronize knowledge note directly into Gemini NotebookLM via nlm CLI (when available).
+ * Updates sync metadata in notebooks.json upon completion.
  * @param {string} notebookId 
  * @param {string} payloadPath 
+ * @param {string} chassisName
+ * @param {number} totalRulesCount
  * @returns {object} { success, message }
  */
-function syncToNotebookLM(notebookId, payloadPath) {
+function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassis', totalRulesCount = 0) {
+  let result = null;
   // 1. Try nlm CLI first via execFile (avoiding shell string interpolation)
   try {
     const envPath = process.env.PATH || '';
@@ -311,10 +333,10 @@ function syncToNotebookLM(notebookId, payloadPath) {
       timeout: 30000,
       env: { ...process.env, PATH: extendedPath }
     });
-    return { success: true, mode: 'CLI', message: `Successfully synchronized payload to NotebookLM (${notebookId}) via nlm CLI.` };
+    result = { success: true, mode: 'CLI', message: `Successfully synchronized payload to NotebookLM (${notebookId}) via nlm CLI.` };
   } catch (cliErr) {
     // 2. Return fallback metadata indicating MCP tool source_add can be invoked
-    return {
+    result = {
       success: false,
       mode: 'MCP_OR_MANUAL',
       notebookId,
@@ -324,6 +346,31 @@ function syncToNotebookLM(notebookId, payloadPath) {
       message: `CLI sync unavailable (${cliErr.message}). Payload file prepared at ${payloadPath}. Use gemini-notebook-mcp tool source_add or nlm CLI.`
     };
   }
+
+  // Update sync metadata in notebooks.json if successful or prepared
+  if (fs.existsSync(CONFIG_NOTEBOOKS)) {
+    try {
+      const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+      if (cfg.notebooks && cfg.notebooks[chassisName]) {
+        if (typeof cfg.notebooks[chassisName] === 'string') {
+          cfg.notebooks[chassisName] = {
+            notebookId: cfg.notebooks[chassisName],
+            lastSyncedAt: new Date().toISOString(),
+            lastSyncDeltaCount: totalRulesCount,
+            isolationLevel: 'CHASSIS_SPECIFIC'
+          };
+        } else {
+          cfg.notebooks[chassisName].lastSyncedAt = new Date().toISOString();
+          cfg.notebooks[chassisName].lastSyncDeltaCount = totalRulesCount;
+        }
+        safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+      }
+    } catch (e) {
+      /* ignore config write errors */
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -334,17 +381,33 @@ function syncToNotebookLM(notebookId, payloadPath) {
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis') {
   const registry = buildMasterKnowledgeRegistry();
   const cfg = loadNotebookConfig();
-  const notebookId = cfg.notebooks[chassisName] || cfg.defaultNotebookId;
+  const notebookId = getNotebookIdForChassis(cfg, chassisName);
 
-  const payload = generateNotebookSyncPayload(chassisName);
+  const entry = cfg.notebooks && cfg.notebooks[chassisName];
+  const lastSyncDeltaCount = (typeof entry === 'object' && entry !== null && typeof entry.lastSyncDeltaCount === 'number')
+    ? entry.lastSyncDeltaCount
+    : 0;
+
+  const totalRules = registry.totalLearnedRules || 0;
+  const unSyncedDeltasCount = Math.max(0, totalRules - lastSyncDeltaCount);
+
+  const payload = generateNotebookSyncPayload(chassisName, false);
+
+  let status = 'SYNCHRONIZED';
+  if (unSyncedDeltasCount > 0) {
+    status = 'DRIFT_DETECTED';
+  } else if (totalRules === 0) {
+    status = 'BASELINE_READY';
+  }
 
   return {
     chassisName,
     notebookId,
-    totalLearnedRules: registry.totalLearnedRules,
-    unSyncedDeltasCount: registry.totalLearnedRules > 0 ? 0 : 0, // Master registry stays in sync
+    totalLearnedRules: totalRules,
+    lastSyncedRulesCount: lastSyncDeltaCount,
+    unSyncedDeltasCount,
     payloadPath: payload.payloadPath,
-    status: registry.totalLearnedRules > 0 ? 'SYNCHRONIZED' : 'BASELINE_READY'
+    status
   };
 }
 

@@ -61,7 +61,7 @@ function cleanStrayPDFs(dir, destPath, maxAgeMs = 120000) {
         fs.unlinkSync(fullPath);
         console.log(`Cleaned stray temporary PDF: ${file}`);
       }
-    } catch (e) { console.warn('Caught suppressed error in fs_compat.js:', e); }
+    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'fs_compat.js', e); }
   }
 }
 

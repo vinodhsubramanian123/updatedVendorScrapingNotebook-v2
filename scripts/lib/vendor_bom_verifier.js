@@ -59,7 +59,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
           });
         });
       }
-    } catch (_) { console.warn('Caught suppressed error in vendor_bom_verifier.js:', _); }
+    } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
   }
 
   const proposedSkus = (proposedRankSolution?.skuList || proposedRankSolution?.skuPartsList || []).reduce((map, item) => {
@@ -149,7 +149,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
       try {
         const feedbackMsg = `Vendor Partner Portal auto-inserted SKU ${added.sku} (Qty ${added.quantity}): ${added.description}`;
         processPortalFeedback(feedbackMsg, chassisDir);
-      } catch (_) { console.warn('Caught suppressed error in vendor_bom_verifier.js:', _); }
+      } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
     });
   }
 

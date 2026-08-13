@@ -135,7 +135,7 @@ function updateCatalogRulesFile(outputDir, delta) {
         rule: delta.ruleUpdate
       });
       safeWriteJsonAtomic(rulesJson, data, { minEntriesKey: 'rules', minCount: 1 });
-    } catch (_) { console.warn('Caught suppressed error in feedback_loop.js:', _); }
+    } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'feedback_loop.js', _); }
   }
 }
 

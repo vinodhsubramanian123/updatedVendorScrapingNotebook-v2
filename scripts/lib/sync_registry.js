@@ -52,7 +52,7 @@ function findCatalogJsonFiles(dir, visitedInodes = new Set()) {
     const dirStat = fs.lstatSync(dir);
     if (dirStat.ino && visitedInodes.has(dirStat.ino)) return results;
     if (dirStat.ino) visitedInodes.add(dirStat.ino);
-  } catch (e) { console.warn('Caught suppressed error in sync_registry.js:', e); }
+  } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'sync_registry.js', e); }
 
   const list = fs.readdirSync(dir);
 
