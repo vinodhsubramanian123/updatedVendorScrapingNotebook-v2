@@ -30,3 +30,9 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 - **Portfolio Audit Suite (`scripts/verify_all.js`)**: 100% verification across all portfolio catalog outputs on disk.
 - **UI End-to-End (`tests/e2e_headless_ui_test.js`)**: Headless browser test verifying full dashboard component rendering and user interaction flows.
 
+## 5. DL380 Gen12 E2E Perfection & Fail-Safe Pipeline Learnings
+- **Staging Isolation & Master Excel Integrity**: Live scrapes triggered from the Express dashboard execute inside isolated staging paths (`outputs/temp/staging_{chassis}_{ts}`). Promotion to live workspace (`{chassis}_OCA_Catalog.xlsx`, `{chassis}_Catalog.json`) occurs ONLY after `verify_excel_tally.js` certifies 100% row and SKU count accuracy. If any failure occurs, the live catalog remains 100% untouched while failed staging is preserved for diagnosis.
+- **NotebookLM RAG Auto-Sync**: Post-flow sync (`post_flow_sync.js`) automatically refreshes the Markdown RAG payload (`notebook_sync_payload_DL380_Gen12_SFF.md`) and updates `notebooks.json` sync status (`lastSyncedAt`, `lastSyncDeltaCount`), maintaining real-time alignment between the Dual-Brain RAG and live catalog data.
+- **Closed-Loop Telemetry & HITL Action Ledger**: Every evaluation run logs execution duration, confidence score, and domain violation counts into `pipeline_telemetry.json`. Human-in-the-loop actions (such as split confirmation or feedback drawer submissions) feed directly into `feedback_loop.js`, continuously improving evaluation precision over subsequent quote runs.
+
+
