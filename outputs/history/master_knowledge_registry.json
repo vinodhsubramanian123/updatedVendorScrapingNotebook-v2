@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "lastSyncedAt": "2026-08-14T14:22:20.784Z",
-  "totalLearnedRules": 42,
+  "lastSyncedAt": "2026-08-14T14:31:28.357Z",
+  "totalLearnedRules": 43,
   "counts": {
     "universal": 2,
     "familyGen": 4,
-    "chassisSpecific": 36
+    "chassisSpecific": 37
   },
   "universalRules": [
     {
@@ -641,6 +641,21 @@
       "solutionType": "General Server",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG",
       "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "DELTA-1786717879785",
+      "timestamp": "2026-08-14T14:31:19.785Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "CHASSIS_SPECIFIC"
     }
   ],
   "grouped": {
@@ -1238,6 +1253,21 @@
         {
           "deltaId": "DELTA-1786711328615",
           "timestamp": "2026-08-14T12:42:08.614Z",
+          "chassis": "DL380_Gen12_SFF",
+          "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+          "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+          "affectedSku": "P76453-B21",
+          "requiredDependencySku": null,
+          "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+          "humanReasoning": null,
+          "scopeTaxonomy": "CHASSIS_SPECIFIC",
+          "solutionType": "General Server",
+          "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+          "scope": "CHASSIS_SPECIFIC"
+        },
+        {
+          "deltaId": "DELTA-1786717879785",
+          "timestamp": "2026-08-14T14:31:19.785Z",
           "chassis": "DL380_Gen12_SFF",
           "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
           "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

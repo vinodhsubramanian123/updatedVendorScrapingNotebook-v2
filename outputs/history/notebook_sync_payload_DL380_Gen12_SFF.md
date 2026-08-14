@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-14T14:22:19.017Z  
+**Sync Timestamp**: 2026-08-14T14:31:26.269Z  
 **Total Verified SKUs**: `787` (`277` Hardware + `510` Services)  
-**Total Synced KnowledgeDeltas**: `42`  
+**Total Synced KnowledgeDeltas**: `43`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -180,6 +180,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 
 36. **[DELTA-1786711328615] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+37. **[DELTA-1786717879785] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76453-B21.
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 
