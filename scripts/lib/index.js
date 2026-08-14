@@ -17,16 +17,19 @@ module.exports = {
     telemetry: require('./system/telemetry.js'),
     fsCompat: require('./fs_compat.js'),
     progress: require('./progress.js'),
-    logger: require('./pipeline_logger.js')
+    logger: require('./pipeline_logger.js'),
+    profileLoader: require('./profile_loader.js')
   },
 
   // BOQ Processing & Evaluation Subsystem
   boq: {
     evaluator: require('./boq_evaluator.js'),
     preprocessor: require('./boq_preprocessor.js'),
+    parser: require('./boq_parser.js'),
     conflictGraph: require('./conflict_graph.js'),
     budgetOptimizer: require('./budget_optimizer.js'),
-    vendorBomVerifier: require('./vendor_bom_verifier.js')
+    vendorBomVerifier: require('./vendor_bom_verifier.js'),
+    xlsxExporter: require('./generate_boq_xlsx.js')
   },
 
   // Catalog Management Subsystem
@@ -37,7 +40,11 @@ module.exports = {
     diff: require('./diff_catalog.js'),
     productMeta: require('./product_meta.js'),
     sku: require('./sku.js'),
-    registry: require('./registry.js')
+    registry: require('./registry.js'),
+    validator: require('./data_validator.js'),
+    checksumDiff: require('./checksum_diff.js'),
+    skuVersioning: require('./sku_versioning.js'),
+    syncRegistry: require('./sync_registry.js')
   },
 
   // RAG & Multimodal AI Subsystem

@@ -603,11 +603,121 @@ if (servicesTSV && servicesTSV.trim()) {
   fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`), servicesTSV);
 }
 
+// Build Chassis Variant Matrix from the TSV (which has the most accurate classification).
+// Read directly from the just-written TSV rather than traversing the enriched JSON.
+const CHASSIS_FF_MAP = {
+  '8SFF': 'Small Form Factor (8-Bay SFF)', '24SFF': 'Small Form Factor (24-Bay SFF)',
+  '12LFF': 'Large Form Factor (12-Bay LFF)', '8LFF': 'Large Form Factor (8-Bay LFF)',
+  '16EDSFF': 'eDesign SFF (16-Bay EDSFF)', 'High Power': 'High Power / Telco',
+  'Telco': 'High Power / Telco'
+};
+
+function parseTSVRows(tsvPath) {
+  if (!fs.existsSync(tsvPath)) return [];
+  const lines = fs.readFileSync(tsvPath, 'utf-8').split('\n');
+  const headers = lines[0].split('\t');
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const cells = line.split('\t');
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = cells[i] || ''; });
+    return obj;
+  });
+}
+
+// Read from both SKUs TSV and Services TSV to find CTO Base Chassis rows
+const skuTSVRows = parseTSVRows(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`));
+const srvTSVRows = parseTSVRows(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`));
+const allTSVRows = [...skuTSVRows, ...srvTSVRows];
+
+const chassisVariantRows = allTSVRows.filter(r => {
+  const cat = (r['Main Category'] || '').toLowerCase();
+  const sub = (r['Sub-Category'] || '').toLowerCase();
+  const role = (r['Component Role'] || '').toLowerCase();
+  const optType = (r['Option Type'] || '').toLowerCase();
+  return (cat === 'chassis' && sub === 'variants') ||
+         role.includes('base chassis') ||
+         optType === 'cto';
+});
+
+const chassisVariants = chassisVariantRows.map(r => {
+  const desc = r['Description'] || '';
+  let formFactor = 'Unknown';
+  for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
+    if (desc.includes(key)) { formFactor = label; break; }
+  }
+  return {
+    sku: r['Product #'] || '',
+    description: desc,
+    formFactor,
+    listPrice: parseFloat(r['Unit Price (USD)']) || 0,
+    listPriceFormatted: `$${(parseFloat(r['Unit Price (USD)']) || 0).toFixed(2)}`,
+    optionType: r['Option Type'] || 'CTO',
+    startDate: r['Start Date'] || '',
+    discontinuedDate: r['Discontinued Date'] || '',
+    constraint: r['Constraint Text'] || 'max 1 — Mandatory Base Chassis Selection',
+    maxQty: r['Subcategory Max Qty'] || '1',
+    diffStatus: r['Diff Status'] || '',
+    priceHistoryTrail: r['Price History Trail'] || ''
+  };
+}).filter(v => v.sku && /^[A-Z0-9]+-[A-Z0-9]+$/.test(v.sku)); // Only valid HPE SKU format
+
+const chassisVariantMatrix = {};
+for (const v of chassisVariants) {
+  if (v.sku) chassisVariantMatrix[v.sku] = v;
+}
+
+// Fallback: if no chassis variants found in current TSVs, load from history catalog snapshots
+// (base CTO chassis options may have been removed from the live OCA page but remain valid reference)
+if (Object.keys(chassisVariantMatrix).length === 0) {
+  const historyDir = path.join(targetDir, 'history');
+  if (fs.existsSync(historyDir)) {
+    const histFiles = fs.readdirSync(historyDir)
+      .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
+      .sort().reverse(); // Newest first
+    for (const hf of histFiles) {
+      try {
+        const hCat = JSON.parse(fs.readFileSync(path.join(historyDir, hf), 'utf-8'));
+        const hChassisEntries = (hCat.entries || []).filter(e =>
+          (e.parentCategory || '').toLowerCase() === 'chassis' ||
+          (e.subCategory || '').toLowerCase() === 'variants'
+        );
+        for (const e of hChassisEntries) {
+          for (const s of (e.skus || [])) {
+            const pn = s.sku || s['Product #'] || '';
+            if (!pn || chassisVariantMatrix[pn]) continue;
+            const desc = s.description || s.Description || s['Description'] || '';
+            let formFactor = 'Unknown';
+            for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
+              if (desc.includes(key)) { formFactor = label; break; }
+            }
+            chassisVariantMatrix[pn] = {
+              sku: pn, description: desc, formFactor,
+              listPrice: s.listPrice || 0,
+              listPriceFormatted: `$${(s.listPrice || 0).toFixed(2)}`,
+              optionType: s['Option Type'] || s.optionType || 'CTO',
+              startDate: s['Start Date'] || s.startDate || '',
+              discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
+              constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
+              maxQty: e.maxQty || '1',
+              sourceSnapshot: hf
+            };
+          }
+        }
+        if (Object.keys(chassisVariantMatrix).length > 0) break; // Stop after first history file with chassis entries
+      } catch (_) { /* ignore corrupt history files */ }
+    }
+  }
+}
 
 // Standalone Rules JSON (Dual Safety Net)
 const rulesJsonPath = path.join(targetDir, `${filePrefix}_Catalog_Rules.json`);
 const rulesJsonData = {
-  metadata: enrichedCatalog.metadata,
+  metadata: {
+    ...enrichedCatalog.metadata,
+    chassisVariantCount: chassisVariants.length,
+    rulesGeneratedAt: new Date().toISOString()
+  },
+  chassisVariantMatrix,
   subcategories: enrichedCatalog.subcategories,
   rules: (enrichedCatalog.entries || []).flatMap(e => (e.rules || []).map(r => ({
     parentCategory: e.parentCategory,
@@ -618,6 +728,7 @@ const rulesJsonData = {
   })))
 };
 safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
+
 
 // Atomic write hardware catalog companion JSON with schema verification
 safeWriteJsonAtomic(jsonOutputPath, enrichedCatalog, { validateSchema: true, rejectInvalid: true });

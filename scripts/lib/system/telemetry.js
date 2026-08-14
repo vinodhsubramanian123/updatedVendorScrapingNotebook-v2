@@ -307,6 +307,42 @@ function recordExportTelemetry(exportData) {
   return entry;
 }
 
+/**
+ * Record a Partner Portal BOM Reconciliation & Cross-Verification event in telemetry.
+ * @param {object} auditReport
+ */
+function recordReconciliationTelemetry(auditReport) {
+  const telemetryDir = path.dirname(TELEMETRY_FILE);
+  if (!fs.existsSync(telemetryDir)) {
+    fs.mkdirSync(telemetryDir, { recursive: true });
+  }
+  const data = loadTelemetry();
+  if (!data.reconciliationHistory) data.reconciliationHistory = [];
+
+  const entry = {
+    id: `RECON-${Date.now()}`,
+    timestamp: auditReport.verificationTimestamp || new Date().toISOString(),
+    chassisModel: auditReport.chassisModel || 'Unknown_Chassis',
+    proposedRank: auditReport.proposedRank || 1,
+    totalVendorSkus: auditReport.totalVendorSkus || 0,
+    totalProposedSkus: auditReport.totalProposedSkus || 0,
+    is100PercentMatch: auditReport.is100PercentMatch || false,
+    requiresFreshScrape: auditReport.requiresFreshScrape || false,
+    addedCount: auditReport.discrepancies?.addedByVendor?.length || 0,
+    removedCount: auditReport.discrepancies?.removedByVendor?.length || 0,
+    priceDeltaCount: auditReport.discrepancies?.priceDeltas?.length || 0,
+    uncatalogedCount: auditReport.discrepancies?.uncatalogedSkus?.length || 0
+  };
+
+  data.totalReconciliations = (data.totalReconciliations || 0) + 1;
+  data.reconciliationHistory.unshift(entry);
+  if (data.reconciliationHistory.length > 100) data.reconciliationHistory.pop();
+
+  data.lastUpdated = new Date().toISOString();
+  safeWriteJsonAtomic(TELEMETRY_FILE, data);
+  return entry;
+}
+
 module.exports = {
   loadTelemetry,
   recordEvaluationTelemetry,
@@ -314,5 +350,6 @@ module.exports = {
   recordNotebookConsultationTelemetry,
   recordCleansingPreflightTelemetry,
   recordOcrTelemetry,
-  recordExportTelemetry
+  recordExportTelemetry,
+  recordReconciliationTelemetry
 };

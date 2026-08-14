@@ -5,19 +5,19 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 
 ---
 
-## Pipeline State of Health (Last Updated: 2026-08-12)
+## Pipeline State of Health (Last Updated: 2026-08-14)
 
-### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-12)
+### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-14)
 | Product | Family | Output Prefix | Unique SKUs | Entries | QuickSpecs PDF | Status |
 |---------|--------|---------------|-------------|---------|----------------|--------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 774 | 98 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline) |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
-| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
-| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline — full OCA scrape pending) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
-| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline — full OCA scrape pending) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
-| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | — | — | ⏳ Configured in map, payload ready | ⏳ Scrape Pending |
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 277 HW / 512 Svc | 70 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline) |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
+| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
+| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline + CTO variants) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
+| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
+| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **785 unique SKUs** across 5 verified product lines. 1 product (Alletra) pending scrape. 34/34 Test Assertions + 5/5 Benchmarks Certified.
+**Total Verified Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks Certified.
 
 ### ✅ Automated Evaluation Benchmark Suite (`scripts/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 5/5 Scenarios (100.0%)
@@ -48,11 +48,12 @@ vendorNotebookSolution/
 │   ├── lib/
 │   │   ├── agentic_guardrail.js           ← LLM MCP tool loop & fallback
 │   │   ├── boq_evaluator.js               ← 6-aspect physical math engine
+│   │   ├── boq_parser.js                  ← shared SKU extraction & line parser (DRY single source)
 │   │   ├── boq_preprocessor.js            ← BOQ text/CSV parser & grouper
 │   │   ├── budget_optimizer.js            ← Rank 5 budget optimization engine
 │   │   ├── catalog_discovery.js           ← auto-discover chassis dirs & metadata
 │   │   ├── catalog_formatter.js           ← SKU formatting & normalization
-│   │   ├── catalog_rules.js               ← aspect rule extractors
+│   │   ├── catalog_rules.js               ← 5-level rule extractor & mandatory SKU resolver
 │   │   ├── cdp.js                         ← shared CDP connection & command module
 │   │   ├── checksum_diff.js               ← SHA-256 hash diff engine
 │   │   ├── conflict_graph.js              ← 5-level conflict graph & strategy matrix
@@ -63,14 +64,16 @@ vendorNotebookSolution/
 │   │   ├── feedback_queue.js              ← async feedback queue
 │   │   ├── fs_compat.js                   ← safe atomic file operations & backups
 │   │   ├── generate_boq_xlsx.js           ← XLSX exporter
-│   │   ├── index.js                       ← barrel re-export for common lib modules
-│   │   ├── knowledge_sync.js              ← NotebookLM sync payload builder
+│   │   ├── index.js                       ← barrel re-export for common lib modules (33 domain exports)
+│   │   ├── knowledge_sync.js              ← NotebookLM sync payload builder & delta registry
 │   │   ├── local_rag_search.js            ← dual-layer local fallback search
 │   │   ├── navigate_oca.js                ← smart partner portal auto-navigator
 │   │   ├── notebook_query_utils.js        ← natural language query pre/post-processor
-│   │   ├── ocr_service.js                 ← Gemini Vision OCR service
+│   │   ├── ocr_service.js                 ← Gemini Vision OCR service with 25MB limits
 │   │   ├── pipeline_logger.js             ← standardized logger
+│   │   ├── post_flow_sync.js              ← post-flow RAG sync hook
 │   │   ├── product_meta.js                ← universal product family & model parser
+│   │   ├── profile_loader.js              ← dynamic JSON profile loader
 │   │   ├── progress.js                    ← task progress tracker
 │   │   ├── registry.js                    ← shared registry table updater
 │   │   ├── sku.js                         ← centralized HPE SKU regex & normalization

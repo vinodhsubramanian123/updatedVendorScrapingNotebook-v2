@@ -335,7 +335,7 @@ return isoString;
                     <div>
                       <span className="text-slate-400 text-[10px] uppercase font-bold block mb-0.5">Scraped / Processed</span>
                       <span className="font-bold text-slate-800 font-mono">
-                        {run.itemsScraped > 0 ? `${run.itemsScraped.toLocaleString()} SKUs` : 'Catalog Metadata Sync'}
+                        {run.itemsScraped > 0 ? `${run.itemsScraped.toLocaleString()} SKUs` : (matchingCat?.totalSKUs ? `${matchingCat.totalSKUs} SKUs` : 'Catalog Metadata Sync')}
                       </span>
                     </div>
 
@@ -351,6 +351,55 @@ return isoString;
                       <span className="font-mono text-slate-600 text-[11px] truncate block">
                         {run.runId}
                       </span>
+                    </div>
+                  </div>
+
+                  {/* ITEMISED SCRAPE DELTA & CHANGE LEDGER */}
+                  <div className="bg-white border border-slate-200/90 rounded-lg p-2.5 space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                        <Activity className="w-3.5 h-3.5 text-blue-600" /> Differential Scrape Audit Ledger:
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400">
+                        Snapshot vs Previous Baseline
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+                      <div className="p-1.5 rounded-md bg-emerald-50 border border-emerald-200">
+                        <span className="text-[10px] uppercase font-extrabold text-emerald-700 block">Added</span>
+                        <span className="font-bold text-emerald-800 font-mono text-xs">
+                          +{run.diffSummary?.added ?? 0} SKUs
+                        </span>
+                      </div>
+
+                      <div className="p-1.5 rounded-md bg-rose-50 border border-rose-200">
+                        <span className="text-[10px] uppercase font-extrabold text-rose-700 block">Removed</span>
+                        <span className="font-bold text-rose-800 font-mono text-xs">
+                          -{run.diffSummary?.removed ?? 0} SKUs
+                        </span>
+                      </div>
+
+                      <div className="p-1.5 rounded-md bg-amber-50 border border-amber-200">
+                        <span className="text-[10px] uppercase font-extrabold text-amber-700 block">Price Δ</span>
+                        <span className="font-bold text-amber-800 font-mono text-xs">
+                          {run.diffSummary?.priceChanged ?? 0} Modified
+                        </span>
+                      </div>
+
+                      <div className="p-1.5 rounded-md bg-blue-50 border border-blue-200">
+                        <span className="text-[10px] uppercase font-extrabold text-blue-700 block">Attr Δ</span>
+                        <span className="font-bold text-blue-800 font-mono text-xs">
+                          {run.diffSummary?.attributeChanged ?? 0} Modified
+                        </span>
+                      </div>
+
+                      <div className="p-1.5 rounded-md bg-slate-50 border border-slate-200 col-span-2 sm:col-span-1">
+                        <span className="text-[10px] uppercase font-extrabold text-slate-600 block">Unchanged</span>
+                        <span className="font-bold text-slate-800 font-mono text-xs">
+                          {run.diffSummary?.unchanged ?? (run.itemsScraped || matchingCat?.totalSKUs || 0)} SKUs
+                        </span>
+                      </div>
                     </div>
                   </div>
 

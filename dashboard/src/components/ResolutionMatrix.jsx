@@ -27,8 +27,21 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
   const [rejectionConfirmed, setRejectionConfirmed] = useState(null);
   const [rejectionError, setRejectionError] = useState(null);
 
+  const [matrixViewMode, setMatrixViewMode] = useState('cards'); // 'cards' | 'vertical-matrix'
   const [expandedParts, setExpandedParts] = useState({});
   const [copyStatus, setCopyStatus] = useState({});
+
+  const STANDARD_CATEGORIES = [
+    { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
+    { id: 'cpu', label: 'Compute Processors & Thermal TDP', match: ['processor', 'cpu', 'intel', 'xeon'] },
+    { id: 'cooling', label: 'Thermal Fans & Heatsinks', match: ['fan', 'cooling', 'heatsink', 'thermal'] },
+    { id: 'memory', label: 'Memory (DDR5 1DPC / 2DPC)', match: ['memory', 'ram', 'dimm', 'ddr5'] },
+    { id: 'storage_ctrl', label: 'Storage Controllers & Battery', match: ['storage controller', 'controller', 'raid', 'cache', 'battery'] },
+    { id: 'storage_drives', label: 'Drive Media & Backplanes', match: ['drive', 'ssd', 'hdd', 'nvme', 'cage'] },
+    { id: 'power', label: 'Power Infrastructure & Redundancy', match: ['power', 'psu', 'titanium', 'platinum', 'dc', 'lug'] },
+    { id: 'networking', label: 'Networking & PCIe Risers', match: ['network', 'nic', 'ocp', 'adapter', 'riser', 'pcie'] },
+    { id: 'support', label: 'Pointnext Tech Care Warranty', match: ['service', 'support', 'warranty', 'care'] }
+  ];
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -159,13 +172,13 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
         </div>
       )}
       <div className="glass-card p-6">
-        <div className="border-b border-slate-100 pb-3 mb-4 flex justify-between items-start">
+        <div className="border-b border-slate-100 pb-3 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <Award className="w-5 h-5 text-emerald-600" />
               {tiers.length > 0 ? `${tiers.length}-Tier` : 'Multi-Tier'} Strategic Resolution Matrix
             </h2>
-            <div className="flex items-center gap-3 mt-1">
+            <div className="flex items-center gap-3 mt-1 flex-wrap">
               <p className="text-xs text-slate-500">
                 Multi-tiered buildable candidates. Apply fixes and export a corrected BOQ, or report a portal rejection to train the engine.
               </p>
@@ -176,41 +189,66 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
               )}
             </div>
           </div>
-          {evalResults?.confidence && (
-            <div className="group relative flex items-center">
-              <div className={`px-3 py-1.5 rounded-full border text-xs font-bold cursor-help ${
-                evalResults.confidence.isHitlTriggered 
-                  ? 'bg-amber-50 border-amber-200 text-amber-700' 
-                  : 'bg-emerald-50 border-emerald-200 text-emerald-700'
-              }`}>
-                Confidence: {Math.round(evalResults.confidence.score * 100)}%
-              </div>
-              
-              {/* Tooltip / Popover */}
-              <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-                <p className="text-xs font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Score Breakdown</p>
-                <div className="space-y-1.5">
-                  <p className="text-[11px] flex justify-between text-emerald-600">
-                    <span>Base Intent Match</span>
-                    <span className="font-mono">1.00</span>
-                  </p>
-                  {(evalResults.confidence.deductions || []).map((deduction, i) => (
-                    <p key={i} className="text-[11px] flex justify-between text-amber-600">
-                      <span className="truncate pr-2">{deduction.replace(/ \(-[0-9.]+\)$/, '')}</span>
-                      <span className="font-mono">
-                        {deduction.match(/\((-[0-9.]+)\)$/) ? deduction.match(/\((-[0-9.]+)\)$/)[1] : ''}
-                      </span>
+
+          <div className="flex items-center gap-3 shrink-0">
+            {/* View Mode Toggle Switch */}
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setMatrixViewMode('cards')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  matrixViewMode === 'cards' ? 'bg-white text-blue-700 shadow-2xs font-extrabold' : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Ranked Cards
+              </button>
+              <button
+                type="button"
+                onClick={() => setMatrixViewMode('vertical-matrix')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  matrixViewMode === 'vertical-matrix' ? 'bg-white text-blue-700 shadow-2xs font-extrabold' : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Vertical Category Matrix
+              </button>
+            </div>
+
+            {/* Overall Confidence Badge */}
+            {evalResults?.confidence && (
+              <div className="group relative flex items-center">
+                <div className={`px-3 py-1.5 rounded-full border text-xs font-bold cursor-help ${
+                  evalResults.confidence.isHitlTriggered 
+                    ? 'bg-amber-50 border-amber-200 text-amber-700' 
+                    : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                }`}>
+                  Confidence: {Math.round(evalResults.confidence.score * 100)}%
+                </div>
+                
+                {/* Tooltip / Popover */}
+                <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                  <p className="text-xs font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Score Breakdown</p>
+                  <div className="space-y-1.5">
+                    <p className="text-[11px] flex justify-between text-emerald-600">
+                      <span>Base Intent Match</span>
+                      <span className="font-mono">1.00</span>
                     </p>
-                  ))}
-                  <div className="pt-2 mt-2 border-t border-slate-100 flex justify-between font-bold text-xs">
-                    <span className="text-slate-800">Final Score</span>
-                    <span className="font-mono text-slate-900">{evalResults.confidence.score.toFixed(2)}</span>
+                    {(evalResults.confidence.deductions || []).map((deduction, i) => (
+                      <p key={i} className="text-[11px] flex justify-between text-amber-600">
+                        <span className="truncate pr-2">{deduction.replace(/ \(-[0-9.]+\)$/, '')}</span>
+                        <span className="font-mono">
+                          {deduction.match(/\((-[0-9.]+)\)$/) ? deduction.match(/\((-[0-9.]+)\)$/)[1] : ''}
+                        </span>
+                      </p>
+                    ))}
+                    <div className="pt-2 mt-2 border-t border-slate-100 flex justify-between font-bold text-xs">
+                      <span className="text-slate-800">Final Score</span>
+                      <span className="font-mono text-slate-900">{evalResults.confidence.score.toFixed(2)}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-
+            )}
+          </div>
         </div>
         
         {evalResults?.agenticExplanation && (
@@ -232,7 +270,114 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 1. VERTICAL CATEGORY COMPARISON TABLE VIEW */}
+        {matrixViewMode === 'vertical-matrix' && tiers.length > 0 && (
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm mb-6 animate-fade-in">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-slate-100/90 text-slate-800 font-bold border-b border-slate-200">
+                  <th className="p-3.5 w-48 sticky left-0 bg-slate-100 z-10 text-[11px] uppercase tracking-wider">
+                    Hardware Category
+                  </th>
+                  {tiers.map(t => (
+                    <th key={t.rank} className={`p-3.5 min-w-[220px] ${t.rank === 1 ? 'bg-emerald-50/80 border-x border-emerald-200' : ''}`}>
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className={`badge ${t.badgeClass} text-[10px]`}>{t.subtitle}</span>
+                        <span className="text-[11px] font-bold text-slate-500">Match: {t.intentMatch}</span>
+                      </div>
+                      <div className="text-sm font-extrabold text-slate-900">{t.title}</div>
+                      <div className="text-xs font-mono font-bold text-emerald-700 mt-0.5">{t.capex}</div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {STANDARD_CATEGORIES.map(cat => (
+                  <tr key={cat.id} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="p-3.5 font-bold text-slate-800 bg-slate-50/80 sticky left-0 border-r border-slate-200 text-xs">
+                      {cat.label}
+                    </td>
+                    {tiers.map(tier => {
+                      const matchedItems = (tier.skuPartsList || []).filter(item => {
+                        const itCat = String(item.category || item.description || '').toLowerCase();
+                        return cat.match.some(m => itCat.includes(m));
+                      });
+
+                      return (
+                        <td key={tier.rank} className={`p-3.5 align-top ${tier.rank === 1 ? 'bg-emerald-50/30 border-x border-emerald-100' : ''}`}>
+                          {matchedItems.length === 0 ? (
+                            <span className="inline-block text-[11px] font-medium text-slate-400 bg-slate-50 border border-dashed border-slate-200 px-2 py-1 rounded-lg italic">
+                              — None Required (Standard Default Included)
+                            </span>
+                          ) : (
+                            <div className="space-y-1.5">
+                              {matchedItems.map((part, pIdx) => (
+                                <div key={pIdx} className="p-2 rounded-lg bg-white border border-slate-200 text-[11px] shadow-2xs space-y-0.5">
+                                  <div className="flex items-center justify-between font-mono font-bold text-slate-900">
+                                    <span className="text-blue-600">{part.quantity}x {part.sku}</span>
+                                    <span className="text-slate-800">${((part.unitPriceUsd || 0) * (part.quantity || 1)).toLocaleString()}</span>
+                                  </div>
+                                  <div className="text-slate-600 text-[10px] line-clamp-1">{part.description}</div>
+                                  {part.isFixInjected && (
+                                    <span className="inline-block bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.2 rounded border border-emerald-300">
+                                      Aspect Fix Injected
+                                    </span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+
+                {/* Table Footer with Summary Actions */}
+                <tr className="bg-slate-100/90 font-bold border-t-2 border-slate-300">
+                  <td className="p-3.5 font-extrabold text-slate-900 sticky left-0 bg-slate-100">
+                    Summary &amp; Action
+                  </td>
+                  {tiers.map(tier => (
+                    <td key={tier.rank} className={`p-3.5 ${tier.rank === 1 ? 'bg-emerald-50/80 border-x border-emerald-200' : ''}`}>
+                      <div className="space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => handleCopyBomText(tier)}
+                          className="w-full text-[11px] font-bold text-blue-700 hover:text-blue-900 bg-blue-100/70 hover:bg-blue-200/70 border border-blue-200 p-1.5 rounded-lg flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                        >
+                          {copyStatus[tier.rank] ? (
+                            <>
+                              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>Copied for Portal!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-blue-600" />
+                              <span>Copy TSV for Partner Portal</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleExport(tier)}
+                          disabled={exportingRank !== null}
+                          className="w-full text-[11px] font-bold text-white bg-slate-900 hover:bg-slate-800 p-1.5 rounded-lg flex items-center justify-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                        >
+                          <Download className="w-3.5 h-3.5" /> Export Excel
+                        </button>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* 2. RANKED CARDS VIEW */}
+        {matrixViewMode === 'cards' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {tiers.length === 0 ? (
             <div className="col-span-full p-8 text-center text-slate-500 bg-slate-50/50 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
@@ -331,17 +476,21 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
                   </div>
                 )}
 
-                {/* Confidence Score Visual Indicator */}
+                {/* Confidence Score Visual Indicator & Expandable Mathematical Breakdown */}
                 <div className="pt-2 border-t border-slate-200/60">
                   <div className="flex justify-between items-center text-[11px] mb-1">
                     <span className="font-bold text-slate-700 flex items-center gap-1">
                       <Sparkles className="w-3 h-3 text-indigo-500" /> Confidence Score:
                     </span>
-                    <span className={`font-mono font-bold ${
-                      tier.score >= 0.85 ? 'text-emerald-700' : tier.score >= 0.70 ? 'text-blue-700' : 'text-amber-700'
-                    }`}>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedParts(prev => ({ ...prev, [`breakdown_${tier.rank}`]: !prev[`breakdown_${tier.rank}`] }))}
+                      className={`font-mono font-bold hover:underline cursor-pointer flex items-center gap-1 ${
+                        tier.score >= 0.85 ? 'text-emerald-700' : tier.score >= 0.70 ? 'text-blue-700' : 'text-amber-700'
+                      }`}
+                    >
                       {Math.round(tier.score * 100)}% ({tier.score >= 0.85 ? 'High' : tier.score >= 0.70 ? 'Moderate' : 'Low Confidence'})
-                    </span>
+                    </button>
                   </div>
                   <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                     <div 
@@ -351,10 +500,37 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
                       style={{ width: `${Math.round(tier.score * 100)}%` }}
                     />
                   </div>
+
+                  {/* Inline Score Breakdown on low score or toggle */}
+                  {(expandedParts[`breakdown_${tier.rank}`] || tier.score < 0.75) && evalResults?.confidence && (
+                    <div className="mt-2 p-2 bg-white rounded-lg border border-slate-200 text-[10px] space-y-1 font-mono">
+                      <div className="flex justify-between text-slate-600 font-bold border-b border-slate-100 pb-1">
+                        <span>Base Intent Score:</span>
+                        <span>1.00</span>
+                      </div>
+                      {(evalResults.confidence.deductions || []).map((ded, i) => (
+                        <div key={i} className="flex justify-between text-rose-600">
+                          <span className="truncate pr-1">{ded.replace(/ \(-[0-9.]+\)$/, '')}</span>
+                          <span className="shrink-0">{ded.match(/\((-[0-9.]+)\)$/) ? ded.match(/\((-[0-9.]+)\)$/)[1] : '-0.20'}</span>
+                        </div>
+                      ))}
+                      {(evalResults.confidence.boosts || []).map((bst, i) => (
+                        <div key={i} className="flex justify-between text-emerald-600">
+                          <span className="truncate pr-1">{bst.replace(/ \(\+[0-9.]+\)$/, '')}</span>
+                          <span className="shrink-0">{bst.match(/\(\+([0-9.]+)\)$/) ? bst.match(/\(\+([0-9.]+)\)$/)[1] : '+0.05'}</span>
+                        </div>
+                      ))}
+                      <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-1">
+                        <span>Calculated Confidence:</span>
+                        <span>{tier.score.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  )}
+
                   {tier.score < 0.75 && (
                     <button
                       onClick={() => onOpenPortalFeedback && onOpenPortalFeedback(tier)}
-                      className="mt-2 text-[10px] font-bold text-amber-700 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-100 px-2 py-1 rounded w-full flex items-center justify-center gap-1 transition-colors"
+                      className="mt-2 text-[10px] font-bold text-amber-700 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-100 px-2 py-1 rounded w-full flex items-center justify-center gap-1 transition-colors cursor-pointer"
                     >
                       <MessageSquare className="w-3 h-3" /> Score is Low — Raise Feedback to Improve RAG
                     </button>
@@ -507,6 +683,7 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
           );
         })}
         </div>
+        )}
       </div>
 
       {/* Portal Rejection Training Modal */}

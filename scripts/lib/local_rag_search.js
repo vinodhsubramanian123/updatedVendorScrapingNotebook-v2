@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const KNOWLEDGE_FILE = path.join(OUTPUTS_DIR, 'history', 'master_knowledge_registry.json');
 

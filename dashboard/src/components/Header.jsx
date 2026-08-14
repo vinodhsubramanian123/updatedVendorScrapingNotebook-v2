@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   Cpu, Search, Sparkles, Server, RefreshCw, MessageSquare, Settings,
-  LayoutDashboard, Table, FileText, ShieldAlert, FileSpreadsheet, Activity, Terminal, ShieldCheck,
+  LayoutDashboard, Table, FileSpreadsheet, Activity, Terminal,
   ChevronDown, Check, ArrowRight, Bot, Zap, CheckCircle2, AlertCircle,
   Maximize2, X, HelpCircle
 } from 'lucide-react';
@@ -183,38 +183,67 @@ export default function Header({
             </div>
           </div>
 
-          {/* Global Custom Popover Chassis Selector Pill */}
+          {/* Global Context Indicator & Scoped Product Selector */}
           <div className="h-6 w-[1px] bg-slate-200 hidden sm:block" />
           <div className="relative" ref={chassisDropdownRef}>
-            <button
-              type="button"
-              onClick={() => setIsChassisOpen(!isChassisOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-50/80 via-white to-slate-50 border border-blue-200/90 text-slate-800 hover:border-blue-400 hover:bg-white shadow-2xs hover:shadow-xs transition-all duration-200 cursor-pointer"
-            >
-              <Server className="w-4 h-4 text-blue-600 shrink-0" />
-              <div className="flex items-center gap-1.5 text-xs font-bold">
-                <span className="text-slate-900 truncate max-w-[190px]">
-                  {selectedChassis && currentCatalog ? currentCatalog.chassis : 'All HPE Products (Portfolio)'}
-                </span>
-                {selectedChassis && currentCatalog ? (
-                  <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200">
-                    {currentCatalog.totalSKUs} SKUs
-                  </span>
+            <div className="flex flex-col">
+              <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5 hidden sm:block">
+                {activeTab === 'orchestrator' ? 'BOQ Engine Mode:' : (activeTab === 'catalog' || activeTab === 'artifacts') ? 'Catalog Scope:' : activeTab === 'scraper' ? 'Scrape Target:' : 'Portfolio Scope:'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsChassisOpen(!isChassisOpen)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border shadow-2xs hover:shadow-xs transition-all duration-200 cursor-pointer ${
+                  activeTab === 'orchestrator'
+                    ? 'bg-gradient-to-r from-emerald-50/90 via-white to-blue-50/50 border-emerald-200/90 text-slate-800 hover:border-emerald-400'
+                    : 'bg-gradient-to-r from-blue-50/80 via-white to-slate-50 border-blue-200/90 text-slate-800 hover:border-blue-400'
+                }`}
+                title={activeTab === 'orchestrator' ? 'BOQ Engine auto-detects chassis per line item in quotes. Click to view or filter specific product catalog.' : 'Select product catalog context.'}
+              >
+                {activeTab === 'orchestrator' ? (
+                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0 animate-pulse" />
                 ) : (
-                  <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    {catalogs.length} Models
-                  </span>
+                  <Server className="w-4 h-4 text-blue-600 shrink-0" />
                 )}
-              </div>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isChassisOpen ? 'rotate-180 text-blue-600' : ''}`} />
-              {isCatalogLoading && (
-                <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0 ml-0.5" />
-              )}
-            </button>
+                <div className="flex items-center gap-1.5 text-xs font-bold">
+                  {activeTab === 'orchestrator' ? (
+                    <span className="text-slate-900 truncate max-w-[200px]">
+                      Multi-Model Auto-Detect
+                    </span>
+                  ) : (
+                    <span className="text-slate-900 truncate max-w-[190px]">
+                      {selectedChassis && currentCatalog ? currentCatalog.chassis : 'All HPE Products (Portfolio)'}
+                    </span>
+                  )}
+                  {activeTab === 'orchestrator' ? (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      All Models
+                    </span>
+                  ) : selectedChassis && currentCatalog ? (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200">
+                      {currentCatalog.totalSKUs} SKUs
+                    </span>
+                  ) : (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      {catalogs.length} Models
+                    </span>
+                  )}
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isChassisOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                {isCatalogLoading && (
+                  <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0 ml-0.5" />
+                )}
+              </button>
+            </div>
 
             {/* Custom Popover Dropdown Menu */}
             {isChassisOpen && (
-              <div className="absolute left-0 mt-2 w-80 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150 p-2">
+              <div className="absolute left-0 mt-2 w-84 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-dropdown-reveal p-2.5">
+                {/* Context Helper Callout */}
+                <div className="px-2 py-1.5 mb-2 bg-slate-50 border border-slate-200/80 rounded-xl text-[10.5px] text-slate-500 leading-snug">
+                  <strong className="text-slate-700">Multi-Vendor Compatibility:</strong> BOQ quotes auto-detect their chassis. Selecting here filters Master Catalog and Artifacts.
+                </div>
+
                 {/* Clear / All Products Option */}
                 <button
                   type="button"
@@ -351,7 +380,7 @@ export default function Header({
 
           {/* Instant Search Popover Overlay */}
           {isSearchOpen && searchQuery.trim().length > 0 && (
-            <div className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150 p-3 space-y-3">
+            <div className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-dropdown-reveal p-3 space-y-3">
               
               {/* Popover Header with Local Index Confidence */}
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -454,9 +483,9 @@ export default function Header({
             onClick={(e) => {
               if (e.target === e.currentTarget) setIsComplexModalOpen(false);
             }}
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-modal-backdrop"
           >
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full p-6 space-y-5 relative">
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full p-6 space-y-5 relative animate-modal-content">
               
               <div className="flex items-start justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">

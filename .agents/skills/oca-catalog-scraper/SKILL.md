@@ -42,40 +42,47 @@ sequenceDiagram
 
 ---
 
-## 3. Current State & Certified Products (as of 2026-08-06)
+## 3. Current State & Certified Products (as of 2026-08-14)
 
 | Product | Family | Output Prefix | SKUs | Audit | QuickSpecs PDF |
 |---------|--------|---------------|------|-------|----------------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 951 | ✅ 100% | ✅ Verified (2.06 MB) |
-| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 92 | ✅ 100% | ✅ Verified (2.06 MB) |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 1,253 | ✅ 100% | ✅ Verified (2.06 MB) |
-| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 85 | ✅ 100% | ✅ Verified (2.06 MB) |
-| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 46 | ✅ 100% | ⚠️ Advisory |
-| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 141 | ✅ 100% | ✅ Verified (0.89 MB) |
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 277 HW / 512 Svc | ✅ 100% PASS | ✅ Verified (2.06 MB) |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (2.06 MB) |
+| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (2.06 MB) |
+| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | ✅ 100% PASS | ⚠️ Advisory |
+| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (0.89 MB) |
+| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | ✅ 100% PASS | ⏳ Configured in map |
 
-**Total Portfolio Intelligence**: **2,568 unique SKUs** across 6 product lines in 5 families.
+**Total Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families.
 
 ---
 
 ## 4. Key Production Components & Scripts
 
-- **CDP Debugging Module**: [`scripts/lib/cdp.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/lib/cdp.js) — WebSocket remote debugging connection over port 9222 with auto-retry and backoff.
-- **Server/Compute Scraper**: [`scripts/scrape_oca_solution.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/scrape_oca_solution.js) — Solution-first 4-level root traversal scraper (`npm run scrape`).
-- **Storage Solution Wizard Scraper**: [`scripts/scrape_oca_storage_solution.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/scrape_oca_storage_solution.js) — Wizard sub-tab scraper for Alletra/Nimble/StoreOnce (`npm run scrape:storage`).
-- **Catalog Build Engine**: [`scripts/build_catalog.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/build_catalog.js) — Compiles raw JSON into structured catalog JSON + TSVs + Dual Safety Net `*_Catalog_Rules.json`.
-- **Excel Workbook Generator**: [`scripts/generate_xlsx.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/generate_xlsx.js) — Multi-sheet Excel generator using `xlsx-js-style` with color-coded diff formatting.
-- **QuickSpecs PDF Downloader**: [`scripts/download_quickspecs_pdf.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/download_quickspecs_pdf.js) — Downloads PDF with MD5 fingerprint caching.
-- **7-Check Tally Audit**: [`scripts/verify_excel_tally.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/verify_excel_tally.js) — Post-flight audit engine.
-- **Master Registry Auto-Synchronizer**: [`scripts/lib/sync_registry.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/lib/sync_registry.js) — Updates `outputs/SCRAPED_CATALOGS.md` (`npm run registry:sync`).
+- **CDP Debugging Module**: [`scripts/lib/cdp.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/cdp.js) — WebSocket remote debugging connection over port 9222 with auto-retry and backoff.
+- **Server/Compute Scraper**: [`scripts/scrape_oca_solution.js`](file:///home/vinodh/vendorNotebookSolution/scripts/scrape_oca_solution.js) — Solution-first 4-level root traversal scraper (`npm run scrape`).
+- **Storage Solution Wizard Scraper**: [`scripts/scrape_oca_storage_solution.js`](file:///home/vinodh/vendorNotebookSolution/scripts/scrape_oca_storage_solution.js) — Wizard sub-tab scraper for Alletra/Nimble/StoreOnce (`npm run scrape:storage`).
+- **Catalog Build Engine**: [`scripts/build_catalog.js`](file:///home/vinodh/vendorNotebookSolution/scripts/build_catalog.js) — Compiles raw JSON into structured catalog JSON + TSVs + Dual Safety Net `*_Catalog_Rules.json` with `chassisVariantMatrix`.
+- **Excel Workbook Generator**: [`scripts/generate_xlsx.js`](file:///home/vinodh/vendorNotebookSolution/scripts/generate_xlsx.js) — 19-sheet Excel generator using `xlsx-js-style` with color-coded diff formatting.
+- **QuickSpecs PDF Downloader**: [`scripts/download_quickspecs_pdf.js`](file:///home/vinodh/vendorNotebookSolution/scripts/download_quickspecs_pdf.js) — Downloads PDF with MD5 fingerprint caching.
+- **7-Check Tally Audit**: [`scripts/verify_excel_tally.js`](file:///home/vinodh/vendorNotebookSolution/scripts/verify_excel_tally.js) — Post-flight audit engine.
+- **Master Registry Auto-Synchronizer**: [`scripts/sync_all_registered_catalogs.js`](file:///home/vinodh/vendorNotebookSolution/scripts/sync_all_registered_catalogs.js) — Injects base chassis variants across all registered catalogs.
 
 ---
 
-## 5. Critical Distinction: QuickSpecs Link vs Menu Link
+## 5. Portal Scraping Channels & Strict In-Page Navigation Protocol
 
-| Element | Selector | Action | Purpose |
-|---------|----------|--------|---------|
-| Chain link icon 🔗 | `a.qs-link-a`, `i.icon-chain2.qs-link-icon` | **DO NOT CLICK for navigation** | Downloads/opens QuickSpecs PDF |
-| Menu tab label | `.menu_label`, `a[href*="extended_overview_menu"]` | **CLICK FOR CATALOG SCRAPING** | Opens component Menu tab in OCA |
+### 🌐 3 Distinct Scraping Channels
+1. **Channel 1: Solution Root & Chassis Search Page**:
+   - Contains Base Chassis CTO Variants (`P73282-B21` to `P73287-B21`) and their base list prices ($5,584 - $7,450).
+2. **Channel 2: Product Node Menu / Extended Overview Menu**:
+   - Contains internal hardware subcategories (Processors, Memory, Power, Drive cages, Fans) and Aspect Rules.
+3. **Channel 3: Solution Services / Configured BOM Tab**:
+   - Contains Pointnext, Tech Care tiers, and startup services.
+
+### 🔒 Strict Navigation Protocol
+- **NEVER use browser `back()` button or raw direct URLs**: Direct URL navigation breaks authenticated WebLogic/OAuth SSO sessions.
+- **ALL navigation MUST execute via in-page DOM element clicks and jQuery tree selectors** via CDP within the active authenticated session.
 
 ---
 
@@ -91,6 +98,6 @@ npm run scrape:storage
 # Rebuild all scraped catalogs & regenerate workbooks
 npm run rebuild
 
-# Sync portfolio registry
-npm run registry:sync
+# Sync portfolio registry & base chassis variants
+node scripts/sync_all_registered_catalogs.js
 ```

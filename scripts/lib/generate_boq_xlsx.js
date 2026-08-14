@@ -7,11 +7,21 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
   const wb = XLSX.utils.book_new();
   const tier = rankTier || 1;
   const rankedSolution = evalResults.conflictGraph?.rankedSolutions?.find(s => s.rank === tier) || null;
-  const allSkus = rankedSolution?.skuList || [];
+  let allSkus = rankedSolution?.skuList || rankedSolution?.skuPartsList || [];
+
+  if (allSkus.length === 0 && evalResults.items) {
+    const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
+      ...f,
+      sku: f.sku || f.key,
+      isFixInjected: true,
+      category: 'Mandatory Aspect Fix'
+    }));
+    allSkus = [...evalResults.items.map(it => ({ ...it, isFixInjected: false })), ...fixes];
+  }
 
   // Data mapping
-  const baseSkus = allSkus.filter(s => !s.isFixInjected && s.category !== 'Strategy Add-on');
-  const missingDeps = allSkus.filter(s => s.isFixInjected);
+  const baseSkus = allSkus.filter(s => !s.isFixInjected && s.category !== 'Strategy Add-on' && s.category !== 'Aspect Rule Fix' && s.category !== 'Mandatory Aspect Fix');
+  const missingDeps = allSkus.filter(s => s.isFixInjected || s.category === 'Aspect Rule Fix' || s.category === 'Mandatory Aspect Fix');
   const strategyOptions = allSkus.filter(s => s.category === 'Strategy Add-on');
 
   // Styles

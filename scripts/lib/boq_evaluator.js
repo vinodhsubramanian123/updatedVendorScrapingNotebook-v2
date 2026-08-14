@@ -16,42 +16,12 @@ const { emitProgress } = require('./progress');
 
 const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('./boq_preprocessor');
 
+const { DEFAULT_MANDATORY_SKUS, getMandatorySkusForChassis } = require('./catalog_rules');
+
 /**
  * High TDP threshold requiring High-Performance Fan Kits
  */
 const HIGH_TDP_THRESHOLD_WATTS = 240;
-
-/**
- * Standard default SKU mappings for mandatory physical dependencies
- */
-const DEFAULT_MANDATORY_SKUS = {
-  HIGH_PERF_FAN_KIT: { sku: 'P48820-B21', name: 'HPE ProLiant High Performance Fan Kit' },
-  HIGH_PERF_HEATSINK: { sku: 'P74792-B21', name: 'HPE ProLiant Performance Heat Sink Kit' },
-  NO_DRIVE_FIO_KIT: { sku: '873763-B21', name: 'HPE ProLiant Compute No Drive Configuration FIO Kit' },
-  DC_LUG_KIT: { sku: 'P36877-B21', name: 'HPE 1600W -48VDC Power Cable Lug Kit' },
-  SMART_STORAGE_BATTERY: { sku: 'P01366-B21', name: 'HPE 96W Smart Storage Battery' },
-  CONTROLLER_CABLE_KIT: { sku: 'P48918-B21', name: 'HPE Storage Controller Cable Kit' },
-  TRI_MODE_BOX12_CABLE: { sku: 'P76453-B21', name: 'HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit' }
-};
-
-/**
- * Dynamically resolve mandatory SKUs for a given chassis or fallback to default mappings
- * @param {object} chassisInfo 
- * @returns {object} Mandatory SKUs mapping
- */
-function getMandatorySkusForChassis(chassisInfo) {
-  const skus = { ...DEFAULT_MANDATORY_SKUS };
-  const family = (chassisInfo?.family || '').toLowerCase();
-  const model = (chassisInfo?.model || '').toLowerCase();
-
-  if (family.includes('alletra')) {
-    skus.NO_DRIVE_FIO_KIT = { sku: 'R0Q21A', name: 'HPE Alletra Storage Drive Blank Kit' };
-  } else if (model.includes('dl360')) {
-    skus.HIGH_PERF_FAN_KIT = { sku: 'P48821-B21', name: 'HPE ProLiant DL360 High Performance Fan Kit' };
-    skus.HIGH_PERF_HEATSINK = { sku: 'P48822-B21', name: 'HPE ProLiant DL360 Performance Heat Sink Kit' };
-  }
-  return skus;
-}
 
 /**
  * Parse raw BOQ input (CSV, TSV, Multi-sheet Excel workbook, or text) and extract consolidated items.
@@ -61,6 +31,7 @@ function getMandatorySkusForChassis(chassisInfo) {
  * @returns {Array<object>} Consolidated items array
  */
 function parseAndConsolidateBOQ(rawInput, filePath = '') {
+  const { parseSkuLines } = require('./boq_parser');
   let lines = [];
 
   if (filePath && (filePath.endsWith('.xlsx') || filePath.endsWith('.xls'))) {
@@ -76,68 +47,7 @@ function parseAndConsolidateBOQ(rawInput, filePath = '') {
   }
 
   lines = lines.filter(l => l.trim().length > 0);
-  const itemMap = new Map();
-  let currentMultiplier = 1;
-
-  for (const line of lines) {
-    // Skip headers
-    if (line.toLowerCase().includes('product #') && line.toLowerCase().includes('description')) continue;
-
-    // Detect chassis/node multiplier line (e.g. "2x HPE DL380 Gen12 Server Nodes" or "Multiplier: 2")
-    const multMatch = line.match(/^(\d+)\s*x\b/i) || line.match(/\b(\d+)\s*x\s*(?:node|server|chassis|system|unit|quote)\b/i) || line.match(/^(?:multiplier|qty|quantity)[:=\s]*(\d+)\b/i);
-    const lineSku = (line.match(HPE_SKU_EXTRACT_REGEX) || [])[1];
-    if (multMatch && (!lineSku || !isValidHpeSKU(lineSku))) {
-      currentMultiplier = parseInt(multMatch[1], 10) || 1;
-    }
-
-    // Normalize separators (/, |, ;, +, -- double dash) without removing single SKU hyphens
-    const normalizedLine = line.replace(/[\/\|;\+]|--/g, ' ');
-
-    // Extract all valid SKU matches on the line
-    const rawMatches = normalizedLine.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [];
-    const validMatches = rawMatches.map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
-    if (validMatches.length === 0) continue;
-
-    for (const cleanSku of validMatches) {
-      // Parse line item quantity (default to 1)
-      let lineQty = 1;
-      const explicitQty = normalizedLine.match(/\b(?:qty|quantity|count)[:=\s]*(\d+)\b/i);
-      if (explicitQty) {
-        lineQty = parseInt(explicitQty[1], 10) || 1;
-      } else {
-        const leadingQty = normalizedLine.match(/^(\d+)[\s,\t]+/);
-        const trailingQty = normalizedLine.match(/[\s,\t]+(\d+)\s*$/);
-        if (leadingQty && validMatches.length === 1) {
-          lineQty = parseInt(leadingQty[1], 10) || 1;
-        } else if (trailingQty && validMatches.length === 1) {
-          lineQty = parseInt(trailingQty[1], 10) || 1;
-        }
-      }
-
-      const totalQty = lineQty * currentMultiplier;
-
-      // Clean description
-      let description = normalizedLine
-        .replace(new RegExp(cleanSku.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '')
-        .replace(/^[\d\s,\t\-"'\:\;]+/, '')
-        .replace(/[\d\s,\t\-"'\:\;]+$/, '')
-        .trim();
-      if (!description) description = cleanSku;
-
-      if (itemMap.has(cleanSku)) {
-        const existing = itemMap.get(cleanSku);
-        existing.quantity += totalQty;
-      } else {
-        itemMap.set(cleanSku, {
-          sku: cleanSku,
-          description: description,
-          quantity: totalQty
-        });
-      }
-    }
-  }
-
-  return Array.from(itemMap.values());
+  return parseSkuLines(lines).items;
 }
 
 /**
@@ -252,30 +162,64 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = DEFAULT_M
  */
 function evalNetworkingOcp(items, catalogData = null) {
   let networkPortsCount = 0;
+  let ocpAdapterCount = 0;
   let hasOcpAdapter = false;
+  let maxOcpSlots = 2; // Standard Gen11/Gen12 supports up to 2 OCP 3.0 slots (Slot 1 + Slot 2)
 
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Network Adapter' || desc.includes('ocp') || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('bcm5719') || desc.includes('bcm57504')) {
-      hasOcpAdapter = true;
-      networkPortsCount += (4 * it.quantity);
+  if (catalogData && catalogData.entries) {
+    const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
+    if (ocpEntry && typeof ocpEntry.maxQty === 'number' && ocpEntry.maxQty > 0) {
+      maxOcpSlots = ocpEntry.maxQty;
     }
   }
 
-  return { networkPortsCount, hasOcpAdapter };
+  for (const it of items) {
+    const desc = it.description.toLowerCase();
+    const sku = cleanBaseSKU(it.sku);
+    
+    let role = classifyComponentRole('', desc);
+    if (catalogData && catalogData.entries) {
+      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === sku));
+      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    }
+
+    if (role === 'Network Adapter' || desc.includes('ocp') || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('bcm5719') || desc.includes('bcm57504') || desc.includes('e810') || desc.includes('cx6')) {
+      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('bcm57504') || desc.includes('bcm5719');
+      if (isOcp) {
+        hasOcpAdapter = true;
+        ocpAdapterCount += it.quantity;
+      }
+
+      // Parse realistic port multiplier from description
+      let portsPerCard = 2;
+      const explicitPortMatch = desc.match(/(\d+)\s*-?\s*port/i) || desc.match(/\b(1|2|4|8)\s*p\b/i);
+      const quadMatch = desc.match(/\b(quad|4x|4-port)\b/i);
+      const dualMatch = desc.match(/\b(dual|2x|2-port)\b/i);
+      const singleMatch = desc.match(/\b(single|1x|1-port)\b/i);
+
+      if (explicitPortMatch) {
+        portsPerCard = parseInt(explicitPortMatch[1], 10) || 2;
+      } else if (quadMatch) {
+        portsPerCard = 4;
+      } else if (dualMatch) {
+        portsPerCard = 2;
+      } else if (singleMatch) {
+        portsPerCard = 1;
+      }
+
+      networkPortsCount += (portsPerCard * it.quantity);
+    }
+  }
+
+  const isExceedingOcpSlots = ocpAdapterCount > maxOcpSlots;
+
+  return { networkPortsCount, hasOcpAdapter, ocpAdapterCount, maxOcpSlots, isExceedingOcpSlots };
 }
 
 /**
  * Aspect 5: PCIe Slot Capacity & Riser Expansion Card Math Pre-Check
  */
-function evalPcieRiserSlots(items) {
+function evalPcieRiserSlots(items, catalogData = null) {
   let requiredPcieCards = 0;
   let primaryRiserCount = 0;
   let secondaryRiserCount = 0;
@@ -283,18 +227,25 @@ function evalPcieRiserSlots(items) {
 
   for (const it of items) {
     const desc = it.description.toLowerCase();
+    let role = classifyComponentRole('', desc);
+    if (catalogData && catalogData.entries) {
+      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
+      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    }
 
     // Count PCIe Expansion Cards (GPUs, NICs, HBAs, Controllers, Accelerator Cards)
-    if (desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
-      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('lom') && !desc.includes('cable') && !desc.includes('cage')) {
+    if (role === 'GPU / Accelerator' || role === 'Network Adapter' || role === 'Storage Controller' || desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
+      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('lom') && !desc.includes('cable') && !desc.includes('cage') && !desc.includes('battery')) {
         requiredPcieCards += it.quantity;
       }
     }
 
     // Count Risers
-    if (desc.includes('primary riser') || desc.includes('main riser')) primaryRiserCount += it.quantity;
-    if (desc.includes('secondary riser')) secondaryRiserCount += it.quantity;
-    if (desc.includes('tertiary riser')) tertiaryRiserCount += it.quantity;
+    if (role === 'PCIe Riser' || desc.includes('riser')) {
+      if (desc.includes('primary riser') || desc.includes('main riser')) primaryRiserCount += it.quantity;
+      if (desc.includes('secondary riser')) secondaryRiserCount += it.quantity;
+      if (desc.includes('tertiary riser')) tertiaryRiserCount += it.quantity;
+    }
   }
 
   // Base Chassis provides 2 standard slots; Primary adds 3; Secondary adds 3; Tertiary adds 2.
@@ -378,7 +329,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   
   emitProgress(5, 10, 'Networking & PCIe Constraints', 'in_progress', `Analyzing OCP NICs and PCIe Riser slot math.`);
   const network = evalNetworkingOcp(items, catalogData);
-  const pcie    = evalPcieRiserSlots(items);
+  const pcie    = evalPcieRiserSlots(items, catalogData);
   
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
@@ -388,6 +339,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const warnings = [];
   const missingDependencies = [];
   const mathDeductions = [];
+
+  // Rule: OCP Slot Capacity Math
+  if (network.isExceedingOcpSlots) {
+    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${network.maxOcpSlots} OCP slot(s).`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
 
   // Rule: PCIe Slot Capacity vs Riser Math
   if (pcie.requiredPcieCards > pcie.totalSlotsAvailable) {
@@ -544,8 +502,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       name: 'Networking & OCP Interconnect',
       iconType: 'Zap',
       defaultRule: 'OCP 3.0 network adapter slots and port allocation rules',
-      status: 'PASS',
-      detail: `Verified OCP adapter status (${network.hasOcpAdapter ? 'Present' : 'Standard LOM/PCIe NICs'}).`
+      status: network.isExceedingOcpSlots ? 'FAIL' : 'PASS',
+      detail: network.isExceedingOcpSlots
+        ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${network.maxOcpSlots} slots.`
+        : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
     },
     {
       id: 6,
@@ -706,8 +666,6 @@ module.exports = {
   evalSupportManufacturing,
   evaluateBOQMultiAspect,
   parseAndConsolidateBOQ,
-  preprocessAndGroupBOQ,
-  savePreprocessingRuleFeedback,
   evaluatePhysicalMath,
   formatNotebookQueryPayload,
   getMandatorySkusForChassis

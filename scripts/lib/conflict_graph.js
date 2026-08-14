@@ -1,5 +1,5 @@
 'use strict';
-const { getMandatorySkusForChassis } = require('./boq_evaluator');
+const { getMandatorySkusForChassis, loadCatalogRules } = require('./catalog_rules');
 /**
  * scripts/lib/conflict_graph.js — Dependency Conflict Graph & Workload DNA Resolution Engine
  *
@@ -16,21 +16,36 @@ const { getMandatorySkusForChassis } = require('./boq_evaluator');
  */
 
 const path = require('path');
-const { loadCatalogRules } = require('./catalog_rules');
 const { cleanBaseSKU } = require('./sku');
 const { classifyComponentRole } = require('./product_meta');
 const fs = require('fs');
 
 function getChassisMap() {
   const mapPath = path.join(__dirname, '..', 'config', 'chassis_map.json');
+  const aggregated = {};
   if (fs.existsSync(mapPath)) {
     try {
-      return JSON.parse(fs.readFileSync(mapPath, 'utf8')).chassis_base_skus || {};
+      const parsed = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+      if (parsed.chassis_base_skus) {
+        Object.assign(aggregated, parsed.chassis_base_skus);
+      }
+      if (parsed.chassis_base_skus_by_family_gen) {
+        for (const famKey of Object.values(parsed.chassis_base_skus_by_family_gen)) {
+          if (famKey && famKey.skus) {
+            for (const [sku, details] of Object.entries(famKey.skus)) {
+              if (!aggregated[sku]) {
+                aggregated[sku] = details;
+              }
+            }
+          }
+        }
+      }
     } catch (e) {
-      return {};
+      const _logger = require('./pipeline_logger');
+      _logger.warn('CONFLICT_GRAPH', 'Failed to load chassis_map.json', e);
     }
   }
-  return {};
+  return aggregated;
 }
 
 /**
@@ -80,7 +95,8 @@ function extractWorkloadDna(items = []) {
   let totalMemoryGb = 0;
   let memoryCount = 0;
   let hasGpu = false;
-  let gpuModel = '';
+  let gpuModels = [];
+  let totalGpuCount = 0;
   let driveCount = 0;
   let storageType = 'NONE';
   let storageWorkload = 'READ_INTENSIVE'; // Default RI
@@ -108,9 +124,12 @@ function extractWorkloadDna(items = []) {
     }
 
     // GPU Profile
-    if (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('rtx') || desc.includes('h200') || desc.includes('l40s') || desc.includes('l4')) {
+    if (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('rtx') || desc.includes('h200') || desc.includes('l40s') || desc.includes('l4') || desc.includes('accelerator') || desc.includes('h100') || desc.includes('a100')) {
       hasGpu = true;
-      gpuModel = it.description;
+      if (!gpuModels.includes(it.description)) {
+        gpuModels.push(it.description);
+      }
+      totalGpuCount += qty;
     }
 
     // Storage I/O Profile
@@ -130,6 +149,7 @@ function extractWorkloadDna(items = []) {
   });
 
   const gbPerCore = totalCores > 0 ? parseFloat((totalMemoryGb / totalCores).toFixed(1)) : 0;
+  const gpuModelStr = gpuModels.join(', ');
 
   // Classify Primary Workload DNA
   let primaryWorkload = 'BALANCED_ENTERPRISE';
@@ -137,7 +157,7 @@ function extractWorkloadDna(items = []) {
 
   if (hasGpu) {
     primaryWorkload = 'VDI_AI_GRAPHICS';
-    workloadDescription = `VDI / AI Inference & Graphics Acceleration (${gpuModel || 'NVIDIA GPU'})`;
+    workloadDescription = `VDI / AI Inference & Graphics Acceleration (${totalGpuCount}x ${gpuModelStr || 'NVIDIA GPU'})`;
   } else if (gbPerCore >= 16 || totalMemoryGb >= 768) {
     primaryWorkload = 'DATABASE_IN_MEMORY';
     workloadDescription = `In-Memory Database & Analytics (High Memory Footprint: ${totalMemoryGb}GB RAM, ${gbPerCore}GB/Core)`;
@@ -157,7 +177,9 @@ function extractWorkloadDna(items = []) {
     totalMemoryGb,
     gbPerCore,
     hasGpu,
-    gpuModel,
+    gpuModel: gpuModelStr,
+    gpuModels,
+    totalGpuCount,
     driveCount,
     storageType,
     storageWorkload
@@ -181,7 +203,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     try {
       priceMap = JSON.parse(fs.readFileSync(path.join(targetDir, 'price_history.json'), 'utf8'));
     } catch (err) {
-      console.error('Failed to parse price_history.json:', err);
+      const _logger = require('./pipeline_logger');
+      _logger.warn('CONFLICT_GRAPH', 'Failed to parse price_history.json', err);
     }
   }
 
@@ -243,7 +266,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     }
   } catch (err) {
-    console.error('Failed to parse strategy_addons.json:', err);
+    const _logger = require('./pipeline_logger');
+    _logger.warn('CONFLICT_GRAPH', 'Failed to parse strategy_addons.json', err);
   }
 
   const modelKey = (chassisInfo.model || '').toLowerCase();
@@ -266,14 +290,17 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   });
 
   const rank2Addons = mapAddons(addons.rank2 || []);
+  const rank2AddonCost = rank2Addons.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
   const rank2Parts = [...rank1Parts, ...rank2Addons];
   const rank2Cost = rank2Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
 
   const rank3Addons = mapAddons(addons.rank3 || []);
+  const rank3AddonCost = rank3Addons.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
   const rank3Parts = [...rank1Parts, ...rank3Addons];
   const rank3Cost = rank3Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
 
   const rank4Addons = mapAddons(addons.rank4 || []);
+  const rank4AddonCost = rank4Addons.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
   const rank4Parts = [...rank1Parts, ...rank4Addons];
   const rank4Cost = rank4Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
 
@@ -317,7 +344,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       budgetBreakdown: {
         baseBomCost: baseCost,
         fixCost: fixCost,
-        strategyAddonCost: 250,
+        strategyAddonCost: rank2AddonCost || 250,
         totalBudgetUsd: rank2Cost
       },
       workloadDnaMatch: 'CTO Factory Default Standardized Configuration',
@@ -326,7 +353,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       tradeoffMetrics: {
         intentAlignment: `${Math.max(80, 95 - fixes.length * 3)}% (Standardized)`,
         skuModifications: `${fixes.length + rank2Addons.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + 250).toLocaleString()}`,
+        costDeltaUsd: `+$${(fixCost + (rank2AddonCost || 250)).toLocaleString()}`,
         capacityExpansion: 'Standard Factory Margins'
       },
       ragSecondOpinion: '⏳ Pending QuickSpecs Verification...',
@@ -340,7 +367,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       budgetBreakdown: {
         baseBomCost: baseCost,
         fixCost: fixCost,
-        strategyAddonCost: 850,
+        strategyAddonCost: rank3AddonCost || 850,
         totalBudgetUsd: rank3Cost
       },
       workloadDnaMatch: `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
@@ -349,7 +376,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       tradeoffMetrics: {
         intentAlignment: `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`,
         skuModifications: `${fixes.length + rank3Addons.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + 850).toLocaleString()}`,
+        costDeltaUsd: `+$${(fixCost + (rank3AddonCost || 850)).toLocaleString()}`,
         capacityExpansion: 'High Drive Controller Throughput'
       },
       ragSecondOpinion: '⏳ Pending QuickSpecs Verification...',
@@ -363,7 +390,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       budgetBreakdown: {
         baseBomCost: baseCost,
         fixCost: fixCost,
-        strategyAddonCost: 1850,
+        strategyAddonCost: rank4AddonCost || 1850,
         totalBudgetUsd: rank4Cost
       },
       workloadDnaMatch: 'Max Headroom (Full PCIe Riser & High-Perf Thermal Expansion)',
@@ -372,7 +399,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       tradeoffMetrics: {
         intentAlignment: `${Math.max(70, 85 - fixes.length * 3)}% (Scalability Focused)`,
         skuModifications: `${fixes.length + rank4Addons.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + 1850).toLocaleString()}`,
+        costDeltaUsd: `+$${(fixCost + (rank4AddonCost || 1850)).toLocaleString()}`,
         capacityExpansion: '100% Slot & Thermal Headroom'
       },
       ragSecondOpinion: '⏳ Pending QuickSpecs Verification...',
@@ -482,6 +509,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // ───────────────────────────────────────────────────────────────────────────
   function loadLearnedKnowledgeDeltas() {
     const deltas = [];
+    const seenDeltaKeys = new Set();
     const pathsToSearch = [
       path.join(__dirname, '..', '..', 'outputs', 'history', 'master_knowledge_registry.json'),
       path.join(__dirname, '..', '..', 'outputs', 'history', 'catalog_deltas.json')
@@ -495,8 +523,17 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
         try {
           const content = JSON.parse(fs.readFileSync(p, 'utf-8'));
           const list = Array.isArray(content) ? content : (content.deltas || []);
-          list.forEach(d => deltas.push(d));
-        } catch (err) { console.error('Failed to parse historical catalog JSON:', err); }
+          list.forEach(d => {
+            const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
+            if (!seenDeltaKeys.has(key)) {
+              seenDeltaKeys.add(key);
+              deltas.push(d);
+            }
+          });
+        } catch (err) {
+          const _logger = require('./pipeline_logger');
+          _logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
+        }
       }
     });
     return deltas;

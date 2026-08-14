@@ -162,10 +162,11 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
     const { processCatalogDiff } = require('./lib/diff_catalog');
     processCatalogDiff(catalogJSON, historyDir);
     const { safeWriteJsonAtomic } = require('./lib/fs_compat');
-    safeWriteJsonAtomic(jsonOutputPath, catalogJSON);
+    safeWriteJsonAtomic(jsonOutputPath, catalogJSON, { validateSchema: true });
   } catch (err) {
     console.warn(`  ⚠️ Catalog diff calculation skipped/failed for ${chassisLabel}: ${err.message}`);
-    fs.writeFileSync(jsonOutputPath, JSON.stringify(catalogJSON, null, 2), 'utf-8');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    safeWriteJsonAtomic(jsonOutputPath, catalogJSON);
   }
 
   // Generate TSV intermediate scraps & rebuild Excel workbook

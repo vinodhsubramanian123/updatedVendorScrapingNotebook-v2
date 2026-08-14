@@ -1,0 +1,130 @@
+{
+  "description": "Family & Generation Specific Rules (ProLiant Gen12 DDR5 memory channels, Alletra cache battery, Synergy fabric).",
+  "totalRules": 4,
+  "byFamily": {
+    "DL380": [
+      {
+        "deltaId": "DELTA-1786705957846",
+        "timestamp": "2026-08-14T11:12:37.846Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 16): P69728-B21, 16, HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P69728-B21",
+        "requiredDependencySku": "P69728-B21",
+        "ruleUpdate": "If P69728-B21 is present, P69728-B21 is mandatory.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "FAMILY_GEN"
+      },
+      {
+        "deltaId": "DELTA-1786705957977",
+        "timestamp": "2026-08-14T11:12:37.977Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "Vendor Partner Portal auto-inserted SKU P03178-B21 (Qty 2): P03178-B21, 2, HPE 1000W Flex Slot Titanium Hot Plug Power Supply",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P03178-B21",
+        "requiredDependencySku": "P03178-B21",
+        "ruleUpdate": "If P03178-B21 is present, P03178-B21 is mandatory.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "FAMILY_GEN"
+      },
+      {
+        "deltaId": "DELTA-1786707084575",
+        "timestamp": "2026-08-14T11:31:24.575Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 16): P69728-B21, 16, HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P69728-B21",
+        "requiredDependencySku": "P69728-B21",
+        "ruleUpdate": "If P69728-B21 is present, P69728-B21 is mandatory.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "FAMILY_GEN"
+      },
+      {
+        "deltaId": "DELTA-1786707084682",
+        "timestamp": "2026-08-14T11:31:24.682Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "Vendor Partner Portal auto-inserted SKU P03178-B21 (Qty 2): P03178-B21, 2, HPE 1000W Flex Slot Titanium Hot Plug Power Supply",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P03178-B21",
+        "requiredDependencySku": "P03178-B21",
+        "ruleUpdate": "If P03178-B21 is present, P03178-B21 is mandatory.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "FAMILY_GEN"
+      }
+    ]
+  },
+  "rules": [
+    {
+      "deltaId": "DELTA-1786705957846",
+      "timestamp": "2026-08-14T11:12:37.846Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 16): P69728-B21, 16, HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P69728-B21",
+      "requiredDependencySku": "P69728-B21",
+      "ruleUpdate": "If P69728-B21 is present, P69728-B21 is mandatory.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1786705957977",
+      "timestamp": "2026-08-14T11:12:37.977Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "Vendor Partner Portal auto-inserted SKU P03178-B21 (Qty 2): P03178-B21, 2, HPE 1000W Flex Slot Titanium Hot Plug Power Supply",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P03178-B21",
+      "requiredDependencySku": "P03178-B21",
+      "ruleUpdate": "If P03178-B21 is present, P03178-B21 is mandatory.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1786707084575",
+      "timestamp": "2026-08-14T11:31:24.575Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 16): P69728-B21, 16, HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P69728-B21",
+      "requiredDependencySku": "P69728-B21",
+      "ruleUpdate": "If P69728-B21 is present, P69728-B21 is mandatory.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1786707084682",
+      "timestamp": "2026-08-14T11:31:24.682Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "Vendor Partner Portal auto-inserted SKU P03178-B21 (Qty 2): P03178-B21, 2, HPE 1000W Flex Slot Titanium Hot Plug Power Supply",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P03178-B21",
+      "requiredDependencySku": "P03178-B21",
+      "ruleUpdate": "If P03178-B21 is present, P03178-B21 is mandatory.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    }
+  ]
+}

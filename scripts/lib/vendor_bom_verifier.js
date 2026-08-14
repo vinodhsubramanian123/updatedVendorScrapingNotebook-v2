@@ -153,7 +153,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
     });
   }
 
-  return {
+  const auditReport = {
     chassisModel: path.basename(chassisDir),
     proposedRank: proposedRankSolution?.rank || 1,
     totalVendorSkus: vendorItems.length,
@@ -163,6 +163,16 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
     discrepancies,
     verificationTimestamp: new Date().toISOString()
   };
+
+  try {
+    const { recordReconciliationTelemetry } = require('./system/telemetry');
+    recordReconciliationTelemetry(auditReport);
+  } catch (err) {
+    const _logger = require('./pipeline_logger');
+    _logger.warn('VENDOR_BOM', 'Telemetry recording advisory', err);
+  }
+
+  return auditReport;
 }
 
 module.exports = {

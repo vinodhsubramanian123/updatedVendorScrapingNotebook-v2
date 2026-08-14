@@ -94,21 +94,24 @@ function getSkuAuditHistory(targetSku, chassisDir) {
 
   // 4. Scan catalog snapshots
   const snapshots = fs.readdirSync(historyDir)
-    .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
+    .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && f !== 'catalog_deltas.json')
     .sort();
 
   for (const file of snapshots) {
     const snapshotPath = path.join(historyDir, file);
     try {
       const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+      if (!content || typeof content !== 'object') continue;
       const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
       const checksum = calculateChecksum(content);
 
       let foundInSnapshot = false;
       let skuDetails = null;
 
-      for (const entry of (content.entries || [])) {
-        for (const s of (entry.skus || [])) {
+      const entriesList = Array.isArray(content.entries) ? content.entries : [];
+      for (const entry of entriesList) {
+        const skusList = Array.isArray(entry.skus) ? entry.skus : [];
+        for (const s of skusList) {
           const skuCode = s.sku || s['Product #'] || s['SKU'];
           if (skuCode === cleanSku) {
             foundInSnapshot = true;

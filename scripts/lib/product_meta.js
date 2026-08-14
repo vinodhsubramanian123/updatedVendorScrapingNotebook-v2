@@ -87,11 +87,15 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   if (cat.includes('processor') || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) return 'Processor';
   if (cat.includes('memory') || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) return 'Memory';
   if (cat.includes('power') || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('-48vdc')) return 'Power Supply';
-  if (cat.includes('storage') || desc.includes('controller') || desc.includes('raid') || desc.includes('mr416i')) return 'Storage Controller';
-  if (cat.includes('network') || desc.includes('ethernet') || desc.includes('ocp') || desc.includes('adapter')) return 'Network Adapter';
-  if (cat.includes('drive') || desc.includes('cage') || desc.includes('hdd') || desc.includes('ssd')) return 'Drive Cage / Drive';
+  if (cat.includes('gpu') || cat.includes('accelerator') || desc.includes('nvidia') || desc.includes('tesla') || desc.includes('quadro') || desc.includes('radeon') || desc.includes('gpu')) return 'GPU / Accelerator';
+  if (cat.includes('riser') || desc.includes('riser kit') || desc.includes('primary riser') || desc.includes('secondary riser') || desc.includes('tertiary riser')) return 'PCIe Riser';
+  if (cat.includes('cable') || desc.includes('cable kit') || desc.includes('power cable') || desc.includes('lug kit') || desc.includes('box 1/2 cable')) return 'Cable Kit';
+  if (cat.includes('storage') || desc.includes('controller') || desc.includes('raid') || desc.includes('mr416i') || desc.includes('sr932i')) return 'Storage Controller';
+  if (cat.includes('network') || desc.includes('ethernet') || desc.includes('ocp') || desc.includes('adapter') || desc.includes('bcm57')) return 'Network Adapter';
+  if (cat.includes('drive') || desc.includes('cage') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('nvme')) return 'Drive Cage / Drive';
   if (cat.includes('fan') || cat.includes('cooling') || desc.includes('fan kit') || desc.includes('heatsink')) return 'Cooling / Thermal';
-  if (cat.includes('support') || cat.includes('service') || desc.includes('tech care')) return 'Service & Support';
+  if (cat.includes('support') || cat.includes('service') || desc.includes('tech care') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(desc)) return 'Service & Support';
+  if (cat.includes('software') || cat.includes('operating system') || desc.includes('windows server') || desc.includes('red hat') || desc.includes('suse') || desc.includes('license') || desc.includes('vmware')) return 'Operating System / License';
   if (cat.includes('chassis') || cat.includes('base') || desc.includes('chassis') || desc.includes('configure-to-order') || desc.includes('cto server') || desc.includes('base system') || desc.includes('frame') || desc.includes('enclosure') || desc.includes('compute module')) return 'Base Chassis';
 
   return 'Option Component';

@@ -270,7 +270,7 @@ export default function VendorScraperProgress({
         <div className="relative">
           <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200/80 p-0.5 shadow-inner">
             <div
-              className={`h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden ${
+              className={`h-full rounded-full progress-bar-fill relative overflow-hidden ${
                 isCompleted ? 'bg-emerald-500' :
                 isFailed ? 'bg-rose-500' :
                 isTaskRunning ? 'animate-stripes bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500' :

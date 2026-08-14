@@ -129,3 +129,150 @@ WARNINGS:
   ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
 ================================================================
 
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786709260060
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:07:40.059Z
+END TIME:     2026-08-14T12:07:40.851Z (0.79s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:07:40.060Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:07:40.713Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:07:40.730Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:07:40.851Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710669848
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:31:09.848Z
+END TIME:     2026-08-14T12:31:10.271Z (0.42s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:31:09.848Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:31:10.209Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:31:10.214Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:31:10.270Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710717184
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:31:57.183Z
+END TIME:     2026-08-14T12:31:57.566Z (0.38s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:31:57.184Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:31:57.493Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:31:57.498Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:31:57.566Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710773664
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:32:53.663Z
+END TIME:     2026-08-14T12:32:54.043Z (0.38s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:32:53.664Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:32:53.963Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:32:53.970Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:32:54.043Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710832678
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:33:52.678Z
+END TIME:     2026-08-14T12:33:53.062Z (0.38s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:33:52.678Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:33:52.987Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:33:52.991Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:33:53.062Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710941460
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:35:41.452Z
+END TIME:     2026-08-14T12:35:41.958Z (0.51s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:35:41.460Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:35:41.836Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:35:41.845Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:35:41.958Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1786710999228
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-14T12:36:39.227Z
+END TIME:     2026-08-14T12:36:39.694Z (0.47s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     3
+SKUS PROC:    284
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-14T12:36:39.228Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-14T12:36:39.551Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-14T12:36:39.559Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-14T12:36:39.694Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+  ⚠️ Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly.
+================================================================
+

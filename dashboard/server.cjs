@@ -13,9 +13,8 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { spawn, execFile } = require('child_process');
-
 const PROJECT_ROOT = path.resolve(__dirname, '..');
+require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const TEMP_DIR = path.join(OUTPUTS_DIR, 'temp');
 const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');
@@ -1473,8 +1472,10 @@ const { safeWriteJsonAtomic } = require(path.join(PROJECT_ROOT, 'scripts', 'lib'
   let syncInfo = null;
   try {
     const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'knowledge_sync.js'));
+    const { recordFeedbackTelemetry } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'system', 'telemetry.js'));
     buildMasterKnowledgeRegistry();
     syncInfo = generateNotebookSyncPayload(newDelta.chassis);
+    recordFeedbackTelemetry(newDelta);
   } catch (syncErr) {
     console.warn('⚠️ Real-time KnowledgeSync notice:', syncErr.message);
   }

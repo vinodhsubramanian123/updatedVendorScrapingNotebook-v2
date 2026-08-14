@@ -434,70 +434,19 @@ function preprocessAndGroupBOQ(rawInput, filePath = '', options = {}) {
   const rawVariations = [];
   let globalLineCount = 0;
 
+  const { parseSkuLines } = require('./boq_parser');
   sheetsData.forEach((sec, idx) => {
     const lines = sec.content.split(/\r?\n/).filter(l => l.trim().length > 0);
     globalLineCount += lines.length;
 
-    const itemMap = new Map();
-    let currentMultiplier = 1;
+    const { items, multiplier } = parseSkuLines(lines);
 
-    for (const line of lines) {
-      if (line.toLowerCase().includes('product #') && line.toLowerCase().includes('description')) continue;
-
-      const multMatch = line.match(/^(\d+)\s*x\b/i) || line.match(/\b(\d+)\s*x\s*(?:node|server|chassis|system|unit|quote)\b/i) || line.match(/^(?:multiplier|qty|quantity)[:=\s]*(\d+)\b/i);
-      const lineSku = (line.match(HPE_SKU_EXTRACT_REGEX) || [])[1];
-      if (multMatch && (!lineSku || !isValidHpeSKU(lineSku))) {
-        currentMultiplier = parseInt(multMatch[1], 10) || 1;
-      }
-
-      const normalizedLine = line.replace(/[\/\|;\+]|--/g, ' ');
-      const rawMatches = normalizedLine.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [];
-      const validMatches = rawMatches.map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
-      if (validMatches.length === 0) continue;
-
-      for (const cleanSku of validMatches) {
-        let lineQty = 1;
-        const explicitQty = normalizedLine.match(/\b(?:qty|quantity|count)[:=\s]*(\d+)\b/i);
-        if (explicitQty) {
-          lineQty = parseInt(explicitQty[1], 10) || 1;
-        } else {
-          const leadingQty = normalizedLine.match(/^(\d+)[\s,\t]+/);
-          const trailingQty = normalizedLine.match(/[\s,\t]+(\d+)\s*$/);
-          if (leadingQty && validMatches.length === 1) {
-            lineQty = parseInt(leadingQty[1], 10) || 1;
-          } else if (trailingQty && validMatches.length === 1) {
-            lineQty = parseInt(trailingQty[1], 10) || 1;
-          }
-        }
-
-        const totalQty = lineQty * currentMultiplier;
-
-        let description = normalizedLine
-          .replace(new RegExp(cleanSku.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '')
-          .replace(/^[\d\s,\t\-"'\:\;]+/, '')
-          .replace(/[\d\s,\t\-"'\:\;]+$/, '')
-          .trim();
-        if (!description) description = cleanSku;
-
-        if (itemMap.has(cleanSku)) {
-          itemMap.get(cleanSku).quantity += totalQty;
-        } else {
-          itemMap.set(cleanSku, {
-            sku: cleanSku,
-            description: description,
-            quantity: totalQty
-          });
-        }
-      }
-    }
-
-    const items = Array.from(itemMap.values());
     if (items.length > 0) {
       rawVariations.push({
         configId: `config_${idx + 1}`,
         rawName: sec.sectionName,
         items: items,
-        multiplier: 1
+        multiplier: multiplier || 1
       });
     }
   });
@@ -771,60 +720,77 @@ function preprocessAndGroupBOQ(rawInput, filePath = '', options = {}) {
 function buildConfigDiffMatrix(variations) {
   if (!variations || variations.length <= 1) {
     return {
-      comparedConfigs: variations ? variations.map(v => v.configId) : [],
+      comparedConfigs: variations ? variations.map(v => v.configId || v.name) : [],
       differences: []
     };
   }
 
-  const v1 = variations[0];
-  const v2 = variations[1];
-
+  const comparedConfigs = variations.map(v => v.name || v.configId);
   const diffs = [];
 
-  if (v1.profile.cpus !== v2.profile.cpus || v1.profile.maxTdpWatts !== v2.profile.maxTdpWatts) {
+  // 1. Processor & TDP Aspect
+  const cpuValues = variations.map(v => `${v.profile?.cpus || 'Unknown'} (${v.profile?.maxTdpWatts || 0}W TDP)`);
+  const hasCpuDiff = new Set(cpuValues).size > 1;
+  if (hasCpuDiff) {
+    const hasHighTdp = variations.some(v => (v.profile?.maxTdpWatts || 0) >= 240);
     diffs.push({
       aspect: 'Processor & TDP Envelope',
-      config1: `${v1.profile.cpus} (${v1.profile.maxTdpWatts}W TDP)`,
-      config2: `${v2.profile.cpus} (${v2.profile.maxTdpWatts}W TDP)`,
-      impact: v1.profile.maxTdpWatts >= 240 || v2.profile.maxTdpWatts >= 240
+      config1: cpuValues[0],
+      config2: cpuValues[1],
+      allConfigs: cpuValues,
+      impact: hasHighTdp
         ? 'High TDP (>=240W) mandates High-Performance Fan Kit (P48820-B21).'
         : 'Standard thermal cooling fans suffice.'
     });
   }
 
-  if (v1.profile.totalRamGb !== v2.profile.totalRamGb) {
+  // 2. Memory Capacity & Interleaving Aspect
+  const ramValues = variations.map(v => `${v.profile?.totalRamGb || 0}GB RAM (${v.profile?.dimmCount || 0} DIMMs)`);
+  const hasRamDiff = new Set(ramValues).size > 1;
+  if (hasRamDiff) {
     diffs.push({
       aspect: 'Memory Capacity & Interleaving',
-      config1: `${v1.profile.totalRamGb}GB RAM (${v1.profile.dimmCount} DIMMs)`,
-      config2: `${v2.profile.totalRamGb}GB RAM (${v2.profile.dimmCount} DIMMs)`,
+      config1: ramValues[0],
+      config2: ramValues[1],
+      allConfigs: ramValues,
       impact: 'Different memory population affects channel balance and memory bandwidth.'
     });
   }
 
-  if (v1.profile.driveCount !== v2.profile.driveCount || v1.profile.driveMedia !== v2.profile.driveMedia) {
+  // 3. Storage Media & Controller Aspect
+  const storageValues = variations.map(v => `${v.profile?.driveCount || 0}x ${v.profile?.driveMedia || 'None'}`);
+  const hasStorageDiff = new Set(storageValues).size > 1;
+  if (hasStorageDiff) {
+    const hasDriveLess = variations.some(v => (v.profile?.driveCount || 0) === 0);
     diffs.push({
       aspect: 'Storage Media & Controller',
-      config1: `${v1.profile.driveCount}x ${v1.profile.driveMedia}`,
-      config2: `${v2.profile.driveCount}x ${v2.profile.driveMedia}`,
-      impact: v1.profile.driveCount === 0 || v2.profile.driveCount === 0
+      config1: storageValues[0],
+      config2: storageValues[1],
+      allConfigs: storageValues,
+      impact: hasDriveLess
         ? 'Drive-less chassis requires No Drive Configuration FIO Kit (873763-B21).'
         : 'Storage controller and cache battery protection required.'
     });
   }
 
-  if (v1.profile.psuType !== v2.profile.psuType) {
+  // 4. Power Feed Aspect
+  const psuValues = variations.map(v => v.profile?.psuType || 'AC Power');
+  const hasPsuDiff = new Set(psuValues).size > 1;
+  if (hasPsuDiff) {
+    const hasDc = variations.some(v => (v.profile?.psuType || '').includes('-48VDC'));
     diffs.push({
       aspect: 'Power Feed & Cable Lug Requirements',
-      config1: v1.profile.psuType,
-      config2: v2.profile.psuType,
-      impact: v1.profile.psuType.includes('-48VDC') || v2.profile.psuType.includes('-48VDC')
+      config1: psuValues[0],
+      config2: psuValues[1],
+      allConfigs: psuValues,
+      impact: hasDc
         ? '-48VDC Power Supply requires DC Power Cable Lug Kit (P36877-B21).'
         : 'Standard AC power cabling.'
     });
   }
 
   return {
-    comparedConfigs: [v1.name, v2.name],
+    comparedConfigs,
     differences: diffs
   };
 }

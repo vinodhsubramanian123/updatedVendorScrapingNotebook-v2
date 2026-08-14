@@ -6,7 +6,19 @@ import PriceAnalyticsCard from './PriceAnalyticsCard';
 import GlobalLoadingState from './GlobalLoadingState';
 import RulesConfiguration from './RulesConfiguration';
 
-export default function CatalogExplorer({ catalogData, chassisName, isCatalogLoading = false, initialSearchQuery = '' }) {
+export default function CatalogExplorer({ 
+  catalogData, 
+  chassisName, 
+  catalogs = [],
+  selectedChassis,
+  onSelectChassis,
+  isCatalogLoading = false, 
+  initialSearchQuery = '',
+  globalSearchTerm = '',
+  onClearSearch,
+  onOpenRag,
+  onRagQuery
+}) {
   const [query, setQuery] = useState(initialSearchQuery || '');
   const [searchResults, setSearchResults] = useState(null);
   const [selectedSkuTrend, setSelectedSkuTrend] = useState(null);
@@ -182,7 +194,57 @@ export default function CatalogExplorer({ catalogData, chassisName, isCatalogLoa
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      
+      {/* Dedicated Product Line Switcher Bar */}
+      {catalogs.length > 0 && (
+        <div className="glass-card p-3 bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200 shadow-2xs">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 text-blue-600" />
+                Select Hardware Catalog:
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => onSelectChassis && onSelectChassis('')}
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  !selectedChassis
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                All Products ({catalogs.length})
+              </button>
+              {catalogs.map(c => {
+                const isSelected = c.id === selectedChassis;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => onSelectChassis && onSelectChassis(c.id)}
+                    className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                      isSelected
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700'
+                    }`}
+                  >
+                    <span>{c.chassis}</span>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
+                      isSelected ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-600'
+                    }`}>
+                      {c.totalSKUs}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Top Explorer Control Bar */}
       <div className="glass-card p-4 flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[156px] z-20 bg-white/95 backdrop-blur-md shadow-xs border border-slate-200/80">
         <div>
@@ -374,7 +436,11 @@ export default function CatalogExplorer({ catalogData, chassisName, isCatalogLoa
                   const isAttrChanged = status === 'ATTRIBUTE_CHANGED' || status === 'PRICE_AND_ATTRIBUTE_CHANGED';
 
                   return (
-                    <tr key={idx} className={`hover:bg-slate-50/80 transition-colors ${isRemoved ? 'bg-rose-50/40 line-through text-rose-800' : isPriceChanged ? 'bg-amber-50/30' : isAdded ? 'bg-emerald-50/30' : ''}`}>
+                    <tr 
+                      key={idx} 
+                      style={{ animationDelay: `${Math.min(idx, 12) * 20}ms` }}
+                      className={`animate-row-reveal hover:bg-slate-50/80 transition-colors ${isRemoved ? 'bg-rose-50/40 line-through text-rose-800' : isPriceChanged ? 'bg-amber-50/30' : isAdded ? 'bg-emerald-50/30' : ''}`}
+                    >
                       <td className="px-4 py-2.5">
                         <span className={`badge ${
                           isAdded ? 'badge-emerald' : isPriceChanged || isAttrChanged ? 'badge-amber' : isRemoved ? 'badge-rose' : 'bg-slate-100 text-slate-600'

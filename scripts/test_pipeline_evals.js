@@ -190,8 +190,10 @@ async function main() {
   let chassisBaseSkus = [];
 
   (catalogData.entries || []).forEach(entry => {
-    const isChassisCategory = (entry.parentCategory || '').toLowerCase().includes('chassis') ||
-                              (entry.subCategory || '').toLowerCase().includes('chassis');
+    // Only exact 'Chassis' parentCategory or 'Variants' subCategory are base chassis entries.
+    // 'Smart Chassis' accessory bundles (Standard type) are NOT base CTO variants.
+    const isChassisCategory = (entry.parentCategory || '').toLowerCase() === 'chassis' ||
+                              (entry.subCategory || '').toLowerCase() === 'variants';
     (entry.skus || []).forEach(sku => {
       totalSkusInJson++;
       const qty = String(sku['Current Qty'] || '0').trim();

@@ -2,8 +2,8 @@
 
 :root {
   --bg-porcelain: #F8FAFC;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: rgba(255, 255, 255, 0.99);
   
   --border-light: #E2E8F0;
   --border-focus: #01A781;
@@ -11,6 +11,7 @@
   --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
   --shadow-glass: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
   --shadow-hover: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-active: 0 2px 4px -1px rgba(15, 23, 42, 0.06);
   
   --color-hpe-emerald: #01A781;
   --color-hpe-emerald-light: #E6F7F3;
@@ -20,6 +21,8 @@
   --color-amber-light: #FEF3C7;
   --color-rose: #DC2626;
   --color-rose-light: #FEE2E2;
+  --color-purple: #7C3AED;
+  --color-purple-light: #F5F3FF;
   
   --text-primary: #0F172A;
   --text-secondary: #475569;
@@ -45,15 +48,225 @@ body {
   line-height: 1.5;
 }
 
+/* ==========================================================================
+   Motion & Animation System (GPU-Accelerated & Taste-Skill Compliant)
+   ========================================================================== */
+
+/* 1. Tab & Page Content Enter */
+@keyframes tabContentEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tab-enter {
+  animation: tabContentEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 2. Fade In Up */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 3. Modal Animations */
+@keyframes modalBackdropIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes modalContentIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-backdrop {
+  animation: modalBackdropIn 0.2s ease-out forwards;
+}
+
+.animate-modal-content {
+  animation: modalContentIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 4. Organic Breathe / Status Indicator Pulse */
+@keyframes breatheSlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(0.97);
+  }
+}
+
+.animate-breathe {
+  animation: breatheSlow 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 5. Step Completion Flash */
+@keyframes stepCompletePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(1, 167, 129, 0.6);
+    border-color: rgba(1, 167, 129, 0.8);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(1, 167, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(1, 167, 129, 0);
+  }
+}
+
+.animate-step-complete {
+  animation: stepCompletePulse 1.2s ease-out;
+}
+
+/* 6. Active Step Ring Glow */
+@keyframes activeStepGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4), 0 4px 12px rgba(37, 99, 235, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.6), 0 6px 16px rgba(37, 99, 235, 0.25);
+  }
+}
+
+.animate-step-active {
+  animation: activeStepGlow 2s ease-in-out infinite;
+}
+
+/* 7. Dropdown Reveal */
+@keyframes dropdownReveal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.92) translateY(-4px);
+    transform-origin: top;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+    transform-origin: top;
+  }
+}
+
+.animate-dropdown-reveal {
+  animation: dropdownReveal 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 8. Table Row Cascading Cascade */
+@keyframes rowFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-row-reveal {
+  animation: rowFadeIn 0.25s ease-out forwards;
+}
+
+/* 9. Stage Connector Animation */
+@keyframes connectorFill {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.animate-connector-fill {
+  animation: connectorFill 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 10. Shimmer Skeleton Animation */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.skeleton {
+  background-color: #E2E8F0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+
+/* 11. Stagger Delay Utility Classes */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+
+/* 12. Smooth Progress Bar Fill */
+.progress-bar-fill {
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+  will-change: width;
+}
+
+/* ==========================================================================
+   Component & Layout Tokens
+   ========================================================================== */
+
 /* Glassmorphism utilities */
 .glass-card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: var(--shadow-glass);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
@@ -61,9 +274,33 @@ body {
   border-color: #CBD5E1;
 }
 
+.glass-card-interactive {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  box-shadow: var(--shadow-glass);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.glass-card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: #CBD5E1;
+  background: var(--bg-card-hover);
+}
+
+.glass-card-interactive:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: var(--shadow-active);
+}
+
 .glass-nav {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
@@ -86,7 +323,7 @@ body {
   background: #94A3B8;
 }
 
-/* Dedicated Navigation Scrollbar with Separation & Smooth Breathing Room */
+/* Dedicated Navigation Scrollbar */
 .scrollbar-nav::-webkit-scrollbar {
   height: 4px;
 }
@@ -115,59 +352,70 @@ h1, h2, h3, h4 {
   font-family: var(--font-mono);
 }
 
-/* Skeleton Loading Animation */
-@keyframes pulse-light {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.skeleton {
-  animation: pulse-light 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  background: #E2E8F0;
-  border-radius: 6px;
-}
-
-/* Button & Badge Variants */
+/* Button Variants with Tactile Feedback */
 .btn-primary {
   background: var(--color-hpe-emerald);
   color: #FFFFFF;
-  font-weight: 500;
+  font-weight: 600;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-sans);
+  box-shadow: 0 1px 2px 0 rgba(1, 167, 129, 0.2);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: #018E6E;
-  box-shadow: 0 4px 12px rgba(1, 167, 129, 0.25);
+  box-shadow: 0 4px 12px rgba(1, 167, 129, 0.3);
   transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
   background: #FFFFFF;
   color: var(--text-primary);
   border: 1px solid var(--border-light);
-  font-weight: 500;
+  font-weight: 600;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
-.btn-secondary:hover {
-  background: #F1F5F9;
-  border-color: #CBD5E1;
+.btn-secondary:hover:not(:disabled) {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Badge Classes */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -177,7 +425,8 @@ h1, h2, h3, h4 {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
 }
 
 .badge-emerald {
@@ -204,9 +453,15 @@ h1, h2, h3, h4 {
   border: 1px solid rgba(220, 38, 38, 0.3);
 }
 
+.badge-purple {
+  background: var(--color-purple-light);
+  color: var(--color-purple);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
 /* Terminal Log View */
 .terminal-view {
-  background: #0F172A;
+  background: #0B0F19;
   color: #E2E8F0;
   font-family: var(--font-mono);
   font-size: 0.825rem;
@@ -254,21 +509,22 @@ select:active {
   background-color: #ffffff !important;
 }
 
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-  -webkit-text-fill-color: var(--text-primary, #0F172A) !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-select::-ms-expand {
-  display: none;
-}
-
 select option {
   color-scheme: light !important;
   background-color: #ffffff !important;
   color: #0f172a !important;
 }
 
+/* ==========================================================================
+   Accessibility & Reduced Motion Gate (taste skill Section 6.B)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

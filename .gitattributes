@@ -9,3 +9,4 @@
 *.pdf binary
 *.xlsx binary
 *.png binary
+graphify-out/graph.json merge=graphify

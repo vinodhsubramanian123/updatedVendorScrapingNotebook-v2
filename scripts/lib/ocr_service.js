@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 const { GoogleGenAI } = require('@google/genai');
 
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.tiff', '.pdf'];
@@ -24,6 +25,8 @@ function isImageFile(filePath) {
   return IMAGE_EXTENSIONS.includes(ext);
 }
 
+const MAX_IMAGE_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB max
+
 /**
  * Perform Multimodal Gemini Vision OCR on an image file or buffer.
  * Extracts clean tabular text containing line items, SKUs, descriptions, quantities, and pricing.
@@ -32,30 +35,40 @@ function isImageFile(filePath) {
  * @returns {Promise<{ text: string, lineCount: number, detectedSkus: string[], isOcrProcessed: boolean, logs: string[] }>}
  */
 async function performGeminiOcr(filePath, options = {}) {
+  const logger = require('./pipeline_logger');
   const logs = [];
   const log = (msg) => {
     const entry = `📸 [OCR_SERVICE] ${msg}`;
     logs.push(entry);
-    console.log(entry);
+    logger.info('OCR_SERVICE', msg);
   };
 
-  log(`Initiating Multimodal OCR pre-processing for: ${path.basename(filePath)}`);
+  const resolvedPath = path.resolve(filePath);
+  log(`Initiating Multimodal OCR pre-processing for: ${path.basename(resolvedPath)}`);
 
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`OCR Target file not found: ${filePath}`);
+  if (!fs.existsSync(resolvedPath)) {
+    throw new Error(`OCR Target file not found: ${resolvedPath}`);
   }
 
-  const ext = path.extname(filePath).toLowerCase();
+  const fileStats = fs.statSync(resolvedPath);
+  if (fileStats.size > MAX_IMAGE_SIZE_BYTES) {
+    throw new Error(`OCR Target file exceeds maximum allowed size of 25MB (Current size: ${(fileStats.size / (1024 * 1024)).toFixed(2)}MB)`);
+  }
+
+  const ext = path.extname(resolvedPath).toLowerCase();
   let mimeType = 'image/png';
   if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
   else if (ext === '.webp') mimeType = 'image/webp';
   else if (ext === '.pdf') mimeType = 'application/pdf';
+  else if (ext === '.tiff' || ext === '.tif') mimeType = 'image/tiff';
+  else if (ext === '.gif') mimeType = 'image/gif';
+  else if (ext === '.bmp') mimeType = 'image/bmp';
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     log('⚠️ GEMINI_API_KEY environment variable is absent. Serving image metadata fallback notice.');
     return {
-      text: `[OCR_NOTICE] Image file '${path.basename(filePath)}' uploaded. Gemini API Key is required for image OCR parsing. Please configure GEMINI_API_KEY or paste BOM text directly.`,
+      text: `[OCR_NOTICE] Image file '${path.basename(resolvedPath)}' uploaded. Gemini API Key is required for image OCR parsing. Please configure GEMINI_API_KEY or paste BOM text directly.`,
       lineCount: 1,
       detectedSkus: [],
       isOcrProcessed: false,

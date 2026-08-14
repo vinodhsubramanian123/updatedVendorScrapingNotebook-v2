@@ -207,6 +207,69 @@ applyDiffStyles(skuWS, skuData.data);
 enableSheetUsability(skuWS);
 XLSX.utils.book_append_sheet(wb, skuWS, 'All SKUs');
 
+// Sheet 2b: Chassis Variants — Dedicated sheet showing all CTO base chassis options with pricing.
+// This is the foundational selection — all downstream component rules depend on the chosen variant.
+const chassisVariantRows = skuData.data.filter(r => r['Main Category'] === 'Chassis');
+if (chassisVariantRows.length > 0) {
+  // Enrich with a human-readable Form Factor column derived from description
+  const FORM_FACTOR_MAP = {
+    '8SFF': 'Small Form Factor (8-Bay)', '24SFF': 'Small Form Factor (24-Bay)',
+    '12LFF': 'Large Form Factor (12-Bay)', '8LFF': 'Large Form Factor (8-Bay)',
+    '16EDSFF': 'eDesign SFF (16-Bay)', 'High Power': 'High Power / Telco',
+    'Telco': 'High Power / Telco'
+  };
+  const variantSheetRows = chassisVariantRows.map(r => {
+    const desc = r['Description'] || '';
+    let formFactor = 'Unknown';
+    for (const [key, label] of Object.entries(FORM_FACTOR_MAP)) {
+      if (desc.includes(key)) { formFactor = label; break; }
+    }
+    return {
+      'Product #':           r['Product #'],
+      'Form Factor':         formFactor,
+      'Description':         r['Description'],
+      'Option Type':         r['Option Type'],
+      'List Price (USD)':    r['Unit Price (USD)'],
+      'Constraint':          r['Constraint Text'] || 'max 1 — Mandatory Base Chassis',
+      'Start Date':          r['Start Date'],
+      'Discontinued Date':   r['Discontinued Date'] || 'Active',
+      'Diff Status':         r['Diff Status'],
+      'Price History Trail': r['Price History Trail'],
+      'Note': 'Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection.'
+    };
+  });
+  const variantWS = XLSX.utils.json_to_sheet(variantSheetRows);
+  variantWS['!cols'] = [
+    { wch: 18 }, // Product #
+    { wch: 30 }, // Form Factor
+    { wch: 75 }, // Description
+    { wch: 14 }, // Option Type
+    { wch: 18 }, // List Price (USD)
+    { wch: 40 }, // Constraint
+    { wch: 14 }, // Start Date
+    { wch: 18 }, // Discontinued Date
+    { wch: 16 }, // Diff Status
+    { wch: 100 }, // Price History Trail
+    { wch: 80 }, // Note
+  ];
+  // Style header with a distinct emerald green to highlight importance
+  const variantRange = XLSX.utils.decode_range(variantWS['!ref']);
+  const variantHeaderStyle = {
+    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
+    fill: { fgColor: { rgb: '01A781' } }, // HPE Emerald
+    alignment: { vertical: 'center' }
+  };
+  for (let c = variantRange.s.c; c <= variantRange.e.c; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
+    if (variantWS[cellRef]) variantWS[cellRef].s = variantHeaderStyle;
+  }
+  applyDiffStyles(variantWS, variantSheetRows);
+  variantWS['!autofilter'] = { ref: variantWS['!ref'] };
+  variantWS['!views'] = [{ state: 'frozen', xSplit: 0, ySplit: 1, activeCell: 'A2' }];
+  XLSX.utils.book_append_sheet(wb, variantWS, 'Chassis Variants');
+  console.log(`  ✅ Sheet 'Chassis Variants' — ${variantSheetRows.length} CTO base options with pricing.`);
+}
+
 // Sheet 3: Rules & Constraints
 const rulesWS = XLSX.utils.json_to_sheet(rulesData.data);
 rulesWS['!cols'] = [
@@ -215,17 +278,43 @@ rulesWS['!cols'] = [
 enableSheetUsability(rulesWS);
 XLSX.utils.book_append_sheet(wb, rulesWS, 'Rules & Constraints');
 
-// Sheet 4: All Service SKUs (Pointnext, Tech Care, Support)
-// Isolated from hardware so service pricing is easy to audit and update.
+// Sheet 4a: Hardware Accessories — Non-software items from the services TSV.
+// These are valid hardware options (bezel kits, cable kits, rack accessories)
+// that are separated from the main catalog because they are qty=0 by default.
+// Sheet 4b: Software & Licenses — iLO licenses, GreenLake, Compute Ops Management subscriptions.
+const HPE_HW_SKU_REGEX = /^[A-Z0-9]{6,12}-[A-Z0-9]{2,4}$/; // Standard hardware: P73282-B21 format
 if (servicesData.data.length > 0) {
-  const servicesWS = XLSX.utils.json_to_sheet(servicesData.data);
-  servicesWS['!cols'] = SKU_COL_WIDTHS;
-  applyDiffStyles(servicesWS, servicesData.data);
-  enableSheetUsability(servicesWS);
-  XLSX.utils.book_append_sheet(wb, servicesWS, 'All Service SKUs');
-  console.log(`  ✅ Sheet 'All Service SKUs' — ${servicesData.data.length} service entries added.`);
+  const hwAccessories = servicesData.data.filter(r => HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim()));
+  const swLicenses    = servicesData.data.filter(r => !HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim()));
+
+  if (hwAccessories.length > 0) {
+    const hwWS = XLSX.utils.json_to_sheet(hwAccessories);
+    hwWS['!cols'] = SKU_COL_WIDTHS;
+    applyDiffStyles(hwWS, hwAccessories);
+    enableSheetUsability(hwWS);
+    XLSX.utils.book_append_sheet(wb, hwWS, 'Hardware Accessories');
+    console.log(`  ✅ Sheet 'Hardware Accessories' — ${hwAccessories.length} accessory SKUs (bezel kits, cable kits, rack add-ons).`);
+  }
+
+  if (swLicenses.length > 0) {
+    const swWS = XLSX.utils.json_to_sheet(swLicenses);
+    swWS['!cols'] = SKU_COL_WIDTHS;
+    applyDiffStyles(swWS, swLicenses);
+    enableSheetUsability(swWS);
+    XLSX.utils.book_append_sheet(wb, swWS, 'Software & Licenses');
+    console.log(`  ✅ Sheet 'Software & Licenses' — ${swLicenses.length} software/service SKUs (iLO, GreenLake, Compute Ops).`);
+  }
+
+  if (hwAccessories.length === 0 && swLicenses.length === 0) {
+    // Fallback: dump everything as before
+    const servicesWS = XLSX.utils.json_to_sheet(servicesData.data);
+    servicesWS['!cols'] = SKU_COL_WIDTHS;
+    applyDiffStyles(servicesWS, servicesData.data);
+    enableSheetUsability(servicesWS);
+    XLSX.utils.book_append_sheet(wb, servicesWS, 'All Service SKUs');
+  }
 } else {
-  console.log(`  ℹ️  No service SKUs found in TSV — 'All Service SKUs' sheet skipped.`);
+  console.log(`  ℹ️  No service/accessory SKUs found in TSV — sheets skipped.`);
 }
 
 // Sheet 4: Catalog Diff (Dedicated diff sheet — ONLY when diffs exist)
@@ -382,19 +471,21 @@ const metaData = [
   { Field: 'Scrape Date',            Value: catalogMeta.scrapeDate    || new Date().toISOString() },
   { Field: 'Source',                 Value: 'OCA (Online Configuration Application)' },
   { Field: 'Total Sub-Categories',   Value: String(summaryData.data.length) },
-  { Field: 'Total Hardware SKUs',    Value: String(skuData.data.length) },
-  { Field: 'Total Service SKUs',     Value: String(servicesData.data.length || servicesMeta.totalUniqueSKUs || 0) },
-  { Field: 'Total Rules',            Value: String(rulesData.data.length) },
-  { Field: 'Total Tables',           Value: String(catalogMeta.totalTables || '') },
-  { Field: 'Diff Added SKUs',        Value: String(diffSummary.added || 0) },
-  { Field: 'Diff Removed SKUs',      Value: String(diffSummary.removed || 0) },
-  { Field: 'Diff Price Changed',     Value: String(diffSummary.priceChanged || 0) },
-  { Field: 'Diff Attr Changed',      Value: String(diffSummary.attributeChanged || 0) },
-  { Field: 'Diff Unchanged SKUs',    Value: String(diffSummary.unchanged || skuData.data.length) },
-  { Field: 'Discontinued (All-Time)',Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length) },
-  { Field: 'Reinstated (All-Time)',  Value: String(discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length) },
-  { Field: 'Services JSON',          Value: fs.existsSync(servicesJsonPath) ? servicesJsonPath : '(Not yet generated)' },
-  { Field: 'Output Folder',          Value: targetDir },
+  { Field: 'Total Hardware SKUs',        Value: String(skuData.data.length) },
+  { Field: 'Chassis Variant Options',    Value: String(skuData.data.filter(r => r['Main Category'] === 'Chassis').length) },
+  { Field: 'Hardware Accessories',       Value: String(servicesData.data.filter(r => HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim())).length) },
+  { Field: 'Software & License SKUs',   Value: String(servicesData.data.filter(r => !HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim())).length) },
+  { Field: 'Total Rules',                Value: String(rulesData.data.length) },
+  { Field: 'Total Tables',               Value: String(catalogMeta.totalTables || '') },
+  { Field: 'Diff Added SKUs',            Value: String(diffSummary.added || 0) },
+  { Field: 'Diff Removed SKUs',          Value: String(diffSummary.removed || 0) },
+  { Field: 'Diff Price Changed',         Value: String(diffSummary.priceChanged || 0) },
+  { Field: 'Diff Attr Changed',          Value: String(diffSummary.attributeChanged || 0) },
+  { Field: 'Diff Unchanged SKUs',        Value: String(diffSummary.unchanged || skuData.data.length) },
+  { Field: 'Discontinued (All-Time)',    Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length) },
+  { Field: 'Reinstated (All-Time)',      Value: String(discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length) },
+  { Field: 'Services JSON',              Value: fs.existsSync(servicesJsonPath) ? servicesJsonPath : '(Not yet generated)' },
+  { Field: 'Output Folder',              Value: targetDir },
 ];
 const metaWS = XLSX.utils.json_to_sheet(metaData);
 metaWS['!cols'] = [{ wch: 25 }, { wch: 80 }];

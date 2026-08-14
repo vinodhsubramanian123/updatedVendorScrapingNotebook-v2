@@ -94,9 +94,9 @@ export default function VendorBomVerificationModal({ isOpen, onClose, selectedRa
       } catch {
         const lines = vendorText.split('\n');
         lines.forEach(line => {
-          const match = line.match(/\b([A-Z0-9]{5,6}-[A-Z0-9]{2,3})\b/i);
+          const match = line.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,10})\b/i);
           if (match) {
-            const sku = match[1].toUpperCase();
+            const sku = match[1].toUpperCase().replace(/(CTO|BTO|FIO)$/i, '');
             const qtyMatch = line.match(/\b(\d+)\b/);
             const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
             items.push({ sku, quantity, description: line.trim() });

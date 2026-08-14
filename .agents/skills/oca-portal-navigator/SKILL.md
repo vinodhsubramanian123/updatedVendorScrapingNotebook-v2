@@ -59,3 +59,5 @@ node scripts/lib/navigate_oca.js "Alletra 9000" && node scripts/scrape_oca_solut
 3. **Manual Human Step**: The human user MUST log into the browser and click the "OCA Configurator" link.
 4. **Session Persistence**: Session cookies are automatically stored in Chrome's `.chrome_sso_profile`.
 5. **Subsequent Scrapes**: Once the human has generated the SSO session in that window, subsequent scraping runs can attach to that CDP port headlessly without touching the terminal again.
+6. **Strict In-Page Navigation Protocol**: NEVER use the browser `back()` button or navigate to raw direct URLs after entering OCA. Direct URL navigation drops the stateful WebLogic session. All navigation MUST execute via in-page DOM element clicks and jQuery triggers over CDP.
+

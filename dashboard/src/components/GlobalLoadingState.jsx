@@ -81,8 +81,8 @@ export default function GlobalLoadingState({
 
           <div className="relative z-10 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3.5">
-              {/* Pulsing Icon Badge */}
-              <div className="p-3 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-xl animate-pulse shrink-0">
+              {/* Breathing Icon Badge */}
+              <div className="p-3 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-xl animate-breathe shrink-0">
                 <IconComponent className="w-6 h-6 text-blue-400 animate-spin-slow" />
               </div>
 
@@ -119,10 +119,10 @@ export default function GlobalLoadingState({
           <div className="mt-4 relative">
             <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700 p-0.5">
               <div 
-                className={`h-full rounded-full transition-all duration-500 relative overflow-hidden ${isProcessing ? 'animate-stripes bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400' : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400'}`}
+                className={`h-full rounded-full progress-bar-fill relative overflow-hidden ${isProcessing ? 'animate-stripes bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400' : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400'}`}
                 style={{ width: `${Math.max(percent, 8)}%` }}
               >
-                <div className="absolute inset-0 bg-white/10 animate-pulse-slow" />
+                <div className="absolute inset-0 bg-white/10 animate-breathe" />
               </div>
             </div>
           </div>

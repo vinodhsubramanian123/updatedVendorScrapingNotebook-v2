@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { HelpCircle, BrainCircuit, Sparkles, PlusCircle, CheckCircle, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
 
-export default function AmbiguityInbox({ evalResults, chassisContext }) {
+export default function AmbiguityInbox({ evalResults, chassisContext, onReEvaluate }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isQuerying, setIsQuerying] = useState(false);
   const [notebookResponse, setNotebookResponse] = useState('');
@@ -259,7 +259,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext }) {
                 </div>
               </div>
 
-              <div className="pt-2 flex items-center justify-between">
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
                 <button 
                   type="submit" 
                   disabled={isSubmitting || !ruleUpdate}
@@ -269,10 +269,21 @@ export default function AmbiguityInbox({ evalResults, chassisContext }) {
                 </button>
                 
                 {submitStatus && (
-                  <span className={`text-xs font-bold flex items-center gap-1 ${submitStatus.type === 'success' ? 'text-emerald-800' : 'text-rose-800'}`}>
-                    {submitStatus.type === 'success' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700 stroke-[2.25px]" /> : null}
-                    {submitStatus.msg}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs font-bold flex items-center gap-1 ${submitStatus.type === 'success' ? 'text-emerald-800' : 'text-rose-800'}`}>
+                      {submitStatus.type === 'success' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700 stroke-[2.25px]" /> : null}
+                      {submitStatus.msg}
+                    </span>
+                    {submitStatus.type === 'success' && onReEvaluate && (
+                      <button
+                        type="button"
+                        onClick={() => onReEvaluate()}
+                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs transition-transform active:scale-95"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" /> Re-Evaluate BOQ with Learned Rule
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             </form>
@@ -283,3 +294,4 @@ export default function AmbiguityInbox({ evalResults, chassisContext }) {
     </div>
   );
 }
+

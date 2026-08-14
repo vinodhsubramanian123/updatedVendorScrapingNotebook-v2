@@ -1,39 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles } from 'lucide-react';
 import Header from './components/Header';
 import CatalogExplorer from './components/CatalogExplorer';
 import ScraperTriggerCard from './components/ScraperTriggerCard';
 import BoqUploader from './components/BoqUploader';
 import WorkloadDnaCard from './components/WorkloadDnaCard';
-import ConflictGraphInspector from './components/ConflictGraphInspector';
 import ResolutionMatrix from './components/ResolutionMatrix';
 import NotebookRagDrawer from './components/NotebookRagDrawer';
 import ArtifactInspector from './components/ArtifactInspector';
 import TelemetryCard from './components/TelemetryCard';
-import CatalogOverviewCard from './components/CatalogOverviewCard';
-import TaskHistoryCard from './components/TaskHistoryCard';
-import ExportHistoryCard from './components/ExportHistoryCard';
 import AmbiguityInbox from './components/AmbiguityInbox';
 import UserFeedbackDrawer from './components/UserFeedbackDrawer';
 import FeedbackModal from './components/FeedbackModal';
 import SettingsDrawer from './components/SettingsDrawer';
 import PartnerReconciliationView from './components/PartnerReconciliationView';
-import WorkflowStepper from './components/WorkflowStepper';
 import GlobalLoadingState from './components/GlobalLoadingState';
-import ChassisSyncSummaryView from './components/ChassisSyncSummaryView';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
 
 // Generic Modal Wrapper Component
 function ToolModal({ isOpen, onClose, title, children }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-xl shadow-xl overflow-hidden flex flex-col border border-slate-200">
-        <div className="flex items-center justify-between p-4 bg-white border-b border-slate-200">
-          <h2 className="text-lg font-bold text-slate-800">{title}</h2>
-          <button onClick={onClose} className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-modal-backdrop"
+    >
+      <div className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-200/90 animate-modal-content">
+        <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
+          <h2 className="text-base font-extrabold text-slate-800 tracking-tight">{title}</h2>
+          <button
+            onClick={onClose}
+            aria-label="Close modal"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
+            title="Close (Esc)"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-6">
@@ -46,7 +60,7 @@ function ToolModal({ isOpen, onClose, title, children }) {
 
 export default function App() {
   const [catalogs, setCatalogs] = useState([]);
-  const [selectedChassis, setSelectedChassis] = useState('');
+  const [selectedChassis, setSelectedChassis] = useState('DL380_Gen12_SFF');
   const [catalogData, setCatalogData] = useState(null);
   const [isCatalogLoading, setIsCatalogLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('orchestrator');
@@ -56,7 +70,7 @@ export default function App() {
   // Real-time SSE Log Stream State
   const [logStream, setLogStream] = useState([]);
   const [isTaskRunning, setIsTaskRunning] = useState(false);
-  const [taskHistory, setTaskHistory] = useState([]);
+  const [_taskHistory, setTaskHistory] = useState([]);
   const [activeProgress, setActiveProgress] = useState(null);
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const pollIntervalsRef = useRef(new Set());
@@ -456,29 +470,34 @@ export default function App() {
         
         {/* The Macro Flow Engine (Default View) */}
         {activeTab === 'orchestrator' && (
-          <MacroOrchestratorFlow
-            evalResults={evalResults}
-            auditReport={auditReport}
-            isTaskRunning={isTaskRunning}
-            activeProgress={activeProgress}
-            selectedChassis={selectedChassis}
-            logStream={logStream}
-            onOpenTool={setActiveModal}
-          />
+          <div key="orchestrator" className="animate-tab-enter">
+            <MacroOrchestratorFlow
+              evalResults={evalResults}
+              auditReport={auditReport}
+              isTaskRunning={isTaskRunning}
+              activeProgress={activeProgress}
+              selectedChassis={selectedChassis}
+              logStream={logStream}
+              onOpenTool={setActiveModal}
+              onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+            />
+          </div>
         )}
 
         {/* Data Ingestion & Scraping Tab */}
         {activeTab === 'scraper' && (
-          <ScraperTriggerCard
-            logStream={logStream}
-            isTaskRunning={isTaskRunning}
-            onTriggerScrape={handleTriggerScrape}
-            onTriggerRebuild={handleTriggerRebuild}
-            onTriggerDownloadPdf={handleTriggerDownloadPdf}
-            onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-            onTriggerKillTask={handleTriggerKillTask}
-            onTriggerNavigate={handleTriggerNavigate}
-          />
+          <div key="scraper" className="animate-tab-enter">
+            <ScraperTriggerCard
+              logStream={logStream}
+              isTaskRunning={isTaskRunning}
+              onTriggerScrape={handleTriggerScrape}
+              onTriggerRebuild={handleTriggerRebuild}
+              onTriggerDownloadPdf={handleTriggerDownloadPdf}
+              onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+              onTriggerKillTask={handleTriggerKillTask}
+              onTriggerNavigate={handleTriggerNavigate}
+            />
+          </div>
         )}
 
         {/* Global Pending Loading State Indicator & Skeleton Wireframes */}
@@ -489,32 +508,39 @@ export default function App() {
           mode="banner"
         />
 
-
-
         {/* Master Excel Catalog Explorer */}
         {activeTab === 'catalog' && (
-          <CatalogExplorer
-            catalogData={catalogData}
-            selectedChassis={selectedChassis}
-            isCatalogLoading={isCatalogLoading}
-            globalSearchTerm={globalSearchTerm}
-            onClearSearch={() => setGlobalSearchTerm('')}
-            onOpenRag={() => setIsRagOpen(true)}
-            onRagQuery={handleSmartSearch}
-          />
+          <div key="catalog" className="animate-tab-enter">
+            <CatalogExplorer
+              catalogData={catalogData}
+              catalogs={catalogs}
+              selectedChassis={selectedChassis}
+              onSelectChassis={setSelectedChassis}
+              chassisName={currentCatObj?.chassis}
+              isCatalogLoading={isCatalogLoading}
+              globalSearchTerm={globalSearchTerm}
+              onClearSearch={() => setGlobalSearchTerm('')}
+              onOpenRag={() => setIsRagOpen(true)}
+              onRagQuery={handleSmartSearch}
+            />
+          </div>
         )}
 
         {/* Artifacts & Quality Audit Tab */}
         {activeTab === 'artifacts' && (
-          <ArtifactInspector
-            currentCatalog={currentCatObj}
-            onAuditCatalog={() => {}}
-          />
+          <div key="artifacts" className="animate-tab-enter">
+            <ArtifactInspector
+              currentCatalog={currentCatObj}
+              onAuditCatalog={() => {}}
+            />
+          </div>
         )}
 
         {/* System Telemetry & Observability Tab */}
         {activeTab === 'telemetry' && (
-          <TelemetryCard />
+          <div key="telemetry" className="animate-tab-enter">
+            <TelemetryCard />
+          </div>
         )}
 
       </main>
@@ -523,19 +549,23 @@ export default function App() {
       <ToolModal 
         isOpen={activeModal === 'boqUploader'} 
         onClose={() => setActiveModal(null)}
-        title="Stage 2: BOQ Quote Ingestion & Math Engine"
+        title="Stage 1: BOQ Quote Ingestion & 6-Aspect Math Engine"
       >
         <BoqUploader 
           onEvaluateBoq={handleEvaluateBoq} 
           evalResults={evalResults} 
           logStream={logStream}
           chassisDir={currentCatObj?.chassisDir}
+          isTaskRunning={isTaskRunning}
+          onOpenMatrix={() => setActiveModal('resolutionMatrix')}
+          onOpenReconciliation={() => setActiveModal('reconciliation')}
         />
         {evalResults && (
-          <div className="mt-6 space-y-6">
+          <div className="mt-6 space-y-6 animate-fade-in">
             <AmbiguityInbox 
               evalResults={evalResults} 
               chassisContext={selectedChassis || 'Unknown Chassis'} 
+              onReEvaluate={(extraText) => handleEvaluateBoq({ rawText: extraText || '' })}
             />
             <WorkloadDnaCard dnaData={evalResults.workloadDna} />
           </div>
@@ -545,7 +575,7 @@ export default function App() {
       <ToolModal 
         isOpen={activeModal === 'resolutionMatrix'} 
         onClose={() => setActiveModal(null)}
-        title="Stage 2.5: Strategic Resolution Matrix"
+        title="Stage 1.5: 5-Tier Strategic Resolution Matrix"
       >
         <ResolutionMatrix
           evalResults={evalResults}

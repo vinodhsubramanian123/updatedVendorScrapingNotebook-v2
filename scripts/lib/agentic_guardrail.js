@@ -1,3 +1,4 @@
+'use strict';
 const { GoogleGenAI, Type } = require('@google/genai');
 const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
 const { executeNotebookQuery } = require('./notebook_query_utils.js');
@@ -78,7 +79,11 @@ const evaluationTools = [
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
+
 async function runAgenticGuardrail(items, chassisDir) {
+  const logger = require('./pipeline_logger');
+  const startTime = Date.now();
   const apiKeys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
   if (apiKeys.length === 0) {
     return { error: 'GEMINI_API_KEY environment variable is required.' };
@@ -114,14 +119,18 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
   
   let retryCountInitial = 0;
   while (true) {
+    if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
+      return { error: 'Agentic Guardrail execution timed out after 90 seconds.' };
+    }
+
     try {
       response = await chat.sendMessage({ message: `Please evaluate this BOQ configuration containing ${items.length} items. Chassis ID is ${chassisId}.\nItems JSON: ${initialItemsJson}` });
       break;
     } catch (err) {
       if (err.status === 429 && apiKeys.length > 1 && retryCountInitial < apiKeys.length) {
-        console.warn('⚠️ Rate limit hit on initial prompt.');
+        logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit on initial prompt.');
         currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
-        console.warn(`🔄 Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+        logger.warn('AGENTIC_GUARDRAIL', `Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
         
         ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
         chat = ai.chats.create({
@@ -140,13 +149,21 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
   }
 
   let turns = 0;
+  const executedToolCalls = [];
+
   while (response.functionCalls && response.functionCalls.length > 0 && turns < 15) {
+    if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
+      logger.warn('AGENTIC_GUARDRAIL', 'Overall timeout reached during tool execution loop.');
+      break;
+    }
+
     turns++;
     const calls = response.functionCalls;
     const toolResponses = [];
 
     for (const call of calls) {
       let result = null;
+      executedToolCalls.push(call.name);
       try {
         const args = call.args;
         switch (call.name) {
@@ -166,12 +183,10 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'record_knowledge_delta': {
-            // Dynamically resolve chassis output directory instead of hardcoding ProLiant/Gen12
             const { listAllCatalogs } = require('./catalog_discovery');
             const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
             let outputDir = cat ? cat.catalogDir : null;
             if (!outputDir) {
-              // Fallback: create under outputs using chassis_id as folder name
               outputDir = path.join(__dirname, '..', '..', 'outputs', args.chassis_id);
             }
             if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
@@ -206,9 +221,9 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
         break;
       } catch (err) {
         if (err.status === 429 && apiKeys.length > 1 && retryCount < apiKeys.length) {
-          console.warn('⚠️ Rate limit hit.');
+          logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit during agent turn.');
           currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
-          console.warn(`🔄 Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+          logger.warn('AGENTIC_GUARDRAIL', `Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
           
           try {
             const oldHistory = await chat.getHistory();
@@ -223,25 +238,34 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
               }
             });
             retryCount++;
-            continue; // Immediately retry with the new key without sleeping
+            continue;
           } catch (historyErr) {
-            console.error("Failed to rotate chat history:", historyErr);
+            logger.warn('AGENTIC_GUARDRAIL', 'Failed to rotate chat history', historyErr);
           }
         }
         
         if (err.status === 429 && retryCount < 3) {
-          console.warn('⚠️ Rate limit hit. Waiting 15s before retrying...');
+          logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit. Waiting 15s before retrying...');
           await sleep(15000);
           retryCount++;
         } else {
-          console.error("Agentic loop chat error:", err);
-          return { error: err.message, text: response ? response.text : '' };
+          logger.warn('AGENTIC_GUARDRAIL', 'Agentic loop chat error', err);
+          return { error: err.message, text: response ? response.text : '', turns, executedToolCalls };
         }
       }
     }
   }
 
-  return { text: response.text, success: true };
+  const durationMs = Date.now() - startTime;
+  logger.info('AGENTIC_GUARDRAIL', `Completed Guardrail in ${turns} turns (${durationMs}ms), tools: [${executedToolCalls.join(', ')}]`);
+
+  return {
+    text: response ? response.text : '',
+    success: true,
+    turns,
+    executedToolCalls,
+    durationMs
+  };
 }
 
 module.exports = { runAgenticGuardrail };

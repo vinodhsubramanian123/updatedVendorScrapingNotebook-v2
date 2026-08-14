@@ -38,12 +38,13 @@ Generates a clean Markdown document (`outputs/history/notebook_sync_payload_{cha
 - Section 2: Family & Generation Rules
 - Section 3: Chassis-Specific Rules & Physical Gotchas
 
-### 3. Automated NotebookLM RAG Push (`nlm`)
+### 3. Automated NotebookLM RAG Push & Upsert Deduplication (`nlm`)
 When the `nlm` CLI is authenticated:
 ```bash
 node scripts/lib/knowledge_sync.js --chassis DL380_Gen12_SFF --auto-upload-nlm
 ```
-This automatically invokes `nlm source add <notebook_id> --file <payload.md>` to update NotebookLM RAG sources instantly.
+- **Direct Source ID Tracking**: The sync engine captures the source ID returned by `nlm source add` and records it as `lastSyncedSourceId` in `scripts/config/notebooks.json`.
+- **Targeted Delete-by-ID**: On subsequent syncs, the engine executes `nlm source delete <notebookId> <lastSyncedSourceId> --yes` before uploading the new payload, completely preventing duplicate source clutter and maintaining clean RAG grounding.
 
 ### 4. Drift Inspection Protocol
 Run `inspectKnowledgeDrift(chassisName)` at the start of any evaluation cycle to verify that local evaluation rules and NotebookLM sources match 100%.

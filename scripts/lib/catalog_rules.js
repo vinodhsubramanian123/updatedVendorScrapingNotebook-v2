@@ -17,6 +17,38 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Standard default SKU mappings for mandatory physical dependencies
+ */
+const DEFAULT_MANDATORY_SKUS = {
+  HIGH_PERF_FAN_KIT: { sku: 'P48820-B21', name: 'HPE ProLiant High Performance Fan Kit' },
+  HIGH_PERF_HEATSINK: { sku: 'P74792-B21', name: 'HPE ProLiant Performance Heat Sink Kit' },
+  NO_DRIVE_FIO_KIT: { sku: '873763-B21', name: 'HPE ProLiant Compute No Drive Configuration FIO Kit' },
+  DC_LUG_KIT: { sku: 'P36877-B21', name: 'HPE 1600W -48VDC Power Cable Lug Kit' },
+  SMART_STORAGE_BATTERY: { sku: 'P01366-B21', name: 'HPE 96W Smart Storage Battery' },
+  CONTROLLER_CABLE_KIT: { sku: 'P48918-B21', name: 'HPE Storage Controller Cable Kit' },
+  TRI_MODE_BOX12_CABLE: { sku: 'P76453-B21', name: 'HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit' }
+};
+
+/**
+ * Dynamically resolve mandatory SKUs for a given chassis or fallback to default mappings
+ * @param {object} chassisInfo 
+ * @returns {object} Mandatory SKUs mapping
+ */
+function getMandatorySkusForChassis(chassisInfo) {
+  const skus = { ...DEFAULT_MANDATORY_SKUS };
+  const family = (chassisInfo?.family || '').toLowerCase();
+  const model = (chassisInfo?.model || '').toLowerCase();
+
+  if (family.includes('alletra')) {
+    skus.NO_DRIVE_FIO_KIT = { sku: 'R0Q21A', name: 'HPE Alletra Storage Drive Blank Kit' };
+  } else if (model.includes('dl360')) {
+    skus.HIGH_PERF_FAN_KIT = { sku: 'P48821-B21', name: 'HPE ProLiant DL360 High Performance Fan Kit' };
+    skus.HIGH_PERF_HEATSINK = { sku: 'P48822-B21', name: 'HPE ProLiant DL360 Performance Heat Sink Kit' };
+  }
+  return skus;
+}
+
+/**
  * Classify a raw rule text into one of the 5 hierarchy levels and assign action type.
  * @param {string} ruleText 
  * @param {string} parentCategory 
@@ -78,7 +110,10 @@ function loadCatalogRules(targetDir) {
     try {
       rawData = JSON.parse(fs.readFileSync(rulesJsonPath, 'utf-8'));
       sourceFile = rulesJsonPath;
-    } catch (err) { console.error('Failed to parse catalog JSON:', err); }
+    } catch (err) {
+      const _logger = require('./pipeline_logger');
+      _logger.warn('CATALOG_RULES', `Failed to parse ${rulesJsonPath}`, err);
+    }
   }
 
   if (!rawData && fs.existsSync(rulesBakPath)) {
@@ -86,7 +121,10 @@ function loadCatalogRules(targetDir) {
       rawData = JSON.parse(fs.readFileSync(rulesBakPath, 'utf-8'));
       sourceFile = rulesBakPath;
       isFallback = true;
-    } catch (err) { console.error('Failed to parse catalog JSON:', err); }
+    } catch (err) {
+      const _logger = require('./pipeline_logger');
+      _logger.warn('CATALOG_RULES', `Failed to parse ${rulesBakPath}`, err);
+    }
   }
 
   if (!rawData && fs.existsSync(catalogJsonPath)) {
@@ -94,7 +132,10 @@ function loadCatalogRules(targetDir) {
       rawData = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
       sourceFile = catalogJsonPath;
       isFallback = true;
-    } catch (err) { console.error('Failed to parse catalog JSON:', err); }
+    } catch (err) {
+      const _logger = require('./pipeline_logger');
+      _logger.warn('CATALOG_RULES', `Failed to parse ${catalogJsonPath}`, err);
+    }
   }
 
   if (!rawData) {
@@ -173,6 +214,8 @@ function loadCatalogRules(targetDir) {
 }
 
 module.exports = {
+  DEFAULT_MANDATORY_SKUS,
+  getMandatorySkusForChassis,
   classifyRule,
   loadCatalogRules
 };

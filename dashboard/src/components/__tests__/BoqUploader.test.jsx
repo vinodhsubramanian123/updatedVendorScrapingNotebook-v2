@@ -18,7 +18,7 @@ describe('BoqUploader', () => {
     fireEvent.click(presetBtn);
     
     const textarea = screen.getByPlaceholderText(/e.g. 1x P49057-B21/i);
-    expect(textarea.value).toContain('P49057-B21');
+    expect(textarea.value).toContain('P73282-B21');
   });
 
   it('calls onEvaluateBoq with raw text when submit button is clicked', async () => {
@@ -34,7 +34,7 @@ describe('BoqUploader', () => {
     
     expect(mockOnEvaluateBoq).toHaveBeenCalledWith({
       filepath: null,
-      rawText: expect.stringContaining('P49057-B21')
+      rawText: expect.stringContaining('P73282-B21')
     });
   });
 });

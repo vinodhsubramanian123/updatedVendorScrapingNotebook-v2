@@ -20,6 +20,8 @@ outputs/**/*.md
 outputs/**/*.log
 # Always keep the registry and directory structure
 !outputs/SCRAPED_CATALOGS.md
+!outputs/history/rules/**
+!outputs/history/master_knowledge_registry.json
 
 # IDE / editor
 .vscode/
