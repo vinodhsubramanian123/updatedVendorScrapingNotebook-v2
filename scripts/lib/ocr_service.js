@@ -64,8 +64,9 @@ async function performGeminiOcr(filePath, options = {}) {
   else if (ext === '.gif') mimeType = 'image/gif';
   else if (ext === '.bmp') mimeType = 'image/bmp';
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const geminiRotator = require('./gemini_rotator');
+  const activeKeyInfo = geminiRotator.getActiveKey();
+  if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     log('⚠️ GEMINI_API_KEY environment variable is absent. Serving image metadata fallback notice.');
     return {
       text: `[OCR_NOTICE] Image file '${path.basename(resolvedPath)}' uploaded. Gemini API Key is required for image OCR parsing. Please configure GEMINI_API_KEY or paste BOM text directly.`,
@@ -77,15 +78,6 @@ async function performGeminiOcr(filePath, options = {}) {
   }
 
   try {
-    const ai = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build'
-        }
-      }
-    });
-
     const fileBuffer = fs.readFileSync(filePath);
     const base64Data = fileBuffer.toString('base64');
     const modelUsed = 'gemini-2.5-flash';
@@ -114,10 +106,18 @@ CRITICAL EXTRACTION RULES:
 
     const textPart = { text: prompt };
 
-    log(`Transmitting image payload to Gemini (${modelUsed})...`);
-    const response = await ai.models.generateContent({
-      model: modelUsed,
-      contents: { parts: [imagePart, textPart] }
+    log(`Transmitting image payload to Gemini (${modelUsed}) with smart key rotation...`);
+    const response = await geminiRotator.executeWithSmartRotation(async ({ ai }) => {
+      return await ai.models.generateContent({
+        model: modelUsed,
+        contents: { parts: [imagePart, textPart] }
+      });
+    }, {
+      clientOptions: {
+        httpOptions: {
+          headers: { 'User-Agent': 'aistudio-build' }
+        }
+      }
     });
 
     const extractedText = response.text ? response.text.trim() : '';

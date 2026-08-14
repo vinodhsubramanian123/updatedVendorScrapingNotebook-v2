@@ -82,16 +82,18 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
 
 async function runAgenticGuardrail(items, chassisDir) {
+  const geminiRotator = require('./gemini_rotator');
   const logger = require('./pipeline_logger');
   const startTime = Date.now();
-  const apiKeys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
-  if (apiKeys.length === 0) {
+  
+  let activeKeyInfo = geminiRotator.getActiveKey();
+  if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     return { error: 'GEMINI_API_KEY environment variable is required.' };
   }
 
   const chassisId = path.basename(chassisDir);
-  let currentKeyIndex = 0;
-  let ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
+  let currentApiKey = activeKeyInfo.apiKey;
+  let ai = new GoogleGenAI({ apiKey: currentApiKey });
 
   const systemInstruction = `You are the HPE BOQ Evaluation Orchestrator (Intent Brain) with a Guardrail Loop.
 Your task is to analyze the user's BOQ configuration.
@@ -118,6 +120,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
   emitProgress(4, 10, 'Agentic AI Cross-Verification', 'in_progress', `Engaging Gemini LLM for Dual-Brain Verification Guardrail Loop.`);
   
   let retryCountInitial = 0;
+  const maxRetries = Math.max(3, activeKeyInfo.totalKeys || 5);
   while (true) {
     if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
       return { error: 'Agentic Guardrail execution timed out after 90 seconds.' };
@@ -125,14 +128,19 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
 
     try {
       response = await chat.sendMessage({ message: `Please evaluate this BOQ configuration containing ${items.length} items. Chassis ID is ${chassisId}.\nItems JSON: ${initialItemsJson}` });
+      geminiRotator.markKeySuccess(currentApiKey);
       break;
     } catch (err) {
-      if (err.status === 429 && apiKeys.length > 1 && retryCountInitial < apiKeys.length) {
-        logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit on initial prompt.');
-        currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
-        logger.warn('AGENTIC_GUARDRAIL', `Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+      const isRateLimit = err.status === 429 || /quota|resource_exhausted|daily|429/i.test(err.message || '');
+      if (isRateLimit && retryCountInitial < maxRetries) {
+        logger.warn('AGENTIC_GUARDRAIL', `Rate limit hit on initial prompt with key ${activeKeyInfo.fingerprint}. Demoting key to bottom of queue.`);
+        geminiRotator.markKeyExhausted(currentApiKey, err, { isDailyLimit: true });
         
-        ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
+        activeKeyInfo = geminiRotator.getActiveKey();
+        currentApiKey = activeKeyInfo.apiKey;
+        logger.warn('AGENTIC_GUARDRAIL', `Promoted new top key: ${activeKeyInfo.fingerprint}`);
+        
+        ai = new GoogleGenAI({ apiKey: currentApiKey });
         chat = ai.chats.create({
           model: MODEL_NAME,
           config: {
@@ -218,16 +226,21 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
     while (true) {
       try {
         response = await chat.sendMessage({ message: toolResponses });
+        geminiRotator.markKeySuccess(currentApiKey);
         break;
       } catch (err) {
-        if (err.status === 429 && apiKeys.length > 1 && retryCount < apiKeys.length) {
-          logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit during agent turn.');
-          currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
-          logger.warn('AGENTIC_GUARDRAIL', `Rotating to API key ${currentKeyIndex + 1} of ${apiKeys.length}`);
+        const isRateLimit = err.status === 429 || /quota|resource_exhausted|daily|429/i.test(err.message || '');
+        if (isRateLimit && retryCount < maxRetries) {
+          logger.warn('AGENTIC_GUARDRAIL', `Rate limit hit during agent turn on key ${activeKeyInfo.fingerprint}. Demoting to bottom of queue.`);
+          geminiRotator.markKeyExhausted(currentApiKey, err, { isDailyLimit: true });
+          
+          activeKeyInfo = geminiRotator.getActiveKey();
+          currentApiKey = activeKeyInfo.apiKey;
+          logger.warn('AGENTIC_GUARDRAIL', `Promoted new top key: ${activeKeyInfo.fingerprint}`);
           
           try {
             const oldHistory = await chat.getHistory();
-            ai = new GoogleGenAI({ apiKey: apiKeys[currentKeyIndex] });
+            ai = new GoogleGenAI({ apiKey: currentApiKey });
             chat = ai.chats.create({
               model: MODEL_NAME,
               config: {
@@ -244,9 +257,9 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
           }
         }
         
-        if (err.status === 429 && retryCount < 3) {
-          logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit. Waiting 15s before retrying...');
-          await sleep(15000);
+        if (isRateLimit && retryCount < 3) {
+          logger.warn('AGENTIC_GUARDRAIL', 'Rate limit hit. Waiting 10s before retrying...');
+          await sleep(10000);
           retryCount++;
         } else {
           logger.warn('AGENTIC_GUARDRAIL', 'Agentic loop chat error', err);

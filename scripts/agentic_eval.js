@@ -68,13 +68,14 @@ const evaluationTools = [
 ];
 
 async function runAgenticEval(inputFile) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const geminiRotator = lib.system.geminiRotator;
+  const activeKeyInfo = geminiRotator.getActiveKey();
+  if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     console.error('GEMINI_API_KEY environment variable is required.');
     process.exit(1);
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  const ai = new GoogleGenAI({ apiKey: activeKeyInfo.apiKey });
   const rawText = fs.readFileSync(inputFile, 'utf-8');
   
   console.log('⚡ Phase 1: Parsing BOQ');

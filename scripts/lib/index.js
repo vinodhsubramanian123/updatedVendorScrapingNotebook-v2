@@ -18,7 +18,8 @@ module.exports = {
     fsCompat: require('./fs_compat.js'),
     progress: require('./progress.js'),
     logger: require('./pipeline_logger.js'),
-    profileLoader: require('./profile_loader.js')
+    profileLoader: require('./profile_loader.js'),
+    geminiRotator: require('./gemini_rotator.js')
   },
 
   // BOQ Processing & Evaluation Subsystem
@@ -53,7 +54,8 @@ module.exports = {
     knowledgeSync: require('./knowledge_sync.js'),
     notebookQuery: require('./notebook_query_utils.js'),
     localSearch: require('./local_rag_search.js'),
-    postFlowSync: require('./post_flow_sync.js')
+    postFlowSync: require('./post_flow_sync.js'),
+    geminiRotator: require('./gemini_rotator.js')
   },
 
   // Scraper Subsystem

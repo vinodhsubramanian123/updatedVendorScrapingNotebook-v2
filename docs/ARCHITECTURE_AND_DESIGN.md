@@ -8,14 +8,19 @@ graph TD
     subgraph "Phase 1: Ingestion"
         A[Input BOQ - Excel/CSV/Image] --> B[Multimodal OCR Extraction]
     end
+    subgraph "Infrastructure: Gemini Key Rotator"
+        KR[Smart Key Rotator: FIFO Queue + Daily Quota Demotion] -->|Active Key| B
+        KR -->|Active Key| E[Agentic Guardrail Loop via MCP]
+        KR -->|Active Key| G[Local Catalog DB Search]
+    end
     subgraph "Phase 2: Local Rule Engine (Deterministic)"
         B --> C[BOQ Parsing & Multi-Node Cleansing]
         C --> D[6-Aspect Math: Thermal, Power, Memory, PCIe, Storage, Network]
     end
     subgraph "Phase 3: Agentic Guardrail (Probabilistic)"
-        D -->|If Confidence < 1.0| E[Agentic Guardrail Loop via MCP]
+        D -->|If Confidence < 1.0| E
         E <--> F[NotebookLM RAG Grounding]
-        E <--> G[Local Catalog DB Search]
+        E <--> G
     end
     subgraph "Phase 4: Synthesis & Output"
         E --> H[5-Tier Strategic Resolution Matrix]
@@ -26,6 +31,7 @@ graph TD
 
 ## 2. Core Architectural Decisions
 - **Deterministic Rule Engine Primacy**: The local engine (e.g., `boq_evaluator.js`) executes fast, hardcoded physical hardware math without relying on external LLMs. This ensures a 100% functional fallback if APIs go offline.
+- **Smart Key Rotation & Quota Management (FIFO Queue)**: API traffic is governed by `gemini_rotator.js`. Instead of random key selection, it uses a deterministic FIFO queue. When a key encounters a 429 or daily quota exhaustion, it is marked exhausted and pushed to the bottom of the queue while the next active key immediately pops up to complete the call. Keys automatically restore to active status on UTC day rollover.
 - **Agentic MCP Guardrail**: Instead of brittle LLM single-pass prompting, the system uses a stateful Model Context Protocol (MCP) tool-calling loop (`agentic_guardrail.js`). The LLM actively hypothesizes fixes, calls the local rule engine via `simulate_build`, and checks NotebookLM before committing.
 - **Loose Coupling via Barrel Exports**: All backend subsystems (BOQ Engine, RAG, Scraper, Feedback) are strictly decoupled and routed through a master barrel export (`scripts/lib/index.js`). This eliminates "God Nodes" and tight coupling, preventing brittle cross-dependencies.
 - **Continuous Structural Auditing (Dynamic Truth)**: While this document provides the *static* conceptual design, the system architecture is actively audited using the `graphify` skill. The resulting semantic graph (`graphify-out/GRAPH_REPORT.md`) is the *dynamic source of truth* for file dependencies and god nodes. Agents MUST query this graph rather than relying solely on static docs.
@@ -36,6 +42,7 @@ graph TD
 - **KnowledgeDelta**: Captures learned physical dependency rules. Used to train the local rule engine.
 - **ConflictGraph**: Directed Acyclic Graph tracking SKU dependencies, mutually exclusive items, and capacity bounds.
 - **ResolutionMatrix**: 5-Tier layout of hardware builds (Rank 1: Intent Preserving, Rank 5: Budget Minimized). Includes itemized price data.
+- **GeminiKeysState**: Dynamic queue state, quota health, success/failure counts, and cooldown timestamps for all configured API keys (`gemini_keys_state.json`).
 
 ## 4. UI/UX Design System
 - **Real-Time Telemetry Dashboard**: Utilizes SSE (Server-Sent Events) to stream evaluation logs.
@@ -47,9 +54,9 @@ The engine is structured into 5 decoupled domain namespaces exported via [`scrip
 
 | Subsystem | Modules | Core Responsibilities |
 |---|---|---|
-| **`system`** | `telemetry`, `fsCompat`, `progress`, `logger`, `profileLoader` | Atomic I/O with rollback (`safeWriteJsonAtomic`), progress streaming, structured logging, profile loading |
+| **`system`** | `telemetry`, `fsCompat`, `progress`, `logger`, `profileLoader`, `geminiRotator` | Atomic I/O with rollback (`safeWriteJsonAtomic`), progress streaming, structured logging, profile loading, FIFO Gemini API key rotation & daily quota management |
 | **`boq`** | `evaluator`, `preprocessor`, `parser`, `conflictGraph`, `budgetOptimizer`, `vendorBomVerifier`, `xlsxExporter` | 6-aspect physical math, N-way configuration diffing, shared SKU line parsing (`boq_parser.js`), 5-tier strategy matrix |
 | **`catalog`** | `rules`, `discovery`, `formatter`, `diff`, `productMeta`, `sku`, `registry`, `validator`, `checksumDiff`, `skuVersioning`, `syncRegistry` | 5-level catalog rules, auto-chassis detection, schema validation (`data_validator.js`), SKU regex, price diff audit |
-| **`rag`** | `ocrService`, `knowledgeSync`, `notebookQuery`, `localSearch`, `postFlowSync` | Multimodal Gemini Vision OCR (with 25MB limits), bi-directional NotebookLM sync, dual-layer local fallback search |
+| **`rag`** | `ocrService`, `knowledgeSync`, `notebookQuery`, `localSearch`, `postFlowSync`, `geminiRotator` | Multimodal Gemini Vision OCR (with 25MB limits), bi-directional NotebookLM sync, dual-layer local fallback search, smart LLM synthesis |
 | **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning |
 

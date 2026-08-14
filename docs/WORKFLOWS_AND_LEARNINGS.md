@@ -1,7 +1,7 @@
 # Workflows, Pipelines & Full Learnings
 
 ## 1. 6-Stage BOQ Evaluation Workflow
-1. **Multimodal Parsing**: `gemini-2.5-flash` processes images/PDFs into structured BOQ JSON.
+1. **Multimodal Parsing**: Multimodal OCR service (`ocr_service.js`) backed by `gemini-3.5-flash` processes images/PDFs into structured BOQ JSON with automated API key rotation and retry.
 2. **CTO Normalization**: Resolves fractional math for multi-node chassis configurations.
 3. **Aspect Math Guardrails**: Validates CPU TDP limits, memory channel symmetry, power lug kits, and PCIe slots.
 4. **NotebookLM Grounding**: Queries HPE QuickSpecs for absolute truth on dependencies.
@@ -9,7 +9,12 @@
 6. **Partner Portal Re-verification**: Cross-checks solutions against official HPE portals to derive `KnowledgeDeltas`.
 
 ## 2. System Learnings & Improvements
-- **API Rate Limits & Key Rotation (429 & 503 Errors)**: High concurrency triggers strict Gemini API limits. We solved this by implementing an autonomous dynamic API Key Rotation architecture in `agentic_guardrail.js`. The system parses a comma-separated list of keys from `.env` and immediately reconstructs the `@google/genai` Chat session (preserving full message history) with a new active key if a `429` error is encountered, bypassing the traditional 15-second backoff loop.
+- **Deterministic FIFO Key Rotation & Quota Management (429 & Daily Quota Errors)**: High concurrency triggers strict Gemini API limits. We solved this by creating a dedicated, stateful Key Rotation Manager (`gemini_rotator.js`). Instead of random key selection, it uses a deterministic FIFO queue:
+  - **Deterministic Head-of-Queue**: The system always uses the active Head key at the top of the queue.
+  - **Demote-to-Bottom on 429 / Quota Limit**: When a key encounters a rate limit (HTTP 429 / Quota Exhaustion / Daily Limit), it is marked exhausted until midnight UTC, removed from the head, and pushed to the bottom of the queue.
+  - **Immediate Pop & Retry**: The next active key immediately pops up to the top and seamlessly executes the request.
+  - **Day-Rollover Auto-Restoration**: As soon as the UTC calendar day rolls over, all exhausted keys automatically reset to active status and rejoin the rotation.
+  - **State Persistence**: Tracked atomically in `outputs/history/gemini_keys_state.json`.
 - **Hallucination Prevention (Red-Teaming)**: We implemented a background Adversarial Agent (`adversarial_agent.js`) that continuously injects hallucinated BOQs to verify the evaluator's Catch Rate and Precision. This runs asynchronously and updates the `pipeline_telemetry.json` heartbeat.
 - **Agentic Autonomy**: We replaced static LLM explanation prompts with an active **Guardrail Loop** using MCP tool definitions. The LLM can now call `simulate_build` and `record_knowledge_delta`.
 - **Decoupling Scraping from Core Script**: We observed that globally hardcoded CDP parameters (like a 15,000px scroll threshold) were perfectly tuned for massive chassis like DL380 Gen12 but would artificially cause false-positive validation failures on smaller networking or storage scrapes. We resolved this ambiguity by implementing a Configuration-Driven Profile architecture (`scripts/config/profiles/`), moving generation-specific keywords and heuristics out of regex strings and into maintainable JSON profiles.
@@ -22,13 +27,14 @@
 - **Architectural Loose Coupling via Graphify**: By running `graphify` audits on our `scripts/` and `dashboard/src/` codebases, we successfully identified "God Nodes" and "Surprising Connections" (e.g., `agentic_eval.js` tightly coupling directly to `lib/local_rag_search.js`). We resolved this by refactoring backend agents to enforce strict loose coupling through a master barrel export (`scripts/lib/index.js`), which significantly improves modularity.
 - **Anti-Slop UI Refactoring (Taste Skill)**: Standard templates often yield visually generic "AI slop". By incorporating the `design-taste-frontend` skill, we standardized on the **Geist** font, strict `rounded-xl` (12px) shapes, tight drop-shadows, and a high-contrast **Emerald Green (`#01A781`) / Slate** palette. This drastically improved data density and visual hierarchy in the React dashboard.
 - **Token Optimization via Graphify Semantic Reports**: Agents reviewing this repository to understand code flow and logic MUST read the `graphify-out/GRAPH_REPORT.md` files (generated via Graphify) instead of executing full-file reads. Graphify summarizes architectural hubs and edges, effectively saving thousands of input tokens while preventing agents from hallucinating dependencies.
-- **Graphify API Key Resolution**: `agentic_guardrail.js` utilizes a comma-separated list of Gemini API keys in `.env` for rotation. However, third-party Python tools like `graphify` expect a single valid key and will fail with `400 Invalid Auth key` if passed the raw list. Always extract a single key (e.g., `export GEMINI_API_KEY=$(grep GEMINI_API_KEY .env | cut -d '=' -f2 | awk -F',' '{print $3}')`) before running `graphify .`.
+- **Graphify API Key Resolution**: `agentic_guardrail.js` and `gemini_rotator.js` utilize a comma-separated list of Gemini API keys in `.env` for rotation. However, third-party Python tools like `graphify` expect a single valid key and will fail with `400 Invalid Auth key` if passed the raw list. Always extract a single key (e.g., `export GEMINI_API_KEY=$(grep GEMINI_API_KEY .env | cut -d '=' -f2 | awk -F',' '{print $3}')`) before running `graphify .`.
 
 ## 3. MCP Server & Tooling Workflow
 The MCP server (`scripts/mcp_server.js`) exposes the local rule engine as standardized tools. 
 When a BOQ evaluation results in low confidence, the orchestrator triggers `runAgenticGuardrail`, which uses these tools to iteratively resolve issues until a high confidence score is achieved.
 
 ## 4. Testing & Certification Suite
+- **Smart Key Rotator Suite (`tests/test_gemini_rotator.js`)**: 7 unit and integration tests verifying queue selection, daily limit exhaustion demotion to bottom of queue, instant failover, day-rollover restoration, and live key pool connectivity.
 - **Aspect Math Unit Suite (`scripts/test_all_aspects.js`)**: 34 assertions covering physical hardware aspects (thermal, power, memory, PCIe, storage, network).
 - **Evaluation Benchmarks (`scripts/test_boq_eval_benchmarks.js`)**: 5 scenarios validating violation recall rate (100.0%) and precision rate (100.0%) across strategy matrix tiers.
 - **Portfolio Audit Suite (`scripts/verify_all.js`)**: 100% verification across all portfolio catalog outputs on disk.

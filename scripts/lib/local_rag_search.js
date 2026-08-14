@@ -260,15 +260,13 @@ async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId 
   }
   const localRes = queryLocalKnowledgeBase(query, resolvedChassis);
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const geminiRotator = require('./gemini_rotator');
+  const activeKeyInfo = geminiRotator.getActiveKey();
+  if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     return localRes;
   }
 
   try {
-    const { GoogleGenAI } = require('@google/genai');
-    const ai = new GoogleGenAI({ apiKey });
-
     const prompt = `You are the official Gemini NotebookLM RAG Assistant for HPE Solution Configurator (Notebook ID: ${notebookId || 'Mapped Notebook'}).
 User Query: "${query}"
 
@@ -280,9 +278,11 @@ Instructions:
 2. Maintain clean markdown formatting with bolding for SKUs, bullet points, core counts, and prices.
 3. Keep the citations accurate and professional.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
-      contents: prompt
+    const response = await geminiRotator.executeWithSmartRotation(async ({ ai }) => {
+      return await ai.models.generateContent({
+        model: 'gemini-3.5-flash',
+        contents: prompt
+      });
     });
 
     if (response && response.text) {

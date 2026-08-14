@@ -63,8 +63,9 @@ vendorNotebookSolution/
 │   │   ├── feedback_loop.js               ← HITL feedback capture & learning
 │   │   ├── feedback_queue.js              ← async feedback queue
 │   │   ├── fs_compat.js                   ← safe atomic file operations & backups
+│   │   ├── gemini_rotator.js              ← deterministic FIFO key rotator & daily quota manager
 │   │   ├── generate_boq_xlsx.js           ← XLSX exporter
-│   │   ├── index.js                       ← barrel re-export for common lib modules (33 domain exports)
+│   │   ├── index.js                       ← barrel re-export for common lib modules (34 domain exports)
 │   │   ├── knowledge_sync.js              ← NotebookLM sync payload builder & delta registry
 │   │   ├── local_rag_search.js            ← dual-layer local fallback search
 │   │   ├── navigate_oca.js                ← smart partner portal auto-navigator
@@ -89,6 +90,7 @@ vendorNotebookSolution/
 │   ├── verify_all.js                      ← portfolio audit suite (npm test)
 │   └── rebuild_all.js                     ← rebuild all catalogs from raw_data
 ├── tests/                                 ← test suites
+│   ├── test_gemini_rotator.js             ← smart FIFO key rotator & daily quota unit/live suite
 │   ├── e2e_headless_ui_test.js            ← E2E headless browser UI test
 │   ├── test_end_to_end_scenarios.js       ← multi-scenario E2E validation
 │   ├── test_conflict_graph.js             ← conflict graph unit tests

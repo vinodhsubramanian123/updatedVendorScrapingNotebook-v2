@@ -23,9 +23,9 @@ cp .env.example .env
 |----------|----------|---------|-------------|
 | `PORT` | No | `3000` | Express server port for the dashboard |
 | `NODE_ENV` | No | `development` | Node environment (`development` / `production`) |
-| `GEMINI_API_KEY` | No | — | Google Gemini API key for NotebookLM RAG features and Agentic Guardrail |
+| `GEMINI_API_KEY` | No | — | Google Gemini API key (or comma-separated pool of keys) for Smart FIFO Rotation, NotebookLM RAG, OCR, and Agentic Guardrail |
 
-> **Note**: The dashboard runs fully functional without `GEMINI_API_KEY`. The local Rule Engine (deterministic) handles all BOQ evaluations. The API key only enables the NotebookLM RAG verification layer.
+> **Note**: The dashboard runs fully functional without `GEMINI_API_KEY`. The local Rule Engine (deterministic) handles all BOQ evaluations. The API keys enable the Multimodal OCR, NotebookLM RAG verification, and Agentic Guardrail loops with zero-downtime auto-rotation.
 
 ---
 
@@ -47,6 +47,7 @@ npm run dev
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files |
 | `npm test` | Run portfolio verification audit (`verify_all.js`) |
+| `npm run test:rotator` | Run Smart Gemini Key Rotator test suite (`test_gemini_rotator.js`) |
 | `npm run test:all` | Run ALL test suites (E2E, conflicts, offline, edges, aspects, audit) |
 | `npm run test:aspects` | Run 34-assertion aspect math verification |
 | `npm run test:benchmarks` | Run 5-scenario BOQ evaluation benchmarks |
