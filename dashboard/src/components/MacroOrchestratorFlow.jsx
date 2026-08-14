@@ -3,7 +3,7 @@ import {
   FileUp, ShieldCheck, Layers, Brain, LayoutDashboard,
   Repeat, Database, CheckCircle2, AlertTriangle,
   RefreshCw, ChevronDown, ChevronUp, Terminal, ArrowRight,
-  Zap, Sparkles, Activity, Award, Play, Check
+  Zap, Sparkles, Activity, Award
 } from 'lucide-react';
 import WorkflowStepper from './WorkflowStepper';
 import AutonomousWorkflowSimulator from './AutonomousWorkflowSimulator';

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, 
   XCircle, Terminal, Sliders, Layers, GitCompare, Check, 
-  ShieldCheck, Calculator, HelpCircle, ArrowRight, Zap, Award, Wrench
+  ShieldCheck, Calculator, HelpCircle, ArrowRight, Award, Wrench
 } from 'lucide-react';
 
 export default function BoqUploader({ 
@@ -12,7 +12,7 @@ export default function BoqUploader({
   chassisDir,
   isTaskRunning = false,
   onOpenMatrix,
-  onOpenReconciliation
+  _onOpenReconciliation
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
@@ -147,8 +147,6 @@ export default function BoqUploader({
     // Submit with updated text
     onEvaluateBoq({ rawText: updated });
   };
-
-  const lowConfidence = evalResults?.requiresUserChassisConfirmation || (evalResults?.chassisConfidence < 0.75);
 
   const confidenceScore = evalResults?.confidence?.score ?? (evalResults?.conflictGraph?.isWholeSolutionValid ? 1.0 : 0.55);
   const confidencePercent = Math.round(confidenceScore * 100);

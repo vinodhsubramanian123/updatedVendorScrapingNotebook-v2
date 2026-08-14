@@ -14,10 +14,10 @@ export default function CatalogExplorer({
   onSelectChassis,
   isCatalogLoading = false, 
   initialSearchQuery = '',
-  globalSearchTerm = '',
-  onClearSearch,
-  onOpenRag,
-  onRagQuery
+  _globalSearchTerm = '',
+  _onClearSearch,
+  _onOpenRag,
+  _onRagQuery
 }) {
   const [query, setQuery] = useState(initialSearchQuery || '');
   const [searchResults, setSearchResults] = useState(null);

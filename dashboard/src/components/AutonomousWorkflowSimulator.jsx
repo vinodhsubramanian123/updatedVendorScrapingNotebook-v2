@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Play, Pause, RotateCcw, ChevronRight, ChevronLeft,
-  CheckCircle2, AlertTriangle, RefreshCw, Zap,
+  CheckCircle2, RefreshCw, Zap,
   Brain, ShieldCheck, FileUp, Layers, Repeat,
-  Database, Award, Activity, HelpCircle, ArrowRight,
-  Server, Cpu, HardDrive, Thermometer, BatteryCharging,
-  Sliders, Sparkles, Terminal, Check
+  Database,
+  Cpu, Thermometer, BatteryCharging,
+  Sparkles
 } from 'lucide-react';
 
 const SCENARIOS = [
@@ -140,8 +140,8 @@ const STEPS = [
 ];
 
 export default function AutonomousWorkflowSimulator({
-  onApplyScenarioResults,
-  onClose
+  _onApplyScenarioResults,
+  _onClose
 }) {
   const [selectedScenarioIdx, setSelectedScenarioIdx] = useState(0);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
