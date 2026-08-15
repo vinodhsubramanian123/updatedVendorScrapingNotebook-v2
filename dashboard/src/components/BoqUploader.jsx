@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, 
-  XCircle, Terminal, Sliders, Layers, GitCompare, Check, 
+  XCircle, Terminal, Sliders, Layers, Check, 
   ShieldCheck, Calculator, HelpCircle, ArrowRight, Award, Wrench,
-  Cpu, Database, Sparkles, Activity, Play, Zap, CheckCircle
+  Activity
 } from 'lucide-react';
 
 const EVAL_PIPELINE_STEPS = [
@@ -549,7 +549,6 @@ export default function BoqUploader({
             {EVAL_PIPELINE_STEPS.map((step) => {
               const isCompleted = currentStep > step.id || (currentStep >= 10 && evalResults);
               const isCurrent = currentStep === step.id && isEvaluating;
-              const isPending = currentStep < step.id;
 
               return (
                 <div

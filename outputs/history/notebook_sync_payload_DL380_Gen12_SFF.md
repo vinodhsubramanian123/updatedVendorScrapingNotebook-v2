@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-15T19:15:16.793Z  
+**Sync Timestamp**: 2026-08-15T19:25:18.636Z  
 **Total Verified SKUs**: `787` (`277` Hardware + `510` Services)  
-**Total Synced KnowledgeDeltas**: `49`  
+**Total Synced KnowledgeDeltas**: `52`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -208,6 +208,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 
 43. **[DELTA-1786821316650] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+44. **[DELTA-1786821535252] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+45. **[DELTA-1786821757289] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76450-B21.
+   - **Affected SKU**: `P76449-B21` | **Required Dependency**: `P76450-B21` 
+
+46. **[DELTA-1786821909493] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76453-B21.
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 
