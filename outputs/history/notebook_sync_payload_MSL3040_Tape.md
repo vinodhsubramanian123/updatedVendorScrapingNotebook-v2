@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `MSL3040_Tape`  
-**Sync Timestamp**: 2026-08-14T14:31:27.311Z  
+**Sync Timestamp**: 2026-08-15T19:15:02.142Z  
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `43`  
+**Total Synced KnowledgeDeltas**: `48`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -39,7 +39,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (MSL3040_Tape)
 
-*No specific gotchas logged for MSL3040_Tape. Baseline chassis layout rules active.*
+1. **[PREPROC-DELTA-1786781599909] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
+2. **[PREPROC-DELTA-1786781611542] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for Variation 1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

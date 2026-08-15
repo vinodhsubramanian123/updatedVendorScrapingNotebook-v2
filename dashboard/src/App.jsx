@@ -17,6 +17,20 @@ import GlobalLoadingState from './components/GlobalLoadingState';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
 
+// Build structured aspectChecks array from individual eval fields when not provided
+function buildAspectChecksFromEval(evalData) {
+  if (!evalData || Object.keys(evalData).length === 0) return [];
+  return [
+    { id: 1, name: 'Compute & Thermal', status: evalData.hasHighPerfFans !== false ? 'PASS' : 'FAIL', detail: `${evalData.cpuCount || 0} CPUs (Max TDP: ${evalData.maxCpuTdpWatts || 0}W) | High-Perf Fans: ${evalData.hasHighPerfFans ? '✅' : '❌'}` },
+    { id: 2, name: 'Memory & Channels', status: evalData.isBalancedChannel !== false ? 'PASS' : 'FAIL', detail: `${evalData.memoryCount || 0} DIMMs (${evalData.totalMemoryGb || 0} GB Total)` },
+    { id: 3, name: 'Storage & Tri-Mode', status: evalData.hasSmartBattery !== false ? 'PASS' : 'FAIL', detail: `${evalData.driveCount || 0} Drives | Battery: ${evalData.hasSmartBattery ? '✅' : '❌'}` },
+    { id: 4, name: 'PCIe Expansion', status: (evalData.requiredPcieCards || 0) <= (evalData.totalPcieSlotsAvailable || 8) ? 'PASS' : 'FAIL', detail: `${evalData.requiredPcieCards || 0} Cards / ${evalData.totalPcieSlotsAvailable || 8} Slots` },
+    { id: 5, name: 'Networking & OCP', status: 'PASS', detail: `OCP Adapter: ${evalData.hasOcpAdapter ? '✅' : '⚠️ Optional'}` },
+    { id: 6, name: 'Power & Ambient', status: (!evalData.hasDcPowerSupply || evalData.hasDcLugKit) ? 'PASS' : 'FAIL', detail: `DC PSU: ${evalData.hasDcPowerSupply ? 'YES' : 'NO'} | Lug Kit: ${evalData.hasDcLugKit ? '✅' : '❌'}` },
+    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '⚠️ Optional'}` },
+  ];
+}
+
 // Generic Modal Wrapper Component
 function ToolModal({ isOpen, onClose, title, children }) {
   useEffect(() => {
@@ -208,12 +222,42 @@ export default function App() {
         } else if (payload.type === 'LOG') {
           setLogStream(prev => [...prev.slice(-200), payload]);
         } else if (payload.type === 'EVAL_RESULT') {
+          console.log('[App.jsx:SSE] EVAL_RESULT received:', payload);
           // The async BOQ evaluation completed successfully!
           setIsTaskRunning(false);
           setActiveProgress(null);
           
           if (payload.data) {
-            setEvalResults(payload.data);
+            // Flatten: hoist inner evalResults fields to top-level so UI components 
+            // can access .errors, .confidence, .aspectChecks, .missingDependencies directly
+            const inner = payload.data.evalResults || {};
+            const flatEval = {
+              ...payload.data,
+              // Hoist inner eval fields to top level for component backward compat
+              errors: inner.errors ?? payload.data.errors ?? [],
+              warnings: inner.warnings ?? payload.data.warnings ?? [],
+              missingDependencies: inner.missingDependencies ?? payload.data.missingDependencies ?? [],
+              confidence: inner.confidence ?? payload.data.confidence ?? { score: 0, summary: '' },
+              cpuCount: inner.cpuCount ?? payload.data.cpuCount,
+              maxCpuTdpWatts: inner.maxCpuTdpWatts ?? payload.data.maxCpuTdpWatts,
+              memoryCount: inner.memoryCount ?? payload.data.memoryCount,
+              totalMemoryGb: inner.totalMemoryGb ?? payload.data.totalMemoryGb,
+              driveCount: inner.driveCount ?? payload.data.driveCount,
+              hasHighPerfFans: inner.hasHighPerfFans ?? payload.data.hasHighPerfFans,
+              hasSmartBattery: inner.hasSmartBattery ?? payload.data.hasSmartBattery,
+              hasDcPowerSupply: inner.hasDcPowerSupply ?? payload.data.hasDcPowerSupply,
+              hasDcLugKit: inner.hasDcLugKit ?? payload.data.hasDcLugKit,
+              hasOcpAdapter: inner.hasOcpAdapter ?? payload.data.hasOcpAdapter,
+              hasSupportService: inner.hasSupportService ?? payload.data.hasSupportService,
+              agenticExplanation: inner.agenticExplanation ?? payload.data.agenticExplanation,
+              // Preserve conflictGraph and rankedSolutions for easy access
+              conflictGraph: payload.data.conflictGraph ?? inner.conflictGraph ?? {},
+              rankedSolutions: payload.data.conflictGraph?.rankedSolutions ?? inner.conflictGraph?.rankedSolutions ?? payload.data.rankedSolutions ?? [],
+              workloadDna: payload.data.conflictGraph?.workloadDna ?? payload.data.workloadDna,
+              // Generate aspectChecks from inner eval data for components that need it
+              aspectChecks: inner.aspectChecks ?? buildAspectChecksFromEval(inner),
+            };
+            setEvalResults(flatEval);
             // Stay on orchestrator to view matrix
             
             // Decoupled RAG: Dispatch parallel RAG query now that matrix is rendered
@@ -420,10 +464,12 @@ export default function App() {
 
   // Handler: Evaluate BOQ (Now Async SSE Driven)
   const handleEvaluateBoq = async (boqInput) => {
+    console.log('[App.jsx] handleEvaluateBoq called with input:', boqInput);
     setLogStream([]);
     setEvalResults(null);
     try {
       const currentCat = catalogs.find(c => c.id === selectedChassis);
+      console.log('[App.jsx] Selected chassis:', selectedChassis, 'chassisDir:', currentCat?.chassisDir);
       const res = await fetch('/api/eval-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -431,6 +477,7 @@ export default function App() {
       });
       
       const data = await res.json();
+      console.log('[App.jsx] /api/eval-boq response status:', res.status, 'data:', data);
       if (!res.ok) {
         setEvalResults({ status: 'ERROR', error: data.error });
         return { error: data.error };
@@ -438,7 +485,7 @@ export default function App() {
       // If ok (202), we don't return data immediately. The SSE stream will broadcast EVAL_RESULT.
       return { status: 'ACCEPTED' };
     } catch (err) {
-      console.error(err);
+      console.error('[App.jsx] handleEvaluateBoq error:', err);
       setEvalResults({ status: 'ERROR', error: err.message });
       return { error: err.message };
     }

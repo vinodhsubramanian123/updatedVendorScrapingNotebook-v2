@@ -183,8 +183,10 @@ function evalNetworkingOcp(items, catalogData = null) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    if (role === 'Network Adapter' || desc.includes('ocp') || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('bcm5719') || desc.includes('bcm57504') || desc.includes('e810') || desc.includes('cx6')) {
-      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('bcm57504') || desc.includes('bcm5719');
+    if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) continue;
+
+    if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || desc.includes('bcm5719') || desc.includes('bcm57504') || desc.includes('e810') || desc.includes('cx6')) {
+      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('ocp3');
       if (isOcp) {
         hasOcpAdapter = true;
         ocpAdapterCount += it.quantity;
@@ -233,8 +235,10 @@ function evalPcieRiserSlots(items, catalogData = null) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
+    if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Battery' || role === 'Boot Device' || role === 'Chassis Infrastructure' || role === 'Service & Support' || role === 'Operating System / License') continue;
+
     // Count PCIe Expansion Cards (GPUs, NICs, HBAs, Controllers, Accelerator Cards)
-    if (role === 'GPU / Accelerator' || role === 'Network Adapter' || role === 'Storage Controller' || desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
+    if (role === 'GPU / Accelerator' || role === 'Network Adapter' || role === 'Storage Controller' || role === 'Fibre Channel HBA' || desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
       if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('lom') && !desc.includes('cable') && !desc.includes('cage') && !desc.includes('battery')) {
         requiredPcieCards += it.quantity;
       }
@@ -248,9 +252,9 @@ function evalPcieRiserSlots(items, catalogData = null) {
     }
   }
 
-  // Base Chassis provides 2 standard slots; Primary adds 3; Secondary adds 3; Tertiary adds 2.
-  const totalSlotsAvailable = 2 + (primaryRiserCount * 3) + (secondaryRiserCount * 3) + (tertiaryRiserCount * 2);
-  const needsSecondaryRiser = requiredPcieCards > (2 + primaryRiserCount * 3);
+  // 2U Base Chassis provides 3 standard slots (Primary Riser); Secondary adds 3; Tertiary adds 2.
+  const totalSlotsAvailable = 3 + (primaryRiserCount * 3) + (secondaryRiserCount * 3) + (tertiaryRiserCount * 2);
+  const needsSecondaryRiser = requiredPcieCards > (3 + primaryRiserCount * 3);
 
   return { requiredPcieCards, primaryRiserCount, secondaryRiserCount, tertiaryRiserCount, totalSlotsAvailable, needsSecondaryRiser };
 }
@@ -318,6 +322,26 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const chassisInfo = detectChassisVariant(items);
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
+  // Detect server / chassis node count for multi-node orders
+  let serverCount = 1;
+  for (const it of items) {
+    const desc = (it.description || '').toLowerCase();
+    const clean = cleanBaseSKU(it.sku);
+    if (
+      desc.includes('configure-to-order') ||
+      desc.includes('cto server') ||
+      desc.includes('base server') ||
+      clean === chassisInfo.baseSku ||
+      clean === 'P73282-B21' ||
+      clean === 'P52534-B21' ||
+      clean === 'P76706-B21' ||
+      clean === 'P56900-B21'
+    ) {
+      serverCount = Math.max(1, parseInt(it.quantity, 10) || 1);
+      break;
+    }
+  }
+
   emitProgress(2, 10, 'Compute & Thermal Profiling', 'in_progress', `Analyzing ${items.length} SKUs for high-TDP processor constraints and heatsink counts.`);
   const compute = evalComputeThermal(items, catalogData, mandatorySkus);
   
@@ -340,23 +364,31 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const missingDependencies = [];
   const mathDeductions = [];
 
+  // Per-server normalized values
+  const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
+  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
+  const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
+  const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
+  const psuPerServer = power.psuCount / serverCount;
+
   // Rule: OCP Slot Capacity Math
-  if (network.isExceedingOcpSlots) {
-    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${network.maxOcpSlots} OCP slot(s).`;
+  if (isExceedingOcp) {
+    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} OCP slot(s) across ${serverCount} server(s).`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
 
   // Rule: PCIe Slot Capacity vs Riser Math
-  if (pcie.requiredPcieCards > pcie.totalSlotsAvailable) {
-    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcie.totalSlotsAvailable} available slots.`;
+  if (isExceedingPcie) {
+    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} available slots across ${serverCount} server(s).`;
     warnings.push(reason);
     mathDeductions.push(reason);
   }
 
   // Rule: CPU 2 PCIe Lane Allocation requirement for Secondary/Tertiary Risers
-  if ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && compute.cpuCount < 2) {
-    const reason = `Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket. Only 1 CPU found.`;
+  const cpusPerServer = compute.cpuCount / serverCount;
+  if ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) {
+    const reason = `Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket. Only ${cpusPerServer} CPU(s) per node found.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
@@ -371,7 +403,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       rule: 'High TDP Thermal Cooling Rule',
       sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
       description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
-      quantity: 1,
+      quantity: serverCount,
       reasoning: reason
     });
   }
@@ -386,7 +418,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       rule: 'Drive-less Chassis Configuration Rule',
       sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
       description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
-      quantity: 1,
+      quantity: serverCount,
       reasoning: reason
     });
   }
@@ -401,21 +433,21 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       rule: 'DC Power Supply Cable Rule',
       sku: mandatorySkus.DC_LUG_KIT.sku,
       description: mandatorySkus.DC_LUG_KIT.name,
-      quantity: 1,
+      quantity: serverCount,
       reasoning: reason
     });
   }
 
   // Rule 3b: Power Supply Redundancy Warning
-  if (power.psuCount === 1) {
-    const reason = `Power Redundancy Warning: Single power supply configured. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
+  if (psuPerServer === 1) {
+    const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'POWER_SUPPLY_REDUNDANCY',
       rule: 'Power Supply N+1 Redundancy Rule',
       sku: 'P48818-B21',
       description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply',
-      quantity: 1,
+      quantity: serverCount,
       reasoning: reason
     });
   }
@@ -426,7 +458,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     return clean === chassisInfo.baseSku || clean === 'P73282-B21';
   });
   const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
-  const hasDriveCageKit = items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21');
+  const hasDriveCageKit = items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21');
 
   if (hasBaseChassis && storage.driveCount === 0 && !hasNoDriveFioKit && !hasDriveCageKit) {
     const reason = `CLIC Rule 81392308: Chassis ${chassisInfo.baseSku || 'CTO'} without drives requires ${mandatorySkus.NO_DRIVE_FIO_KIT.sku} FIO Kit.`;
@@ -436,7 +468,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       rule: 'CLIC Rule 81392308: Front Cage / No Drive FIO Requirement',
       sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
       description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
-      quantity: 1,
+      quantity: serverCount,
       reason: `UNBUILDABLE CONFIGURATION (Rule 81392308): Base chassis ordered without drives requires FIO Kit or an explicit Front Drive Cage Kit.`,
       reasoning: reason
     });
@@ -452,7 +484,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       rule: 'Controller Cache Protection Rule',
       sku: mandatorySkus.SMART_STORAGE_BATTERY.sku,
       description: mandatorySkus.SMART_STORAGE_BATTERY.name,
-      quantity: 1,
+      quantity: serverCount,
       reasoning: reason
     });
   }
@@ -471,7 +503,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       iconType: 'Cpu',
       defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules',
       status: compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans ? 'FAIL' : 'PASS',
-      detail: compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.` : `Verified ${compute.cpuCount} CPUs within TDP envelope.`
+      detail: compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.` : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope.`
     },
     {
       id: 2,
@@ -479,7 +511,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       iconType: 'Memory',
       defaultRule: 'Memory interleaving, channel balance & population rules',
       status: (memory.memoryCount > 0 && !memory.isBalancedChannel) ? 'FAIL' : 'PASS',
-      detail: (memory.memoryCount > 0 && !memory.isBalancedChannel) ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.` : `Verified ${memory.memoryCount} DIMMs in balanced configuration.`
+      detail: (memory.memoryCount > 0 && !memory.isBalancedChannel) ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.` : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
     },
     {
       id: 3,
@@ -487,24 +519,24 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       iconType: 'HardDrive',
       defaultRule: 'Storage controller, drive cage & cable kit compatibility checks',
       status: (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
-      detail: storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.' : storage.hasStorageController && !storage.hasSmartBattery ? 'Storage Math Failed: Storage controller requires Smart Storage Battery.' : `Verified ${storage.driveCount} drives and controller configuration.`
+      detail: storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.' : storage.hasStorageController && !storage.hasSmartBattery ? 'Storage Math Failed: Storage controller requires Smart Storage Battery.' : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
     },
     {
       id: 4,
       name: 'PCIe Riser & Slot Expansion Math',
       iconType: 'Layers',
       defaultRule: 'PCIe slot capacity, riser lane allocation & GPU expansion rules',
-      status: (pcie.requiredPcieCards > pcie.totalSlotsAvailable) || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && compute.cpuCount < 2) ? 'FAIL' : 'PASS',
-      detail: pcie.requiredPcieCards > pcie.totalSlotsAvailable ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcie.totalSlotsAvailable} slots.` : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && compute.cpuCount < 2 ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.' : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${pcie.totalSlotsAvailable} slots.`
+      status: isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
+      detail: isExceedingPcie ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.` : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2 ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.' : `Verified ${pcie.requiredPcieCards} PCIe cards fit within available slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node).`
     },
     {
       id: 5,
       name: 'Networking & OCP Interconnect',
       iconType: 'Zap',
       defaultRule: 'OCP 3.0 network adapter slots and port allocation rules',
-      status: network.isExceedingOcpSlots ? 'FAIL' : 'PASS',
-      detail: network.isExceedingOcpSlots
-        ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${network.maxOcpSlots} slots.`
+      status: isExceedingOcp ? 'FAIL' : 'PASS',
+      detail: isExceedingOcp
+        ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} slots.`
         : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
     },
     {
@@ -513,7 +545,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       iconType: 'Power',
       defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
       status: power.hasDcPowerSupply && !power.hasDcLugKit ? 'FAIL' : 'PASS',
-      detail: power.hasDcPowerSupply && !power.hasDcLugKit ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.' : 'Verified power supply and infrastructure dependencies.'
+      detail: power.hasDcPowerSupply && !power.hasDcLugKit ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.' : `Verified power supply and infrastructure dependencies (${psuPerServer} PSUs/node).`
     },
     {
       id: 7,

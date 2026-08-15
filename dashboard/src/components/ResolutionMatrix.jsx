@@ -74,11 +74,11 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
     }, 2500);
   };
 
-  const rankedFromEval = evalResults?.conflictGraph?.rankedSolutions;
+  const rankedFromEval = evalResults?.conflictGraph?.rankedSolutions || evalResults?.rankedSolutions || [];
 
   const tiers = (rankedFromEval && rankedFromEval.length > 0)
     ? rankedFromEval.map(sol => {
-        const resolvedFixes = evalResults?.conflictGraph?.resolvedFixes || [];
+        const resolvedFixes = evalResults?.conflictGraph?.resolvedFixes || evalResults?.resolvedFixes || [];
         const detailedSwaps = resolvedFixes.length > 0
           ? resolvedFixes.map(f => `${f.sku}: ${f.reasoning || f.action}`)
           : [
@@ -631,8 +631,6 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
                 <a
                   href={exportedFiles[tier.rank].downloadPath}
                   download={exportedFiles[tier.rank].filename}
-                  target="_blank"
-                  rel="noreferrer"
                   className="w-full mb-2 flex items-center gap-1.5 justify-center btn-primary text-xs"
                   style={{ textDecoration: 'none' }}
                 >

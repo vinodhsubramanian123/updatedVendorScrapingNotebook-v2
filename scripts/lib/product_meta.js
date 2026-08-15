@@ -86,16 +86,21 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   // Fallback heuristic if no profile provided (or no match in profile)
   if (cat.includes('processor') || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) return 'Processor';
   if (cat.includes('memory') || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) return 'Memory';
+  if (cat.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp28 sr') || desc.includes('optical transceiver')) return 'Transceiver';
+  if (cat.includes('cable') || desc.includes('cable kit') || desc.includes('power cable') || desc.includes('lug kit') || desc.includes('box 1/2 cable') || desc.includes('direct attach') || desc.includes('enablement kit')) return 'Cable Kit';
+  if (cat.includes('battery') || desc.includes('smart storage battery') || desc.includes('lithium-ion battery')) return 'Storage Battery';
+  if (cat.includes('boot device') || desc.includes('ns204i') || desc.includes('boot optimized')) return 'Boot Device';
   if (cat.includes('power') || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('-48vdc')) return 'Power Supply';
   if (cat.includes('gpu') || cat.includes('accelerator') || desc.includes('nvidia') || desc.includes('tesla') || desc.includes('quadro') || desc.includes('radeon') || desc.includes('gpu')) return 'GPU / Accelerator';
   if (cat.includes('riser') || desc.includes('riser kit') || desc.includes('primary riser') || desc.includes('secondary riser') || desc.includes('tertiary riser')) return 'PCIe Riser';
-  if (cat.includes('cable') || desc.includes('cable kit') || desc.includes('power cable') || desc.includes('lug kit') || desc.includes('box 1/2 cable')) return 'Cable Kit';
+  if (cat.includes('fibre channel') || desc.includes('fibre channel') || desc.includes('host bus adapter') || desc.includes('hba')) return 'Fibre Channel HBA';
   if (cat.includes('storage') || desc.includes('controller') || desc.includes('raid') || desc.includes('mr416i') || desc.includes('sr932i')) return 'Storage Controller';
   if (cat.includes('network') || desc.includes('ethernet') || desc.includes('ocp') || desc.includes('adapter') || desc.includes('bcm57')) return 'Network Adapter';
   if (cat.includes('drive') || desc.includes('cage') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('nvme')) return 'Drive Cage / Drive';
   if (cat.includes('fan') || cat.includes('cooling') || desc.includes('fan kit') || desc.includes('heatsink')) return 'Cooling / Thermal';
-  if (cat.includes('support') || cat.includes('service') || desc.includes('tech care') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(desc)) return 'Service & Support';
-  if (cat.includes('software') || cat.includes('operating system') || desc.includes('windows server') || desc.includes('red hat') || desc.includes('suse') || desc.includes('license') || desc.includes('vmware')) return 'Operating System / License';
+  if (cat.includes('support') || cat.includes('service') || desc.includes('tech care') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc)) return 'Service & Support';
+  if (cat.includes('software') || cat.includes('operating system') || desc.includes('windows server') || desc.includes('red hat') || desc.includes('suse') || desc.includes('license') || desc.includes('oneview') || desc.includes('e-ltu') || desc.includes('vmware')) return 'Operating System / License';
+  if (cat.includes('infrastructure') || desc.includes('bezel') || desc.includes('rail') || desc.includes('management arm') || desc.includes('tracking') || desc.includes('localization')) return 'Chassis Infrastructure';
   if (cat.includes('chassis') || cat.includes('base') || desc.includes('chassis') || desc.includes('configure-to-order') || desc.includes('cto server') || desc.includes('base system') || desc.includes('frame') || desc.includes('enclosure') || desc.includes('compute module')) return 'Base Chassis';
 
   return 'Option Component';

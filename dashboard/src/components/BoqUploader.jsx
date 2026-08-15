@@ -2,8 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, 
   XCircle, Terminal, Sliders, Layers, GitCompare, Check, 
-  ShieldCheck, Calculator, HelpCircle, ArrowRight, Award, Wrench
+  ShieldCheck, Calculator, HelpCircle, ArrowRight, Award, Wrench,
+  Cpu, Database, Sparkles, Activity, Play, Zap, CheckCircle
 } from 'lucide-react';
+
+const EVAL_PIPELINE_STEPS = [
+  { id: 1, title: 'Workload DNA & Intake', subtitle: 'Extract hardware SKU lines, multi-sheet BOM & CTO multipliers' },
+  { id: 2, title: 'Chassis Auto-Detection', subtitle: 'Identify target chassis variant, generation & form factor' },
+  { id: 3, title: 'Catalog Rules Engine', subtitle: 'Load multi-tiered scraped rules & mandatory dependencies' },
+  { id: 4, title: '6-Aspect Physical Math', subtitle: 'Compute/Thermal, Memory, Storage, PCIe, Power, Support checks' },
+  { id: 5, title: '5-Tier Strategy Matrix', subtitle: 'Synthesize Rank 1 (Intent) through Rank 5 (Budget Minimized)' },
+  { id: 6, title: 'Quantitative Confidence', subtitle: 'Calculate deterministic reliability & conflict graph score' },
+  { id: 7, title: 'CapEx Budget Optimizer', subtitle: 'Evaluate budget limits, upgrade paths & pricing baseline' },
+  { id: 8, title: 'Agentic Guardrail Loop', subtitle: 'Autonomous conflict resolution & fallback safety checks' },
+  { id: 9, title: 'NotebookLM RAG Grounding', subtitle: 'QuickSpecs document verification & grounding payload' },
+  { id: 10, title: 'Solution Report & Audit', subtitle: 'Compile telemetry ledger, exportable BOM & actionable fixes' }
+];
 
 export default function BoqUploader({ 
   onEvaluateBoq, 
@@ -26,7 +40,29 @@ export default function BoqUploader({
   const [confirmedConfigSplits, setConfirmedConfigSplits] = useState(new Set());
   const logsEndRef = useRef(null);
 
-  const isEvaluating = isSubmitting || (isTaskRunning && logStream.some(l => (l.text || '').includes('Step ')));
+  // Safe evaluation check
+  const isEvaluating = isSubmitting || (isTaskRunning && logStream.some(l => {
+    const text = typeof l === 'string' ? l : (l?.text || l?.action || '');
+    return text.includes('Step ') || text.includes('Evaluating') || text.includes('Extracting');
+  }));
+
+  // Derive current active evaluation step index (1..10)
+  const currentStep = React.useMemo(() => {
+    if (evalResults && evalResults.status !== 'ERROR') return 10;
+    if (!isEvaluating) return 0;
+    let highest = 1;
+    for (const log of logStream) {
+      if (typeof log === 'object' && log !== null && typeof log.step === 'number') {
+        highest = Math.max(highest, log.step);
+      }
+      const text = typeof log === 'string' ? log : (log?.text || log?.action || '');
+      const match = text.match(/Step\s+(\d+)\/10/i);
+      if (match) {
+        highest = Math.max(highest, parseInt(match[1], 10));
+      }
+    }
+    return highest;
+  }, [logStream, isEvaluating, evalResults]);
 
   // Auto-scroll logs
   useEffect(() => {
@@ -57,16 +93,21 @@ export default function BoqUploader({
   };
 
   // Pre-process BOQ and analyze variations
-  const handlePreprocess = async () => {
-    if (!file && !rawText.trim()) return;
+  const handlePreprocess = async (overrideFile = null, overrideRawText = null) => {
+    const isFileObject = (overrideFile instanceof File) || (overrideFile && typeof overrideFile.name === 'string' && typeof overrideFile.size === 'number');
+    const currentFile = isFileObject ? overrideFile : file;
+    const currentText = (typeof overrideRawText === 'string') ? overrideRawText : rawText;
+    
+    console.log('[BoqUploader] handlePreprocess triggered. currentFile:', currentFile?.name, 'currentText length:', currentText?.trim()?.length);
+    if (!currentFile && !currentText?.trim()) return;
     setIsPreprocessing(true);
     setEvalError(null);
 
     try {
       let filepath = null;
-      if (file) {
+      if (currentFile) {
         const formData = new FormData();
-        formData.append('boqFile', file);
+        formData.append('boqFile', currentFile);
         const uploadRes = await fetch('/api/upload-boq', {
           method: 'POST',
           body: formData
@@ -78,15 +119,17 @@ export default function BoqUploader({
       const res = await fetch('/api/preprocess-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filepath, rawText, chassisDir })
+        body: JSON.stringify({ filepath, rawText: currentText, chassisDir })
       });
       const data = await res.json();
+      console.log('[BoqUploader] preprocess-boq response:', data);
       if (data.status === 'SUCCESS') {
         setPreflightData(data.preflightData);
       } else {
         setEvalError(data.error || 'Failed to preprocess BOQ');
       }
     } catch (err) {
+      console.error('[BoqUploader] preprocess error:', err);
       setEvalError(err.message || 'Failed to preprocess BOQ');
     } finally {
       setIsPreprocessing(false);
@@ -110,6 +153,7 @@ export default function BoqUploader({
   };
 
   const handleSubmit = async () => {
+    console.log('[BoqUploader] handleSubmit triggered. file:', file?.name, 'rawText length:', rawText.trim().length);
     if (!file && !rawText.trim()) return;
     setIsSubmitting(true);
     setEvalError(null);
@@ -124,15 +168,19 @@ export default function BoqUploader({
           body: formData
         });
         const uploadData = await uploadRes.json();
+        console.log('[BoqUploader] upload-boq response:', uploadData);
         filepath = uploadData.filepath;
       }
 
+      console.log('[BoqUploader] calling onEvaluateBoq with filepath:', filepath);
       const res = await onEvaluateBoq({ filepath, rawText });
+      console.log('[BoqUploader] onEvaluateBoq response:', res);
       if (res?.error) {
         setEvalError(res.error);
         setIsSubmitting(false);
       }
     } catch (err) {
+      console.error('[BoqUploader] eval error:', err);
       setEvalError(err.message || 'Failed to evaluate BOQ quote');
       setIsSubmitting(false);
     }
@@ -144,7 +192,6 @@ export default function BoqUploader({
     const addition = `1x ${fixSku} (${desc || 'Physical Fix'})`;
     const updated = current ? `${current}, ${addition}` : addition;
     setRawText(updated);
-    // Submit with updated text
     onEvaluateBoq({ rawText: updated });
   };
 
@@ -155,7 +202,7 @@ export default function BoqUploader({
   const missingDeps = evalResults?.missingDependencies || [];
 
   return (
-    <div className="glass-card p-6 space-y-5 animate-fade-in">
+    <div className="glass-card p-6 space-y-6 animate-fade-in">
       <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
         <div>
           <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
@@ -170,7 +217,7 @@ export default function BoqUploader({
         <button
           onClick={handlePreprocess}
           disabled={isPreprocessing || (!file && !rawText.trim()) || isEvaluating}
-          className="btn-secondary text-xs flex items-center gap-1.5 border-blue-200 text-blue-700 hover:bg-blue-50"
+          className="btn-secondary text-xs flex items-center gap-1.5 border-blue-200 text-blue-700 hover:bg-blue-50 transition-all active:scale-98"
         >
           {isPreprocessing ? <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600" /> : <Sliders className="w-3.5 h-3.5 text-blue-600" />}
           Pre-process &amp; Categorize
@@ -179,7 +226,7 @@ export default function BoqUploader({
 
       {/* Evaluation Error Alert */}
       {evalError && (
-        <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-900 flex items-start gap-2 animate-fade-in">
+        <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-900 flex items-start gap-2 animate-fade-in shadow-2xs">
           <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">BOQ Preprocessing / Evaluation Failed</p>
@@ -198,15 +245,15 @@ export default function BoqUploader({
                 Manual Pre-Processing &amp; Variant Categorization
               </h3>
               <span className="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">
-                {preflightData.variations.length} Variation(s) Identified
+                {preflightData.variations?.length || 0} Variation(s) Identified
               </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-slate-500 font-bold">Confidence Score:</span>
               <span className={`text-[11px] font-bold font-mono px-2 py-0.5 rounded ${
-                preflightData.preprocessingConfidence >= 0.85 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                (preflightData.preprocessingConfidence || 0) >= 0.85 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
               }`}>
-                {Math.round(preflightData.preprocessingConfidence * 100)}%
+                {Math.round((preflightData.preprocessingConfidence || 0) * 100)}%
               </span>
             </div>
           </div>
@@ -221,7 +268,7 @@ export default function BoqUploader({
                     5-Stage Validation Cleansing &amp; Math Guardrails Workflow
                   </h4>
                 </div>
-                <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">
+                <span data-testid="stages-cleared-badge" className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">
                   {preflightData.preflightPipeline.stages.filter(s => s.passed).length}/5 Stages Cleared
                 </span>
               </div>
@@ -232,8 +279,8 @@ export default function BoqUploader({
                     key={stg.id}
                     className={`p-2.5 rounded-lg border text-left space-y-1 transition-all ${
                       stg.passed
-                        ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950'
-                        : 'bg-amber-50/80 border-amber-300 text-amber-950'
+                        ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950 shadow-2xs'
+                        : 'bg-amber-50/80 border-amber-300 text-amber-950 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -263,28 +310,28 @@ export default function BoqUploader({
                     <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                     <div>
                       <h5 className="font-bold text-xs text-rose-900">
-                        Fractional CTO Multiplier Anomaly Detected
+                        Fractional CTO Multiplier Detected ({preflightData.preflightPipeline.fractionalDetails?.foundMultiplier || 'Non-Integer'}x)
                       </h5>
-                      <p className="text-[11px] text-rose-800 mt-0.5">
-                        Child items are not integer multiples of base chassis count ({preflightData.preflightPipeline.baseChassisQty} units). Select a Human-In-The-Loop resolution action:
+                      <p className="text-[11px] text-rose-700">
+                        Some SKU quantities are not evenly divisible by the detected multiplier. Choose resolution:
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 pt-1 pl-6">
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleConfirmSplit(preflightData.variations[0]?.configId, 'ROUND_NEAREST_INTEGER')}
+                      className="px-2.5 py-1 bg-white hover:bg-slate-50 text-slate-800 text-[11px] font-bold rounded border border-rose-300 shadow-2xs transition-colors flex items-center gap-1"
+                    >
+                      <Calculator className="w-3 h-3 text-blue-600" /> Round to Nearest Integer
+                    </button>
                     <button
                       type="button"
                       onClick={() => alert('Option Selected: Treat fractional items as unattached spare parts in order.')}
                       className="px-2.5 py-1 bg-white hover:bg-slate-50 text-slate-800 text-[11px] font-bold rounded border border-rose-300 shadow-2xs transition-colors flex items-center gap-1"
                     >
                       <Check className="w-3 h-3 text-emerald-600" /> Treat Remainder as Spare Parts
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => alert('Option Selected: Rounded per-unit quantity to nearest integer.')}
-                      className="px-2.5 py-1 bg-white hover:bg-slate-50 text-slate-800 text-[11px] font-bold rounded border border-rose-300 shadow-2xs transition-colors flex items-center gap-1"
-                    >
-                      <Calculator className="w-3 h-3 text-blue-600" /> Round to Nearest Integer
                     </button>
                     <button
                       type="button"
@@ -300,85 +347,52 @@ export default function BoqUploader({
           )}
 
           {/* Configuration Variations Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {preflightData.variations.map((v) => (
-              <div key={v.configId} className="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs text-slate-800">{v.name}</span>
-                  <span className="text-[10px] font-mono text-slate-400">{v.items.length} SKUs</span>
-                </div>
-                
-                <div className="text-[11px] text-slate-600 space-y-1 bg-slate-50 p-2 rounded border border-slate-100 font-mono">
-                  <div>• <span className="font-semibold text-slate-700">CPU:</span> {v.profile.cpus} ({v.profile.maxTdpWatts}W)</div>
-                  <div>• <span className="font-semibold text-slate-700">RAM:</span> {v.profile.totalRamGb}GB ({v.profile.dimmCount} DIMMs)</div>
-                  <div>• <span className="font-semibold text-slate-700">Storage:</span> {v.profile.driveCount}x {v.profile.driveMedia}</div>
-                  <div>• <span className="font-semibold text-slate-700">Power Feed:</span> {v.profile.psuType}</div>
-                </div>
-
-                {v.splitReasons && v.splitReasons.length > 0 && (
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">Split Reason Taxonomy:</span>
-                    <div className="flex flex-wrap gap-1">
-                      {v.splitReasons.map(r => (
-                        <span key={r} className="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded font-semibold">
-                          {r}
-                        </span>
-                      ))}
-                    </div>
+          {preflightData.variations && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {preflightData.variations.map((v) => (
+                <div key={v.configId} className="bg-white p-3 rounded-lg border border-slate-200 space-y-2 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-slate-800">{v.name}</span>
+                    <span className="text-[10px] font-mono text-slate-400">{v.items?.length || 0} SKUs</span>
                   </div>
-                )}
+                  
+                  {v.profile && (
+                    <div data-testid="profile-summary" className="text-[11px] text-slate-600 space-y-1 bg-slate-50 p-2 rounded border border-slate-100 font-mono">
+                      <div>• <span className="font-semibold text-slate-700">CPU:</span> {v.profile.cpus} ({v.profile.maxTdpWatts}W)</div>
+                      <div>• <span className="font-semibold text-slate-700">RAM:</span> {v.profile.totalRamGb}GB ({v.profile.dimmCount} DIMMs)</div>
+                      <div>• <span className="font-semibold text-slate-700">Storage:</span> {v.profile.driveCount}x {v.profile.driveMedia}</div>
+                      <div>• <span className="font-semibold text-slate-700">Power Feed:</span> {v.profile.psuType}</div>
+                    </div>
+                  )}
 
-                {v.businessRationale && (
-                  <p className="text-[10px] text-slate-500 italic bg-amber-50/50 p-1.5 rounded border border-amber-100">
-                    "{v.businessRationale}"
-                  </p>
-                )}
+                  {v.splitReasons && v.splitReasons.length > 0 && (
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Split Reason Taxonomy:</span>
+                      <div className="flex flex-wrap gap-1">
+                        {v.splitReasons.map(r => (
+                          <span key={r} className="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded font-semibold">
+                            {r}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-                <div className="pt-1 flex justify-end">
-                  <button
-                    onClick={() => handleConfirmSplit(v.configId, v.splitReasons[0] || 'WORKLOAD_NODE_PURPOSE')}
-                    disabled={confirmedConfigSplits.has(v.configId)}
-                    className="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-1 transition-colors"
-                  >
-                    {confirmedConfigSplits.has(v.configId) ? (
-                      <><Check className="w-3 h-3 text-emerald-600" /> Categorization Confirmed</>
-                    ) : (
-                      <><ShieldCheck className="w-3 h-3 text-blue-600" /> Confirm Categorization</>
-                    )}
-                  </button>
+                  <div className="pt-1 flex justify-end">
+                    <button
+                      onClick={() => handleConfirmSplit(v.configId, v.splitReasons?.[0] || 'WORKLOAD_NODE_PURPOSE')}
+                      disabled={confirmedConfigSplits.has(v.configId)}
+                      className="text-[10px] font-bold px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-1 transition-colors"
+                    >
+                      {confirmedConfigSplits.has(v.configId) ? (
+                        <><Check className="w-3 h-3 text-emerald-600" /> Categorization Confirmed</>
+                      ) : (
+                        <><ShieldCheck className="w-3 h-3 text-blue-600" /> Confirm Categorization</>
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Differential Analysis Matrix Table */}
-          {preflightData.diffSummary?.differences?.length > 0 && (
-            <div className="space-y-2 pt-2 border-t border-slate-200">
-              <h4 className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wider">
-                <GitCompare className="w-3.5 h-3.5 text-indigo-600" /> Variant Differential Analysis
-              </h4>
-              <div className="overflow-x-auto rounded-lg border border-slate-200">
-                <table className="w-full text-left text-[11px]">
-                  <thead className="bg-slate-100 text-slate-600 font-bold border-b border-slate-200">
-                    <tr>
-                      <th className="p-2">Hardware Aspect</th>
-                      <th className="p-2">{preflightData.diffSummary.comparedConfigs[0] || 'Config 1'}</th>
-                      <th className="p-2">{preflightData.diffSummary.comparedConfigs[1] || 'Config 2'}</th>
-                      <th className="p-2">Technical / Rule Impact</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white">
-                    {preflightData.diffSummary.differences.map((d, i) => (
-                      <tr key={i} className="hover:bg-slate-50">
-                        <td className="p-2 font-semibold text-slate-800">{d.aspect}</td>
-                        <td className="p-2 font-mono text-slate-600">{d.config1}</td>
-                        <td className="p-2 font-mono text-slate-600">{d.config2}</td>
-                        <td className="p-2 text-indigo-900 bg-indigo-50/50 font-medium">{d.impact}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              ))}
             </div>
           )}
         </div>
@@ -454,10 +468,10 @@ export default function BoqUploader({
           <button
             onClick={handleSubmit}
             disabled={isEvaluating || (!file && !rawText.trim())}
-            className="w-full btn-primary justify-center text-xs disabled:opacity-50 py-2.5 shadow-md shadow-blue-600/20"
+            className="w-full btn-primary justify-center text-xs disabled:opacity-50 py-2.5 shadow-md shadow-blue-600/20 active:scale-98 transition-all"
           >
             {isEvaluating ? (
-              <><RefreshCw className="w-4 h-4 animate-spin" /> Evaluating 6 Physical Aspects...</>
+              <><RefreshCw className="w-4 h-4 animate-spin" /> Evaluating 6 Physical Aspects (Step {currentStep}/10)...</>
             ) : (
               <><FileText className="w-4 h-4" /> Run Aspect Math &amp; Pre-Flight BOQ Check</>
             )}
@@ -483,20 +497,99 @@ export default function BoqUploader({
                 Awaiting evaluation task...
               </div>
             ) : (
-              logStream.map((log, i) => (
-                <div key={i} className={log.stream === 'stderr' ? 'text-rose-400' : (log.text.includes('FAIL') || log.text.includes('❌') ? 'text-amber-400' : 'text-emerald-400')}>
-                  {log.text}
-                </div>
-              ))
+              logStream.map((log, i) => {
+                const text = typeof log === 'string' ? log : (log?.text || (log?.action ? `[Step ${log?.step || ''}/10] ${log.action}: ${log.detail || ''}` : ''));
+                if (!text) return null;
+                const isError = log?.stream === 'stderr' || text.includes('FAIL') || text.includes('❌') || log?.status === 'error';
+                const isProgress = text.includes('Step ') || text.includes('🚀') || text.includes('▶');
+                return (
+                  <div key={i} className={isError ? 'text-amber-400 font-bold' : isProgress ? 'text-blue-300 font-semibold' : 'text-emerald-400'}>
+                    {text}
+                  </div>
+                );
+              })
             )}
             <div ref={logsEndRef} />
           </div>
         </div>
       </div>
 
+      {/* 2. TRANSPARENT 10-STEP VISUAL MOTION GRAPHICS PROGRESS TRACKER */}
+      {(isEvaluating || (evalResults && evalResults.status !== 'ERROR')) && (
+        <div className="p-4 bg-slate-900 text-slate-100 rounded-xl border border-slate-700/80 shadow-md space-y-3 animate-fade-in">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div className="flex items-center gap-2">
+              <Activity className={`w-4 h-4 ${isEvaluating ? 'text-blue-400 animate-pulse' : 'text-emerald-400'}`} />
+              <h4 className="font-extrabold text-xs text-slate-100 tracking-wide uppercase">
+                10-Step Evaluation &amp; Aspect Math Verification Pipeline
+              </h4>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-slate-400 font-bold">Progress:</span>
+              <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded ${
+                currentStep >= 10 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+              }`}>
+                {currentStep >= 10 ? '10/10 (100%)' : `${currentStep}/10 (${Math.round((currentStep / 10) * 100)}%)`}
+              </span>
+            </div>
+          </div>
+
+          {/* Step Progress Bar */}
+          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-500 ease-out ${
+                currentStep >= 10 ? 'bg-emerald-500' : 'bg-gradient-to-r from-blue-500 to-indigo-500'
+              }`}
+              style={{ width: `${Math.max(10, Math.min(100, currentStep * 10))}%` }}
+            />
+          </div>
+
+          {/* 10-Step Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+            {EVAL_PIPELINE_STEPS.map((step) => {
+              const isCompleted = currentStep > step.id || (currentStep >= 10 && evalResults);
+              const isCurrent = currentStep === step.id && isEvaluating;
+              const isPending = currentStep < step.id;
+
+              return (
+                <div
+                  key={step.id}
+                  className={`p-2 rounded-lg border text-left space-y-1 transition-all ${
+                    isCompleted
+                      ? 'bg-slate-800/80 border-emerald-500/30 text-slate-200'
+                      : isCurrent
+                      ? 'bg-blue-950/70 border-blue-500 text-blue-100 shadow-sm ring-1 ring-blue-500/30'
+                      : 'bg-slate-900/50 border-slate-800 text-slate-500 opacity-60'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold font-mono text-slate-400 uppercase">
+                      Step {step.id}
+                    </span>
+                    {isCompleted ? (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    ) : isCurrent ? (
+                      <RefreshCw className="w-3.5 h-3.5 text-blue-400 animate-spin shrink-0" />
+                    ) : (
+                      <div className="w-2 h-2 rounded-full bg-slate-700" />
+                    )}
+                  </div>
+                  <p className={`font-bold text-[10px] leading-tight ${isCurrent ? 'text-blue-200' : isCompleted ? 'text-slate-200' : 'text-slate-400'}`}>
+                    {step.title}
+                  </p>
+                  <p className="text-[9px] leading-snug text-slate-400 line-clamp-2">
+                    {step.subtitle}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* 3. EVALUATION RESULTS & TRANSPARENT ASPECT VIOLATION BREAKDOWN */}
       {evalResults && (
-        <div className="space-y-4 pt-4 border-t border-slate-200 animate-fade-in">
+        <div className="space-y-4 pt-2 border-t border-slate-200 animate-fade-in">
           
           {/* Quantitative Confidence Gauge Banner */}
           <div className={`p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs ${
@@ -526,7 +619,7 @@ export default function BoqUploader({
               {onOpenMatrix && (
                 <button
                   onClick={onOpenMatrix}
-                  className="btn-primary text-xs flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 shadow-sm"
+                  className="btn-primary text-xs flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 shadow-sm transition-all active:scale-98"
                 >
                   <Award className="w-4 h-4" /> View 5-Tier Strategy Matrix <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -595,4 +688,3 @@ export default function BoqUploader({
     </div>
   );
 }
-

@@ -95,12 +95,12 @@ export default function WorkflowStepper({
       icon: ShieldCheck,
       status: isEvaluating
         ? (activeProgress?.currentStep === 3 ? 'RUNNING' : activeProgress?.currentStep > 3 ? 'COMPLETED' : 'READY')
-        : (hasEval ? (evalResults?.aspectValidation?.hasViolations ? 'WARNING' : 'COMPLETED') : 'READY'),
+        : (hasEval ? (evalResults?.errors?.length > 0 || evalResults?.aspectChecks?.some(a => a.status === 'FAIL') ? 'WARNING' : 'COMPLETED') : 'READY'),
       durationMs: evalResults?.telemetry?.rulesTimeMs || 210,
       details: 'Evaluated physical constraints across thermal TDP thresholds, power supply lug kits, memory bit-width homogeny, and PCIe riser limits.',
       metrics: {
-        rulesEvaluated: evalResults?.aspectValidation?.totalRulesEvaluated || 18,
-        conflictsFound: evalResults?.aspectValidation?.violationsCount || 0
+        rulesEvaluated: evalResults?.conflictGraph?.totalRulesEvaluated || 18,
+        conflictsFound: evalResults?.errors?.length || 0
       },
       actionText: 'Inspect Aspect Rules',
       tabTarget: 'conflict'
@@ -118,8 +118,8 @@ export default function WorkflowStepper({
       durationMs: evalResults?.telemetry?.rankingTimeMs || 160,
       details: 'Synthesized 5 ranked buildable solution candidates (Rank 1 Intent-Preserving to Rank 5 Budget Minimized) with vertical itemized parts breakdowns.',
       metrics: {
-        rankedTiers: evalResults?.rankedSolutions?.length || 5,
-        topCandidate: evalResults?.rankedSolutions?.[0]?.title || 'Intent-Preserving'
+        rankedTiers: evalResults?.conflictGraph?.rankedSolutions?.length || evalResults?.rankedSolutions?.length || 5,
+        topCandidate: evalResults?.conflictGraph?.rankedSolutions?.[0]?.name || 'Rank 1 (Intent-Preserving)'
       },
       actionText: 'View Resolution Matrix',
       tabTarget: 'boq'

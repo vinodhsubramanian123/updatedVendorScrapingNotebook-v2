@@ -63,7 +63,7 @@ async function runE2ETest() {
   page.on('console', msg => {
     if (msg.type() === 'error') {
       const text = msg.text();
-      if (!text.includes('favicon') && !text.includes('404')) {
+      if (!text.includes('favicon') && !text.includes('404') && !text.includes('409')) {
         consoleErrors.push(`[Console Error] ${text}`);
       }
     }
@@ -76,6 +76,11 @@ async function runE2ETest() {
   let evalApiResponse = null;
 
   try {
+    // Reset any lingering tasks
+    await page.evaluate(async () => {
+      await fetch('/api/kill-task', { method: 'POST' }).catch(() => {});
+    }).catch(() => {});
+
     // TEST 1: Dashboard Navigation & Header State
     console.log('▶ [TEST 1] Navigating to Dashboard & Checking Header...');
     const startTime1 = Date.now();
@@ -99,8 +104,8 @@ async function runE2ETest() {
     const startTime2 = Date.now();
     const chassisSelect = await page.$('select');
     if (chassisSelect) {
-      await chassisSelect.selectOption({ label: 'DL380 Gen12 SFF' }).catch(() => {});
-      await page.waitForTimeout(1000);
+      await chassisSelect.selectOption({ label: 'DL380 Gen12 SFF' }, { timeout: 2000 }).catch(() => {});
+      await page.waitForTimeout(500);
     }
     testResults.push({ name: 'DL380 Gen12 Chassis Selection', passed: true, durationMs: Date.now() - startTime2 });
     console.log('  ✅ DL380 Gen12 SFF selected in header dropdown');

@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-14T14:31:21.196Z  
+**Sync Timestamp**: 2026-08-15T19:14:55.676Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `43`  
+**Total Synced KnowledgeDeltas**: `48`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -39,7 +39,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (Alletra_Storage_System)
 
-*No specific gotchas logged for Alletra_Storage_System. Baseline chassis layout rules active.*
+1. **[PREPROC-DELTA-1786781599909] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
+2. **[PREPROC-DELTA-1786781611542] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for Variation 1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
@@ -70,9 +77,9 @@ The following table details every valid hardware SKU, its current list price, di
 
 | Product # | Description | Current Price (USD) | Diff Status | Attribute Deltas | Price History Trail |
 |-----------|-------------|---------------------|-------------|------------------|---------------------|
-| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **UNCHANGED** | None | 2026-08-12: $12500.00 → 2026-08-13: $12500.00 → 2026-08-14: $12500.00 |
-| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **UNCHANGED** | None | 2026-08-12: $18900.00 → 2026-08-13: $18900.00 → 2026-08-14: $18900.00 |
-| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **UNCHANGED** | None | 2026-08-12: $15200.00 → 2026-08-13: $15200.00 → 2026-08-14: $15200.00 |
+| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **UNCHANGED** | None | 2026-08-12: $12500.00 → 2026-08-13: $12500.00 → 2026-08-14: $12500.00 → 2026-08-15: $12500.00 |
+| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **UNCHANGED** | None | 2026-08-12: $18900.00 → 2026-08-13: $18900.00 → 2026-08-14: $18900.00 → 2026-08-15: $18900.00 |
+| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **UNCHANGED** | None | 2026-08-12: $15200.00 → 2026-08-13: $15200.00 → 2026-08-14: $15200.00 → 2026-08-15: $15200.00 |
 
 ---
 *Generated automatically by HPE Knowledge Sync Engine.*  

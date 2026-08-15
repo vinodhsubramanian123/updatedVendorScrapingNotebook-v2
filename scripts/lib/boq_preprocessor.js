@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku');
+const { cleanBaseSKU, isValidHpeSKU, isServiceSku, HPE_SKU_EXTRACT_REGEX } = require('./sku');
 const { classifyComponentRole } = require('./product_meta');
 const { safeWriteJsonAtomic } = require('./fs_compat');
 const { isImageFile, performGeminiOcr } = require('./ocr_service');
@@ -105,7 +105,8 @@ function detectAndNormalizeAtomicCto(items) {
       const atomicQtyRaw = totalQ / baseChassisQty;
       const isInteger = Number.isInteger(atomicQtyRaw);
 
-      if (!isInteger) {
+      const isService = isServiceSku(it.sku) || (it.description || '').toLowerCase().includes('service');
+      if (!isInteger && !isService) {
         hasNonIntegerDivisor = true;
         ctoAnomalies.push({
           type: 'NON_INTEGER_CTO_DIVISOR_ANOMALY',
@@ -120,10 +121,10 @@ function detectAndNormalizeAtomicCto(items) {
 
       return {
         ...it,
-        atomicQuantity: isInteger ? atomicQtyRaw : parseFloat(atomicQtyRaw.toFixed(2)),
+        atomicQuantity: isInteger ? atomicQtyRaw : (isService ? totalQ : parseFloat(atomicQtyRaw.toFixed(2))),
         totalQuantity: totalQ,
         isMultipliedByCto: true,
-        isIntegerDivisor: isInteger
+        isIntegerDivisor: isInteger || isService
       };
     } else {
       const q = parseInt(it.quantity, 10) || 1;
@@ -277,7 +278,7 @@ function extractHardwareProfile(items) {
     const sku = cleanBaseSKU(it.sku);
 
     // CPU detection
-    if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cpu')) {
+    if ((desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) && !desc.includes('cable') && !desc.includes('heatsink') && !desc.includes('fan')) {
       const q = parseInt(it.atomicQuantity || it.quantity, 10) || 1;
       cpuCount += q;
       const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
@@ -295,9 +296,9 @@ function extractHardwareProfile(items) {
       }
     }
 
-    // Drive detection
+    // Drive detection (Front cage media drives)
     if (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme') || desc.includes('drive')) {
-      if (!desc.includes('no drive') && !desc.includes('cage') && !desc.includes('controller')) {
+      if (!desc.includes('no drive') && !desc.includes('cage') && !desc.includes('controller') && !desc.includes('boot optimized') && !desc.includes('boot device') && !desc.includes('ns204i')) {
         driveCount += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
         if (desc.includes('nvme')) driveTypes.add('NVMe SSD');
         else if (desc.includes('sas')) driveTypes.add('SAS');
@@ -318,8 +319,8 @@ function extractHardwareProfile(items) {
       hasController = true;
     }
 
-    if (desc.includes('adapter') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu') || desc.includes('hba')) {
-      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('cable')) {
+    if (desc.includes('adapter') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu') || desc.includes('hba') || desc.includes('fibre channel')) {
+      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('cable') && !desc.includes('transceiver') && !desc.includes('sfp28 sr')) {
         pcieCards += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
       }
     }
@@ -458,7 +459,8 @@ function preprocessAndGroupBOQ(rawInput, filePath = '', options = {}) {
   if (rawVariations.length === 1) {
     const single = rawVariations[0];
     const cpus = single.items.filter(it => {
-      const desc = it.description.toLowerCase();
+      const desc = (it.description || '').toLowerCase();
+      if (desc.includes('cable') || desc.includes('heatsink') || desc.includes('fan') || desc.includes('ocp')) return false;
       return desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc');
     });
 

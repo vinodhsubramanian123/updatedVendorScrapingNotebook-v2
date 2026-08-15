@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-14T14:31:26.269Z  
+**Sync Timestamp**: 2026-08-15T19:15:16.793Z  
 **Total Verified SKUs**: `787` (`277` Hardware + `510` Services)  
-**Total Synced KnowledgeDeltas**: `43`  
+**Total Synced KnowledgeDeltas**: `49`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -184,6 +184,30 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 
 37. **[DELTA-1786717879785] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+38. **[DELTA-1786780228386] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+39. **[PREPROC-DELTA-1786781599909] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
+40. **[PREPROC-DELTA-1786781611542] undefined** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for Variation 1
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+
+41. **[DELTA-1786798116332] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+42. **[DELTA-1786799746143] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
+
+43. **[DELTA-1786821316650] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76453-B21.
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A` 
 

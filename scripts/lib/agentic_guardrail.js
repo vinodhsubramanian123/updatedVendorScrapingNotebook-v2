@@ -217,7 +217,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
         functionResponse: {
           name: call.name,
           id: call.id,
-          response: result
+          response: typeof result === 'object' && result !== null ? result : { output: result }
         }
       });
     }
@@ -246,9 +246,9 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
               config: {
                 systemInstruction,
                 tools: [{ functionDeclarations: evaluationTools }],
-                temperature: 0.1,
-                history: oldHistory
-              }
+                temperature: 0.1
+              },
+              history: oldHistory
             });
             retryCount++;
             continue;

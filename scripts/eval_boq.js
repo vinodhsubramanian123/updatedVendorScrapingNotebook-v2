@@ -553,7 +553,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
       }
     };
     emitProgress(10, 10, 'Generation Complete', 'completed', 'Analysis finished successfully.');
-    process.stdout.write(JSON.stringify(jsonResult));
+    process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
   } else {
     console.log(`\n===============================================================`);
     console.log(`âœ… EVALUATION COMPLETE! Report saved to: ${outputPath}`);
@@ -564,7 +564,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
 main().catch(err => {
   const JSON_MODE = process.argv.includes('--json');
   if (JSON_MODE) {
-    process.stdout.write(JSON.stringify({ status: 'ERROR', error: err.message }));
+    process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({ status: 'ERROR', error: err.message }) + '__EVAL_RESULT_JSON__\n');
   } else {
     console.error('Fatal evaluation error:', err);
   }

@@ -648,10 +648,8 @@ export default function ChassisSyncSummaryView({
                         {v.hasExcel ? (
                           <Tooltip content="Download Excel Workbook"><a
                             href={v.xlsxPath}
-                            target="_blank"
-                            rel="noreferrer"
+                            download
                             className="p-1.5 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-colors"
-                            
                           >
                             <FileSpreadsheet className="w-4 h-4" />
                           </a></Tooltip>

@@ -196,8 +196,6 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
             <a
               href={currentCatalog.xlsxPath}
               download
-              target="_blank"
-              rel="noreferrer"
               className="w-full btn-secondary justify-center text-xs"
             >
               Download .xlsx
@@ -226,9 +224,7 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
               <AlertTriangle className="w-4 h-4 text-amber-500" /> QuickSpecs PDF
             </h4>
             <p className="text-[11px] text-slate-400">PDF not cached locally yet</p>
-            <span className="text-[10px] text-slate-400 block italic">Use Scraper tab to download
-              target="_blank"
-              rel="noreferrer"</span>
+            <span className="text-[10px] text-slate-400 block italic">Use Scraper tab to download</span>
           </div>
         )}
       </div>

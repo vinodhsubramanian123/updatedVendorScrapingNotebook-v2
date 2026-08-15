@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Play, Pause, RotateCcw, ChevronRight, ChevronLeft,
-  CheckCircle2, RefreshCw, Zap,
+  CheckCircle2, Check, RefreshCw, Zap,
   Brain, ShieldCheck, FileUp, Layers, Repeat,
   Database,
   Cpu, Thermometer, BatteryCharging,

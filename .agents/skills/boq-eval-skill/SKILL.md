@@ -32,26 +32,35 @@ graph TD
 ## 2. Phase-by-Phase Execution Engine
 
 ### Phase 1: Ingestion & Multi-Sheet Multi-Config Engine
-- **Module**: [`scripts/lib/boq_evaluator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_evaluator.js) & [`scripts/lib/boq_preprocessor.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_preprocessor.js)
-- **Functions**: `parseAndConsolidateBOQ(rawContent, filePath)`, `preprocessBoqText(rawText)`
+- **Module**: [`scripts/lib/boq_evaluator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_evaluator.js), [`scripts/lib/boq_preprocessor.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_preprocessor.js) & [`scripts/lib/boq_parser.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_parser.js)
+- **Functions**: `parseAndConsolidateBOQ(rawContent, filePath)`, `preprocessAndGroupBOQ(rawInput, filePath, options)`, `parseSkuLines(lines)`, `detectAndNormalizeAtomicCto(items)`
 - **Capabilities**:
-  - **Multi-Config Agnostic Parsing**: Automatically evaluates quotes containing multiple server configurations across different product lines (DL380 Gen12, Gen11, Synergy, Alletra).
-  - Multi-sheet Excel workbook inspection using `xlsx`.
-  - Multi-Config Parallel Evaluation (`npm run eval:multi`) using `scripts/eval_multi_boq.js` to dynamically spin up independent `child_process` evaluators for massive scale.
-  - Line separator normalization (`/`, `|`, `;`, `+`, `--`, tab columns).
+  - **Multi-Unit CTO Normalization**: Resolves $N$-unit multiplied quotes (e.g. 5x DL380 server orders) into atomic 1-unit server profiles, normalizing CPU, RAM, storage, and accessory counts.
+  - **5-Stage Preflight Cleansing Workflow**:
+    1. *Stage 1*: Base Chassis & CTO Multiplier Detection
+    2. *Stage 2*: Atomic Integer Division & Fractional Anomaly Check
+    3. *Stage 3*: Scraped Category & Subcategory Limits Check
+    4. *Stage 4*: Physical Aspect Math Guardrails
+    5. *Stage 5*: Pre-Validation NotebookLM & Local RAG Grounding
+  - Multi-sheet Excel workbook inspection using `xlsx-js-style` with automatic section extraction.
+  - Multi-Config Parallel Evaluation (`npm run eval:multi`) using `scripts/eval_multi_boq.js` for massive enterprise scale.
   - Multi-part inline SKU extraction via `isValidHpeSKU()` filtering.
-  - Chassis multiplier math (`serverQty * chassisMultiplier = totalConsolidatedQty`).
 
-### Phase 2: Modular 6-Aspect Physical Math Pre-Checks
+### Phase 2: Modular 6-Aspect Physical Math Pre-Checks & 10-Step Progress Streaming
 - **Module**: [`scripts/lib/boq_evaluator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq_evaluator.js)
 - **Functions**: `evaluatePhysicalMath(consolidatedItems)`
-- **6 Physical Aspects**:
-  1. **Compute & Thermal**: CPU TDP vs Heatsinks (`P74792-B21`), High-Perf Fan Kits (`P48820-B21`).
-  2. **Memory & Channel**: 32 DIMM max, 8 channels/socket population rules.
-  3. **Storage & Tri-Mode**: EDSFF vs SFF/LFF drive cages, Box 1/2 cables (`P76453-B21`), Smart Battery (`P01366-B21`).
-  4. **Networking & PCIe**: OCP 3.0 NIC slots, PCIe slot capacity vs Riser math.
-  5. **Power & Ambient**: -48VDC Lug Kits (`P36877-B21`), Titanium 96% PSUs, AC/DC cord filtering.
-  6. **Support & Services**: Hardware SKUs vs mandatory Tech Care Support tiers.
+- **10-Step Live Visual Execution Sequence**:
+  1. *Step 1*: Workload DNA & BOQ Items Extraction
+  2. *Step 2*: Compute & Thermal Profiling
+  3. *Step 3*: Memory Channel Math (1DPC / 2DPC symmetry)
+  4. *Step 4*: Storage Tri-Mode Validation (NVMe/SAS/SATA drive cages, controllers)
+  5. *Step 5*: Networking & PCIe Constraints (OCP NICs, Riser slot math)
+  6. *Step 6*: Power & Infrastructure Checking (-48VDC Lug Kits, redundancy)
+  7. *Step 7*: Conflict Graph Validation & Dependency Resolution
+  8. *Step 8*: Grounded Gemini Notebook Validation (RAG Payload dispatch)
+  9. *Step 9*: 5-Tier Strategic Resolution Matrix Synthesis
+  10. *Step 10*: Generation Complete & Output Audit
+- **Streaming Output Protocol**: Structured results are enclosed within `\n__EVAL_RESULT_JSON__...__EVAL_RESULT_JSON__\n` delimiters to guarantee uncorrupted extraction over chunked streams.
 
 ### Phase 2.5: 5-Level Dependency Conflict Graph & Closed-Loop Delta Auto-Injection
 - **Module**: [`scripts/lib/conflict_graph.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict_graph.js) & [`scripts/lib/catalog_rules.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/catalog_rules.js)
@@ -60,7 +69,12 @@ graph TD
 - **Dual Safety Net**: Loads `<prefix>_Catalog_Rules.json` (with `chassisVariantMatrix`) first, falls back to `<prefix>_Catalog.json`.
 - **5 Rule Levels**: `VENDOR`, `CHASSIS`, `CATEGORY`, `SUBCATEGORY`, `SKU` + `LEARNED_DELTA`.
 - **Workload DNA Extraction**: Infers `VDI_AI_GRAPHICS`, `DATABASE_IN_MEMORY`, `STORAGE_HIGH_IOPS`, or `VIRTUALIZATION_DENSE` profile.
-- **Top 5 Resolution Matrix**: **Rank 1 strictly matches customer workload intent** (neither over- nor under-provisioned).
+- **Top 5 Resolution Matrix**:
+  - **Rank 1**: Customer Workload Intent Preserved (Optimal Match, 0 unnecessary alterations)
+  - **Rank 2**: Standardized CTO Baseline & Factory Default Accessories
+  - **Rank 3**: High-IOPS & Storage Performance Optimized
+  - **Rank 4**: Maximum Density & Future Scalability Expansion
+  - **Rank 5**: Budget & CapEx Minimized Buildable Baseline
 
 ### Phase 3: Gemini Notebook RAG Payload Generation (Decoupled Architecture)
 - **Module**: [`scripts/eval_boq.js`](file:///home/vinodh/vendorNotebookSolution/scripts/eval_boq.js)

@@ -1,6 +1,6 @@
 {
   "description": "Chassis-Specific Gotchas & Physical Wiring Constraints (DL380 Gen12 8SFF Box 1/2 controller cable kit P76453-B21, etc.).",
-  "totalRules": 37,
+  "totalRules": 43,
   "byChassis": {
     "DL380_Gen12_SFF": [
       {
@@ -557,6 +557,86 @@
         "solutionType": "General Server",
         "status": "APPLIED_TO_PRECHECKS_AND_RAG",
         "scope": "CHASSIS_SPECIFIC"
+      },
+      {
+        "deltaId": "DELTA-1786780228386",
+        "timestamp": "2026-08-15T07:50:28.385Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P76453-B21",
+        "requiredDependencySku": null,
+        "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "CHASSIS_SPECIFIC"
+      },
+      {
+        "deltaId": "DELTA-1786798116332",
+        "timestamp": "2026-08-15T12:48:36.329Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P76453-B21",
+        "requiredDependencySku": null,
+        "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "CHASSIS_SPECIFIC"
+      },
+      {
+        "deltaId": "DELTA-1786799746143",
+        "timestamp": "2026-08-15T13:15:46.143Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P76453-B21",
+        "requiredDependencySku": null,
+        "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "CHASSIS_SPECIFIC"
+      },
+      {
+        "deltaId": "DELTA-1786821316650",
+        "timestamp": "2026-08-15T19:15:16.650Z",
+        "chassis": "DL380_Gen12_SFF",
+        "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+        "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+        "affectedSku": "P76453-B21",
+        "requiredDependencySku": null,
+        "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+        "humanReasoning": null,
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "solutionType": "General Server",
+        "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+        "scope": "CHASSIS_SPECIFIC"
+      }
+    ],
+    "General": [
+      {
+        "deltaId": "PREPROC-DELTA-1786781599909",
+        "timestamp": "2026-08-15T08:13:19.909Z",
+        "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
+        "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1",
+        "notes": "Confirmed by analyst in Pre-flight preview.",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "scope": "CHASSIS_SPECIFIC"
+      },
+      {
+        "deltaId": "PREPROC-DELTA-1786781611542",
+        "timestamp": "2026-08-15T08:13:31.542Z",
+        "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
+        "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for Variation 1",
+        "notes": "Verified",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "scope": "CHASSIS_SPECIFIC"
       }
     ]
   },
@@ -1104,6 +1184,84 @@
     {
       "deltaId": "DELTA-1786717879785",
       "timestamp": "2026-08-14T14:31:19.785Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "DELTA-1786780228386",
+      "timestamp": "2026-08-15T07:50:28.385Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "PREPROC-DELTA-1786781599909",
+      "timestamp": "2026-08-15T08:13:19.909Z",
+      "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
+      "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1",
+      "notes": "Confirmed by analyst in Pre-flight preview.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "PREPROC-DELTA-1786781611542",
+      "timestamp": "2026-08-15T08:13:31.542Z",
+      "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
+      "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for Variation 1",
+      "notes": "Verified",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "DELTA-1786798116332",
+      "timestamp": "2026-08-15T12:48:36.329Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "DELTA-1786799746143",
+      "timestamp": "2026-08-15T13:15:46.143Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "CHASSIS_SPECIFIC"
+    },
+    {
+      "deltaId": "DELTA-1786821316650",
+      "timestamp": "2026-08-15T19:15:16.650Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

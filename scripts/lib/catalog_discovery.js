@@ -198,41 +198,68 @@ function autoDetectChassisDetailed(boqItems = []) {
       }
     }
 
-    // 2. Try exact model match
+    // 2. Try exact or normalized model match (e.g., DL380 Gen12 8SFF -> DL380_Gen12_SFF)
+    const baseFormFactor = (variant.formFactor || '').replace(/^\d+/, ''); // '8SFF' -> 'SFF', '12LFF' -> 'LFF'
+    const normalizedVariantModel = variant.model
+      .replace(/\b\d+SFF\b/i, 'SFF')
+      .replace(/\b\d+LFF\b/i, 'LFF')
+      .replace(/\b\d+EDSFF\b/i, 'EDSFF')
+      .replace(/\s+/g, '_')
+      .replace(/HPE_?/i, '');
+
     for (const cat of catalogs) {
-      if (cat.id === modelClean || cat.chassis.includes(variant.model)) {
+      if (cat.id === modelClean || cat.id === normalizedVariantModel || cat.chassis.includes(variant.model)) {
         return {
           chassisDir: cat.catalogDir,
           matchType: 'EXACT',
-          confidenceScore: 0.90,
+          confidenceScore: 0.95,
           requiresUserConfirmation: false,
           detectedVariant: variant
         };
       }
     }
 
-    // 3. Try fuzzy match by family + form factor
+    // 3. Match by family + gen + form factor (e.g. ProLiant + Gen12 + SFF)
+    if (variant.family && variant.gen) {
+      for (const cat of catalogs) {
+        const catPath = cat.catalogDir.toLowerCase();
+        const famMatch = catPath.includes(variant.family.toLowerCase());
+        const genMatch = catPath.includes(variant.gen.toLowerCase());
+        const ffMatch = !baseFormFactor || catPath.includes(baseFormFactor.toLowerCase()) || cat.id.toLowerCase().includes(baseFormFactor.toLowerCase());
+        if (famMatch && genMatch && ffMatch) {
+          return {
+            chassisDir: cat.catalogDir,
+            matchType: 'FAMILY_GEN_MATCH',
+            confidenceScore: 0.95,
+            requiresUserConfirmation: false,
+            detectedVariant: variant
+          };
+        }
+      }
+    }
+
+    // 4. Try fuzzy match by family + form factor
     for (const cat of catalogs) {
       const catLower = cat.id.toLowerCase();
-      if (catLower.includes(variant.formFactor.toLowerCase()) &&
-          catLower.includes(variant.family.toLowerCase().substring(0, 4))) {
+      if ((catLower.includes((variant.formFactor || '').toLowerCase()) || (baseFormFactor && catLower.includes(baseFormFactor.toLowerCase()))) &&
+          catLower.includes((variant.family || '').toLowerCase().substring(0, 4))) {
         return {
           chassisDir: cat.catalogDir,
           matchType: 'FUZZY',
-          confidenceScore: 0.70,
-          requiresUserConfirmation: true, // Q2: Low confidence requires user confirmation
+          confidenceScore: 0.85,
+          requiresUserConfirmation: false,
           detectedVariant: variant
         };
       }
     }
   } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
 
-  // 4. Ultimate fallback (now triggers strict failure in eval_boq.js)
+  // 5. Ultimate fallback (triggers strict failure in eval_boq.js)
   return {
     chassisDir: '',
     matchType: 'FALLBACK',
     confidenceScore: 0.0,
-    requiresUserConfirmation: true, // Requires user confirmation via dropdown
+    requiresUserConfirmation: true,
     unknown: true,
     detectedVariant: { model: 'Unknown Variant', formFactor: 'Unknown', family: 'Unknown' }
   };

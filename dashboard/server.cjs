@@ -12,6 +12,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { spawn, execFile, exec } = require('child_process');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
@@ -52,7 +53,7 @@ const { loadCatalogRules } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', '
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3000'] }));
+app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -142,7 +143,9 @@ function startTask(type, proc, res) {
   proc.stderr.on('data', data => handleData(data, 'stderr'));
 
   proc.on('close', (code) => {
-    const durationMs = Date.now() - activeTask.startTime;
+    const taskRef = activeTask; // Capture reference before clearing to prevent race condition
+    activeTask = null; // Clear mutex immediately
+    const durationMs = taskRef ? Date.now() - taskRef.startTime : 0;
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
     
     // Persist trace log
@@ -151,13 +154,11 @@ function startTask(type, proc, res) {
     fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({
       runId,
       taskType: type,
-      startTime: new Date(activeTask.startTime).toISOString(),
+      startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
       durationMs,
       exitCode: code,
       logs
     }, null, 2));
-
-    activeTask = null;
   });
 
   res.json({ message: `${type} task started`, runId, pid: proc.pid });
@@ -776,6 +777,8 @@ app.post('/api/confirm-preflight-split', (req, res) => {
 });
 
 app.post('/api/eval-boq', (req, res) => {
+  if (activeTask) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
+
   const { filepath, rawText, chassisDir } = req.body;
 
   let safeFilepath = null;
@@ -829,13 +832,19 @@ app.post('/api/eval-boq', (req, res) => {
   res.status(202).json({ status: 'ACCEPTED', runId, message: 'Evaluation job started in background' });
 
   let stdoutBuffer = '';
+  const lineBuffers = { stdout: '', stderr: '' };
 
   const handleData = (data, streamType) => {
-    const lines = data.toString().split('\n');
+    const chunkStr = data.toString();
+    if (streamType === 'stdout') stdoutBuffer += chunkStr;
+
+    const fullStr = lineBuffers[streamType] + chunkStr;
+    const lines = fullStr.split('\n');
+    lineBuffers[streamType] = lines.pop() || ''; // Buffer trailing partial line
+
     lines.forEach(line => {
       if (line.trim()) {
         logs.push({ timestamp: new Date().toISOString(), stream: streamType, text: line });
-        if (streamType === 'stdout') stdoutBuffer += line + '\n';
         
         try {
           const parsed = JSON.parse(line);
@@ -843,7 +852,7 @@ app.post('/api/eval-boq', (req, res) => {
             broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
             return;
           }
-        } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
+        } catch (_) {}
         
         broadcastSSE({ type: 'LOG', text: line, stream: streamType });
       }
@@ -854,7 +863,16 @@ app.post('/api/eval-boq', (req, res) => {
   proc.stderr.on('data', data => handleData(data, 'stderr'));
 
   proc.on('close', (code) => {
-    const durationMs = Date.now() - activeTask.startTime;
+    // Flush any remaining buffered line
+    ['stdout', 'stderr'].forEach(st => {
+      if (lineBuffers[st] && lineBuffers[st].trim()) {
+        logs.push({ timestamp: new Date().toISOString(), stream: st, text: lineBuffers[st] });
+        broadcastSSE({ type: 'LOG', text: lineBuffers[st], stream: st });
+      }
+    });
+    const taskRef = activeTask; // Capture reference before clearing to prevent race condition
+    activeTask = null; // Clear mutex immediately
+    const durationMs = taskRef ? Date.now() - taskRef.startTime : 0;
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: 'EVAL_BOQ', runId, durationMs });
     
     // Persist trace log
@@ -863,13 +881,11 @@ app.post('/api/eval-boq', (req, res) => {
     fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({
       runId,
       taskType: 'EVAL_BOQ',
-      startTime: new Date(activeTask.startTime).toISOString(),
+      startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
       durationMs,
       exitCode: code,
       logs
     }, null, 2));
-
-    activeTask = null;
 
     // Cleanup temp BOQ file if it was created from text
     if (targetPath && targetPath.includes(TEMP_DIR) && fs.existsSync(targetPath)) {
@@ -879,24 +895,48 @@ app.post('/api/eval-boq', (req, res) => {
     try {
       // Find the last line or JSON block that parses as a valid result object
       let parsedData = null;
-      const lines = stdoutBuffer.split('\n').map(l => l.trim()).filter(Boolean);
-      
-      // Reverse loop to find the final status payload
-      for (let i = lines.length - 1; i >= 0; i--) {
+
+      // Strategy 0: Exact __EVAL_RESULT_JSON__ delimiter markers
+      const markerTag = '__EVAL_RESULT_JSON__';
+      const firstMarker = stdoutBuffer.indexOf(markerTag);
+      const lastMarker = stdoutBuffer.lastIndexOf(markerTag);
+      if (firstMarker !== -1 && lastMarker !== -1 && lastMarker > firstMarker) {
         try {
-          const obj = JSON.parse(lines[i]);
-          if (obj && (obj.status === 'SUCCESS' || obj.status === 'ERROR' || obj.data)) {
-            parsedData = obj;
-            break;
-          }
-        } catch (_) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', _); }
+          const jsonStr = stdoutBuffer.substring(firstMarker + markerTag.length, lastMarker).trim();
+          parsedData = JSON.parse(jsonStr);
+        } catch (_) {}
       }
 
+      // Strategy 1: Search backwards for {"status":"SUCCESS" or {"status":"ERROR"
       if (!parsedData) {
-        // Fallback: try parsing entire trimmed buffer if single JSON object
-        const jsonStrMatch = stdoutBuffer.match(/\{[\s\S]*\}/);
-        if (jsonStrMatch) {
-          parsedData = JSON.parse(jsonStrMatch[0]);
+        const statusIdx = Math.max(
+          stdoutBuffer.lastIndexOf('{"status":"SUCCESS"'),
+          stdoutBuffer.lastIndexOf('{"status": "SUCCESS"'),
+          stdoutBuffer.lastIndexOf('{"status":"ERROR"'),
+          stdoutBuffer.lastIndexOf('{"status": "ERROR"')
+        );
+        if (statusIdx !== -1) {
+          try {
+            const candidate = stdoutBuffer.substring(statusIdx);
+            const lastBrace = candidate.lastIndexOf('}');
+            if (lastBrace !== -1) {
+              parsedData = JSON.parse(candidate.substring(0, lastBrace + 1));
+            }
+          } catch (_) {}
+        }
+      }
+
+      // Strategy 2: Line-by-line parsing from the end
+      if (!parsedData) {
+        const lines = stdoutBuffer.split('\n').map(l => l.trim()).filter(Boolean);
+        for (let i = lines.length - 1; i >= 0; i--) {
+          try {
+            const obj = JSON.parse(lines[i]);
+            if (obj && (obj.status === 'SUCCESS' || obj.status === 'ERROR' || obj.data)) {
+              parsedData = obj;
+              break;
+            }
+          } catch (_) {}
         }
       }
 
@@ -1069,9 +1109,11 @@ app.post('/api/notebook-query-async', (req, res) => {
   if (fs.existsSync(notebooksPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'));
-      const chassisId = (config.notebooks && config.notebooks[chassis]);
-      if (chassisId && chassisId.trim()) {
-        notebookId = chassisId.trim();
+      const chassisEntry = config.notebooks?.[chassis];
+      // Handle both string and object formats: { notebookId: "...", family: "..." }
+      const extractedId = typeof chassisEntry === 'string' ? chassisEntry : chassisEntry?.notebookId;
+      if (extractedId && typeof extractedId === 'string' && extractedId.trim()) {
+        notebookId = extractedId.trim();
       }
     } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
   }
@@ -1418,7 +1460,9 @@ app.post('/api/ask-notebook', async (req, res) => {
     try {
       const config = JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'));
       if (chassis && config.notebooks && config.notebooks[chassis]) {
-        notebookId = config.notebooks[chassis];
+        // Handle both string and object formats: { notebookId: "...", family: "..." }
+        const entry = config.notebooks[chassis];
+        notebookId = typeof entry === 'string' ? entry : entry?.notebookId || null;
       } else {
         notebookId = null;
       }
