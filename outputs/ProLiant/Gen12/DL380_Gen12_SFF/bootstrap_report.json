@@ -1,6 +1,6 @@
 {
   "chassis": "DL380_Gen12_SFF",
-  "bootstrappedAt": "2026-08-19T15:22:15.284Z",
+  "bootstrappedAt": "2026-08-19T15:43:37.623Z",
   "totalUniqueSKUs": 261,
   "status": "PASS",
   "steps": [
