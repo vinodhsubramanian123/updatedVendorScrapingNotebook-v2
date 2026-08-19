@@ -3,7 +3,7 @@
 ## 1. Prerequisites & Environment Setup
 
 ### System Requirements
-- **Node.js** ≥ 18.0.0
+- **Node.js** ≥ 20.19.0 (Active LTS / Node 20 or 22)
 - **npm** ≥ 9.0.0 (comes with Node.js)
 - **Google Chrome** with remote debugging enabled on port `9222` (for live OCA scraping)
 

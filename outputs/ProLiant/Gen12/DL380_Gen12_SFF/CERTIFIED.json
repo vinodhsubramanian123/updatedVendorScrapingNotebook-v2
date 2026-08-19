@@ -1,6 +1,6 @@
 {
   "chassis": "DL380_Gen12_SFF",
-  "certifiedAt": "2026-08-16T11:30:23.704Z",
+  "certifiedAt": "2026-08-19T15:22:20.320Z",
   "status": "PASS",
   "totalUniqueSKUs": 261,
   "benchmarkPassRate": "5/5",

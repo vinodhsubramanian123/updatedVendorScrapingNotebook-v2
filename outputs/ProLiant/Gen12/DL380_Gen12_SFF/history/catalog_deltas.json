@@ -1078,5 +1078,61 @@
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "General Server",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787152930518",
+    "timestamp": "2026-08-19T15:22:10.516Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787152934359",
+    "timestamp": "2026-08-19T15:22:14.358Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787152945599",
+    "timestamp": "2026-08-19T15:22:25.598Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787153864919",
+    "timestamp": "2026-08-19T15:37:44.918Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]
