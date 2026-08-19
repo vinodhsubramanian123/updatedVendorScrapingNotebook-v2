@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-19T15:43:53.265Z  
+**Sync Timestamp**: 2026-08-19T15:59:22.100Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
@@ -74,9 +74,9 @@ The following table details every valid hardware SKU, its current list price, di
 
 | Product # | Description | Current Price (USD) | Diff Status | Attribute Deltas | Price History Trail |
 |-----------|-------------|---------------------|-------------|------------------|---------------------|
-| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **UNCHANGED** | None | 2026-08-12: $12500.00 → 2026-08-13: $12500.00 → 2026-08-14: $12500.00 → 2026-08-15: $12500.00 |
-| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **UNCHANGED** | None | 2026-08-12: $18900.00 → 2026-08-13: $18900.00 → 2026-08-14: $18900.00 → 2026-08-15: $18900.00 |
-| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **UNCHANGED** | None | 2026-08-12: $15200.00 → 2026-08-13: $15200.00 → 2026-08-14: $15200.00 → 2026-08-15: $15200.00 |
+| `R0Q35A` | HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis | $12500.00 | **UNCHANGED** | None | 2026-08-12: $12500.00 → 2026-08-13: $12500.00 → 2026-08-14: $12500.00 → 2026-08-15: $12500.00 → 2026-08-19: $12500.00 |
+| `R0Q36A` | HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO | $18900.00 | **UNCHANGED** | None | 2026-08-12: $18900.00 → 2026-08-13: $18900.00 → 2026-08-14: $18900.00 → 2026-08-15: $18900.00 → 2026-08-19: $18900.00 |
+| `R0Q37A` | HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis | $15200.00 | **UNCHANGED** | None | 2026-08-12: $15200.00 → 2026-08-13: $15200.00 → 2026-08-14: $15200.00 → 2026-08-15: $15200.00 → 2026-08-19: $15200.00 |
 
 ---
 *Generated automatically by HPE Knowledge Sync Engine.*  

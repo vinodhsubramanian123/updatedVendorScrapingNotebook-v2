@@ -55,7 +55,6 @@ module.exports = {
     notebookQuery: require('./notebook_query_utils.js'),
     localSearch: require('./local_rag_search.js'),
     postFlowSync: require('./post_flow_sync.js'),
-    geminiRotator: require('./gemini_rotator.js'),
     agenticGuardrail: require('./agentic_guardrail.js')
   },
 

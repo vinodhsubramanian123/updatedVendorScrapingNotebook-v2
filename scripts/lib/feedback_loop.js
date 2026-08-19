@@ -89,6 +89,9 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
       ? `If ${classification.affectedSku} is present, ${classification.requiredSku} is mandatory.`
       : `Portal validation flagged restriction on ${classification.affectedSku}.`),
     humanReasoning: options.humanReasoning || null,
+    sourceAgent: options.sourceAgent || 'HUMAN_HITL',
+    guardrailTurn: options.guardrailTurn || null,
+    preConfidenceScore: options.preConfidenceScore || null,
     scopeTaxonomy: options.scopeTaxonomy || 'CHASSIS_SPECIFIC',
     solutionType: options.solutionType || 'General Server',
     status: 'APPLIED_TO_PRECHECKS_AND_RAG'

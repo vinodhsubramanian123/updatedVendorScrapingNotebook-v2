@@ -348,6 +348,69 @@ function recordReconciliationTelemetry(auditReport) {
   return entry;
 }
 
+/**
+ * Record an Agentic Guardrail execution in telemetry.
+ * @param {object} guardrailResult - { turns, executedToolCalls, durationMs, success, error }
+ * @param {string} chassisId - Target chassis identifier
+ * @param {number} preConfidence - Confidence score before guardrail ran
+ * @param {number} postConfidence - Confidence score after guardrail completed
+ */
+function recordGuardrailTelemetry(guardrailResult, chassisId = 'Unknown_Chassis', preConfidence = 0, postConfidence = 0) {
+  const telemetryDir = path.dirname(TELEMETRY_FILE);
+  if (!fs.existsSync(telemetryDir)) {
+    fs.mkdirSync(telemetryDir, { recursive: true });
+  }
+
+  const data = loadTelemetry();
+  if (!data.guardrailHistory) data.guardrailHistory = [];
+
+  const toolCalls = guardrailResult.executedToolCalls || [];
+  const toolCallCounts = {};
+  toolCalls.forEach(t => {
+    toolCallCounts[t] = (toolCallCounts[t] || 0) + 1;
+  });
+
+  const entry = {
+    id: `GUARD-${Date.now()}`,
+    timestamp: new Date().toISOString(),
+    chassisId,
+    success: guardrailResult.success || false,
+    error: guardrailResult.error || null,
+    turns: guardrailResult.turns || 0,
+    totalToolCalls: toolCalls.length,
+    toolCallBreakdown: toolCallCounts,
+    durationMs: guardrailResult.durationMs || 0,
+    preConfidence,
+    postConfidence,
+    confidenceLift: parseFloat((postConfidence - preConfidence).toFixed(2)),
+    knowledgeDeltasRecorded: toolCallCounts['record_knowledge_delta'] || 0,
+    simulateBuildsRun: toolCallCounts['simulate_build'] || 0,
+    ragQueriesRun: (toolCallCounts['query_notebooklm'] || 0) + (toolCallCounts['query_catalog_db'] || 0)
+  };
+
+  data.guardrailHistory.unshift(entry);
+  if (data.guardrailHistory.length > 50) data.guardrailHistory.pop();
+
+  // Aggregate guardrail metrics
+  data.totalGuardrailRuns = (data.totalGuardrailRuns || 0) + 1;
+  const validDurations = data.guardrailHistory.filter(h => typeof h.durationMs === 'number' && h.durationMs > 0);
+  data.avgGuardrailDurationMs = validDurations.length > 0
+    ? Math.round(validDurations.reduce((acc, h) => acc + h.durationMs, 0) / validDurations.length)
+    : 0;
+  const validTurns = data.guardrailHistory.filter(h => typeof h.turns === 'number');
+  data.avgGuardrailTurns = validTurns.length > 0
+    ? parseFloat((validTurns.reduce((acc, h) => acc + h.turns, 0) / validTurns.length).toFixed(1))
+    : 0;
+  const successRuns = data.guardrailHistory.filter(h => h.success).length;
+  data.guardrailSuccessRate = data.guardrailHistory.length > 0
+    ? parseFloat(((successRuns / data.guardrailHistory.length) * 100).toFixed(1))
+    : 100;
+
+  data.lastUpdated = new Date().toISOString();
+  safeWriteJsonAtomic(TELEMETRY_FILE, data);
+  return entry;
+}
+
 module.exports = {
   loadTelemetry,
   recordEvaluationTelemetry,
@@ -356,5 +419,7 @@ module.exports = {
   recordCleansingPreflightTelemetry,
   recordOcrTelemetry,
   recordExportTelemetry,
-  recordReconciliationTelemetry
+  recordReconciliationTelemetry,
+  recordGuardrailTelemetry
 };
+

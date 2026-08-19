@@ -747,5 +747,7 @@ module.exports = {
   generateNotebookSyncPayload,
   syncToNotebookLM,
   inspectKnowledgeDrift,
-  classifyKnowledgeScope
+  classifyKnowledgeScope,
+  loadNotebookConfig,
+  getNotebookIdForChassis
 };

@@ -4,20 +4,6 @@ const { CallToolRequestSchema, ListToolsRequestSchema } = require("@modelcontext
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Load notebook config to resolve chassis → notebookId mapping.
- * @returns {object} { defaultNotebookId, notebooks }
- */
-function loadNotebookConfig() {
-  const configPath = path.join(__dirname, 'config', 'notebooks.json');
-  if (fs.existsSync(configPath)) {
-    try {
-      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-    } catch (e) { /* fallback below */ }
-  }
-  return { defaultNotebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f', notebooks: {} };
-}
-
 const {
   evalComputeThermal,
   evalMemoryChannel,
@@ -30,6 +16,9 @@ const {
 } = require('./lib/boq_evaluator.js');
 const { executeNotebookQuery } = require('./lib/notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('./lib/local_rag_search.js');
+const { loadNotebookConfig, getNotebookIdForChassis } = require('./lib/knowledge_sync.js');
+const { processPortalFeedback } = require('./lib/feedback_loop.js');
+const { listAllCatalogs } = require('./lib/catalog_discovery.js');
 
 const server = new Server(
   {
@@ -152,6 +141,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ["items_json"]
         }
+      },
+      {
+        name: "record_knowledge_delta",
+        description: "Records a learned physical dependency rule to the persistent KnowledgeBase so the system automatically learns from this session.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            chassis_id: { type: "string", description: "The chassis variant, e.g., 'DL380_Gen12_SFF'" },
+            affected_sku: { type: "string", description: "The SKU that requires a fix." },
+            required_sku: { type: "string", description: "The mandatory required SKU." },
+            rule_update: { type: "string", description: "The explanation of the new rule." }
+          },
+          required: ["chassis_id", "affected_sku", "required_sku", "rule_update"]
+        }
       }
     ],
   };
@@ -192,7 +195,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       case "query_notebooklm": {
         const cfg = loadNotebookConfig();
-        const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]) || cfg.defaultNotebookId;
+        const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
         const result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
@@ -202,6 +205,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       case "simulate_build": {
         const result = evaluateBOQMultiAspect(items, { chassis: args.chassis_id });
+        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      }
+      case "record_knowledge_delta": {
+        const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
+        let outputDir = cat ? cat.catalogDir : null;
+        if (!outputDir) {
+          outputDir = path.join(__dirname, '..', 'outputs', args.chassis_id);
+        }
+        if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+        const result = processPortalFeedback("MCP tool rule update", outputDir, {
+          affectedSku: args.affected_sku,
+          requiredDependencySku: args.required_sku,
+          ruleUpdate: args.rule_update,
+          humanReasoning: "MCP Server tool-call derived knowledge delta",
+          sourceAgent: 'MCP_EXTERNAL'
+        });
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       default:

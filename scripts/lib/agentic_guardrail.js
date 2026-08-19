@@ -1,26 +1,21 @@
 'use strict';
 const { GoogleGenAI, Type } = require('@google/genai');
+const path = require('path');
+const fs = require('fs');
+
 const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
 const { executeNotebookQuery } = require('./notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('./local_rag_search.js');
 const { processPortalFeedback } = require('./feedback_loop.js');
-const path = require('path');
-const fs = require('fs');
+const { loadNotebookConfig, getNotebookIdForChassis } = require('./knowledge_sync.js');
 const { emitProgress } = require('./progress.js');
-require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
+const { recordGuardrailTelemetry } = require('./system/telemetry.js');
+const { triggerPostFlowSync } = require('./post_flow_sync.js');
+const { listAllCatalogs } = require('./catalog_discovery.js');
+const geminiRotator = require('./gemini_rotator.js');
+const logger = require('./pipeline_logger.js');
 
-/**
- * Load notebook config to resolve chassis → notebookId mapping.
- */
-function loadNotebookConfig() {
-  const configPath = path.join(__dirname, '..', 'config', 'notebooks.json');
-  if (fs.existsSync(configPath)) {
-    try {
-      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-    } catch (e) { /* fallback below */ }
-  }
-  return { defaultNotebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f', notebooks: {} };
-}
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const MODEL_NAME = 'gemini-3.5-flash';
 
@@ -82,8 +77,6 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
 
 async function runAgenticGuardrail(items, chassisDir) {
-  const geminiRotator = require('./gemini_rotator.js');
-  const logger = require('./pipeline_logger.js');
   const startTime = Date.now();
   
   let activeKeyInfo = geminiRotator.getActiveKey();
@@ -94,6 +87,15 @@ async function runAgenticGuardrail(items, chassisDir) {
   const chassisId = path.basename(chassisDir);
   let currentApiKey = activeKeyInfo.apiKey;
   let ai = new GoogleGenAI({ apiKey: currentApiKey });
+
+  // Compute pre-guardrail confidence baseline
+  let preConfidence = 0.5;
+  try {
+    const initialEval = evaluateBOQMultiAspect(items, { chassis: chassisId });
+    preConfidence = initialEval?.confidence?.score ?? 0.5;
+  } catch (_) { /* ignore pre-eval failure */ }
+  let latestConfidence = preConfidence;
+  let deltasRecordedCount = 0;
 
   const systemInstruction = `You are the HPE BOQ Evaluation Orchestrator (Intent Brain) with a Guardrail Loop.
 Your task is to analyze the user's BOQ configuration.
@@ -158,6 +160,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
 
   let turns = 0;
   const executedToolCalls = [];
+  let isOptimalResolved = false;
 
   while (response.functionCalls && response.functionCalls.length > 0 && turns < 15) {
     if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
@@ -178,11 +181,18 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
           case 'simulate_build': {
             const parsedItems = JSON.parse(args.items_json);
             result = evaluateBOQMultiAspect(parsedItems, { chassis: args.chassis_id });
+            if (result?.confidence?.score !== undefined) {
+              latestConfidence = result.confidence.score;
+            }
+            // Deterministic exit check: If build is 100% physically valid with 0 errors
+            if (result?.confidence?.score >= 1.0 && (result?.errors || []).length === 0) {
+              isOptimalResolved = true;
+            }
             break;
           }
           case 'query_notebooklm': {
             const cfg = loadNotebookConfig();
-            const notebookId = (cfg.notebooks && cfg.notebooks[args.chassis_id]?.notebookId) || cfg.defaultNotebookId;
+            const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
             result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
             break;
           }
@@ -191,7 +201,6 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'record_knowledge_delta': {
-            const { listAllCatalogs } = require('./catalog_discovery.js');
             const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
             let outputDir = cat ? cat.catalogDir : null;
             if (!outputDir) {
@@ -202,8 +211,12 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
               affectedSku: args.affected_sku,
               requiredDependencySku: args.required_sku,
               ruleUpdate: args.rule_update,
-              humanReasoning: "Agentic Guardrail Loop derived from RAG/DB fact-check"
+              humanReasoning: "Agentic Guardrail Loop derived from RAG/DB fact-check",
+              sourceAgent: 'AGENTIC_GUARDRAIL',
+              guardrailTurn: turns,
+              preConfidenceScore: preConfidence
             });
+            deltasRecordedCount++;
             break;
           }
           default:
@@ -267,6 +280,12 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
         }
       }
     }
+
+    // GAP-C2: Deterministic exit if simulate_build resolved 100% buildability
+    if (isOptimalResolved && (!response.functionCalls || response.functionCalls.length === 0)) {
+      logger.info('AGENTIC_GUARDRAIL', `Optimal build resolution confirmed (Confidence 1.0). Exiting loop deterministically at turn ${turns}.`);
+      break;
+    }
   }
 
   const durationMs = Date.now() - startTime;
@@ -288,13 +307,33 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
     extractedText = `Autonomous Agentic Guardrail completed in ${turns} turns, executing ${executedToolCalls.length} verification tools: [${executedToolCalls.join(', ')}]. Physical constraints and knowledge deltas successfully grounded against Gemini NotebookLM.`;
   }
 
-  return {
+  const guardrailSummary = {
     text: extractedText,
     success: true,
     turns,
     executedToolCalls,
-    durationMs
+    durationMs,
+    preConfidence,
+    postConfidence: latestConfidence
   };
+
+  // GAP-C3: Record Guardrail Telemetry
+  try {
+    recordGuardrailTelemetry(guardrailSummary, chassisId, preConfidence, latestConfidence);
+  } catch (telErr) {
+    logger.warn('AGENTIC_GUARDRAIL', 'Failed to record guardrail telemetry', telErr);
+  }
+
+  // GAP-M5: Trigger Post-Flow Sync if new deltas were learned
+  if (deltasRecordedCount > 0) {
+    try {
+      triggerPostFlowSync(chassisId, 'GUARDRAIL');
+    } catch (syncErr) {
+      logger.warn('AGENTIC_GUARDRAIL', 'Post-flow sync advisory', syncErr);
+    }
+  }
+
+  return guardrailSummary;
 }
 
 module.exports = {
