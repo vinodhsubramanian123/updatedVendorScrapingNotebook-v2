@@ -9,6 +9,9 @@
   "workspaces": [
     "dashboard"
   ],
+  "overrides": {
+    "jsdom": "^26.0.0"
+  },
   "scripts": {
     "dev": "node dashboard/server.cjs",
     "start": "node dashboard/server.cjs",
