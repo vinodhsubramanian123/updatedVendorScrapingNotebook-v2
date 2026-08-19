@@ -31,6 +31,9 @@ jobs:
       - name: Run dashboard linter
         run: npm --workspace dashboard run lint
 
+      - name: Run dashboard component tests
+        run: npm --workspace dashboard test
+
       - name: Run offline pipeline tests
         run: node tests/test_offline_pipeline.js
 
@@ -51,3 +54,24 @@ jobs:
 
       - name: Run vendor portal BOM verification tests
         run: node tests/test_vendor_bom_verifier.js
+
+      - name: Run Gemini rotator FIFO & quota tests
+        run: node tests/test_gemini_rotator.js
+
+      - name: Run incremental checksum & diff tests
+        run: node tests/test_incremental_checksum.js
+
+      - name: Run edge cases & robustness tests
+        run: node tests/test_edge_cases.js
+
+      - name: Run chaos & failure modes resilience tests
+        run: node tests/test_failure_modes_and_chaos.js
+
+      - name: Run historical pricing timeline tests
+        run: node tests/test_historical_pricing_timeline.js
+
+      - name: Run Master Excel alignment & audit tests
+        run: node tests/test_excel_alignment_and_audit.js
+
+      - name: Run full multi-family portfolio certification
+        run: node scripts/verify_all.js
