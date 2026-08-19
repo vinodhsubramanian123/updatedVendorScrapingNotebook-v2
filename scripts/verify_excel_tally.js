@@ -122,7 +122,8 @@ async function main() {
   let validHpeSKUCount     = 0;
 
   allSkusSheet.forEach(row => {
-    const qty = String(row['Current Qty'] || row['Quantity'] || '');
+    const rawQty = row['Current Qty'] !== undefined && row['Current Qty'] !== null && row['Current Qty'] !== '' ? row['Current Qty'] : (row['Quantity'] !== undefined && row['Quantity'] !== null ? row['Quantity'] : '');
+    const qty = String(rawQty).trim();
     if (/^\d+$/.test(qty)) cleanQtyCount++;
 
     const pathStr = String(row['Hierarchy Path'] || '');

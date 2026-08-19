@@ -85,13 +85,13 @@ function classifyKnowledgeScope(delta) {
 function collectAllDeltas() {
   const { collectKnowledgeDeltas } = require('./catalog_discovery');
   const rawDeltas = collectKnowledgeDeltas(OUTPUTS_ROOT);
-  const seenIds = new Set();
+  const seenSemanticKeys = new Set();
   const deduped = [];
 
   for (const d of rawDeltas) {
-    const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
-    if (!seenIds.has(key)) {
-      seenIds.add(key);
+    const semanticKey = `${d.chassis || ''}:${d.affectedSku || ''}:${d.requiredDependencySku || ''}:${(d.ruleUpdate || d.rawMessage || '').trim()}`;
+    if (!seenSemanticKeys.has(semanticKey)) {
+      seenSemanticKeys.add(semanticKey);
       deduped.push({
         ...d,
         scope: classifyKnowledgeScope(d)
@@ -494,64 +494,85 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
   let result = null;
   const payloadBasename = path.basename(payloadPath);
 
+  // ── Canonical Source Name ────────────────────────────────────────────────────
+  // Format: <ChassisName>_OCA_Catalog_<YYYY-MM-DD>  (matches the output Excel filename)
+  // This is what will appear in NotebookLM's source list, ensuring no duplicate confusion.
+  const scrapeDate = new Date().toISOString().split('T')[0];  // e.g. 2026-08-19
+  const canonicalSourceName = `${chassisName}_OCA_Catalog_${scrapeDate}`;
+
   // 1. Try nlm CLI first via execFile (avoiding shell string interpolation)
   try {
     const envPath = process.env.PATH || '';
     const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
     const extendedPath = `${homeBin}:${envPath}`;
 
-    // Source Hygiene: Check if a tracked source ID exists (most reliable) or fall back to title-match search
-    let previousSourceId = null;
+    // ── Source Hygiene: Remove ALL stale sources for this chassis ────────────
+    // Priority 1: delete by tracked source ID (fastest, most reliable)
+    // Priority 2: full source list scan — deletes anything whose title contains
+    //             the chassis name OR the previous canonical name pattern
     const notebookCfg = loadNotebookConfig();
     const cfgEntry = notebookCfg.notebooks && notebookCfg.notebooks[chassisName];
-    if (cfgEntry && typeof cfgEntry === 'object' && cfgEntry.lastSyncedSourceId) {
-      previousSourceId = cfgEntry.lastSyncedSourceId;
-    }
+    const previousSourceId = (cfgEntry && typeof cfgEntry === 'object') ? cfgEntry.lastSyncedSourceId : null;
+    const previousSourceName = (cfgEntry && typeof cfgEntry === 'object') ? cfgEntry.lastSyncedSourceName : null;
 
     if (previousSourceId) {
-      // Fast path: direct delete by tracked source ID — avoids title-match search
+      // Fast path: direct delete by tracked source ID
       try {
-        execFileSync('nlm', ['source', 'delete', notebookId, previousSourceId, '--yes'], {
+        execFileSync('nlm', ['source', 'delete', previousSourceId, '--confirm'], {
           encoding: 'utf-8',
           timeout: 10000,
           env: { ...process.env, PATH: extendedPath }
         });
-      } catch (delErr) { /* ignore if source was already removed */ }
-    } else {
-      // Fallback: list all sources and match by chassis name or payload filename
-      try {
-        const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
-          encoding: 'utf-8',
-          timeout: 15000,
-          env: { ...process.env, PATH: extendedPath }
-        });
-        const sources = JSON.parse(listOutput);
-        const staleSources = Array.isArray(sources) ? sources.filter(s =>
-          (s.title && s.title.includes(chassisName)) ||
-          (s.filename && s.filename.includes(payloadBasename))
-        ) : [];
-
-        for (const stale of staleSources) {
-          if (stale.id) {
-            try {
-              execFileSync('nlm', ['source', 'delete', notebookId, stale.id, '--yes'], {
-                encoding: 'utf-8',
-                timeout: 10000,
-                env: { ...process.env, PATH: extendedPath }
-              });
-            } catch (delErr) { /* ignore deletion warning and proceed with add */ }
-          }
-        }
-      } catch (listErr) { /* ignore list failure and proceed with add */ }
+      } catch (delErr) { /* ignore if already removed */ }
     }
 
-    const stdout = execFileSync('nlm', ['source', 'add', notebookId, '--file', payloadPath], {
+    // Always do a title-scan to catch any manually uploaded or differently named duplicates
+    // (e.g. old "Live_Scraping_Aug_16_2026_V2" files or a previous day's canonical source)
+    try {
+      const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
+        encoding: 'utf-8',
+        timeout: 15000,
+        env: { ...process.env, PATH: extendedPath }
+      });
+      const sources = JSON.parse(listOutput);
+      const staleSources = Array.isArray(sources) ? sources.filter(s => {
+        const title = String(s.title || s.filename || '');
+        // Match any source whose name contains the chassis prefix (e.g. DL380_Gen12_SFF)
+        // or the previous canonical name, regardless of date suffix
+        return (
+          title.includes(chassisName) ||
+          (previousSourceName && title === previousSourceName) ||
+          title.includes(payloadBasename)
+        ) && s.id !== undefined;
+      }) : [];
+
+      for (const stale of staleSources) {
+        if (stale.id && stale.id !== previousSourceId) {
+          // Only delete if not already deleted above via ID
+          try {
+            execFileSync('nlm', ['source', 'delete', stale.id, '--confirm'], {
+              encoding: 'utf-8',
+              timeout: 10000,
+              env: { ...process.env, PATH: extendedPath }
+            });
+          } catch (delErr) { /* ignore individual deletion errors */ }
+        }
+      }
+    } catch (listErr) { /* list failure is non-fatal — proceed with add */ }
+
+    // ── Add fresh source with the canonical name ──────────────────────────────
+    const stdout = execFileSync('nlm', [
+      'source', 'add', notebookId,
+      '--file', payloadPath,
+      '--title', canonicalSourceName,
+      '--wait'  // wait for NotebookLM to finish indexing before returning
+    ], {
       encoding: 'utf-8',
-      timeout: 30000,
+      timeout: 120000,  // 120s — indexing large payloads with --wait can take 60-90s
       env: { ...process.env, PATH: extendedPath }
     });
 
-    // Parse the new source ID from the CLI output (format: "Source added: src_abc123" or JSON)
+    // Parse new source ID from CLI output
     let newSourceId = null;
     const idMatch = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
                     stdout.match(/"id"\s*:\s*"([^"]+)"/i) ||
@@ -562,22 +583,24 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
       success: true,
       mode: 'CLI',
       newSourceId,
-      message: `Successfully replaced old knowledge source and synchronized latest payload to NotebookLM (${notebookId}) via nlm CLI.`
+      newSourceName: canonicalSourceName,
+      message: `Replaced old source(s) and synced "${canonicalSourceName}" to NotebookLM (${notebookId}) via nlm CLI.`
     };
   } catch (cliErr) {
-    // 2. Return fallback metadata indicating MCP tool source_add can be invoked
+    // 2. Fallback: return metadata for MCP tool / manual upload
     result = {
       success: false,
       mode: 'MCP_OR_MANUAL',
       notebookId,
       payloadPath,
+      canonicalSourceName,
       mcpToolName: 'source_add',
       mcpServer: 'gemini-notebook-mcp',
-      message: `CLI sync unavailable (${cliErr.message}). Payload file prepared at ${payloadPath}. Use gemini-notebook-mcp tool source_add or nlm CLI.`
+      message: `CLI sync unavailable (${cliErr.message}). Payload ready at ${payloadPath}. Upload as "${canonicalSourceName}" via gemini-notebook-mcp source_add or nlm CLI.`
     };
   }
 
-  // Update sync metadata in notebooks.json — persist new source ID for direct delete on next sync
+  // ── Persist sync metadata (source ID + canonical name) to notebooks.json ──
   if (fs.existsSync(CONFIG_NOTEBOOKS)) {
     try {
       const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
@@ -590,13 +613,13 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           lastSyncedAt: new Date().toISOString(),
           lastSyncDeltaCount: totalRulesCount,
           isolationLevel: 'CHASSIS_SPECIFIC',
-          // Persist the new source ID so the next sync can do a direct delete-by-ID
+          lastSyncedSourceName: canonicalSourceName,
           ...(result && result.newSourceId ? { lastSyncedSourceId: result.newSourceId } : {})
         };
         safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
       }
     } catch (e) {
-      /* ignore config write errors */
+      /* ignore config write errors — sync outcome is not affected */
     }
   }
 

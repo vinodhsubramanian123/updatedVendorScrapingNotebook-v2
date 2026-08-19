@@ -10,7 +10,7 @@ const geminiRotator = lib.system.geminiRotator;
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
 
-const MODEL_NAME = 'gemini-2.5-flash';
+const MODEL_NAME = 'gemini-3.5-flash';
 
 async function generateAdversarialBOQ() {
   const prompt = `You are an Adversarial BOQ Generator for HPE servers.
@@ -26,8 +26,10 @@ Format each item exactly like this:
 
   try {
     const text = await geminiRotator.executeWithSmartRotation(async ({ ai }) => {
-      const chat = ai.chats.create({ model: MODEL_NAME, config: { temperature: 0.8 } });
-      const response = await chat.sendMessage({ message: prompt });
+      const response = await ai.models.generateContent({
+        model: MODEL_NAME,
+        contents: prompt
+      });
       return response.text ? response.text.trim() : '';
     }, { model: MODEL_NAME });
 
@@ -99,7 +101,30 @@ async function runAdversarialAgent() {
   updateAdversarialTelemetry(isCaught, truePositive, falsePositive);
 }
 
-// Run once, then exit. 
-// Can be run in a loop if needed.
-runAdversarialAgent();
+async function main() {
+  const isLoop = process.argv.includes('--loop');
+  const intervalIdx = process.argv.indexOf('--interval');
+  const intervalSec = intervalIdx !== -1 && process.argv[intervalIdx + 1] ? parseInt(process.argv[intervalIdx + 1], 10) : 60;
+  const iterIdx = process.argv.indexOf('--iterations');
+  const maxIterations = iterIdx !== -1 && process.argv[iterIdx + 1] ? parseInt(process.argv[iterIdx + 1], 10) : (isLoop ? Infinity : 1);
+
+  let currentIter = 0;
+  while (currentIter < maxIterations) {
+    currentIter++;
+    console.log(`\n================================================================`);
+    console.log(`😈 ADVERSARIAL RED-TEAM ITERATION ${currentIter}${maxIterations !== Infinity ? `/${maxIterations}` : ''}`);
+    console.log(`================================================================`);
+    await runAdversarialAgent();
+
+    if (currentIter < maxIterations) {
+      console.log(`⏱️ Next adversarial pass in ${intervalSec}s... (Ctrl+C to stop)`);
+      await new Promise(resolve => setTimeout(resolve, intervalSec * 1000));
+    }
+  }
+}
+
+main().catch(err => {
+  console.error("Adversarial agent error:", err);
+  process.exit(1);
+});
 

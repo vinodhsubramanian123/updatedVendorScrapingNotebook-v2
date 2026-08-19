@@ -42,11 +42,13 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
       // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
       const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
+      const isRecommended = (entry.parentCategory === 'Chassis' || (sku['Option Type'] || sku.optionType) === 'CTO') ? 'Yes' : 'No';
+
       rows.push([
         entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintStr, maxQtyVal,
         (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
         priceVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
-        sku['Price per GB (USD)'] || '', sku['HPE Recommended'] || '', sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '',
+        sku['Price per GB (USD)'] || '', sku['HPE Recommended'] || isRecommended, sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '',
         sku['Diff Status'] || 'UNCHANGED', sku['Previous List Price (USD)'] || 'N/A', sku['Price Change (USD)'] || '$0.00', sku['Price Change (%)'] || '0.00%', sku['Price History Trail'] || ''
       ].join('\t'));
     }
@@ -56,32 +58,52 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
 
 /**
  * Generate Rules & Constraints TSV content.
+ * Supports combined entries, learned feedback rules, and deduplication of redundant messages.
  * @param {Array<object>} entries 
  * @param {Array<object>} subcatList 
  * @param {string} fullText 
+ * @param {Array<object>} extraRules
  * @returns {string} TSV content string
  */
-function generateRulesSheet(entries, subcatList = [], fullText = '') {
+function generateRulesSheet(entries, subcatList = [], fullText = '', extraRules = []) {
   const rows = [['Main Category', 'Sub-Category', 'Constraint', 'Rule Type', 'Rule Text'].join('\t')];
-  const seen = new Set();
+  const seenRuleTriples = new Set();
 
+  const addRuleRow = (parentCat, subCat, constraint, ruleType, ruleText) => {
+    if (!ruleText || typeof ruleText !== 'string' || ruleText.trim().length < 5) return;
+    const cleanText = ruleText.trim();
+    const key = `${parentCat}|${subCat}|${cleanText}`;
+    if (seenRuleTriples.has(key)) return;
+    seenRuleTriples.add(key);
+    rows.push([parentCat, subCat, constraint || '', ruleType, cleanText].join('\t'));
+  };
+
+  // 1. Subcategory constraints
   for (const sc of subcatList) {
-    const key = sc.parentCategory + '|' + sc.name;
-    if (seen.has(key)) continue;
-    seen.add(key);
-
     const constraintStr = sc.maxQty === -1 ? 'Unlimited' :
                          sc.maxQty === -2 ? 'Required' :
                          sc.maxQty > 0 ? `max ${sc.maxQty}` : sc.constraint;
-    rows.push([sc.parentCategory, sc.name, constraintStr, 'Quantity Constraint', 'Max quantity: ' + constraintStr].join('\t'));
-  }
-
-  for (const entry of entries) {
-    for (const rule of (entry.rules || [])) {
-      rows.push([entry.parentCategory, entry.subCategory, entry.constraint || '', 'Configuration Rule', rule].join('\t'));
+    if (constraintStr) {
+      addRuleRow(sc.parentCategory, sc.name, constraintStr, 'Quantity Constraint', `Max quantity: ${constraintStr}`);
     }
   }
 
+  // 2. Embedded configuration rules from entries (Hardware + Services)
+  for (const entry of entries) {
+    for (const rule of (entry.rules || [])) {
+      addRuleRow(entry.parentCategory, entry.subCategory, entry.constraint || '', 'Configuration Rule', rule);
+    }
+  }
+
+  // 3. Extra / Learned Feedback Rules (from Catalog_Rules.json)
+  for (const r of extraRules) {
+    const parent = r.parentCategory || 'Learned Feedback Rules';
+    const sub = r.subCategory || '(Feedback)';
+    const text = r.rule || r.description || '';
+    addRuleRow(parent, sub, r.constraint || '', 'Learned Feedback Rule', text);
+  }
+
+  // 4. Text-extracted rules from QuickSpecs / DOM
   const notePatterns = [
     { regex: /For [Mm]ore detail[s]? on .+?, please refer to: (.+)/g, type: 'Reference Link' },
     { regex: /Minimum \d+ of .+/g, type: 'Minimum Requirement' },
@@ -92,7 +114,6 @@ function generateRulesSheet(entries, subcatList = [], fullText = '') {
   ];
 
   for (const pat of notePatterns) {
-    // Reset regex state for safety (Rule: regex state safety)
     pat.regex.lastIndex = 0;
     let m;
     while ((m = pat.regex.exec(fullText)) !== null) {
@@ -104,14 +125,17 @@ function generateRulesSheet(entries, subcatList = [], fullText = '') {
         }
       }
       const ruleText = m[0].substring(0, 300).trim();
-      if (ruleText.length > 10) rows.push([nearestParent, nearestSubcat, '', pat.type, ruleText].join('\t'));
+      if (ruleText.length > 10) {
+        addRuleRow(nearestParent, nearestSubcat, '', pat.type, ruleText);
+      }
     }
   }
+
   return rows.join('\n');
 }
 
 /**
- * Generate Category Summary TSV content.
+ * Generate Category Summary TSV content across combined entries.
  * @param {Array<object>} entries 
  * @param {Array<object>} subcatList 
  * @returns {string} TSV content string
@@ -133,7 +157,7 @@ function generateSummarySheet(entries, subcatList = []) {
     let skuCount = 0, ruleCount = 0;
     for (const entry of entries) {
       if (entry.subCategory === sc.name && entry.parentCategory === sc.parentCategory) {
-        skuCount += entry.skuCount;
+        skuCount += (entry.skuCount || (entry.skus ? entry.skus.length : 0));
         ruleCount += (entry.rules || []).length;
       }
     }

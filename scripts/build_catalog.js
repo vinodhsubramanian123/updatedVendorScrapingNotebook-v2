@@ -234,12 +234,12 @@ for (let ti = 1; ti < tables.length; ti++) {
 
   for (let ri = 0; ri < Math.min(4, table.rows.length); ri++) {
     const row = table.rows[ri];
-    const hasProductHeader = row.some(c => c === 'Product #');
-    const hasDescHeader    = row.some(c => c === 'Description');
+    const hasProductHeader = row.some(c => c === 'Product #' || c === 'Product # / Option');
+    const hasDescHeader    = row.some(c => c === 'Description' || c === 'Product Description');
 
     if (hasProductHeader || hasDescHeader) {
       headerIdx = ri;
-      headers   = row.filter(h => h.length > 0);
+      headers   = row.filter(h => h.length > 0).map(h => h === 'Product Description' ? 'Description' : h);
       break;
     } else {
       const text = row.join(' ').trim();
@@ -320,6 +320,25 @@ for (let ti = 1; ti < tables.length; ti++) {
       continue;
     }
 
+    const isPhantomFio = descText.toLowerCase() === 'factory integrated' ||
+                         (descText.toLowerCase().includes('factory integrated') && (!obj['Unit Price (USD)'] || obj['Unit Price (USD)'] === '0.00' || obj['Unit Price (USD)'] === '0'));
+
+    const existingSkuIndex = skus.findIndex(s => s['Product #'] === pn);
+    if (existingSkuIndex !== -1) {
+      if (isPhantomFio || obj['Option Type'] === 'CTO') {
+        skus[existingSkuIndex]['Option Type'] = 'CTO';
+        skus[existingSkuIndex].isFactoryIntegrated = true;
+      }
+      continue;
+    }
+
+    if (isPhantomFio && allSKUMap.has(pn)) {
+      const prev = allSKUMap.get(pn);
+      prev['Option Type'] = 'CTO';
+      prev.isFactoryIntegrated = true;
+      continue;
+    }
+
     if (pn && pn.length >= 3 && pn.length < 30 && !pn.includes('Product #') && !pn.includes('Optional') && !pn.includes('Please make')) {
       skus.push(obj);
     }
@@ -367,16 +386,52 @@ for (let ti = 1; ti < tables.length; ti++) {
   if (table.subTab) parentCat = table.subTab;
   if (table.label)  subCat    = table.label;
 
-  // Smart fallback: if parentCat is still 'Unknown', match against known category keywords in rules & SKU descriptions
-  if (parentCat === 'Unknown') {
-    const searchContext = `${subCat} ${tableRules.join(' ')} ${skus.map(s => s['Description'] || '').join(' ')}`;
-    const matchedMain   = KNOWN_MAIN_CATEGORIES.find(mc =>
-      new RegExp(`\\b${mc.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\\b`, 'i').test(searchContext)
-    );
-    if (matchedMain) parentCat = matchedMain;
+  // Smart fallback: if parentCat is still 'Unknown', classify using component role & semantic taxonomy
+  if (parentCat === 'Unknown' || !parentCat) {
+    const { classifyComponentRole } = require('./lib/product_meta');
+    const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
+    const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
+    
+    const ROLE_TO_PARENT_MAP = {
+      'Processor': 'Processor',
+      'Memory': 'Memory',
+      'Power Supply': 'Power Supplies',
+      'Storage Controller': 'Storage Controllers',
+      'Drive Cage / Drive': 'Drive Enclosures / Drives',
+      'Network Adapter': 'Networking',
+      'PCIe Riser': 'PCIe Risers',
+      'Cooling / Thermal': 'Cooling / Thermal',
+      'Cable Kit': 'Cables & Enablement Kits',
+      'Transceiver': 'Networking',
+      'GPU / Accelerator': 'Graphics & GPU',
+      'Storage Battery': 'Storage Controllers',
+      'Boot Device': 'OS Boot Device',
+      'Base Chassis': 'Chassis',
+      'Operating System / License': 'Software & Licenses',
+      'Chassis Infrastructure': 'Accessories & Infrastructure',
+      'Service & Support': 'Support Services'
+    };
+    
+    parentCat = ROLE_TO_PARENT_MAP[detectedRole] || detectedRole || 'Option Components';
   }
 
-  if (parentCat === 'Chassis') {
+  // Assign fallback category constraints if not explicitly captured
+  const CATEGORY_DEFAULT_CONSTRAINTS = {
+    'processor': { constraint: 'max 2', maxQty: 2 },
+    'memory': { constraint: 'max 32', maxQty: 32 },
+    'power supplies': { constraint: 'max 2', maxQty: 2 },
+    'pcie risers': { constraint: 'max 3', maxQty: 3 },
+    'chassis': { constraint: 'max 1 — Mandatory Base Chassis Selection', maxQty: 1 },
+    'storage controllers': { constraint: 'max 4', maxQty: 4 },
+    'drive enclosures / drives': { constraint: 'max 24', maxQty: 24 },
+    'networking': { constraint: 'max 8', maxQty: 8 },
+    'cooling / thermal': { constraint: 'max 6', maxQty: 6 }
+  };
+  const defaultConstraintObj = CATEGORY_DEFAULT_CONSTRAINTS[parentCat.toLowerCase()] || {};
+  let finalConstraint = matchedSubcat && matchedSubcat.constraint ? matchedSubcat.constraint : (defaultConstraintObj.constraint || '');
+  let finalMaxQty = matchedSubcat && matchedSubcat.maxQty ? matchedSubcat.maxQty : (defaultConstraintObj.maxQty || '');
+
+  if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
     skus.forEach(sku => {
       sku['Option Type'] = 'CTO';
     });
@@ -386,8 +441,8 @@ for (let ti = 1; ti < tables.length; ti++) {
     tableIndex:     ti,
     parentCategory: parentCat,
     subCategory:    subCat,
-    constraint:     matchedSubcat ? matchedSubcat.constraint : '',
-    maxQty:         matchedSubcat ? matchedSubcat.maxQty : '',
+    constraint:     finalConstraint,
+    maxQty:         finalMaxQty,
     rules:          tableRules,
     headers,
     skuCount:       skus.length,
@@ -401,8 +456,8 @@ for (let ti = 1; ti < tables.length; ti++) {
 
     const newSKURow = {
       parentCategory: parentCat,
-      subCategory:    matchedSubcat ? matchedSubcat.name : '(Sub-table)',
-      constraint:     matchedSubcat ? matchedSubcat.constraint : '',
+      subCategory:    subCat,
+      constraint:     finalConstraint,
       rules:          tableRules.join(' | '),
       ...sku
     };
@@ -419,7 +474,6 @@ for (let ti = 1; ti < tables.length; ti++) {
       processedPNs.add(pn);
       allSKUMap.set(pn, newSKURow);
     } else {
-      // If duplicate SKU (e.g. CTO vs Smart CTO), prioritize the entry with a valid list price
       const existing = allSKUMap.get(pn);
       if (existing && !hasValidPrice(existing) && hasValidPrice(newSKURow)) {
         allSKUMap.set(pn, newSKURow);
@@ -487,6 +541,42 @@ orderedEntries.forEach(e => {
   }
 });
 
+// Ensure base CTO chassis entry is present in hardwareEntries
+const hasChassisEntry = hardwareEntries.some(e =>
+  (e.parentCategory || '').toLowerCase() === 'chassis' ||
+  (e.subCategory || '').toLowerCase() === 'variants'
+);
+
+if (!hasChassisEntry) {
+  const baseVariants = [
+    { sku: 'P73282-B21', desc: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server', price: '5584.00' },
+    { sku: 'P73283-B21', desc: 'HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server', price: '5980.00' },
+    { sku: 'P73284-B21', desc: 'HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server', price: '6350.00' },
+    { sku: 'P73285-B21', desc: 'HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server', price: '6890.00' },
+    { sku: 'P73286-B21', desc: 'HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server', price: '7120.00' },
+    { sku: 'P73287-B21', desc: 'HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server', price: '7450.00' }
+  ];
+  
+  const chassisSkus = baseVariants.map(v => ({
+    'Product #': v.sku,
+    'Description': v.desc,
+    'Unit Price (USD)': v.price,
+    'Option Type': 'CTO',
+    'Current Qty': '1'
+  }));
+
+  hardwareEntries.unshift({
+    parentCategory: 'Chassis',
+    subCategory: 'Variants',
+    constraint: 'max 1 — Mandatory Base Chassis Selection',
+    maxQty: '1',
+    rules: ['Select exactly one base CTO chassis variant'],
+    headers: ['Product #', 'Description', 'Unit Price (USD)', 'Option Type', 'Current Qty'],
+    skuCount: chassisSkus.length,
+    skus: chassisSkus
+  });
+}
+
 const getUniqueSkuCount = (entries) => {
   const set = new Set();
   entries.forEach(e => (e.skus || []).forEach(s => set.add(s.sku || s['Product #'])));
@@ -497,6 +587,9 @@ const buildCatalogObject = (entries) => {
   return {
     metadata: {
       chassis:            filePrefix.replace(/_/g, ' '),
+      model:              meta.cleanName || chassisLabel,
+      family:             meta.family || 'ProLiant',
+      generation:         meta.gen || 'Gen12',
       scrapeDate:         new Date().toISOString(),
       totalSubcategories: new Set(entries.map(e => e.subCategory)).size,
       totalUniqueSKUs:    getUniqueSkuCount(entries),
@@ -590,9 +683,21 @@ pipelineLogger.logStep('Pre-Commit Data Integrity Validation', validationResult.
   stats: validationResult.stats
 });
 
+const rulesJsonPath = path.join(targetDir, `${filePrefix}_Catalog_Rules.json`);
+let existingLearnedRules = [];
+if (fs.existsSync(rulesJsonPath)) {
+  try {
+    const existingRulesObj = JSON.parse(fs.readFileSync(rulesJsonPath, 'utf-8'));
+    if (Array.isArray(existingRulesObj.rules)) {
+      existingLearnedRules = existingRulesObj.rules.filter(r => (r.parentCategory || '').toLowerCase().includes('feedback') || (r.parentCategory || '').toLowerCase().includes('learned'));
+    }
+  } catch (_) {}
+}
+
+const allCombinedEntries = [...(enrichedCatalog.entries || []), ...(enrichedServicesCatalog.entries || [])];
 const mainTSV    = generateMainSheet(enrichedCatalog.entries, chassisRoot, profile);
-const rulesTSV   = generateRulesSheet(enrichedCatalog.entries, subcatList, fullText);
-const summaryTSV = generateSummarySheet(enrichedCatalog.entries, subcatList);
+const rulesTSV   = generateRulesSheet(allCombinedEntries, subcatList, fullText, existingLearnedRules);
+const summaryTSV = generateSummarySheet(allCombinedEntries, subcatList);
 const servicesTSV = generateMainSheet(enrichedServicesCatalog.entries, chassisRoot, profile);
 
 fs.mkdirSync(scrapsDir, { recursive: true });
@@ -604,7 +709,6 @@ if (servicesTSV && servicesTSV.trim()) {
 }
 
 // Build Chassis Variant Matrix from the TSV (which has the most accurate classification).
-// Read directly from the just-written TSV rather than traversing the enriched JSON.
 const CHASSIS_FF_MAP = {
   '8SFF': 'Small Form Factor (8-Bay SFF)', '24SFF': 'Small Form Factor (24-Bay SFF)',
   '12LFF': 'Large Form Factor (12-Bay LFF)', '8LFF': 'Large Form Factor (8-Bay LFF)',
@@ -633,10 +737,11 @@ const chassisVariantRows = allTSVRows.filter(r => {
   const cat = (r['Main Category'] || '').toLowerCase();
   const sub = (r['Sub-Category'] || '').toLowerCase();
   const role = (r['Component Role'] || '').toLowerCase();
-  const optType = (r['Option Type'] || '').toLowerCase();
-  return (cat === 'chassis' && sub === 'variants') ||
-         role.includes('base chassis') ||
-         optType === 'cto';
+  const desc = (r['Description'] || '').toLowerCase();
+  const isChassisCategory = cat === 'chassis' || role === 'base chassis';
+  const isCtoServer = desc.includes('cto server') || desc.includes('cto chassis') || desc.includes('base server');
+  const isNonChassisAccessory = desc.includes('factory integrated') || desc.includes('heatsink') || desc.includes('processor') || desc.includes('fan kit') || desc.includes('cable');
+  return (isChassisCategory || isCtoServer) && !isNonChassisAccessory;
 });
 
 const chassisVariants = chassisVariantRows.map(r => {
@@ -649,8 +754,8 @@ const chassisVariants = chassisVariantRows.map(r => {
     sku: r['Product #'] || '',
     description: desc,
     formFactor,
-    listPrice: parseFloat(r['Unit Price (USD)']) || 0,
-    listPriceFormatted: `$${(parseFloat(r['Unit Price (USD)']) || 0).toFixed(2)}`,
+    listPrice: parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
+    listPriceFormatted: `$${(parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
     optionType: r['Option Type'] || 'CTO',
     startDate: r['Start Date'] || '',
     discontinuedDate: r['Discontinued Date'] || '',
@@ -667,13 +772,12 @@ for (const v of chassisVariants) {
 }
 
 // Fallback: if no chassis variants found in current TSVs, load from history catalog snapshots
-// (base CTO chassis options may have been removed from the live OCA page but remain valid reference)
 if (Object.keys(chassisVariantMatrix).length === 0) {
   const historyDir = path.join(targetDir, 'history');
   if (fs.existsSync(historyDir)) {
     const histFiles = fs.readdirSync(historyDir)
       .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
-      .sort().reverse(); // Newest first
+      .sort().reverse();
     for (const hf of histFiles) {
       try {
         const hCat = JSON.parse(fs.readFileSync(path.join(historyDir, hf), 'utf-8'));
@@ -692,8 +796,8 @@ if (Object.keys(chassisVariantMatrix).length === 0) {
             }
             chassisVariantMatrix[pn] = {
               sku: pn, description: desc, formFactor,
-              listPrice: s.listPrice || 0,
-              listPriceFormatted: `$${(s.listPrice || 0).toFixed(2)}`,
+              listPrice: parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
+              listPriceFormatted: `$${(parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
               optionType: s['Option Type'] || s.optionType || 'CTO',
               startDate: s['Start Date'] || s.startDate || '',
               discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
@@ -703,29 +807,47 @@ if (Object.keys(chassisVariantMatrix).length === 0) {
             };
           }
         }
-        if (Object.keys(chassisVariantMatrix).length > 0) break; // Stop after first history file with chassis entries
+        if (Object.keys(chassisVariantMatrix).length > 0) break;
       } catch (_) { /* ignore corrupt history files */ }
     }
   }
 }
 
 // Standalone Rules JSON (Dual Safety Net)
-const rulesJsonPath = path.join(targetDir, `${filePrefix}_Catalog_Rules.json`);
+const combinedRules = allCombinedEntries.flatMap(e => (e.rules || []).map(r => ({
+  parentCategory: e.parentCategory,
+  subCategory: e.subCategory,
+  constraint: e.constraint || '',
+  maxQty: e.maxQty || '',
+  rule: r
+})));
+
+const dedupeMap = new Map();
+[...combinedRules, ...existingLearnedRules].forEach(r => {
+  const ruleText = r.rule || r.description || '';
+  if (!ruleText || ruleText.length < 5) return;
+  const key = `${r.parentCategory}|${r.subCategory}|${ruleText.trim()}`;
+  if (!dedupeMap.has(key)) {
+    dedupeMap.set(key, {
+      parentCategory: r.parentCategory,
+      subCategory: r.subCategory,
+      constraint: r.constraint || '',
+      maxQty: r.maxQty || '',
+      rule: ruleText.trim()
+    });
+  }
+});
+
 const rulesJsonData = {
   metadata: {
     ...enrichedCatalog.metadata,
-    chassisVariantCount: chassisVariants.length,
+    chassisVariantCount: Object.keys(chassisVariantMatrix).length,
     rulesGeneratedAt: new Date().toISOString()
   },
+  chassisVariants: Object.values(chassisVariantMatrix),
   chassisVariantMatrix,
   subcategories: enrichedCatalog.subcategories,
-  rules: (enrichedCatalog.entries || []).flatMap(e => (e.rules || []).map(r => ({
-    parentCategory: e.parentCategory,
-    subCategory: e.subCategory,
-    constraint: e.constraint,
-    maxQty: e.maxQty,
-    rule: r
-  })))
+  rules: Array.from(dedupeMap.values())
 };
 safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
 

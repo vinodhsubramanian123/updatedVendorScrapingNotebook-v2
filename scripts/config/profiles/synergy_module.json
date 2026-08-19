@@ -1,0 +1,13 @@
+{
+  "description": "HPE Synergy Virtual Connect & Compute Module Overrides",
+  "family": "Synergy",
+  "gen": "General",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 8000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|interconnect|module"
+  },
+  "component_mapping": {
+    "Network Adapter": ["virtual connect", "f32 module", "interconnect module", "qsfp28"],
+    "Base Chassis": ["synergy 12000 frame", "compute module", "synergy frame"]
+  }
+}

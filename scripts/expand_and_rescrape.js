@@ -105,7 +105,8 @@ async function main() {
     };
 
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-    fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    safeWriteJsonAtomic(outputPath, data);
 
     console.log(`\n✅ Data saved to ${outputPath}`);
     console.log(`  Text:   ${totalLen} chars`);

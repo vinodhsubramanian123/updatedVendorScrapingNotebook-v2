@@ -1,25 +1,10 @@
 {
   "description": "Universal HPE Enterprise Server Rules applicable across all product lines (BTO/CTO, TAA/GTA, -48VDC Lug Kits).",
-  "totalRules": 2,
+  "totalRules": 1,
   "rules": [
     {
       "deltaId": "DELTA-1786705957681",
       "timestamp": "2026-08-14T11:12:37.681Z",
-      "chassis": "DL380_Gen12_SFF",
-      "rawMessage": "Vendor Partner Portal auto-inserted SKU P73282-B21 (Qty 1): P73282-B21, 1, HPE ProLiant DL380 Gen12 SFF CTO Server",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "P73282-B21",
-      "requiredDependencySku": "P73282-B21",
-      "ruleUpdate": "If P73282-B21 is present, P73282-B21 is mandatory.",
-      "humanReasoning": null,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-      "scope": "UNIVERSAL_VENDOR"
-    },
-    {
-      "deltaId": "DELTA-1786707084434",
-      "timestamp": "2026-08-14T11:31:24.434Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "Vendor Partner Portal auto-inserted SKU P73282-B21 (Qty 1): P73282-B21, 1, HPE ProLiant DL380 Gen12 SFF CTO Server",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

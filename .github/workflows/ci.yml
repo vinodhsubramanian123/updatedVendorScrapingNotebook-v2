@@ -34,6 +34,12 @@ jobs:
       - name: Run offline pipeline tests
         run: node tests/test_offline_pipeline.js
 
+      - name: Bootstrap Gen12 golden catalog
+        run: npm run bootstrap:gen12
+
+      - name: Certify Gen12 golden catalog
+        run: npm run certify:gen12
+
       - name: Run SKU regex & category tests
         run: node scripts/test_all_aspects.js
 

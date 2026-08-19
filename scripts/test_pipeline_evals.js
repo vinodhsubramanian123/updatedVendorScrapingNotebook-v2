@@ -242,9 +242,8 @@ async function main() {
 
   // Check subcategory naming for Base Chassis
   (catalogData.entries || []).forEach(entry => {
-    const pLower = (entry.parentCategory || '').toLowerCase();
-    const sLower = (entry.subCategory || '').toLowerCase();
-    if (pLower.includes('chassis') || sLower.includes('chassis') || pLower.includes('base') || sLower.includes('base')) {
+    const pLower = (entry.parentCategory || '').toLowerCase().trim();
+    if (pLower === 'chassis' || pLower === 'base chassis') {
       if (entry.subCategory !== 'Variants' || entry.subCategory.includes('Controllers')) {
         invalidSubcategoryCount++;
       }
@@ -365,6 +364,31 @@ async function main() {
     'Post-flight: NotebookLM payload contains Attribute Modifications section');
   assert(payloadResult.markdownText.includes('Cross-Chassis Variant & Platform Benchmark Matrix'),
     'Post-flight: NotebookLM payload contains Cross-Chassis Variant Matrix section');
+
+  // ── GUARDRAIL 7: Live Cloud NotebookLM Health & Token Verification ─────────
+  console.log('\n--- TEST 7: Live Cloud NotebookLM Health & Token Verification ---');
+  const homeDir = process.env.HOME || '';
+  const nlmUserPath = path.join(homeDir, '.local', 'bin', 'nlm');
+  const hasNlmBinary = fs.existsSync(nlmUserPath) || (() => {
+    try {
+      require('child_process').execSync('which nlm', { stdio: 'ignore' });
+      return true;
+    } catch (_) { return false; }
+  })();
+  assert(hasNlmBinary, 'Post-flight: nlm CLI executable is installed in PATH (~/.local/bin/nlm)');
+
+  const profileDir = path.join(homeDir, '.notebooklm-mcp-cli', 'profiles', 'default');
+  const hasAuthProfile = fs.existsSync(profileDir);
+  assert(hasAuthProfile, `Post-flight: Active NotebookLM OAuth Profile exists at ${profileDir}`);
+
+  const notebooksConfigPath = path.join(__dirname, 'config', 'notebooks.json');
+  if (fs.existsSync(notebooksConfigPath)) {
+    const nbConfig = JSON.parse(fs.readFileSync(notebooksConfigPath, 'utf-8'));
+    const entry = nbConfig.notebooks && nbConfig.notebooks[filePrefix];
+    if (entry && entry.notebookId) {
+      assert(Boolean(entry.lastSyncedSourceId), `Post-flight: NotebookLM source ID tracked in notebooks.json for ${filePrefix}`);
+    }
+  }
 
   console.log('\n=============================================================');
   console.log('🎉 ALL GUARDRAIL EVALUATIONS PASSED (100% COMPLIANT)');

@@ -149,6 +149,286 @@ function getSkuAuditHistory(targetSku, chassisDir) {
 }
 
 /**
+ * Helper to get the last day of a given month.
+ */
+function getLastDayOfMonth(year, monthNum) {
+  const y = parseInt(year, 10) || 2026;
+  const m = parseInt(monthNum, 10) || 1;
+  const daysInMonth = [31, (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const d = daysInMonth[m - 1] || 30;
+  return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
+/**
+ * Normalize human-friendly dates/month names into YYYY-MM-DD.
+ * Specific dates (e.g. '2026-08-15') are preserved.
+ * Month-level strings (e.g. 'Aug 2026', 'September', '2026-10') resolve to end-of-month (e.g. '2026-08-31', '2026-09-30')
+ * so that mid-month price changes are fully captured.
+ */
+function normalizeTargetDate(targetDate) {
+  if (!targetDate) return new Date().toISOString().split('T')[0];
+  const s = String(targetDate).trim().toLowerCase();
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  
+  if (/^\d{4}-\d{2}$/.test(s)) {
+    const [y, m] = s.split('-');
+    return getLastDayOfMonth(y, m);
+  }
+
+  const months = {
+    jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+    jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
+  };
+
+  const monthMatch = s.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/i);
+  const yearMatch = s.match(/\b(20\d{2})\b/);
+  const year = yearMatch ? yearMatch[1] : '2026';
+
+  if (monthMatch) {
+    const mPrefix = monthMatch[1].toLowerCase().slice(0, 3);
+    const monthNum = months[mPrefix] || '01';
+    return getLastDayOfMonth(year, monthNum);
+  }
+
+  return new Date().toISOString().split('T')[0];
+}
+
+/**
+ * Format a YYYY-MM-DD date into a readable month label (e.g. 'Aug 2026')
+ */
+function formatMonthLabel(isoDate) {
+  const [year, month] = (isoDate || '2026-01-01').split('-');
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const mIdx = Math.max(0, Math.min(11, (parseInt(month, 10) || 1) - 1));
+  return `${monthNames[mIdx]} ${year}`;
+}
+
+/**
+ * Query historical unit price of a single SKU at a specific point in time.
+ * @param {string} targetSku - Cleaned HPE SKU
+ * @param {string} targetDate - Date or month (e.g. '2026-08-15', 'Aug 2026', '2026-10')
+ * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
+ * @returns {object} Historical price details on that date
+ */
+function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
+  const normalizedDate = normalizeTargetDate(targetDate);
+  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+  const audit = getSkuAuditHistory(targetSku, dir);
+
+  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
+  const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
+
+  if (priceTimeline.length === 0) {
+    // If no price timeline in history, check current catalog fallback price
+    let fallbackPrice = 0;
+    const catalogPath = path.join(dir, `${path.basename(dir)}_Catalog.json`);
+    if (fs.existsSync(catalogPath)) {
+      try {
+        const cat = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+        const entries = Array.isArray(cat.entries) ? cat.entries : [];
+        for (const e of entries) {
+          const skus = Array.isArray(e.skus) ? e.skus : [];
+          const match = skus.find(s => (s.sku || s['Product #']) === cleanSku);
+          if (match) {
+            fallbackPrice = parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || 0).replace(/[^0-9.]/g, '')) || 0;
+            break;
+          }
+        }
+      } catch (_) { /* ignore fallback read error */ }
+    }
+
+    return {
+      sku: cleanSku,
+      targetDate: normalizedDate,
+      effectiveDate: normalizedDate,
+      priceUsd: fallbackPrice,
+      status: fallbackPrice > 0 ? 'CURRENT_PRICE' : 'NO_PRICE_RECORDED',
+      isDiscontinued: audit.currentStatus === 'DISCONTINUED',
+      priceTrail: audit.priceTimeline
+    };
+  }
+
+  // Sort chronological ascending
+  const sorted = [...priceTimeline].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const baselinePrice = sorted[0]?.price || 0;
+
+  // Find latest recorded price event on or before normalizedDate
+  const eventsOnOrBefore = sorted.filter(e => (e.date || '') <= normalizedDate);
+
+  if (eventsOnOrBefore.length === 0) {
+    // Target date is before earliest recorded scrape
+    const earliest = sorted[0];
+    return {
+      sku: cleanSku,
+      targetDate: normalizedDate,
+      effectiveDate: earliest.date,
+      priceUsd: earliest.price || 0,
+      status: 'PRE_BASELINE_ESTIMATE',
+      changeFromBaselinePercent: 0,
+      isDiscontinued: false,
+      priceTrail: sorted
+    };
+  }
+
+  const effectiveEvent = eventsOnOrBefore[eventsOnOrBefore.length - 1];
+  const effectivePrice = effectiveEvent.price || 0;
+  const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
+
+  return {
+    sku: cleanSku,
+    targetDate: normalizedDate,
+    effectiveDate: effectiveEvent.date,
+    priceUsd: effectivePrice,
+    status: effectiveEvent.status || 'ACTIVE',
+    changeFromBaselinePercent: changePercent,
+    isDiscontinued: effectiveEvent.status === 'REMOVED' || audit.currentStatus === 'DISCONTINUED',
+    priceTrail: sorted
+  };
+}
+
+/**
+ * Query consolidated BOQ total pricing at a specific historical point in time.
+ * @param {string|Array<object>} boqInput - Raw BOQ text, CSV, or parsed items array
+ * @param {string} targetDate - Date or month (e.g. '2026-09-01', 'Oct 2026')
+ * @param {string} chassisDir - Path to chassis folder
+ * @returns {object} Consolidated BOQ breakdown on that date
+ */
+function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
+  const normalizedDate = normalizeTargetDate(targetDate);
+  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+
+  let items = [];
+  if (Array.isArray(boqInput)) {
+    items = boqInput;
+  } else {
+    const { parseSkuLines } = require('./boq_parser');
+    const lines = String(boqInput || '').split(/\r?\n/);
+    items = parseSkuLines(lines).items;
+  }
+
+  let totalCapExUsd = 0;
+  const pricedItems = [];
+  let discontinuedCount = 0;
+
+  for (const it of items) {
+    const cleanSku = it.sku;
+    const qty = parseInt(it.quantity, 10) || 1;
+    const hist = getHistoricalSkuPrice(cleanSku, normalizedDate, dir);
+    const unitPrice = hist.priceUsd;
+    const extendedPrice = unitPrice * qty;
+
+    totalCapExUsd += extendedPrice;
+    if (hist.isDiscontinued) discontinuedCount++;
+
+    pricedItems.push({
+      sku: cleanSku,
+      description: it.description || cleanSku,
+      quantity: qty,
+      unitPriceUsd: unitPrice,
+      extendedPriceUsd: extendedPrice,
+      effectiveDate: hist.effectiveDate,
+      status: hist.status,
+      isDiscontinued: hist.isDiscontinued,
+      changeFromBaselinePercent: hist.changeFromBaselinePercent || 0
+    });
+  }
+
+  return {
+    targetDate: normalizedDate,
+    monthLabel: formatMonthLabel(normalizedDate),
+    totalCapExUsd: parseFloat(totalCapExUsd.toFixed(2)),
+    itemsCount: items.length,
+    discontinuedItemsCount: discontinuedCount,
+    items: pricedItems
+  };
+}
+
+/**
+ * Compare consolidated BOQ and component prices across a multi-month timeline.
+ * e.g. timeline across ['2026-08', '2026-09', '2026-10', '2026-11', '2026-12']
+ * @param {string|Array<object>} boqInput - BOQ text or items array
+ * @param {Array<string>} timelineDates - Array of dates or month names
+ * @param {string} chassisDir - Path to chassis folder
+ * @returns {object} Full comparative time-series report
+ */
+function compareBoqPricingAcrossTimeline(boqInput, timelineDates, chassisDir) {
+  const dates = (timelineDates && timelineDates.length > 0)
+    ? timelineDates
+    : ['2026-08-01', '2026-09-01', '2026-10-01', '2026-11-01', '2026-12-01'];
+
+  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+
+  const monthlySnapshots = dates.map(d => getHistoricalBoqPricing(boqInput, d, dir));
+  const baselineCapEx = monthlySnapshots[0]?.totalCapExUsd || 0;
+
+  const timeline = monthlySnapshots.map((snap, idx) => {
+    const prevSnap = idx > 0 ? monthlySnapshots[idx - 1] : null;
+    const deltaBaseline = snap.totalCapExUsd - baselineCapEx;
+    const deltaBaselinePct = baselineCapEx > 0 ? (deltaBaseline / baselineCapEx) * 100 : 0;
+    const deltaPrev = prevSnap ? snap.totalCapExUsd - prevSnap.totalCapExUsd : 0;
+    const deltaPrevPct = prevSnap && prevSnap.totalCapExUsd > 0 ? (deltaPrev / prevSnap.totalCapExUsd) * 100 : 0;
+
+    return {
+      date: snap.targetDate,
+      monthLabel: snap.monthLabel,
+      totalCapExUsd: snap.totalCapExUsd,
+      deltaFromBaselineUsd: parseFloat(deltaBaseline.toFixed(2)),
+      deltaFromBaselinePercent: parseFloat(deltaBaselinePct.toFixed(2)),
+      deltaFromPrevMonthUsd: parseFloat(deltaPrev.toFixed(2)),
+      deltaFromPrevMonthPercent: parseFloat(deltaPrevPct.toFixed(2)),
+      discontinuedItemsCount: snap.discontinuedItemsCount
+    };
+  });
+
+  // Calculate volatility metrics
+  const allCosts = timeline.map(t => t.totalCapExUsd);
+  const minCost = Math.min(...allCosts);
+  const maxCost = Math.max(...allCosts);
+  const minEntry = timeline.find(t => t.totalCapExUsd === minCost);
+  const maxEntry = timeline.find(t => t.totalCapExUsd === maxCost);
+  const varianceUsd = maxCost - minCost;
+  const maxFluctuationPct = minCost > 0 ? parseFloat(((varianceUsd / minCost) * 100).toFixed(2)) : 0;
+
+  // Build component-level price trail matrix across the timeline
+  const skuMap = new Map();
+  monthlySnapshots.forEach(snap => {
+    snap.items.forEach(it => {
+      if (!skuMap.has(it.sku)) {
+        skuMap.set(it.sku, {
+          sku: it.sku,
+          description: it.description,
+          quantity: it.quantity,
+          timeline: []
+        });
+      }
+      skuMap.get(it.sku).timeline.push({
+        date: snap.targetDate,
+        monthLabel: snap.monthLabel,
+        unitPriceUsd: it.unitPriceUsd,
+        extendedPriceUsd: it.extendedPriceUsd,
+        status: it.status
+      });
+    });
+  });
+
+  return {
+    baselineDate: timeline[0]?.date,
+    baselineCapExUsd: baselineCapEx,
+    timeline,
+    volatilityMetrics: {
+      lowestCostMonth: minEntry?.monthLabel,
+      lowestCapExUsd: minCost,
+      highestCostMonth: maxEntry?.monthLabel,
+      highestCapExUsd: maxCost,
+      netVarianceUsd: parseFloat(varianceUsd.toFixed(2)),
+      maxFluctuationPercent: maxFluctuationPct
+    },
+    componentMatrix: Array.from(skuMap.values())
+  };
+}
+
+/**
  * Record a version snapshot of a catalog JSON payload with checksums.
  */
 function recordVersionSnapshot(catalogData, historyDir) {
@@ -172,6 +452,13 @@ function recordVersionSnapshot(catalogData, historyDir) {
 
 module.exports = {
   calculateChecksum,
+  normalizeTargetDate,
+  formatMonthLabel,
   getSkuAuditHistory,
+  getHistoricalSkuPrice,
+  getHistoricalBoqPricing,
+  compareBoqPricingAcrossTimeline,
   recordVersionSnapshot
 };
+
+

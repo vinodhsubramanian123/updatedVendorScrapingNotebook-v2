@@ -1,0 +1,13 @@
+{
+  "description": "HPE ProLiant Gen 11 Configuration Overrides",
+  "family": "ProLiant",
+  "gen": "Gen11",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 12000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|^bom$"
+  },
+  "component_mapping": {
+    "Storage Controller": ["sr932i-p", "mr416i-p", "mr408i-p", "mr216i-p", "e208i-p"],
+    "Processor": ["xeon platinum", "xeon gold", "xeon silver", "xeon bronze", "epyc 9004"]
+  }
+}

@@ -129,33 +129,33 @@ function applyDiffStyles(ws, data) {
 
     if (status === 'ADDED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: '137333' }, bold: true },
-        fill: { fgColor: { rgb: 'E6F4EA' } }
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF137333' }, bold: true },
+        fill: { fgColor: { rgb: 'FFE6F4EA' } }
       };
     } else if (status === 'REMOVED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: 'C5221F' }, strike: true },
-        fill: { fgColor: { rgb: 'FDE7E7' } }
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FFC5221F' }, strike: true },
+        fill: { fgColor: { rgb: 'FFFDE7E7' } }
       };
     } else if (status === 'REINSTATED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: '7B4F00' }, bold: true },
-        fill: { fgColor: { rgb: 'FFF8E1' } }   // Gold/amber — returned from discontinuation
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF7B4F00' }, bold: true },
+        fill: { fgColor: { rgb: 'FFFFF8E1' } }   // Gold/amber
       };
     } else if (status === 'PRICE_CHANGED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: 'B06000' }, bold: true },
-        fill: { fgColor: { rgb: 'FFF3E0' } }
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FFB06000' }, bold: true },
+        fill: { fgColor: { rgb: 'FFFFF3E0' } }
       };
     } else if (status === 'ATTRIBUTE_CHANGED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: '1A73E8' } },
-        fill: { fgColor: { rgb: 'E8F0FE' } }   // Blue — attribute change only
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF1A73E8' } },
+        fill: { fgColor: { rgb: 'FFE8F0FE' } }   // Blue
       };
     } else if (status === 'PRICE_AND_ATTRIBUTE_CHANGED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: '6B0080' }, bold: true },
-        fill: { fgColor: { rgb: 'F3E5F5' } }   // Purple — both changed
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF6B0080' }, bold: true },
+        fill: { fgColor: { rgb: 'FFF3E5F5' } }   // Purple
       };
     }
 
@@ -170,17 +170,17 @@ function applyDiffStyles(ws, data) {
   }
 }
 
-// ── Enable Freeze Header Row & AutoFilter for clean UX ───────────────────────
-function enableSheetUsability(ws) {
+// ── Enable Freeze Header Row, Header Colors & AutoFilter for clean UX ──────────
+function enableSheetUsability(ws, headerFg = 'FF0072C6') {
   if (!ws || !ws['!ref']) return;
   ws['!autofilter'] = { ref: ws['!ref'] };
   ws['!views']      = [{ state: 'frozen', xSplit: 0, ySplit: 1, activeCell: 'A2' }];
 
-  // Style header row
+  // Style header row — use 8-char ARGB FFFFFFFF to ensure 100% opacity in Excel
   const range = XLSX.utils.decode_range(ws['!ref']);
   const headerStyle = {
-    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
-    fill: { fgColor: { rgb: '0072C6' } },
+    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFFFF' } },
+    fill: { fgColor: { rgb: headerFg } },
     alignment: { vertical: 'center' }
   };
   for (let c = range.s.c; c <= range.e.c; c++) {
@@ -191,27 +191,93 @@ function enableSheetUsability(ws) {
   }
 }
 
+// ── Convert String Numbers to Native Excel Types (Numeric Math & Sorting) ─────
+function normalizeRowsForExcel(rows) {
+  return rows.map(r => {
+    const out = {};
+    for (const [k, v] of Object.entries(r)) {
+      if (v === null || v === undefined || v === '') {
+        out[k] = '';
+        continue;
+      }
+      const sVal = String(v).trim();
+      
+      // Price fields
+      if (k.includes('Price') || k.includes('Cost')) {
+        if (sVal === 'N/A' || sVal === '-' || sVal.startsWith('[REMOVED') || sVal.includes('(')) {
+          out[k] = sVal;
+        } else {
+          const cleanNum = sVal.replace(/[\$,\s]/g, '');
+          const num = parseFloat(cleanNum);
+          out[k] = isNaN(num) ? sVal : num;
+        }
+      }
+      // Quantity / Count fields
+      else if (k.includes('Qty') || k.includes('Count') || k.includes('Unique SKUs') || k.includes('Total SKUs') || k === 'Days Active') {
+        if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-') {
+          out[k] = sVal;
+        } else {
+          const cleanInt = sVal.replace(/[^0-9\-]/g, '');
+          const num = parseInt(cleanInt, 10);
+          out[k] = isNaN(num) ? sVal : num;
+        }
+      } else {
+        out[k] = sVal;
+      }
+    }
+    return out;
+  });
+}
+
+function formatNumericCells(ws) {
+  if (!ws || !ws['!ref']) return;
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  const headers = [];
+  for (let c = range.s.c; c <= range.e.c; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
+    headers[c] = ws[cellRef] ? ws[cellRef].v : '';
+  }
+  for (let r = 1; r <= range.e.r; r++) {
+    for (let c = range.s.c; c <= range.e.c; c++) {
+      const h = headers[c] || '';
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      const cell = ws[cellRef];
+      if (cell && typeof cell.v === 'number') {
+        if (h.includes('Price') || h.includes('Cost')) {
+          cell.z = '$#,##0.00';
+        } else if (h.includes('Qty') || h.includes('Count') || h.includes('SKUs') || h === 'Days Active') {
+          cell.z = '#,##0';
+        }
+      }
+    }
+  }
+}
+
+function createStyledSheet(data, colWidths = null, diffData = null, headerFg = 'FF0072C6') {
+  const normalized = normalizeRowsForExcel(data);
+  const ws = XLSX.utils.json_to_sheet(normalized);
+  if (colWidths) ws['!cols'] = colWidths;
+  if (diffData) applyDiffStyles(ws, diffData);
+  else applyDiffStyles(ws, data);
+  formatNumericCells(ws);
+  enableSheetUsability(ws, headerFg);
+  return ws;
+}
+
 // Sheet 1: Category Summary
-const summaryWS = XLSX.utils.json_to_sheet(summaryData.data);
-summaryWS['!cols'] = [
+const summaryWS = createStyledSheet(summaryData.data, [
   { wch: 30 }, { wch: 45 }, { wch: 15 },
-  { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 10 },
-];
-enableSheetUsability(summaryWS);
+  { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 },
+]);
 XLSX.utils.book_append_sheet(wb, summaryWS, 'Category Summary');
 
 // Sheet 2: All SKUs
-const skuWS = XLSX.utils.json_to_sheet(skuData.data);
-skuWS['!cols'] = SKU_COL_WIDTHS;
-applyDiffStyles(skuWS, skuData.data);
-enableSheetUsability(skuWS);
+const skuWS = createStyledSheet(skuData.data, SKU_COL_WIDTHS);
 XLSX.utils.book_append_sheet(wb, skuWS, 'All SKUs');
 
 // Sheet 2b: Chassis Variants — Dedicated sheet showing all CTO base chassis options with pricing.
-// This is the foundational selection — all downstream component rules depend on the chosen variant.
 const chassisVariantRows = skuData.data.filter(r => r['Main Category'] === 'Chassis');
 if (chassisVariantRows.length > 0) {
-  // Enrich with a human-readable Form Factor column derived from description
   const FORM_FACTOR_MAP = {
     '8SFF': 'Small Form Factor (8-Bay)', '24SFF': 'Small Form Factor (24-Bay)',
     '12LFF': 'Large Form Factor (12-Bay)', '8LFF': 'Large Form Factor (8-Bay)',
@@ -238,100 +304,77 @@ if (chassisVariantRows.length > 0) {
       'Note': 'Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection.'
     };
   });
-  const variantWS = XLSX.utils.json_to_sheet(variantSheetRows);
-  variantWS['!cols'] = [
-    { wch: 18 }, // Product #
-    { wch: 30 }, // Form Factor
-    { wch: 75 }, // Description
-    { wch: 14 }, // Option Type
-    { wch: 18 }, // List Price (USD)
-    { wch: 40 }, // Constraint
-    { wch: 14 }, // Start Date
-    { wch: 18 }, // Discontinued Date
-    { wch: 16 }, // Diff Status
-    { wch: 100 }, // Price History Trail
-    { wch: 80 }, // Note
-  ];
-  // Style header with a distinct emerald green to highlight importance
-  const variantRange = XLSX.utils.decode_range(variantWS['!ref']);
-  const variantHeaderStyle = {
-    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
-    fill: { fgColor: { rgb: '01A781' } }, // HPE Emerald
-    alignment: { vertical: 'center' }
-  };
-  for (let c = variantRange.s.c; c <= variantRange.e.c; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
-    if (variantWS[cellRef]) variantWS[cellRef].s = variantHeaderStyle;
-  }
-  applyDiffStyles(variantWS, variantSheetRows);
-  variantWS['!autofilter'] = { ref: variantWS['!ref'] };
-  variantWS['!views'] = [{ state: 'frozen', xSplit: 0, ySplit: 1, activeCell: 'A2' }];
+  const variantWS = createStyledSheet(variantSheetRows, [
+    { wch: 18 }, { wch: 30 }, { wch: 75 }, { wch: 14 },
+    { wch: 18 }, { wch: 40 }, { wch: 14 }, { wch: 18 },
+    { wch: 16 }, { wch: 100 }, { wch: 80 }
+  ], variantSheetRows, 'FF01A781'); // HPE Emerald
   XLSX.utils.book_append_sheet(wb, variantWS, 'Chassis Variants');
   console.log(`  ✅ Sheet 'Chassis Variants' — ${variantSheetRows.length} CTO base options with pricing.`);
 }
 
 // Sheet 3: Rules & Constraints
-const rulesWS = XLSX.utils.json_to_sheet(rulesData.data);
-rulesWS['!cols'] = [
-  { wch: 30 }, { wch: 45 }, { wch: 15 }, { wch: 20 }, { wch: 100 },
-];
-enableSheetUsability(rulesWS);
+const rulesWS = createStyledSheet(rulesData.data, [
+  { wch: 30 }, { wch: 45 }, { wch: 15 }, { wch: 20 }, { wch: 100 }
+]);
 XLSX.utils.book_append_sheet(wb, rulesWS, 'Rules & Constraints');
 
-// Sheet 4a: Hardware Accessories — Non-software items from the services TSV.
-// These are valid hardware options (bezel kits, cable kits, rack accessories)
-// that are separated from the main catalog because they are qty=0 by default.
-// Sheet 4b: Software & Licenses — iLO licenses, GreenLake, Compute Ops Management subscriptions.
-const HPE_HW_SKU_REGEX = /^[A-Z0-9]{6,12}-[A-Z0-9]{2,4}$/; // Standard hardware: P73282-B21 format
-if (servicesData.data.length > 0) {
-  const hwAccessories = servicesData.data.filter(r => HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim()));
-  const swLicenses    = servicesData.data.filter(r => !HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim()));
+// Sheet 4a: Hardware Accessories, Software & Licenses, and Support Services (Routing by Category)
+const isSoftwareRow = (r) => {
+  const cat = (r['Main Category'] || '').toLowerCase();
+  const sub = (r['Sub-Category'] || '').toLowerCase();
+  const desc = (r['Description'] || '').toLowerCase();
+  return cat.includes('software') || cat.includes('license') || sub.includes('software') || sub.includes('license') || desc.includes('oneview') || desc.includes('ilo ') || desc.includes('e-ltu');
+};
 
-  if (hwAccessories.length > 0) {
-    const hwWS = XLSX.utils.json_to_sheet(hwAccessories);
-    hwWS['!cols'] = SKU_COL_WIDTHS;
-    applyDiffStyles(hwWS, hwAccessories);
-    enableSheetUsability(hwWS);
-    XLSX.utils.book_append_sheet(wb, hwWS, 'Hardware Accessories');
-    console.log(`  ✅ Sheet 'Hardware Accessories' — ${hwAccessories.length} accessory SKUs (bezel kits, cable kits, rack add-ons).`);
-  }
+const isSupportRow = (r) => {
+  const cat = (r['Main Category'] || '').toLowerCase();
+  const sub = (r['Sub-Category'] || '').toLowerCase();
+  const desc = (r['Description'] || '').toLowerCase();
+  return (cat.includes('support') || cat.includes('service') || sub.includes('pointnext') || sub.includes('tech care') || desc.includes('tech care')) && !isSoftwareRow(r);
+};
 
-  if (swLicenses.length > 0) {
-    const swWS = XLSX.utils.json_to_sheet(swLicenses);
-    swWS['!cols'] = SKU_COL_WIDTHS;
-    applyDiffStyles(swWS, swLicenses);
-    enableSheetUsability(swWS);
-    XLSX.utils.book_append_sheet(wb, swWS, 'Software & Licenses');
-    console.log(`  ✅ Sheet 'Software & Licenses' — ${swLicenses.length} software/service SKUs (iLO, GreenLake, Compute Ops).`);
-  }
+const swLicenses = [
+  ...skuData.data.filter(isSoftwareRow),
+  ...servicesData.data.filter(isSoftwareRow)
+];
 
-  if (hwAccessories.length === 0 && swLicenses.length === 0) {
-    // Fallback: dump everything as before
-    const servicesWS = XLSX.utils.json_to_sheet(servicesData.data);
-    servicesWS['!cols'] = SKU_COL_WIDTHS;
-    applyDiffStyles(servicesWS, servicesData.data);
-    enableSheetUsability(servicesWS);
-    XLSX.utils.book_append_sheet(wb, servicesWS, 'All Service SKUs');
-  }
-} else {
-  console.log(`  ℹ️  No service/accessory SKUs found in TSV — sheets skipped.`);
+const supportServices = servicesData.data.filter(isSupportRow);
+const hwAccessories   = servicesData.data.filter(r => !isSoftwareRow(r) && !isSupportRow(r));
+
+if (hwAccessories.length > 0) {
+  const hwWS = createStyledSheet(hwAccessories, SKU_COL_WIDTHS);
+  XLSX.utils.book_append_sheet(wb, hwWS, 'Hardware Accessories');
+  console.log(`  ✅ Sheet 'Hardware Accessories' — ${hwAccessories.length} accessory SKUs.`);
 }
 
-// Sheet 4: Catalog Diff (Dedicated diff sheet — ONLY when diffs exist)
-const diffRows = skuData.data.filter(r =>
-  r['Diff Status'] === 'ADDED' || r['Diff Status'] === 'REMOVED' || r['Diff Status'] === 'PRICE_CHANGED'
+if (swLicenses.length > 0) {
+  const swWS = createStyledSheet(swLicenses, SKU_COL_WIDTHS);
+  XLSX.utils.book_append_sheet(wb, swWS, 'Software & Licenses');
+  console.log(`  ✅ Sheet 'Software & Licenses' — ${swLicenses.length} consolidated software/license SKUs.`);
+}
+
+if (supportServices.length > 0) {
+  const spWS = createStyledSheet(supportServices, SKU_COL_WIDTHS);
+  XLSX.utils.book_append_sheet(wb, spWS, 'Support Services');
+  console.log(`  ✅ Sheet 'Support Services' — ${supportServices.length} service/support SKUs.`);
+}
+
+// Sheet 4: Catalog Diff (Combined Hardware + Services Diffs)
+const allCombinedData = [...skuData.data, ...servicesData.data];
+const diffRows = allCombinedData.filter(r =>
+  r['Diff Status'] === 'ADDED' || r['Diff Status'] === 'REMOVED' || r['Diff Status'] === 'PRICE_CHANGED' ||
+  r['Diff Status'] === 'ATTRIBUTE_CHANGED' || r['Diff Status'] === 'PRICE_AND_ATTRIBUTE_CHANGED' || r['Diff Status'] === 'REINSTATED'
 );
 
 if (diffRows.length > 0) {
-  const diffWS = XLSX.utils.json_to_sheet(diffRows);
-  diffWS['!cols'] = SKU_COL_WIDTHS;
-  applyDiffStyles(diffWS, diffRows);
-  enableSheetUsability(diffWS);
+  const diffWS = createStyledSheet(diffRows, SKU_COL_WIDTHS);
   XLSX.utils.book_append_sheet(wb, diffWS, 'Catalog Diffs');
+  console.log(`  ✅ Sheet 'Catalog Diffs' — ${diffRows.length} modified SKUs across hardware and services.`);
 }
 
-// Sheet 5: Price History Timeline (Dedicated sheet for viewing the complete timeline of all SKUs)
-const timelineWS = XLSX.utils.json_to_sheet(skuData.data.map(r => ({
+// Sheet 5: Price History Timeline (Complete timeline covering hardware + services)
+const timelineRows = allCombinedData.map(r => ({
   'Main Category': r['Main Category'],
   'Sub-Category': r['Sub-Category'],
   'Product #': r['Product #'],
@@ -339,24 +382,15 @@ const timelineWS = XLSX.utils.json_to_sheet(skuData.data.map(r => ({
   'Current Price (USD)': r['Unit Price (USD)'],
   'Diff Status': r['Diff Status'],
   'Price History Trail': r['Price History Trail']
-})));
+}));
 
-timelineWS['!cols'] = [
-  { wch: 25 }, // Main Category
-  { wch: 35 }, // Sub-Category
-  { wch: 16 }, // Product #
-  { wch: 70 }, // Description
-  { wch: 18 }, // Current Price (USD)
-  { wch: 16 }, // Diff Status
-  { wch: 100 } // Price History Trail (wider for timeline readability)
-];
-
-// Apply same diff styles based on 'Diff Status'
-applyDiffStyles(timelineWS, skuData.data);
-enableSheetUsability(timelineWS);
+const timelineWS = createStyledSheet(timelineRows, [
+  { wch: 25 }, { wch: 35 }, { wch: 16 }, { wch: 70 },
+  { wch: 18 }, { wch: 16 }, { wch: 100 }
+], allCombinedData);
 XLSX.utils.book_append_sheet(wb, timelineWS, 'Price History Timeline');
 
-// Sheets 5+: Category drill-downs — dynamically discovered from SKU data
+// Dynamic Category Drill-Down Sheets
 const REQUIRED_CATEGORIES = [
   'Processor', 'Memory', 'Smart Chassis', 'Storage Devices',
   'Networking', 'Power Supplies', 'Graphics Options',
@@ -373,71 +407,69 @@ const orderedCategories = [
   ...allCategoriesInData.filter(c => !REQUIRED_CATEGORIES.includes(c))
 ];
 
-const usedSheetNames = wb.SheetNames.slice(); // Track names already in use
+const usedSheetNames = wb.SheetNames.slice();
 
 for (const cat of orderedCategories) {
+  if (cat.toLowerCase().includes('software') || cat.toLowerCase().includes('license')) continue; // Already consolidated into 'Software & Licenses'
   const catSKUs = skuData.data.filter(r => r['Main Category'] === cat);
-  if (catSKUs.length === 0) continue;   // Skip categories with no SKUs
-  const ws       = XLSX.utils.json_to_sheet(catSKUs);
-  ws['!cols']    = SKU_COL_WIDTHS;
-  applyDiffStyles(ws, catSKUs);
-  enableSheetUsability(ws);
+  if (catSKUs.length === 0) continue;
+  const ws = createStyledSheet(catSKUs, SKU_COL_WIDTHS);
   const sheetName = sanitizeSheetName(cat, usedSheetNames);
   usedSheetNames.push(sheetName);
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
-// Sheet: Discontinued & Reinstated SKU Registry
-// Loaded directly from discontinued_skus.json — the single source of truth for
-// all SKUs ever removed from the HPE OCA portal for this chassis.
+// Discontinued SKUs Sheet
 const discontinuedJsonPath = path.join(targetDir, 'history', 'discontinued_skus.json');
 let discontinuedRows = [];
 if (fs.existsSync(discontinuedJsonPath)) {
   try {
     const discObj = JSON.parse(fs.readFileSync(discontinuedJsonPath, 'utf-8'));
-    discontinuedRows = Object.values(discObj).map(d => ({
-      'Product #':        d.productNumber    || '',
-      'Description':      d.description      || '',
-      'Main Category':    d.mainCategory     || '',
-      'Sub-Category':     d.subCategory      || '',
-      'Status':           d.status           || '',
-      'First Seen Date':  d.firstSeenDate    || '',
-      'Discontinued Date':d.discontinuedDate || '',
-      'Reinstated Date':  d.reinstatedDate   || '',
-      'Days Active':      String(d.daysActive || ''),
-      'Last Known Price': d.lastKnownPrice   || '',
-      'Full Price Trail': d.fullPriceTrail   || '',
-      'Reason':           d.reason           || ''
-    }));
+    discontinuedRows = Object.values(discObj).map(d => {
+      // If category is unknown, resolve from allCombinedData
+      let mainCat = d.mainCategory || '';
+      let subCat = d.subCategory || '';
+      if (!mainCat || mainCat === 'Unknown' || mainCat === 'Deprecation Archive') {
+        const found = allCombinedData.find(r => r['Product #'] === d.productNumber);
+        if (found) {
+          mainCat = found['Main Category'];
+          subCat = found['Sub-Category'];
+        }
+      }
+      return {
+        'Product #':        d.productNumber    || '',
+        'Description':      d.description      || '',
+        'Main Category':    mainCat || 'General Hardware',
+        'Sub-Category':     subCat  || 'Discontinued Options',
+        'Status':           d.status           || 'DISCONTINUED',
+        'First Seen Date':  d.firstSeenDate    || '',
+        'Discontinued Date':d.discontinuedDate || '',
+        'Reinstated Date':  d.reinstatedDate   || '',
+        'Days Active':      String(d.daysActive || ''),
+        'Last Known Price': d.lastKnownPrice   || '',
+        'Full Price Trail': d.fullPriceTrail   || '',
+        'Reason':           d.reason           || '[DISCONTINUED] Deprecated from latest HPE OCA portal'
+      };
+    });
   } catch (e) { console.warn('Could not read discontinued_skus.json:', e.message); }
 }
+
 if (discontinuedRows.length > 0) {
-  const discWS = XLSX.utils.json_to_sheet(discontinuedRows);
-  discWS['!cols'] = [
-    { wch: 16 }, // Product #
-    { wch: 70 }, // Description
-    { wch: 28 }, // Main Category
-    { wch: 28 }, // Sub-Category
-    { wch: 14 }, // Status
-    { wch: 14 }, // First Seen Date
-    { wch: 16 }, // Discontinued Date
-    { wch: 16 }, // Reinstated Date
-    { wch: 12 }, // Days Active
-    { wch: 18 }, // Last Known Price
-    { wch: 100 },// Full Price Trail
-    { wch: 50 }, // Reason
-  ];
-  // Style rows by status
+  const discWS = createStyledSheet(discontinuedRows, [
+    { wch: 16 }, { wch: 70 }, { wch: 28 }, { wch: 28 },
+    { wch: 14 }, { wch: 14 }, { wch: 16 }, { wch: 16 },
+    { wch: 12 }, { wch: 18 }, { wch: 100 }, { wch: 50 }
+  ]);
   const discRange = XLSX.utils.decode_range(discWS['!ref']);
   for (let r = 1; r <= discRange.e.r; r++) {
     const row = discontinuedRows[r - 1];
     if (!row) continue;
-    const isDiscontinued = row['Status'] === 'DISCONTINUED';
+    const isDiscontinued = row['Status'] === 'DISCONTINUED' || row['Status'] === 'REMOVED';
     const isReinstated   = row['Status'] === 'REINSTATED';
     const rowStyle = isDiscontinued
-      ? { font: { name: 'Calibri', sz: 11, color: { rgb: 'C5221F' }, strike: true }, fill: { fgColor: { rgb: 'FDE7E7' } } }
+      ? { font: { name: 'Calibri', sz: 11, color: { rgb: 'FFC5221F' }, strike: true }, fill: { fgColor: { rgb: 'FFFDE7E7' } } }
       : isReinstated
-      ? { font: { name: 'Calibri', sz: 11, color: { rgb: '7B4F00' }, bold: true }, fill: { fgColor: { rgb: 'FFF8E1' } } }
+      ? { font: { name: 'Calibri', sz: 11, color: { rgb: 'FF7B4F00' }, bold: true }, fill: { fgColor: { rgb: 'FFFFF8E1' } } }
       : null;
     if (rowStyle) {
       for (let c = discRange.s.c; c <= discRange.e.c; c++) {
@@ -446,9 +478,8 @@ if (discontinuedRows.length > 0) {
       }
     }
   }
-  enableSheetUsability(discWS);
   XLSX.utils.book_append_sheet(wb, discWS, 'Discontinued SKUs');
-  console.log(`  ✅ Sheet 'Discontinued SKUs' — ${discontinuedRows.length} entries (${discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length} discontinued, ${discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length} reinstated).`);
+  console.log(`  ✅ Sheet 'Discontinued SKUs' — ${discontinuedRows.length} entries (${discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED' || r['Status'] === 'REMOVED').length} discontinued, ${discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length} reinstated).`);
 }
 
 // Sheet: Metadata — all values derived dynamically
@@ -458,13 +489,16 @@ if (fs.existsSync(catalogJsonPath)) {
   try { catalogMeta = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8')).metadata || {}; } catch (e) { console.warn('Caught suppressed error in generate_xlsx.js:', e); }
 }
 
-const diffSummary = catalogMeta.diffSummary || {};
+const diffCounts = {
+  added: allCombinedData.filter(r => r['Diff Status'] === 'ADDED').length,
+  removed: allCombinedData.filter(r => r['Diff Status'] === 'REMOVED').length,
+  reinstated: allCombinedData.filter(r => r['Diff Status'] === 'REINSTATED').length,
+  priceChanged: allCombinedData.filter(r => r['Diff Status'] === 'PRICE_CHANGED' || r['Diff Status'] === 'PRICE_AND_ATTRIBUTE_CHANGED').length,
+  attributeChanged: allCombinedData.filter(r => r['Diff Status'] === 'ATTRIBUTE_CHANGED').length,
+  unchanged: allCombinedData.filter(r => r['Diff Status'] === 'UNCHANGED' || r['Diff Status'] === 'BASELINE' || !r['Diff Status']).length,
+};
 
 const servicesJsonPath = path.join(targetDir, `${filePrefix}_Services.json`);
-let servicesMeta = {};
-if (fs.existsSync(servicesJsonPath)) {
-  try { servicesMeta = JSON.parse(fs.readFileSync(servicesJsonPath, 'utf-8')).metadata || {}; } catch (e) { /* suppress */ }
-}
 
 const metaData = [
   { Field: 'Chassis',                Value: catalogMeta.chassis       || filePrefix.replace(/_/g, ' ') },
@@ -472,23 +506,23 @@ const metaData = [
   { Field: 'Source',                 Value: 'OCA (Online Configuration Application)' },
   { Field: 'Total Sub-Categories',   Value: String(summaryData.data.length) },
   { Field: 'Total Hardware SKUs',        Value: String(skuData.data.length) },
+  { Field: 'Total Service/Software SKUs', Value: String(servicesData.data.length) },
+  { Field: 'Total Combined SKUs',        Value: String(allCombinedData.length) },
   { Field: 'Chassis Variant Options',    Value: String(skuData.data.filter(r => r['Main Category'] === 'Chassis').length) },
-  { Field: 'Hardware Accessories',       Value: String(servicesData.data.filter(r => HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim())).length) },
-  { Field: 'Software & License SKUs',   Value: String(servicesData.data.filter(r => !HPE_HW_SKU_REGEX.test((r['Product #'] || '').trim())).length) },
   { Field: 'Total Rules',                Value: String(rulesData.data.length) },
   { Field: 'Total Tables',               Value: String(catalogMeta.totalTables || '') },
-  { Field: 'Diff Added SKUs',            Value: String(diffSummary.added || 0) },
-  { Field: 'Diff Removed SKUs',          Value: String(diffSummary.removed || 0) },
-  { Field: 'Diff Price Changed',         Value: String(diffSummary.priceChanged || 0) },
-  { Field: 'Diff Attr Changed',          Value: String(diffSummary.attributeChanged || 0) },
-  { Field: 'Diff Unchanged SKUs',        Value: String(diffSummary.unchanged || skuData.data.length) },
-  { Field: 'Discontinued (All-Time)',    Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED').length) },
+  { Field: 'Diff Added SKUs',            Value: String(diffCounts.added) },
+  { Field: 'Diff Removed SKUs',          Value: String(diffCounts.removed) },
+  { Field: 'Diff Price Changed',         Value: String(diffCounts.priceChanged) },
+  { Field: 'Diff Attr Changed',          Value: String(diffCounts.attributeChanged) },
+  { Field: 'Diff Reinstated SKUs',       Value: String(diffCounts.reinstated) },
+  { Field: 'Diff Unchanged SKUs',        Value: String(diffCounts.unchanged) },
+  { Field: 'Discontinued (All-Time)',    Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED' || r['Status'] === 'REMOVED').length) },
   { Field: 'Reinstated (All-Time)',      Value: String(discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length) },
   { Field: 'Services JSON',              Value: fs.existsSync(servicesJsonPath) ? servicesJsonPath : '(Not yet generated)' },
   { Field: 'Output Folder',              Value: targetDir },
 ];
-const metaWS = XLSX.utils.json_to_sheet(metaData);
-metaWS['!cols'] = [{ wch: 25 }, { wch: 80 }];
+const metaWS = createStyledSheet(metaData, [{ wch: 30 }, { wch: 80 }]);
 XLSX.utils.book_append_sheet(wb, metaWS, 'Metadata');
 
 // ── Write file ────────────────────────────────────────────────────────────────

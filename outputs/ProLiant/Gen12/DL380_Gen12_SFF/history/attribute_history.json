@@ -1,0 +1,162 @@
+[
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P73282-B21)",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "System Standard (Max 1)"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Base Chassis"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-12"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P74568-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P74568-B21)",
+    "newValue": "Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P74792-B21)",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P69727-F21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P69727-F21)",
+    "newValue": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P79552-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P79552-B21)",
+    "newValue": "HPE ProLiant Compute 30C Maximum Recommended Ambient Temperature Configuration Tracking"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P51181-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P51181-B21)",
+    "newValue": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P72203-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P72203-B21)",
+    "newValue": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P73325-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P73325-B21)",
+    "newValue": "HPE ProLiant Compute Localization FIO Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P52341-B21)",
+    "newValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P03178-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P03178-B21)",
+    "newValue": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P48820-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P48820-B21)",
+    "newValue": "HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "P78145-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (P78145-B21)",
+    "newValue": "HPE C13 - C14 250V 10Amp 2m FIO Power Cord"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (R7A12AAE)",
+    "newValue": "HPE Compute Ops Management Standard 5-year Upfront ProLiant SaaS"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (S1A05A)",
+    "newValue": "HPE Compute Cloud Management Server FIO Enablement"
+  },
+  {
+    "date": "2026-08-12",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Server Option (BD505A)",
+    "newValue": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features"
+  }
+]

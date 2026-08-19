@@ -238,12 +238,25 @@ Examples:
     }
   }
 
-  emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Generating RAG payload for asynchronous dispatch.`);
-  // UI will fetch the actual NotebookLM RAG result non-blockingly via /api/notebook-query-async
+  emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
+  
+  const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
+  const ragResult = await executeNotebookQuery(notebookId, ragPayload, { context: { chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'DL380_Gen12_SFF' } });
 
-  let ragAnswer = `### Pre-Flight Physical Validation Matrix (RAG Dispatched Asynchronously)
+  evalResults.notebookLmStatus = {
+    source: ragResult.source,
+    sourcesUsed: ragResult.sourcesUsed || [],
+    citationsCount: (ragResult.citations || []).length,
+    fallbackReason: ragResult.fallbackReason || null
+  };
+  evalResults.ragFallbackUsed = ragResult.source === 'LOCAL_RAG_FALLBACK';
+  evalResults.ragResult = ragResult;
 
-> ℹ️ **Notice**: Gemini Notebook RAG synthesis is now executed non-blockingly by the dashboard UI. Please check the dashboard for the real-time verified RAG Second Opinion.
+  let ragAnswer = `### Pre-Flight Grounded Physical Validation Matrix (${ragResult.source})
+
+> ℹ️ **Knowledge Source**: \`${ragResult.source}\` ${ragResult.sourcesUsed && ragResult.sourcesUsed.length > 0 ? `(Active Cloud Sources: ${ragResult.sourcesUsed.join(', ')})` : ''}
+
+${ragResult.answer}
 
 #### Physical Validation Summary (Local Rules Engine)
 - **Errors Identified**: ${evalResults.errors.length} critical physical violation(s)
@@ -289,7 +302,9 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
 
   let reportContent = `# HPE Pre-Flight BOQ Evaluation & Validation Report\n\n`;
   reportContent += `**Target BOQ File**: \`${inputFile}\`  \n`;
-  reportContent += `**Target Gemini Notebook**: \`Dl 380 Spec Gen 12\` (\`${notebookId}\`)  \n`;
+  const chassisLabel = (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'HPE ProLiant BOQ';
+  const notebookLabel = notebookId ? `${chassisLabel} Notebook (\`${notebookId}\`)` : `${chassisLabel} — Local Catalog Rules (no Notebook configured)`;
+  reportContent += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
   reportContent += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
   reportContent += `**Quantitative Confidence Score**: \`${evalResults.confidence.score} / 1.00\` (${evalResults.confidence.isHitlTriggered ? '🚨 HITL Review Required' : '✅ Certified Buildable'})  \n`;
   if (targetBudgetUsd > 0) {

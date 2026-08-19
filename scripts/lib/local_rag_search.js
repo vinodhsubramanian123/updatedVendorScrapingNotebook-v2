@@ -24,6 +24,10 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   const rawWords = cleanQuery.split(/[\s,;.!?'"()[\]{}]+/).filter(w => w.length > 0);
   const searchTerms = rawWords.filter(w => !STOP_WORDS.has(w) && w.length >= 2);
 
+  const CHASSIS_NOISE_WORDS = new Set(['dl380', 'gen12', 'gen11', 'proliant', 'hpe', 'compute', 'server', 'sff', 'lff', 'edsff']);
+  const specificTerms = searchTerms.filter(w => !CHASSIS_NOISE_WORDS.has(w));
+  const activeTerms = specificTerms.length > 0 ? specificTerms : searchTerms;
+
   // Check if query is asking for cores threshold (e.g., "64 cores", "equal to or more than 64", ">= 64")
   let minCores = null;
   const coreMatch = cleanQuery.match(/(\d+)\s*(-|\s*)core/i) || cleanQuery.match(/(?:more than|equal to|at least|\>=)\s*(\d+)/i) || cleanQuery.match(/(\d+)\s*cores/i);
@@ -43,7 +47,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
         const update = (rule.ruleUpdate || '').toLowerCase();
         const affected = (rule.affectedSku || '').toLowerCase();
 
-        if (searchTerms.length > 0 && searchTerms.some(term => raw.includes(term) || update.includes(term) || affected.includes(term))) {
+        if (activeTerms.length > 0 && activeTerms.some(term => raw.includes(term) || update.includes(term) || affected.includes(term))) {
           matches.push(`• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`);
           citations.push({
             title: `Master Knowledge Registry (${rule.deltaId})`,
@@ -96,50 +100,62 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
           if (isProcessorQuery && (parentCat.includes('processor') || subCat.includes('processor') || subCat.includes('intel') || subCat.includes('amd'))) {
             const skus = entry.skus || [];
             for (const s of skus) {
-              const desc = s.description || '';
+              const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+              const desc = s.description || s['Description'] || '';
+              const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
               const descLower = desc.toLowerCase();
 
               const coresInSkuMatch = descLower.match(/(\d+)\s*-?\s*core/);
               const coresInSku = coresInSkuMatch ? parseInt(coresInSkuMatch[1], 10) : null;
+              const isActualCpu = descLower.includes('processor') || descLower.includes('xeon') || descLower.includes('epyc') || coresInSku !== null;
 
-              if (minCores !== null) {
-                if (coresInSku !== null && coresInSku >= minCores) {
+              if (isActualCpu) {
+                if (minCores !== null) {
+                  if (coresInSku !== null && coresInSku >= minCores) {
+                    matchedProcessorSkus.push({
+                      chassis: folderName,
+                      sku: skuPn,
+                      description: desc,
+                      cores: coresInSku,
+                      price,
+                      catalogPath: catalogJson
+                    });
+                  }
+                } else if (searchTerms.length === 0 || searchTerms.some(term => descLower.includes(term))) {
                   matchedProcessorSkus.push({
                     chassis: folderName,
-                    sku: s.sku,
+                    sku: skuPn,
                     description: desc,
                     cores: coresInSku,
-                    price: s.listPriceFormatted || `$${s.listPrice}`,
+                    price,
                     catalogPath: catalogJson
                   });
                 }
-              } else if (searchTerms.length === 0 || searchTerms.some(term => descLower.includes(term))) {
-                matchedProcessorSkus.push({
-                  chassis: folderName,
-                  sku: s.sku,
-                  description: desc,
-                  cores: coresInSku,
-                  price: s.listPriceFormatted || `$${s.listPrice}`,
-                  catalogPath: catalogJson
-                });
               }
             }
-          } else if (!isProcessorQuery && searchTerms.length > 0) {
-            const isCatMatch = searchTerms.some(term => catStr.includes(term));
+          } else if (!isProcessorQuery && activeTerms.length > 0) {
+            const isCatMatch = activeTerms.some(term => catStr.includes(term));
             
             // Search inside the SKUs as well
             let matchedSkusInCat = [];
             for (const s of (entry.skus || [])) {
-               const sLower = (s.sku || '').toLowerCase();
-               const descLower = (s.description || '').toLowerCase();
-               if (searchTerms.some(term => sLower.includes(term) || descLower.includes(term))) {
+               const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+               const desc = s.description || s['Description'] || '';
+               const sLower = skuPn.toLowerCase();
+               const descLower = desc.toLowerCase();
+               if (activeTerms.some(term => sLower.includes(term) || descLower.includes(term))) {
                   matchedSkusInCat.push(s);
                }
             }
 
             if (isCatMatch || matchedSkusInCat.length > 0) {
               const skusToDisplay = matchedSkusInCat.length > 0 ? matchedSkusInCat : (entry.skus || []);
-              const skuList = skusToDisplay.slice(0, 4).map(s => `${s.sku} (${s.description}) - ${s.listPriceFormatted || '$' + s.listPrice}`).join('; ');
+              const skuList = skusToDisplay.slice(0, 4).map(s => {
+                const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+                const desc = s.description || s['Description'] || '';
+                const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
+                return `${skuPn} (${desc}) - ${price}`;
+              }).join('; ');
               if (skuList) {
                 matches.push(`• [${folderName} Hardware SKUs] ${entry.parentCategory} > ${entry.subCategory}: ${skuList}`);
                 citations.push({
@@ -153,16 +169,20 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
         }
         
         // Search base variants
-        const baseVariants = catData.chassisBaseVariants || catData.baseVariants || [];
+        const baseVariants = catData.chassisVariants || catData.chassisBaseVariants || catData.baseVariants || [];
+        const isChassisQuery = cleanQuery.includes('chassis') || cleanQuery.includes('variant') || cleanQuery.includes('base') || cleanQuery.includes('cto');
+        
         for (const variant of baseVariants) {
-          const skuLower = (variant.sku || '').toLowerCase();
-          const descLower = (variant.description || variant.desc || '').toLowerCase();
-          if (searchTerms.some(term => skuLower.includes(term) || descLower.includes(term))) {
-            const priceStr = variant.price || variant.listPriceFormatted || `$${variant.listPrice || variant.priceNum || 0}`;
-            matches.push(`• [${folderName} Base Chassis] ${variant.sku}: ${variant.description || variant.desc} - ${priceStr}`);
+          const skuLower = (variant.sku || variant['Product #'] || '').toLowerCase();
+          const descLower = (variant.description || variant['Description'] || variant.desc || '').toLowerCase();
+          if (isChassisQuery || searchTerms.some(term => skuLower.includes(term) || descLower.includes(term))) {
+            const skuPn = variant.sku || variant['Product #'] || '';
+            const desc = variant.description || variant['Description'] || variant.desc || '';
+            const priceStr = variant.listPriceFormatted || (variant['Unit Price (USD)'] ? `$${variant['Unit Price (USD)']}` : (variant.listPrice ? `$${variant.listPrice}` : '$0.00'));
+            matches.push(`• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`);
             citations.push({
-              title: `${folderName} Base Chassis SKUs`,
-              snippet: `${variant.sku}: ${variant.description || variant.desc}`,
+              title: `${folderName} Base Chassis CTO (${skuPn})`,
+              snippet: `${skuPn}: ${desc} (${priceStr})`,
               url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
             });
           }

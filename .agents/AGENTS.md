@@ -5,25 +5,26 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 
 ---
 
-## Pipeline State of Health (Last Updated: 2026-08-14)
+## Pipeline State of Health (Last Updated: 2026-08-19)
 
-### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-14)
+### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-19)
 | Product | Family | Output Prefix | Unique SKUs | Entries | QuickSpecs PDF | Status |
 |---------|--------|---------------|-------------|---------|----------------|--------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 277 HW / 512 Svc | 70 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline) |
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 261 HW / 603 Svc | 66 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline & Cloud NLM) |
 | HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
 | HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline + CTO variants) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks Certified.
+**Total Verified Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 13 test suites.
 
 ### ✅ Automated Evaluation Benchmark Suite (`scripts/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 5/5 Scenarios (100.0%)
 - **Recall Rate**: 100.0%
 - **Precision Rate**: 100.0%
 - **Strategy Matrix Tiers**: 5 Tiers Validated (Rank 1 through Rank 5)
+- **Cloud NotebookLM Grounding**: Active OAuth Profile authenticated; `DL380_Gen12_SFF_OCA_Catalog_2026-08-19` synced.
 
 ---
 

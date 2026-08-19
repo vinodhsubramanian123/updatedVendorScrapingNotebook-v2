@@ -33,7 +33,9 @@ function loadProfile(family, gen) {
         const filePath = path.join(PROFILES_DIR, file);
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         
-        if (data.family === family && data.gen === gen) {
+        const famMatch = data.family && family && data.family.toLowerCase() === family.toLowerCase();
+        const genMatch = !data.gen || data.gen === '*' || (gen && data.gen.toLowerCase() === gen.toLowerCase());
+        if (famMatch && genMatch) {
           overrideProfile = data;
           break;
         }

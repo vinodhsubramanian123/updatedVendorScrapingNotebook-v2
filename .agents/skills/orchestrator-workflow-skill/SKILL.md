@@ -52,12 +52,12 @@ graph TD
 ## 🔁 The 6-Stage Continuous Learning Lifecycle
 
 ### 1. Ingestion (Live Scraping)
-- **Actor**: [`oca-catalog-scraper`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/oca-catalog-scraper/SKILL.md)
+- **Actor**: [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md)
 - **Action**: Scrapes the live HPE OCA vendor portal via Chrome DevTools Protocol (`scripts/lib/cdp.js`) over port 9222.
 - **Output**: Generates classified JSON catalogs, standalone rules files (`*_Catalog_Rules.json`), and multi-sheet Excel workbooks (`*_OCA_Catalog.xlsx`).
 
 ### 2. Decoupled Knowledge Sync & Dual Safety Net
-- **Actor**: [`diff_catalog.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/lib/diff_catalog.js) & [`knowledge-sync-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/knowledge-sync-skill/SKILL.md)
+- **Actor**: [`diff_catalog.js`](scripts/lib/diff_catalog.js) & [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md)
 - **Action**: 
   - Compares newly scraped JSON against historical snapshots to log SKU additions, removals, and cumulative price trails.
   - Emits standalone `*_Catalog_Rules.json` for fast dual safety net loading.
@@ -65,7 +65,7 @@ graph TD
   - **Decoupled Workflow**: Knowledge Sync (pushing to NotebookLM via CLI or MCP) now runs as an independent background task (`/api/sync-knowledge`) to ensure core scraping speed is unaffected.
 
 ### 3. BOQ Ingestion, 8-Stage Atomicity & Conflict Graph
-- **Actor**: [`boq-eval-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
+- **Actor**: [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
 - **Action**:
   - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
   - Ingests customer BOQs, multi-sheet proposals, or obfuscated SKU text.
@@ -76,7 +76,7 @@ graph TD
   - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
 
 ### 4. Grounded Gemini Notebook Validation (RAG) & Dashboard Command Center
-- **Actor**: [`nlm-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/nlm-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
+- **Actor**: [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
 - **Action**: 
   - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
   - The React Dashboard provides a full Command-and-Control hub for triggering Knowledge Sync, exporting corrected BOQs, logging portal rejection KnowledgeDeltas, and managing the async RAG status polling (`GET /api/notebook-query-status/:jobId`).
@@ -88,7 +88,7 @@ graph TD
   - If a BOQ evaluation drops below 75% confidence, the **Ambiguity Inbox** prompts the user to Auto-Query NotebookLM via the MCP bridge to acquire missing configuration rules.
 
 ### 6. Closed-Loop Feedback & Telemetry Learning
-- **Actor**: [`feedback_loop.js`](file:///Users/macbookaira1466/Downloads/booktoSkill/scripts/lib/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
+- **Actor**: [`feedback_loop.js`](scripts/lib/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
 - **Action**:
   - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
   - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
@@ -100,10 +100,10 @@ graph TD
 
 | Task / Intent | Active Sub-Skill | Command Target |
 |---|---|---|
-| Trigger autonomous scrape sequence | [`oca-catalog-scraper`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/oca-catalog-scraper/SKILL.md) | `npm run scrape:auto` / `npm run probe:cdp` |
-| Parallel eval of multi-sheet BOQs | [`boq-eval-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:multi <boq_file>` |
-| Ingest & evaluate single BOQ config | [`boq-eval-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:boq <boq_file>` |
-| Query Gemini NotebookLM RAG | [`nlm-skill`](file:///Users/macbookaira1466/Downloads/booktoSkill/.agents/skills/nlm-skill/SKILL.md) | `nlm notebook query <id> "<prompt>"` |
+| Trigger autonomous scrape sequence | [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md) | `npm run scrape:auto` / `npm run probe:cdp` |
+| Parallel eval of multi-sheet BOQs | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:multi <boq_file>` |
+| Ingest & evaluate single BOQ config | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:boq <boq_file>` |
+| Query Gemini NotebookLM RAG | [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) | `nlm notebook query <id> "<prompt>"` |
 | Replay historical pipeline logs | Dashboard / Trace Engine | `npm run trace:view <runId>` |
 | Portfolio health & telemetry audit | Dashboard | `npm run status` |
 

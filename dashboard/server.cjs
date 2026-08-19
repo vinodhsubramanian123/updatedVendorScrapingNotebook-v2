@@ -1453,20 +1453,30 @@ app.post('/api/ask-notebook', async (req, res) => {
   const { prompt, chassis } = req.body;
   if (!prompt) return res.status(400).json({ error: 'prompt is required' });
 
-  // Resolve target notebook ID
+  // Resolve target notebook ID — always read from notebooks.json; never hardcode
   const notebooksPath = path.join(CONFIG_DIR, 'notebooks.json');
-  let notebookId = '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
+  let notebookId = null;
   if (fs.existsSync(notebooksPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'));
       if (chassis && config.notebooks && config.notebooks[chassis]) {
         // Handle both string and object formats: { notebookId: "...", family: "..." }
         const entry = config.notebooks[chassis];
-        notebookId = typeof entry === 'string' ? entry : entry?.notebookId || null;
-      } else {
-        notebookId = null;
+        const resolved = typeof entry === 'string' ? entry : entry?.notebookId;
+        if (resolved && resolved.trim()) notebookId = resolved.trim();
       }
+      // Fall back to defaultNotebookId when chassis-specific mapping is missing
+      if (!notebookId && config.defaultNotebookId) notebookId = config.defaultNotebookId;
     } catch (e) { const _l = require('../scripts/lib/pipeline_logger'); _l.warn('SERVER', 'server.cjs', e); }
+  }
+
+  // Guard: emit observable telemetry if no notebook is configured — never silently query null
+  if (!notebookId) {
+    const _l = require('../scripts/lib/pipeline_logger');
+    _l.warn('SERVER', `[ask-notebook] No notebook configured for chassis "${chassis || 'unknown'}". Routing to LOCAL_RAG_FALLBACK. Add a notebookId to scripts/config/notebooks.json.`);
+    const { queryLocalKnowledgeBase } = require('../scripts/lib/local_rag_search.js');
+    const localRes = queryLocalKnowledgeBase(prompt, chassis || '');
+    return res.json({ answer: localRes.answer, citations: localRes.citations || [], query: localRes.query, source: 'LOCAL_RAG_FALLBACK', warning: `No notebook configured for chassis "${chassis || 'unknown'}"` });
   }
 
   try {

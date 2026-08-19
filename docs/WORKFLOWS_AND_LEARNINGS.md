@@ -131,3 +131,43 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 - **Product Catalog Explorer (`catalog` tab) & Scraper (`scraper` tab)**:
   - **Product-Scoped**: These views specifically browse or trigger scraping for a concrete hardware catalog.
   - An in-page **Product Line Switcher Bar** allows toggling between all 6 certified product lines (`DL380 Gen12`, `DL380 Gen11`, `Alletra`, `Synergy`, `MSL Tape`, `Cray`) directly within the view without confusing the global BOQ workflow.
+
+## 14. Gemini NotebookLM Cloud OAuth Authentication & Guardrail 7 Learnings
+- **Silent Fallback Anti-Pattern & Prevention**:
+  - *The Gap*: When `nlm` CLI was not installed or unauthenticated, `notebook_query_utils.js` was catching `ENOENT` and silently falling back to `queryLocalKnowledgeBase(...)`. While local tests passed with mock responses, the live Google NotebookLM cloud web session was never being updated or queried.
+  - *The Solution*: We installed `notebooklm-mcp-cli` via `uv` at `~/.local/bin/nlm`, registered the `gemini-notebook-mcp` server in `mcp_config.json`, and completed real Google OAuth authentication (`vinodhsubramanian@gmail.com`).
+- **Live Cloud Source Lifecycle (`Live_Scraping_Aug_16_2026_V2`)**:
+  - The stale August 5th sources (`Live_Scrapping_Aug_05_2026_V1`, old CSVs with 215 "Unknown" SKUs) were permanently deleted from Google's servers via `nlm source delete`.
+  - The new certified source `Live_Scraping_Aug_16_2026_V2` (Source ID: `d0bb030a-40ca-4362-a1a5-7adbdc4b9424`) was uploaded and verified in cloud Notebook `1d190853-4e9c-48df-aa70-eae66c6f2c1f`.
+- **Guardrail 7 Pipeline Assertion (`test_pipeline_evals.js`)**:
+  - Added mandatory pre-flight / post-flight assertions that verify:
+    1. `nlm` executable exists in system PATH.
+    2. Active OAuth Profile exists at `~/.notebooklm-mcp-cli/profiles/default`.
+    3. `notebooks.json` tracks a valid `lastSyncedSourceId` matching the cloud resource.
+  - Any future expiration or failure of cloud auth will immediately halt evaluation with a loud failure alert.
+- **Environment & PATH Resilience**:
+  - Added `NOTEBOOKLM_DEFAULT_NOTEBOOK_ID`, `NOTEBOOKLM_PROFILE`, and `PATH` export to `.env` and script execution environments so background workers, child processes, and daemons never fail binary resolution.
+
+## 15. Master Excel 23-Sheet Alignment & Usability Learnings
+- **8-Character ARGB Color Formatting**: In `xlsx-js-style`, 6-char hex strings (`FFFFFF`) default to alpha `00` (100% transparent text). 8-character ARGB formatting (`FFFFFFFF` for opaque white, `FF0072C6` for corporate blue, `FF01A781` for HPE emerald) is mandatory for proper Excel cell contrast.
+- **Native Numeric Cell Typing (`t: 'n'`)**: Pre-normalizing currency strings (`"$5,584.00"`) and quantity values (`"1"`) to native JavaScript numbers with explicit Excel format masks (`z: '$#,##0.00'`, `z: '#,##0'`) enables Excel's native arithmetic (`SUM`, `AVERAGE`) and numeric sorting.
+- **Categorization-First Sheet Routing**: Routing by `Main Category` keywords prior to SKU hyphen format checks eliminates duplicate/orphan sheets (e.g. `Software & Licenses_2`) and ensures all 361 software and license SKUs reside in a single consolidated sheet.
+- **Hardware & Services Unification (864 Total SKUs)**: Merging `Catalog.json` (261 HW) and `Services.json` (603 Services/Software/Accessories) across `Category Summary`, `Rules & Constraints`, `Catalog Diffs`, and `Price History Timeline` provides single-pane workbook visibility.
+- **Freeze Panes & Autofilter**: Explicitly configuring `!views = [{ state: 'frozen', ySplit: 1, activeCell: 'A2' }]` and `!autofilter` on all 23 workbook sheets ensures production-grade usability for sales engineers.
+- **Falsy `0` Numeric Guard**: In `verify_excel_tally.js`, replacing `String(row['Current Qty'] || '')` with explicit `!== undefined && !== null && !== ''` guards prevents valid `0` quantity values from failing numeric regex validations.
+
+## 16. NotebookLM Canonical Source Naming & Zero-Duplicate Hygiene
+- **Canonical Source Naming**: NotebookLM sources are strictly named to match the output Excel artifact: `${chassisName}_OCA_Catalog_${YYYY-MM-DD}` (e.g. `DL380_Gen12_SFF_OCA_Catalog_2026-08-19`).
+- **Deterministic Stale Source Cleanup**: Before uploading a new payload, `knowledge_sync.js` deletes stale sources via tracked source ID (fast path) and a secondary title-match scan with the `--confirm` flag, guaranteeing zero duplicate clutter in NotebookLM.
+- **Index Completion Guarantee (`--wait`)**: `nlm source add` invokes `--wait` with a 120s timeout, ensuring NotebookLM fully processes and indexes the knowledge charter before subsequent RAG queries execute.
+
+## 17. Multi-Month Historical Pricing & Volatility Analytics
+- **Continuous Historical Snapshots**: Monthly catalog snapshots (`outputs/.../history/catalog_YYYY-MM-DD.json`) and cumulative logs (`price_history.json`, `discontinued_skus.json`, `attribute_history.json`) enable precise point-in-time and consolidated pricing queries across August through December.
+- **Multi-Month Comparative Matrix**: `test_historical_pricing_timeline.js` (28/28 passing) verifies baseline identification, lowest/highest cost period detection, total dollar variance, and max percentage fluctuation across multi-month evaluations.
+
+## 18. Customer Quote & BOM Header Row Offset Auto-Detection
+- **Dynamic Header Offset Scanning**: Customer BOM downloads from HPE OCA or vendor portals often have 3–15 rows of introductory branding, quote metadata, or terms. `boq_parser.js` dynamically scans rows 1–20 to detect header signatures (`Product Number`, `Description`, `Quantity`, `Unit Price`), establishing column maps without brittle hardcoded row indices.
+
+## 19. Chaos & Adversarial Red-Teaming Resilience
+- **Continuous Adversarial Verification**: `scripts/adversarial_agent.js` continuously generates subtly invalid BOQs using live `gemini-3.5-flash` (`ai.models.generateContent`) and confirms the evaluator catches 100% of injected anomalies with 100% precision.
+- **38/38 Chaos Failure Mode Certification**: `tests/test_failure_modes_and_chaos.js` validates that simulated cloud outages, API quota limits (HTTP 429), missing dependencies, and OCR vision failures are never silently suppressed and transparently fall back to local safety nets with full observability.

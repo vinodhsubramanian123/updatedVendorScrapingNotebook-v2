@@ -8,20 +8,30 @@ yarn-error.log
 .AppleDouble
 .LSOverride
 
-# Scrape outputs — large binaries and generated files
-# Keep the directory structure but not the actual data files
-outputs/**/*.json
-outputs/**/*.xlsx
-outputs/**/*.tsv
-outputs/**/*.csv
-outputs/**/*.pdf
-outputs/**/*.html
-outputs/**/*.md
-outputs/**/*.log
-# Always keep the registry and directory structure
+# ── Scrape outputs (default: ignore all generated data) ─────────────────────
+outputs/*
 !outputs/SCRAPED_CATALOGS.md
+!outputs/history/
+outputs/history/*
+!outputs/history/rules/
 !outputs/history/rules/**
 !outputs/history/master_knowledge_registry.json
+
+# Gen12 certified golden catalog — tracked for clone/CI bootstrap
+!outputs/ProLiant/
+outputs/ProLiant/*
+!outputs/ProLiant/Gen12/
+outputs/ProLiant/Gen12/*
+!outputs/ProLiant/Gen12/DL380_Gen12_SFF/
+!outputs/ProLiant/Gen12/DL380_Gen12_SFF/**/*
+# Re-ignore ephemeral / noisy Gen12 paths (JSON rules above still apply to siblings)
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/intermittent_scraps/
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/reports/
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/audit_result.json
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/preflight_audit_log.json
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/pipeline_execution.log
+outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/catalog_2026-08-14T*
 
 # IDE / editor
 .vscode/

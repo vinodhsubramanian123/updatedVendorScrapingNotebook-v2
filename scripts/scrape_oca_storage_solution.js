@@ -225,8 +225,9 @@ async function main() {
       dropdownSKUs
     };
 
-    fs.writeFileSync(rawJsonPath, JSON.stringify(rawData, null, 2));
-    console.log(`Raw storage data saved to staging: ${rawJsonPath}`);
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    safeWriteJsonAtomic(rawJsonPath, rawData);
+    console.log(`Raw storage data saved atomically to staging: ${rawJsonPath}`);
 
     // STEP 4: QuickSpecs Download
     if (qsLink) {

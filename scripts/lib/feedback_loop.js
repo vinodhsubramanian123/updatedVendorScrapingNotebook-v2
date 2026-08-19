@@ -48,10 +48,13 @@ function classifyPortalError(errorMessage) {
  * @returns {object} Generated KnowledgeDelta
  */
 function processPortalFeedback(portalError, outputDir, options = {}) {
-  if (!outputDir) {
-    throw new Error('processPortalFeedback requires an explicit outputDir parameter (no hardcoded default).');
+  if (!outputDir || typeof outputDir !== 'string') {
+    throw new Error('processPortalFeedback requires an explicit string outputDir parameter (no hardcoded default).');
   }
-  const classification = classifyPortalError(portalError);
+  const errorText = typeof portalError === 'string' 
+    ? portalError 
+    : ((portalError && (portalError.reason || portalError.rawMessage || portalError.errorType)) || JSON.stringify(portalError || ''));
+  const classification = classifyPortalError(errorText);
 
   const historyDir = path.join(outputDir, 'history');
   if (!fs.existsSync(historyDir)) {
@@ -63,7 +66,13 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
   if (fs.existsSync(deltaFile)) {
     try {
       deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
-    } catch (_) {
+      if (!Array.isArray(deltas)) deltas = [];
+    } catch (parseErr) {
+      // Corruption detected — back up the corrupt file before resetting to prevent data loss
+      const corruptBackup = `${deltaFile}.corrupt_${Date.now()}.bak`;
+      try { fs.copyFileSync(deltaFile, corruptBackup); } catch (_) { /* backup best-effort */ }
+      const logger = require('./pipeline_logger');
+      logger.warn('FEEDBACK_LOOP', `catalog_deltas.json was corrupt (${parseErr.message}). Backed up to ${path.basename(corruptBackup)} and reset to []. Check backup for recovery.`);
       deltas = [];
     }
   }
@@ -127,13 +136,30 @@ function updateCatalogRulesFile(outputDir, delta) {
     try {
       const data = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
       data.rules = data.rules || [];
-      data.rules.push({
-        parentCategory: 'Learned Feedback Rules',
-        subCategory: delta.affectedSku,
-        constraint: 'learned',
-        maxQty: 1,
-        rule: delta.ruleUpdate
-      });
+      
+      // Deduplicate existing rules and check if new rule already exists
+      const seen = new Set();
+      const dedupedRules = [];
+      for (const r of data.rules) {
+        const key = `${r.parentCategory}|${r.subCategory}|${r.rule}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          dedupedRules.push(r);
+        }
+      }
+
+      const newKey = `Learned Feedback Rules|${delta.affectedSku}|${delta.ruleUpdate}`;
+      if (!seen.has(newKey)) {
+        dedupedRules.push({
+          parentCategory: 'Learned Feedback Rules',
+          subCategory: delta.affectedSku,
+          constraint: 'learned',
+          maxQty: 1,
+          rule: delta.ruleUpdate
+        });
+      }
+
+      data.rules = dedupedRules;
       safeWriteJsonAtomic(rulesJson, data, { minEntriesKey: 'rules', minCount: 1 });
     } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'feedback_loop.js', _); }
   }

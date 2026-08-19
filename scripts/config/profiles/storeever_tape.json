@@ -1,0 +1,13 @@
+{
+  "description": "HPE StoreEver MSL Tape Library Overrides",
+  "family": "StoreEver",
+  "gen": "Tape",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 8000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|tape drive|cartridge"
+  },
+  "component_mapping": {
+    "Base Chassis": ["msl3040", "tape library", "base module", "expansion module"],
+    "Storage Controller": ["lto-9", "lto-8", "lto-7", "tape drive", "sas tape", "fc tape drive"]
+  }
+}

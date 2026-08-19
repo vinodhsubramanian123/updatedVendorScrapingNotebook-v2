@@ -179,7 +179,7 @@ export default function Header({
             </div>
             <div>
               <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Catalog Intelligence</h1>
-              <p className="text-[11px] font-medium text-slate-500">Multi-Vendor Hardware BOM Engine</p>
+              <p className="text-[11px] font-medium text-slate-500">HPE OCA Hardware BOM Engine</p>
             </div>
           </div>
 
@@ -241,7 +241,7 @@ export default function Header({
               <div className="absolute left-0 mt-2 w-84 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-dropdown-reveal p-2.5">
                 {/* Context Helper Callout */}
                 <div className="px-2 py-1.5 mb-2 bg-slate-50 border border-slate-200/80 rounded-xl text-[10.5px] text-slate-500 leading-snug">
-                  <strong className="text-slate-700">Multi-Vendor Compatibility:</strong> BOQ quotes auto-detect their chassis. Selecting here filters Master Catalog and Artifacts.
+                  <strong className="text-slate-700">Multi-Chassis Auto-Detect:</strong> BOQ quotes auto-detect their chassis. Selecting here filters Master Catalog and Artifacts.
                 </div>
 
                 {/* Clear / All Products Option */}

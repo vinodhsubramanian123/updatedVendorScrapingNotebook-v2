@@ -504,10 +504,27 @@ function preprocessAndGroupBOQ(rawInput, filePath = '', options = {}) {
     // 2. Extract hardware profile based on per-unit atomic configuration
     const profile = extractHardwareProfile(ctoNorm.items);
     
-    // Infer chassis model
-    let chassisName = 'DL380 Gen12 SFF';
-    const isAlletra = v.items.some(i => (i.description || '').toLowerCase().includes('alletra') || cleanBaseSKU(i.sku).startsWith('R0Q'));
-    if (isAlletra) chassisName = 'Alletra Storage System';
+    // Infer chassis model — covers all 6 certified HPE product families
+    // Priority: explicit SKU prefix match > description keyword match > fallback
+    let chassisName = 'DL380 Gen12 SFF'; // default only if nothing else matches
+    const allSkus  = v.items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
+    const allDescs = v.items.map(i => (i.description || '').toLowerCase()).join(' ');
+
+    if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G'))) {
+      chassisName = 'Alletra Storage System';
+    } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
+      chassisName = 'SY100Gb F32 Module';
+    } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
+      chassisName = 'GX5000 General RACK';
+    } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
+      chassisName = 'MSL3040 Tape';
+    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
+      chassisName = 'DL380 Gen11';
+    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732')))) {
+      chassisName = 'DL380 Gen12 SFF';
+    } else if (options && options.chassisHint) {
+      chassisName = options.chassisHint; // caller override — e.g. from dashboard upload
+    }
 
     const tempVar = {
       configId: v.configId,

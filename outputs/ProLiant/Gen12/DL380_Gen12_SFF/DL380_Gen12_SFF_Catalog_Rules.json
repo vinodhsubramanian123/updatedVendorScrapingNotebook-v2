@@ -1,0 +1,620 @@
+{
+  "metadata": {
+    "chassis": "DL380 Gen12 SFF",
+    "model": "DL380_Gen12_SFF",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "scrapeDate": "2026-08-19T13:01:00.622Z",
+    "totalSubcategories": 2,
+    "totalUniqueSKUs": 261,
+    "totalTables": 66,
+    "diffSummary": {
+      "added": 261,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-08-19.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-08-19",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 39374,
+          "minPrice": 5584,
+          "maxPrice": 7450,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 39374,
+              "avgPrice": 6562.333333333333
+            }
+          },
+          "avgPrice": 6562.333333333333
+        },
+        "Option Component": {
+          "totalSKUs": 17,
+          "totalPrice": 8105,
+          "minPrice": 1,
+          "maxPrice": 2027,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 17,
+              "totalPrice": 8105,
+              "avgPrice": 476.7647058823529
+            }
+          },
+          "avgPrice": 476.7647058823529
+        },
+        "Processor": {
+          "totalSKUs": 61,
+          "totalPrice": 467785,
+          "minPrice": 60,
+          "maxPrice": 58094,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 61,
+              "totalPrice": 467785,
+              "avgPrice": 7668.606557377049
+            }
+          },
+          "avgPrice": 7668.606557377049
+        },
+        "Memory": {
+          "totalSKUs": 9,
+          "totalPrice": 297881,
+          "minPrice": 1,
+          "maxPrice": 133186,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 9,
+              "totalPrice": 297881,
+              "avgPrice": 33097.88888888889
+            }
+          },
+          "avgPrice": 33097.88888888889
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 26,
+          "totalPrice": 4283,
+          "minPrice": 1,
+          "maxPrice": 714,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 26,
+              "totalPrice": 4283,
+              "avgPrice": 164.73076923076923
+            }
+          },
+          "avgPrice": 164.73076923076923
+        },
+        "Networking": {
+          "totalSKUs": 50,
+          "totalPrice": 114100,
+          "minPrice": 1,
+          "maxPrice": 8910,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 50,
+              "totalPrice": 114100,
+              "avgPrice": 2282
+            }
+          },
+          "avgPrice": 2282
+        },
+        "PCIe Risers": {
+          "totalSKUs": 7,
+          "totalPrice": 3210,
+          "minPrice": 262,
+          "maxPrice": 625,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 7,
+              "totalPrice": 3210,
+              "avgPrice": 458.57142857142856
+            }
+          },
+          "avgPrice": 458.57142857142856
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 9,
+          "totalPrice": 467,
+          "minPrice": 1,
+          "maxPrice": 105,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 9,
+              "totalPrice": 467,
+              "avgPrice": 51.888888888888886
+            }
+          },
+          "avgPrice": 51.888888888888886
+        },
+        "Storage Controllers": {
+          "totalSKUs": 34,
+          "totalPrice": 81099,
+          "minPrice": 1,
+          "maxPrice": 14299,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 34,
+              "totalPrice": 81099,
+              "avgPrice": 2385.264705882353
+            }
+          },
+          "avgPrice": 2385.264705882353
+        },
+        "Accessories & Infrastructure": {
+          "totalSKUs": 9,
+          "totalPrice": 459,
+          "minPrice": 1,
+          "maxPrice": 172,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 9,
+              "totalPrice": 459,
+              "avgPrice": 51
+            }
+          },
+          "avgPrice": 51
+        },
+        "Power Supplies": {
+          "totalSKUs": 19,
+          "totalPrice": 7262,
+          "minPrice": 1,
+          "maxPrice": 1588,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 19,
+              "totalPrice": 7262,
+              "avgPrice": 382.2105263157895
+            }
+          },
+          "avgPrice": 382.2105263157895
+        },
+        "Cooling / Thermal": {
+          "totalSKUs": 5,
+          "totalPrice": 4059,
+          "minPrice": 115,
+          "maxPrice": 1213,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 5,
+              "totalPrice": 4059,
+              "avgPrice": 811.8
+            }
+          },
+          "avgPrice": 811.8
+        },
+        "Software & Licenses": {
+          "totalSKUs": 2,
+          "totalPrice": 4142,
+          "minPrice": 752,
+          "maxPrice": 3390,
+          "subcategories": {
+            "(Sub-table)": {
+              "totalSKUs": 2,
+              "totalPrice": 4142,
+              "avgPrice": 2071
+            }
+          },
+          "avgPrice": 2071
+        }
+      }
+    },
+    "incrementalStats": {
+      "totalScrapedSkus": 261,
+      "unchangedSkusCount": 261,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 39150,
+      "estimatedProcessingTimeSavedMs": 52200
+    },
+    "chassisVariantCount": 6,
+    "rulesGeneratedAt": "2026-08-19T13:01:00.929Z"
+  },
+  "chassisVariants": [
+    {
+      "sku": "P73282-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
+      "listPrice": 5584,
+      "listPriceFormatted": "$5584.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00"
+    },
+    {
+      "sku": "P73283-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+      "formFactor": "Small Form Factor (24-Bay SFF)",
+      "listPrice": 5980,
+      "listPriceFormatted": "$5980.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00"
+    },
+    {
+      "sku": "P73284-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+      "formFactor": "Large Form Factor (12-Bay LFF)",
+      "listPrice": 6350,
+      "listPriceFormatted": "$6350.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00"
+    },
+    {
+      "sku": "P73285-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+      "formFactor": "Large Form Factor (8-Bay LFF)",
+      "listPrice": 6890,
+      "listPriceFormatted": "$6890.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00"
+    },
+    {
+      "sku": "P73286-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
+      "listPrice": 7120,
+      "listPriceFormatted": "$7120.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00"
+    },
+    {
+      "sku": "P73287-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+      "formFactor": "High Power / Telco",
+      "listPrice": 7450,
+      "listPriceFormatted": "$7450.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "P73282-B21": {
+      "sku": "P73282-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
+      "listPrice": 5584,
+      "listPriceFormatted": "$5584.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00"
+    },
+    "P73283-B21": {
+      "sku": "P73283-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+      "formFactor": "Small Form Factor (24-Bay SFF)",
+      "listPrice": 5980,
+      "listPriceFormatted": "$5980.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00"
+    },
+    "P73284-B21": {
+      "sku": "P73284-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+      "formFactor": "Large Form Factor (12-Bay LFF)",
+      "listPrice": 6350,
+      "listPriceFormatted": "$6350.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00"
+    },
+    "P73285-B21": {
+      "sku": "P73285-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+      "formFactor": "Large Form Factor (8-Bay LFF)",
+      "listPrice": 6890,
+      "listPriceFormatted": "$6890.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00"
+    },
+    "P73286-B21": {
+      "sku": "P73286-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
+      "listPrice": 7120,
+      "listPriceFormatted": "$7120.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00"
+    },
+    "P73287-B21": {
+      "sku": "P73287-B21",
+      "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+      "formFactor": "High Power / Telco",
+      "listPrice": 7450,
+      "listPriceFormatted": "$7450.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00"
+    }
+  },
+  "subcategories": [],
+  "rules": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "max 1 — Mandatory Base Chassis Selection",
+      "maxQty": "1",
+      "rule": "Select exactly one base CTO chassis variant"
+    },
+    {
+      "parentCategory": "Option Component",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "Mixing of Heat sink is not allowed."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "Mixing of x4 and x8 memory is not allowed"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "These products are hidden due to Supply constraints"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "96GB Memory cannot be mixed with any other Memory."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "128GB Memory cannot be mixed with any other Memory."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "Mixing of 3DS and non 3DS memory is not allowed."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Supported with EDSFF CTO Server only."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Supported with 8LFF and 12LFF CTO Server only."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Supported with 8LFF CTO Server only."
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Nvme option not available with 8sff smart chassis choice."
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together."
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Supported with EDSFF CTO Server only."
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "These products are hidden due to Supply constraints"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Supported with 8LFF and 12LFF CTO Server only."
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Supported with 12EDSFF CTO Server only."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "Supported with 8LFF CTO Server only."
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Supported with 12EDSFF CTO Server only."
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "These products are hidden due to Supply constraints"
+    },
+    {
+      "parentCategory": "Option Component",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Mixing of Power supplies are not allowed."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21)."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together."
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "(Sub-table)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Max quantity of product limited by space available."
+    },
+    {
+      "parentCategory": "Option Component",
+      "subCategory": "(Sub-table)",
+      "constraint": "",
+      "maxQty": "",
+      "rule": "Not Supported ProStack Server Software"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P76453-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Portal validation flagged restriction on P76453-B21."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P74573-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P74573-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans."
+    }
+  ]
+}

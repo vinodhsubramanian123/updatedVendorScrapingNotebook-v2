@@ -2,7 +2,7 @@
 
 **Target BOQ File**: `tests/fixtures/test_boq_dl380_gen12.csv`  
 **Target Gemini Notebook**: `Dl 380 Spec Gen 12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`)  
-**Evaluation Date**: 2026-08-13T19:58:03.592Z  
+**Evaluation Date**: 2026-08-16T11:40:00.300Z  
 **Quantitative Confidence Score**: `0.2 / 1.00` (🚨 HITL Review Required)  
 
 ---
@@ -26,8 +26,8 @@
 - **Aspect 1: Thermal & Compute Math**: ❌ VIOLATION — High TDP Thermal Math Failed: 250W processor exceeds 240W limit without High-Performance Fan Kit.
 - **Aspect 2: Memory & Channel Balance**: ❌ VIOLATION — Memory Math Failed: 12 DIMMs across 2 CPUs is not balanced.
 - **Aspect 3: Storage & Controller Cabling**: ❌ VIOLATION — Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.
-- **Aspect 4: PCIe Riser & Slot Expansion Math**: ✅ PASS — Verified 1 PCIe cards fit within 2 slots.
-- **Aspect 5: Networking & OCP Interconnect**: ✅ PASS — Verified OCP adapter status (Standard LOM/PCIe NICs).
+- **Aspect 4: PCIe Riser & Slot Expansion Math**: ✅ PASS — Verified 1 PCIe cards fit within available slots (1 cards/node).
+- **Aspect 5: Networking & OCP Interconnect**: ✅ PASS — Verified 0 active network ports (Standard PCIe/LOM NICs).
 - **Aspect 6: Power & Redundancy Math**: ❌ VIOLATION — Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.
 - **Aspect 7: Vendor Support Taxonomy**: ❌ VIOLATION — Support Taxonomy Failed: Missing required support service SLA.
 
@@ -44,11 +44,23 @@
 ## 1. Workload Fingerprint & Intent Analysis  
 - **Detected Chassis Variant**: `DL380 Gen12 8SFF`  
 - **Primary Workload DNA**: `In-Memory Database & Analytics (High Memory Footprint: 768GB RAM, 12GB/Core)`  
-- **Chassis Auto-Detection**: Match Type `EXPLICIT_CLI` (Confidence: 100%)  
-- **Rules Loaded Source**: `outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog_Rules.json` (Dual Safety Net)  
+- **Chassis Auto-Detection**: Match Type `EXACT` (Confidence: 95%)  
+- **Rules Loaded Source**: `/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog_Rules.json` (Dual Safety Net)  
 
 | Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |
 |---|---|---|---|
+| **LEARNED_DELTA** | Learned Rule: P73282-B21 requires P73282-B21 | ✅ PASS | Satisfied: P73282-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P74573-B21 requires P74573-B21 | ✅ PASS | Satisfied: P74573-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P48820-B21 requires P48820-B21 | ✅ PASS | Satisfied: P48820-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P69728-B21 requires P69728-B21 | ✅ PASS | Satisfied: P69728-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P47777-B21 requires P47777-B21 | ✅ PASS | Satisfied: P47777-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P01366-B21 requires P01366-B21 | ✅ PASS | Satisfied: P01366-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P73282-B21 requires P73282-B21 | ✅ PASS | Satisfied: P73282-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P74573-B21 requires P74573-B21 | ✅ PASS | Satisfied: P74573-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P48820-B21 requires P48820-B21 | ✅ PASS | Satisfied: P48820-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P69728-B21 requires P69728-B21 | ✅ PASS | Satisfied: P69728-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P47777-B21 requires P47777-B21 | ✅ PASS | Satisfied: P47777-B21 present in BOM. |
+| **LEARNED_DELTA** | Learned Rule: P01366-B21 requires P01366-B21 | ✅ PASS | Satisfied: P01366-B21 present in BOM. |
 | **CHASSIS** | Supported with EDSFF CTO Server only. | ✅ PASS | Compliant: No unsupported (Sub-table) items selected for 8SFF. |
 | **CHASSIS** | Supported with 8LFF and 12LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
 | **CHASSIS** | Supported with 8LFF CTO Server only. | ✅ PASS | Chassis gate passed for 8SFF. |
@@ -94,9 +106,43 @@
 
 ## 🤖 4. Gemini Notebook RAG Status
 
-### Pre-Flight Physical Validation Matrix (RAG Dispatched Asynchronously)
+### Pre-Flight Grounded Physical Validation Matrix (NOTEBOOK_LM_CLOUD)
 
-> ℹ️ **Notice**: Gemini Notebook RAG synthesis is now executed non-blockingly by the dashboard UI. Please check the dashboard for the real-time verified RAG Second Opinion.
+> ℹ️ **Knowledge Source**: `NOTEBOOK_LM_CLOUD` (Active Cloud Sources: 15fef5a7-b740-4e07-9367-f91e188a4a93, 6eb52606-9295-4f0b-af65-89454b2d443a, 92afbdf5-a2d0-494c-b761-3977df415f7f, 3c6b139c-ec7d-4d11-8fb3-205abc7d70f4)
+
+### **Technical Validation and Rationale**
+
+The physical dependencies, thermal constraints, and QuickSpecs validation rules governing these four critical part numbers on the **HPE ProLiant Compute DL380 Gen12 SFF NC** (`P73282-B21`) platform are outlined below:
+
+---
+
+### **1. HPE ProLiant High Performance Fan Kit (`P48820-B21`)**
+*   **Physical Inclusions & Defaults:** The **DL380 Gen12 SFF NC chassis** ships with **four (4) standard fans** pre-installed [1, 2]. Upgrading to the High Performance Fan Kit (`P48820-B21`) replaces these with **six (6) high-performance fans** [3].
+*   **Thermal Triggers:** In accordance with the QuickSpecs, this upgrade is strictly **mandatory** if your build includes any of the following:
+    *   **High-TDP Processors:** Any Intel Xeon 6 performance processor operating at a TDP **greater than 240W**—such as the Intel Xeon 6730P (250W) [2, 4].
+    *   **Stand-up PCIe GPUs:** Populating PCIe graphics accelerators automatically triggers a requirement for high-performance fans [5].
+    *   **Direct-Attach NVMe Cages:** Selecting NVMe direct-attach FIO bundle kits (such as `P78047-B21`) automatically co-requisites and locks this fan kit in the Bill of Materials [6].
+
+### **2. HPE ProLiant Compute DL380 No Drive Configuration FIO Kit (`873763-B21`)**
+*   **Physical Rule:** The standard 8SFF NC CTO base chassis (`P73282-B21`) is designed as a modular unit that ships with **no front drive cages by default** [1, 7, 8]. 
+*   **Logical Constraint:** If you choose to deploy a drive-less server and do not configure a physical front drive cage (e.g., `P75740-B21`), the Online Configurator (OCA) triggers a hard **unbuildable block** [7]. To bypass this, you must explicitly inject **Qty-1 of SKU `873763-B21`** [7]. This SKU instructs the manufacturing line to populate the empty front drive bays with **physical bay blanks** instead of cages, resolving the layout validation conflict [7, 9].
+
+### **3. HPE 1600W -48VDC Power Cable Lug Kit (`P36877-B21`)**
+*   **Physical Rule:** This accessory is a strict, single-purpose termination option [10]. 
+*   **Logical Constraint:** The selection of the **HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit (`P17023-B21`)** physically mandates a method for connecting raw DC power lines [10]. You must select either the **Power Cable Lug Kit (`P36877-B21`)** to manually terminate copper DC feeds at the power supply terminal block, or a pre-assembled 3.5m DC power cable [10]. It is completely **incompatible** with any standard AC power supplies [10].
+
+### **4. HPE 96W Smart Storage Lithium-ion Battery (`P01366-B21`)**
+*   **Physical Rule:** This battery is a critical physical dependency designed to provide backup power for **write-cache protection** [11].
+*   **Logical Constraint:** When utilizing stand-up PCIe hardware RAID storage controllers that feature an onboard write cache—such as the **HPE MR416i-p Gen11 Storage Controller (`P47777-B21`)**, which utilizes an 8GB flash-backed write cache [12, 13]—the configurator enforces the **mandatory selection** of the **Smart Storage Battery (`P01366-B21`)** with its 145mm cable kit to safeguard in-flight data during sudden power loss [12].
+
+---
+
+### **Conclusion**
+For a dual-processor configuration deploying high-TDP compute (e.g., Xeon 6730P) and hardware RAID storage under a drive-less layout powered by DC feeds, **all four of these SKUs represent 100% correct, structurally required, and mutually compatible physical options** [11, 14, 15]. Their injection successfully clears all physical, thermal, and electrical rule blocks in the HPE Online Configuration system [11, 14].
+
+***
+
+⚙️ I can verify the exact motherboard MCIO storage cable routing kits for you to ensure that your stand-up storage controller connects seamlessly to your PCI riser slots. Would you like to review those cable rules?
 
 #### Physical Validation Summary (Local Rules Engine)
 - **Errors Identified**: 2 critical physical violation(s)

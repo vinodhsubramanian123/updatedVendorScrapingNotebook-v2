@@ -280,8 +280,9 @@ async function main() {
       tables,
       tableCount: tables.length
     };
-    fs.writeFileSync(rawJsonPath, JSON.stringify(rawData, null, 2));
-    console.log(`Raw data JSON saved to staging: ${rawJsonPath}`);
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    safeWriteJsonAtomic(rawJsonPath, rawData);
+    console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
 
     // STEP 5: QuickSpecs PDF Download
     if (qsLink) {

@@ -161,13 +161,20 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
     .replace(/\s+/g, ' ')
     .trim();
 
+  const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
+
+  // If query is a lengthy structured prompt (e.g. from formatNotebookQueryPayload), condense into focused semantic prompt
+  if (clean.length > 350 && uniqueSkus.length > 0) {
+    let condensed = `Validate physical hardware configuration rules, thermal constraints, and QuickSpecs specifications for ${chassisName} regarding Part Numbers: ${uniqueSkus.slice(0, 12).join(', ')}.`;
+    return condensed;
+  }
+
   if (clean.length === 0) {
     clean = 'What are the hardware configuration rules and QuickSpecs specifications for this model?';
   }
 
   // Prepend explicit product scope, family, generation, and chassis context
   const { parseProductMeta } = require('./product_meta');
-  const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
   const meta = parseProductMeta(chassisName);
   
   let scope = 'Server';
@@ -177,8 +184,11 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
   else if (meta.family === 'Cray') scope = 'Supercomputing System';
 
   if (!clean.toLowerCase().includes(chassisName.toLowerCase())) {
-    clean = `[Product Scope: ${scope} | Family: ${meta.family} | Gen: ${meta.gen} | Chassis: ${chassisName}] ${clean}`;
+    clean = `For ${meta.family} ${meta.gen} ${chassisName} ${scope}: ${clean}`;
   }
+
+  // Strip any remaining brackets, pipes, or shell metacharacters
+  clean = clean.replace(/[\[\]|`"$\\]/g, ' ').replace(/\s+/g, ' ').trim();
 
   return clean;
 }
@@ -204,18 +214,21 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
     query: originalQuery,
     answer: '',
     citations: [],
-    source: 'NOTEBOOK_LM'
+    sourcesUsed: [],
+    source: 'NOTEBOOK_LM_CLOUD'
   };
 
   if (!stdout) {
     result.answer = 'No response returned from Gemini Notebook.';
-    result.source = 'FALLBACK';
+    result.source = 'LOCAL_RAG_FALLBACK';
+    result.fallbackReason = 'Empty response from NotebookLM';
     return result;
   }
 
   if (typeof stdout === 'object') {
     result.answer = stdout.answer || stdout.response || JSON.stringify(stdout);
-    result.citations = Array.isArray(stdout.citations) ? stdout.citations : [];
+    result.citations = Array.isArray(stdout.citations) ? stdout.citations : Object.entries(stdout.citations || {}).map(([k, v]) => ({ index: k, sourceId: v }));
+    result.sourcesUsed = stdout.sources_used || [];
     return result;
   }
 
@@ -224,8 +237,19 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
   try {
     const parsed = JSON.parse(cleanStdout);
     result.answer = parsed.answer || parsed.response || parsed.result || cleanStdout;
+    result.sourcesUsed = parsed.sources_used || [];
+    
     if (Array.isArray(parsed.citations)) {
       result.citations = parsed.citations;
+    } else if (parsed.citations && typeof parsed.citations === 'object') {
+      result.citations = Object.entries(parsed.citations).map(([k, v]) => ({
+        index: k,
+        sourceId: v,
+        title: (parsed.references && parsed.references.find(r => r.source_id === v)?.cited_text) || `Source ${v}`
+      }));
+    }
+    if (parsed.references && Array.isArray(parsed.references)) {
+      result.references = parsed.references;
     }
   } catch (_) {
     // If not JSON, treat raw clean string as answer text
@@ -254,50 +278,59 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
 function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   return new Promise((resolve) => {
     const { queryLocalKnowledgeBase } = require('./local_rag_search');
+    const logger = require('./pipeline_logger');
     const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-    const timeoutMs = options.timeout || 30000;
+    const timeoutMs = options.timeout || 60000;
 
     const envPath = process.env.PATH || '';
     const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-    const nlmScriptDir = path.join(__dirname, '..', 'bin');
-    const extendedPath = `${homeBin}:${nlmScriptDir}:${envPath}`;
+    const nvmBin = path.join(process.env.HOME || '', '.nvm', 'versions', 'node', 'v22.12.0', 'bin');
+    const extendedPath = `${nvmBin}:${homeBin}:${envPath}`;
 
-    // Check if nlm binary exists in PATH or local bin
+    // Resolve nlm binary path
     const nlmUserPath = path.join(homeBin, 'nlm');
-    const nlmScriptPath = path.join(__dirname, '..', 'bin', 'nlm');
-    let hasNlm = fs.existsSync(nlmUserPath) || fs.existsSync(nlmScriptPath);
+    let hasNlm = fs.existsSync(nlmUserPath);
 
     if (!hasNlm) {
       try {
         const { execSync } = require('child_process');
         execSync('which nlm', { env: { ...process.env, PATH: extendedPath }, stdio: 'ignore' });
         hasNlm = true;
-      } catch (e) { console.warn('Caught suppressed error in notebook_query_utils.js:', e);
-hasNlm = false;
+      } catch (_) {
+        hasNlm = false;
       }
     }
 
     if (!hasNlm) {
-      // nlm CLI is not installed in server container - serve rich Local Catalog RAG directly
+      logger.warn('NOTEBOOK_QUERY', 'nlm CLI executable not found in PATH (~/.local/bin/nlm). Falling back to Local RAG.');
       const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-      return resolve(localRes);
+      return resolve({
+        ...localRes,
+        source: 'LOCAL_RAG_FALLBACK',
+        fallbackReason: 'NLM CLI executable not installed in environment'
+      });
     }
 
-    execFile('nlm', ['notebook', 'query', notebookId, sanitizedQuery, '--json'], {
+    const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : 'nlm';
+
+    execFile(nlmExecutable, ['notebook', 'query', notebookId, sanitizedQuery, '--json'], {
       timeout: timeoutMs,
       env: { ...process.env, PATH: extendedPath },
       maxBuffer: 10 * 1024 * 1024
     }, (err, stdout, stderr) => {
       if (err) {
-        // Fallback to local catalog rules and Knowledge Delta RAG search
+        logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed (${err.message || 'Execution error'}). Falling back to Local RAG.`, { stderr });
         try {
           const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-          return resolve(localRes);
-        } catch (e) {
-          const fallbackMsg = `NotebookLM RAG Query Notice: ${err.message || 'Execution error'}`;
+          return resolve({
+            ...localRes,
+            source: 'LOCAL_RAG_FALLBACK',
+            fallbackReason: `Live Cloud Query Error: ${err.message || 'Execution error'}`
+          });
+        } catch (localErr) {
           return resolve({
             query: sanitizedQuery,
-            answer: fallbackMsg,
+            answer: `NotebookLM RAG Query Error: ${err.message || 'Execution error'}`,
             citations: [],
             source: 'FALLBACK_ERROR',
             error: err.message

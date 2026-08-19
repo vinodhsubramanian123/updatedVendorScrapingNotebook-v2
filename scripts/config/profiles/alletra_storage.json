@@ -1,0 +1,14 @@
+{
+  "description": "HPE Alletra Storage System Configuration Overrides",
+  "family": "Alletra",
+  "gen": "Storage",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 10000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|storage|enclosure"
+  },
+  "component_mapping": {
+    "Storage Controller": ["controller node", "storage controller", "nvme controller"],
+    "Drive Cage / Drive": ["nvme ssd", "sas ssd", "drive enclosure", "expansion cage"],
+    "Network Adapter": ["fibre channel", "iscsi host adapter", "100gbe host adapter"]
+  }
+}

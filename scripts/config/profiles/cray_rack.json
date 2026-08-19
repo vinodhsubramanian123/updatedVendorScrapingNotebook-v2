@@ -1,0 +1,13 @@
+{
+  "description": "HPE Cray Supercomputing & High Performance Compute Overrides",
+  "family": "Cray",
+  "gen": "General",
+  "scraping_tuning": {
+    "scrollHeightThreshold": 8000,
+    "targetTabsRegex": "pointnext|services|support services|tech care|rack|compute blade"
+  },
+  "component_mapping": {
+    "Base Chassis": ["cray gx5000", "cray rack", "general rack", "supercomputing frame"],
+    "Cooling / Thermal": ["liquid cooling", "direct liquid", "manifold", "coolant distribution"]
+  }
+}

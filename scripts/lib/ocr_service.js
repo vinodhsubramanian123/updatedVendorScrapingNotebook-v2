@@ -80,7 +80,7 @@ async function performGeminiOcr(filePath, options = {}) {
   try {
     const fileBuffer = fs.readFileSync(filePath);
     const base64Data = fileBuffer.toString('base64');
-    const modelUsed = 'gemini-2.5-flash';
+    const modelUsed = 'gemini-3.5-flash';
 
     log(`Reading ${Math.round(fileBuffer.length / 1024)} KB image payload for multimodal model analysis...`);
 

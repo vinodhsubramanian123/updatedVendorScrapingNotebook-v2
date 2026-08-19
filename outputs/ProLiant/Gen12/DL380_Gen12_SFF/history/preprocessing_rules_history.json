@@ -1,0 +1,20 @@
+[
+  {
+    "feedbackId": "PREPROC-1786781599907",
+    "timestamp": "2026-08-15T08:13:19.907Z",
+    "configId": "config_1",
+    "humanConfirmedReason": "WORKLOAD_NODE_PURPOSE",
+    "humanNotes": "Confirmed by analyst in Pre-flight preview.",
+    "chassis": "DL380_Gen12_SFF",
+    "status": "CONFIRMED"
+  },
+  {
+    "feedbackId": "PREPROC-1786781611538",
+    "timestamp": "2026-08-15T08:13:31.538Z",
+    "configId": "Variation 1",
+    "humanConfirmedReason": "WORKLOAD_NODE_PURPOSE",
+    "humanNotes": "Verified",
+    "chassis": "DL380_Gen12_SFF",
+    "status": "CONFIRMED"
+  }
+]

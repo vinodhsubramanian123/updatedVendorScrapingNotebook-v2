@@ -44,7 +44,12 @@ Before reading any code or executing commands, **you MUST read `graphify-out/GRA
    ```bash
    node scripts/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12_SFF
    ```
-3. Run the continuous Red-Team background benchmarking:
+3. Bootstrap & certify the Gen12 golden catalog (fresh clone / after rescrape):
    ```bash
-   node scripts/run_background_adversary.js &
+   npm run bootstrap:gen12
+   npm run certify:gen12
+   ```
+4. Run a single adversarial red-team pass (optional):
+   ```bash
+   node scripts/adversarial_agent.js
    ```

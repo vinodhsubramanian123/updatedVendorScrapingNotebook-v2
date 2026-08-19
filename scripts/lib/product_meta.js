@@ -84,6 +84,7 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   }
 
   // Fallback heuristic if no profile provided (or no match in profile)
+  if (cat.includes('chassis') || cat.includes('base') || desc.includes('cto server') || desc.includes('cto chassis') || desc.includes('base chassis') || desc.includes('configure-to-order') || desc.includes('base system') || desc.includes('compute module')) return 'Base Chassis';
   if (cat.includes('processor') || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) return 'Processor';
   if (cat.includes('memory') || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) return 'Memory';
   if (cat.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp28 sr') || desc.includes('optical transceiver')) return 'Transceiver';
@@ -101,7 +102,7 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   if (cat.includes('support') || cat.includes('service') || desc.includes('tech care') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc)) return 'Service & Support';
   if (cat.includes('software') || cat.includes('operating system') || desc.includes('windows server') || desc.includes('red hat') || desc.includes('suse') || desc.includes('license') || desc.includes('oneview') || desc.includes('e-ltu') || desc.includes('vmware')) return 'Operating System / License';
   if (cat.includes('infrastructure') || desc.includes('bezel') || desc.includes('rail') || desc.includes('management arm') || desc.includes('tracking') || desc.includes('localization')) return 'Chassis Infrastructure';
-  if (cat.includes('chassis') || cat.includes('base') || desc.includes('chassis') || desc.includes('configure-to-order') || desc.includes('cto server') || desc.includes('base system') || desc.includes('frame') || desc.includes('enclosure') || desc.includes('compute module')) return 'Base Chassis';
+  if (desc.includes('frame') || desc.includes('enclosure')) return 'Base Chassis';
 
   return 'Option Component';
 }

@@ -475,17 +475,25 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   boqItems.forEach(it => {
     fullBomMap.set(cleanBaseSKU(it.sku), { ...it, isFix: false });
   });
-  missingDependencies.forEach(dep => {
-    const sku = cleanBaseSKU(dep.sku);
+
+  // Handle both Array of dependencies or full evalResults object
+  const depsList = Array.isArray(missingDependencies)
+    ? missingDependencies
+    : ((missingDependencies && Array.isArray(missingDependencies.missingDependencies)) ? missingDependencies.missingDependencies : []);
+
+  depsList.forEach(dep => {
+    const sku = cleanBaseSKU(dep.sku || dep.key);
+    if (!sku) return;
+    const qty = dep.quantity || dep.qty || 1;
     if (fullBomMap.has(sku)) {
-      fullBomMap.get(sku).quantity += dep.quantity;
+      fullBomMap.get(sku).quantity += qty;
     } else {
       fullBomMap.set(sku, {
         sku: sku,
-        description: dep.description,
-        quantity: dep.quantity,
+        description: dep.description || dep.title || 'Required Fix SKU',
+        quantity: qty,
         isFix: true,
-        fixRule: dep.rule
+        fixRule: dep.rule || dep.reason
       });
     }
   });
@@ -641,7 +649,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // ───────────────────────────────────────────────────────────────────────────
   // 4. SUBCATEGORY & SKU LEVEL DEPENDENCY VALIDATION
   // ───────────────────────────────────────────────────────────────────────────
-  missingDependencies.forEach(fix => {
+  depsList.forEach(fix => {
     const fixSku = cleanBaseSKU(fix.sku);
     let isCascadingConflict = false;
 
@@ -688,7 +696,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   const isWholeSolutionValid = conflicts.length === 0 && unresolvedConflicts.length === 0;
 
   // Synthesize 5-Tier Ranked Solutions based on Workload DNA & Tradeoffs
-  const rankedSolutions = synthesize5TierRankedSolutions(boqItems, { missingDependencies }, { isWholeSolutionValid, conflicts }, chassisInfo, targetDir);
+  const rankedSolutions = synthesize5TierRankedSolutions(boqItems, { missingDependencies: depsList }, { isWholeSolutionValid, conflicts }, chassisInfo, targetDir);
 
   return {
     chassisInfo,

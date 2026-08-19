@@ -237,7 +237,7 @@ class GeminiKeyRotator {
       const key = this.state.queue[i];
       const info = this.state.keys[key];
       if (info && info.status === 'active') {
-        const totalActive = this.state.queue.filter(k => this.state.keys[k]?.status === 'active').length;
+        const totalActive = this.state.queue.filter(k => this.state.keys[k] && this.state.keys[k].status === 'active').length;
         return {
           apiKey: key,
           fingerprint: info.fingerprint,

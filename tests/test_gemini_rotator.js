@@ -127,8 +127,9 @@ async function runTests() {
     console.log(`  ✅ Live Execution succeeded on Key [${result.keyUsed}]: "${result.text}"`);
     assert.ok(result.text.includes('SMART_ROTATION_SUCCESS'), 'Response text should match expected prompt');
   } catch (err) {
-    if (err.status === 429 || err.message?.includes('quota') || err.message?.includes('429')) {
-      console.log(`  ⚠️ Live pool exhausted during test run (${err.message.slice(0, 100)}). Failover & queue demotion verified.`);
+    const msg = (err && err.message) || '';
+    if (err.status === 429 || msg.includes('quota') || msg.includes('429')) {
+      console.log(`  ⚠️ Live pool exhausted during test run (${msg.slice(0, 100)}). Failover & queue demotion verified.`);
     } else {
       throw err;
     }

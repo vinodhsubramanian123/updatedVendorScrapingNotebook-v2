@@ -55,7 +55,8 @@ npm run dev
 | `npm run scrape` | Execute live OCA portal scrape via CDP |
 | `npm run rebuild` | Rebuild all catalogs from raw_data |
 | `npm run sync:knowledge` | Sync knowledge payloads to NotebookLM |
-| `npm run status` | View pipeline observability status |
+| `npm run bootstrap:gen12` | Verify Gen12 golden catalog artifacts and run offline sanity tests |
+| `npm run certify:gen12` | Full Gen12 certification gate (bootstrap + pipeline + unit suites) |
 
 ---
 

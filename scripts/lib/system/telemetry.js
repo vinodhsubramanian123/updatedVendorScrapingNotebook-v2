@@ -92,6 +92,10 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     stageBreakdown,
     domainMap,
     ragFallbackUsed: evalResults.ragFallbackUsed || false,
+    notebookLmMode: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.source) || (evalResults.ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'NOTEBOOK_LM_CLOUD'),
+    notebookLmSourcesUsed: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.sourcesUsed) || [],
+    notebookLmCitationsCount: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.citationsCount) || 0,
+    cloudGroundingConfirmed: evalResults.notebookLmStatus ? evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' : !evalResults.ragFallbackUsed,
     durationMs
   };
 
@@ -103,9 +107,10 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
   const totalScore = data.history.reduce((acc, curr) => acc + curr.confidenceScore, 0);
   data.avgConfidenceScore = parseFloat((totalScore / data.history.length).toFixed(2));
   
-  // Calculate RAG Fallback Frequency (%)
-  const fallbackRuns = data.history.filter(h => h.ragFallbackUsed).length;
+  // Calculate RAG Fallback Frequency (%) & Cloud Grounding Frequency (%)
+  const fallbackRuns = data.history.filter(h => h.ragFallbackUsed || h.notebookLmMode === 'LOCAL_RAG_FALLBACK').length;
   data.ragFallbackRatio = parseFloat(((fallbackRuns / data.history.length) * 100).toFixed(1));
+  data.cloudGroundingRatio = parseFloat((((data.history.length - fallbackRuns) / data.history.length) * 100).toFixed(1));
 
   // Calculate Evaluation Accuracy Score (%)
   const highConfidenceRuns = data.history.filter(h => h.confidenceScore >= 0.85).length;
@@ -268,7 +273,7 @@ function recordOcrTelemetry(ocrMeta) {
     fileSizeBytes: ocrMeta.fileSizeBytes || 0,
     charLength: ocrMeta.charLength || 0,
     extractedSkusCount: ocrMeta.extractedSkusCount || 0,
-    modelUsed: 'gemini-2.5-flash',
+    modelUsed: ocrMeta.modelUsed || 'gemini-3.5-flash',
     durationMs: ocrMeta.durationMs || 0
   };
 

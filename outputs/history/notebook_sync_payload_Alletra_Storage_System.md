@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-15T19:25:12.846Z  
+**Sync Timestamp**: 2026-08-19T13:06:30.735Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `52`  
+**Total Synced KnowledgeDeltas**: `13`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -28,14 +28,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🌐 1. Universal Vendor Rules (Applies Across All HPE Product Lines)
 
 1. **[DELTA-1786705957681]**: If P73282-B21 is present, P73282-B21 is mandatory. *(Type: PERMANENT_PHYSICAL_DEPENDENCY)*
-2. **[DELTA-1786707084434]**: If P73282-B21 is present, P73282-B21 is mandatory. *(Type: PERMANENT_PHYSICAL_DEPENDENCY)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)
 
 1. **[DELTA-1786705957846] DL380_Gen12_SFF**: If P69728-B21 is present, P69728-B21 is mandatory. *(Affected SKU: P69728-B21)*
 2. **[DELTA-1786705957977] DL380_Gen12_SFF**: If P03178-B21 is present, P03178-B21 is mandatory. *(Affected SKU: P03178-B21)*
-3. **[DELTA-1786707084575] DL380_Gen12_SFF**: If P69728-B21 is present, P69728-B21 is mandatory. *(Affected SKU: P69728-B21)*
-4. **[DELTA-1786707084682] DL380_Gen12_SFF**: If P03178-B21 is present, P03178-B21 is mandatory. *(Affected SKU: P03178-B21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (Alletra_Storage_System)
 
@@ -65,7 +62,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `HPE Alletra Storage System` | Alletra | Storage | 3 | — | **ACTIVE** |
 | `GX5000 General RACK` | Cray | General | 2 | 2026-08-10 | **ACTIVE** |
 | `DL380 Gen11` | ProLiant | Gen11 | 4 | 2026-08-10 | **ACTIVE** |
-| `DL380 Gen12 SFF` | ProLiant | Gen12 | 277 | 2026-08-14 | **ACTIVE** |
+| `DL380 Gen12 SFF` | ProLiant | Gen12 | 261 | 2026-08-19 | **ACTIVE** |
 | `MSL3040 Tape` | StoreEver | Tape | 2 | 2026-08-10 | **ACTIVE** |
 | `SY100Gb F32 Module` | Synergy | General | 3 | 2026-08-10 | **ACTIVE** |
 
