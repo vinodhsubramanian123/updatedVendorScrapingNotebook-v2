@@ -61,7 +61,7 @@ function findCatalogJsonFiles(dir) {
       } else if (file.endsWith('_Catalog.json') && !filePath.includes('raw_data')) {
         results.push(filePath);
       }
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return results;
@@ -120,7 +120,7 @@ function listAllCatalogs(outputsRoot = OUTPUTS_ROOT) {
         pdf: pdfInfo,
         hasDiffHistory
       });
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return catalogs;
@@ -161,9 +161,9 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
         try {
           const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
           if (Array.isArray(parsed)) deltas.push(...parsed);
-        } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+        } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
       }
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
   });
 
   return deltas;
@@ -177,7 +177,7 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
  */
 function autoDetectChassisDetailed(boqItems = []) {
   try {
-    const { detectChassisVariant } = require('./conflict_graph');
+    const { detectChassisVariant } = require('./conflict_graph.js');
     const variant = detectChassisVariant(boqItems);
 
     const catalogs = listAllCatalogs();
@@ -252,7 +252,7 @@ function autoDetectChassisDetailed(boqItems = []) {
         };
       }
     }
-  } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+  } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
 
   // 5. Ultimate fallback (triggers strict failure in eval_boq.js)
   return {

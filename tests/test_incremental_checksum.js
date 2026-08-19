@@ -6,8 +6,8 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
-const { computeSkuHash, computeIncrementalDifferential } = require('../scripts/lib/checksum_diff');
-const { getSkuAuditHistory, calculateChecksum } = require('../scripts/lib/sku_versioning');
+const { computeSkuHash, computeIncrementalDifferential } = require('../scripts/lib/checksum_diff.js');
+const { getSkuAuditHistory, calculateChecksum } = require('../scripts/lib/sku_versioning.js');
 
 console.log('--- STARTING INCREMENTAL CHECKSUM & VERSIONING TESTS ---');
 

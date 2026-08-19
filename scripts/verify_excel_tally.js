@@ -9,7 +9,7 @@ const XLSX   = require('xlsx-js-style');
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
-const { isValidHpeSKU } = require('./lib/sku');
+const { isValidHpeSKU } = require('./lib/sku.js');
 
 // ── Argument handling ─────────────────────────────────────────────────────────
 const xlsxPath = process.argv[2];

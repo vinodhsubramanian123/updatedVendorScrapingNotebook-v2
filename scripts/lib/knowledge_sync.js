@@ -19,7 +19,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { execSync, execFileSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('./fs_compat');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -36,7 +36,7 @@ function loadNotebookConfig() {
     try {
       return JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
     } catch (e) {
-      const logger = require('./pipeline_logger');
+      const logger = require('./pipeline_logger.js');
       logger.warn('KNOWLEDGE_SYNC', 'Failed to load notebooks.json config', e);
     }
   }
@@ -83,7 +83,7 @@ function classifyKnowledgeScope(delta) {
  * @returns {Array<object>} Consolidated KnowledgeDeltas
  */
 function collectAllDeltas() {
-  const { collectKnowledgeDeltas } = require('./catalog_discovery');
+  const { collectKnowledgeDeltas } = require('./catalog_discovery.js');
   const rawDeltas = collectKnowledgeDeltas(OUTPUTS_ROOT);
   const seenSemanticKeys = new Set();
   const deduped = [];
@@ -202,7 +202,7 @@ This directory maintains isolated, structured rule sets to prevent cross-pollina
  * @returns {object} { payloadPath, markdownText, deltaCount, uploadResult }
  */
 function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false) {
-  const logger = require('./pipeline_logger');
+  const logger = require('./pipeline_logger.js');
 
   // Guard: Refuse to generate payloads for invalid or garbage chassis names
   const BLOCKED_CHASSIS = new Set([
@@ -220,7 +220,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const registry = buildMasterKnowledgeRegistry();
 
   // Find catalog path dynamically across all outputs/ directories
-  const { findCatalogJsonFiles } = require('./sync_registry');
+  const { findCatalogJsonFiles } = require('./sync_registry.js');
   const allCatalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
   
   let catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName)) || null;
@@ -232,7 +232,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
       targetDir = path.dirname(catalogPath);
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   const historyDir = path.join(targetDir, 'history');
@@ -243,7 +243,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   if (fs.existsSync(discontinuedSkusPath)) {
     try {
       discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8'));
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   let attributeHistory = [];
@@ -251,7 +251,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     try {
       attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
       if (!Array.isArray(attributeHistory)) attributeHistory = [];
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   }
 
   // Load Services Companion JSON and Services History (Pointnext, Tech Care, etc.)
@@ -260,7 +260,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   if (fs.existsSync(servicesJsonPath)) {
     try {
       servicesData = JSON.parse(fs.readFileSync(servicesJsonPath, 'utf-8'));
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js (Services load)', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'knowledge_sync.js (Services load)', e); }
   }
 
   const servicesHistoryDir = path.join(targetDir, 'services_history');
@@ -399,7 +399,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
       const meta = cData.metadata || {};
       const relDir = path.relative(OUTPUTS_ROOT, path.dirname(f));
       md += `| \`${meta.chassis || path.basename(f, '_Catalog.json')}\` | ${relDir.split(path.sep)[0] || 'ProLiant'} | ${relDir.split(path.sep)[1] || 'Gen12'} | ${meta.totalUniqueSKUs || 0} | ${meta.scrapeDate ? meta.scrapeDate.split('T')[0] : 'Active'} | **ACTIVE** |\n`;
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'knowledge_sync.js', e); }
   });
   md += `\n`;
 
@@ -677,7 +677,7 @@ async function main() {
   const cfg = loadNotebookConfig();
 
   // If no chassis specified, sync all discovered catalog chassis (defaulting to DL380_Gen12_SFF if none)
-  const { findCatalogJsonFiles } = require('./sync_registry');
+  const { findCatalogJsonFiles } = require('./sync_registry.js');
   const allCatalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
   const targetChassisList = chassis 
     ? [chassis] 

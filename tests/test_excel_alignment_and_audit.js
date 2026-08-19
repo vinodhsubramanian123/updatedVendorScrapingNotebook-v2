@@ -102,7 +102,7 @@ test('Bug 6: chassisVariants strictly contains only 6 base chassis options (no n
 
 // 7. Bug 7: P73287-B21 tagged with Component Role "Base Chassis"
 test('Bug 7: P73287-B21 tagged with Component Role "Base Chassis" (not Power Supply)', () => {
-  const { classifyComponentRole } = require('../scripts/lib/product_meta');
+  const { classifyComponentRole } = require('../scripts/lib/product_meta.js');
   const role = classifyComponentRole('Chassis', 'HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server');
   assert.strictEqual(role, 'Base Chassis', `Expected "Base Chassis", got "${role}"`);
 });

@@ -8,8 +8,8 @@
 const fs    = require('fs');
 const XLSX  = require('xlsx-js-style');
 const path  = require('path');
-const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp');
-const { isValidHpeSKU } = require('./lib/sku');
+const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp.js');
+const { isValidHpeSKU } = require('./lib/sku.js');
 
 // ── Argument handling ─────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -355,7 +355,7 @@ async function main() {
   assert(fs.existsSync(attributeHistoryPath), `Post-flight: attribute_history.json exists`);
 
   // Verify NotebookLM payload generator & sync payload
-  const { generateNotebookSyncPayload } = require('./lib/knowledge_sync');
+  const { generateNotebookSyncPayload } = require('./lib/knowledge_sync.js');
   const payloadResult = generateNotebookSyncPayload(filePrefix);
   assert(fs.existsSync(payloadResult.payloadPath), `Post-flight: NotebookLM sync payload exists: ${path.basename(payloadResult.payloadPath)}`);
   assert(payloadResult.markdownText.includes('Discontinued & Obsolete SKUs Registry'),

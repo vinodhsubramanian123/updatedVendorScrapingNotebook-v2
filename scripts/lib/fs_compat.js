@@ -61,7 +61,7 @@ function cleanStrayPDFs(dir, destPath, maxAgeMs = 120000) {
         fs.unlinkSync(fullPath);
         console.log(`Cleaned stray temporary PDF: ${file}`);
       }
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'fs_compat.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'fs_compat.js', e); }
   }
 }
 
@@ -93,7 +93,7 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
   const isCatalogJson = destPath.endsWith('_Catalog.json') || options.validateSchema;
   if (isCatalogJson && data.entries) {
     try {
-      const { validateCatalogData } = require('./data_validator');
+      const { validateCatalogData } = require('./data_validator.js');
       validationResult = validateCatalogData(data, { strictMode: options.strictMode !== false });
       if (!validationResult.isValid && options.rejectInvalid !== false) {
         throw new Error(`safeWriteJsonAtomic aborted: Schema integrity validation failed with ${validationResult.errors.length} error(s):\n  - ${validationResult.errors.join('\n  - ')}`);
@@ -157,7 +157,7 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
       fs.unlinkSync(bakPath);
     }
   } catch (finalVerifyErr) {
-    const logger = require('./pipeline_logger');
+    const logger = require('./pipeline_logger.js');
     logger.error('FS_COMPAT', `Final verification failed for ${destPath} — restoring from .bak`, finalVerifyErr);
     if (backupCreated && fs.existsSync(bakPath)) {
       fs.copyFileSync(bakPath, destPath);
@@ -198,7 +198,7 @@ function copyDirRecursive(srcDir, destDir) {
  * @returns {object} { success: boolean, liveTargetDir: string }
  */
 function promoteStagingDirectory(stagingDir, liveTargetDir) {
-  const logger = require('./pipeline_logger');
+  const logger = require('./pipeline_logger.js');
   if (!fs.existsSync(stagingDir)) {
     throw new Error(`Staging directory does not exist: ${stagingDir}`);
   }

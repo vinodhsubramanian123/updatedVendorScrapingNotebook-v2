@@ -28,7 +28,7 @@ function findXlsxFiles(dir) {
       } else if (file.endsWith('_OCA_Catalog.xlsx')) {
         results.push(filePath);
       }
-    } catch (e) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'verify_all.js', e); }
+    } catch (e) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('ERROR', 'verify_all.js', e); }
   });
 
   return results;

@@ -7,10 +7,10 @@
 const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { sendCommand, getOCATarget, connectWS, setupDialogAutoHandler, extractTablesAsRows, extractChunkedText, sleep } = require('./lib/cdp');
-const { emitProgress, emitLog, emitResult } = require('./lib/progress');
-const { updateScrapedRegistry } = require('./lib/registry');
-const { parseProductMeta } = require('./lib/product_meta');
+const { sendCommand, getOCATarget, connectWS, setupDialogAutoHandler, extractTablesAsRows, extractChunkedText, sleep } = require('./lib/cdp.js');
+const { emitProgress, emitLog, emitResult } = require('./lib/progress.js');
+const { updateScrapedRegistry } = require('./lib/registry.js');
+const { parseProductMeta } = require('./lib/product_meta.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
@@ -28,7 +28,7 @@ async function main() {
     console.log(`⚠️ Active Storage OCA tab not found: ${err.message}`);
     console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
     try {
-      const { navigateToOCAChassis } = require('./lib/navigate_oca');
+      const { navigateToOCAChassis } = require('./lib/navigate_oca.js');
       await navigateToOCAChassis('Alletra');
       pageTarget = await getOCATarget();
     } catch (navErr) {
@@ -225,7 +225,7 @@ async function main() {
       dropdownSKUs
     };
 
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(rawJsonPath, rawData);
     console.log(`Raw storage data saved atomically to staging: ${rawJsonPath}`);
 
@@ -279,7 +279,7 @@ async function main() {
 
   // STEP 7: Promote Staging to Live Workspace, Update Registry & Sync
   console.log('\n--- STEP 7: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
-  const { promoteStagingDirectory } = require('./lib/fs_compat');
+  const { promoteStagingDirectory } = require('./lib/fs_compat.js');
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   promoteStagingDirectory(outputDir, liveOutputDir);
 

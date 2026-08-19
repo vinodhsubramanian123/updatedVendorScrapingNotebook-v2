@@ -8,9 +8,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator');
-const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph');
-const { recordEvaluationTelemetry } = require('./lib/telemetry');
+const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator.js');
+const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph.js');
+const { recordEvaluationTelemetry } = require('./lib/telemetry.js');
 
 // ── Synthetic Test Benchmarks Suite ───────────────────────────────────────────
 const BENCHMARK_SCENARIOS = [

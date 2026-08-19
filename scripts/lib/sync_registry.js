@@ -8,8 +8,8 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { updateScrapedRegistry } = require('./registry');
-const { convertCSVToCatalogJSON } = require('../csv_to_catalog');
+const { updateScrapedRegistry } = require('./registry.js');
+const { convertCSVToCatalogJSON } = require('../csv_to_catalog.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -52,7 +52,7 @@ function findCatalogJsonFiles(dir, visitedInodes = new Set()) {
     const dirStat = fs.lstatSync(dir);
     if (dirStat.ino && visitedInodes.has(dirStat.ino)) return results;
     if (dirStat.ino) visitedInodes.add(dirStat.ino);
-  } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'sync_registry.js', e); }
+  } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'sync_registry.js', e); }
 
   const BLOCKED_DIRS = new Set(['Chassis Dir', '-------------', 'Output Path', 'root', 'temp', 'history', 'raw_data', 'intermittent_scraps']);
   const list = fs.readdirSync(dir);

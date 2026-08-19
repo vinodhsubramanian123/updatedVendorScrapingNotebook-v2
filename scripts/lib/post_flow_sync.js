@@ -6,8 +6,8 @@
  * of evaluation flows, scrape flows, and partner portal feedback loops.
  */
 
-const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload, inspectKnowledgeDrift } = require('./knowledge_sync');
-const logger = require('./pipeline_logger');
+const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload, inspectKnowledgeDrift } = require('./knowledge_sync.js');
+const logger = require('./pipeline_logger.js');
 
 /**
  * Trigger post-flow knowledge synchronization.

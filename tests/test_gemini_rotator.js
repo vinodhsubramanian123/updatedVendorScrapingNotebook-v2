@@ -6,7 +6,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { GeminiKeyRotator, maskKey, DEFAULT_MODEL } = require('../scripts/lib/gemini_rotator');
+const { GeminiKeyRotator, maskKey, DEFAULT_MODEL } = require('../scripts/lib/gemini_rotator.js');
 const { GoogleGenAI } = require('@google/genai');
 
 const TEST_STATE_FILE = path.join(__dirname, 'temp_test_keys_state.json');

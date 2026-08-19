@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { convertCSVToCatalogJSON } = require('./csv_to_catalog');
+const { convertCSVToCatalogJSON } = require('./csv_to_catalog.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
@@ -174,7 +174,7 @@ function buildChassisVariantsEntry(prod) {
 
 function sanitizeSkuAndDesc(rawSku, rawDesc) {
   if (!rawSku) return null;
-  const { isValidHpeSKU, cleanBaseSKU } = require('./lib/sku');
+  const { isValidHpeSKU, cleanBaseSKU } = require('./lib/sku.js');
   let sku = cleanBaseSKU(rawSku);
   let desc = (rawDesc || '').trim();
 
@@ -352,13 +352,13 @@ function syncAllProducts() {
     // Ensure history directory and catalog diff processing are established
     const historyDir = path.join(prod.fullOutputDir, 'history');
     try {
-      const { processCatalogDiff } = require('./lib/diff_catalog');
+      const { processCatalogDiff } = require('./lib/diff_catalog.js');
       processCatalogDiff(catalogData, historyDir);
     } catch (err) {
       if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
     }
 
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(prod.jsonPath, catalogData);
     console.log(`✅ Synced catalog JSON for ${prod.chassisShorthand} (${actualUniqueSkus.size} SKUs across ${catalogData.entries.length} categories) with Base Chassis Variants.`);
 
@@ -367,7 +367,7 @@ function syncAllProducts() {
       const scrapsDir = path.join(prod.fullOutputDir, 'intermittent_scraps');
       if (!fs.existsSync(scrapsDir)) fs.mkdirSync(scrapsDir, { recursive: true });
 
-      const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter');
+      const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter.js');
       const subcatList = catalogData.subcategories || [];
 
       fs.writeFileSync(path.join(scrapsDir, `${prod.chassisShorthand}_Catalog_SKUs.tsv`), generateMainSheet(catalogData.entries, prod.solutionName || prod.chassisShorthand), 'utf-8');

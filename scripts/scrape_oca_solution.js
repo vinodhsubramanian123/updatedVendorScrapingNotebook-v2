@@ -11,10 +11,10 @@ const {
   sendCommand, getOCATarget, connectWS, setupDialogAutoHandler,
   expandSections, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
   sleep
-} = require('./lib/cdp');
-const { emitProgress, emitLog, emitResult } = require('./lib/progress');
-const { updateScrapedRegistry } = require('./lib/registry');
-const { parseProductMeta } = require('./lib/product_meta');
+} = require('./lib/cdp.js');
+const { emitProgress, emitLog, emitResult } = require('./lib/progress.js');
+const { updateScrapedRegistry } = require('./lib/registry.js');
+const { parseProductMeta } = require('./lib/product_meta.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
@@ -22,7 +22,7 @@ const JSON_MODE     = process.argv.includes('--json');
 
 async function main() {
   const pipelineStart = Date.now();
-  const logger = require('./lib/pipeline_logger');
+  const logger = require('./lib/pipeline_logger.js');
 
   console.log('================================================================');
   console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
@@ -56,7 +56,7 @@ async function main() {
     console.log(`⚠️ Active OCA tab not found: ${err.message}`);
     console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
     try {
-      const { navigateToOCAChassis } = require('./lib/navigate_oca');
+      const { navigateToOCAChassis } = require('./lib/navigate_oca.js');
       await navigateToOCAChassis('DL380 Gen12');
       pageTarget = await getOCATarget();
     } catch (navErr) {
@@ -154,7 +154,7 @@ async function main() {
     console.log(`Active Product Node Title: "${pageHeading}"`);
 
     meta = parseProductMeta(pageHeading, pageTarget.title);
-    const { loadProfile } = require('./lib/profile_loader');
+    const { loadProfile } = require('./lib/profile_loader.js');
     const profile = loadProfile(meta.family, meta.gen);
     console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
@@ -280,7 +280,7 @@ async function main() {
       tables,
       tableCount: tables.length
     };
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(rawJsonPath, rawData);
     console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
 
@@ -298,7 +298,7 @@ async function main() {
       }
     }
 } finally {
-    try { ws.close(); } catch (e) { const _logger = require('./lib/pipeline_logger'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
+    try { ws.close(); } catch (e) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
 }
 
   // STEP 6: Catalog Parser & Excel Generator
@@ -313,7 +313,7 @@ async function main() {
   // directly to the live path — only to staging, then promote atomically on success.
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   if (fs.existsSync(liveOutputDir)) {
-    const { copyDirRecursive } = require('./lib/fs_compat');
+    const { copyDirRecursive } = require('./lib/fs_compat.js');
     console.log(`\n🛡️  Seeding staging from live workspace to protect previous scrape data...`);
 
     // Seed history/ — required for diff engine to compute ADDED/REMOVED/PRICE_CHANGED
@@ -399,7 +399,7 @@ async function main() {
 
   // STEP 8: Promote Staging to Live Workspace, Update Registry & Sync
   console.log('\n--- STEP 8: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
-  const { promoteStagingDirectory } = require('./lib/fs_compat');
+  const { promoteStagingDirectory } = require('./lib/fs_compat.js');
   promoteStagingDirectory(outputDir, liveOutputDir);
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
@@ -455,7 +455,7 @@ async function main() {
 
   // Post-flow knowledge sync — update master registry after every scrape
   try {
-    const { triggerPostFlowSync } = require('./lib/post_flow_sync');
+    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
     triggerPostFlowSync(meta.cleanName, 'SCRAPE');
   } catch (_) {}
 

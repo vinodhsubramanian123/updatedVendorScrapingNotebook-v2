@@ -15,8 +15,8 @@ const {
   getHistoricalSkuPrice,
   getHistoricalBoqPricing,
   compareBoqPricingAcrossTimeline
-} = require('../scripts/lib/sku_versioning');
-const { safeWriteJsonAtomic } = require('../scripts/lib/fs_compat');
+} = require('../scripts/lib/sku_versioning.js');
+const { safeWriteJsonAtomic } = require('../scripts/lib/fs_compat.js');
 
 let totalTests = 0;
 let passedTests = 0;

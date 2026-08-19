@@ -16,13 +16,13 @@ const path = require('path');
 const os = require('os');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const { execSync } = require('child_process');
-const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('./lib/boq_evaluator');
-const { calculateConfidenceScore, processPortalFeedback } = require('./lib/feedback_loop');
-const { autoDetectChassisDetailed } = require('./lib/catalog_discovery');
-const { emitProgress } = require('./lib/progress');
-const { executeNotebookQuery } = require('./lib/notebook_query_utils');
+const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('./lib/boq_evaluator.js');
+const { calculateConfidenceScore, processPortalFeedback } = require('./lib/feedback_loop.js');
+const { autoDetectChassisDetailed } = require('./lib/catalog_discovery.js');
+const { emitProgress } = require('./lib/progress.js');
+const { executeNotebookQuery } = require('./lib/notebook_query_utils.js');
 
-const { runAgenticGuardrail } = require('./lib/agentic_guardrail');
+const { runAgenticGuardrail } = require('./lib/agentic_guardrail.js');
 
 
 /**
@@ -34,7 +34,7 @@ function getDefaultNotebookId() {
     try {
       const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       return cfg.defaultNotebookId || cfg.default || '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
-    } catch (e) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'eval_boq.js', e); }
+    } catch (e) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('ERROR', 'eval_boq.js', e); }
   }
   return '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
 }
@@ -292,7 +292,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- тЪая
     targetBudgetUsd = parseFloat(args[bIdx + 1]) || 0;
   }
 
-  const { optimizeForBudget } = require('./lib/budget_optimizer');
+  const { optimizeForBudget } = require('./lib/budget_optimizer.js');
   const budgetOpt = optimizeForBudget(items, evalResults, targetBudgetUsd, catalogData);
 
   // Step 5: Synthesize Final Markdown Report
@@ -413,12 +413,12 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- тЪая
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
   // Record Pipeline Telemetry for Observability Dashboard
-  const { recordEvaluationTelemetry } = require('./lib/telemetry');
+  const { recordEvaluationTelemetry } = require('./lib/telemetry.js');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
   // Trigger post-flow knowledge sync hook
   try {
-    const { triggerPostFlowSync } = require('./lib/post_flow_sync');
+    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
     triggerPostFlowSync(chassisPrefix, 'EVALUATION');
   } catch (_) {}
 

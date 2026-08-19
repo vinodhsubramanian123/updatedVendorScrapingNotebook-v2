@@ -615,6 +615,13 @@
       "constraint": "learned",
       "maxQty": 1,
       "rule": "Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P76449-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Portal validation flagged restriction on P76450-B21."
     }
   ]
 }

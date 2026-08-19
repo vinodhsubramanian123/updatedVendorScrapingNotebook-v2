@@ -9,8 +9,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('./lib/cdp');
-const { processPortalFeedback } = require('./lib/feedback_loop');
+const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('./lib/cdp.js');
+const { processPortalFeedback } = require('./lib/feedback_loop.js');
 
 async function main() {
   console.log(`================================================================`);

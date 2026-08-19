@@ -6,7 +6,7 @@ const { queryLocalKnowledgeBase } = require('./local_rag_search.js');
 const { processPortalFeedback } = require('./feedback_loop.js');
 const path = require('path');
 const fs = require('fs');
-const { emitProgress } = require('./progress');
+const { emitProgress } = require('./progress.js');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 /**
@@ -82,8 +82,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
 
 async function runAgenticGuardrail(items, chassisDir) {
-  const geminiRotator = require('./gemini_rotator');
-  const logger = require('./pipeline_logger');
+  const geminiRotator = require('./gemini_rotator.js');
+  const logger = require('./pipeline_logger.js');
   const startTime = Date.now();
   
   let activeKeyInfo = geminiRotator.getActiveKey();
@@ -191,7 +191,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'record_knowledge_delta': {
-            const { listAllCatalogs } = require('./catalog_discovery');
+            const { listAllCatalogs } = require('./catalog_discovery.js');
             const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
             let outputDir = cat ? cat.catalogDir : null;
             if (!outputDir) {

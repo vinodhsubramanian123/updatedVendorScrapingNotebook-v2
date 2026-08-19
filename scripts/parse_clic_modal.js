@@ -6,8 +6,8 @@
  * parses Rule#, Product#, Error Message, Root Cause, Action Required, and logs KnowledgeDelta.
  */
 
-const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('./lib/cdp');
-const { processPortalFeedback } = require('./lib/feedback_loop');
+const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('./lib/cdp.js');
+const { processPortalFeedback } = require('./lib/feedback_loop.js');
 
 async function main() {
   console.log(`================================================================`);

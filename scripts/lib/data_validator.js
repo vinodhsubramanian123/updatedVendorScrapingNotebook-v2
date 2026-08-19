@@ -6,7 +6,7 @@
  * pricing consistency, and capacity constraint rules before updating local JSON workspace files.
  */
 
-const { isValidHpeSKU, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./sku');
+const { isValidHpeSKU, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./sku.js');
 
 /**
  * Validates a complete catalog object (scraped JSON output) against predefined schema rules.

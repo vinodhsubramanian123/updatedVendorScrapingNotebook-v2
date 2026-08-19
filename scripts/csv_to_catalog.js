@@ -159,13 +159,13 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
   const targetDir = path.dirname(jsonOutputPath);
   const historyDir = path.join(targetDir, 'history');
   try {
-    const { processCatalogDiff } = require('./lib/diff_catalog');
+    const { processCatalogDiff } = require('./lib/diff_catalog.js');
     processCatalogDiff(catalogJSON, historyDir);
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(jsonOutputPath, catalogJSON, { validateSchema: true });
   } catch (err) {
     console.warn(`  ⚠️ Catalog diff calculation skipped/failed for ${chassisLabel}: ${err.message}`);
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(jsonOutputPath, catalogJSON);
   }
 
@@ -176,7 +176,7 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
     if (!fs.existsSync(scrapsDir)) fs.mkdirSync(scrapsDir, { recursive: true });
 
     const filePrefix = path.basename(jsonOutputPath, '.json').replace(/_Catalog$/, '');
-    const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter');
+    const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter.js');
 
     const subcatList = Array.from(subcategoriesMap.values()).map(s => ({
       parentCategory: s.parentCategory,

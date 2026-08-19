@@ -9,14 +9,14 @@
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku');
-const { calculateConfidenceScore } = require('./feedback_loop');
-const { classifyComponentRole } = require('./product_meta');
-const { emitProgress } = require('./progress');
+const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku.js');
+const { calculateConfidenceScore } = require('./feedback_loop.js');
+const { classifyComponentRole } = require('./product_meta.js');
+const { emitProgress } = require('./progress.js');
 
-const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('./boq_preprocessor');
+const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('./boq_preprocessor.js');
 
-const { DEFAULT_MANDATORY_SKUS, getMandatorySkusForChassis } = require('./catalog_rules');
+const { DEFAULT_MANDATORY_SKUS, getMandatorySkusForChassis } = require('./catalog_rules.js');
 
 /**
  * High TDP threshold requiring High-Performance Fan Kits
@@ -31,7 +31,7 @@ const HIGH_TDP_THRESHOLD_WATTS = 240;
  * @returns {Array<object>} Consolidated items array
  */
 function parseAndConsolidateBOQ(rawInput, filePath = '') {
-  const { parseSkuLines } = require('./boq_parser');
+  const { parseSkuLines } = require('./boq_parser.js');
   let lines = [];
 
   if (filePath && (filePath.endsWith('.xlsx') || filePath.endsWith('.xls'))) {
@@ -318,7 +318,7 @@ function evalSupportManufacturing(items, catalogData = null) {
  * @returns {object} Evaluation results
  */
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
-  const { detectChassisVariant } = require('./conflict_graph');
+  const { detectChassisVariant } = require('./conflict_graph.js');
   const chassisInfo = detectChassisVariant(items);
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
@@ -584,7 +584,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   };
 
   // Step 7: Run 5-Level Dependency Conflict Graph Validation
-  const { validateConflictGraph } = require('./conflict_graph');
+  const { validateConflictGraph } = require('./conflict_graph.js');
   emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
   
   // Auto-detect chassis directory if not provided

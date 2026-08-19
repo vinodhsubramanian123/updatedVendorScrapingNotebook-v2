@@ -9,7 +9,7 @@
 
 const http = require('http');
 const path = require('path');
-const { sendCommand, connectWS, getOCATarget } = require('./cdp');
+const { sendCommand, connectWS, getOCATarget } = require('./cdp.js');
 
 const CDP_PORT = 9222;
 

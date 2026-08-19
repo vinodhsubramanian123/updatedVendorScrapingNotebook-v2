@@ -111,7 +111,7 @@ function loadCatalogRules(targetDir) {
       rawData = JSON.parse(fs.readFileSync(rulesJsonPath, 'utf-8'));
       sourceFile = rulesJsonPath;
     } catch (err) {
-      const _logger = require('./pipeline_logger');
+      const _logger = require('./pipeline_logger.js');
       _logger.warn('CATALOG_RULES', `Failed to parse ${rulesJsonPath}`, err);
     }
   }
@@ -122,7 +122,7 @@ function loadCatalogRules(targetDir) {
       sourceFile = rulesBakPath;
       isFallback = true;
     } catch (err) {
-      const _logger = require('./pipeline_logger');
+      const _logger = require('./pipeline_logger.js');
       _logger.warn('CATALOG_RULES', `Failed to parse ${rulesBakPath}`, err);
     }
   }
@@ -133,7 +133,7 @@ function loadCatalogRules(targetDir) {
       sourceFile = catalogJsonPath;
       isFallback = true;
     } catch (err) {
-      const _logger = require('./pipeline_logger');
+      const _logger = require('./pipeline_logger.js');
       _logger.warn('CATALOG_RULES', `Failed to parse ${catalogJsonPath}`, err);
     }
   }

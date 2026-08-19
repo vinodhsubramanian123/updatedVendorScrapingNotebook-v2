@@ -6,8 +6,8 @@
 const fs      = require('fs');
 const path    = require('path');
 const crypto  = require('crypto');
-const { sendCommand, getAnyPageTarget, connectWS, sleep, CDP_PORT } = require('./lib/cdp');
-const { moveFile, cleanStrayPDFs } = require('./lib/fs_compat');
+const { sendCommand, getAnyPageTarget, connectWS, sleep, CDP_PORT } = require('./lib/cdp.js');
+const { moveFile, cleanStrayPDFs } = require('./lib/fs_compat.js');
 
 if (!process.argv[2] || !process.argv[3]) {
   console.error('Usage: node scripts/download_quickspecs_pdf.js <docId_or_url> <dest_absolute_path> [--force]');

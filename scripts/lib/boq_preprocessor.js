@@ -12,11 +12,11 @@
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
-const { cleanBaseSKU, isValidHpeSKU, isServiceSku, HPE_SKU_EXTRACT_REGEX } = require('./sku');
-const { classifyComponentRole } = require('./product_meta');
-const { safeWriteJsonAtomic } = require('./fs_compat');
-const { isImageFile, performGeminiOcr } = require('./ocr_service');
-const { loadCatalogRules } = require('./catalog_rules');
+const { cleanBaseSKU, isValidHpeSKU, isServiceSku, HPE_SKU_EXTRACT_REGEX } = require('./sku.js');
+const { classifyComponentRole } = require('./product_meta.js');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
+const { isImageFile, performGeminiOcr } = require('./ocr_service.js');
+const { loadCatalogRules } = require('./catalog_rules.js');
 
 /**
  * Split reason taxonomy constants
@@ -435,7 +435,7 @@ function preprocessAndGroupBOQ(rawInput, filePath = '', options = {}) {
   const rawVariations = [];
   let globalLineCount = 0;
 
-  const { parseSkuLines } = require('./boq_parser');
+  const { parseSkuLines } = require('./boq_parser.js');
   sheetsData.forEach((sec, idx) => {
     const lines = sec.content.split(/\r?\n/).filter(l => l.trim().length > 0);
     globalLineCount += lines.length;

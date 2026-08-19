@@ -10,7 +10,7 @@
  * 4. Real end-to-end query execution via `executeNotebookQuery`.
  */
 
-const { sanitizeNotebookQuery, postProcessNotebookResult, executeNotebookQuery } = require('./lib/notebook_query_utils');
+const { sanitizeNotebookQuery, postProcessNotebookResult, executeNotebookQuery } = require('./lib/notebook_query_utils.js');
 
 async function testSuite() {
   console.log('===============================================================');
@@ -74,7 +74,7 @@ async function testSuite() {
 
   // --- TEST 6: Async Non-Blocking Query Job Launch & Status Polling ---
   console.log('\n⚡ Testing Async Non-Blocking Query Job Engine...');
-  const { startAsyncNotebookQueryJob, getAsyncNotebookQueryJobStatus, diagnoseNotebookFailure } = require('./lib/notebook_query_utils');
+  const { startAsyncNotebookQueryJob, getAsyncNotebookQueryJobStatus, diagnoseNotebookFailure } = require('./lib/notebook_query_utils.js');
 
   const asyncJob = startAsyncNotebookQueryJob(targetNotebookId, 'What are the power supply redundancy options for DL380 Gen12?', {
     context: { chassis: 'HPE ProLiant DL380 Gen12 SFF' }

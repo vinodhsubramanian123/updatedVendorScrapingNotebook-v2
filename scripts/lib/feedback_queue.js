@@ -9,7 +9,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('./fs_compat');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const QUEUE_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'user_feedback_queue.json');
@@ -23,7 +23,7 @@ function loadQueue() {
     try {
       const data = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
       if (Array.isArray(data)) return data;
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'feedback_queue.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'feedback_queue.js', e); }
   }
   return [];
 }

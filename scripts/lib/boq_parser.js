@@ -13,7 +13,7 @@
  * - Item deduplication and consolidation
  */
 
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku');
+const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku.js');
 
 /**
  * Parse an array of text lines, extracting and consolidating valid HPE SKU items.

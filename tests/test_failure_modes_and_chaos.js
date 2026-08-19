@@ -16,16 +16,16 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { executeNotebookQuery, sanitizeNotebookQuery } = require('../scripts/lib/notebook_query_utils');
-const { GeminiKeyRotator, ApiQuotaExhaustedError } = require('../scripts/lib/gemini_rotator');
-const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator');
-const { preprocessAndGroupBOQ } = require('../scripts/lib/boq_preprocessor');
-const { validateConflictGraph } = require('../scripts/lib/conflict_graph');
-const { processPortalFeedback } = require('../scripts/lib/feedback_loop');
-const { triggerPostFlowSync } = require('../scripts/lib/post_flow_sync');
-const { inspectKnowledgeDrift } = require('../scripts/lib/knowledge_sync');
-const { safeWriteJsonAtomic } = require('../scripts/lib/fs_compat');
-const { recordEvaluationTelemetry, loadTelemetry } = require('../scripts/lib/system/telemetry');
+const { executeNotebookQuery, sanitizeNotebookQuery } = require('../scripts/lib/notebook_query_utils.js');
+const { GeminiKeyRotator, ApiQuotaExhaustedError } = require('../scripts/lib/gemini_rotator.js');
+const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator.js');
+const { preprocessAndGroupBOQ } = require('../scripts/lib/boq_preprocessor.js');
+const { validateConflictGraph } = require('../scripts/lib/conflict_graph.js');
+const { processPortalFeedback } = require('../scripts/lib/feedback_loop.js');
+const { triggerPostFlowSync } = require('../scripts/lib/post_flow_sync.js');
+const { inspectKnowledgeDrift } = require('../scripts/lib/knowledge_sync.js');
+const { safeWriteJsonAtomic } = require('../scripts/lib/fs_compat.js');
+const { recordEvaluationTelemetry, loadTelemetry } = require('../scripts/lib/system/telemetry.js');
 
 let totalTests = 0;
 let passedTests = 0;

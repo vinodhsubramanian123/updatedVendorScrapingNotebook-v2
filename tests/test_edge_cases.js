@@ -13,10 +13,10 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator');
-const { validateConflictGraph } = require('../scripts/lib/conflict_graph');
-const { queryLocalKnowledgeBase } = require('../scripts/lib/local_rag_search');
-const { processPortalFeedback } = require('../scripts/lib/feedback_loop');
+const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator.js');
+const { validateConflictGraph } = require('../scripts/lib/conflict_graph.js');
+const { queryLocalKnowledgeBase } = require('../scripts/lib/local_rag_search.js');
+const { processPortalFeedback } = require('../scripts/lib/feedback_loop.js');
 
 let passed = 0;
 let failed = 0;

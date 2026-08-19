@@ -9,14 +9,14 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { processCatalogDiff } = require('./lib/diff_catalog');
-const { safeWriteJsonAtomic } = require('./lib/fs_compat');
-const { computeIncrementalDifferential } = require('./lib/checksum_diff');
-const { recordVersionSnapshot } = require('./lib/sku_versioning');
-const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./lib/sku');
-const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter');
-const { validateCatalogData } = require('./lib/data_validator');
-const PipelineLogger = require('./lib/pipeline_logger');
+const { processCatalogDiff } = require('./lib/diff_catalog.js');
+const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
+const { computeIncrementalDifferential } = require('./lib/checksum_diff.js');
+const { recordVersionSnapshot } = require('./lib/sku_versioning.js');
+const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./lib/sku.js');
+const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('./lib/catalog_formatter.js');
+const { validateCatalogData } = require('./lib/data_validator.js');
+const PipelineLogger = require('./lib/pipeline_logger.js');
 
 // ── CLI Arguments ─────────────────────────────────────────────────────────────
 const rawInputPath   = process.argv[2];
@@ -72,8 +72,8 @@ const rawData  = JSON.parse(fs.readFileSync(rawInputPath, 'utf-8'));
 const fullText = rawData.fullText || rawData.bodyText || '';
 const tables   = rawData.tables || [];
 
-const { parseProductMeta } = require('./lib/product_meta');
-const { loadProfile } = require('./lib/profile_loader');
+const { parseProductMeta } = require('./lib/product_meta.js');
+const { loadProfile } = require('./lib/profile_loader.js');
 const meta = parseProductMeta(chassisLabel);
 const profile = loadProfile(meta.family, meta.gen);
 
@@ -281,7 +281,7 @@ for (let ti = 1; ti < tables.length; ti++) {
 
     // Sanitize Product # — strictly extract HPE hardware and Service SKUs
     // Rejects internal DOM pattern IDs (e.g. dl380pat001b94fb), core count strings, and arbitrary numeric labels
-    const { isValidHpeSKU } = require('./lib/sku');
+    const { isValidHpeSKU } = require('./lib/sku.js');
     let rawPN = obj['Product #'] || '';
     if (rawPN) {
       rawPN = cleanBaseSKU(rawPN);
@@ -388,7 +388,7 @@ for (let ti = 1; ti < tables.length; ti++) {
 
   // Smart fallback: if parentCat is still 'Unknown', classify using component role & semantic taxonomy
   if (parentCat === 'Unknown' || !parentCat) {
-    const { classifyComponentRole } = require('./lib/product_meta');
+    const { classifyComponentRole } = require('./lib/product_meta.js');
     const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
     const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
     

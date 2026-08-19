@@ -6,7 +6,7 @@
  * and AI-agent-friendly code modularity.
  */
 
-const { classifyComponentRole } = require('./product_meta');
+const { classifyComponentRole } = require('./product_meta.js');
 
 /**
  * Generate Main SKUs TSV content.

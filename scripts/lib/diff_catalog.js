@@ -19,7 +19,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('./fs_compat');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 function parsePrice(val) {
   if (val === null || val === undefined) return 0;

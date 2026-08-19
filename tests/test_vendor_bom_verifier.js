@@ -6,7 +6,7 @@
  */
 
 const path = require('path');
-const { verifyVendorBOM } = require('../scripts/lib/vendor_bom_verifier');
+const { verifyVendorBOM } = require('../scripts/lib/vendor_bom_verifier.js');
 
 function runTests() {
   console.log('===============================================================');

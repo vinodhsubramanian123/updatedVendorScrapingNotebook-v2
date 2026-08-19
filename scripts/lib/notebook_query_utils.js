@@ -60,7 +60,7 @@ function classifyQueryScenario(rawQuery = '') {
  */
 function getSanitizationBreakdown(rawQuery, context = {}) {
   const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
-  const { parseProductMeta } = require('./product_meta');
+  const { parseProductMeta } = require('./product_meta.js');
   const meta = parseProductMeta(chassisName);
   
   let scope = 'Server';
@@ -174,7 +174,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
   }
 
   // Prepend explicit product scope, family, generation, and chassis context
-  const { parseProductMeta } = require('./product_meta');
+  const { parseProductMeta } = require('./product_meta.js');
   const meta = parseProductMeta(chassisName);
   
   let scope = 'Server';
@@ -261,7 +261,7 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
     try {
       const inner = JSON.parse(result.answer);
       if (inner.answer) result.answer = inner.answer;
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'notebook_query_utils.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'notebook_query_utils.js', e); }
   }
 
   return result;
@@ -277,8 +277,8 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
  */
 function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   return new Promise((resolve) => {
-    const { queryLocalKnowledgeBase } = require('./local_rag_search');
-    const logger = require('./pipeline_logger');
+    const { queryLocalKnowledgeBase } = require('./local_rag_search.js');
+    const logger = require('./pipeline_logger.js');
     const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
     const timeoutMs = options.timeout || 60000;
 
@@ -437,7 +437,7 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}) {
 
         // Record telemetry if callback provided or via telemetry lib
         try {
-          const telemetryLib = require('./system/telemetry');
+          const telemetryLib = require('./system/telemetry.js');
           telemetryLib.recordNotebookConsultationTelemetry({
             query: sanitizedQuery,
             answer: job.answer,
@@ -448,7 +448,7 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}) {
             agreementScore: job.status === 'COMPLETED' ? 0.95 : 0.5,
             nextActionExecuted: job.status === 'COMPLETED' ? 'ASYNC_RAG_DOUBLE_PROOFED' : 'ASYNC_RAG_FAILED'
           });
-        } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'notebook_query_utils.js', _); }
+        } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'notebook_query_utils.js', _); }
       })
       .catch((err) => {
         job.status = 'FAILED';

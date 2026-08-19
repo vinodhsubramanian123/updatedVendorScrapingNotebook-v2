@@ -9,7 +9,7 @@ const path = require('path');
 const {
   sendCommand, getOCATarget, connectWS,
   extractChunkedText, extractTablesAsRows, extractSectionHeaders
-} = require('./lib/cdp');
+} = require('./lib/cdp.js');
 
 const outputPath = process.argv[2];
 if (!outputPath) {
@@ -70,7 +70,7 @@ async function main() {
     };
 
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-    const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+    const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
     safeWriteJsonAtomic(outputPath, data);
 
     console.log(`\nData saved to ${outputPath}`);

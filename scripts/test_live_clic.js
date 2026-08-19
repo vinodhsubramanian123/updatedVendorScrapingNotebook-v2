@@ -6,7 +6,7 @@
  * finds the active OCA page target, executes CLIC check inspection, and logs any unbuildable errors.
  */
 
-const { getOCATarget, getAnyPageTarget, connectWS, triggerClicCheck, sleep } = require('./lib/cdp');
+const { getOCATarget, getAnyPageTarget, connectWS, triggerClicCheck, sleep } = require('./lib/cdp.js');
 
 async function main() {
   console.log(`================================================================`);

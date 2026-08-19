@@ -14,10 +14,10 @@ const path = require('path');
 const http = require('http');
 const XLSX = require('xlsx-js-style');
 
-const { generateProfessionalBOQ } = require('./lib/generate_boq_xlsx');
-const { generateNotebookSyncPayload, buildMasterKnowledgeRegistry } = require('./lib/knowledge_sync');
-const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator');
-const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph');
+const { generateProfessionalBOQ } = require('./lib/generate_boq_xlsx.js');
+const { generateNotebookSyncPayload, buildMasterKnowledgeRegistry } = require('./lib/knowledge_sync.js');
+const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator.js');
+const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');

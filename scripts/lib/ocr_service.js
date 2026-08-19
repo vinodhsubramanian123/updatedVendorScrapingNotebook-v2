@@ -35,7 +35,7 @@ const MAX_IMAGE_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB max
  * @returns {Promise<{ text: string, lineCount: number, detectedSkus: string[], isOcrProcessed: boolean, logs: string[] }>}
  */
 async function performGeminiOcr(filePath, options = {}) {
-  const logger = require('./pipeline_logger');
+  const logger = require('./pipeline_logger.js');
   const logs = [];
   const log = (msg) => {
     const entry = `📸 [OCR_SERVICE] ${msg}`;
@@ -64,7 +64,7 @@ async function performGeminiOcr(filePath, options = {}) {
   else if (ext === '.gif') mimeType = 'image/gif';
   else if (ext === '.bmp') mimeType = 'image/bmp';
 
-  const geminiRotator = require('./gemini_rotator');
+  const geminiRotator = require('./gemini_rotator.js');
   const activeKeyInfo = geminiRotator.getActiveKey();
   if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     log('⚠️ GEMINI_API_KEY environment variable is absent. Serving image metadata fallback notice.');

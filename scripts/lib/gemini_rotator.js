@@ -14,8 +14,8 @@
 const fs = require('fs');
 const path = require('path');
 const { GoogleGenAI, Type } = require('@google/genai');
-const { safeWriteJsonAtomic } = require('./fs_compat');
-const logger = require('./pipeline_logger');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
+const logger = require('./pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const STATE_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'gemini_keys_state.json');

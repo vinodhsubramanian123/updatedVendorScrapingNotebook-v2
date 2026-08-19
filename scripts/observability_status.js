@@ -15,7 +15,7 @@
 const fs     = require('fs');
 const path   = require('path');
 
-const { checkCdpHealth, listAllCatalogs, collectKnowledgeDeltas } = require('./lib/catalog_discovery');
+const { checkCdpHealth, listAllCatalogs, collectKnowledgeDeltas } = require('./lib/catalog_discovery.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
@@ -36,16 +36,16 @@ async function main() {
   // 3.2 Master Knowledge Registry & Scope Taxonomy Sync State
   let knowledgeSyncState = null;
   try {
-    const { buildMasterKnowledgeRegistry } = require('./lib/knowledge_sync');
+    const { buildMasterKnowledgeRegistry } = require('./lib/knowledge_sync.js');
     knowledgeSyncState = buildMasterKnowledgeRegistry();
-  } catch (_) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'observability_status.js', _); }
+  } catch (_) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('ERROR', 'observability_status.js', _); }
 
   // 3.5 Telemetry & Audit Observability
   let telemetryData = null;
   try {
-    const { loadTelemetry } = require('./lib/telemetry');
+    const { loadTelemetry } = require('./lib/telemetry.js');
     telemetryData = loadTelemetry();
-  } catch (_) { const _logger = require('./lib/pipeline_logger'); _logger.warn('ERROR', 'observability_status.js', _); }
+  } catch (_) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('ERROR', 'observability_status.js', _); }
 
   // 4. Script Wiring & package.json Registry
   let scripts = {};

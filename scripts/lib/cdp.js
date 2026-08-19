@@ -9,7 +9,7 @@
 
 const WebSocket = require('ws');
 const http      = require('http');
-const domExtract = require('./dom_extract');
+const domExtract = require('./dom_extract.js');
 
 const CDP_PORT        = 9222;
 const DEFAULT_TIMEOUT = 45000;   // ms — generous for slow OCA pages

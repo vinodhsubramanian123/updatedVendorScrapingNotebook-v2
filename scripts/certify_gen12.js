@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('./lib/fs_compat');
+const { safeWriteJsonAtomic } = require('./lib/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');

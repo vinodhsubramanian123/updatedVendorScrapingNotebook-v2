@@ -11,9 +11,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator');
-const { validateConflictGraph } = require('../scripts/lib/conflict_graph');
-const { processPortalFeedback } = require('../scripts/lib/feedback_loop');
+const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../scripts/lib/boq_evaluator.js');
+const { validateConflictGraph } = require('../scripts/lib/conflict_graph.js');
+const { processPortalFeedback } = require('../scripts/lib/feedback_loop.js');
 
 let passed = 0;
 let failed = 0;
@@ -141,7 +141,7 @@ try { fs.rmSync(testOutputDir, { recursive: true, force: true }); } catch (err) 
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('\n--- 5. Workload DNA Profiling & 5-Tier Strategic Matrix ---');
 
-const { extractWorkloadDna, synthesize5TierRankedSolutions } = require('../scripts/lib/conflict_graph');
+const { extractWorkloadDna, synthesize5TierRankedSolutions } = require('../scripts/lib/conflict_graph.js');
 
 const vdiGpuBoq = [
   { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server', quantity: 1 },

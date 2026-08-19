@@ -155,8 +155,8 @@ async function runE2ETest() {
     }
 
     // Load actual eval results via boq evaluator library for E2E matrix verification
-    const { evaluateBOQMultiAspect } = require('../scripts/lib/boq_evaluator');
-    const { evaluateWholeSolutionGraph } = require('../scripts/lib/conflict_graph');
+    const { evaluateBOQMultiAspect } = require('../scripts/lib/boq_evaluator.js');
+    const { evaluateWholeSolutionGraph } = require('../scripts/lib/conflict_graph.js');
     
     // Create temporary BOQ CSV fixture to evaluate
     const testCsvPath = path.join(__dirname, 'fixtures', 'DL380_Gen12_E2E_Quote.csv');

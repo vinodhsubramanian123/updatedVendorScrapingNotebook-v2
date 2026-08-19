@@ -17,10 +17,10 @@ const {
   classifyQueryScenario,
   postProcessNotebookResult,
   diagnoseNotebookFailure
-} = require('./lib/notebook_query_utils');
+} = require('./lib/notebook_query_utils.js');
 
-const { queryLocalKnowledgeBase } = require('./lib/local_rag_search');
-const { recordNotebookConsultationTelemetry, loadTelemetry } = require('./lib/system/telemetry');
+const { queryLocalKnowledgeBase } = require('./lib/local_rag_search.js');
+const { recordNotebookConsultationTelemetry, loadTelemetry } = require('./lib/system/telemetry.js');
 
 async function runScenarioVerificationSuite() {
   console.log('========================================================================');

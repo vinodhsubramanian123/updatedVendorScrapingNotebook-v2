@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { safeWriteJsonAtomic } = require('./fs_compat');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 /**
  * Calculate SHA-256 checksum for a string or object.
@@ -302,7 +302,7 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   if (Array.isArray(boqInput)) {
     items = boqInput;
   } else {
-    const { parseSkuLines } = require('./boq_parser');
+    const { parseSkuLines } = require('./boq_parser.js');
     const lines = String(boqInput || '').split(/\r?\n/);
     items = parseSkuLines(lines).items;
   }

@@ -13,9 +13,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyRule, loadCatalogRules } = require('../scripts/lib/catalog_rules');
+const { classifyRule, loadCatalogRules } = require('../scripts/lib/catalog_rules.js');
 const os = require('os');
-const { detectChassisVariant, validateConflictGraph } = require('../scripts/lib/conflict_graph');
+const { detectChassisVariant, validateConflictGraph } = require('../scripts/lib/conflict_graph.js');
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'conflict-graph-test-'));
 const chassisDir = path.join(tmpDir, 'DL380_Gen12_SFF');
 fs.mkdirSync(chassisDir, { recursive: true });

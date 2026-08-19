@@ -15,9 +15,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseAndConsolidateBOQ } = require('./boq_evaluator');
-const { processPortalFeedback } = require('./feedback_loop');
-const { isValidHpeSKU } = require('./sku');
+const { parseAndConsolidateBOQ } = require('./boq_evaluator.js');
+const { processPortalFeedback } = require('./feedback_loop.js');
+const { isValidHpeSKU } = require('./sku.js');
 
 /**
  * Cross-verify uploaded Vendor Partner Portal BOM against proposed solution rank.
@@ -59,7 +59,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
           });
         });
       }
-    } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
+    } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
   }
 
   const proposedSkus = (proposedRankSolution?.skuList || proposedRankSolution?.skuPartsList || []).reduce((map, item) => {
@@ -149,7 +149,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
       try {
         const feedbackMsg = `Vendor Partner Portal auto-inserted SKU ${added.sku} (Qty ${added.quantity}): ${added.description}`;
         processPortalFeedback(feedbackMsg, chassisDir);
-      } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
+      } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
     });
   }
 
@@ -165,10 +165,10 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
   };
 
   try {
-    const { recordReconciliationTelemetry } = require('./system/telemetry');
+    const { recordReconciliationTelemetry } = require('./system/telemetry.js');
     recordReconciliationTelemetry(auditReport);
   } catch (err) {
-    const _logger = require('./pipeline_logger');
+    const _logger = require('./pipeline_logger.js');
     _logger.warn('VENDOR_BOM', 'Telemetry recording advisory', err);
   }
 

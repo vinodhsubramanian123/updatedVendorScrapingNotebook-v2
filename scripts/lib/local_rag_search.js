@@ -56,11 +56,11 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
           });
         }
       }
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
   }
 
   // 2. Search Catalogs dynamically across outputs directory
-  const { listAllCatalogs } = require('./catalog_discovery');
+  const { listAllCatalogs } = require('./catalog_discovery.js');
   const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
 
   const matchedProcessorSkus = [];
@@ -187,7 +187,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
             });
           }
         }
-      } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
+      } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
     }
 
     // Search Rules CSV
@@ -276,11 +276,11 @@ async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId 
           }
         }
       }
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'local_rag_search.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
   }
   const localRes = queryLocalKnowledgeBase(query, resolvedChassis);
 
-  const geminiRotator = require('./gemini_rotator');
+  const geminiRotator = require('./gemini_rotator.js');
   const activeKeyInfo = geminiRotator.getActiveKey();
   if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     return localRes;

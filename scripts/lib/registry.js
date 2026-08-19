@@ -8,7 +8,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { toForwardSlash } = require('./fs_compat');
+const { toForwardSlash } = require('./fs_compat.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');

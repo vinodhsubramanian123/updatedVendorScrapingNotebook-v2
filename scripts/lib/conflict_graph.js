@@ -1,5 +1,5 @@
 'use strict';
-const { getMandatorySkusForChassis, loadCatalogRules } = require('./catalog_rules');
+const { getMandatorySkusForChassis, loadCatalogRules } = require('./catalog_rules.js');
 /**
  * scripts/lib/conflict_graph.js — Dependency Conflict Graph & Workload DNA Resolution Engine
  *
@@ -16,8 +16,8 @@ const { getMandatorySkusForChassis, loadCatalogRules } = require('./catalog_rule
  */
 
 const path = require('path');
-const { cleanBaseSKU } = require('./sku');
-const { classifyComponentRole } = require('./product_meta');
+const { cleanBaseSKU } = require('./sku.js');
+const { classifyComponentRole } = require('./product_meta.js');
 const fs = require('fs');
 
 function getChassisMap() {
@@ -41,7 +41,7 @@ function getChassisMap() {
         }
       }
     } catch (e) {
-      const _logger = require('./pipeline_logger');
+      const _logger = require('./pipeline_logger.js');
       _logger.warn('CONFLICT_GRAPH', 'Failed to load chassis_map.json', e);
     }
   }
@@ -203,7 +203,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     try {
       priceMap = JSON.parse(fs.readFileSync(path.join(targetDir, 'price_history.json'), 'utf8'));
     } catch (err) {
-      const _logger = require('./pipeline_logger');
+      const _logger = require('./pipeline_logger.js');
       _logger.warn('CONFLICT_GRAPH', 'Failed to parse price_history.json', err);
     }
   }
@@ -266,7 +266,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     }
   } catch (err) {
-    const _logger = require('./pipeline_logger');
+    const _logger = require('./pipeline_logger.js');
     _logger.warn('CONFLICT_GRAPH', 'Failed to parse strategy_addons.json', err);
   }
 
@@ -539,7 +539,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
             }
           });
         } catch (err) {
-          const _logger = require('./pipeline_logger');
+          const _logger = require('./pipeline_logger.js');
           _logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
         }
       }

@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { listAllCatalogs, checkCdpHealth } = require('./lib/catalog_discovery');
+const { listAllCatalogs, checkCdpHealth } = require('./lib/catalog_discovery.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');

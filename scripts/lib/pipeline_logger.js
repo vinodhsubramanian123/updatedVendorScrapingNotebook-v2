@@ -158,7 +158,7 @@ class PipelineLogger {
       historyRecords.unshift(runRecord);
       if (historyRecords.length > 50) historyRecords = historyRecords.slice(0, 50);
 
-      const { safeWriteJsonAtomic } = require('./fs_compat');
+      const { safeWriteJsonAtomic } = require('./fs_compat.js');
       safeWriteJsonAtomic(historyJsonPath, historyRecords);
 
       // 2. Append to human-readable log file
@@ -190,7 +190,7 @@ class PipelineLogger {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Module-level structured logging interface
-// Usage: const logger = require('./pipeline_logger');
+// Usage: const logger = require('./pipeline_logger.js');
 //        logger.info('MODULE', 'message', optionalData)
 //        logger.warn('MODULE', 'message', optionalError)
 //        logger.error('MODULE', 'message', error)

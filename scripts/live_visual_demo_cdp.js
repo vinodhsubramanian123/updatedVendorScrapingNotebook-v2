@@ -1,6 +1,6 @@
 'use strict';
 
-const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp');
+const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp.js');
 
 async function main() {
   console.log('Connecting via CDP for Live Visual Verification...');

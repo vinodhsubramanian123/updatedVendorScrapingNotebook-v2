@@ -6,7 +6,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp');
+const { sendCommand, getOCATarget, connectWS, sleep } = require('./lib/cdp.js');
 
 async function main() {
   console.log('Connecting via CDP for QuickSpecs vs Menu visual demonstration...');

@@ -8,9 +8,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('./lib/boq_evaluator');
-const { calculateConfidenceScore, processPortalFeedback } = require('./lib/feedback_loop');
-const { cleanBaseSKU, isValidHpeSKU } = require('./lib/sku');
+const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('./lib/boq_evaluator.js');
+const { calculateConfidenceScore, processPortalFeedback } = require('./lib/feedback_loop.js');
+const { cleanBaseSKU, isValidHpeSKU } = require('./lib/sku.js');
 
 let totalPasses = 0;
 let totalFails = 0;
@@ -116,7 +116,7 @@ assert(payload.includes('P48820-B21'), `Direct SKU fix P48820-B21 included in RA
 // Test Group 7: Budget-Constrained Optimization & Golden Rule Assurance
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 7: Budget-Constrained Optimization & Golden Rule Assurance`);
-const { optimizeForBudget } = require('./lib/budget_optimizer');
+const { optimizeForBudget } = require('./lib/budget_optimizer.js');
 
 const mockCatalogData = {
   metadata: { family: 'ProLiant' },
@@ -150,7 +150,7 @@ assert(budgetSurplusRes.recommendedUpgrades.length > 0, `Generated surplus budge
 // Test Group 8: Zero Hardcoding & Dynamic Category Classification
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 8: Zero Hardcoding & Dynamic Category Classification`);
-const { classifyComponentRole } = require('./lib/product_meta');
+const { classifyComponentRole } = require('./lib/product_meta.js');
 assert(classifyComponentRole('Processor', 'Intel Xeon 6730P') === 'Processor', `Classified Processor role dynamically`);
 assert(classifyComponentRole('Smart Memory', '64GB RDIMM') === 'Memory', `Classified Memory role dynamically`);
 assert(classifyComponentRole('Power Supplies', '1600W -48VDC') === 'Power Supply', `Classified Power Supply role dynamically`);
@@ -159,7 +159,7 @@ assert(classifyComponentRole('Power Supplies', '1600W -48VDC') === 'Power Supply
 // Test Group 9: Automated CLIC Check Protocol Interface
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 9: Automated CLIC Check Protocol Interface`);
-const { triggerClicCheck } = require('./lib/cdp');
+const { triggerClicCheck } = require('./lib/cdp.js');
 assert(typeof triggerClicCheck === 'function', `CDP module exports triggerClicCheck function for HPE OCA inspection`);
 
 console.log(`\n================================================================`);

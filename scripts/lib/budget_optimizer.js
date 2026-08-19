@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('./sku');
+const { cleanBaseSKU } = require('./sku.js');
 
 /**
  * Get unit list price for a SKU (USD) by looking it up in the parsed catalog.
@@ -48,7 +48,7 @@ function loadUpgradeTemplates(family = 'ProLiant') {
       const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf-8'));
       const families = cfg.families || {};
       return families[family] || families['ProLiant'] || [];
-    } catch (e) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'budget_optimizer.js', e); }
+    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'budget_optimizer.js', e); }
   }
   return [];
 }

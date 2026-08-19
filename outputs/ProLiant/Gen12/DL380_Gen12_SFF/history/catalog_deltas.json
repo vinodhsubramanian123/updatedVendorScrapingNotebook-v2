@@ -1036,5 +1036,47 @@
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "General Server",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787145180444",
+    "timestamp": "2026-08-19T13:13:00.444Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787145248128",
+    "timestamp": "2026-08-19T13:14:08.118Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76449-B21",
+    "requiredDependencySku": "P76450-B21",
+    "ruleUpdate": "Portal validation flagged restriction on P76450-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA-1787145369157",
+    "timestamp": "2026-08-19T13:16:09.156Z",
+    "chassis": "DL380_Gen12_SFF",
+    "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P76453-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+    "humanReasoning": null,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]

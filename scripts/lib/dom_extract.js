@@ -6,7 +6,7 @@
  * to prevent copy-paste drift across scraping scripts.
  */
 function getSendCommand() {
-  return require('./cdp').sendCommand;
+  return require('./cdp.js').sendCommand;
 }
 
 /**

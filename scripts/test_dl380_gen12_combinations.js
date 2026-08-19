@@ -17,10 +17,10 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
 
-const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator');
-const { preprocessAndGroupBOQ } = require('./lib/boq_preprocessor');
-const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph');
-const { processPortalFeedback } = require('./lib/feedback_loop');
+const { evaluateBOQMultiAspect } = require('./lib/boq_evaluator.js');
+const { preprocessAndGroupBOQ } = require('./lib/boq_preprocessor.js');
+const { evaluateWholeSolutionGraph } = require('./lib/conflict_graph.js');
+const { processPortalFeedback } = require('./lib/feedback_loop.js');
 
 const TEST_OUTPUT_DIR = path.join(__dirname, '..', 'outputs', 'test_boqs');
 

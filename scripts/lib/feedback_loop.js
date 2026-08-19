@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { safeWriteJsonAtomic } = require('./fs_compat');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 /**
  * Classify a portal error message into TEMPORARY_SUPPLY or PERMANENT_PHYSICAL_DEPENDENCY.
@@ -71,7 +71,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
       // Corruption detected — back up the corrupt file before resetting to prevent data loss
       const corruptBackup = `${deltaFile}.corrupt_${Date.now()}.bak`;
       try { fs.copyFileSync(deltaFile, corruptBackup); } catch (_) { /* backup best-effort */ }
-      const logger = require('./pipeline_logger');
+      const logger = require('./pipeline_logger.js');
       logger.warn('FEEDBACK_LOOP', `catalog_deltas.json was corrupt (${parseErr.message}). Backed up to ${path.basename(corruptBackup)} and reset to []. Check backup for recovery.`);
       deltas = [];
     }
@@ -102,7 +102,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
 
   // Record Telemetry
   try {
-    const { recordFeedbackTelemetry } = require('./telemetry');
+    const { recordFeedbackTelemetry } = require('./telemetry.js');
     recordFeedbackTelemetry(delta);
   } catch (err) {
     console.warn('⚠️ Telemetry logging advisory:', err.message);
@@ -110,7 +110,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
 
   // S1: Auto-trigger Master Knowledge Sync & NotebookLM payload generation
   try {
-    const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('./knowledge_sync');
+    const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('./knowledge_sync.js');
     buildMasterKnowledgeRegistry();
     generateNotebookSyncPayload(delta.chassis);
   } catch (err) {
@@ -161,7 +161,7 @@ function updateCatalogRulesFile(outputDir, delta) {
 
       data.rules = dedupedRules;
       safeWriteJsonAtomic(rulesJson, data, { minEntriesKey: 'rules', minCount: 1 });
-    } catch (_) { const _logger = require('./pipeline_logger'); _logger.warn('ERROR', 'feedback_loop.js', _); }
+    } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'feedback_loop.js', _); }
   }
 }
 
