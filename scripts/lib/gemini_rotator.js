@@ -99,7 +99,7 @@ class GeminiKeyRotator {
         if (raw && typeof raw === 'object' && Array.isArray(raw.queue)) {
           state = raw;
         }
-      } catch (e) {
+      } catch {
         logger.warn('GEMINI_ROTATOR', `Could not read state file ${this.stateFile}, creating fresh state.`);
       }
     }
@@ -404,14 +404,14 @@ class GeminiKeyRotator {
         logger.warn('GEMINI_ROTATOR', `All keys currently exhausted/cooling down. Earliest available key in ~${waitSec}s.`);
       }
 
-      const ai = new GoogleGenAI({
+      const client = new GoogleGenAI({
         apiKey: active.apiKey,
-        ...(options.clientOptions || {})
+        ...options.clientOptions
       });
 
       try {
         const result = await operationFn({
-          ai,
+          ai: client,
           apiKey: active.apiKey,
           fingerprint: active.fingerprint,
           GoogleGenAI,
