@@ -3,145 +3,33 @@ import {
   Play, Pause, RotateCcw, ChevronRight, ChevronLeft,
   CheckCircle2, Check, RefreshCw, Zap,
   Brain, ShieldCheck, FileUp, Layers, Repeat,
-  Database,
-  Cpu, Thermometer, BatteryCharging,
-  Sparkles
+  Database, BarChart3, LayoutDashboard, Sparkles,
+  Cpu, Thermometer, BatteryCharging
 } from 'lucide-react';
+import { 
+  ALL_STAGES, 
+  SIMULATOR_SCENARIOS 
+} from '../config/workflowStages';
 
-const SCENARIOS = [
-  {
-    id: 'gen12-thermal-battery',
-    title: 'HPE ProLiant DL380 Gen12 — High-TDP & Smart Storage Battery Remediation',
-    family: 'ProLiant',
-    gen: 'Gen12',
-    genIsolated: true,
-    chassis: 'DL380_Gen12_SFF',
-    chassisName: 'HPE ProLiant DL380 Gen12 SFF CTO Server (P73282-B21)',
-    skus: [
-      { sku: 'P73282-B21', qty: 1, name: 'HPE ProLiant DL380 Gen12 SFF CTO Server', category: 'Chassis', type: 'CTO' },
-      { sku: 'P74573-B21', qty: 2, name: 'Intel Xeon 6730P 2.5GHz 32C 250W Processor', category: 'Processor', type: 'Standard', tdp: 250 },
-      { sku: 'P69728-B21', qty: 16, name: 'HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit', category: 'Memory', type: 'Standard' },
-      { sku: 'P47777-B21', qty: 1, name: 'HPE MR416i-p Gen11 Storage Controller', category: 'Storage Controller', type: 'Standard' },
-      { sku: 'P03178-B21', qty: 2, name: 'HPE 1000W Flex Slot Titanium Power Supply', category: 'Power Supply', type: 'Standard', watts: 1000 }
-    ],
-    remediationSkus: [
-      { sku: 'P48820-B21', qty: 1, name: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit', reason: 'High CPU TDP (>240W) Thermal Requirement' },
-      { sku: 'P01366-B21', qty: 1, name: 'HPE 96W Smart Storage Battery 145mm Cable', reason: 'MR416i-p Storage Controller Write Cache Power' }
-    ]
-  },
-  {
-    id: 'telco-dc-memory',
-    title: 'Telco -48VDC Power Supply Lug Kit & 16-Channel Balanced Population',
-    family: 'ProLiant',
-    gen: 'Gen12',
-    genIsolated: true,
-    chassis: 'DL380_Gen12_SFF',
-    chassisName: 'HPE ProLiant DL380 Gen12 Telco NEBS SFF CTO (P73282-B21)',
-    skus: [
-      { sku: 'P73282-B21', qty: 1, name: 'HPE ProLiant DL380 Gen12 SFF CTO Server', category: 'Chassis', type: 'CTO' },
-      { sku: 'P74571-B21', qty: 2, name: 'Intel Xeon 6710 2.4GHz 16C 185W Processor', category: 'Processor', type: 'Standard', tdp: 185 },
-      { sku: 'P69728-B21', qty: 16, name: 'HPE 64GB Dual Rank x4 DDR5-6400 Smart Memory Kit', category: 'Memory', type: 'Standard' },
-      { sku: 'P18967-B21', qty: 2, name: 'HPE 1600W -48VDC Hot Plug Power Supply Kit', category: 'Power Supply', type: 'Standard', isDC: true }
-    ],
-    remediationSkus: [
-      { sku: 'P36877-B21', qty: 2, name: 'HPE 48VDC Power Supply Lug Kit', reason: 'Mandatory DC Power Cable Lug Connection' }
-    ]
-  }
-];
+const ICON_MAP = {
+  FileUp,
+  Sparkles,
+  ShieldCheck,
+  Layers,
+  Brain,
+  LayoutDashboard,
+  Repeat,
+  BarChart3,
+  Database
+};
 
-const STEPS = [
-  {
-    stageId: 1,
-    title: 'BOM Quote Ingestion & SKU Tokenization',
-    subtitle: 'Extract raw text/CSV, normalize HPE -B21 SKUs, check Option Types & MEA exclusions',
-    icon: FileUp,
-    badge: 'Stage 1.1',
-    durationSec: 2.2,
-    substeps: [
-      'Normalizing SKU string patterns against centralized regex (Rule #35)',
-      'Validating Option Types (CTO Base vs BTO vs FIO Factory-Integrated)',
-      'Checking Dubai MEA TAA/GTA exclusion rules (Rule #33)',
-      'Calculating total BOM cost and BOM item count'
-    ]
-  },
-  {
-    stageId: 2,
-    title: '6-Aspect Deterministic Physical Math Engine',
-    subtitle: 'Run deterministic math for TDP, memory channels, storage tri-mode, PCIe, power, and support',
-    icon: ShieldCheck,
-    badge: 'Stage 1.2',
-    durationSec: 3.0,
-    substeps: [
-      'Thermal & TDP Math: 2x 250W CPUs = 500W TDP (>240W threshold) → Missing High-Perf Fan Kit P48820-B21',
-      'Memory Topology: 16 DIMMs / 2 Sockets = 8 DIMMs/socket (1DPC Balanced Symmetry Certified)',
-      'Storage Tri-Mode: MR416i-p Controller detected → Missing 96W Smart Storage Battery P01366-B21',
-      'Power Redundancy: 2x 1000W Flex Slot PSUs = 2000W Capacity (N+1 Redundancy Certified)',
-      'PCIe Risers & OCP NICs: Primary 3-slot PCIe Gen5 riser math verified',
-      'Pointnext Tech Care: 3-Year 24x7 Support SKU verified'
-    ]
-  },
-  {
-    stageId: 3,
-    title: 'Dual-Brain Agentic Guardrail & NotebookLM RAG',
-    subtitle: 'Query Gemini LLM intent verifier and NotebookLM QuickSpecs source grounding',
-    icon: Brain,
-    badge: 'Stage 1.3',
-    durationSec: 2.5,
-    substeps: [
-      'Gemini LLM Intent Verification: Fact-checking workload DNA for High Performance Fan requirement',
-      'NotebookLM QuickSpecs RAG: Grounding against official DL380 Gen12 PDF source docs',
-      'Cross-checking CTO base rules with 98 scraped OCA catalog entries',
-      'Confidence Score deduction calculation: Base 1.00 - 0.20 (Thermal) - 0.20 (Battery) = 60% Initial'
-    ]
-  },
-  {
-    stageId: 4,
-    title: '5-Tier Strategic Resolution Matrix Synthesis',
-    subtitle: 'Generate Rank 1 (Intent Preserved) through Rank 5 (Budget Minimized) without hallucinated SKUs',
-    icon: Layers,
-    badge: 'Stage 1.4',
-    durationSec: 2.8,
-    substeps: [
-      'Rank 1 (Intent Match): Injected High-Perf Fan (P48820-B21) + Smart Battery (P01366-B21) → 100% Confidence',
-      'Rank 2 (Performance Optimized): Upgraded 96GB DIMMs + Dual MR416i-p controllers',
-      'Rank 3 (Cost Balanced): Standard fans with 205W Xeon CPUs',
-      'Rank 4 (High-Availability): 2x Redundant Storage Batteries + 1600W Titanium PSUs',
-      'Rank 5 (Budget Minimized): Removed redundant options, trimmed accessories ($6,420 budget savings)'
-    ]
-  },
-  {
-    stageId: 5,
-    title: 'HPE Partner Portal Quote Reconciliation',
-    subtitle: 'Line-by-line verification between vendor quote BOM and Rank 1 Strategy Matrix',
-    icon: Repeat,
-    badge: 'Stage 2.1',
-    durationSec: 2.5,
-    substeps: [
-      'Tokenizing Partner Portal Quote items and mapping to OCA internal IDs',
-      'Matching chassis base variant P73282-B21 (100% Match)',
-      'Detecting missing Fan Kit in initial quote and certifying remediation in Rank 1',
-      'Synthesizing discrepancy audit ledger and variance report'
-    ]
-  },
-  {
-    stageId: 6,
-    title: 'Closed-Loop HITL Ambiguity Learning & Knowledge Sync',
-    subtitle: 'Capture human-in-the-loop decisions, record atomic KnowledgeDeltas, and update RAG registry',
-    icon: Database,
-    badge: 'Stage 2.2',
-    durationSec: 2.2,
-    substeps: [
-      'Human-in-the-Loop clarification recorded: Verified High-Perf Fan rule for Gen12 250W CPUs',
-      'Writing KnowledgeDelta atomically to outputs/history/catalog_deltas.json via safeWriteJsonAtomic',
-      'Updating Master Catalog Registry (785 SKUs across 5 certified product lines)',
-      'Generating NotebookLM markdown sync payload: notebook_sync_payload_DL380_Gen12_SFF.md'
-    ]
-  }
-];
+function getIcon(name) {
+  return ICON_MAP[name] || FileUp;
+}
 
 export default function AutonomousWorkflowSimulator({
-  _onApplyScenarioResults,
-  _onClose
+  onApplyScenarioResults: _onApplyScenarioResults,
+  onClose: _onClose
 }) {
   const [selectedScenarioIdx, setSelectedScenarioIdx] = useState(0);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
@@ -149,35 +37,34 @@ export default function AutonomousWorkflowSimulator({
   const [playbackSpeed, setPlaybackSpeed] = useState(1); // 0.5x, 1x, 2x
   const [substepProgress, setSubstepProgress] = useState(0);
 
-  const scenario = SCENARIOS[selectedScenarioIdx];
-  const step = STEPS[currentStepIdx];
+  const scenario = SIMULATOR_SCENARIOS[selectedScenarioIdx] || SIMULATOR_SCENARIOS[0];
+  const step = ALL_STAGES[currentStepIdx] || ALL_STAGES[0];
   const timerRef = useRef(null);
   const substepTimerRef = useRef(null);
 
   // Playback timer
   useEffect(() => {
     if (!isPlaying) {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
       if (substepTimerRef.current) clearInterval(substepTimerRef.current);
       return;
     }
 
     const duration = (step.durationSec * 1000) / playbackSpeed;
-    const intervalTime = duration / (step.substeps.length + 1);
+    const substepCount = step.substeps?.length || 1;
+    const intervalTime = duration / (substepCount + 1);
 
     setSubstepProgress(0);
-    let currentSub = 0;
 
     substepTimerRef.current = setInterval(() => {
-      currentSub += 1;
-      setSubstepProgress(prev => Math.min(prev + 1, step.substeps.length));
+      setSubstepProgress(prev => Math.min(prev + 1, substepCount));
     }, intervalTime);
 
     timerRef.current = setTimeout(() => {
       clearInterval(substepTimerRef.current);
-      setSubstepProgress(step.substeps.length);
+      setSubstepProgress(substepCount);
 
-      if (currentStepIdx < STEPS.length - 1) {
+      if (currentStepIdx < ALL_STAGES.length - 1) {
         setCurrentStepIdx(prev => prev + 1);
       } else {
         setIsPlaying(false);
@@ -188,10 +75,10 @@ export default function AutonomousWorkflowSimulator({
       clearTimeout(timerRef.current);
       clearInterval(substepTimerRef.current);
     };
-  }, [isPlaying, currentStepIdx, selectedScenarioIdx, playbackSpeed]);
+  }, [isPlaying, currentStepIdx, selectedScenarioIdx, playbackSpeed, step]);
 
   const handlePlayPause = () => {
-    if (!isPlaying && currentStepIdx === STEPS.length - 1) {
+    if (!isPlaying && currentStepIdx === ALL_STAGES.length - 1) {
       setCurrentStepIdx(0);
       setSubstepProgress(0);
     }
@@ -206,7 +93,7 @@ export default function AutonomousWorkflowSimulator({
 
   const handleStepForward = () => {
     setIsPlaying(false);
-    if (currentStepIdx < STEPS.length - 1) {
+    if (currentStepIdx < ALL_STAGES.length - 1) {
       setCurrentStepIdx(prev => prev + 1);
       setSubstepProgress(0);
     }
@@ -247,7 +134,7 @@ export default function AutonomousWorkflowSimulator({
             Automated Lifecycle Simulation &amp; Live Step Execution
           </h2>
           <p className="text-xs text-slate-500">
-            Witness the entire 6-stage lifecycle execute autonomously with deliberate pacing, aspect checks, confidence scoring, and closed-loop learning.
+            Witness the entire 9-stage lifecycle execute autonomously with deliberate pacing, aspect checks, confidence scoring, and closed-loop learning.
           </p>
         </div>
 
@@ -263,7 +150,7 @@ export default function AutonomousWorkflowSimulator({
             disabled={isPlaying}
             className="text-xs font-semibold bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 shadow-2xs cursor-pointer [color-scheme:light]"
           >
-            {SCENARIOS.map((sc, sIdx) => (
+            {SIMULATOR_SCENARIOS.map((sc, sIdx) => (
               <option key={sc.id} value={sIdx}>{sc.title}</option>
             ))}
           </select>
@@ -279,7 +166,7 @@ export default function AutonomousWorkflowSimulator({
           </span>
           <span className="text-slate-600">/</span>
           <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 font-bold border border-purple-800">
-            Gen: {scenario.gen} (Isolated — No DL380a cross-bleed)
+            Gen: {scenario.gen} (Isolated &mdash; No DL380a cross-bleed)
           </span>
           <span className="text-slate-600">/</span>
           <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">
@@ -289,7 +176,7 @@ export default function AutonomousWorkflowSimulator({
 
         <div className="flex items-center gap-3">
           <span className="text-[11px] text-slate-300 font-medium">
-            Active Workitem: <strong className="text-white">{scenario.skus.length} Items</strong>
+            Active Workitem: <strong className="text-white">{scenario.skus?.length || 0} Items</strong>
           </span>
           <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 text-[10px] font-mono border border-slate-700">
             Dual-Brain MCP: ONLINE
@@ -309,7 +196,7 @@ export default function AutonomousWorkflowSimulator({
             }`}
           >
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
-            <span>{isPlaying ? 'Pause Simulation' : (currentStepIdx === STEPS.length - 1 ? 'Replay Workflow' : '▶ Run Autonomous Workflow')}</span>
+            <span>{isPlaying ? 'Pause Simulation' : (currentStepIdx === ALL_STAGES.length - 1 ? 'Replay Workflow' : '▶ Run Autonomous Workflow')}</span>
           </button>
 
           <button
@@ -334,14 +221,14 @@ export default function AutonomousWorkflowSimulator({
           </button>
 
           <span className="text-xs font-bold text-slate-700 font-mono px-2">
-            Step {currentStepIdx + 1} of {STEPS.length}
+            Step {currentStepIdx + 1} of {ALL_STAGES.length}
           </span>
 
           <button
             onClick={handleStepForward}
-            disabled={currentStepIdx === STEPS.length - 1 || isPlaying}
+            disabled={currentStepIdx === ALL_STAGES.length - 1 || isPlaying}
             className={`p-2 rounded-xl transition-colors cursor-pointer ${
-              currentStepIdx === STEPS.length - 1 || isPlaying ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+              currentStepIdx === ALL_STAGES.length - 1 || isPlaying ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
             }`}
             title="Next Step"
           >
@@ -388,12 +275,12 @@ export default function AutonomousWorkflowSimulator({
         </div>
       </div>
 
-      {/* 6-STAGE HORIZONTAL STEPPER WITH REAL-TIME ACTIVE GLOW */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-        {STEPS.map((s, idx) => {
+      {/* 9-STAGE HORIZONTAL STEPPER WITH REAL-TIME ACTIVE GLOW */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-2">
+        {ALL_STAGES.map((s, idx) => {
           const isCurrent = currentStepIdx === idx;
           const isDone = currentStepIdx > idx;
-          const StepIcon = s.icon;
+          const StepIcon = getIcon(s.iconName);
 
           let cardStyle = 'border-slate-200 bg-slate-50/70 text-slate-500 opacity-80 hover:border-slate-300 hover:opacity-100';
           if (isCurrent) {
@@ -404,22 +291,22 @@ export default function AutonomousWorkflowSimulator({
 
           return (
             <button
-              key={s.stageId}
+              key={s.id}
               onClick={() => {
                 setIsPlaying(false);
                 setCurrentStepIdx(idx);
-                setSubstepProgress(idx < currentStepIdx ? s.substeps.length : 0);
+                setSubstepProgress(idx < currentStepIdx ? (s.substeps?.length || 1) : 0);
               }}
-              className={`p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden ${cardStyle} ${isDone ? 'animate-step-complete' : ''}`}
+              className={`p-2.5 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden ${cardStyle} ${isDone ? 'animate-step-complete' : ''}`}
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className={`text-[10px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded ${
+              <div className="flex items-center justify-between mb-1">
+                <span className={`text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded ${
                   isCurrent ? 'bg-blue-600 text-white shadow-2xs' : isDone ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
                 }`}>
-                  {s.badge}
+                  0{s.stageNumber}
                 </span>
                 {isDone ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 ) : isCurrent && isPlaying ? (
                   <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0" />
                 ) : (
@@ -427,11 +314,11 @@ export default function AutonomousWorkflowSimulator({
                 )}
               </div>
 
-              <h4 className="text-xs font-bold truncate leading-tight">{s.title}</h4>
+              <h4 className="text-[11px] font-bold truncate leading-tight">{s.shortTitle}</h4>
 
               {/* Mini Substep Progress Bar */}
-              {isCurrent && (
-                <div className="w-full h-1 bg-blue-200 rounded-full mt-2 overflow-hidden">
+              {isCurrent && s.substeps && (
+                <div className="w-full h-1 bg-blue-200 rounded-full mt-1.5 overflow-hidden">
                   <div
                     className="h-full bg-blue-600 progress-bar-fill"
                     style={{ width: `${(substepProgress / s.substeps.length) * 100}%` }}
@@ -448,12 +335,17 @@ export default function AutonomousWorkflowSimulator({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-extrabold text-sm shadow-md shadow-blue-600/20">
-              0{step.stageId}
+              0{step.stageNumber}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-extrabold text-slate-900">{step.title}</h3>
                 <span className="badge badge-blue text-[10px] font-bold">{step.badge}</span>
+                {step.category && (
+                  <span className="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-mono font-bold border border-indigo-200">
+                    {step.category}
+                  </span>
+                )}
               </div>
               <p className="text-xs text-slate-500">{step.subtitle}</p>
             </div>
@@ -461,20 +353,20 @@ export default function AutonomousWorkflowSimulator({
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-slate-500">
-              Completed: <strong>{substepProgress}</strong> / {step.substeps.length} checks
+              Completed: <strong>{substepProgress}</strong> / {step.substeps?.length || 0} checks
             </span>
           </div>
         </div>
 
-        {/* SUBSTEPS EXECUTION LOG WITH ANIMATED CHECKMARKS */}
+        {/* SUBSTEPS EXECUTION LOG WITH ANIMATED CHECKMARKS & RULE CODES */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-          {step.substeps.map((sub, sIdx) => {
+          {step.substeps?.map((sub, sIdx) => {
             const isSubDone = substepProgress > sIdx;
             const isSubActive = substepProgress === sIdx && isPlaying;
 
             return (
               <div
-                key={sIdx}
+                key={sub.id || sIdx}
                 className={`p-3 rounded-xl border text-xs transition-all duration-200 flex items-start gap-2.5 ${
                   isSubDone
                     ? 'border-emerald-200 bg-emerald-50/50 text-emerald-950'
@@ -492,7 +384,19 @@ export default function AutonomousWorkflowSimulator({
                     <div className="w-4 h-4 rounded-full border border-slate-300 bg-white" />
                   )}
                 </div>
-                <span className="leading-snug">{sub}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="font-bold truncate">{sub.title}</span>
+                    {sub.ruleCode && (
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-slate-200 text-slate-700 shrink-0">
+                        {sub.ruleCode}
+                      </span>
+                    )}
+                  </div>
+                  {sub.detail && (
+                    <p className="text-[10px] opacity-80 mt-0.5 leading-tight line-clamp-1">{sub.detail}</p>
+                  )}
+                </div>
               </div>
             );
           })}

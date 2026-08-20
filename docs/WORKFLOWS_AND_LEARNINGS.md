@@ -171,3 +171,17 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 ## 19. Chaos & Adversarial Red-Teaming Resilience
 - **Continuous Adversarial Verification**: `scripts/adversarial_agent.js` continuously generates subtly invalid BOQs using live `gemini-3.5-flash` (`ai.models.generateContent`) and confirms the evaluator catches 100% of injected anomalies with 100% precision.
 - **38/38 Chaos Failure Mode Certification**: `tests/test_failure_modes_and_chaos.js` validates that simulated cloud outages, API quota limits (HTTP 429), missing dependencies, and OCR vision failures are never silently suppressed and transparently fall back to local safety nets with full observability.
+
+## 20. Real-World Customer E2E & Server Concurrency Perfection
+- **Dynamic Server Mutex Guard (`isTaskRunning()`)**:
+  - In Express servers coordinating asynchronous CLI jobs (e.g. `eval_boq.js`), naive boolean task locks (`if (activeTask)`) can become stale if child processes terminate unexpectedly.
+  - Implementing `isTaskRunning()` with live `proc.exitCode !== null || proc.killed` verification and attaching `proc.on('error')` listeners eliminates false 409 Conflict rejections.
+  - Adding a `POST /api/kill-task` handshake at test initialization guarantees automated suites always execute against a completely clean background environment.
+- **JSX Character Entity vs Raw Text Rendering**:
+  - In React JSX, writing literal HTML entities like `&amp;` renders the raw string `"&amp;"` into the DOM text rather than `"&"`.
+  - Standardizing on genuine `&` characters across all JSX components (`ResolutionMatrix.jsx`, `BoqUploader.jsx`) ensures string equality matches for DOM selectors, search filters, and copy-to-clipboard actions.
+- **Preflight vs Evaluation Confidence Gauge Scoping**:
+  - Preflight preview panels and Evaluation result sections both display "Confidence Score:". Scoping test locators to evaluation-specific banners (`Certified Buildable Configuration` / `Physical Constraint Violations Flagged`) prevents race conditions between preflight completion and full aspect evaluation.
+- **CSS Animation Stability in Headless Browser Automation**:
+  - Keyframe animations (`animate-fade-in-up`, `delay-300`, `animate-modal-content`) continuously shift element bounding boxes during transitions.
+  - Using `{ force: true }` click dispatch or awaiting animation completion ensures 100% deterministic test execution across Playwright and CDP automation.

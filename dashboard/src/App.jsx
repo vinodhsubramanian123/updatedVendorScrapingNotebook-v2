@@ -515,6 +515,14 @@ export default function App() {
       {/* Main Content Body */}
       <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
         
+        {/* Global Pending Loading State Indicator & Skeleton Wireframes */}
+        <GlobalLoadingState
+          isTaskRunning={isTaskRunning}
+          isQueryingRag={isQueryingRag}
+          activeProgress={activeProgress}
+          mode="banner"
+        />
+
         {/* The Macro Flow Engine (Default View) */}
         {activeTab === 'orchestrator' && (
           <div key="orchestrator" className="animate-tab-enter">
@@ -525,8 +533,15 @@ export default function App() {
               activeProgress={activeProgress}
               selectedChassis={selectedChassis}
               logStream={logStream}
-              onOpenTool={setActiveModal}
+              onOpenTool={(tool) => {
+                if (tool === 'traceability') {
+                  setShowTraceabilityInspector(true);
+                } else {
+                  setActiveModal(tool);
+                }
+              }}
               onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+              onNavigateTab={setActiveTab}
             />
           </div>
         )}
@@ -546,14 +561,6 @@ export default function App() {
             />
           </div>
         )}
-
-        {/* Global Pending Loading State Indicator & Skeleton Wireframes */}
-        <GlobalLoadingState
-          isTaskRunning={isTaskRunning}
-          isQueryingRag={isQueryingRag}
-          activeProgress={activeProgress}
-          mode="banner"
-        />
 
         {/* Master Excel Catalog Explorer */}
         {activeTab === 'catalog' && (

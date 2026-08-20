@@ -74,6 +74,15 @@ const upload = multer({ storage });
 let activeTask = null; // { type, process, startTime }
 const sseClients = new Set();
 
+function isTaskRunning() {
+  if (!activeTask) return false;
+  if (activeTask.process && (activeTask.process.exitCode !== null || activeTask.process.killed)) {
+    activeTask = null;
+    return false;
+  }
+  return true;
+}
+
 function broadcastSSE(data) {
   const payload = `data: ${JSON.stringify(data)}\n\n`;
   for (const client of sseClients) {
@@ -141,6 +150,12 @@ function startTask(type, proc, res) {
 
   proc.stdout.on('data', data => handleData(data, 'stdout'));
   proc.stderr.on('data', data => handleData(data, 'stderr'));
+
+  proc.on('error', (err) => {
+    activeTask = null;
+    broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr' });
+    broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId });
+  });
 
   proc.on('close', (code) => {
     const taskRef = activeTask; // Capture reference before clearing to prevent race condition
@@ -623,7 +638,7 @@ app.get('/api/stream-logs', (req, res) => {
 // -----------------------------------------------------------------------------
 
 app.post('/api/scrape', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
 
   const { mode } = req.body; // 'solution' or 'storage'
   const scriptName = mode === 'storage' ? 'scrape_oca_storage_solution.js' : 'scrape_oca_solution.js';
@@ -634,7 +649,7 @@ app.post('/api/scrape', (req, res) => {
 });
 
 app.post('/api/rebuild', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running' });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running' });
 
   const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'rebuild_all.js');
   const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT });
@@ -642,7 +657,7 @@ app.post('/api/rebuild', (req, res) => {
 });
 
 app.post('/api/navigate-oca', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running' });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running' });
 
   const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'lib', 'navigate_oca.js');
   const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
@@ -777,7 +792,7 @@ app.post('/api/confirm-preflight-split', (req, res) => {
 });
 
 app.post('/api/eval-boq', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
 
   const { filepath, rawText, chassisDir } = req.body;
 
@@ -951,6 +966,12 @@ app.post('/api/eval-boq', (req, res) => {
       console.error('Error parsing evaluator stdout:', err.message);
       broadcastSSE({ type: 'EVAL_RESULT', error: 'Failed to parse evaluator JSON', runId });
     }
+  });
+
+  proc.on('error', (err) => {
+    activeTask = null;
+    broadcastSSE({ type: 'LOG', text: `Evaluator process error: ${err.message}`, stream: 'stderr' });
+    broadcastSSE({ type: 'EVAL_RESULT', error: err.message, runId });
   });
 });
 
@@ -1236,7 +1257,7 @@ app.post('/api/portal-feedback', (req, res) => {
 
 // Download QuickSpecs PDF Endpoint (Fix B4)
 app.post('/api/download-pdf', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
 
   const { chassisId: _chassisId } = req.body;
   const pdfScript = path.join(PROJECT_ROOT, 'scripts', 'download_quickspecs_pdf.js');
@@ -1314,7 +1335,7 @@ app.get('/api/price-history', (req, res) => {
 
 // Portfolio Verification Suite Endpoint (verify_all.js)
 app.post('/api/verify-all', (req, res) => {
-  if (activeTask) {
+  if (isTaskRunning()) {
     return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
   }
 
@@ -1434,7 +1455,7 @@ app.get('/api/history/runs/:id', (req, res) => {
 // -----------------------------------------------------------------------------
 
 app.post('/api/sync-knowledge', (req, res) => {
-  if (activeTask) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
+  if (isTaskRunning()) return res.status(409).json({ error: 'Another task is currently running', task: activeTask.type });
 
   const syncScript = path.join(PROJECT_ROOT, 'scripts', 'lib', 'knowledge_sync.js');
   if (!fs.existsSync(syncScript)) {

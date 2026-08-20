@@ -98,32 +98,41 @@ export default function BoqUploader({
     const currentFile = isFileObject ? overrideFile : file;
     const currentText = (typeof overrideRawText === 'string') ? overrideRawText : rawText;
     
-    console.log('[BoqUploader] handlePreprocess triggered. currentFile:', currentFile?.name, 'currentText length:', currentText?.trim()?.length);
-    if (!currentFile && !currentText?.trim()) return;
+    console.log('[BoqUploader] handlePreprocess triggered. currentFile:', currentFile?.name, 'size:', currentFile?.size, 'currentText length:', currentText?.trim()?.length);
+    if (!currentFile && !currentText?.trim()) {
+      console.log('[BoqUploader] Aborting handlePreprocess: no file and no text');
+      return;
+    }
     setIsPreprocessing(true);
     setEvalError(null);
 
     try {
       let filepath = null;
       if (currentFile) {
+        console.log('[BoqUploader] Uploading file to /api/upload-boq...');
         const formData = new FormData();
         formData.append('boqFile', currentFile);
         const uploadRes = await fetch('/api/upload-boq', {
           method: 'POST',
           body: formData
         });
+        console.log('[BoqUploader] uploadRes status:', uploadRes.status);
         const uploadData = await uploadRes.json();
+        console.log('[BoqUploader] uploadData:', uploadData);
         filepath = uploadData.filepath;
       }
 
+      console.log('[BoqUploader] Calling /api/preprocess-boq with filepath:', filepath, 'chassisDir:', chassisDir);
       const res = await fetch('/api/preprocess-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filepath, rawText: currentText, chassisDir })
       });
+      console.log('[BoqUploader] preprocess-boq res status:', res.status);
       const data = await res.json();
       console.log('[BoqUploader] preprocess-boq response:', data);
       if (data.status === 'SUCCESS') {
+        console.log('[BoqUploader] Setting preflightData in state:', data.preflightData);
         setPreflightData(data.preflightData);
       } else {
         setEvalError(data.error || 'Failed to preprocess BOQ');
@@ -207,7 +216,7 @@ export default function BoqUploader({
         <div>
           <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
             <UploadCloud className="w-5 h-5 text-blue-600" />
-            BOQ Quote Upload &amp; Multi-Aspect Ingestion
+            BOQ Quote Upload & Multi-Aspect Ingestion
           </h2>
           <p className="text-xs text-slate-500">
             Upload customer Excel quotes (.xlsx, .csv, .json) or paste raw BOM text for real-time 6-aspect physical evaluation.
@@ -220,7 +229,7 @@ export default function BoqUploader({
           className="btn-secondary text-xs flex items-center gap-1.5 border-blue-200 text-blue-700 hover:bg-blue-50 transition-all active:scale-98"
         >
           {isPreprocessing ? <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600" /> : <Sliders className="w-3.5 h-3.5 text-blue-600" />}
-          Pre-process &amp; Categorize
+          Pre-process & Categorize
         </button>
       </div>
 
@@ -242,7 +251,7 @@ export default function BoqUploader({
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-blue-600" />
               <h3 className="font-bold text-xs text-slate-900">
-                Manual Pre-Processing &amp; Variant Categorization
+                Manual Pre-Processing & Variant Categorization
               </h3>
               <span className="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">
                 {preflightData.variations?.length || 0} Variation(s) Identified
@@ -265,7 +274,7 @@ export default function BoqUploader({
                 <div className="flex items-center gap-2">
                   <Calculator className="w-4 h-4 text-indigo-700" />
                   <h4 className="font-bold text-xs text-slate-900">
-                    5-Stage Validation Cleansing &amp; Math Guardrails Workflow
+                    5-Stage Validation Cleansing & Math Guardrails Workflow
                   </h4>
                 </div>
                 <span data-testid="stages-cleared-badge" className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">
@@ -473,7 +482,7 @@ export default function BoqUploader({
             {isEvaluating ? (
               <><RefreshCw className="w-4 h-4 animate-spin" /> Evaluating 6 Physical Aspects (Step {currentStep}/10)...</>
             ) : (
-              <><FileText className="w-4 h-4" /> Run Aspect Math &amp; Pre-Flight BOQ Check</>
+              <><FileText className="w-4 h-4" /> Run Aspect Math & Pre-Flight BOQ Check</>
             )}
           </button>
         </div>
@@ -521,7 +530,7 @@ export default function BoqUploader({
             <div className="flex items-center gap-2">
               <Activity className={`w-4 h-4 ${isEvaluating ? 'text-blue-400 animate-pulse' : 'text-emerald-400'}`} />
               <h4 className="font-extrabold text-xs text-slate-100 tracking-wide uppercase">
-                10-Step Evaluation &amp; Aspect Math Verification Pipeline
+                10-Step Evaluation & Aspect Math Verification Pipeline
               </h4>
             </div>
             <div className="flex items-center gap-2">

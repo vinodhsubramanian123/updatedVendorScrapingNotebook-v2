@@ -22,6 +22,10 @@ For full architectural details, coding decisions, and project learnings, refer t
 - [`docs/WORKFLOWS_AND_LEARNINGS.md`](file:///home/vinodh/vendorNotebookSolution/docs/WORKFLOWS_AND_LEARNINGS.md): E2E Pipelines, Agentic Guardrail loops, Continuous Benchmarking (Adversarial Red-Teaming), and MCP workflows.
 - [`docs/DEVELOPER_GUIDE.md`](file:///home/vinodh/vendorNotebookSolution/docs/DEVELOPER_GUIDE.md): Local development, UI/UX standards, testing (eval/benchmarks), and API rate limit handling.
 
-## 3. Key Technical Decisions
+## 5. Key Technical Decisions & Operational Guardrails
 - **MCP Agentic Loop:** The BOQ Evaluator utilizes an MCP Server (`scripts/mcp_server.js`) and an Agentic Guardrail (`scripts/lib/agentic_guardrail.js`) for resolution.
 - **Red-Teaming:** A background task (`scripts/adversarial_agent.js`) continually stress-tests the evaluator for reliability, logging to `pipeline_telemetry.json`.
+- **Async Task Mutex & Process Lifecycle:** `server.cjs` manages long-running child processes with `isTaskRunning()` and `proc.on('error')` guards, preventing stale mutex locks and false 409 Conflict errors.
+- **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint`).
+- **Dynamic Semantic Graph (`graphify`):** The repository maintains a live 1,878-node semantic dependency graph (`graphify update .`) for token-efficient architecture discovery.
+

@@ -158,6 +158,7 @@ export default function MacroOrchestratorFlow({
             logStream={logStream}
             onNavigateTab={onNavigateTab}
             onTriggerSyncKnowledge={onTriggerSyncKnowledge}
+            onOpenTool={onOpenTool}
             onOpenTraceability={() => onOpenTool && onOpenTool('traceability')}
           />
         </div>
