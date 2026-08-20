@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import WorkflowStepper from './WorkflowStepper';
 import AutonomousWorkflowSimulator from './AutonomousWorkflowSimulator';
+import { parseLogStream } from '../utils/logParser';
 
 export default function MacroOrchestratorFlow({
   // Data
@@ -36,20 +37,8 @@ export default function MacroOrchestratorFlow({
   const confidencePercent = confidenceVal !== undefined ? Math.round(confidenceVal * 100) : null;
   const violationsCount = evalResults?.aspectChecks?.filter(a => a.status === 'FAIL')?.length || evalResults?.errors?.length || 0;
 
-  // Process Logs
-  const logs = logStream.map((logObj, idx) => {
-    const logStr = typeof logObj === 'object' && logObj !== null ? (logObj.text || '') : String(logObj);
-    const match = logStr.match(/^\[(.*?)\]\s*(.*)$/);
-    if (match) {
-      const isSystem = match[2].includes('SYSTEM') || match[2].includes('START');
-      const isError = match[2].includes('ERROR') || match[2].includes('FAIL') || match[2].includes('❌');
-      const isSuccess = match[2].includes('SUCCESS') || match[2].includes('DONE') || match[2].includes('✅') || match[2].includes('PASS');
-      const level = isError ? 'WARN' : isSuccess ? 'SUCCESS' : isSystem ? 'SYSTEM' : 'INFO';
-      return { id: `log-${idx}`, timestamp: match[1], stage: 'PIPELINE', level, message: match[2] };
-    }
-    return { id: `log-${idx}`, timestamp: new Date().toISOString().substring(11, 23), stage: 'PIPELINE', level: 'INFO', message: logStr };
-  });
-
+  // Process Logs via centralized utility
+  const logs = parseLogStream(logStream);
   const filteredLogs = logs;
 
   useEffect(() => {

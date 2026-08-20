@@ -57,7 +57,13 @@ vendorNotebookSolution/
 │   │   ├── catalog_rules.js               ← 5-level rule extractor & mandatory SKU resolver
 │   │   ├── cdp.js                         ← shared CDP connection & command module
 │   │   ├── checksum_diff.js               ← SHA-256 hash diff engine
-│   │   ├── conflict_graph.js              ← 5-level conflict graph & strategy matrix
+│   │   ├── aspects/                       ← 7 physical aspect checkers (compute, memory, storage, pcie, etc.)
+│   │   ├── conflict/                      ← workload DNA & 5-tier strategy matrix synthesizer
+│   │   ├── notebook/                      ← query sanitizer, diagnostics, async job manager
+│   │   ├── preprocessor/                  ← CTO normalizer, variation clusterer, feedback persister
+│   │   ├── sync/                          ← NLM sync client, payload builder, drift inspector
+│   │   ├── error_envelope.js              ← standardized API error envelope & codes
+│   │   ├── conflict_graph.js              ← 5-level conflict graph coordinator
 │   │   ├── data_validator.js              ← schema & assertion validator
 │   │   ├── diff_catalog.js                ← catalog diff & price history engine
 │   │   ├── dom_extract.js                 ← DOM text & table extraction helpers
@@ -67,10 +73,10 @@ vendorNotebookSolution/
 │   │   ├── gemini_rotator.js              ← deterministic FIFO key rotator & daily quota manager
 │   │   ├── generate_boq_xlsx.js           ← XLSX exporter
 │   │   ├── index.js                       ← barrel re-export for common lib modules (34 domain exports)
-│   │   ├── knowledge_sync.js              ← NotebookLM sync payload builder & delta registry
+│   │   ├── knowledge_sync.js              ← NotebookLM sync payload coordinator
 │   │   ├── local_rag_search.js            ← dual-layer local fallback search
 │   │   ├── navigate_oca.js                ← smart partner portal auto-navigator
-│   │   ├── notebook_query_utils.js        ← natural language query pre/post-processor
+│   │   ├── notebook_query_utils.js        ← natural language query coordinator & barrel
 │   │   ├── ocr_service.js                 ← Gemini Vision OCR service with 25MB limits
 │   │   ├── pipeline_logger.js             ← standardized logger
 │   │   ├── post_flow_sync.js              ← post-flow RAG sync hook
@@ -92,7 +98,11 @@ vendorNotebookSolution/
 │   └── rebuild_all.js                     ← rebuild all catalogs from raw_data
 ├── tests/                                 ← test suites
 │   ├── test_gemini_rotator.js             ← smart FIFO key rotator & daily quota unit/live suite
+│   ├── test_task_mutex_concurrency.js     ← background task mutex & concurrency suite
+│   ├── test_dual_brain_fallbacks.js       ← offline dual-brain fallback & error envelope suite
+│   ├── test_extreme_edge_cases.js         ← boundary conditions & extreme edge case suite
 │   ├── e2e_headless_ui_test.js            ← E2E headless browser UI test
+│   ├── test_failure_modes_and_chaos.js    ← 38-test failure mode & chaos resilience suite
 │   ├── test_end_to_end_scenarios.js       ← multi-scenario E2E validation
 │   ├── test_conflict_graph.js             ← conflict graph unit tests
 │   ├── test_offline_pipeline.js           ← offline/fallback mode tests
@@ -100,12 +110,24 @@ vendorNotebookSolution/
 │   ├── test_vendor_bom_verifier.js        ← BOM verification tests
 │   └── test_incremental_checksum.js       ← diff checksum logic tests
 ├── dashboard/                             ← React + Vite UI dashboard
-│   ├── server.cjs                         ← Express backend (API routes + SSE)
+│   ├── server.cjs                         ← modular Express backend coordinator
+│   ├── routes/                            ← modular Express route handlers
+│   ├── services/                          ← taskManager, pathGuard, errorHandler
 │   ├── src/
-│   │   ├── App.jsx                        ← main app shell with tab routing
-│   │   └── components/                    ← 33 React components
+│   │   ├── App.jsx                        ← main app shell with custom hooks
+│   │   ├── services/                      ← evalNormalizer
+│   │   ├── utils/                         ← categoryStyles, logParser
+│   │   └── components/                    ← modular UI components
+│   │       ├── header/                    ← ChassisSelector, SmartSearchInput, NavigationTabs
+│   │       ├── matrix/                    ← RankCard, MatrixComparisonTable, MatrixToolbar, RejectionModal
+│   │       ├── uploader/                  ← BoqInputZone, PreflightPipelineAudit, MultiConfigSplitModal, EvaluationProgressSteps
+│   │       ├── stepper/                   ← StepStageCard, StepLogViewer, WorkflowHeader
+│   │       ├── summary/                   ← ChassisHeaderSummary, ChassisActiveModelCard, ChassisPortfolioTable
+│   │       ├── history/                   ← RunHistoryTable, RunDetailModal
+│   │       ├── reconciliation/            ← VendorMatchTable, ReconciliationActionPanel
+│   │       └── telemetry/                 ← telemetry hooks, sections, ledgers, modals
 │   └── package.json                       ← dashboard workspace config
-├── docs/                                  ← project documentation
+├── docs/                                  ← consolidated project documentation
 │   ├── ARCHITECTURE_AND_DESIGN.md         ← core architecture & Mermaid diagrams
 │   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines & agentic workflows
 │   └── DEVELOPER_GUIDE.md                 ← local dev, testing, API guide

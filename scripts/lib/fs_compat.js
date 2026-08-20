@@ -61,7 +61,9 @@ function cleanStrayPDFs(dir, destPath, maxAgeMs = 120000) {
         fs.unlinkSync(fullPath);
         console.log(`Cleaned stray temporary PDF: ${file}`);
       }
-    } catch (e) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'fs_compat.js', e); }
+    } catch (e) {
+      console.warn(`[WARN] [FS_COMPAT] Failed cleaning stray PDF ${file}: ${e.message}`);
+    }
   }
 }
 
@@ -157,11 +159,10 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
       fs.unlinkSync(bakPath);
     }
   } catch (finalVerifyErr) {
-    const logger = require('./pipeline_logger.js');
-    logger.error('FS_COMPAT', `Final verification failed for ${destPath} — restoring from .bak`, finalVerifyErr);
+    console.error(`[ERROR] [FS_COMPAT] Final verification failed for ${destPath} — restoring from .bak: ${finalVerifyErr.message}`);
     if (backupCreated && fs.existsSync(bakPath)) {
       fs.copyFileSync(bakPath, destPath);
-      logger.warn('FS_COMPAT', `Restored ${destPath} from backup`);
+      console.warn(`[WARN] [FS_COMPAT] Restored ${destPath} from backup`);
     }
     throw new Error(`safeWriteJsonAtomic: final verification failed, reverted from backup: ${finalVerifyErr.message}`);
   }
@@ -198,7 +199,6 @@ function copyDirRecursive(srcDir, destDir) {
  * @returns {object} { success: boolean, liveTargetDir: string }
  */
 function promoteStagingDirectory(stagingDir, liveTargetDir) {
-  const logger = require('./pipeline_logger.js');
   if (!fs.existsSync(stagingDir)) {
     throw new Error(`Staging directory does not exist: ${stagingDir}`);
   }
@@ -209,9 +209,9 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
     try {
       copyDirRecursive(liveTargetDir, backupDir);
       backupCreated = true;
-      logger.info('FS_COMPAT', `Live workspace backed up to: ${path.basename(backupDir)}`);
+      console.log(`[INFO] [FS_COMPAT] Live workspace backed up to: ${path.basename(backupDir)}`);
     } catch (err) {
-      logger.warn('FS_COMPAT', `Could not back up live target ${liveTargetDir}: ${err.message}`);
+      console.warn(`[WARN] [FS_COMPAT] Could not back up live target ${liveTargetDir}: ${err.message}`);
     }
   }
 

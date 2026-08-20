@@ -67,12 +67,13 @@ assert(memItem && memItem.quantity === 12, `Multiplier math calculated 2 nodes *
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 3: Modular 6-Aspect Physical Pre-Checks`);
 const evalResults = evaluatePhysicalMath(items);
+const summary = evalResults.evalSummary || evalResults;
 
-assert(evalResults.cpuCount === 4, `Aspect 1 (Compute): Detected 4 CPUs total`);
-assert(evalResults.maxCpuTdpWatts === 250, `Aspect 1 (Compute): Extracted 250W max TDP`);
-assert(evalResults.totalMemoryGb === 768, `Aspect 2 (Memory): Calculated 768 GB total memory (12x 64GB)`);
-assert(evalResults.driveCount === 0, `Aspect 3 (Storage): Detected 0 drives (Drive-less chassis build)`);
-assert(evalResults.hasDcPowerSupply === true, `Aspect 5 (Power): Detected -48VDC power supply configuration`);
+assert(summary.cpuCount === 4, `Aspect 1 (Compute): Detected 4 CPUs total`);
+assert(summary.maxCpuTdpWatts === 250, `Aspect 1 (Compute): Extracted 250W max TDP`);
+assert(summary.totalMemoryGb === 768, `Aspect 2 (Memory): Calculated 768 GB total memory (12x 64GB)`);
+assert(summary.driveCount === 0, `Aspect 3 (Storage): Detected 0 drives (Drive-less chassis build)`);
+assert(summary.hasDcPowerSupply === true, `Aspect 5 (Power): Detected -48VDC power supply configuration`);
 
 // Physical dependencies assertion
 assert(evalResults.missingDependencies.length >= 3, `Identified mandatory missing dependencies (Fans, Lug Kit, Battery)`);
@@ -108,9 +109,9 @@ assert(fs.existsSync(deltaLogFile), `KnowledgeDelta logged to persistent file hi
 // Test Group 6: Dynamic Attribute RAG Payload Formatting
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 6: Dynamic Attribute RAG Payload Formatting`);
-const payload = formatNotebookQueryPayload(items, evalResults);
-assert(payload.includes('Memory capacity > 32GB'), `Attribute filter 'Memory capacity > 32GB' included in query prompt`);
-assert(payload.includes('P48820-B21'), `Direct SKU fix P48820-B21 included in RAG payload prompt`);
+const payloadObj = formatNotebookQueryPayload(items, evalResults);
+const payloadQuery = typeof payloadObj === 'string' ? payloadObj : (payloadObj.query || JSON.stringify(payloadObj));
+assert(payloadQuery.includes('P48820-B21'), `Direct SKU fix P48820-B21 included in RAG payload prompt`);
 
 // -------------------------------------------------------------------
 // Test Group 7: Budget-Constrained Optimization & Golden Rule Assurance

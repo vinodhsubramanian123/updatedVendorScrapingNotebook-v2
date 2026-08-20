@@ -1,49 +1,95 @@
 'use strict';
 /**
- * scripts/lib/boq_evaluator.js — Pre-Flight BOQ Evaluator & Multi-Aspect Solution Pre-Check Engine
+ * scripts/lib/boq_evaluator.js — Multi-Aspect Physical Validation & Rule Engine
  *
- * Provides comprehensive multi-sheet Excel parsing, chassis multiplier evaluation, separator normalization,
- * modular multi-aspect physical pre-checks, quantitative confidence scoring, and Gemini Notebook payload formatting.
+ * Implements 6 physical math pre-checks:
+ * 1. Compute & Thermal: TDP watts vs High Performance Fan Kit
+ * 2. Memory & Channels: Interleaving, 1DPC/2DPC symmetry
+ * 3. Storage Tri-Mode: Drive cage, controller & Smart Storage Battery
+ * 4. Networking & OCP: OCP 3.0 slot capacity & port counts
+ * 5. PCIe Riser Capacity: PCIe expansion slots vs risers
+ * 6. Power Environment: -48VDC telco power supplies & DC lug kits
+ * 7. Support & Services: Mandatory service SLA validation
  */
 
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('./sku.js');
-const { calculateConfidenceScore } = require('./feedback_loop.js');
-const { classifyComponentRole } = require('./product_meta.js');
-const { emitProgress } = require('./progress.js');
 
-const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('./boq_preprocessor.js');
+const { cleanBaseSKU } = require('./sku.js');
+const { getMandatorySkusForChassis } = require('./catalog_rules.js');
+const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('./conflict_graph.js');
+const { parseSkuLines } = require('./boq_parser.js');
 
-const { DEFAULT_MANDATORY_SKUS, getMandatorySkusForChassis } = require('./catalog_rules.js');
+// Modular aspect subcomponents
+const { evalComputeThermal } = require('./aspects/compute_thermal.js');
+const { evalMemoryChannel } = require('./aspects/memory_channel.js');
+const { evalStorageTriMode } = require('./aspects/storage_tri_mode.js');
+const { evalNetworkingOcp } = require('./aspects/networking_ocp.js');
+const { evalPcieRiserSlots } = require('./aspects/pcie_riser.js');
+const { evalPowerEnvironment } = require('./aspects/power_environment.js');
+const { evalSupportManufacturing } = require('./aspects/support_manufacturing.js');
 
-/**
- * High TDP threshold requiring High-Performance Fan Kits
- */
 const HIGH_TDP_THRESHOLD_WATTS = 240;
 
-/**
- * Parse raw BOQ input (CSV, TSV, Multi-sheet Excel workbook, or text) and extract consolidated items.
- * Handles multipliers (e.g., 2x Server Node x 6x DIMMs = 12 total DIMMs) and line separators.
- * @param {string|Buffer} rawInput 
- * @param {string} filePath Optional filepath if parsing .xlsx file directly
- * @returns {Array<object>} Consolidated items array
- */
-function parseAndConsolidateBOQ(rawInput, filePath = '') {
-  const { parseSkuLines } = require('./boq_parser.js');
-  let lines = [];
+const DEFAULT_MANDATORY_SKUS = {
+  HIGH_PERF_FAN_KIT: { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit' },
+  HIGH_PERF_HEATSINK: { sku: 'P48818-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Heatsink' },
+  SMART_STORAGE_BATTERY: { sku: 'P01366-B21', name: 'HPE 96W Smart Storage Battery (up to 20 Devices)' },
+  NO_DRIVE_FIO_KIT: { sku: '873763-B21', name: 'HPE DL380 Gen10/11/12 No Drive Configuration FIO Kit' },
+  DC_LUG_KIT: { sku: 'P36877-B21', name: 'HPE ProLiant Gen11/12 DC Power Supply Cable Lug Option Kit' }
+};
 
-  if (filePath && (filePath.endsWith('.xlsx') || filePath.endsWith('.xls'))) {
-    const workbook = xlsx.readFile(filePath);
+function buildCtoBaseSkus() {
+  const defaults = [
+    'P73282-B21', // DL380 Gen12 SFF CTO
+    'P52534-B21', // DL360 Gen11 CTO
+    'P76706-B21', // DL380 Gen12 8SFF CTO Variant
+    'P56900-B21', // DL380 Gen11 8SFF CTO
+    'P52533-B21', // DL380 Gen11 8LFF CTO
+    'R0Q21A',     // Alletra / MSA Base
+    '864273-B21', // Synergy Module Base
+    'P57100-B21', // Cray GX5000 Base
+    'Q6Q67A'      // StoreEver Tape Base
+  ];
+  const set = new Set(defaults);
+  try {
+    const map = getChassisMap();
+    for (const info of Object.values(map)) {
+      if (info && info.baseSku) set.add(info.baseSku);
+    }
+  } catch (_) {}
+  return set;
+}
+
+const CTO_BASE_SKUS = buildCtoBaseSkus();
+
+function emitProgress(step, total, label, status = 'in_progress', detail = '') {
+  if (process.send) {
+    process.send({ type: 'PROGRESS', step, total, label, status, detail });
+  }
+}
+
+function parseAndConsolidateBOQ(rawInput, filePath = '') {
+  let lines = [];
+  const targetPath = (filePath && typeof filePath === 'string')
+    ? filePath
+    : (typeof rawInput === 'string' && (rawInput.endsWith('.xlsx') || rawInput.endsWith('.xls') || rawInput.endsWith('.csv') || rawInput.endsWith('.tsv') || rawInput.endsWith('.txt')) && fs.existsSync(rawInput))
+    ? rawInput
+    : '';
+
+  if (targetPath && (targetPath.endsWith('.xlsx') || targetPath.endsWith('.xls'))) {
+    const workbook = xlsx.readFile(targetPath);
     workbook.SheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];
       const csvText = xlsx.utils.sheet_to_csv(sheet);
       lines.push(...csvText.split(/\r?\n/));
     });
+  } else if (targetPath) {
+    const fileContent = fs.readFileSync(targetPath, 'utf-8');
+    lines = fileContent.split(/\r?\n/);
   } else {
-    const text = String(rawInput);
-    lines = text.split(/\r?\n/);
+    lines = String(rawInput || '').split(/\r?\n/);
   }
 
   lines = lines.filter(l => l.trim().length > 0);
@@ -51,274 +97,14 @@ function parseAndConsolidateBOQ(rawInput, filePath = '') {
 }
 
 /**
- * Aspect 1: Compute & Thermal Pre-Check
- */
-function evalComputeThermal(items, catalogData = null, mandatorySkus = DEFAULT_MANDATORY_SKUS) {
-  let cpuCount = 0;
-  let maxCpuTdpWatts = 0;
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    
-    // Attempt to lookup role from catalog if available, fallback to product_meta classifier
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Processor' || /^p\d{5}-b21$/i.test(it.sku)) {
-      if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
-        cpuCount += it.quantity;
-        const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
-        if (tdpMatch) {
-          const tdp = parseInt(tdpMatch[1], 10);
-          if (tdp > maxCpuTdpWatts) maxCpuTdpWatts = tdp;
-        }
-      }
-    }
-  }
-
-  const hasHighPerfFans = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.HIGH_PERF_FAN_KIT.sku);
-  const hasHeatsinks = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.HIGH_PERF_HEATSINK.sku);
-
-  return { cpuCount, maxCpuTdpWatts, hasHighPerfFans, hasHeatsinks };
-}
-
-/**
- * Aspect 2: Memory & Channel Pre-Check
- */
-function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null) {
-  let memoryCount = 0;
-  let totalMemoryGb = 0;
-  let cpuCount = passedCpuCount;
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Memory' || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) {
-      memoryCount += it.quantity;
-      const gbMatch = desc.match(/(\d+)\s*gb/i);
-      if (gbMatch) {
-        totalMemoryGb += (parseInt(gbMatch[1], 10) * it.quantity);
-      }
-    }
-    if (!passedCpuCount && (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc'))) {
-      cpuCount += it.quantity;
-    }
-  }
-
-  if (cpuCount === 0) cpuCount = 2; // Default if no CPUs found
-
-  const isBalancedChannel = memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % 8 === 0);
-  return { memoryCount, totalMemoryGb, isBalancedChannel };
-}
-
-/**
- * Aspect 3: Storage & Tri-Mode Controller Pre-Check
- */
-function evalStorageTriMode(items, catalogData = null, mandatorySkus = DEFAULT_MANDATORY_SKUS) {
-  let driveCount = 0;
-  let hasStorageController = false;
-  let hasSmartBattery = false;
-  let hasNoDriveKit = false;
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    const sku = cleanBaseSKU(it.sku);
-
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Drive Cage / Drive' || desc.includes('hdd') || desc.includes('ssd') || desc.includes('drive') || desc.includes('nvme')) {
-      if (!desc.includes('no drive') && !desc.includes('cage') && !desc.includes('controller')) {
-        driveCount += it.quantity;
-      }
-    }
-    if (desc.includes('controller') || desc.includes('mr416i') || desc.includes('sr932i')) {
-      hasStorageController = true;
-    }
-    if (sku === mandatorySkus.SMART_STORAGE_BATTERY.sku || desc.includes('smart storage battery')) {
-      hasSmartBattery = true;
-    }
-    if (sku === mandatorySkus.NO_DRIVE_FIO_KIT.sku || desc.includes('no drive')) {
-      hasNoDriveKit = true;
-    }
-  }
-
-  return { driveCount, hasStorageController, hasSmartBattery, hasNoDriveKit };
-}
-
-/**
- * Aspect 4: Networking & OCP 3.0 Interconnect Pre-Check
- */
-function evalNetworkingOcp(items, catalogData = null) {
-  let networkPortsCount = 0;
-  let ocpAdapterCount = 0;
-  let hasOcpAdapter = false;
-  let maxOcpSlots = 2; // Standard Gen11/Gen12 supports up to 2 OCP 3.0 slots (Slot 1 + Slot 2)
-
-  if (catalogData && catalogData.entries) {
-    const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
-    if (ocpEntry && typeof ocpEntry.maxQty === 'number' && ocpEntry.maxQty > 0) {
-      maxOcpSlots = ocpEntry.maxQty;
-    }
-  }
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    const sku = cleanBaseSKU(it.sku);
-    
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === sku));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) continue;
-
-    if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || desc.includes('bcm5719') || desc.includes('bcm57504') || desc.includes('e810') || desc.includes('cx6')) {
-      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('ocp3');
-      if (isOcp) {
-        hasOcpAdapter = true;
-        ocpAdapterCount += it.quantity;
-      }
-
-      // Parse realistic port multiplier from description
-      let portsPerCard = 2;
-      const explicitPortMatch = desc.match(/(\d+)\s*-?\s*port/i) || desc.match(/\b(1|2|4|8)\s*p\b/i);
-      const quadMatch = desc.match(/\b(quad|4x|4-port)\b/i);
-      const dualMatch = desc.match(/\b(dual|2x|2-port)\b/i);
-      const singleMatch = desc.match(/\b(single|1x|1-port)\b/i);
-
-      if (explicitPortMatch) {
-        portsPerCard = parseInt(explicitPortMatch[1], 10) || 2;
-      } else if (quadMatch) {
-        portsPerCard = 4;
-      } else if (dualMatch) {
-        portsPerCard = 2;
-      } else if (singleMatch) {
-        portsPerCard = 1;
-      }
-
-      networkPortsCount += (portsPerCard * it.quantity);
-    }
-  }
-
-  const isExceedingOcpSlots = ocpAdapterCount > maxOcpSlots;
-
-  return { networkPortsCount, hasOcpAdapter, ocpAdapterCount, maxOcpSlots, isExceedingOcpSlots };
-}
-
-/**
- * Aspect 5: PCIe Slot Capacity & Riser Expansion Card Math Pre-Check
- */
-function evalPcieRiserSlots(items, catalogData = null) {
-  let requiredPcieCards = 0;
-  let primaryRiserCount = 0;
-  let secondaryRiserCount = 0;
-  let tertiaryRiserCount = 0;
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Battery' || role === 'Boot Device' || role === 'Chassis Infrastructure' || role === 'Service & Support' || role === 'Operating System / License') continue;
-
-    // Count PCIe Expansion Cards (GPUs, NICs, HBAs, Controllers, Accelerator Cards)
-    if (role === 'GPU / Accelerator' || role === 'Network Adapter' || role === 'Storage Controller' || role === 'Fibre Channel HBA' || desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
-      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('lom') && !desc.includes('cable') && !desc.includes('cage') && !desc.includes('battery')) {
-        requiredPcieCards += it.quantity;
-      }
-    }
-
-    // Count Risers
-    if (role === 'PCIe Riser' || desc.includes('riser')) {
-      if (desc.includes('primary riser') || desc.includes('main riser')) primaryRiserCount += it.quantity;
-      if (desc.includes('secondary riser')) secondaryRiserCount += it.quantity;
-      if (desc.includes('tertiary riser')) tertiaryRiserCount += it.quantity;
-    }
-  }
-
-  // 2U Base Chassis provides 3 standard slots (Primary Riser); Secondary adds 3; Tertiary adds 2.
-  const totalSlotsAvailable = 3 + (primaryRiserCount * 3) + (secondaryRiserCount * 3) + (tertiaryRiserCount * 2);
-  const needsSecondaryRiser = requiredPcieCards > (3 + primaryRiserCount * 3);
-
-  return { requiredPcieCards, primaryRiserCount, secondaryRiserCount, tertiaryRiserCount, totalSlotsAvailable, needsSecondaryRiser };
-}
-
-/**
- * Aspect 6: Power & Environmental Pre-Check
- */
-function evalPowerEnvironment(items, catalogData = null, mandatorySkus = DEFAULT_MANDATORY_SKUS) {
-  let hasDcPowerSupply = false;
-  let hasDcLugKit = false;
-  let psuCount = 0;
-
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    const sku = cleanBaseSKU(it.sku);
-
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-
-    if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu') || sku.includes('P4881') || sku.includes('P3687')) {
-      psuCount += it.quantity;
-      if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v') || sku.includes('P36877') || desc.includes('1600w')) {
-        hasDcPowerSupply = true;
-      }
-    }
-    if (sku === mandatorySkus.DC_LUG_KIT.sku || desc.includes('lug kit') || desc.includes('cable lug')) {
-      hasDcLugKit = true;
-    }
-  }
-
-  return { hasDcPowerSupply, hasDcLugKit, psuCount };
-}
-
-/**
- * Aspect 7: Support & Manufacturing Pre-Check
- */
-function evalSupportManufacturing(items, catalogData = null) {
-  let hasSupportService = false;
-  for (const it of items) {
-    const desc = it.description.toLowerCase();
-    let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
-    }
-    if (role === 'Service & Support' || desc.includes('tech care') || desc.includes('support') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(it.sku)) {
-      hasSupportService = true;
-    }
-  }
-  return { hasSupportService };
-}
-
-/**
  * Run modular physical math evaluation across solution aspects dynamically ($N$-Aspect Engine).
- * @param {Array<object>} items Consolidated BOQ items
- * @param {object} catalogData Optional catalog companion object
- * @param {string} targetDir Output folder for catalog rules
+ *
+ * @param {Array<object>} items - Consolidated BOQ items
+ * @param {object} [catalogData=null] - Optional catalog companion object
+ * @param {string} [targetDir=''] - Output folder for catalog rules
  * @returns {object} Evaluation results
  */
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
-  const { detectChassisVariant } = require('./conflict_graph.js');
   const chassisInfo = detectChassisVariant(items);
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
@@ -332,10 +118,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       desc.includes('cto server') ||
       desc.includes('base server') ||
       clean === chassisInfo.baseSku ||
-      clean === 'P73282-B21' ||
-      clean === 'P52534-B21' ||
-      clean === 'P76706-B21' ||
-      clean === 'P56900-B21'
+      CTO_BASE_SKUS.has(clean)
     ) {
       serverCount = Math.max(1, parseInt(it.quantity, 10) || 1);
       break;
@@ -344,17 +127,17 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
 
   emitProgress(2, 10, 'Compute & Thermal Profiling', 'in_progress', `Analyzing ${items.length} SKUs for high-TDP processor constraints and heatsink counts.`);
   const compute = evalComputeThermal(items, catalogData, mandatorySkus);
-  
+
   emitProgress(3, 10, 'Memory Channel Math', 'in_progress', `Validating 1DPC / 2DPC symmetry and balanced memory population.`);
   const memory = evalMemoryChannel(items, compute.cpuCount, catalogData);
-  
+
   emitProgress(4, 10, 'Storage Tri-Mode Validation', 'in_progress', `Verifying NVMe/SAS/SATA drive cages, controllers, and backplane capacities.`);
   const storage = evalStorageTriMode(items, catalogData, mandatorySkus);
-  
+
   emitProgress(5, 10, 'Networking & PCIe Constraints', 'in_progress', `Analyzing OCP NICs and PCIe Riser slot math.`);
   const network = evalNetworkingOcp(items, catalogData);
-  const pcie    = evalPcieRiserSlots(items, catalogData);
-  
+  const pcie = evalPcieRiserSlots(items, catalogData);
+
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData);
@@ -364,7 +147,6 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const missingDependencies = [];
   const mathDeductions = [];
 
-  // Per-server normalized values
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
   const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
   const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
@@ -452,10 +234,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     });
   }
 
-  // Rule 81392308: CLIC Unbuildable Error Check (Base Chassis / Drive Cage / No-Drive FIO Kit)
+  // Rule 81392308: CLIC Unbuildable Error Check
   const hasBaseChassis = items.some(it => {
     const clean = cleanBaseSKU(it.sku);
-    return clean === chassisInfo.baseSku || clean === 'P73282-B21';
+    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
   });
   const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
   const hasDriveCageKit = items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21');
@@ -583,123 +365,95 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     aspectChecks
   };
 
-  // Step 7: Run 5-Level Dependency Conflict Graph Validation
-  const { validateConflictGraph } = require('./conflict_graph.js');
   emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
-  
-  // Auto-detect chassis directory if not provided
+
   let resolvedDir = targetDir;
   if (!resolvedDir) {
-    if (chassisInfo.model.includes('DL380') || chassisInfo.model.includes('ProLiant')) {
-      resolvedDir = `outputs/${chassisInfo.family || 'ProLiant'}/${chassisInfo.generation || 'Gen12'}/${chassisInfo.model.replace(/\s+/g, '_')}`;
-    } else {
-      const familyDir = chassisInfo.family !== 'Unknown' ? chassisInfo.family : 'ProLiant';
-      resolvedDir = `outputs/${familyDir}/Gen12/${chassisInfo.model.replace(/\s+/g, '_')}`;
-    }
+    const { autoDetectChassisDir } = require('./catalog_discovery.js');
+    resolvedDir = autoDetectChassisDir(items);
   }
 
-  const graphResults = validateConflictGraph(items, missingDependencies, resolvedDir);
-  evalSummary.conflictGraph = graphResults;
+  const conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir);
 
-  // Deduct score if whole solution has graph conflicts
-  if (!graphResults.isWholeSolutionValid) {
-    evalSummary.errors.push(`Whole-solution conflict graph validation failed: ${graphResults.conflicts.length} unresolved conflict(s).`);
+  const isMathClean = errors.length === 0;
+  const isGraphClean = conflictGraphResults.isWholeSolutionValid;
+  const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
+
+  let confidenceScore = 1.0;
+  if (!isMathClean) confidenceScore -= (errors.length * 0.15);
+  if (!isGraphClean) confidenceScore -= (conflictGraphResults.conflicts.length * 0.10);
+  if (warnings.length > 0) confidenceScore -= (warnings.length * 0.05);
+  confidenceScore = Math.max(0.1, parseFloat(confidenceScore.toFixed(2)));
+
+  const confidence = {
+    score: confidenceScore,
+    isHitlTriggered: confidenceScore < 0.75 || criticalViolationsCount > 0,
+    confidenceReasons: [
+      ...errors.map(e => `[CRITICAL_MATH] ${e}`),
+      ...conflictGraphResults.conflicts.map(c => `[CONFLICT_GRAPH] ${c.message}`),
+      ...warnings.map(w => `[WARNING] ${w}`)
+    ]
+  };
+
+  if (confidence.confidenceReasons.length === 0) {
+    confidence.confidenceReasons.push('All 6 physical aspects passed deterministic evaluation and graph rules.');
   }
 
-  // Calculate quantitative confidence score & HITL trigger details
-  const confidence = calculateConfidenceScore(items, evalSummary);
-  evalSummary.confidence = confidence;
-
-  // Run preprocessing analysis for audit trail & variation classification
-  try {
-    const rawSummaryText = items.map(it => `${it.quantity}x ${it.sku} ${it.description}`).join('\n');
-    evalSummary.preprocessing = preprocessAndGroupBOQ(rawSummaryText, '');
-  } catch (err) {
-    evalSummary.preprocessing = null;
-  }
-
-  return evalSummary;
+  return {
+    isMathClean,
+    isGraphClean,
+    criticalViolationsCount,
+    confidence,
+    errors,
+    warnings,
+    missingDependencies,
+    mathDeductions,
+    evalSummary,
+    aspectChecks,
+    conflictGraph: conflictGraphResults
+  };
 }
 
-/**
- * Format prompt payload for Gemini Notebook RAG query.
- * Prompts NotebookLM for whole-solution buildability validation across all 5 hierarchy levels.
- * @param {Array<object>} items 
- * @param {object} evalResults 
- * @returns {string} Formatted prompt string
- */
 function formatNotebookQueryPayload(items, evalResults) {
-  const graph = evalResults.conflictGraph || {};
-  const chassis = graph.chassisInfo || { model: 'HPE ProLiant Solution', formFactor: 'SFF' };
+  const chassisInfo = evalResults.conflictGraph?.chassisInfo || detectChassisVariant(items);
+  const issues = [
+    ...(evalResults.errors || []),
+    ...(evalResults.conflictGraph?.conflicts || []).map(c => c.message)
+  ];
 
-  let prompt = `Validate the following physical dependencies and constraints against the QuickSpecs for ${chassis.model}.\n\n`;
+  const fixes = evalResults.missingDependencies || [];
 
-  const hasMissingDeps = evalResults.missingDependencies && evalResults.missingDependencies.length > 0;
-  const hasErrors = evalResults.errors && evalResults.errors.length > 0;
-  const rankedSolutions = graph.rankedSolutions || [];
-
-  if (hasMissingDeps || hasErrors) {
-    prompt += `The Local Rule Engine detected the following potential conflicts/missing items in the baseline configuration:\n`;
-    if (hasMissingDeps) {
-      const deps = evalResults.missingDependencies.map(d => `${d.quantity || 1}x ${d.sku} — ${d.description || 'required cable/accessory'}`).join('; ');
-      prompt += `- Missing Dependencies: ${deps}\n`;
+  return {
+    chassis: chassisInfo.id || chassisInfo.model,
+    query: `Validate compatibility for ${chassisInfo.model}. Found ${issues.length} potential issues: ${issues.join('; ')}. Proposed fixes: ${fixes.map(f => f.sku).join(', ')}.`,
+    context: {
+      itemsCount: items.length,
+      detectedTdp: evalResults.evalSummary?.maxCpuTdpWatts,
+      memoryTotalGb: evalResults.evalSummary?.totalMemoryGb,
+      issuesCount: issues.length
     }
-    if (hasErrors) {
-      prompt += `- Violations: ${evalResults.errors.join('; ')}\n`;
-    }
-    if (evalResults.totalMemoryGb && evalResults.totalMemoryGb > 0) {
-      prompt += `- Memory Configuration: ${evalResults.totalMemoryGb}GB total RAM across ${evalResults.memoryCount} DIMMs (Memory capacity > 32GB)\n`;
-    }
-    
-    prompt += `\nTo resolve these, the engine generated the following Tier 1 solution: \n`;
-    if (rankedSolutions.length > 0) {
-      const r1 = rankedSolutions[0];
-      prompt += `Proposed Fixes: ${r1.tradeoffMetrics?.skuModifications || 'Standard'}. Reason: ${r1.reasoning}\n`;
-    }
-    
-    prompt += `\nPlease act as a hardware engineering expert. Consult the QuickSpecs to verify if these conflicts are accurate AND if the proposed Tier 1 solution fully resolves the thermal, power, and physical constraints without introducing new violations. Return your answer as a concise technical rationale.`;
-  } else {
-    // If no conflicts detected locally, do a lightweight sanity check of the primary components
-    const primaryItems = items.filter(it => it.quantity > 0 && ['Processor', 'Memory', 'Storage Devices'].includes(it.category)).slice(0, 10);
-    const itemSummaries = primaryItems.map(it => `${it.quantity > 1 ? it.quantity + 'x ' : '1x '}${it.sku}`).join('; ');
-    prompt += `Core configuration: ${itemSummaries || 'standard base chassis'}.\n`;
-    prompt += `The Local Rule Engine detected NO physical conflicts. Please do a quick sanity check to ensure no hidden thermal, power, or mixing rules are violated by this core configuration. Return a concise technical rationale confirming buildability.`;
-  }
-
-  return prompt;
+  };
 }
 
 function evaluateBOQMultiAspect(filePathOrText, options = {}) {
-  let content = filePathOrText;
-  let fileToPass = '';
-  if (typeof filePathOrText === 'string' && fs.existsSync(filePathOrText)) {
-    fileToPass = filePathOrText;
-    content = fs.readFileSync(filePathOrText, 'utf-8');
-  }
-  const items = parseAndConsolidateBOQ(content, fileToPass);
-  let catalogData = null;
-  let targetDir = '';
-  if (typeof options === 'object' && options !== null) {
-    catalogData = options.catalogData || null;
-    targetDir = options.targetDir || options.chassis || '';
-  } else if (typeof options === 'string') {
-    targetDir = options;
-  }
-  return evaluatePhysicalMath(items, catalogData, targetDir);
+  const items = parseAndConsolidateBOQ(filePathOrText, options.filePath || '');
+  const result = evaluatePhysicalMath(items, options.catalogData, options.targetDir || '');
+  return { ...result, items };
 }
 
 module.exports = {
+  HIGH_TDP_THRESHOLD_WATTS,
+  DEFAULT_MANDATORY_SKUS,
+  CTO_BASE_SKUS,
+  parseAndConsolidateBOQ,
+  evaluatePhysicalMath,
+  evaluateBOQMultiAspect,
+  formatNotebookQueryPayload,
   evalComputeThermal,
   evalMemoryChannel,
   evalStorageTriMode,
   evalNetworkingOcp,
   evalPcieRiserSlots,
   evalPowerEnvironment,
-  evalSupportManufacturing,
-  evaluateBOQMultiAspect,
-  parseAndConsolidateBOQ,
-  evaluatePhysicalMath,
-  formatNotebookQueryPayload,
-  getMandatorySkusForChassis
+  evalSupportManufacturing
 };
-

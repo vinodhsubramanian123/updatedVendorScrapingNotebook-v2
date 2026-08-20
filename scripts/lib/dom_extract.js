@@ -3,25 +3,23 @@
  * scripts/lib/dom_extract.js — Shared DOM Extraction Helpers
  *
  * Consolidated DOM extraction routines (chunked text, row-array tables, section headers)
- * to prevent copy-paste drift across scraping scripts.
+ * to prevent copy-paste drift across scraping scripts. Pure function helpers that
+ * accept sendCommand explicitly to prevent cyclic dependencies.
  */
-function getSendCommand() {
-  return require('./cdp.js').sendCommand;
-}
 
 /**
  * Extract body text in safe <= 50,000 char chunks over CDP.
  * @param {WebSocket} ws
+ * @param {Function} sendCommand
  * @param {number} [chunkSize=50000]
  * @returns {Promise<{ fullText: string, totalLen: number }>}
  */
-async function extractChunkedText(ws, chunkSize = 50000) {
-  const sendCommand = getSendCommand();
+async function extractChunkedText(ws, sendCommand, chunkSize = 50000) {
   const textLenRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: 'document.body.innerText.length',
     returnByValue: true
   });
-  const totalLen = textLenRes.result.value || 0;
+  const totalLen = textLenRes.result?.value || 0;
 
   let fullText = '';
   for (let i = 0; i < totalLen; i += chunkSize) {
@@ -29,7 +27,7 @@ async function extractChunkedText(ws, chunkSize = 50000) {
       expression: `document.body.innerText.substring(${i}, ${i + chunkSize})`,
       returnByValue: true
     });
-    fullText += chunk.result.value || '';
+    fullText += chunk.result?.value || '';
   }
 
   return { fullText, totalLen };
@@ -38,11 +36,11 @@ async function extractChunkedText(ws, chunkSize = 50000) {
 /**
  * Extract DOM tables as ROW ARRAYS (for build_catalog.js classification engine).
  * @param {WebSocket} ws
+ * @param {Function} sendCommand
  * @param {string} [scopeSelector] Optional sub-panel container selector
  * @returns {Promise<Array<{ tableIndex: number, rowCount: number, rows: Array<Array<string>> }>>}
  */
-async function extractTablesAsRows(ws, scopeSelector = null) {
-  const sendCommand = getSendCommand();
+async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
   const scopeExpr = scopeSelector ? `document.querySelector(${JSON.stringify(scopeSelector)})` : 'document';
   const tableResult = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
@@ -53,7 +51,7 @@ async function extractTablesAsRows(ws, scopeSelector = null) {
         const rows = [];
         table.querySelectorAll('tr').forEach(tr => {
           const cells = [];
-          tr.querySelectorAll('td, th').forEach(cell => cells.push(cell.innerText.trim()));
+          tr.querySelectorAll('td, th').forEach(cell => cells.push((cell.innerText || '').trim()));
           if (cells.length > 0) rows.push(cells);
         });
         if (rows.length > 0) result.push({ tableIndex: idx, rowCount: rows.length, rows });
@@ -64,19 +62,20 @@ async function extractTablesAsRows(ws, scopeSelector = null) {
   });
 
   try {
-    return JSON.parse(tableResult.result.value);
-  } catch (e) { console.warn('Caught suppressed error in dom_extract.js:', e);
-return [];
+    return JSON.parse(tableResult.result?.value || '[]');
+  } catch (e) {
+    console.warn(`[WARN] [DOM_EXTRACT] Failed to parse tables: ${e.message}`);
+    return [];
   }
 }
 
 /**
  * Extract DOM section headers for landmark category matching.
  * @param {WebSocket} ws
+ * @param {Function} sendCommand
  * @returns {Promise<Array<{ tagName: string, text: string, className: string }>>}
  */
-async function extractSectionHeaders(ws) {
-  const sendCommand = getSendCommand();
+async function extractSectionHeaders(ws, sendCommand) {
   const sectionsResult = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const headers = Array.from(document.querySelectorAll(
@@ -92,9 +91,10 @@ async function extractSectionHeaders(ws) {
   });
 
   try {
-    return JSON.parse(sectionsResult.result.value);
-  } catch (e) { console.warn('Caught suppressed error in dom_extract.js:', e);
-return [];
+    return JSON.parse(sectionsResult.result?.value || '[]');
+  } catch (e) {
+    console.warn(`[WARN] [DOM_EXTRACT] Failed to parse section headers: ${e.message}`);
+    return [];
   }
 }
 
