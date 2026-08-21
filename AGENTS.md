@@ -23,9 +23,11 @@ For full architectural details, coding decisions, and project learnings, refer t
 - [`docs/DEVELOPER_GUIDE.md`](file:///home/vinodh/vendorNotebookSolution/docs/DEVELOPER_GUIDE.md): Local development, UI/UX standards, testing (eval/benchmarks), and API rate limit handling.
 
 ## 5. Key Technical Decisions & Operational Guardrails
-- **MCP Agentic Loop:** The BOQ Evaluator utilizes an MCP Server (`scripts/mcp_server.js`) and an Agentic Guardrail (`scripts/lib/agentic_guardrail.js`) for resolution.
-- **Red-Teaming:** A background task (`scripts/adversarial_agent.js`) continually stress-tests the evaluator for reliability, logging to `pipeline_telemetry.json`.
+- **MCP Agentic Loop & Closed-Loop Extractor:** The BOQ Evaluator utilizes an MCP Server (`scripts/mcp_server.js`), an Agentic Guardrail (`scripts/lib/agentic_guardrail.js`), and a generic NLP Knowledge Extractor (`scripts/lib/notebook/knowledge_extractor.js`) to parse verified RAG answers into persistent `KnowledgeDelta` records.
+- **Autonomous Learning & Drift Sync:** RAG responses are structured and scoped into `catalog_deltas.json` (chassis-specific) and `master_knowledge_registry.json` (family/universal). Post-flow sync (`post_flow_sync.js`) guarantees bi-directional alignment before logging telemetry.
+- **Zero-Hardcoding Compliance:** Aspect checkers (`compute_thermal.js`, `memory_channel.js`, `power_environment.js`, etc.) maintain strict 0-hardcoded SKU strings, resolving form factor rules dynamically via `chassis_map.json` and catalog rules.
+- **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/test_failure_modes_and_chaos.js`) and 17 comprehensive test suites maintain a 100% pass benchmark across unit, integration, and chaos tiers.
 - **Async Task Mutex & Process Lifecycle:** `server.cjs` manages long-running child processes with `isTaskRunning()` and `proc.on('error')` guards, preventing stale mutex locks and false 409 Conflict errors.
-- **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint`).
-- **Dynamic Semantic Graph (`graphify`):** The repository maintains a live 1,878-node semantic dependency graph (`graphify update .`) for token-efficient architecture discovery.
+- **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint` with `oxlint`).
+- **Dynamic Semantic Graph (`graphify`):** The repository maintains a live 2,352-node semantic dependency graph (`graphify update .`) with 3,374 edges and 187 communities for token-efficient architecture discovery.
 

@@ -15,16 +15,19 @@ This skill provides an automated, agentic workflow representing **Workflow 2 (Pr
 graph TD
     A["Customer BOQ Intake (CSV / Excel Multi-Sheet / Quote)"] --> B["scripts/eval_boq.js"]
     B --> C["parseAndConsolidateBOQ() (boq_evaluator.js)"]
-    C --> D["evaluatePhysicalMath() (6-Aspect Math)"]
+    C --> D["evaluatePhysicalMath() (7-Aspect Math)"]
     D --> E["validateConflictGraph() (conflict_graph.js)"]
     E --> F["extractWorkloadDna() (Compute, Memory & Storage IO Profile)"]
     F --> G["synthesize5TierRankedSolutions() (Rank 1: Intent Match)"]
-    G --> H["formatNotebookQueryPayload() (nlm-skill Query)"]
-    H --> I["outputs/{Family}/{Gen}/{Model}/reports/ (BOQ Report)"]
-    I --> J["HITL Portal Build Trial"]
-    J -- "Portal Error" --> K["processPortalFeedback() (feedback_loop.js)"]
-    K --> L["outputs/history/catalog_deltas.json (KnowledgeDelta)"]
+    G --> H["executeNotebookQuery() (nlm-skill RAG Grounding)"]
+    H --> M["extractAndPersistLearnedDeltas() (knowledge_extractor.js)"]
+    M --> L["outputs/.../catalog_deltas.json & master_knowledge_registry.json"]
     L --> E
+    H --> N["triggerPostFlowSync() (post_flow_sync.js)"]
+    N --> I["outputs/{Family}/{Gen}/{Model}/reports/ (BOQ Report)"]
+    I --> J["HITL Portal Build Trial"]
+    J -- "Portal Rejection" --> K["processPortalFeedback() (feedback_loop.js)"]
+    K --> L
 ```
 
 ---

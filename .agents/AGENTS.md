@@ -52,6 +52,7 @@ vendorNotebookSolution/
 │   │   ├── boq_parser.js                  ← shared SKU extraction & line parser (DRY single source)
 │   │   ├── boq_preprocessor.js            ← BOQ text/CSV parser & grouper
 │   │   ├── budget_optimizer.js            ← Rank 5 budget optimization engine
+│   │   ├── catalog/                       ← modular catalog barrel (checksum, diff, discovery, format, rules, versioning)
 │   │   ├── catalog_discovery.js           ← auto-discover chassis dirs & metadata
 │   │   ├── catalog_formatter.js           ← SKU formatting & normalization
 │   │   ├── catalog_rules.js               ← 5-level rule extractor & mandatory SKU resolver
@@ -59,10 +60,11 @@ vendorNotebookSolution/
 │   │   ├── checksum_diff.js               ← SHA-256 hash diff engine
 │   │   ├── aspects/                       ← 7 physical aspect checkers (compute, memory, storage, pcie, etc.)
 │   │   ├── conflict/                      ← workload DNA & 5-tier strategy matrix synthesizer
-│   │   ├── notebook/                      ← query sanitizer, diagnostics, async job manager
+│   │   ├── notebook/                      ← query sanitizer, diagnostics, async job manager, knowledge_extractor
 │   │   ├── preprocessor/                  ← CTO normalizer, variation clusterer, feedback persister
 │   │   ├── sync/                          ← NLM sync client, payload builder, drift inspector
 │   │   ├── error_envelope.js              ← standardized API error envelope & codes
+│   │   ├── schemas.js                     ← Zod runtime schema & validation pipeline
 │   │   ├── conflict_graph.js              ← 5-level conflict graph coordinator
 │   │   ├── data_validator.js              ← schema & assertion validator
 │   │   ├── diff_catalog.js                ← catalog diff & price history engine
@@ -96,19 +98,26 @@ vendorNotebookSolution/
 │   ├── test_all_aspects.js                ← 34-test aspect math verification suite
 │   ├── verify_all.js                      ← portfolio audit suite (npm test)
 │   └── rebuild_all.js                     ← rebuild all catalogs from raw_data
-├── tests/                                 ← test suites
-│   ├── test_gemini_rotator.js             ← smart FIFO key rotator & daily quota unit/live suite
-│   ├── test_task_mutex_concurrency.js     ← background task mutex & concurrency suite
-│   ├── test_dual_brain_fallbacks.js       ← offline dual-brain fallback & error envelope suite
-│   ├── test_extreme_edge_cases.js         ← boundary conditions & extreme edge case suite
+├── diagrams/                              ← 22 Mermaid architecture diagrams + interactive viewer.html
+├── tests/                                 ← 17 comprehensive test suites (100% PASS)
+│   ├── e2e_customer_boq_flow.js           ← E2E 13-step customer BOQ flow
 │   ├── e2e_headless_ui_test.js            ← E2E headless browser UI test
-│   ├── test_failure_modes_and_chaos.js    ← 38-test failure mode & chaos resilience suite
-│   ├── test_end_to_end_scenarios.js       ← multi-scenario E2E validation
 │   ├── test_conflict_graph.js             ← conflict graph unit tests
+│   ├── test_dual_brain_fallbacks.js       ← offline dual-brain fallback & error envelope suite
+│   ├── test_edge_cases.js                 ← physical aspect edge cases
+│   ├── test_end_to_end_scenarios.js       ← positive, negative & neutral E2E scenarios
+│   ├── test_excel_alignment_and_audit.js  ← Excel structure & validation tests
+│   ├── test_extreme_edge_cases.js         ← extreme edge case & boundary suite
+│   ├── test_failure_modes_and_chaos.js    ← 44-test failure mode & chaos resilience suite
+│   ├── test_gemini_rotator.js             ← smart FIFO key rotator & daily quota suite
+│   ├── test_historical_pricing_timeline.js← price history timeline tests
+│   ├── test_incremental_checksum.js       ← diff checksum logic tests
+│   ├── test_knowledge_extractor.js        ← generic RAG knowledge extractor tests
 │   ├── test_offline_pipeline.js           ← offline/fallback mode tests
-│   ├── test_edge_cases.js                 ← edge case coverage
-│   ├── test_vendor_bom_verifier.js        ← BOM verification tests
-│   └── test_incremental_checksum.js       ← diff checksum logic tests
+│   ├── test_schemas.js                    ← Zod runtime validation suite
+│   ├── test_task_mutex_concurrency.js     ← background task mutex concurrency suite
+│   ├── test_ui_opportunity_boq.js         ← opportunity BOQ mapping tests
+│   └── test_vendor_bom_verifier.js        ← BOM cross-verification tests
 ├── dashboard/                             ← React + Vite UI dashboard
 │   ├── server.cjs                         ← modular Express backend coordinator
 │   ├── routes/                            ← modular Express route handlers
