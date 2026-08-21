@@ -24,23 +24,38 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
     ? entry.lastSyncDeltaCount
     : 0;
 
-  const totalRules = registry.totalLearnedRules || 0;
-  const unSyncedDeltasCount = Math.max(0, totalRules - lastSyncDeltaCount);
+  const lastSyncedAt = (typeof entry === 'object' && entry !== null) ? (entry.lastSyncedAt || null) : null;
+
+  // Use chassis-specific rule count, not global total.
+  // A chassis that has no catalog_deltas.json of its own should not inherit
+  // another chassis's unsynced count — it's simply at baseline.
+  const chassisRules = [
+    ...(registry.chassisSpecificRules || []),
+    ...(registry.familyGenRules || []),
+    ...(registry.universalRules || [])
+  ].filter(r => !r.chassis || r.chassis === chassisName || r.scopeTaxonomy === 'UNIVERSAL_VENDOR' || r.scopeTaxonomy === 'FAMILY_GEN');
+
+  const chassisRuleCount = chassisRules.length;
+  const unSyncedDeltasCount = Math.max(0, chassisRuleCount - lastSyncDeltaCount);
 
   const payload = generatePayloadFn ? generatePayloadFn(chassisName, false) : { payloadPath: null };
 
   let status = 'SYNCHRONIZED';
-  if (unSyncedDeltasCount > 0) {
-    status = 'DRIFT_DETECTED';
-  } else if (totalRules === 0) {
+  if (!notebookId) {
+    status = 'NO_NOTEBOOK_CONFIGURED';
+  } else if (chassisRuleCount === 0) {
     status = 'BASELINE_READY';
+  } else if (unSyncedDeltasCount > 0) {
+    status = 'DRIFT_DETECTED';
   }
 
   return {
     chassisName,
     notebookId,
-    totalLearnedRules: totalRules,
+    chassisRuleCount,
+    totalLearnedRules: registry.totalLearnedRules || 0,
     lastSyncedRulesCount: lastSyncDeltaCount,
+    lastSyncedAt,
     unSyncedDeltasCount,
     payloadPath: payload.payloadPath,
     status

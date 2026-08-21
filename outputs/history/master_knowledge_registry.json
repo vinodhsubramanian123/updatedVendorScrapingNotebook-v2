@@ -1,6 +1,6 @@
 {
   "registryVersion": "2.0.0",
-  "lastUpdated": "2026-08-21T11:52:28.682Z",
+  "lastUpdated": "2026-08-21T12:04:19.293Z",
   "totalLearnedRules": 12,
   "counts": {
     "universal": 0,
@@ -139,11 +139,12 @@
     {
       "deltaId": "PREPROC-DELTA-1786781599909",
       "timestamp": "2026-08-15T08:13:19.909Z",
+      "chassis": "DL380_Gen12_SFF",
       "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
       "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1",
       "notes": "Confirmed by analyst in Pre-flight preview.",
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server"
+      "solutionType": "DL380_Gen12_SFF CTO Server"
     },
     {
       "deltaId": "DELTA-1786880389958",

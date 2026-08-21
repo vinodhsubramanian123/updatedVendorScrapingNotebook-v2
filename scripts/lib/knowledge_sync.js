@@ -30,18 +30,29 @@ function getNotebookIdForChassis(cfg, chassisName) {
   return cfg.defaultNotebookId || "17cb979a-14d2-430c-a99f-7c1514757e79";
 }
 
-function classifyKnowledgeScope(delta) {
-  const c = String(delta.chassis || '').toLowerCase();
-  const raw = String(delta.rawMessage || delta.ruleUpdate || delta.errorType || '').toLowerCase();
-  
+function classifyKnowledgeScope(deltaOrText) {
+  // Accept both a delta object and a raw string (called from knowledge_extractor.js)
+  const isString = typeof deltaOrText === 'string';
+  const c = isString ? '' : String(deltaOrText.chassis || '').toLowerCase();
+  const raw = isString
+    ? deltaOrText.toLowerCase()
+    : String(deltaOrText.rawMessage || deltaOrText.ruleUpdate || deltaOrText.errorType || '').toLowerCase();
+  const ruleType = isString ? '' : String(deltaOrText.ruleType || '').toUpperCase();
+
   if (raw.includes('all hpe') || raw.includes('global') || raw.includes('vendor-wide') || raw.includes('across all servers') ||
-      raw.includes('bto') || raw.includes('cto') || raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
+      raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
     return 'UNIVERSAL_VENDOR';
   }
-  if (raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc') ||
-      raw.includes('tri-mode') || raw.includes('mr416i') || raw.includes('sr932i') || raw.includes('storage battery') || raw.includes('p01366-b21') ||
+  // BTO→FIO substitutions apply to all CTO ProLiant builds — promote to FAMILY_GEN
+  if (ruleType === 'OPTION_TYPE_SUBSTITUTION' ||
+      raw.includes('bto') || raw.includes('fio') || raw.includes('configure-to-order') ||
+      raw.includes('factory integrated') || raw.includes('-f21') ||
+      raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc') ||
+      raw.includes('tri-mode') || raw.includes('mr416i') || raw.includes('sr932i') ||
+      raw.includes('storage battery') || raw.includes('p01366-b21') ||
       raw.includes('high performance fan') || raw.includes('p48820-b21') ||
-      (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') || c.includes('alletra') || c.includes('synergy') || c.includes('cray'))) {
+      (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') ||
+       c.includes('alletra') || c.includes('synergy') || c.includes('cray'))) {
     return 'FAMILY_GEN';
   }
   return 'CHASSIS_SPECIFIC';
@@ -62,7 +73,13 @@ function collectAllDeltas() {
         try {
           const content = JSON.parse(fs.readFileSync(full, 'utf-8'));
           const list = Array.isArray(content) ? content : (content.deltas || []);
+          const inferredChassis = path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir);
           list.forEach(d => {
+            // Skip orphan deltas with no meaningful data
+            if (!d.chassis && !d.affectedSku && !d.ruleType && !d.rawMessage) return;
+            if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
+              d.chassis = inferredChassis;
+            }
             const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
             if (!seenIds.has(key)) {
               seenIds.add(key);

@@ -432,15 +432,18 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- тЪая
 
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
-  // Record Pipeline Telemetry for Observability Dashboard
+  // Trigger post-flow knowledge sync FIRST so its result is captured in telemetry
+  try {
+    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
+    const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION');
+    // Attach to evalResults so telemetry.recordEvaluationTelemetry() can capture syncStatus
+    evalResults.postFlowSync = syncResult;
+  } catch (_) {}
+
+  // Record Pipeline Telemetry for Observability Dashboard (after sync so syncStatus is present)
   const { recordEvaluationTelemetry } = require('./lib/telemetry.js');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
-  // Trigger post-flow knowledge sync hook
-  try {
-    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
-    triggerPostFlowSync(chassisPrefix, 'EVALUATION');
-  } catch (_) {}
 
   // Transparent workflow steps summary for UI Pipeline Stepper
   const workflowSteps = [

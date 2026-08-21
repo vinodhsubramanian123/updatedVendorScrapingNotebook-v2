@@ -96,8 +96,12 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     notebookLmSourcesUsed: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.sourcesUsed) || [],
     notebookLmCitationsCount: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.citationsCount) || 0,
     cloudGroundingConfirmed: evalResults.notebookLmStatus ? evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' : !evalResults.ragFallbackUsed,
+    // Learning loop sync status for this run
+    syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
+    learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
     durationMs
   };
+
 
   data.evaluationsCount += 1;
   data.history.unshift(entry);
