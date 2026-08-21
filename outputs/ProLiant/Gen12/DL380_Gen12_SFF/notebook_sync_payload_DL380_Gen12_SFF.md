@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-21T12:04:17.147Z  
+**Sync Timestamp**: 2026-08-21T12:15:57.872Z  
 **Total Verified SKUs**: `861` (`261` Hardware + `600` Services)  
 **Total Synced KnowledgeDeltas**: `12`  
 

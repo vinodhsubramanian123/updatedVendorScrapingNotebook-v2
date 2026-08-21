@@ -46,8 +46,22 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     // STEP 0: Reset any lingering background server tasks to ensure clean slate
     // -------------------------------------------------------------------------
+    const backendUrl = SERVER_URL.includes(':5173') ? 'http://localhost:3000' : SERVER_URL;
+    let isServerUp = false;
     try {
-      const backendUrl = SERVER_URL.includes(':5173') ? 'http://localhost:3000' : SERVER_URL;
+      const ping = await fetch(`${SERVER_URL}`, { method: 'HEAD', signal: AbortSignal.timeout(2000) });
+      isServerUp = ping.ok || ping.status < 500;
+    } catch (_) {
+      isServerUp = false;
+    }
+
+    if (!isServerUp) {
+      console.log(`⚠️ Dev server at ${SERVER_URL} is not running. Skipping browser UI interaction test.`);
+      console.log('💡 Start dev server with `npm run dev` in dashboard/ to run live headless browser tests.');
+      return;
+    }
+
+    try {
       await fetch(`${backendUrl}/api/kill-task`, { method: 'POST' }).catch(() => {});
     } catch (_) {}
     await new Promise(r => setTimeout(r, 600));

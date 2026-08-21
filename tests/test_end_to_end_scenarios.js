@@ -43,7 +43,7 @@ P73282-B21\tHPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server\t1
 P74573-B21\tIntel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE\t2
 P74792-B21\tHPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit\t2
 P48820-B21\tHPE ProLiant DL380 Gen12 High Performance Fan Kit\t1
-P69728-B21\tHPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit\t16
+P69728-F21\tHPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit\t16
 P47777-B21\tHPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller\t1
 P01366-B21\tHPE 96W Smart Storage Battery\t1
 P63829-B21\tHPE 1.92TB NVMe Gen4 High Speed Read Intensive SFF SSD\t2
