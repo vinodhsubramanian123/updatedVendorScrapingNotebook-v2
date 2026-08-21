@@ -136,28 +136,107 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
     addStep(2, 'Text Section Segmentation', `Identified ${sheetsData.length} text block section(s)`);
   }
 
-  // Parse items for each section / sheet
+/**
+ * Segments lines of a single sheet or text block into distinct configuration blocks.
+ * Detects:
+ * - Explicit configuration/server/chassis section banners (e.g. "Server 1", "Config 2", "Option B", "Chassis A", "### DL380 Gen12")
+ * - Repeated CTO Base Chassis anchor lines (e.g. encountering a second CTO base chassis item triggers a new config block)
+ * - Major blank/separator row divides between SKU tables
+ */
+function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
+  const blocks = [];
+  let currentBlock = {
+    name: sheetName,
+    lines: [],
+    baseChassisFound: null
+  };
+
+  const isConfigBanner = (l) => {
+    const trimmed = String(l || '').trim();
+    if (!trimmed) return false;
+    if (/^[#*=\-_]{3,}\s*(.*?)\s*[#*=\-_]{3,}$/.test(trimmed)) return true;
+    if (/^\[(.*?)\]$/.test(trimmed)) return true;
+    if (/^(?:Configuration|Config|Server|Chassis|Node|Solution|System|Quote\s*Item)\s*[\d:#\-_A-Za-z]/i.test(trimmed)) {
+      const parts = trimmed.split(/[\t,;|]/);
+      const isTableData = parts.length >= 3 && parts.some(p => /^\d+$/.test(p.trim()));
+      if (!isTableData) return true;
+    }
+    return false;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = String(rawLine || '').trim();
+    if (!line) continue;
+
+    if (isConfigBanner(line)) {
+      if (currentBlock.lines.length > 0) {
+        blocks.push(currentBlock);
+      }
+      const bannerClean = line.replace(/^[#*=\-_\[\]\s]+|[#*=\-_\[\]\s]+$/g, '').trim();
+      currentBlock = {
+        name: `${sheetName} - ${bannerClean}`,
+        lines: [line],
+        baseChassisFound: null
+      };
+      continue;
+    }
+
+    // Check if line contains a CTO Base Chassis SKU
+    const skuMatches = line.match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/g) || [];
+    for (const match of skuMatches) {
+      const clean = cleanBaseSKU(match);
+      if (isCtoBaseChassis({ sku: clean, description: line })) {
+        if (currentBlock.baseChassisFound && currentBlock.lines.length > 0) {
+          // A second base chassis in the same sheet without an explicit header banner
+          blocks.push(currentBlock);
+          currentBlock = {
+            name: `${sheetName} - Config ${blocks.length + 1}`,
+            lines: [],
+            baseChassisFound: clean
+          };
+        } else {
+          currentBlock.baseChassisFound = clean;
+        }
+        break;
+      }
+    }
+
+    currentBlock.lines.push(line);
+  }
+
+  if (currentBlock.lines.length > 0) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks.length > 0 ? blocks : [{ name: sheetName, lines }];
+}
+
+// Parse items for each section / sheet with intelligent intra-sheet config segmentation
   const rawVariations = [];
   let globalLineCount = 0;
 
-  sheetsData.forEach((sec, idx) => {
+  sheetsData.forEach((sec) => {
     const lines = sec.content.split(/\r?\n/).filter(l => l.trim().length > 0);
     globalLineCount += lines.length;
 
-    const { items, multiplier } = parseSkuLines(lines);
+    const configBlocks = segmentSheetIntoConfigBlocks(lines, sec.sectionName);
 
-    if (items.length > 0) {
-      rawVariations.push({
-        configId: `config_${idx + 1}`,
-        rawName: sec.sectionName,
-        items: items,
-        multiplier: multiplier || 1
-      });
-    }
+    configBlocks.forEach((block, bIdx) => {
+      const { items, multiplier } = parseSkuLines(block.lines);
+      if (items.length > 0) {
+        rawVariations.push({
+          configId: `config_${rawVariations.length + 1}`,
+          rawName: block.name || `${sec.sectionName}_Config_${bIdx + 1}`,
+          items: items,
+          multiplier: multiplier || 1
+        });
+      }
+    });
   });
 
   auditTrail.rawInputSummary.totalLines = globalLineCount;
-  addStep(3, 'Line-Level Cleaning & Quantity Normalization', `Processed ${globalLineCount} lines across sections. Cleaned SKU items extracted.`);
+  addStep(3, 'Line-Level Cleaning & Quantity Normalization', `Processed ${globalLineCount} lines across sections. Cleaned SKU items extracted into ${rawVariations.length} configuration variation(s).`);
 
   // Intra-list variant detection if only 1 section with multiple distinct processors
   if (rawVariations.length === 1) {
@@ -184,7 +263,8 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
           configId: `config_${cIdx + 1}`,
           rawName: `Variation ${cIdx + 1} (${cpuItem.description.split(' ')[0] || cpuItem.sku})`,
           items: variantItems,
-          primaryCpu: cpuItem
+          primaryCpu: cpuItem,
+          multiplier: single.multiplier || 1
         };
       });
 
@@ -198,25 +278,55 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
   const loadedRules = options.chassisDir ? loadCatalogRules(options.chassisDir) : { parsedRules: [], subcategoryConstraints: [] };
 
   const processedVariations = rawVariations.map((v, idx) => {
-    const ctoNorm = detectAndNormalizeAtomicCto(v.items);
+    const ctoNorm = detectAndNormalizeAtomicCto(v.items, { explicitMultiplier: v.multiplier });
     const profile = extractHardwareProfile(ctoNorm.items);
 
     let chassisName = 'DL380 Gen12 SFF';
+    let solutionType = 'SERVER';
+    let vendor = 'HPE';
+    let family = 'ProLiant';
+    let gen = 'Gen12';
+    let notebookId = '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
+
     const allSkus = v.items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
     const allDescs = v.items.map(i => (i.description || '').toLowerCase()).join(' ');
 
-    if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G'))) {
+    if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G') || s.startsWith('P764'))) {
       chassisName = 'Alletra Storage System';
+      solutionType = 'STORAGE';
+      family = 'Alletra';
+      gen = 'Gen12';
+      notebookId = '';
     } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
       chassisName = 'SY100Gb F32 Module';
+      solutionType = 'NETWORKING';
+      family = 'Synergy';
+      gen = 'General';
+      notebookId = '';
     } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
       chassisName = 'GX5000 General RACK';
+      solutionType = 'HPC';
+      family = 'Cray';
+      gen = 'General';
+      notebookId = '';
     } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
       chassisName = 'MSL3040 Tape';
+      solutionType = 'TAPE';
+      family = 'StoreEver';
+      gen = 'General';
+      notebookId = '';
     } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
       chassisName = 'DL380 Gen11';
-    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732')))) {
+      solutionType = 'SERVER';
+      family = 'ProLiant';
+      gen = 'Gen11';
+      notebookId = '';
+    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732') || s.startsWith('P767')))) {
       chassisName = 'DL380 Gen12 SFF';
+      solutionType = 'SERVER';
+      family = 'ProLiant';
+      gen = 'Gen12';
+      notebookId = '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
     } else if (options && options.chassisHint) {
       chassisName = options.chassisHint;
     }
@@ -225,6 +335,11 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
       configId: v.configId,
       name: v.rawName || `Configuration #${idx + 1}`,
       chassis: chassisName,
+      solutionType,
+      vendor,
+      family,
+      gen,
+      notebookId,
       itemCount: v.items.length,
       items: ctoNorm.items,
       profile: profile,
@@ -235,7 +350,7 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
       ctoAnomalies: ctoNorm.ctoAnomalies,
       splitReasons: [],
       businessRationale: '',
-      confidenceScore: 0.95
+      confidenceScore: ctoNorm.hasNonIntegerDivisor ? 0.70 : 0.95
     };
 
     const improbabilityMetrics = calculateImprobabilityMetrics(tempVar, loadedRules.subcategoryConstraints || []);
