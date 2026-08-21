@@ -61,6 +61,28 @@ function parseProductMeta(rawText, pageTitle = '') {
   return { family, gen, cleanName };
 }
 
+// Declarative fallback component mapping table
+const DEFAULT_ROLE_MAPPINGS = [
+  { role: 'Base Chassis', keywords: ['chassis', 'base', 'cto server', 'cto chassis', 'base chassis', 'configure-to-order', 'base system', 'compute module', 'frame', 'enclosure'] },
+  { role: 'Processor', keywords: ['processor', 'xeon', 'epyc'] },
+  { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5'] },
+  { role: 'Transceiver', keywords: ['transceiver', 'sfp28 sr', 'optical transceiver'] },
+  { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'lug kit', 'box 1/2 cable', 'direct attach', 'enablement kit'] },
+  { role: 'Storage Battery', keywords: ['battery', 'smart storage battery', 'lithium-ion battery'] },
+  { role: 'Boot Device', keywords: ['boot device', 'ns204i', 'boot optimized'] },
+  { role: 'Power Supply', keywords: ['power', 'power supply', 'flex slot', '-48vdc'] },
+  { role: 'GPU / Accelerator', keywords: ['gpu', 'accelerator', 'nvidia', 'tesla', 'quadro', 'radeon'] },
+  { role: 'PCIe Riser', keywords: ['riser', 'riser kit', 'primary riser', 'secondary riser', 'tertiary riser'] },
+  { role: 'Fibre Channel HBA', keywords: ['fibre channel', 'host bus adapter', 'hba'] },
+  { role: 'Storage Controller', keywords: ['storage', 'controller', 'raid', 'mr416i', 'sr932i'] },
+  { role: 'Network Adapter', keywords: ['network', 'ethernet', 'ocp', 'adapter', 'bcm57'] },
+  { role: 'Drive Cage / Drive', keywords: ['drive', 'cage', 'hdd', 'ssd', 'nvme'] },
+  { role: 'Cooling / Thermal', keywords: ['fan', 'cooling', 'fan kit', 'heatsink'] },
+  { role: 'Service & Support', keywords: ['support', 'service', 'tech care', 'warranty', 'pointnext', 'installation'] },
+  { role: 'Operating System / License', keywords: ['software', 'operating system', 'windows server', 'red hat', 'suse', 'license', 'oneview', 'e-ltu', 'vmware'] },
+  { role: 'Chassis Infrastructure', keywords: ['infrastructure', 'bezel', 'rail', 'management arm', 'tracking', 'localization'] }
+];
+
 /**
  * Dynamically classify component role from category name and item description.
  * Utilizes configuration profile for overrides, falls back to default logic.
@@ -73,36 +95,20 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
 
-  if (profile && profile.component_mapping) {
-    for (const [role, keywords] of Object.entries(profile.component_mapping)) {
-      for (const keyword of keywords) {
-        if (cat.includes(keyword) || desc.includes(keyword)) {
-          return role;
-        }
-      }
+  const mappings = (profile && profile.component_mapping)
+    ? Object.entries(profile.component_mapping).map(([role, keywords]) => ({ role, keywords }))
+    : DEFAULT_ROLE_MAPPINGS;
+
+  for (const { role, keywords } of mappings) {
+    if (keywords.some(k => cat.includes(k) || desc.includes(k))) {
+      return role;
     }
   }
 
-  // Fallback heuristic if no profile provided (or no match in profile)
-  if (cat.includes('chassis') || cat.includes('base') || desc.includes('cto server') || desc.includes('cto chassis') || desc.includes('base chassis') || desc.includes('configure-to-order') || desc.includes('base system') || desc.includes('compute module')) return 'Base Chassis';
-  if (cat.includes('processor') || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) return 'Processor';
-  if (cat.includes('memory') || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) return 'Memory';
-  if (cat.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp28 sr') || desc.includes('optical transceiver')) return 'Transceiver';
-  if (cat.includes('cable') || desc.includes('cable kit') || desc.includes('power cable') || desc.includes('lug kit') || desc.includes('box 1/2 cable') || desc.includes('direct attach') || desc.includes('enablement kit')) return 'Cable Kit';
-  if (cat.includes('battery') || desc.includes('smart storage battery') || desc.includes('lithium-ion battery')) return 'Storage Battery';
-  if (cat.includes('boot device') || desc.includes('ns204i') || desc.includes('boot optimized')) return 'Boot Device';
-  if (cat.includes('power') || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('-48vdc')) return 'Power Supply';
-  if (cat.includes('gpu') || cat.includes('accelerator') || desc.includes('nvidia') || desc.includes('tesla') || desc.includes('quadro') || desc.includes('radeon') || desc.includes('gpu')) return 'GPU / Accelerator';
-  if (cat.includes('riser') || desc.includes('riser kit') || desc.includes('primary riser') || desc.includes('secondary riser') || desc.includes('tertiary riser')) return 'PCIe Riser';
-  if (cat.includes('fibre channel') || desc.includes('fibre channel') || desc.includes('host bus adapter') || desc.includes('hba')) return 'Fibre Channel HBA';
-  if (cat.includes('storage') || desc.includes('controller') || desc.includes('raid') || desc.includes('mr416i') || desc.includes('sr932i')) return 'Storage Controller';
-  if (cat.includes('network') || desc.includes('ethernet') || desc.includes('ocp') || desc.includes('adapter') || desc.includes('bcm57')) return 'Network Adapter';
-  if (cat.includes('drive') || desc.includes('cage') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('nvme')) return 'Drive Cage / Drive';
-  if (cat.includes('fan') || cat.includes('cooling') || desc.includes('fan kit') || desc.includes('heatsink')) return 'Cooling / Thermal';
-  if (cat.includes('support') || cat.includes('service') || desc.includes('tech care') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc)) return 'Service & Support';
-  if (cat.includes('software') || cat.includes('operating system') || desc.includes('windows server') || desc.includes('red hat') || desc.includes('suse') || desc.includes('license') || desc.includes('oneview') || desc.includes('e-ltu') || desc.includes('vmware')) return 'Operating System / License';
-  if (cat.includes('infrastructure') || desc.includes('bezel') || desc.includes('rail') || desc.includes('management arm') || desc.includes('tracking') || desc.includes('localization')) return 'Chassis Infrastructure';
-  if (desc.includes('frame') || desc.includes('enclosure')) return 'Base Chassis';
+  // Regex check for service SKUs
+  if (/^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc)) {
+    return 'Service & Support';
+  }
 
   return 'Option Component';
 }

@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
-  "lastUpdated": "2026-08-21T13:53:07.112Z",
-  "totalLearnedRules": 18,
+  "lastUpdated": "2026-08-21T13:55:39.433Z",
+  "totalLearnedRules": 19,
   "counts": {
     "universal": 0,
-    "familyGen": 6,
+    "familyGen": 7,
     "chassisSpecific": 12
   },
   "universalRules": [],
@@ -97,6 +97,23 @@
     {
       "deltaId": "DELTA-1787319441103",
       "timestamp": "2026-08-21T13:37:21.103Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    },
+    {
+      "deltaId": "DELTA-1787320513501",
+      "timestamp": "2026-08-21T13:55:13.501Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
