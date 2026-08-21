@@ -67,7 +67,7 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
           <MessageSquare className="w-5 h-5 text-emerald-600" />
           <h3 className="font-bold text-slate-900 text-base">Feedback & Agent Task Dispatch</h3>
         </div>
-        <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+        <button onClick={onClose} aria-label="Close drawer" title="Close drawer" className="text-slate-400 hover:text-slate-600 cursor-pointer">
           <X className="w-5 h-5" />
         </button>
       </div>

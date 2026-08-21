@@ -34,6 +34,32 @@ const {
   activeQueryJobs
 } = require('./notebook/job_manager.js');
 
+// Fast in-memory & disk cache for repeated RAG queries within and across workflow steps
+const queryCache = new Map();
+const RAG_CACHE_FILE = path.join(__dirname, '..', '..', 'outputs', 'history', 'rag_cache.json');
+
+try {
+  if (fs.existsSync(RAG_CACHE_FILE)) {
+    const rawDisk = JSON.parse(fs.readFileSync(RAG_CACHE_FILE, 'utf-8'));
+    if (typeof rawDisk === 'object' && rawDisk !== null) {
+      for (const [k, v] of Object.entries(rawDisk)) {
+        queryCache.set(k, v);
+      }
+    }
+  }
+} catch (_) {}
+
+function persistRagCache() {
+  try {
+    const { safeWriteJsonAtomic } = require('./fs_compat.js');
+    const obj = {};
+    for (const [k, v] of queryCache.entries()) {
+      obj[k] = v;
+    }
+    safeWriteJsonAtomic(RAG_CACHE_FILE, obj);
+  } catch (_) {}
+}
+
 /**
  * Safely execute Gemini Notebook query via nlm CLI using child_process.execFile.
  * Pre-processes the prompt and post-processes the result.
@@ -48,6 +74,15 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     const logger = require('./pipeline_logger.js');
     const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
     const timeoutMs = options.timeout || 120000;
+
+    const cacheKey = `${notebookId || 'default'}:${sanitizedQuery.trim()}`;
+    if (!options.bypassCache && queryCache.has(cacheKey)) {
+      logger.info('NOTEBOOK_QUERY', `RAG query cache hit for key [${cacheKey.slice(0, 40)}...]`);
+      return resolve({
+        ...queryCache.get(cacheKey),
+        cached: true
+      });
+    }
 
     const envPath = process.env.PATH || '';
     const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
@@ -106,6 +141,10 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
       }
 
       const processed = postProcessNotebookResult(stdout, sanitizedQuery);
+      if (processed && processed.answer) {
+        queryCache.set(cacheKey, processed);
+        persistRagCache();
+      }
       resolve(processed);
     });
   });

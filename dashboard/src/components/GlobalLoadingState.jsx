@@ -130,7 +130,7 @@ export default function GlobalLoadingState({
       )}
 
       {/* 2. Skeleton Wireframe Layouts */}
-      {(mode === 'full' || mode === 'matrix' || mode === 'catalog' || (isProcessing && mode === 'banner')) && (
+      {(isProcessing && (mode === 'full' || mode === 'matrix' || mode === 'catalog' || mode === 'banner')) && (
         <div id="skeleton-wireframe-grid" className="space-y-4 pt-2">
           {/* Skeleton Section Header */}
           <div className="flex items-center justify-between pb-2 border-b border-slate-200/60">

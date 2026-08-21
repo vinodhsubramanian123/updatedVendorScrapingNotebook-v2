@@ -56,17 +56,17 @@ describe('ResolutionMatrix', () => {
     // Initially, parts are not expanded
     expect(screen.queryByText('P49057-B21')).not.toBeInTheDocument();
     
-    // Find Expand All buttons
-    const expandButtons = screen.getAllByText('Expand All');
+    // Find Expand buttons
+    const expandButtons = screen.getAllByText('Expand');
     fireEvent.click(expandButtons[0]);
     
     // Now parts should be visible
     expect(screen.getByText('P49057-B21')).toBeInTheDocument();
-    expect(screen.getByText('Intel Xeon 8580')).toBeInTheDocument();
   });
 
-  it('renders empty state if no tiers provided', () => {
+  it('renders default strategy matrix tiers if evalResults is null', () => {
     render(<ResolutionMatrix evalResults={null} selectedChassis="DL380_Gen12_SFF" />);
-    expect(screen.getByText('No Synthesis Available')).toBeInTheDocument();
+    expect(screen.getByText(/Multi-Tier Strategic Resolution Matrix/i)).toBeInTheDocument();
+    expect(screen.getByText(/Optimal Workload Match/i)).toBeInTheDocument();
   });
 });

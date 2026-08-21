@@ -622,6 +622,13 @@
       "constraint": "learned",
       "maxQty": 1,
       "rule": "Portal validation flagged restriction on P76450-B21."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P69728-F21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "If P69728-F21 is present, DDR5-6400 is mandatory."
     }
   ]
 }

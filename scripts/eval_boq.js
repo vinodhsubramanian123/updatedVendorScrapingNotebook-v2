@@ -88,9 +88,11 @@ Examples:
   // Auto-detection happens after BOQ parsing (below) if chassisDir is still empty
 
   // Parse BOQ first so we can use items for auto-detection
+  const tStart = Date.now();
   emitProgress(1, 10, 'Extracting Workload DNA & BOQ Items', 'in_progress', `Parsing input file: ${path.basename(inputFile)}`);
   const rawContent = fs.readFileSync(inputFile, 'utf-8');
   const items = parseAndConsolidateBOQ(rawContent, inputFile);
+  const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
   // Auto-detect chassis from BOQ items if --chassis not provided
   let chassisDetection = null;
@@ -169,6 +171,7 @@ Examples:
 
   // Step 2: Modular 6-Aspect Solution Pre-Check Engine
   // G25: Derive catalog filename dynamically from chassis directory basename
+  const tAspectStart = Date.now();
   const chassisPrefix = path.basename(chassisDir);
   const catalogPath = path.join(chassisDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = null;
@@ -181,6 +184,7 @@ Examples:
   // G26: Pass chassisDir through to evaluatePhysicalMath â†’ validateConflictGraph
   const evalResults = evaluatePhysicalMath(items, catalogData, chassisDir);
   const graph = evalResults.conflictGraph || {};
+  const stage2AspectMathMs = Math.max(Date.now() - tAspectStart, 1);
 
   if (!JSON_MODE) {
     console.log(`\nâš¡ Phase 2: Modular ${evalResults.aspectChecks ? evalResults.aspectChecks.length : 'Multi'}-Aspect Physical Pre-Checks Completed:`);
@@ -238,6 +242,7 @@ Examples:
     }
   }
 
+  const tRagStart = Date.now();
   emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
   
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
@@ -249,6 +254,7 @@ Examples:
     },
     timeout: 120000
   });
+  const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
 
   evalResults.notebookLmStatus = {
     source: ragResult.source,
@@ -291,7 +297,9 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
   // -------------------------------------------------------------
   // NEW: Agentic AI Cross-Verification (Guardrail Loop)
   // -------------------------------------------------------------
+  let stage4GuardrailMs = 0;
   if (evalResults.confidence && evalResults.confidence.isHitlTriggered) {
+    const tGuardrailStart = Date.now();
     if (!JSON_MODE) console.log('\nðŸ¤– Triggering Agentic Guardrail Loop for resolution...');
     
     // We await the guardrail to complete
@@ -303,9 +311,11 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
     
     // Re-evaluate if we want, or just accept the LLM's explanation as part of the report
     evalResults.agenticExplanation = guardrailResult.text || null;
+    stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
   }
 
   // Step 4: Budget Optimization Analysis (Golden Rule Assurance)
+  const tMatrixStart = Date.now();
   let targetBudgetUsd = 0;
   const bIdx = args.indexOf('--budget');
   if (bIdx !== -1 && args[bIdx + 1]) {
@@ -317,6 +327,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
 
   // Step 5: Synthesize Final Markdown Report
   emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
+  const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
   const reportDir = path.dirname(outputPath);
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
 
@@ -440,6 +451,15 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
     evalResults.postFlowSync = syncResult;
   } catch (_) {}
 
+  // Attach high-resolution stage breakdown to evalResults
+  evalResults.stageBreakdown = {
+    stage1ParsingMs,
+    stage2AspectMathMs,
+    stage3RAGConsultationMs: stage3RAGMs,
+    stage4GeminiVerificationMs: stage4GuardrailMs,
+    stage5ResolutionMatrixMs: stage5MatrixMs
+  };
+
   // Record Pipeline Telemetry for Observability Dashboard (after sync so syncStatus is present)
   const { recordEvaluationTelemetry } = require('./lib/telemetry.js');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
@@ -543,11 +563,11 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- âš ï
           { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
         ],
         telemetry: {
-          parsingTimeMs: 120,
-          cleaningTimeMs: 180,
-          rulesTimeMs: 210,
-          rankingTimeMs: 160,
-          ragTimeMs: 340,
+          parsingTimeMs: stage1ParsingMs,
+          aspectMathTimeMs: stage2AspectMathMs,
+          ragTimeMs: stage3RAGMs,
+          guardrailTimeMs: stage4GuardrailMs,
+          matrixTimeMs: stage5MatrixMs,
           totalEvalTimeMs: Date.now() - startTime
         },
         evalResults: {

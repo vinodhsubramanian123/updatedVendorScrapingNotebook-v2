@@ -11,6 +11,33 @@ export default function AccuracyProfilerPanel({
   const accuracyScore = telemetry.evalAccuracyScore ? `${telemetry.evalAccuracyScore}%` : '98.5%';
   const adversarialCatch = telemetry.adversarial?.catchRate ? `${telemetry.adversarial.catchRate}%` : '100%';
 
+  const domainTotals = {
+    THERMAL: 0,
+    ELECTRICAL: 0,
+    STORAGE_CACHE_BATTERY: 0,
+    MEMORY_CHANNEL: 0,
+    POWER_REDUNDANCY: 0
+  };
+
+  (telemetry.history || []).forEach(h => {
+    if (h.domainMap) {
+      domainTotals.THERMAL += (h.domainMap.THERMAL || 0);
+      domainTotals.ELECTRICAL += (h.domainMap.ELECTRICAL || 0);
+      domainTotals.STORAGE_CACHE_BATTERY += (h.domainMap.STORAGE_CACHE_BATTERY || 0);
+      domainTotals.MEMORY_CHANNEL += (h.domainMap.MEMORY_CHANNEL || 0);
+      domainTotals.POWER_REDUNDANCY += (h.domainMap.POWER_REDUNDANCY || 0);
+    }
+  });
+
+  const grandTotal = Object.values(domainTotals).reduce((a, b) => a + b, 0);
+  const domainItems = [
+    { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: grandTotal > 0 ? Math.round((domainTotals.THERMAL / grandTotal) * 100) : 35 },
+    { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: grandTotal > 0 ? Math.round((domainTotals.ELECTRICAL / grandTotal) * 100) : 25 },
+    { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: grandTotal > 0 ? Math.round((domainTotals.STORAGE_CACHE_BATTERY / grandTotal) * 100) : 20 },
+    { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: grandTotal > 0 ? Math.round((domainTotals.MEMORY_CHANNEL / grandTotal) * 100) : 12 },
+    { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: grandTotal > 0 ? Math.round((domainTotals.POWER_REDUNDANCY / grandTotal) * 100) : 8 }
+  ];
+
   return (
     <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
@@ -89,13 +116,7 @@ export default function AccuracyProfilerPanel({
           <span className="text-[10px] text-blue-600 font-bold">View Rules &rarr;</span>
         </div>
         <div className="space-y-1.5 text-xs">
-          {[
-            { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: 35 },
-            { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: 25 },
-            { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: 20 },
-            { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: 12 },
-            { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: 8 }
-          ].map((item, idx) => (
+          {domainItems.map((item, idx) => (
             <div key={idx} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${item.color}`}></span>
@@ -121,23 +142,33 @@ export default function AccuracyProfilerPanel({
         <div className="space-y-1 text-[11px]">
           <div className="flex justify-between text-slate-600">
             <span>Stage 1: Parsing &amp; CTO Multiplier</span>
-            <span className="font-mono font-bold text-slate-800">~85ms</span>
+            <span className="font-mono font-bold text-slate-800">
+              {telemetry.history?.[0]?.stageBreakdown?.stage1ParsingMs ? `${telemetry.history[0].stageBreakdown.stage1ParsingMs}ms` : '~85ms'}
+            </span>
           </div>
           <div className="flex justify-between text-slate-600">
             <span>Stage 2: Aspect Math Engine</span>
-            <span className="font-mono font-bold text-slate-800">~140ms</span>
+            <span className="font-mono font-bold text-slate-800">
+              {telemetry.history?.[0]?.stageBreakdown?.stage2AspectMathMs ? `${telemetry.history[0].stageBreakdown.stage2AspectMathMs}ms` : '~140ms'}
+            </span>
           </div>
           <div className="flex justify-between text-slate-600">
             <span>Stage 3: NotebookLM Grounding</span>
-            <span className="font-mono font-bold text-slate-800">~110ms</span>
+            <span className="font-mono font-bold text-slate-800">
+              {telemetry.history?.[0]?.stageBreakdown?.stage3RAGConsultationMs ? `${(telemetry.history[0].stageBreakdown.stage3RAGConsultationMs / 1000).toFixed(1)}s` : '~110ms'}
+            </span>
           </div>
           <div className="flex justify-between text-slate-600">
             <span>Stage 4: Gemini Workload Verify</span>
-            <span className="font-mono font-bold text-slate-800">~160ms</span>
+            <span className="font-mono font-bold text-slate-800">
+              {telemetry.history?.[0]?.stageBreakdown?.stage4GeminiVerificationMs ? `${(telemetry.history[0].stageBreakdown.stage4GeminiVerificationMs / 1000).toFixed(1)}s` : '~160ms'}
+            </span>
           </div>
           <div className="flex justify-between text-slate-600">
             <span>Stage 5: 5-Tier Matrix Synthesis</span>
-            <span className="font-mono font-bold text-slate-800">~95ms</span>
+            <span className="font-mono font-bold text-slate-800">
+              {telemetry.history?.[0]?.stageBreakdown?.stage5ResolutionMatrixMs ? `${telemetry.history[0].stageBreakdown.stage5ResolutionMatrixMs}ms` : '~95ms'}
+            </span>
           </div>
         </div>
       </div>

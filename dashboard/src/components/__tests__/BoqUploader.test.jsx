@@ -7,17 +7,17 @@ describe('BoqUploader', () => {
   it('renders upload area and text area', () => {
     render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" />);
     
-    expect(screen.getByText(/Click to select or drag and drop BOQ quote file/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/e.g. 1x P49057-B21/i)).toBeInTheDocument();
+    expect(screen.getByText(/Drop your Excel/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Paste quote lines/i)).toBeInTheDocument();
   });
 
   it('populates textarea when preset button is clicked', () => {
     render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" />);
     
-    const presetBtn = screen.getByText('DL380 Gen12');
+    const presetBtn = screen.getByText(/Sample Standard BOM/i);
     fireEvent.click(presetBtn);
     
-    const textarea = screen.getByPlaceholderText(/e.g. 1x P49057-B21/i);
+    const textarea = screen.getByPlaceholderText(/Paste quote lines/i);
     expect(textarea.value).toContain('P73282-B21');
   });
 
@@ -26,15 +26,15 @@ describe('BoqUploader', () => {
     render(<BoqUploader onEvaluateBoq={mockOnEvaluateBoq} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" />);
     
     // Set raw text via preset
-    fireEvent.click(screen.getByText('DL380 Gen12'));
+    fireEvent.click(screen.getByText(/Sample Standard BOM/i));
     
     // Submit
-    const submitBtn = screen.getByText(/Run Aspect Math/i);
+    const submitBtn = screen.getByText(/Run 6-Aspect Evaluation/i);
     fireEvent.click(submitBtn);
     
-    expect(mockOnEvaluateBoq).toHaveBeenCalledWith({
-      filepath: null,
-      rawText: expect.stringContaining('P73282-B21')
-    });
+    expect(mockOnEvaluateBoq).toHaveBeenCalledWith(
+      null,
+      expect.stringContaining('P73282-B21')
+    );
   });
 });

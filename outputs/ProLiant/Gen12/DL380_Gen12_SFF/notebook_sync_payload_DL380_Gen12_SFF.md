@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-21T12:15:57.872Z  
+**Sync Timestamp**: 2026-08-21T13:46:30.857Z  
 **Total Verified SKUs**: `861` (`261` Hardware + `600` Services)  
-**Total Synced KnowledgeDeltas**: `12`  
+**Total Synced KnowledgeDeltas**: `18`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -31,7 +31,12 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)
 
-*No family/generation-level rules logged yet. Symmetric memory & power supply mixing rules active.*
+1. **[DELTA-1787315086845] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+2. **[DELTA-1787315091044] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+3. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+4. **[DELTA-1787319423966] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+5. **[DELTA-1787319428509] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+6. **[DELTA-1787319441103] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen12_SFF)
 

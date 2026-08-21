@@ -270,14 +270,32 @@ export default function App() {
     try { await fetch('/api/navigate-oca', { method: 'POST' }); } catch (err) { console.error(err); }
   };
 
-  const handleEvaluateBoq = async (boqInput) => {
+  const handleEvaluateBoq = async (boqInput, maybeRawText) => {
     setLogStream([]); setEvalResults(null);
     try {
+      let payload = {};
+      const isFileObj = boqInput instanceof File || (boqInput && typeof boqInput === 'object' && typeof boqInput.name === 'string' && typeof boqInput.size === 'number');
+      if (isFileObj) {
+        const formData = new FormData();
+        formData.append('boqFile', boqInput);
+        const uploadRes = await fetch('/api/upload-boq', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        payload.filepath = uploadData.filepath;
+        if (maybeRawText) payload.rawText = maybeRawText;
+      } else if (typeof boqInput === 'string') {
+        payload.rawText = boqInput;
+      } else if (boqInput && typeof boqInput === 'object') {
+        payload = { ...boqInput };
+        if (maybeRawText && !payload.rawText) payload.rawText = maybeRawText;
+      } else if (maybeRawText) {
+        payload.rawText = maybeRawText;
+      }
+
       const currentCat = catalogs.find(c => c.id === selectedChassis);
       const res = await fetch('/api/eval-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...boqInput, chassisDir: currentCat?.chassisDir || currentCat?.id })
+        body: JSON.stringify({ ...payload, chassisDir: currentCat?.chassisDir || currentCat?.id })
       });
       const data = await res.json();
       if (!res.ok) { setEvalResults({ status: 'ERROR', error: data.error }); return { error: data.error }; }

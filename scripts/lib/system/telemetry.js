@@ -99,6 +99,11 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     // Learning loop sync status for this run
     syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
+    memoryUsage: {
+      rssMb: process.memoryUsage ? Math.round(process.memoryUsage().rss / (1024 * 1024)) : 0,
+      heapUsedMb: process.memoryUsage ? Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) : 0,
+      heapTotalMb: process.memoryUsage ? Math.round(process.memoryUsage().heapTotal / (1024 * 1024)) : 0
+    },
     durationMs
   };
 
@@ -123,7 +128,41 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
   data.lastUpdated = new Date().toISOString();
 
   safeWriteJsonAtomic(TELEMETRY_FILE, data);
+  pruneRunLogFiles(100);
   return entry;
+}
+
+/**
+ * Prune historical run JSON log files in outputs/history/runs/ to prevent unbounded disk growth.
+ * @param {number} maxFiles 
+ */
+function pruneRunLogFiles(maxFiles = 100) {
+  const runsDir = path.join(PROJECT_ROOT, 'outputs', 'history', 'runs');
+  if (!fs.existsSync(runsDir)) return;
+  try {
+    const files = fs.readdirSync(runsDir)
+      .filter(f => f.startsWith('run_') && f.endsWith('.json'))
+      .map(f => {
+        try {
+          return {
+            name: f,
+            filePath: path.join(runsDir, f),
+            mtime: fs.statSync(path.join(runsDir, f)).mtimeMs
+          };
+        } catch (_) {
+          return null;
+        }
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.mtime - a.mtime); // Newest first
+
+    if (files.length > maxFiles) {
+      const toDelete = files.slice(maxFiles);
+      toDelete.forEach(f => {
+        try { fs.unlinkSync(f.filePath); } catch (_) {}
+      });
+    }
+  } catch (_) {}
 }
 
 /**
