@@ -241,7 +241,14 @@ Examples:
   emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
   
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
-  const ragResult = await executeNotebookQuery(notebookId, ragPayload, { context: { chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'DL380_Gen12_SFF' } });
+  const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
+    context: {
+      chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'DL380_Gen12_SFF',
+      skus: items.map(i => i.sku).filter(Boolean),
+      items: items
+    },
+    timeout: 120000
+  });
 
   evalResults.notebookLmStatus = {
     source: ragResult.source,
@@ -249,8 +256,21 @@ Examples:
     citationsCount: (ragResult.citations || []).length,
     fallbackReason: ragResult.fallbackReason || null
   };
-  evalResults.ragFallbackUsed = ragResult.source === 'LOCAL_RAG_FALLBACK';
   evalResults.ragResult = ragResult;
+  
+  // -------------------------------------------------------------
+  // AUTONOMOUS LEARNING LOOP: Extract & Persist Verified Grounding Rules
+  // -------------------------------------------------------------
+  try {
+    const { extractAndPersistLearnedDeltas } = require('./lib/notebook/knowledge_extractor.js');
+    const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
+      chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir)
+    });
+    evalResults.learnedDeltasCount = learnedResult.count;
+  } catch (extractErr) {
+    const _logger = require('./lib/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', `Knowledge extraction skipped: ${extractErr.message}`);
+  }
 
   let ragAnswer = `### Pre-Flight Grounded Physical Validation Matrix (${ragResult.source})
 

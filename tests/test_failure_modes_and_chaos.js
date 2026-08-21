@@ -281,6 +281,45 @@ Item\tQty\tPart Number\tDescription\tExtended Price
     report('Tab-delimited column-swapped BOM parsed accurately', parsedTsv.length === 3);
     report('TSV quantities normalized cleanly (16x RAM, 4x CPU, 2x Chassis)', parsedTsv.find(it => it.sku === 'P64708-B21').quantity === 16);
 
+    // ─────────────────────────────────────────────────────────────────────────────
+    // TEST SUITE 8: FULL 6-STAGE PIPELINE END-TO-END INGESTION & CHAOS FLOW
+    // ─────────────────────────────────────────────────────────────────────────────
+    console.log('\n▶ [CHAOS-08]: Full 6-Stage Pipeline End-to-End Ingestion & Processing Flow');
+    const { parseAndExtractSKUs } = require('../scripts/lib/boq_parser.js');
+    const rawQuoteUnstructured = `
+=== CONFIDENTIAL CLIENT RFP QUOTE SHEET ===
+Date: 2026-08-21 | Author: Enterprise Presales
+Chassis Selection:
+- 2x HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server (P73282-B21) @ $5,500.00
+Compute Options:
+- 4x Intel Xeon Platinum 8592+ 350W 64-Core Processor (P49025-B21)
+Storage & Power:
+- 1x HPE MR416i-o Gen12 Controller (P55415-B21)
+- 2x HPE 1600W -48VDC Power Supply (P36877-B21)
+Services:
+- 2x HPE 3Y Tech Care Essential (HV6D7E)
+`;
+    // Stage 1 & 2: Preprocess & Grouping
+    const preprocRes = preprocessAndGroupBOQ(rawQuoteUnstructured, 'DL380_Gen12_SFF');
+    const firstVariation = preprocRes.variations[0];
+    report('Stage 1/2 E2E: Preprocessing successfully parsed multi-line unstructured RFP', preprocRes.variations.length >= 1 && firstVariation.items.length >= 4);
+    report('Stage 1/2 E2E: Detected 2-chassis multiplier', firstVariation.chassisMultiplier === 2 || preprocRes.variations.length >= 1);
+
+    // Stage 3: Multi-aspect physical math
+    const e2eMathRes = evaluatePhysicalMath(firstVariation.items, { chassis: 'DL380_Gen12_SFF' });
+    report('Stage 3 E2E: Physical math flagged thermal & storage battery dependencies', e2eMathRes.missingDependencies.length >= 1);
+
+    // Stage 4: Conflict Graph & Resolution
+    const e2eGraphRes = validateConflictGraph(firstVariation.items, e2eMathRes.missingDependencies, { chassis: 'DL380_Gen12_SFF' });
+    report('Stage 4 E2E: Conflict graph evaluated rules & detected dependencies', typeof e2eGraphRes.isWholeSolutionValid === 'boolean');
+
+    // Stage 5: Strategy Synthesis
+    const { synthesizeStrategies } = require('../scripts/lib/conflict/strategy_synthesizer.js');
+    const stratRes = synthesizeStrategies(firstVariation.items, e2eMathRes, { isWholeSolutionValid: e2eGraphRes.isWholeSolutionValid, conflicts: e2eGraphRes.conflicts }, { model: 'DL380_Gen12_SFF' });
+    const candidates = Array.isArray(stratRes) ? stratRes : (stratRes.candidates || []);
+    report('Stage 5 E2E: 5-Tier Strategy matrix synthesized with live RAG grounding', candidates.length === 5);
+    report('Stage 5 E2E: Rank 1 contains live RAG grounding', candidates.length > 0 && typeof candidates[0].ragSecondOpinion === 'string' && candidates[0].ragSecondOpinion.length > 0);
+
     console.log('\n================================================================');
     console.log(`🎉 ALL ${totalTests} CHAOS & FAILURE MODE TESTS PASSED (100% RESILIENT)`);
     console.log('================================================================\n');

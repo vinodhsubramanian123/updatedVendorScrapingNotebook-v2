@@ -19,7 +19,8 @@ module.exports = {
     progress: require('./progress.js'),
     logger: require('./pipeline_logger.js'),
     profileLoader: require('./profile_loader.js'),
-    geminiRotator: require('./gemini_rotator.js')
+    geminiRotator: require('./gemini_rotator.js'),
+    schemas: require('./schemas.js')
   },
 
   // BOQ Processing & Evaluation Subsystem

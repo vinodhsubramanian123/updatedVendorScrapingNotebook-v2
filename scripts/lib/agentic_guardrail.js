@@ -23,7 +23,7 @@ const logger = require('./pipeline_logger.js');
 
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
-const MODEL_NAME = 'gemini-3.5-flash';
+const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));

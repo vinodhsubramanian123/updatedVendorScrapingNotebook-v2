@@ -30,8 +30,8 @@ function getChassisMap() {
   if (_chassisMapCache) return _chassisMapCache;
 
   const defaultMap = {
-    "DL380_Gen12_SFF": { "family": "ProLiant", "gen": "Gen12", "formFactor": "SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12 SFF" },
-    "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "SFF", "baseSku": "P52534-B21", "model": "DL380 Gen11" },
+    "DL380_Gen12_SFF": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12 8SFF" },
+    "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
     "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
     "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
     "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
@@ -50,9 +50,15 @@ function getChassisMap() {
   }
 
   const aggregated = { ...defaultMap };
+  if (loaded.chassis_base_skus && typeof loaded.chassis_base_skus === 'object') {
+    for (const [sku, v] of Object.entries(loaded.chassis_base_skus)) {
+      aggregated[sku] = { ...v, baseSku: sku, model: v.model || sku };
+    }
+  }
   for (const [k, v] of Object.entries(loaded)) {
+    if (k === 'chassis_base_skus' || k === 'chassis_base_skus_by_family_gen') continue;
     if (typeof v === 'string') {
-      aggregated[k] = { family: 'ProLiant', gen: 'Gen12', formFactor: 'SFF', baseSku: v, model: k };
+      aggregated[k] = { family: 'ProLiant', gen: 'Gen12', formFactor: '8SFF', baseSku: v, model: k };
     } else {
       aggregated[k] = { ...v, model: v.model || k };
     }
@@ -71,13 +77,26 @@ function getChassisMap() {
 function detectChassisVariant(items, overrideVariant = '') {
   const chassisMap = getChassisMap();
 
-  if (overrideVariant && chassisMap[overrideVariant]) {
-    return { ...chassisMap[overrideVariant], id: overrideVariant };
+  if (overrideVariant) {
+    if (chassisMap[overrideVariant]) {
+      return { ...chassisMap[overrideVariant], id: overrideVariant };
+    }
+    const found = Object.values(chassisMap).find(c =>
+      (c.formFactor && c.formFactor.toLowerCase() === overrideVariant.toLowerCase()) ||
+      (c.model && c.model.toLowerCase().includes(overrideVariant.toLowerCase()))
+    );
+    if (found) {
+      return { ...found, id: overrideVariant, formFactor: overrideVariant };
+    }
+    return { family: 'ProLiant', gen: 'Gen12', formFactor: overrideVariant, model: overrideVariant, id: overrideVariant };
   }
 
-  // Scan items for base chassis SKU match
+  // Scan items for direct base chassis SKU match
   for (const it of items) {
     const clean = cleanBaseSKU(it.sku);
+    if (chassisMap[clean]) {
+      return { ...chassisMap[clean], id: clean };
+    }
     for (const [id, info] of Object.entries(chassisMap)) {
       if (clean === info.baseSku || (it.description && it.description.toLowerCase().includes(id.toLowerCase()))) {
         return { ...info, id };
@@ -110,8 +129,18 @@ function detectChassisVariant(items, overrideVariant = '') {
  * @returns {object} Graph validation results & audit log
  */
 function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '') {
+  let resolvedTargetDir = '';
+  if (typeof targetDir === 'string') {
+    resolvedTargetDir = targetDir;
+  } else if (targetDir && typeof targetDir === 'object') {
+    resolvedTargetDir = targetDir.targetDir || targetDir.chassisDir || targetDir.chassis || '';
+    if (!chassisVariantOverride && targetDir.chassis) {
+      chassisVariantOverride = targetDir.chassis;
+    }
+  }
+
   const chassisInfo = detectChassisVariant(boqItems, chassisVariantOverride);
-  const catalogData = loadCatalogRules(targetDir);
+  const catalogData = loadCatalogRules(resolvedTargetDir);
   const workloadDna = extractWorkloadDna(boqItems);
 
   const auditLog = [];
@@ -168,8 +197,8 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
       path.join(__dirname, '..', '..', 'outputs', 'history', 'master_knowledge_registry.json'),
       path.join(__dirname, '..', '..', 'outputs', 'history', 'catalog_deltas.json')
     ];
-    if (targetDir) {
-      pathsToSearch.push(path.join(targetDir, 'history', 'catalog_deltas.json'));
+    if (resolvedTargetDir && typeof resolvedTargetDir === 'string' && fs.existsSync(resolvedTargetDir)) {
+      pathsToSearch.push(path.join(resolvedTargetDir, 'history', 'catalog_deltas.json'));
     }
 
     pathsToSearch.forEach(p => {

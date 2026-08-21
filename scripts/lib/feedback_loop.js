@@ -92,7 +92,14 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     sourceAgent: options.sourceAgent || 'HUMAN_HITL',
     guardrailTurn: options.guardrailTurn || null,
     preConfidenceScore: options.preConfidenceScore || null,
-    scopeTaxonomy: options.scopeTaxonomy || 'CHASSIS_SPECIFIC',
+    scopeTaxonomy: options.scopeTaxonomy || (() => {
+      try {
+        const { classifyKnowledgeScope } = require('./knowledge_sync.js');
+        return classifyKnowledgeScope({ chassis: path.basename(outputDir), rawMessage: classification.rawMessage, errorType: classification.errorType });
+      } catch (_) {
+        return 'CHASSIS_SPECIFIC';
+      }
+    })(),
     solutionType: options.solutionType || 'General Server',
     status: 'APPLIED_TO_PRECHECKS_AND_RAG'
   };

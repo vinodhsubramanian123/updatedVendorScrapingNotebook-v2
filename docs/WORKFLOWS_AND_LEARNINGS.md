@@ -74,11 +74,30 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 - **Negative Storage Battery Auto-Injection**: Tri-mode RAID controllers (`MR416i-o` `P55415-B21`) trigger write-back cache warnings. The engine auto-injects `P01366-B21` (96W Smart Storage Battery).
 - **Negative Power DC Lug Auto-Injection**: Telco -48VDC power supplies (`865434-B21` / `P17081-B21`) mandate DC terminal lug connectors for electrical safety. The engine auto-injects `P36877-B21`.
 - **Negative Memory Topology Channel Math**: 9 DIMMs across dual sockets triggers unbalanced channel warnings and interleaving penalties.
-- **Cross-Generation Isolation**: Gen11 Xeon CPUs placed in Gen12 BOQs are flagged cleanly without crashing or cross-contaminating generation catalogs.
-- **Multi-Sheet Multi-Config Preprocessing**: Ingesting multi-sheet workbooks automatically identifies variation drivers (`MEMORY_DENSITY_VARIATION`, `STORAGE_VARIATION`, `WORKLOAD_NODE_PURPOSE`).
-- **Closed-Loop Feedback & Learning**: Human-in-the-loop or Partner Portal rejections write `KnowledgeDelta` records atomically (`outputs/.../history/catalog_deltas.json`), immediately updating subsequent evaluation runs to 100% confidence.
+## 8. Live Customer BOQ (22-Node DL380 Gen12) & Dual-Brain Architectural Learnings
 
-## 8. Vertical Category-Wise Strategy Matrix Grid & Blank SKU Cell Handling
+### 1. Commercial Option Suffix Rules (BTO vs FIO in CTO Chassis)
+- **The Finding**: Customer BOQs often contain retail Build-to-Order (`-B21`) part numbers (e.g. `P69728-B21` 64GB DDR5-6400 RAM) inside Configure-to-Order (CTO) factory base chassis (`P73282-B21`). While physical math (DIMM count, 8-channel balance, 1DPC bus speed) passes 100%, HPE OCA factory orderability rules reject `-B21` parts with `BTO products are not allowed in CTO Base Model`.
+- **The Remediation**: Integrated Option Suffix Validation into `scripts/lib/aspects/memory_channel.js` and `boq_evaluator.js`. When a CTO chassis is detected, any `-B21` memory/accessory option is automatically flagged as a critical violation and mapped to its Factory Integrated Option (`-F21`) direct SKU fix (e.g. `P69728-B21` → `P69728-F21`).
+
+### 2. Cross-Chassis & Cross-Generation Physical Contamination
+- **Cross-Chassis Cable Mismatch**: Identified 1U DL360 Storage Controller Cables (`P48918-B21`) erroneously quoted on a 2U DL380 Gen12 server. Added explicit cross-chassis size validation.
+- **Cross-Generation Riser Mismatch**: Identified Gen11 risers (`P48803-B21` / `P51083-B21`) on Gen12 PCIe Gen5 motherboards. Added generation boundary checks to prevent PCIe bus mismatch.
+
+### 3. Dual-Brain Query Payload Integrity (Sanitizer Object Handling)
+- **The Bug**: Passing structured query objects (`{ chassis, query, context }`) from `formatNotebookQueryPayload()` directly into `executeNotebookQuery()` previously caused `sanitizeNotebookQuery()` to treat non-string inputs as empty, defaulting to a generic query without BOM SKUs.
+- **The Fix**: Enhanced `sanitizeNotebookQuery()` in `scripts/lib/notebook/query_sanitizer.js` to natively parse structured query objects, extract the full SKU array from `context.skus` and `context.items`, and format an explicit, grounded prompt for NotebookLM.
+
+### 4. Cloud RAG Timeout Synchronization (120s Extended Window)
+- **The Issue**: Live Cloud NotebookLM queries on large multi-source notebooks (16+ sources) require 45–75 seconds to synthesize cross-document citations. The previous 60s timeout caused premature fallback to local RAG.
+- **The Fix**: Standardized timeout to `120000ms` (120s) across `notebook_query_utils.js`, matching `nlm`'s native CLI default.
+
+### 5. Gemini Model Modernization (`gemini-3.6-flash`)
+- Standardized all agentic loops (`agentic_guardrail.js`, `ocr_service.js`) from deprecated `gemini-2.5-flash` to `gemini-3.6-flash` (or `gemini-3.7-flash`), preserving seamless Autonomous MCP Guardrail execution without API 404 errors.
+
+---
+
+## 9. Vertical Category-Wise Strategy Matrix Grid & Blank SKU Cell Handling
 - **Vertical Category Matrix Grid**: Renders hardware items grouped into 9 standardized physical rows: `Chassis Base`, `Compute Processors`, `Thermal Fans`, `Memory`, `Storage Controllers & Battery`, `Drive Media`, `Power Infrastructure`, `Networking & PCIe`, `Pointnext Tech Care`.
 - **Clean Blank / Unneeded SKU Handling**: When candidate solutions (e.g. Rank 3 Cost Balanced or Rank 5 Budget Minimized) intentionally omit an add-on or accessory, the UI displays `— None Required (Standard Default Included)` to avoid confusing missing data errors.
 - **1-Click Portal TSV Copy & Excel Export**: Instant tab-delimited copying for HPE Partner Portal entry and multi-sheet Excel export.

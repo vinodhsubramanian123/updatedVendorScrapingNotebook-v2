@@ -81,23 +81,7 @@
         "category": "Factory CTO Standard"
       }
     ],
-    "rank3": [
-      {
-        "sku": "HPE-CACHE-BATTERY",
-        "description": "HPE Standard Smart Storage Capacitor Battery",
-        "quantity": 1,
-        "unitPriceUsd": 350,
-        "category": "Storage Performance"
-      }
-    ],
-    "rank4": [
-      {
-        "sku": "HPE-PCIE-RISER",
-        "description": "HPE Standard Full PCIe x16 Riser Kit",
-        "quantity": 1,
-        "unitPriceUsd": 900,
-        "category": "Scalability Expansion"
-      }
-    ]
+    "rank3": [],
+    "rank4": []
   }
 }

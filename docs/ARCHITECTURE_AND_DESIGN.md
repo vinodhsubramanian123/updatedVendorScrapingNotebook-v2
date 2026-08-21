@@ -15,7 +15,7 @@ graph TD
         KR -->|Active Key| G[Local Catalog DB Search]
     end
     subgraph "Phase 2: Local Rule Engine (Deterministic Brain)"
-        C --> D[6-Aspect Math: Thermal, Power, Memory, PCIe, Storage, Network]
+        C --> D[7-Aspect Math: Thermal, Power, Memory, PCIe, Storage, Network, Support]
         D --> CG[Conflict Graph & Capacity Bounds]
     end
     subgraph "Phase 3: Agentic Guardrail (Intent & Verification Brain)"
@@ -49,7 +49,7 @@ sequenceDiagram
 
     Customer->>Dashboard: Uploads Customer BOQ
     Dashboard->>Engine: POST /api/evaluate-boq
-    Engine->>Engine: Run 6-Aspect Math & Conflict Graph
+    Engine->>Engine: Run 7-Aspect Math & Conflict Graph
     alt Low Confidence / Missing Dependency
         Engine->>Guardrail: Invoke Agentic Guardrail Loop (MCP)
         Guardrail->>NLM: Query QuickSpecs & Delta Corpus
@@ -62,7 +62,7 @@ sequenceDiagram
         Customer->>Portal: Test Quote Submission in OCA
         alt Portal Rejection / Auto-Inserted SKU
             Customer->>Dashboard: Confirm Portal Difference (Added SKU / Rule)
-            Dashboard->>Registry: POST /api/submit-feedback (KnowledgeDelta)
+            Dashboard->>Registry: POST /api/feedback (KnowledgeDelta)
             Registry->>Registry: safeWriteJsonAtomic(catalog_deltas.json)
             Registry->>NLM: nlm source add (notebook_sync_payload.md)
             Note over Engine,Registry: Local Rule Engine immediately learns delta for 100% confidence on next run
@@ -153,6 +153,8 @@ sequenceDiagram
 - **Continuous Structural Auditing (Dynamic Truth)**: While this document provides the *static* conceptual design, the system architecture is actively audited using the `graphify` skill. The resulting semantic graph (`graphify-out/GRAPH_REPORT.md`) is the *dynamic source of truth* for file dependencies and god nodes. Agents MUST query this graph rather than relying solely on static docs.
 - **Decoupled Data Architecture**: SKUs are strictly classified (e.g., base chassis vs. options). Atomic JSON writes (`safeWriteJsonAtomic`) ensure database files are never corrupted.
 - **Incremental SHA-256 Checksum Diffing & Fingerprinting**: `checksum_diff.js` computes deterministic SHA-256 hashes per SKU and per subcategory table payload. During live rescapes, unchanged SKUs skip LLM re-classification (saving ~150 tokens and ~200ms per SKU), while modified and discontinued SKUs are isolated and logged to `price_history.json` and `discontinued_skus.json`.
+- **Commercial Option Suffix (BTO vs FIO) & Factory Rules**: The engine decouples physical feasibility from factory orderability. In Configure-to-Order (CTO) server chassis (e.g. `P73282-B21`), retail Build-to-Order (`-B21`) memory kits and options are flagged with direct SKU replacements to Factory Integrated Option (`-F21` / `FIO`) equivalents.
+- **Cross-Chassis & Cross-Gen Boundary Guards**: The physical math engine detects form factor mismatches (e.g. 1U DL360 storage cables on 2U DL380 chassis) and bus generation mismatches (e.g. Gen11 PCIe risers on Gen12 servers) before sending quotes to vendor portals.
 - **Configuration-Driven Scraping Profiles**: The scraping pipeline (`scrape_oca_solution.js`) relies on dynamically loaded JSON profiles (`scripts/config/profiles/`) to govern DOM thresholds, required tabs, and generation-specific component rules (e.g., DL380 Gen12 vs Alletra). This ensures zero hardcoding in the core orchestration script, making scaling to new product families highly maintainable.
 
 ## 3. Data Dictionary & Key Schemas
@@ -173,7 +175,7 @@ The engine is structured into 5 decoupled domain namespaces exported via [`scrip
 | Subsystem | Modules | Core Responsibilities |
 |---|---|---|
 | **`system`** | `telemetry`, `fsCompat`, `progress`, `logger`, `profileLoader`, `geminiRotator` | Atomic I/O with rollback (`safeWriteJsonAtomic`), progress streaming, structured logging, profile loading, FIFO Gemini API key rotation & daily quota management |
-| **`boq`** | `evaluator`, `preprocessor`, `parser`, `conflictGraph`, `budgetOptimizer`, `vendorBomVerifier`, `xlsxExporter` | 6-aspect physical math, N-way configuration diffing, shared SKU line parsing (`boq_parser.js`), 5-tier strategy matrix |
+| **`boq`** | `evaluator`, `preprocessor`, `parser`, `conflictGraph`, `budgetOptimizer`, `vendorBomVerifier`, `xlsxExporter` | 7-aspect physical math, N-way configuration diffing, shared SKU line parsing (`boq_parser.js`), 5-tier strategy matrix |
 | **`catalog`** | `rules`, `discovery`, `formatter`, `diff`, `productMeta`, `sku`, `registry`, `validator`, `checksumDiff`, `skuVersioning`, `syncRegistry` | 5-level catalog rules, auto-chassis detection, schema validation (`data_validator.js`), SKU regex, price diff audit |
 | **`rag`** | `ocrService`, `knowledgeSync`, `notebookQuery`, `localSearch`, `postFlowSync`, `geminiRotator` | Multimodal Gemini Vision OCR (with 25MB limits), bi-directional NotebookLM sync, dual-layer local fallback search, smart LLM synthesis |
 | **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning |

@@ -96,10 +96,28 @@ function classifyRule(ruleText, parentCategory = '', subCategory = '') {
  * @returns {object} { metadata, parsedRules: Array, subcategoryConstraints: Array, sourceFile, isFallback }
  */
 function loadCatalogRules(targetDir) {
-  const prefix = path.basename(targetDir);
-  const rulesJsonPath = path.join(targetDir, `${prefix}_Catalog_Rules.json`);
-  const rulesBakPath = path.join(targetDir, `${prefix}_Catalog_Rules.json.bak`);
-  const catalogJsonPath = path.join(targetDir, `${prefix}_Catalog.json`);
+  let resolvedDir = '';
+  if (typeof targetDir === 'string') {
+    resolvedDir = targetDir;
+  } else if (targetDir && typeof targetDir === 'object') {
+    resolvedDir = targetDir.targetDir || targetDir.chassisDir || targetDir.chassis || '';
+  }
+
+  if (!resolvedDir) {
+    resolvedDir = path.join(__dirname, '..', '..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+  } else if (!fs.existsSync(resolvedDir)) {
+    // If it's a model name like 'DL380_Gen12_SFF'
+    try {
+      const { findCatalogDirectory } = require('./catalog_discovery.js');
+      const found = findCatalogDirectory(resolvedDir);
+      if (found) resolvedDir = found;
+    } catch (_) {}
+  }
+
+  const prefix = path.basename(resolvedDir);
+  const rulesJsonPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json`);
+  const rulesBakPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json.bak`);
+  const catalogJsonPath = path.join(resolvedDir, `${prefix}_Catalog.json`);
   const fixtureRulesPath = path.join(__dirname, '..', '..', 'tests', 'fixtures', 'sample_Catalog_Rules.json');
 
   let rawData = null;

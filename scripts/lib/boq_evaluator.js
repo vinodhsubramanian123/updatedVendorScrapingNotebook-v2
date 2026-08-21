@@ -105,6 +105,33 @@ function parseAndConsolidateBOQ(rawInput, filePath = '') {
  * @returns {object} Evaluation results
  */
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    const reason = 'Empty BOQ: No SKUs or line items detected.';
+    return {
+      isMathClean: false,
+      isGraphClean: false,
+      criticalViolationsCount: 1,
+      confidence: {
+        score: 0.0,
+        isHitlTriggered: true,
+        confidenceReasons: [`[CRITICAL_MATH] ${reason}`]
+      },
+      errors: [reason],
+      warnings: [],
+      missingDependencies: [],
+      mathDeductions: [reason],
+      evalSummary: {},
+      aspectChecks: [],
+      conflictGraph: {
+        isWholeSolutionValid: false,
+        conflicts: [{ level: 'BOQ', type: 'EMPTY_INPUT', message: reason }],
+        resolvedFixes: [],
+        unresolvedConflicts: [],
+        rankedSolutions: []
+      }
+    };
+  }
+
   const chassisInfo = detectChassisVariant(items);
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
@@ -271,12 +298,29 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     });
   }
 
-  // Rule 5: Memory Channel Balance requirement
+  // Rule 5: Memory Channel Balance & CTO FIO Memory requirement
+  if (memory.hasBtoMemoryInCto) {
+    memory.btoMemoryViolations.forEach(v => {
+      errors.push(v.reason);
+      mathDeductions.push(v.reason);
+      missingDependencies.push({
+        key: `FIO_MEMORY_${v.fioSku}`,
+        rule: 'CLIC Option Type Constraint: FIO Memory Required in CTO Base Model',
+        sku: v.fioSku,
+        description: `HPE Factory Integrated Option (FIO) Replacement for ${v.btoSku}`,
+        quantity: v.quantity,
+        reason: v.reason,
+        reasoning: v.reason
+      });
+    });
+  }
+
   if (memory.memoryCount > 0 && !memory.isBalancedChannel) {
     const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`;
     warnings.push(reason);
     mathDeductions.push(reason);
   }
+
 
   const aspectChecks = [
     {
@@ -292,8 +336,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       name: 'Memory & Channel Balance',
       iconType: 'Memory',
       defaultRule: 'Memory interleaving, channel balance & population rules',
-      status: (memory.memoryCount > 0 && !memory.isBalancedChannel) ? 'FAIL' : 'PASS',
-      detail: (memory.memoryCount > 0 && !memory.isBalancedChannel) ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.` : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
+      status: (memory.memoryCount > 0 && !memory.isBalancedChannel) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
+      detail: memory.hasBtoMemoryInCto ? `Memory Option Rule Failed: Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is not allowed in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).` : (memory.memoryCount > 0 && !memory.isBalancedChannel) ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.` : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
     },
     {
       id: 3,
@@ -301,7 +345,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       iconType: 'HardDrive',
       defaultRule: 'Storage controller, drive cage & cable kit compatibility checks',
       status: (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
-      detail: storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.' : storage.hasStorageController && !storage.hasSmartBattery ? 'Storage Math Failed: Storage controller requires Smart Storage Battery.' : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
+      detail: (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.' : storage.hasStorageController && !storage.hasSmartBattery ? 'Storage Math Failed: Storage controller requires Smart Storage Battery.' : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
     },
     {
       id: 4,

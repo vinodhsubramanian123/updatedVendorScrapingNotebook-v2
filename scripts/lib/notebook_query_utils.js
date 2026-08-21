@@ -47,7 +47,7 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     const { queryLocalKnowledgeBase } = require('./local_rag_search.js');
     const logger = require('./pipeline_logger.js');
     const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-    const timeoutMs = options.timeout || 60000;
+    const timeoutMs = options.timeout || 120000;
 
     const envPath = process.env.PATH || '';
     const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
@@ -115,6 +115,11 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}) {
   return startJob(notebookId, rawQuery, options, executeNotebookQuery);
 }
 
+const {
+  extractKnowledgeFromRagAnswer,
+  extractAndPersistLearnedDeltas
+} = require('./notebook/knowledge_extractor.js');
+
 module.exports = {
   SCRIPTING_PATTERNS,
   sanitizeNotebookQuery,
@@ -126,5 +131,7 @@ module.exports = {
   startAsyncNotebookQueryJob,
   getAsyncNotebookQueryJobStatus,
   diagnoseNotebookFailure,
-  activeQueryJobs
+  activeQueryJobs,
+  extractKnowledgeFromRagAnswer,
+  extractAndPersistLearnedDeltas
 };

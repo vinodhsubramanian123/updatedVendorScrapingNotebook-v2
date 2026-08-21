@@ -78,6 +78,10 @@ app.use('/artifacts', express.static(OUTPUTS_DIR, {
   }
 }));
 
+// Serve Architecture Diagrams Viewer
+const DIAGRAMS_DIR = path.resolve(__dirname, '..', 'diagrams');
+app.use('/diagrams', express.static(DIAGRAMS_DIR));
+
 // ── Mount Route Modules ───────────────────────────────────────────────────────
 app.use('/api', sseRouter);
 app.use('/api', catalogsRouter);

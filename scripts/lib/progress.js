@@ -33,7 +33,16 @@ function emitProgress(step, total, action, status = 'in_progress', detail = '') 
                  status === 'error' ? '❌' :
                  status === 'skipped' ? '⏭️' :
                  status === 'started' ? '🚀' : '⏳';
-    console.log(`${icon} Step ${step}/${total}: ${action}${detail ? ' — ' + detail : ''}`);
+    const percent = Math.min(100, Math.round((step / Math.max(1, total)) * 100));
+    const barWidth = 10;
+    const filled = Math.round((percent / 100) * barWidth);
+    const bar = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+    
+    if (process.stdout.isTTY) {
+      console.log(`${icon} [${bar}] ${String(percent).padStart(3)}% (Step ${step}/${total}) ${action}${detail ? ' — ' + detail : ''}`);
+    } else {
+      console.log(`${icon} Step ${step}/${total}: ${action}${detail ? ' — ' + detail : ''}`);
+    }
   }
 }
 

@@ -48,6 +48,7 @@ const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr_service
 const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/telemetry.js');
 const telemetryLib = require('../../scripts/lib/telemetry.js');
 const { generateProfessionalBOQ } = require('../../scripts/lib/generate_boq_xlsx.js');
+const { safeParseEvalResult } = require('../../scripts/lib/schemas.js');
 
 // ── Upload BOQ ────────────────────────────────────────────────────────────────
 router.post('/upload-boq', upload.single('boqFile'), (req, res) => {
@@ -230,7 +231,9 @@ router.post('/eval-boq', (req, res) => {
         }
       }
       if (parsedData?.status === 'SUCCESS' && parsedData.data) {
-        broadcastSSE({ type: 'EVAL_RESULT', data: parsedData.data, runId });
+        const validated = safeParseEvalResult(parsedData.data);
+        const broadcastPayload = validated.success ? validated.data : parsedData.data;
+        broadcastSSE({ type: 'EVAL_RESULT', data: broadcastPayload, runId });
       } else if (parsedData) {
         broadcastSSE({ type: 'EVAL_RESULT', error: parsedData, runId });
       } else {

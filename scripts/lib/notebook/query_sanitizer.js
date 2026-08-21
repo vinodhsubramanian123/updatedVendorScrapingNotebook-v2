@@ -7,6 +7,7 @@
  */
 
 const { parseProductMeta } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../sku.js');
 
 const SCRIPTING_PATTERNS = [
   /const\s+[a-zA-Z0-9_$]+\s*=/g,
@@ -46,13 +47,29 @@ function stripAnsi(str) {
 }
 
 function sanitizeNotebookQuery(rawQuery, context = {}) {
-  if (!rawQuery || typeof rawQuery !== 'string') {
-    return 'What are the hardware configuration rules and QuickSpecs specifications for this chassis?';
+  let queryStr = '';
+  if (typeof rawQuery === 'string') {
+    queryStr = rawQuery;
+  } else if (rawQuery && typeof rawQuery === 'object') {
+    queryStr = rawQuery.query || rawQuery.prompt || rawQuery.text || '';
+    if (!context.chassis && rawQuery.chassis) context.chassis = rawQuery.chassis;
+    if (!context.skus && rawQuery.skus) context.skus = rawQuery.skus;
   }
 
-  let clean = rawQuery.trim();
+  if (!queryStr) {
+    const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
+    const skus = Array.isArray(context.skus) ? context.skus.slice(0, 12).join(', ') : '';
+    return skus
+      ? `What are the hardware configuration rules, memory rules, and QuickSpecs specifications for ${chassisName} regarding parts: ${skus}?`
+      : `What are the hardware configuration rules and QuickSpecs specifications for ${chassisName}?`;
+  }
+
+  let clean = queryStr.trim();
 
   const skuMatches = Array.from(clean.matchAll(/([A-Z0-9]{5,6}-[A-Z0-9]{2,3})/g)).map(m => m[1]);
+  if (Array.isArray(context.skus)) {
+    context.skus.forEach(s => { if (typeof s === 'string' && /^[A-Z0-9]{5,6}-[A-Z0-9]{2,3}$/.test(s)) skuMatches.push(s); });
+  }
   const uniqueSkus = Array.from(new Set(skuMatches));
 
   const containsCode = SCRIPTING_PATTERNS.some(pattern => pattern.test(clean)) ||
@@ -84,12 +101,25 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
 
   const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
 
-  if (clean.length > 350 && uniqueSkus.length > 0) {
-    return `Validate physical hardware configuration rules, thermal constraints, and QuickSpecs specifications for ${chassisName} regarding Part Numbers: ${uniqueSkus.slice(0, 12).join(', ')}.`;
+  let itemDescriptions = [];
+  if (Array.isArray(context.items) && context.items.length > 0) {
+    itemDescriptions = context.items
+      .filter(it => it && it.sku)
+      .map(it => `${cleanBaseSKU(it.sku)}${it.description ? ` (${it.description.slice(0, 60)})` : ''}`);
+  }
+
+  const partsListStr = itemDescriptions.length > 0
+    ? itemDescriptions.join(', ')
+    : (uniqueSkus.length > 0 ? uniqueSkus.join(', ') : '');
+
+  if (clean.length > 1000 && partsListStr) {
+    return `Validate physical hardware configuration rules, thermal constraints, memory rules, and QuickSpecs specifications for ${chassisName} regarding Part Numbers and Descriptions: ${partsListStr.slice(0, 800)}.`;
   }
 
   if (clean.length === 0) {
-    clean = 'What are the hardware configuration rules and QuickSpecs specifications for this model?';
+    clean = partsListStr
+      ? `What are the hardware configuration rules, cabling requirements, and QuickSpecs rules for ${chassisName} regarding: ${partsListStr}?`
+      : 'What are the hardware configuration rules and QuickSpecs specifications for this model?';
   }
 
   const meta = parseProductMeta(chassisName);

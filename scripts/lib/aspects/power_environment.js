@@ -23,9 +23,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu') || sku.includes('P4881') || sku.includes('P3687')) {
+    if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
       psuCount += (it.quantity || 1);
-      if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v') || sku.includes('P36877') || desc.includes('1600w')) {
+      if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
         hasDcPowerSupply = true;
       }
     }

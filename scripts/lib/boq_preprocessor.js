@@ -10,6 +10,7 @@
  * 5. Preprocessing audit trail & Human-in-the-Loop (HITL) review triggers.
  */
 
+const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
 const { cleanBaseSKU } = require('./sku.js');

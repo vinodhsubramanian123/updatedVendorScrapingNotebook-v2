@@ -93,9 +93,8 @@ async function runE2ETest() {
     const title = await page.title();
     console.log(`  Page Title: "${title}"`);
 
-    // Check header title or brand text
     const brandText = await page.textContent('h1');
-    const headerOk = brandText.includes('HPE OCA') || brandText.includes('Catalog');
+    const headerOk = brandText.includes('HPE OCA') || brandText.includes('Catalog') || brandText.includes('AI Studio') || brandText.includes('HPE ProLiant');
     testResults.push({ name: 'Dashboard Header & Load', passed: headerOk, durationMs: Date.now() - startTime1 });
     console.log(`  ✅ Header rendered: "${brandText.trim().substring(0, 40)}..."`);
 

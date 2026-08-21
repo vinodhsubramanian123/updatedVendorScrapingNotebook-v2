@@ -6,7 +6,7 @@
 - **Gemini Vision OCR**: Extracts structured tabular SKU entries from quotes via `ocr_service.js` with automated key rotation.
 
 ## 2. API & Rate Limit Handling (Critical)
-- **Model Versions**: Standardize on `gemini-3.5-flash` (or `gemini-2.5-flash-lite` / `gemini-3.7-flash`).
+- **Model Versions**: Standardize on `gemini-3.6-flash` (or `gemini-3.5-flash-lite` / `gemini-3.7-flash`).
 - **Smart FIFO Key Rotation & Quota Management**: `gemini_rotator.js` manages all configured keys in a deterministic FIFO queue. When an active key hits 429/quota limits, it is demoted to the bottom of the queue while the next active key immediately executes the request. Keys automatically restore on UTC day rollover.
 - **Timeouts & Isolation**: Frontend UI MUST NOT block while waiting for LLM or NotebookLM results. Background processing is mandated.
 

@@ -32,14 +32,17 @@ function getNotebookIdForChassis(cfg, chassisName) {
 
 function classifyKnowledgeScope(delta) {
   const c = String(delta.chassis || '').toLowerCase();
-  const raw = String(delta.rawMessage || delta.ruleUpdate || '').toLowerCase();
-  if (raw.includes('all hpe') || raw.includes('global') || raw.includes('vendor-wide') || raw.includes('across all servers')) {
-    return 'UNIVERSAL_HPE';
+  const raw = String(delta.rawMessage || delta.ruleUpdate || delta.errorType || '').toLowerCase();
+  
+  if (raw.includes('all hpe') || raw.includes('global') || raw.includes('vendor-wide') || raw.includes('across all servers') ||
+      raw.includes('bto') || raw.includes('cto') || raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
+    return 'UNIVERSAL_VENDOR';
   }
-  if (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') || c.includes('alletra') || c.includes('synergy') || c.includes('cray')) {
-    if (!c.includes('sff') && !c.includes('lff') && !c.includes('tape')) {
-      return 'FAMILY_GEN_SPECIFIC';
-    }
+  if (raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc') ||
+      raw.includes('tri-mode') || raw.includes('mr416i') || raw.includes('sr932i') || raw.includes('storage battery') || raw.includes('p01366-b21') ||
+      raw.includes('high performance fan') || raw.includes('p48820-b21') ||
+      (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') || c.includes('alletra') || c.includes('synergy') || c.includes('cray'))) {
+    return 'FAMILY_GEN';
   }
   return 'CHASSIS_SPECIFIC';
 }
@@ -82,16 +85,20 @@ function buildMasterKnowledgeRegistry() {
   const chassisSpecificRules = [];
 
   allDeltas.forEach(d => {
-    const scope = d.scopeTaxonomy || classifyKnowledgeScope(d);
+    let scope = d.scopeTaxonomy || classifyKnowledgeScope(d);
+    // Backward compatibility normalization
+    if (scope === 'UNIVERSAL_HPE') scope = 'UNIVERSAL_VENDOR';
+    if (scope === 'FAMILY_GEN_SPECIFIC') scope = 'FAMILY_GEN';
+
     const enrichedDelta = {
       ...d,
       scopeTaxonomy: scope,
       solutionType: d.solutionType || (d.chassis ? `${d.chassis} CTO Server` : 'General Server')
     };
 
-    if (scope === 'UNIVERSAL_HPE') {
+    if (scope === 'UNIVERSAL_VENDOR') {
       universalRules.push(enrichedDelta);
-    } else if (scope === 'FAMILY_GEN_SPECIFIC') {
+    } else if (scope === 'FAMILY_GEN') {
       familyGenRules.push(enrichedDelta);
     } else {
       chassisSpecificRules.push(enrichedDelta);
