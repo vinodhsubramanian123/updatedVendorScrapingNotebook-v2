@@ -3,8 +3,8 @@
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
 ## 1. Mandatory First Step (Dynamic Discovery)
-- **Read the Graph First:** Upon entering any session in this repository, you MUST first read [`graphify-out/GRAPH_REPORT.md`](file:///home/vinodh/vendorNotebookSolution/graphify-out/GRAPH_REPORT.md). This semantic graph is the *dynamic* source of truth for the codebase architecture, community boundaries, and God nodes.
-- **Do Not Brute-Force Read:** Do not use `grep` or `cat` in loops to find code. Instead, use the `graphify` skill (e.g., `/graphify query "<question>"`) to dynamically trace code paths and dependencies to save context tokens.
+- **Query the Graph First:** Upon entering any session in this repository, DO NOT blindly read the entire `graphify-out/GRAPH_REPORT.md` (which is large). Instead, you MUST prioritize using the `graphify` skill (e.g., `/graphify query "<question>"`) to dynamically trace code paths, query community boundaries, and locate God nodes. This heavily saves context tokens.
+- **Do Not Brute-Force Read:** Do not use `grep` or `cat` in loops to find code. Instead, use the `graphify` skill to dynamically trace code paths and dependencies.
 
 ## 2. Static Knowledge vs. Dynamic Knowledge
 - **Static Rules (Read Once):** Core architectural rules (Dual-Brain), UI anti-slop guidelines (`design-taste-frontend`), data dictionary schemas (`.agents/DATA_DICTIONARY.md`), and fail-safe mechanisms are static. Read them here and in `docs/`.
@@ -29,5 +29,5 @@ For full architectural details, coding decisions, and project learnings, refer t
 - **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/test_failure_modes_and_chaos.js`) and 17 comprehensive test suites maintain a 100% pass benchmark across unit, integration, and chaos tiers.
 - **Async Task Mutex & Process Lifecycle:** `server.cjs` manages long-running child processes with `isTaskRunning()` and `proc.on('error')` guards, preventing stale mutex locks and false 409 Conflict errors.
 - **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint` with `oxlint`).
-- **Dynamic Semantic Graph (`graphify`):** The repository maintains a live 2,352-node semantic dependency graph (`graphify update .`) with 3,374 edges and 187 communities for token-efficient architecture discovery.
+- **Dynamic Semantic Graph (`graphify`):** The repository maintains a live semantic dependency graph (updated via git hooks) for token-efficient architecture discovery. If you make significant uncommitted code changes during a session, run `npm run update:graph` to sync the graph before querying it.
 

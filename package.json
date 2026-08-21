@@ -60,7 +60,8 @@
     "dashboard": "npx -y concurrently \"node dashboard/server.cjs\" \"npm --prefix dashboard run dev\" \"node scripts/feedback_listener.js\"",
     "demo:qs": "node scripts/demo_qs_vs_menu_cdp.js",
     "demo:live": "node scripts/live_visual_demo_cdp.js",
-    "start:listener": "node scripts/feedback_listener.js"
+    "start:listener": "node scripts/feedback_listener.js",
+    "update:graph": "graphify update ."
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

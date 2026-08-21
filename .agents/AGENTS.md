@@ -157,7 +157,7 @@ vendorNotebookSolution/
 
 ## Key Operational Rules & Agent Directives
 
-1. **Token Optimization (Graphify)**: AI Agents MUST NOT blindly read large source files or crawl directories manually. ALWAYS use the `graphify` skill to map semantic graphs, or read the pre-generated `graphify-out/GRAPH_REPORT.md` artifacts to save tokens and understand codebase architecture.
+1. **Token Optimization (Graphify)**: AI Agents MUST NOT blindly read large source files or crawl directories manually. ALWAYS prioritize using the `graphify` skill (`/graphify query`) to extract targeted architectural insights. Only read the full `graphify-out/GRAPH_REPORT.md` artifact if a comprehensive overview is strictly necessary. Run `npm run update:graph` if you have uncommitted changes.
 2. **Anti-Slop UI Standard**: Adhere to `design-taste-frontend` rules. Avoid generic gradients and pure-black shadows. Stick to the high-contrast Emerald Green/Slate palette with strict 12px radiuses.
 3. **Authentication via CDP**: Use Chrome DevTools Protocol on port 9222 to piggyback on the active authenticated browser session.
 4. **Safe Atomic Writes**: All JSON modifications MUST pass through `safeWriteJsonAtomic` in `scripts/lib/fs_compat.js`.
