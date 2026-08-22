@@ -180,3 +180,32 @@ The engine is structured into 5 decoupled domain namespaces exported via [`scrip
 | **`rag`** | `ocrService`, `knowledgeSync`, `notebookQuery`, `localSearch`, `postFlowSync`, `geminiRotator` | Multimodal Gemini Vision OCR (with 25MB limits), bi-directional NotebookLM sync, dual-layer local fallback search, smart LLM synthesis |
 | **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning |
 
+## 6. Visual BOQ Configuration Topology & Mindmap Engine
+The frontend incorporates a decoupled, high-density SVG visualizer located in [`dashboard/src/components/topology/`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/topology/) driven by the [`topologyGraphBuilder.js`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/services/topologyGraphBuilder.js) pure service.
+
+```mermaid
+graph LR
+    subgraph "Solution Hierarchy & Modular Decomposition"
+        Root["Chassis / Frame Root<br/>(e.g., Synergy 12000 / DL380 Gen12)"] --> Modules["Sub-Product Modules<br/>(Compute Blades, VC Interconnects, Storage Trays)"]
+        Modules --> Busses["6 Canonical Subsystem Busses"]
+    end
+    subgraph "6 Subsystems"
+        Busses --> Comp["Compute & Sockets (CPUs, Fans, Heatsinks)"]
+        Busses --> Mem["Memory Channels (DIMMs, Symmetrical Channels)"]
+        Busses --> Stor["Storage & Controllers (Backplane, MR/SR RAID, Batteries)"]
+        Busses --> PCIe["PCIe & Network (Risers, OCP3, Adapters, GPUs)"]
+        Busses --> Pwr["Power & Thermal (Flex Slot PSUs, -48VDC Lugs, PDUs)"]
+        Busses --> Svc["Services & Care (Pointnext Tech Care, Installation)"]
+    end
+    subgraph "Visual Connectors & Status Graph"
+        Comp --> VNodes["Valid SKUs (Solid Emerald)"]
+        Stor --> GNodes["Missing Dependency Gaps (Pulsing Rose Dashed)"]
+        Mem --> FNodes["Strategy Injected Fixes (Cyan Solid)"]
+    end
+```
+
+- **Product Family Flexibility**: Dynamically renders standard rack servers (ProLiant), composable modular infrastructure (Synergy Frame $\rightarrow$ Compute & VC Modules), controller pairs & expansion enclosures (Alletra), and tape library drawers (StoreEver).
+- **Interactive Multi-Level Canvas**: Supports drag-panning, wheel-zooming, reset-view, and subsystem filtering (`Compute`, `Memory`, `Storage`, `PCIe`, `Power`, `Services`, `Only Gaps & Fixes`).
+- **Telemetry & Self-Healing**: Real-time diagnostic bar tracking render latency, subsystem nodes, mapped SKUs, completeness scores, and product family identification.
+
+

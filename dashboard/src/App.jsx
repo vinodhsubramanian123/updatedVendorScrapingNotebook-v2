@@ -16,7 +16,7 @@ import PartnerReconciliationView from './components/PartnerReconciliationView';
 import GlobalLoadingState from './components/GlobalLoadingState';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
-import BoqTopologyModal from './components/topology/BoqTopologyModal';
+import { BoqTopologyModal } from './components/topology';
 
 // Extracted services & hooks (GAP-L1, GAP-L4 fixes)
 import { useSSEStream } from './hooks/useSSEStream.js';
