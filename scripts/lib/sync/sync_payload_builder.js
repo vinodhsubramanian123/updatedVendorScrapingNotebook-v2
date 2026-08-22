@@ -59,13 +59,32 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   if (!catalogPath && allCatalogFiles.length > 0) catalogPath = allCatalogFiles[0];
 
   let catalogData = null;
-  let targetDir = OUTPUTS_ROOT;
-  if (catalogPath && fs.existsSync(catalogPath)) {
+  // GAP-7 FIX: Detect ephemeral/test chassis names and route their payloads
+  // to outputs/temp/test_payloads/ to avoid polluting outputs/history/.
+  const TEST_CHASSIS_PATTERNS = [
+    /^edge-test-/i,
+    /^hpe-chaos-test-/i,
+    /^tmp[_-]test/i,
+    /^test[_-]/i
+  ];
+  const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName));
+
+  let targetDir = isTestChassis
+    ? path.join(PROJECT_ROOT, 'outputs', 'temp', 'test_payloads')
+    : OUTPUTS_ROOT;
+
+  if (!isTestChassis && catalogPath && fs.existsSync(catalogPath)) {
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
       targetDir = path.dirname(catalogPath);
     } catch (e) { logger.warn('KNOWLEDGE_SYNC', 'Error reading catalogData', e); }
+  } else if (!isTestChassis) {
+    // No catalog found for a real chassis — fall back to outputs/history/
+    targetDir = path.join(OUTPUTS_ROOT, 'history');
   }
+
+  // Ensure the target directory exists
+  if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
 
   const historyDir = path.join(targetDir, 'history');
   const discontinuedSkusPath = path.join(historyDir, 'discontinued_skus.json');

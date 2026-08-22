@@ -248,6 +248,73 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
   - Standardized all API endpoints on the `{ status: "ERROR", code, error, source, timestamp }` error contract wrapped with `asyncHandler` and `sendErrorResponse` utilities.
 - **Micro-Package Subsystem Decomposition**:
   - `scripts/lib/` modularized into domain micro-packages (`aspects/`, `conflict/`, `notebook/`, `preprocessor/`, `sync/`, `prompts/`), achieving 0 circular dependencies across all 174 modules (`madge`).
-- **Zero-Warning Code Quality Standard**:
-  - Strict 0-warning and 0-error code quality enforced via `oxlint` across 85 frontend and backend files, paired with 100% pass rates across 8 comprehensive automated test suites.
+## 22. 10-Stage Atomic Scraping Lifecycle, Universal NotebookLM Multi-Environment Stability & Master Excel Verification
+- **10-Stage Atomic Scraping Protocol**:
+  - Refactored `scripts/scrape_oca_solution.js` to structure the scraping process into 10 explicit, decoupled atomic stages (`CDP_CONNECT`, `PORTAL_NAV`, `CATEGORY_DISCOVERY`, `PAGE_EXPAND`, `DOM_EXTRACTION`, `RULES_PARSING`, `CATALOG_GEN`, `STAGING_AUDIT`, `KNOWLEDGE_SYNC`, `REGISTRY_SYNC`).
+  - Enhanced `scripts/lib/progress.js` to emit rich JSON progress events (`percent`, `stage`, `itemsScraped`, `category`, `sku`, `message`) over SSE, enabling real-time glowing pulse animations and step clarity in `VendorScraperProgress.jsx`.
+- **Permanent Multi-Environment NotebookLM RAG Stability**:
+  - Fixed notebook ID resolution in `knowledge_sync.js` and `nlm_sync_client.js` so empty strings never trigger CLI argument errors, automatically resolving to `defaultNotebookId` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
+  - Added CI/GitHub Actions guardrails (`process.env.CI || process.env.GITHUB_ACTIONS`) and 3-tier fallback (`CLI` ➔ `MCP (gemini-notebook-mcp)` ➔ `Local RAG Cache`) so tests and builds run reliably in all environments.
+  - Automatically wired cloud NotebookLM grounding into the scraping post-flow hook (`triggerPostFlowSync(..., { autoUploadNLM: true })`).
+- **Master Excel 20-Sheet Quality & Diff Verification**:
+  - Full validation of all 20 sheets in `DL380_Gen12_SFF_OCA_Catalog.xlsx` (2.26 MB) with 100% compliance across 262 SKUs, 34 subcategories, 44 aspect rules, 6 CTO base variants, 850-point price timelines, 790 discontinued SKUs, and color-coded differential formatting.
+
+## 23. 2026-08-22 Deep Gap Audit — 7 Scraping Workflow Invariants Fixed
+
+This session performed a comprehensive live audit of the DL380 Gen12 scraping pipeline and identified 7 code-evidenced gaps with evidence (not theoretical). All 7 were fixed, verified, and made permanent invariants in `.agents/AGENTS.md`. Test results after fixes: **npm test 6/6 PASS · E2E UI 7/7 PASS · Chaos suite 44/44 PASS · 52 stale test payloads purged · 28 ISO-timestamp snapshot files removed.**
+
+### Gap-by-Gap Learnings
+
+**GAP-1 — Price Trail `appendTrailEvent` Deduplication (Root Cause: `(date+status)` composite key)**
+- **Symptom**: `price_history.json` showed 2 entries per SKU per day on same-day reruns: `ADDED` immediately followed by `UNCHANGED` for the same `2026-08-22` date, inflating trail length.
+- **Root cause**: `appendTrailEvent(trail, event)` deduplicated on `(date AND status)` — so `ADDED` on day X and `UNCHANGED` on day X were both written as two distinct entries.
+- **Fix**: Changed to deduplicate on `date` only using a `STATUS_PRIORITY` array. Higher-priority status silently replaces lower-priority for the same date. BASELINE emits BASELINE and does NOT also trigger ADDED.
+- **Learning**: On a baseline run (first scrape), all SKUs get `BASELINE` status. ADDED only applies when a SKU appears in current but not in previous snapshot. These two paths are mutually exclusive — if any code makes them overlap for the same date, that's a bug.
+
+**GAP-2 — Registry Shows 124 SKUs Instead of 780 (Root Cause: `tables.length` not SKU count)**
+- **Symptom**: `SCRAPED_CATALOGS.md` showed 124 unique SKUs for DL380 Gen12 SFF. The real count is 864 (261 HW + 603 Svc).
+- **Root cause**: Step 9 in `scrape_oca_solution.js` was passing `tablesCount: tables.length` to `updateScrapedRegistry()`. `tables` is the raw DOM table array extracted by CDP — it represents 66-124 section groups, not unique SKUs.
+- **Fix**: After `promoteStagingDirectory()`, read `liveCatalogJson.metadata.totalUniqueSKUs` (the de-duplicated count computed by `build_catalog.js`) plus `liveServicesJson.metadata.totalUniqueSKUs`. Sum = `totalSkuCount`.
+- **Learning**: `tables.length` and `metadata.totalUniqueSKUs` are fundamentally different numbers. Never confuse them. The registry entry is what appears in the dashboard's portfolio table — it must show the real SKU count.
+
+**GAP-3 — Stage Stepper `idx * 16` Bucket Math (Root Cause: Legacy 6-stage arithmetic)**
+- **Symptom**: With a 10-stage pipeline, stage 5 (DOM Extraction) was calculated to start at `5 * 16 = 80%` instead of 60%. This meant stages 6-10 were never visually highlighted.
+- **Root cause**: `VendorScraperProgress.jsx` had `const isCurrent = progressPercent >= idx * 16 && progressPercent < (idx+1) * 16 + 5` from when the pipeline had 6 stages. No one updated the math when stages were added.
+- **Fix**: Each `SCRAPER_STAGES` entry now has `minPercent`/`maxPercent` fields. The primary match is `stg.id === currentStageId` (direct SSE `stage` ID string match). Percent-range is the fallback only. `currentStageId` is a new named field from the `useMemo` return object.
+- **Learning**: Never use `idx * (100/N)` arithmetic for stage progress. Always emit and match on an explicit stage ID string. If the stage count changes, the arithmetic silently breaks; the ID match never does.
+
+**GAP-4 — `generatedAt` Missing from `master_knowledge_registry.json`**
+- **Symptom**: Dashboard's telemetry section showed `undefined` for the registry generation time.
+- **Root cause**: `buildMasterKnowledgeRegistry()` emitted `lastUpdated` but the dashboard read `generatedAt`. No schema version or `productFamiliesSynced` list was present.
+- **Fix**: Emits both `generatedAt` (canonical, read by UI) and `lastUpdated` (backward compat), `schemaVersion: "1.0"`, and `productFamiliesSynced: [...familySet]`.
+- **Learning**: When adding output fields to a JSON file, also add them to `.agents/DATA_DICTIONARY.md` immediately. Never rely on consumers tolerating `undefined`.
+
+**GAP-5 — Silent Failure + Premature `percent: 100` (Root Cause: `console.warn` in Step 10)**
+- **Symptom**: When `sync_all_registered_catalogs.js` threw an error, the UI showed a green "Completed" state with `percent: 100` even though the portfolio registry was not updated.
+- **Root cause**: Step 10's `catch` block only called `console.warn(...)` and the pipeline continued. `percent: 100` was emitted regardless before the sync completed.
+- **Fix**: Step 10 catch now emits an `error` SSE event and **rethrows**. `percent: 100` is emitted only after both sync operations return successfully.
+- **Learning**: `percent: 100` MUST be the very last SSE event, and it MUST be inside a success path. Any catch block between step 9 and `percent: 100` that doesn't rethrow is a false-success bug. Steps 8-10 are all fail-hard.
+
+**GAP-6 — ISO Snapshot Pollution (Root Cause: `scrapeDate` was full ISO8601)**
+- **Symptom**: `history/` directory had 10+ snapshot files per calendar day: `catalog_2026-08-22T09:27:12.174Z.json`, `catalog_2026-08-22T09:43:36.369Z.json`, etc.
+- **Root cause**: `build_catalog.js` set `metadata.scrapeDate: new Date().toISOString()` (full timestamp). `diff_catalog.js` used `formatDate()` on this value but the snapshot regex was `\\d{4}-\\d{2}-\\d{2}.*\\.json` (wildcard `.*`) so it matched ISO-named files as valid previous snapshots.
+- **Fix**: `build_catalog.js` now writes `scrapeDate: new Date().toISOString().split('T')[0]` (stable YYYY-MM-DD) and `scrapeTimestamp: new Date().toISOString()` separately. `diff_catalog.js` snapshot regex is now strict: `^catalog_\\d{4}-\\d{2}-\\d{2}\\.json$` (no wildcard).
+- **Learning**: `scrapeDate` is a snapshot key — it must be stable (one per day). `scrapeTimestamp` is the audit trail field. They serve different purposes and must never be the same field.
+- **Cleanup**: 28 legacy ISO-timestamp snapshot files were deleted from `DL380_Gen12_SFF/history/`. The canonical set is now exactly 6 files (one per scrape day: 2026-08-12 through 2026-08-22).
+
+**GAP-7 — Test Payloads Polluting `outputs/history/` (Root Cause: No test chassis detection)**
+- **Symptom**: `outputs/history/` contained 52 `.md` files named `notebook_sync_payload_edge-test-*.md` and `notebook_sync_payload_hpe-chaos-test-*.md`.
+- **Root cause**: Chaos/stress tests create ephemeral chassis names (e.g. `edge-test-1234567890`) and call `generateNotebookSyncPayload()`. With no catalog on disk, `targetDir` fell back to `OUTPUTS_ROOT` → `outputs/`.
+- **Fix**: `sync_payload_builder.js` tests chassis name against `TEST_CHASSIS_PATTERNS` array and routes to `outputs/temp/test_payloads/` for matches. `post_flow_sync.js` exports `cleanTestPayloads()` which removes stale test `.md` files from `outputs/history/` and calls it at the end of every production sync.
+- **Learning**: Every code path that writes to `outputs/history/` must have an explicit guard that validates the chassis name is a real production chassis. Test names must never reach production artifact directories.
+
+### Verification Results
+```
+npm test (verify_all.js)        → 6/6 portfolios PASS
+tests/e2e_headless_ui_test.js   → 7/7 tests PASS, 0 console errors
+tests/test_failure_modes_and_chaos.js → 44/44 PASS
+Stale test payloads purged      → 52 files
+ISO-timestamp snapshots removed → 28 files
+Remaining canonical snapshots   → 6 (YYYY-MM-DD format, one per scrape day)
+```
 

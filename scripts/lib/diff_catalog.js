@@ -34,13 +34,32 @@ function formatDate(dateStr) {
   return matched ? matched[0] : new Date().toISOString().split('T')[0];
 }
 
+// Status priority order — higher index = higher priority (replaces lower on same date)
+const STATUS_PRIORITY = [
+  'BASELINE', 'UNCHANGED', 'ATTRIBUTE_CHANGED', 'ADDED', 'REINSTATED',
+  'REMOVED', 'PRICE_CHANGED', 'PRICE_AND_ATTRIBUTE_CHANGED'
+];
+
 /**
- * Append a price trail event, deduplicating by (date + status).
- * This prevents same-day re-runs from adding ghost entries.
+ * Append a price trail event, deduplicating by date.
+ * GAP-1 FIX: On same-day reruns, replace the existing entry ONLY if the new status
+ * has a higher informational priority (e.g. PRICE_CHANGED > UNCHANGED).
+ * This prevents ADDED + UNCHANGED ghost pairs on repeated same-day runs.
  */
 function appendTrailEvent(trail, event) {
-  const isDupe = trail.some(h => h.date === event.date && h.status === event.status);
-  if (!isDupe) trail.push(event);
+  const existingIdx = trail.findIndex(h => h.date === event.date);
+  if (existingIdx === -1) {
+    // No entry for this date yet — just push
+    trail.push(event);
+    return;
+  }
+  // Replace only if new status has equal or higher priority
+  const existingPriority = STATUS_PRIORITY.indexOf(trail[existingIdx].status);
+  const newPriority = STATUS_PRIORITY.indexOf(event.status);
+  if (newPriority >= existingPriority) {
+    trail[existingIdx] = event;
+  }
+  // Otherwise keep existing (higher-priority) entry silently
 }
 
 /**
@@ -77,8 +96,11 @@ function buildTrailString(trail) {
 function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   fs.mkdirSync(historyDir, { recursive: true });
 
+  // GAP-6 FIX: Always normalize scrapeDate to YYYY-MM-DD for stable snapshot filenames.
+  // catalogData.metadata.scrapeDate may be a full ISO8601 string from old scrapes.
   const scrapeDate          = formatDate(catalogData.metadata?.scrapeDate);
   const snapshotPrefix      = historyLabel === 'services' ? 'services_catalog' : 'catalog';
+  // GAP-6 FIX: Snapshot filename always uses the normalized YYYY-MM-DD date, never a full ISO string.
   const currentSnapshotPath = path.join(historyDir, `${snapshotPrefix}_${scrapeDate}.json`);
   const priceHistoryPath    = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}price_history.json`);
   const attributeHistoryPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}attribute_history.json`);
@@ -100,8 +122,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
     }
   }
 
-  // Find previous catalog snapshots (excluding today's file if re-running same day and excluding delta/history files)
-  const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}.*\\.json$`);
+  // GAP-6 FIX: Snapshot regex matches only strict YYYY-MM-DD format files.
+  // This filters out stale ISO-timestamp named snapshots (e.g. catalog_2026-08-22T09:27:12.174Z.json)
+  // that were created before the date normalization fix was applied.
+  const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}\.json$`);
   const snapshotFiles = fs.readdirSync(historyDir)
     .filter(f => snapshotRegex.test(f) && f !== `${snapshotPrefix}_${scrapeDate}.json`)
     .sort();
@@ -196,7 +220,9 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
       }
 
       if (!prevCatalog) {
-        // Baseline run — first time scrape
+        // Baseline run — first time scrape.
+        // GAP-1 FIX: Emit BASELINE only — NOT both BASELINE and ADDED.
+        // Previously, some code paths emitted both on the same day.
         sku['Diff Status']               = 'BASELINE';
         sku['Previous List Price (USD)']  = 'N/A';
         sku['Price Change (USD)']         = '$0.00';
@@ -204,15 +230,18 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
         sku['Attribute Deltas']           = 'None';
 
         appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
+        // Note: diffSummary.added is NOT incremented for baseline — all baseline SKUs are counted as unchanged.
         diffSummary.unchanged++;
       } else if (!prevSkuMap.has(pn)) {
-        // ADDED SKU
+        // ADDED SKU — genuinely new since last scrape
         sku['Diff Status']               = 'ADDED';
         sku['Previous List Price (USD)']  = 'N/A';
         sku['Price Change (USD)']         = currPrice > 0 ? `+$${currPrice.toFixed(2)}` : '$0.00';
         sku['Price Change (%)']           = currPrice > 0 ? '+100.00%' : '0.00%';
         sku['Attribute Deltas']           = 'New SKU introduced';
 
+        // GAP-1 FIX: appendTrailEvent with priority dedup will replace any same-date UNCHANGED
+        // entry with ADDED (higher priority), preventing ghost ADDED+UNCHANGED pairs.
         appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ADDED' });
         diffSummary.added++;
 

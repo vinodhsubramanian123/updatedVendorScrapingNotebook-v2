@@ -9,11 +9,11 @@ description: Use this skill to live-scrape HPE OCA portal product catalogs (ProL
 
 ## 1. Purpose & Overview (Workflow 1)
 
-This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workflow paradigm. Its sole purpose is to extract complete product catalog intelligence from vendor portals (HPE OCA, etc.) to build the baseline rules engine. It produces a classified multi-sheet **Catalog Excel workbook** + companion JSON files stored under `outputs/{Family}/{Gen}/{Model}_{FormFactor}/`. These rules are structurally required by **Workflow 2 (Pre-Flight Evaluation)** to validate quotes.
+This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workflow paradigm. Its sole purpose is to extract complete product catalog intelligence from vendor portals (HPE OCA, etc.) to build the baseline rules engine. It produces a classified multi-sheet **Catalog Excel workbook** (20 sheets) + companion JSON files stored under `outputs/{Family}/{Gen}/{Model}_{FormFactor}/`. These rules are structurally required by **Workflow 2 (Pre-Flight Evaluation)** to validate quotes.
 
 ---
 
-## 2. Scraping Lifecycle Architecture (Mermaid Sequence Visual)
+## 2. 10-Stage Scraping Lifecycle Architecture (Mermaid Sequence Visual)
 
 ```mermaid
 sequenceDiagram
@@ -23,66 +23,81 @@ sequenceDiagram
     participant Scraper as scripts/scrape_oca_solution.js
     participant Builder as scripts/build_catalog.js
     participant Excel as scripts/generate_xlsx.js
-    participant PDF as scripts/download_quickspecs_pdf.js
     participant Audit as scripts/verify_excel_tally.js
+    participant Sync as scripts/lib/knowledge_sync.js
+    participant NLM as Google NotebookLM Cloud
 
-    Scraper->>CDP: Connect WS on port 9222 (getOCATarget)
+    Scraper->>CDP: Step 1 (10%): Connect WS on port 9222 (CDP Handshake & Setup Dialog Handler)
     CDP->>Browser: Enable Page & Intercept Modals (dismissDOMModals)
-    Scraper->>Browser: Navigate Solution Tree to Product Node (Level 1 to 4)
-    Scraper->>Browser: Expand All Sections & Show More Checkboxes
-    Browser-->>Scraper: Return DOM Tables & Text Payload (oca_raw_data_full.json)
-    Scraper->>Builder: Invoke Catalog Classification Engine
-    Builder->>Builder: Extract Subcategories, Rules & Quantity Constraints
-    Builder->>Builder: Run Catalog Diff Engine (diff_catalog.js)
-    Builder-->>Scraper: Save Catalog JSON & _Catalog_Rules.json (Dual Safety Net)
-    Scraper->>Excel: Generate Multi-Sheet Workbook (xlsx-js-style)
-    Scraper->>PDF: Download & MD5 Fingerprint Cache QuickSpecs PDF
-    Scraper->>Audit: Execute 7-Check Post-Flight Tally Audit
+    Scraper->>Browser: Step 2 (20%): Navigate Solution Tree to Product Root (PORTAL_NAV)
+    Scraper->>Browser: Step 3 (30%): Enter Extended Overview Menu & Profile Chassis (CATEGORY_DISCOVERY)
+    Scraper->>Browser: Step 4 (45%): Deep Page Expansion >15000px & Multi-Tab Reveal (PAGE_EXPAND)
+    Browser-->>Scraper: Step 5 (60%): Return DOM Tables & Text Payload (DOM_EXTRACTION)
+    Scraper->>Builder: Step 6 (75%): Aspect Rules Engine & Constraint Graph (RULES_PARSING)
+    Builder->>Excel: Step 7 (85%): Compile TSVs & 20-Sheet Excel in Staging (CATALOG_GEN)
+    Scraper->>Audit: Step 8 (90%): 7-Check Post-Flight Tally Audit (STAGING_AUDIT)
+    Scraper->>Scraper: Step 9 (95%): Promote Staging Atomically to Live Workspace
+    Scraper->>Sync: Step 9.5: Post-Flow Knowledge Sync Hook (autoUploadNLM: true)
+    Sync->>NLM: Upsert Canonical Markdown Payload (KNOWLEDGE_SYNC)
+    Scraper->>Scraper: Step 10 (100%): Portfolio Registry Sync & Action Ledger Log (REGISTRY_SYNC)
 ```
 
 ---
 
-## 3. Current State & Certified Products (as of 2026-08-14)
+## 3. The 10 Atomic Scraping Stages & SSE Telemetry
 
-| Product | Family | Output Prefix | SKUs | Audit | QuickSpecs PDF |
-|---------|--------|---------------|------|-------|----------------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 277 HW / 512 Svc | ✅ 100% PASS | ✅ Verified (2.06 MB) |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (2.06 MB) |
-| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (2.06 MB) |
-| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | ✅ 100% PASS | ⚠️ Advisory |
-| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | ✅ 100% PASS | ✅ Verified (0.89 MB) |
-| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | ✅ 100% PASS | ⏳ Configured in map |
+| Step # | Stage ID | Stage Name | Target Action | SSE Emission Payload |
+| :---: | :--- | :--- | :--- | :--- |
+| **1** | `CDP_CONNECT` | CDP Handshake & Verification | Connects to port 9222 and binds automated modal handlers. | `{ step: 1, percent: 10, stage: 'CDP_CONNECT' }` |
+| **2** | `PORTAL_NAV` | Solution Root Discovery | Finds solution title and navigates tree root. | `{ step: 2, percent: 20, stage: 'PORTAL_NAV' }` |
+| **3** | `CATEGORY_DISCOVERY` | Menu Traversal & Profiling | Enters menu and loads hardware profile. | `{ step: 3, percent: 30, stage: 'CATEGORY_DISCOVERY' }` |
+| **4** | `PAGE_EXPAND` | Section & Multi-Tab Expansion | Scrolls page past threshold, checks Pointnext/Services tabs. | `{ step: 4, percent: 45, stage: 'PAGE_EXPAND' }` |
+| **5** | `DOM_EXTRACTION` | Tabular Row & Text Scraping | Extracts chunked text, table row arrays, and landmark headers. | `{ step: 5, percent: 60, stage: 'DOM_EXTRACTION', itemsScraped: N }` |
+| **6** | `RULES_PARSING` | Aspect Rules & Constraints | Parses min/max limits, slot caps, dependencies into constraint graph. | `{ step: 6, percent: 75, stage: 'RULES_PARSING' }` |
+| **7** | `CATALOG_GEN` | Staging & Master Excel Generation | Compiles TSVs, computes diffs, writes 20-sheet Excel in staging. | `{ step: 7, percent: 85, stage: 'CATALOG_GEN' }` |
+| **8** | `STAGING_AUDIT` | 7-Check Post-Flight Tally Audit | Verifies row counts, formulas, 4-level hierarchy paths, numeric Qty. | `{ step: 8, percent: 90, stage: 'STAGING_AUDIT' }` |
+| **9** | `KNOWLEDGE_SYNC` | Live Promotion & NotebookLM Grounding | Atomically promotes staging and syncs knowledge payload to NotebookLM. | `{ step: 9, percent: 95, stage: 'KNOWLEDGE_SYNC' }` |
+| **10** | `REGISTRY_SYNC` | Portfolio Registry & Ledger Sync | Synchronizes chassis variants across workspace and logs action ledger. | `{ step: 10, percent: 100, stage: 'REGISTRY_SYNC' }` |
+
+---
+
+## 4. Current State & Certified Products (Last Audited: 2026-08-22)
+
+| Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
+|---------|--------|---------------|-------------|--------|-------|-----------------|
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 262 HW / 518 Svc | 20 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 
 **Total Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families.
 
 ---
 
-## 4. Key Production Components & Scripts
+## 5. Master Excel Workbook Architecture (20 Validated Sheets)
 
-- **CDP Debugging Module**: [`scripts/lib/cdp.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/cdp.js) — WebSocket remote debugging connection over port 9222 with auto-retry and backoff.
-- **Server/Compute Scraper**: [`scripts/scrape_oca_solution.js`](file:///home/vinodh/vendorNotebookSolution/scripts/scrape_oca_solution.js) — Solution-first 4-level root traversal scraper (`npm run scrape`).
-- **Storage Solution Wizard Scraper**: [`scripts/scrape_oca_storage_solution.js`](file:///home/vinodh/vendorNotebookSolution/scripts/scrape_oca_storage_solution.js) — Wizard sub-tab scraper for Alletra/Nimble/StoreOnce (`npm run scrape:storage`).
-- **Catalog Build Engine**: [`scripts/build_catalog.js`](file:///home/vinodh/vendorNotebookSolution/scripts/build_catalog.js) — Compiles raw JSON into structured catalog JSON + TSVs + Dual Safety Net `*_Catalog_Rules.json` with `chassisVariantMatrix`.
-- **Excel Workbook Generator**: [`scripts/generate_xlsx.js`](file:///home/vinodh/vendorNotebookSolution/scripts/generate_xlsx.js) — 19-sheet Excel generator using `xlsx-js-style` with color-coded diff formatting.
-- **QuickSpecs PDF Downloader**: [`scripts/download_quickspecs_pdf.js`](file:///home/vinodh/vendorNotebookSolution/scripts/download_quickspecs_pdf.js) — Downloads PDF with MD5 fingerprint caching.
-- **7-Check Tally Audit**: [`scripts/verify_excel_tally.js`](file:///home/vinodh/vendorNotebookSolution/scripts/verify_excel_tally.js) — Post-flight audit engine.
-- **Master Registry Auto-Synchronizer**: [`scripts/sync_all_registered_catalogs.js`](file:///home/vinodh/vendorNotebookSolution/scripts/sync_all_registered_catalogs.js) — Injects base chassis variants across all registered catalogs.
-
----
-
-## 5. Portal Scraping Channels & Strict In-Page Navigation Protocol
-
-### 🌐 3 Distinct Scraping Channels
-1. **Channel 1: Solution Root & Chassis Search Page**:
-   - Contains Base Chassis CTO Variants (`P73282-B21` to `P73287-B21`) and their base list prices ($5,584 - $7,450).
-2. **Channel 2: Product Node Menu / Extended Overview Menu**:
-   - Contains internal hardware subcategories (Processors, Memory, Power, Drive cages, Fans) and Aspect Rules.
-3. **Channel 3: Solution Services / Configured BOM Tab**:
-   - Contains Pointnext, Tech Care tiers, and startup services.
-
-### 🔒 Strict Navigation Protocol
-- **NEVER use browser `back()` button or raw direct URLs**: Direct URL navigation breaks authenticated WebLogic/OAuth SSO sessions.
-- **ALL navigation MUST execute via in-page DOM element clicks and jQuery tree selectors** via CDP within the active authenticated session.
+1. `Category Summary`: 34 subcategories with quantity limits and category roles.
+2. `All SKUs`: Full 24-column metadata structure for every hardware component.
+3. `Chassis Variants`: 6 CTO Base Chassis Models (`P73282-B21` to `P73287-B21`).
+4. `Rules & Constraints`: 44 Aspect & constraint rules across the 5 hierarchy levels.
+5. `Hardware Accessories`: Form-factor brackets, blanks, security bezels, cable kits.
+6. `Software & Licenses`: Pointnext, Tech Care tiers, iLO Advanced, and OS licenses.
+7. `Support Services`: Proactive care & startup services configuration table.
+8. `Catalog Diffs`: Differential SKU delta tracking with color-coded diff status badges.
+9. `Price History Timeline`: 850 chronological snapshot price data points.
+10. `Processor`: All 6th Gen Intel Xeon Scalable processors with thermal constraints.
+11. `Memory`: DDR5 Registered Smart Memory modules with memory channel rules.
+12. `Networking`: High-speed OCP 3.0 & PCIe adapters (10GbE to 200GbE).
+13. `Power Supplies`: Titanium, Platinum & -48VDC Flex Slot PSUs with power budget mappings.
+14. `Chassis`: Server chassis configurations and backplane topologies.
+15. `Accessories & Infrastructure`: Energy Star presets, rail kits, and cable management arms.
+16. `Drive Enclosures & Drives`: SFF cage bundles, NVMe drive enclosures, SAS/SATA backplanes.
+17. `Storage Controllers`: Tri-Mode MegaRAID & Smart Array storage controllers.
+18. `Cooling & Thermal`: High Performance & Standard Fan Kits and Performance Heat Sinks.
+19. `Discontinued SKUs`: 790 tracked historical SKUs with EOL dates and price trails.
+20. `Metadata`: Scrape metadata, session timestamps, and SHA-256 catalog checksum.
 
 ---
 
@@ -98,6 +113,6 @@ npm run scrape:storage
 # Rebuild all scraped catalogs & regenerate workbooks
 npm run rebuild
 
-# Sync portfolio registry & base chassis variants
-node scripts/sync_all_registered_catalogs.js
+# Full Portfolio Certification Audit
+npm test
 ```

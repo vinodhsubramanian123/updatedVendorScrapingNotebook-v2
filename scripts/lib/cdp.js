@@ -82,10 +82,12 @@ function getOCATarget() {
           const targets = JSON.parse(data);
           const pages   = targets.filter(t => t.type === 'page');
 
-          // Primary match: active OCA configuration portal tab
-          const ocaPage = pages.find(
-            t => (t.url && t.url.includes('oca.ext.hpe.com')) ||
-                 (t.title && t.title.includes('OCA'))
+          // Primary match: active OCA configuration portal tab (must not be local dashboard)
+          const nonLocalPages = pages.filter(t => !t.url?.includes('localhost') && !t.url?.includes('127.0.0.1') && !t.url?.includes('antigravity'));
+          
+          const ocaPage = nonLocalPages.find(
+            t => (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
+                 (t.title && (t.title.includes('External OCA') || t.title.includes('Online Config') || (t.title.includes('OCA') && !t.title.includes('Engine'))))
           );
           if (ocaPage) return resolve(ocaPage);
 

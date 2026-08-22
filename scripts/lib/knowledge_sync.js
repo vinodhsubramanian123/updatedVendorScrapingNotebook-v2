@@ -23,11 +23,12 @@ const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 const MASTER_REGISTRY_FILE = path.join(OUTPUTS_ROOT, 'history', 'master_knowledge_registry.json');
 
 function getNotebookIdForChassis(cfg, chassisName) {
-  if (cfg.notebooks && cfg.notebooks[chassisName]) {
+  if (cfg && cfg.notebooks && cfg.notebooks[chassisName]) {
     const entry = cfg.notebooks[chassisName];
-    return (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
+    const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
+    if (id && String(id).trim()) return String(id).trim();
   }
-  return cfg.defaultNotebookId || "17cb979a-14d2-430c-a99f-7c1514757e79";
+  return (cfg && cfg.defaultNotebookId && String(cfg.defaultNotebookId).trim()) || "1d190853-4e9c-48df-aa70-eae66c6f2c1f";
 }
 
 function classifyKnowledgeScope(deltaOrText) {
@@ -122,10 +123,20 @@ function buildMasterKnowledgeRegistry() {
     }
   });
 
+  const nowISO = new Date().toISOString();
+
+  // Collect unique product families represented in the learned rules
+  const familySet = new Set(allDeltas.map(d => d.family || (d.chassis || '').split('_')[0]).filter(Boolean));
+
   const registry = {
-    registryVersion: "2.0.0",
-    lastUpdated: new Date().toISOString(),
+    registryVersion: '2.0.0',
+    schemaVersion: '1.0',
+    // GAP-4 FIX: generatedAt is the canonical timestamp field read by the dashboard.
+    // lastUpdated is preserved for backward compatibility with older consumers.
+    generatedAt: nowISO,
+    lastUpdated: nowISO,
     totalLearnedRules: allDeltas.length,
+    productFamiliesSynced: [...familySet],
     counts: {
       universal: universalRules.length,
       familyGen: familyGenRules.length,

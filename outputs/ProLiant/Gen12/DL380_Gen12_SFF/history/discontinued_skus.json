@@ -2166,40 +2166,43 @@
     "productNumber": "P52341-B21",
     "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
     "mainCategory": "Accessories & Infrastructure",
-    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "subCategory": "(Sub-table)",
     "firstSeenDate": "2026-08-12",
     "discontinuedDate": "2026-08-22",
     "daysActive": 10,
     "lastKnownPrice": "164.00",
     "fullPriceTrail": "2026-08-12: $164.00 → 2026-08-12: $164.00 → 2026-08-13: $164.00 → 2026-08-14: $164.00 → 2026-08-16: $164.00 → 2026-08-19: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 (✕ REMOVED) → 2026-08-22: $164.00 (↩ REINSTATED) → 2026-08-22: $164.00",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P70744-B21": {
     "productNumber": "P70744-B21",
     "description": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
     "mainCategory": "Accessories & Infrastructure",
-    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "subCategory": "(Sub-table)",
     "firstSeenDate": "2026-08-12",
     "discontinuedDate": "2026-08-22",
     "daysActive": 10,
     "lastKnownPrice": "172.00",
     "fullPriceTrail": "2026-08-12: $172.00 → 2026-08-12: $172.00 → 2026-08-13: $172.00 → 2026-08-14: $172.00 → 2026-08-16: $172.00 → 2026-08-19: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 (✕ REMOVED) → 2026-08-22: $172.00 (↩ REINSTATED) → 2026-08-22: $172.00",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P74748-B21": {
     "productNumber": "P74748-B21",
     "description": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
     "mainCategory": "Accessories & Infrastructure",
-    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "subCategory": "(Sub-table)",
     "firstSeenDate": "2026-08-12",
     "discontinuedDate": "2026-08-22",
     "daysActive": 10,
     "lastKnownPrice": "117.00",
     "fullPriceTrail": "2026-08-12: $117.00 → 2026-08-12: $117.00 → 2026-08-13: $117.00 → 2026-08-14: $117.00 → 2026-08-16: $117.00 → 2026-08-19: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 (✕ REMOVED) → 2026-08-22: $117.00 (↩ REINSTATED) → 2026-08-22: $117.00",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "S2L70C": {
     "productNumber": "S2L70C",
@@ -6399,6 +6402,14 @@
     "mainCategory": "Networking",
     "subCategory": "(Sub-table)",
     "firstSeenDate": "2026-08-16",
+    "status": "ACTIVE"
+  },
+  "P90157-B21": {
+    "productNumber": "P90157-B21",
+    "description": "Intel Xeon 6762P 2.9GHz 64-core 350W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-08-22",
     "status": "ACTIVE"
   }
 }

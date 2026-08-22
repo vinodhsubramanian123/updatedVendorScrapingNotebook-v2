@@ -8,6 +8,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const logger = require('./pipeline_logger.js');
 
 /**
  * Move a file cross-platform. Handles EXDEV error when moving across drive boundaries on Windows.

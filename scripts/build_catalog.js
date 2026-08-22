@@ -656,7 +656,10 @@ const buildCatalogObject = (entries) => {
       model:              meta.cleanName || chassisLabel,
       family:             meta.family || 'ProLiant',
       generation:         meta.gen || 'Gen12',
-      scrapeDate:         new Date().toISOString(),
+      // GAP-6 FIX: scrapeDate is YYYY-MM-DD only (stable snapshot key).
+      // scrapeTimestamp is the full ISO8601 for audit purposes.
+      scrapeDate:         new Date().toISOString().split('T')[0],
+      scrapeTimestamp:    new Date().toISOString(),
       totalSubcategories: new Set(entries.map(e => e.subCategory)).size,
       totalUniqueSKUs:    getUniqueSkuCount(entries),
       totalTables:        entries.length

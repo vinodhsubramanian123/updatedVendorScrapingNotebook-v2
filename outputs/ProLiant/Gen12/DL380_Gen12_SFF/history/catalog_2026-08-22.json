@@ -4,19 +4,19 @@
     "model": "DL380_Gen12_SFF",
     "family": "ProLiant",
     "generation": "Gen12",
-    "scrapeDate": "2026-08-22T09:47:55.195Z",
-    "totalSubcategories": 65,
-    "totalUniqueSKUs": 258,
-    "totalTables": 65,
+    "scrapeDate": "2026-08-22T12:31:15.957Z",
+    "totalSubcategories": 66,
+    "totalUniqueSKUs": 262,
+    "totalTables": 66,
     "diffSummary": {
-      "added": 0,
-      "removed": 3,
+      "added": 1,
+      "removed": 0,
       "priceChanged": 0,
-      "attributeChanged": 6,
+      "attributeChanged": 31,
       "priceAndAttributeChanged": 0,
-      "unchanged": 252,
+      "unchanged": 230,
       "reinstated": 0,
-      "discontinuedTotal": 3
+      "discontinuedTotal": 0
     },
     "historySnapshot": "catalog_2026-08-22.json",
     "priceAnalytics": {
@@ -82,7 +82,7 @@
               "totalPrice": 4144,
               "avgPrice": 1036
             },
-            "Chassis Infrastructure & Rail Kits": {
+            "(Sub-table)": {
               "totalSKUs": 3,
               "totalPrice": 453,
               "avgPrice": 151
@@ -91,15 +91,15 @@
           "avgPrice": 370.90909090909093
         },
         "Processor": {
-          "totalSKUs": 64,
-          "totalPrice": 470787,
+          "totalSKUs": 65,
+          "totalPrice": 517138,
           "minPrice": 60,
           "maxPrice": 58094,
           "subcategories": {
             "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 32,
-              "totalPrice": 461201,
-              "avgPrice": 14412.53125
+              "totalSKUs": 33,
+              "totalPrice": 507552,
+              "avgPrice": 15380.363636363636
             },
             "Storage Controller Cable Kits": {
               "totalSKUs": 29,
@@ -112,7 +112,7 @@
               "avgPrice": 1000.6666666666666
             }
           },
-          "avgPrice": 7356.046875
+          "avgPrice": 7955.969230769231
         },
         "Memory": {
           "totalSKUs": 8,
@@ -276,13 +276,13 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 261,
-      "unchangedSkusCount": 261,
+      "totalScrapedSkus": 262,
+      "unchangedSkusCount": 262,
       "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 39150,
-      "estimatedProcessingTimeSavedMs": 52200
+      "estimatedTokensSaved": 39300,
+      "estimatedProcessingTimeSavedMs": 52400
     }
   },
   "subcategories": [
@@ -675,6 +675,12 @@
       "name": "Server Management & Operating System Licenses",
       "constraint": "System Option",
       "maxQty": 32
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "(Sub-table)",
+      "constraint": "Discontinued",
+      "maxQty": 32
     }
   ],
   "entries": [
@@ -699,42 +705,42 @@
           "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
           "$5,584.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ],
         [
           "P73283-B21",
           "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
           "$5,980.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ],
         [
           "P73284-B21",
           "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
           "$6,350.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ],
         [
           "P73285-B21",
           "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
           "$6,890.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ],
         [
           "P73286-B21",
           "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
           "$7,120.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ],
         [
           "P73287-B21",
           "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
           "$7,450.00",
           "1",
-          "2026-08-16"
+          "2026-08-22"
         ]
       ],
       "skus": [
@@ -745,7 +751,7 @@
           "Price (USD)": "5584.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -756,7 +762,7 @@
           "listPriceFormatted": "$5,584.00",
           "qty": 1,
           "Previous List Price (USD)": "5584.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -769,7 +775,7 @@
           "Price (USD)": "5980.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -780,7 +786,7 @@
           "listPriceFormatted": "$5,980.00",
           "qty": 1,
           "Previous List Price (USD)": "5980.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -793,7 +799,7 @@
           "Price (USD)": "6350.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -804,7 +810,7 @@
           "listPriceFormatted": "$6,350.00",
           "qty": 1,
           "Previous List Price (USD)": "6350.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -817,7 +823,7 @@
           "Price (USD)": "6890.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -828,7 +834,7 @@
           "listPriceFormatted": "$6,890.00",
           "qty": 1,
           "Previous List Price (USD)": "6890.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -841,7 +847,7 @@
           "Price (USD)": "7120.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -852,7 +858,7 @@
           "listPriceFormatted": "$7,120.00",
           "qty": 1,
           "Previous List Price (USD)": "7120.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -865,7 +871,7 @@
           "Price (USD)": "7450.00",
           "Current Qty": "1",
           "Option Type": "CTO",
-          "Start Date": "2026-08-16",
+          "Start Date": "2026-08-22",
           "Discontinued Date": "",
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
@@ -876,7 +882,7 @@
           "listPriceFormatted": "$7,450.00",
           "qty": 1,
           "Previous List Price (USD)": "7450.00",
-          "Attribute Deltas": "Description: \"[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server\" → \"HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server\" | Constraint: \"Discontinued\" → \"System Standard (Max 1)\" | Rule/Note: \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" → \"(None)\" | Max Qty: \"0\" → \"1\" | Component Role: \"Discontinued Hardware\" → \"Base Chassis\" | HPE Recommended: \"No\" → \"(None)\" | Start Date: \"2026-08-12\" → \"2026-08-16\"",
+          "Attribute Deltas": "Start Date: \"2026-08-16\" → \"2026-08-22\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
@@ -941,7 +947,7 @@
         "Start",
         "Discontinued"
       ],
-      "skuCount": 32,
+      "skuCount": 33,
       "skus": [
         {
           "Product #": "P71117-B21",
@@ -1582,6 +1588,26 @@
           "Price Change (%)": "0.00%",
           "Price History Trail": "2026-08-12: $12209.00 → 2026-08-12: $12209.00 → 2026-08-13: $12209.00 → 2026-08-14: $12209.00 → 2026-08-16: $12209.00 → 2026-08-19: $12209.00 → 2026-08-22: $12209.00 → 2026-08-22: $12209.00",
           "description": "Intel Xeon 6725P 3.7GHz 16-core 235W Processor for HPE"
+        },
+        {
+          "Product #": "P90157-B21",
+          "Description": "Intel Xeon 6762P 2.9GHz 64-core 350W Processor for HPE",
+          "Price (USD)": "46,351.00",
+          "Price Delta (USD)": "+42,109.00",
+          "Extended Price (USD)": "92,702.00",
+          "HPE Recommended": "",
+          "Start": "04/06/2026",
+          "Discontinued": "06/30/2029",
+          "sku": "P90157-B21",
+          "Option Type": "Standard",
+          "Current Qty": "0",
+          "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "New SKU introduced",
+          "Diff Status": "ADDED",
+          "Price Change (USD)": "+$46351.00",
+          "Price Change (%)": "+100.00%",
+          "Price History Trail": "2026-08-22: $46351.00 → 2026-08-22: $46351.00",
+          "description": "Intel Xeon 6762P 2.9GHz 64-core 350W Processor for HPE"
         }
       ]
     },
@@ -1605,7 +1631,7 @@
       "skus": [
         {
           "Product #": "P74792-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit",
+          "Description": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit",
           "Price (USD)": "316.00",
           "Extended Price (USD)": "632.00",
           "Start": "02/24/2025",
@@ -1614,12 +1640,12 @@
           "Option Type": "Standard",
           "Current Qty": "2",
           "Previous List Price (USD)": "316.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit\" → \"HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $316.00 → 2026-08-12: $316.00 → 2026-08-13: $316.00 → 2026-08-14: $316.00 → 2026-08-16: $316.00 → 2026-08-19: $316.00 → 2026-08-22: $316.00 → 2026-08-22: $316.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit"
+          "Price History Trail": "2026-08-12: $316.00 → 2026-08-12: $316.00 → 2026-08-13: $316.00 → 2026-08-14: $316.00 → 2026-08-16: $316.00 → 2026-08-19: $316.00 → 2026-08-22: $316.00 → 2026-08-22: $316.00 → 2026-08-22: $316.00",
+          "description": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
         }
       ]
     },
@@ -1645,7 +1671,7 @@
       "skus": [
         {
           "Product #": "P49145-B21",
-          "Description": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit",
+          "Description": "HPE ProLiant DL380 2U Standard Heat Sink Kit",
           "Price (USD)": "133.00",
           "Extended Price (USD)": "NA",
           "Start": "04/03/2023",
@@ -1654,12 +1680,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "133.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 2U Standard Heat Sink Kit\" → \"HPE ProLiant DL380 2U Standard Heat Sink Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $133.00 → 2026-08-12: $133.00 → 2026-08-13: $133.00 → 2026-08-14: $133.00 → 2026-08-16: $133.00 → 2026-08-19: $133.00 → 2026-08-22: $133.00 → 2026-08-22: $133.00",
-          "description": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit"
+          "Price History Trail": "2026-08-12: $133.00 → 2026-08-12: $133.00 → 2026-08-13: $133.00 → 2026-08-14: $133.00 → 2026-08-16: $133.00 → 2026-08-19: $133.00 → 2026-08-22: $133.00 → 2026-08-22: $133.00 → 2026-08-22: $133.00",
+          "description": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
         },
         {
           "Product #": "P74204-B21",
@@ -1717,7 +1743,7 @@
         },
         {
           "Product #": "P74794-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit",
+          "Description": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit",
           "Price (USD)": "624.00",
           "Extended Price (USD)": "NA",
           "Start": "02/24/2025",
@@ -1726,12 +1752,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "624.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit\" → \"HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $624.00 → 2026-08-12: $624.00 → 2026-08-13: $624.00 → 2026-08-14: $624.00 → 2026-08-16: $624.00 → 2026-08-19: $624.00 → 2026-08-22: $624.00 → 2026-08-22: $624.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit"
+          "Price History Trail": "2026-08-12: $624.00 → 2026-08-12: $624.00 → 2026-08-13: $624.00 → 2026-08-14: $624.00 → 2026-08-16: $624.00 → 2026-08-19: $624.00 → 2026-08-22: $624.00 → 2026-08-22: $624.00 → 2026-08-22: $624.00",
+          "description": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
         }
       ]
     },
@@ -2400,7 +2426,7 @@
       "minQty": 0,
       "maxQty": 8,
       "rules": [
-        "Nvme option not available with 8sff smart chassis choice."
+        "Define connection for 8SFF x4 Cage only needed if cage is selected."
       ],
       "headers": [
         "Product #",
@@ -2416,7 +2442,7 @@
       "skus": [
         {
           "Product #": "DA8SFFX2",
-          "Description": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "NA",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2426,16 +2452,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"Direct Attach x2                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
-          "description": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
+          "description": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "DA8SFFX4",
-          "Description": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "NA",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2445,16 +2471,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"Direct Attach x4                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
-          "description": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
+          "description": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77955-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2464,16 +2490,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77958-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2483,16 +2509,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77931-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2502,16 +2528,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P78064-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "NA",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2521,16 +2547,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
-          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77934-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2540,16 +2566,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77937-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2559,16 +2585,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77940-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2578,16 +2604,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77961-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2597,16 +2623,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P78070-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2616,16 +2642,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P78047-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2635,16 +2661,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P78058-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "NA",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2654,16 +2680,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
-          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P78061-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "NA",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2673,16 +2699,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
-          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: (no price) → 2026-08-12: (no price) (✕ REMOVED) → 2026-08-12: (no price) (↩ REINSTATED) → 2026-08-12: (no price) → 2026-08-13: (no price) → 2026-08-14: (no price) → 2026-08-16: (no price) → 2026-08-19: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price) → 2026-08-22: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         },
         {
           "Product #": "P77943-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+          "Description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
           "Price (USD)": "1.00",
           "Price Delta (USD)": "NA",
           "Extended Price (USD)": "NA",
@@ -2692,12 +2718,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "1.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.\" → \"HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-12: $1.00 (✕ REMOVED) → 2026-08-12: $1.00 (↩ REINSTATED) → 2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00 → 2026-08-22: $1.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
         }
       ]
     },
@@ -2779,7 +2805,7 @@
         },
         {
           "Product #": "P48803-B21",
-          "Description": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit",
+          "Description": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit",
           "Price (USD)": "262.00",
           "Extended Price (USD)": "NA",
           "Start": "01/10/2023",
@@ -2788,16 +2814,16 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "262.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit\" → \"HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $262.00 → 2026-08-12: $262.00 → 2026-08-13: $262.00 → 2026-08-14: $262.00 → 2026-08-16: $262.00 → 2026-08-19: $262.00 → 2026-08-22: $262.00 → 2026-08-22: $262.00",
-          "description": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit"
+          "Price History Trail": "2026-08-12: $262.00 → 2026-08-12: $262.00 → 2026-08-13: $262.00 → 2026-08-14: $262.00 → 2026-08-16: $262.00 → 2026-08-19: $262.00 → 2026-08-22: $262.00 → 2026-08-22: $262.00 → 2026-08-22: $262.00",
+          "description": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
         },
         {
           "Product #": "P51083-B21",
-          "Description": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit",
+          "Description": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit",
           "Price (USD)": "343.00",
           "Extended Price (USD)": "NA",
           "Start": "01/10/2023",
@@ -2806,12 +2832,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "343.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit\" → \"HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $343.00 → 2026-08-12: $343.00 → 2026-08-13: $343.00 → 2026-08-14: $343.00 → 2026-08-16: $343.00 → 2026-08-19: $343.00 → 2026-08-22: $343.00 → 2026-08-22: $343.00",
-          "description": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit"
+          "Price History Trail": "2026-08-12: $343.00 → 2026-08-12: $343.00 → 2026-08-13: $343.00 → 2026-08-14: $343.00 → 2026-08-16: $343.00 → 2026-08-19: $343.00 → 2026-08-22: $343.00 → 2026-08-22: $343.00 → 2026-08-22: $343.00",
+          "description": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
         },
         {
           "Product #": "P76451-B21",
@@ -6261,7 +6287,7 @@
         },
         {
           "Product #": "P74755-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit",
+          "Description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit",
           "Price (USD)": "82.00",
           "Extended Price (USD)": "NA",
           "HPE Recommended": "",
@@ -6271,12 +6297,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "82.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit\" → \"HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $82.00 → 2026-08-12: $82.00 → 2026-08-13: $82.00 → 2026-08-14: $82.00 → 2026-08-16: $82.00 → 2026-08-19: $82.00 → 2026-08-22: $82.00 → 2026-08-22: $82.00",
-          "description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit"
+          "Price History Trail": "2026-08-12: $82.00 → 2026-08-12: $82.00 → 2026-08-13: $82.00 → 2026-08-14: $82.00 → 2026-08-16: $82.00 → 2026-08-19: $82.00 → 2026-08-22: $82.00 → 2026-08-22: $82.00 → 2026-08-22: $82.00",
+          "description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
         },
         {
           "Product #": "P74759-B21",
@@ -6708,7 +6734,7 @@
         },
         {
           "Product #": "P49146-B21",
-          "Description": "HPE ProLiant Compute DL380 2U Standard Fan Kit",
+          "Description": "HPE ProLiant DL380 2U Standard Fan Kit",
           "Price (USD)": "115.00",
           "Extended Price (USD)": "NA",
           "Start": "01/10/2023",
@@ -6717,12 +6743,12 @@
           "Option Type": "Standard",
           "Current Qty": "0",
           "Previous List Price (USD)": "115.00",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 2U Standard Fan Kit\" → \"HPE ProLiant DL380 2U Standard Fan Kit\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-12: $115.00 → 2026-08-12: $115.00 → 2026-08-13: $115.00 → 2026-08-14: $115.00 → 2026-08-16: $115.00 → 2026-08-19: $115.00 → 2026-08-22: $115.00 → 2026-08-22: $115.00",
-          "description": "HPE ProLiant Compute DL380 2U Standard Fan Kit"
+          "Price History Trail": "2026-08-12: $115.00 → 2026-08-12: $115.00 → 2026-08-13: $115.00 → 2026-08-14: $115.00 → 2026-08-16: $115.00 → 2026-08-19: $115.00 → 2026-08-22: $115.00 → 2026-08-22: $115.00 → 2026-08-22: $115.00",
+          "description": "HPE ProLiant DL380 2U Standard Fan Kit"
         },
         {
           "Product #": "P62038-B21",
@@ -7023,7 +7049,7 @@
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "subCategory": "(Sub-table)",
       "constraint": "Discontinued",
       "maxQty": 0,
       "rules": [
@@ -7040,7 +7066,7 @@
       "skus": [
         {
           "Main Category": "Accessories & Infrastructure",
-          "Sub-Category": "Chassis Infrastructure & Rail Kits",
+          "Sub-Category": "(Sub-table)",
           "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
           "Component Role": "Discontinued Hardware",
           "Constraint Text": "Discontinued",
@@ -7058,16 +7084,18 @@
           "Start Date": "11/10/2022",
           "Discontinued Date": "2026-08-22",
           "Days Active": "10",
-          "Diff Status": "REMOVED",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Previous List Price (USD)": "164.00",
-          "Price Change (USD)": "-$164.00",
-          "Price Change (%)": "-100.00%",
-          "Attribute Deltas": "SKU Discontinued & Tombstoned",
-          "Price History Trail": "2026-08-12: $164.00 → 2026-08-12: $164.00 → 2026-08-13: $164.00 → 2026-08-14: $164.00 → 2026-08-16: $164.00 → 2026-08-19: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 (✕ REMOVED) → 2026-08-22: $164.00 (↩ REINSTATED) → 2026-08-22: $164.00"
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "Description: \"HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit\" → \"[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit\" | Constraint: \"(None)\" → \"Discontinued\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"(None)\" → \"0\" | Component Role: \"(None)\" → \"Discontinued Hardware\" | HPE Recommended: \"(None)\" → \"No\" | Start Date: \"(None)\" → \"11/10/2022\"",
+          "Price History Trail": "2026-08-12: $164.00 → 2026-08-12: $164.00 → 2026-08-13: $164.00 → 2026-08-14: $164.00 → 2026-08-16: $164.00 → 2026-08-19: $164.00 → 2026-08-22: $164.00 (↩ REINSTATED) → 2026-08-22: $164.00 → 2026-08-22: $164.00 (✕ REMOVED) → 2026-08-22: $164.00 (↩ REINSTATED) → 2026-08-22: $164.00",
+          "sku": "P52341-B21",
+          "description": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
         },
         {
           "Main Category": "Accessories & Infrastructure",
-          "Sub-Category": "Chassis Infrastructure & Rail Kits",
+          "Sub-Category": "(Sub-table)",
           "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
           "Component Role": "Discontinued Hardware",
           "Constraint Text": "Discontinued",
@@ -7085,16 +7113,18 @@
           "Start Date": "02/24/2025",
           "Discontinued Date": "2026-08-22",
           "Days Active": "10",
-          "Diff Status": "REMOVED",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Previous List Price (USD)": "172.00",
-          "Price Change (USD)": "-$172.00",
-          "Price Change (%)": "-100.00%",
-          "Attribute Deltas": "SKU Discontinued & Tombstoned",
-          "Price History Trail": "2026-08-12: $172.00 → 2026-08-12: $172.00 → 2026-08-13: $172.00 → 2026-08-14: $172.00 → 2026-08-16: $172.00 → 2026-08-19: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 (✕ REMOVED) → 2026-08-22: $172.00 (↩ REINSTATED) → 2026-08-22: $172.00"
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit\" → \"[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit\" | Constraint: \"(None)\" → \"Discontinued\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"(None)\" → \"0\" | Component Role: \"(None)\" → \"Discontinued Hardware\" | HPE Recommended: \"(None)\" → \"No\" | Start Date: \"(None)\" → \"02/24/2025\"",
+          "Price History Trail": "2026-08-12: $172.00 → 2026-08-12: $172.00 → 2026-08-13: $172.00 → 2026-08-14: $172.00 → 2026-08-16: $172.00 → 2026-08-19: $172.00 → 2026-08-22: $172.00 (↩ REINSTATED) → 2026-08-22: $172.00 → 2026-08-22: $172.00 (✕ REMOVED) → 2026-08-22: $172.00 (↩ REINSTATED) → 2026-08-22: $172.00",
+          "sku": "P70744-B21",
+          "description": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
         },
         {
           "Main Category": "Accessories & Infrastructure",
-          "Sub-Category": "Chassis Infrastructure & Rail Kits",
+          "Sub-Category": "(Sub-table)",
           "Hierarchy Path": "HPE OCA > DL380 Gen12 SFF > Deprecation Archive > Discontinued SKUs",
           "Component Role": "Discontinued Hardware",
           "Constraint Text": "Discontinued",
@@ -7112,12 +7142,14 @@
           "Start Date": "02/24/2025",
           "Discontinued Date": "2026-08-22",
           "Days Active": "10",
-          "Diff Status": "REMOVED",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Previous List Price (USD)": "117.00",
-          "Price Change (USD)": "-$117.00",
-          "Price Change (%)": "-100.00%",
-          "Attribute Deltas": "SKU Discontinued & Tombstoned",
-          "Price History Trail": "2026-08-12: $117.00 → 2026-08-12: $117.00 → 2026-08-13: $117.00 → 2026-08-14: $117.00 → 2026-08-16: $117.00 → 2026-08-19: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 (✕ REMOVED) → 2026-08-22: $117.00 (↩ REINSTATED) → 2026-08-22: $117.00"
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 System Insight Display Kit\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit\" | Constraint: \"(None)\" → \"Discontinued\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"(None)\" → \"0\" | Component Role: \"(None)\" → \"Discontinued Hardware\" | HPE Recommended: \"(None)\" → \"No\" | Start Date: \"(None)\" → \"02/24/2025\"",
+          "Price History Trail": "2026-08-12: $117.00 → 2026-08-12: $117.00 → 2026-08-13: $117.00 → 2026-08-14: $117.00 → 2026-08-16: $117.00 → 2026-08-19: $117.00 → 2026-08-22: $117.00 (↩ REINSTATED) → 2026-08-22: $117.00 → 2026-08-22: $117.00 (✕ REMOVED) → 2026-08-22: $117.00 (↩ REINSTATED) → 2026-08-22: $117.00",
+          "sku": "P74748-B21",
+          "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
         }
       ]
     }

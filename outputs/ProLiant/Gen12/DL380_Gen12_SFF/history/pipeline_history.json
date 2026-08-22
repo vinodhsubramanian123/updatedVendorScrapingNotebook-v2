@@ -1,6 +1,192 @@
 [
   {
     "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787401875786",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-22T12:31:15.785Z",
+      "endTime": "2026-08-22T12:31:16.190Z",
+      "durationMs": 405,
+      "durationSec": "0.41",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 262,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 262,
+      "validationStats": {
+        "totalEntries": 66,
+        "totalSKUs": 262,
+        "validSKUs": 262,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 7,
+        "priceErrors": 0,
+        "ruleCount": 28,
+        "categoryCount": 9
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-22T12:31:15.786Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:31:16.102Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 262,
+          "incrementalStats": {
+            "totalScrapedSkus": 262,
+            "unchangedSkusCount": 262,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 39300,
+            "estimatedProcessingTimeSavedMs": 52400
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:31:16.108Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 66,
+            "totalSKUs": 262,
+            "validSKUs": 262,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 7,
+            "priceErrors": 0,
+            "ruleCount": 28,
+            "categoryCount": 9
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:31:16.189Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 262,
+      "classified": 262,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787401795407",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-22T12:29:55.407Z",
+      "endTime": "2026-08-22T12:29:55.828Z",
+      "durationMs": 421,
+      "durationSec": "0.42",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 262,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 262,
+      "validationStats": {
+        "totalEntries": 66,
+        "totalSKUs": 262,
+        "validSKUs": 262,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 7,
+        "priceErrors": 0,
+        "ruleCount": 28,
+        "categoryCount": 9
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-22T12:29:55.407Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401795146/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401795146/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:29:55.754Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 262,
+          "incrementalStats": {
+            "totalScrapedSkus": 262,
+            "unchangedSkusCount": 230,
+            "modifiedSkusCount": 31,
+            "addedSkusCount": 1,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 34500,
+            "estimatedProcessingTimeSavedMs": 46000
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:29:55.763Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 66,
+            "totalSKUs": 262,
+            "validSKUs": 262,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 7,
+            "priceErrors": 0,
+            "ruleCount": 28,
+            "categoryCount": 9
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-22T12:29:55.828Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401795146/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 262,
+      "classified": 262,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380_Gen12_SFF_1787392075022",
       "sessionName": "DL380_Gen12_SFF",
       "startTime": "2026-08-22T09:47:55.021Z",

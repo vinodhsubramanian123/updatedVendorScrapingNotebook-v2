@@ -28,31 +28,36 @@ async function main() {
   console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
   console.log('================================================================\n');
 
-  // ── Startup: Clean up stale staging directories from previous interrupted runs ──
+  // ── Startup: Proactive cleanup of orphaned staging and stale failed runs ──
   const tempDir = path.join(OUTPUTS_ROOT, 'temp');
   if (fs.existsSync(tempDir)) {
+    const now = Date.now();
     for (const entry of fs.readdirSync(tempDir)) {
-      if (!entry.startsWith('staging_')) continue;
-      const stagingPath = path.join(tempDir, entry);
+      const entryPath = path.join(tempDir, entry);
       try {
-        const stat = fs.statSync(stagingPath);
-        const ageHours = (Date.now() - stat.mtimeMs) / 3600000;
-        if (ageHours > 24) {
+        const stat = fs.statSync(entryPath);
+        const ageHours = (now - stat.mtimeMs) / 3600000;
+        // 1. Orphaned staging directories older than 15 mins → mark as failed for diagnostic inspection
+        if (entry.startsWith('staging_') && ageHours > 0.25) {
           const failedPath = path.join(tempDir, entry.replace('staging_', 'failed_stale_'));
-          fs.renameSync(stagingPath, failedPath);
-          logger.warn('SCRAPE', `Stale staging dir (${ageHours.toFixed(1)}h old) renamed for inspection: ${path.basename(failedPath)}`);
+          fs.renameSync(entryPath, failedPath);
+          logger.warn('SCRAPE', `Orphaned staging dir (${(ageHours * 60).toFixed(0)}m old) preserved for diagnosis: ${path.basename(failedPath)}`);
+        }
+        // 2. Old failed diagnostics older than 48 hours → purge to keep disk clean
+        else if (entry.startsWith('failed_') && ageHours > 48) {
+          fs.rmSync(entryPath, { recursive: true, force: true });
+          logger.info('SCRAPE', `Purged old diagnostic dir (${ageHours.toFixed(1)}h old): ${entry}`);
         }
       } catch (e) {
-        logger.warn('SCRAPE', `Could not inspect staging dir ${entry}`, e);
+        logger.warn('SCRAPE', `Could not inspect temp dir entry ${entry}`, e);
       }
     }
   }
 
-
   let pageTarget;
   try {
     pageTarget = await getOCATarget();
-} catch (err) {
+  } catch (err) {
     console.log(`⚠️ Active OCA tab not found: ${err.message}`);
     console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
     try {
@@ -62,7 +67,13 @@ async function main() {
     } catch (navErr) {
       throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
     }
-}
+  }
+
+  // STEP 1: CDP Handshake & Session Verification
+  emitProgress(1, 10, 'CDP Handshake & Session Verification', 'started', `Connecting to ${pageTarget.title}`, {
+    stage: 'CDP_CONNECT', percent: 10
+  });
+
   console.log(`Connecting via CDP: ${pageTarget.id} (${pageTarget.title})...`);
   const ws = await connectWS(pageTarget.webSocketDebuggerUrl);
 
@@ -79,8 +90,12 @@ async function main() {
     // Enable automated JS dialog & WebLogic modal prompt handler
     await setupDialogAutoHandler(ws);
 
-    // STEP 1: Solution Root Navigation & Pre-flight
-    console.log('\n--- STEP 1: Solution Root Discovery & Pre-flight ---');
+    // STEP 2: Solution Root Navigation & Pre-flight
+    console.log('\n--- STEP 2: Solution Root Discovery & Pre-flight ---');
+    emitProgress(2, 10, 'Solution Root Discovery & Navigation', 'in_progress', 'Locating components tree', {
+      stage: 'PORTAL_NAV', percent: 20
+    });
+
     await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
         const upBtn = document.querySelector('#nav_up, .icon-arrow-up3');
@@ -112,10 +127,19 @@ async function main() {
     console.log(`Discovered Solution Name: "${treeInfo.solutionName}"`);
     console.log(`Discovered Nodes (${treeInfo.options.length}):`, treeInfo.options.map(o => o.text));
 
-    // STEP 2: Navigate into Product Node Menu tab
-    console.log('\n--- STEP 2: Navigating into Product Node Menu Catalog ---');
+    // STEP 3: Navigate into Product Node Menu tab & Profiling
+    console.log('\n--- STEP 3: Navigating into Product Node Menu Catalog ---');
+    emitProgress(3, 10, 'Category Discovery & Profiling', 'in_progress', 'Entering configuration menu', {
+      stage: 'CATEGORY_DISCOVERY', percent: 30
+    });
+
     await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
+        // Try clicking Menu tab in OCA configuration view
+        const menuTab = Array.from(document.querySelectorAll('a, button, span, li'))
+          .find(el => el.innerText && el.innerText.trim() === 'Menu');
+        if (menuTab) menuTab.click();
+
         if (typeof jQuery !== 'undefined') {
           const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
             const t = jQuery(el).text();
@@ -126,22 +150,51 @@ async function main() {
           if (lastVal) jQuery('#selectNavTreeOption').val(lastVal).trigger('change');
           jQuery('a[href*="extended_overview_menu"]').click();
         }
-        const menuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
-        if (menuTab) menuTab.click();
+        const extMenuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
+        if (extMenuTab) extMenuTab.click();
       })()`,
       returnByValue: true
     });
 
     await sleep(4000);
 
-    // Extract Page Heading & Load Profile BEFORE Step 3
+    // Extract Page Heading & Load Profile BEFORE Step 4
     const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
-        const rawHeading = Array.from(document.querySelectorAll(
-          'h1, h2, h3, .breadcrumb, #solution_title, .qs-link, .menu_info, .menu-title, span[class*="qs"]'
-        )).map(el => el.innerText.trim()).find(t =>
-          /Gen\\d+/i.test(t) || /MSL|Tape|DL\\d|ML\\d|RL\\d|SY\\d|GX\\d|Synergy|Alletra|ProLiant|StoreOnce|StoreEver|MSA|Cray|Aruba/i.test(t)
-        ) || document.title;
+        // Priority-ordered selectors to find the most specific product model/description
+        const targetedSelectors = [
+          '.product_description',
+          '[id*="summary_property_description"]',
+          '[id*="summary_property_summary_name"]',
+          '.eo_nav_li.current',
+          '.eo_nav_div',
+          '.configName',
+          '.breadcrumb',
+          '.breadcrumb-item',
+          'h1, h2, h3, h4',
+          '.fancytree-title',
+          '.menu_info',
+          '.menu-title',
+          '#solution_title',
+          'strong, td'
+        ];
+
+        let foundHeading = '';
+        const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
+
+        for (const sel of targetedSelectors) {
+          const els = Array.from(document.querySelectorAll(sel));
+          for (const el of els) {
+            const t = (el.innerText || '').trim();
+            if (t && t.length < 200 && pattern.test(t)) {
+              foundHeading = t;
+              break;
+            }
+          }
+          if (foundHeading) break;
+        }
+
+        const rawHeading = foundHeading || document.title;
         const pageHeading = rawHeading
           .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
           .trim();
@@ -161,13 +214,16 @@ async function main() {
     const scrollThreshold = profile.scraping_tuning.scrollHeightThreshold || 15000;
     const targetTabsRegex = profile.scraping_tuning.targetTabsRegex || "pointnext|services|support services|tech care|^bom$";
 
-    // STEP 3: Full Page Section Expansion
-    console.log(`\n--- STEP 3: Expanding Page Sections (Threshold: ${scrollThreshold}px) ---`);
+    // STEP 4: Full Page Section Expansion
+    console.log(`\n--- STEP 4: Expanding Page Sections (Threshold: ${scrollThreshold}px) ---`);
+    emitProgress(4, 10, 'Section Expansion & Multi-Tab Reveal', 'in_progress', `Threshold: ${scrollThreshold}px`, {
+      stage: 'PAGE_EXPAND', percent: 45, category: meta.cleanName
+    });
+
     await expandSections(ws);
     await sleep(3000);
 
-    // STEP 3.5: Multi-Tab Support Services & Configured BOM Check
-    console.log('\n--- STEP 3.5: Checking for Solution Services & Configured BOM Tab ---');
+    // Multi-Tab Support Services & Configured BOM Check
     await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
         const tabsToClick = Array.from(document.querySelectorAll('a, button, div.tab_header')).filter(el => 
@@ -216,8 +272,11 @@ async function main() {
     }
     console.log(`✅ Expansion verified: ${metrics.tablesCount} tables, ${metrics.totalRows} rows — Rule #19 passed.`);
 
-    // STEP 4: Extract Dynamic DOM & Metadata
-    console.log('\n--- STEP 4: Extracting DOM & Metadata ---');
+    // STEP 5: Extract Dynamic DOM & Metadata
+    console.log('\n--- STEP 5: Extracting DOM & Metadata ---');
+    emitProgress(5, 10, 'DOM Extraction & Tabular Row Scraping', 'in_progress', `${metrics.tablesCount} tables detected`, {
+      stage: 'DOM_EXTRACTION', percent: 60, itemsScraped: metrics.tablesCount, category: meta.cleanName
+    });
 
     // Shared chunked text extraction
     console.log('Extracting page text...');
@@ -236,7 +295,7 @@ async function main() {
     const sections = await extractSectionHeaders(ws);
     console.log(`Extracted ${sections.length} DOM section headers.`);
 
-    // ── Phantom Chassis Guard — prevents rogue directory creation at project root ──
+    // ── Phantom Chassis Guard ──
     const BLOCKED_CHASSIS_NAMES = new Set([
       'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
       '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'Chassis Dir'
@@ -284,9 +343,9 @@ async function main() {
     safeWriteJsonAtomic(rawJsonPath, rawData);
     console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
 
-    // STEP 5: QuickSpecs PDF Download
+    // QuickSpecs PDF Download
     if (qsLink) {
-      console.log(`\n--- STEP 5: QuickSpecs PDF Download ---`);
+      console.log(`\n--- QuickSpecs PDF Download ---`);
       pdfDestPath = path.join(outputDir, `HPE_${meta.cleanName}_QuickSpecs.pdf`);
       try {
         execSync(
@@ -297,54 +356,50 @@ async function main() {
         console.warn('QuickSpecs download warning:', e.message);
       }
     }
-} finally {
+  } finally {
     try { ws.close(); } catch (e) { const _logger = require('./lib/pipeline_logger.js'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
-}
+  }
 
-  // STEP 6: Catalog Parser & Excel Generator
+  // STEP 6: Catalog Parser & Excel Generator in Staging
   console.log('\n--- STEP 6: Catalog Classification & Excel Generation in Staging ---');
+  emitProgress(6, 10, 'Aspect Rules Engine & Constraint Graph', 'in_progress', 'Building catalog JSON and TSV intermediates', {
+    stage: 'RULES_PARSING', percent: 75, category: meta.cleanName
+  });
+
   catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
   catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
   const rawJsonPath = path.join(outputDir, 'raw_data', 'oca_raw_data_full.json');
 
   // ── STAGING SEED: Copy ALL critical live files into staging BEFORE any scrape ──
-  // This guarantees that if the scrape fails at any point (CDP port down, browser
-  // crash, partial data), the live directory is 100% untouched. We NEVER write
-  // directly to the live path — only to staging, then promote atomically on success.
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   if (fs.existsSync(liveOutputDir)) {
     const { copyDirRecursive } = require('./lib/fs_compat.js');
     console.log(`\n🛡️  Seeding staging from live workspace to protect previous scrape data...`);
 
-    // Seed history/ — required for diff engine to compute ADDED/REMOVED/PRICE_CHANGED
     const existingHistory = path.join(liveOutputDir, 'history');
     if (fs.existsSync(existingHistory)) {
       copyDirRecursive(existingHistory, path.join(outputDir, 'history'));
       console.log(`   ✅ history/ seeded (diff engine can compare against previous scrape)`);
     }
 
-    // Seed intermittent_scraps/ — required for re-running generate_xlsx.js standalone
     const existingScraps = path.join(liveOutputDir, 'intermittent_scraps');
     if (fs.existsSync(existingScraps)) {
       copyDirRecursive(existingScraps, path.join(outputDir, 'intermittent_scraps'));
       console.log(`   ✅ intermittent_scraps/ seeded (TSV intermediates preserved)`);
     }
 
-    // Seed _Catalog.json — required for incremental checksum differential
     const existingCatalog = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
     if (fs.existsSync(existingCatalog)) {
       fs.copyFileSync(existingCatalog, path.join(outputDir, `${meta.cleanName}_Catalog.json`));
       console.log(`   ✅ ${meta.cleanName}_Catalog.json seeded`);
     }
 
-    // Seed _Services.json — required for services diff to compute delta across scrapes
     const existingServices = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
     if (fs.existsSync(existingServices)) {
       fs.copyFileSync(existingServices, path.join(outputDir, `${meta.cleanName}_Services.json`));
       console.log(`   ✅ ${meta.cleanName}_Services.json seeded`);
     }
 
-    // Seed _Catalog_Rules.json — required for BOQ evaluator and downstream tools
     const existingRules = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Rules.json`);
     if (fs.existsSync(existingRules)) {
       fs.copyFileSync(existingRules, path.join(outputDir, `${meta.cleanName}_Catalog_Rules.json`));
@@ -352,10 +407,14 @@ async function main() {
     }
 
     console.log(`   🔒 Live workspace is safe — all writes go to staging only until audit passes.\n`);
-} else {
+  } else {
     console.log(`\n🆕  No existing live workspace found — this is a fresh first-run for ${meta.cleanName}.`);
-}
+  }
 
+  // STEP 7: Build Catalog & Generate Multi-Sheet Excel
+  emitProgress(7, 10, 'Catalog Generation & Workbook Compilation', 'in_progress', 'Generating 20-sheet Master Excel', {
+    stage: 'CATALOG_GEN', percent: 85, category: meta.cleanName
+  });
 
   execSync(
     `node "${path.join(__dirname, 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}"`,
@@ -366,15 +425,19 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
-  // STEP 7: Automated Post-Flight Audit Verification
-  console.log('\n--- STEP 7: Staging Post-Flight Quality Audit ---');
+  // STEP 8: Automated Post-Flight Audit Verification
+  console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
+  emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
+    stage: 'STAGING_AUDIT', percent: 90, category: meta.cleanName
+  });
+
   try {
     execSync(
       `node "${path.join(__dirname, 'verify_excel_tally.js')}" "${catalogXlsx}"`,
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
     console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
-} catch (e) {
+  } catch (e) {
     const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
     console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
     console.error('\n🔒 LIVE WORKSPACE IS COMPLETELY INTACT — your previous good data is safe:');
@@ -394,11 +457,15 @@ async function main() {
     console.error(`   You can inspect raw_data/ and intermittent_scraps/ in that folder to diagnose the failure.`);
     try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
     process.exit(1);
-}
+  }
 
+  // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
+  // STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding
+  console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
+  emitProgress(9, 10, 'Live Workspace Promotion & NotebookLM Grounding', 'in_progress', 'Syncing knowledge payload to NotebookLM', {
+    stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName
+  });
 
-  // STEP 8: Promote Staging to Live Workspace, Update Registry & Sync
-  console.log('\n--- STEP 8: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
   const { promoteStagingDirectory } = require('./lib/fs_compat.js');
   promoteStagingDirectory(outputDir, liveOutputDir);
 
@@ -407,61 +474,110 @@ async function main() {
   const livePdfPath    = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
   const actualPdfPath  = livePdfPath && fs.existsSync(livePdfPath) ? livePdfPath : null;
 
-  updateScrapedRegistry({
-    timestamp:    new Date().toISOString(),
-    solutionName: treeInfo.solutionName || 'OCA Solution',
-    family:       meta.family,
-    gen:          meta.gen,
-    chassisName:  meta.cleanName,
-    outputDir:    liveOutputDir,
-    jsonPath:     liveCatalogJson,
-    xlsxPath:     liveCatalogXlsx,
-    pdfPath:      actualPdfPath,
-    tablesCount:  tables.length,
-    textLength:   totalLen
-});
+  // GAP-2 FIX: Read live catalog JSON to get the actual HW + service SKU counts.
+  // Previously, tablesCount (raw DOM tables = 124) was passed instead of the real SKU count (780).
+  let hwSkuCount = tables.length; // fallback if read fails
+  let serviceSkuCount = 0;
+  let totalSkuCount = tables.length;
+  try {
+    const liveCatalogData = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf-8'));
+    hwSkuCount = liveCatalogData.metadata?.totalUniqueSKUs || tables.length;
+    const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
+    if (fs.existsSync(liveServicesJson)) {
+      const svcData = JSON.parse(fs.readFileSync(liveServicesJson, 'utf-8'));
+      serviceSkuCount = svcData.metadata?.totalUniqueSKUs || 0;
+    }
+    totalSkuCount = hwSkuCount + serviceSkuCount;
+  } catch (catalogReadErr) {
+    console.warn(`Warning: Could not read liveCatalogJson for SKU count: ${catalogReadErr.message}`);
+  }
 
-  // Re-sync all registered catalogs & chassis variants across workspace
+  updateScrapedRegistry({
+    timestamp:      new Date().toISOString(),
+    solutionName:   treeInfo.solutionName || 'OCA Solution',
+    family:         meta.family,
+    gen:            meta.gen,
+    chassisName:    meta.cleanName,
+    outputDir:      liveOutputDir,
+    jsonPath:       liveCatalogJson,
+    xlsxPath:       liveCatalogXlsx,
+    pdfPath:        actualPdfPath,
+    // GAP-2 FIX: actual total SKU count, not raw DOM table count
+    tablesCount:    totalSkuCount,
+    hwSkuCount,
+    serviceSkuCount,
+    textLength:     totalLen
+  });
+
+  // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
+  try {
+    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
+    triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
+  } catch (syncErr) {
+    console.warn('Warning during triggerPostFlowSync:', syncErr.message);
+  }
+
+  // STEP 10: Re-sync all registered catalogs across workspace & Action Ledger
+  console.log('\n--- STEP 10: Portfolio Registry & Action Ledger Sync ---');
+  emitProgress(10, 10, 'Portfolio Registry & Telemetry Ledger Sync', 'in_progress', 'Synchronizing chassis variants', {
+    stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
+  });
+
+  // GAP-5 FIX: Rethrow on sync_all_registered_catalogs failure.
+  // Pipeline exits with code 1 — not silently console.warn and exit 0.
+  // percent:100 emitted AFTER this succeeds — never before.
   try {
     execSync(`node "${path.join(__dirname, 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
-} catch (syncErr) {
-    console.warn('Warning during sync_all_registered_catalogs execution:', syncErr.message);
-}
+  } catch (syncErr) {
+    emitProgress(10, 10, 'Portfolio Registry Sync Failed', 'error', syncErr.message, {
+      stage: 'REGISTRY_SYNC', percent: 98
+    });
+    throw new Error(`Step 10 sync_all_registered_catalogs failed: ${syncErr.message}`);
+  }
 
   // Clean up staging folder
   try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
 
   const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
 
+  // GAP-5 FIX: percent:100 only fires after BOTH sync operations complete successfully.
+  emitProgress(10, 10, 'Scrape Pipeline & Knowledge Sync Complete', 'completed', `Completed in ${durationSec}s`, {
+    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName
+  });
+
   if (JSON_MODE) {
     emitResult('SUCCESS', {
       solutionName: treeInfo.solutionName || 'OCA Solution',
-      family: meta.family,
-      gen: meta.gen,
-      chassisName: meta.cleanName,
-      outputDir: liveOutputDir,
-      jsonPath: liveCatalogJson,
-      xlsxPath: liveCatalogXlsx,
-      pdfPath: actualPdfPath,
-      tablesCount: tables.length,
+      family:       meta.family,
+      gen:          meta.gen,
+      chassisName:  meta.cleanName,
+      outputDir:    liveOutputDir,
+      jsonPath:     liveCatalogJson,
+      xlsxPath:     liveCatalogXlsx,
+      pdfPath:      actualPdfPath,
+      tablesCount:  totalSkuCount,
+      hwSkuCount,
+      serviceSkuCount,
       durationSec
     });
   } else {
     console.log('\n================================================================');
     console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
     console.log(`   ${liveOutputDir}`);
+    console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
     console.log('================================================================\n');
   }
-
-  // Post-flow knowledge sync — update master registry after every scrape
-  try {
-    const { triggerPostFlowSync } = require('./lib/post_flow_sync.js');
-    triggerPostFlowSync(meta.cleanName, 'SCRAPE');
-  } catch (_) {}
 
 }
 
 main().catch(err => {
+  // Emit SSE error event so UI receives immediate notification and diagnostics
+  try {
+    emitProgress(1, 10, 'Scrape Pipeline Aborted', 'error', err.message || String(err), {
+      stage: 'CDP_CONNECT', percent: 0
+    });
+  } catch (_) {}
+
   if (JSON_MODE) {
     emitResult('ERROR', {}, err.message || String(err));
   } else {

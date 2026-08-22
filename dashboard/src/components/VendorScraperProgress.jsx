@@ -17,14 +17,20 @@ import {
 
 /**
  * Stage definitions for HPE OCA Vendor Scraping & Catalog Pipeline Workflow
+ * GAP-3 FIX: Added minPercent/maxPercent for accurate progress highlighting.
+ * Each stage is identified by its SSE `stage` field value (direct match, not bucket math).
  */
 const SCRAPER_STAGES = [
-  { id: 'CDP_CONNECT', label: 'CDP Handshake', desc: 'Attach to Chrome port 9222' },
-  { id: 'PORTAL_NAV', label: 'Portal Navigation', desc: 'Locate HPE OCA solution root' },
-  { id: 'CATEGORY_DISCOVERY', label: 'Category Discovery', desc: 'Scan tree & sub-menus' },
-  { id: 'DOM_EXTRACTION', label: 'DOM & SKU Scraping', desc: 'Extract hardware & prices' },
-  { id: 'RULES_PARSING', label: 'Aspect Rules Engine', desc: 'Synthesize constraint graph' },
-  { id: 'CATALOG_GEN', label: 'Catalog Generation', desc: 'Write Excel & JSON artifacts' },
+  { id: 'CDP_CONNECT',        label: 'CDP Handshake',        desc: 'Attach to Chrome port 9222',          minPercent: 0,  maxPercent: 19 },
+  { id: 'PORTAL_NAV',         label: 'Portal Navigation',    desc: 'Locate HPE OCA solution root',         minPercent: 20, maxPercent: 29 },
+  { id: 'CATEGORY_DISCOVERY', label: 'Category Discovery',   desc: 'Scan tree & sub-menus',                minPercent: 30, maxPercent: 44 },
+  { id: 'PAGE_EXPAND',        label: 'Section Expansion',    desc: 'Deep scroll & multi-tab reveal',        minPercent: 45, maxPercent: 59 },
+  { id: 'DOM_EXTRACTION',     label: 'DOM & SKU Scraping',   desc: 'Extract hardware & prices',             minPercent: 60, maxPercent: 69 },
+  { id: 'RULES_PARSING',      label: 'Aspect Rules Engine',  desc: 'Synthesize constraint graph',           minPercent: 70, maxPercent: 79 },
+  { id: 'CATALOG_GEN',        label: 'Catalog Generation',   desc: 'Write Excel & JSON artifacts',          minPercent: 80, maxPercent: 89 },
+  { id: 'STAGING_AUDIT',      label: 'Staging Tally Audit',  desc: '7-check post-flight certification',     minPercent: 90, maxPercent: 94 },
+  { id: 'KNOWLEDGE_SYNC',     label: 'NotebookLM Grounding', desc: 'Sync knowledge payload to RAG',         minPercent: 95, maxPercent: 97 },
+  { id: 'REGISTRY_SYNC',      label: 'Portfolio Ledger Sync',desc: 'Update registry & telemetry',            minPercent: 98, maxPercent: 100 },
 ];
 
 export default function VendorScraperProgress({
@@ -54,7 +60,9 @@ export default function VendorScraperProgress({
   // Extract latest progress event and status from logStream
   const { 
     progressPercent, 
-    progressStage, 
+    progressStage,
+    // GAP-3 FIX: currentStageId for direct stage ID match in the stepper
+    currentStageId,
     statusMessage, 
     scrapedItems, 
     recentLogEntries,
@@ -133,6 +141,9 @@ export default function VendorScraperProgress({
     return {
       progressPercent: percent,
       progressStage: stage,
+      // GAP-3 FIX: currentStageId is used for direct stage ID matching in the stepper render.
+      // This avoids the stale idx * 16 percent-bucket arithmetic.
+      currentStageId: stage,
       statusMessage: msg,
       scrapedItems: items,
       currentCategory: category,
@@ -292,9 +303,21 @@ export default function VendorScraperProgress({
             {/* Visual Stage Stepper */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap md:flex-nowrap gap-2 items-stretch">
               {SCRAPER_STAGES.map((stg, idx) => {
-                const isCurrent = isTaskRunning && (progressPercent === null || (progressPercent >= idx * 16 && progressPercent < (idx + 1) * 16 + 5));
-                const isDone = isCompleted || (progressPercent !== null && progressPercent >= (idx + 1) * 16);
-
+                // GAP-3 FIX: Primary matching is by SSE stage ID (direct string match).
+                // Fallback to percent-range matching when stage field is not in the known list.
+                const isStageIdKnown = isTaskRunning && SCRAPER_STAGES.some(s => s.id === currentStageId);
+                let isCurrent, isDone;
+                if (isStageIdKnown) {
+                  // Direct ID match — accurate and lag-free
+                  isCurrent = isTaskRunning && stg.id === currentStageId;
+                  const stgIdx = SCRAPER_STAGES.findIndex(s => s.id === currentStageId);
+                  isDone = isCompleted || (stgIdx > idx);
+                } else {
+                  // Fallback: percent range matching using minPercent/maxPercent
+                  const pct = progressPercent ?? (isTaskRunning ? 5 : 0);
+                  isCurrent = isTaskRunning && pct >= stg.minPercent && pct <= stg.maxPercent;
+                  isDone = isCompleted || (progressPercent !== null && progressPercent > stg.maxPercent);
+                }
                 return (
                   <div key={stg.id} className="flex-1 flex items-center relative group">
                     <div

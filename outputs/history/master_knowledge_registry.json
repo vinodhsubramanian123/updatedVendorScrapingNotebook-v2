@@ -1,7 +1,12 @@
 {
   "registryVersion": "2.0.0",
-  "lastUpdated": "2026-08-22T10:02:06.651Z",
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-08-22T13:45:31.388Z",
+  "lastUpdated": "2026-08-22T13:45:31.388Z",
   "totalLearnedRules": 23,
+  "productFamiliesSynced": [
+    "DL380"
+  ],
   "counts": {
     "universal": 0,
     "familyGen": 11,

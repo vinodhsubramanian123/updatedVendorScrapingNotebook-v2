@@ -5,56 +5,61 @@
       "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
       "family": "ProLiant",
       "gen": "Gen12",
-      "lastSyncedAt": "2026-08-22T09:34:51.107Z",
-      "lastSyncDeltaCount": 20,
-      "lastSyncedSourceId": "5a25b07c-ccc3-46ac-bfc2-fce8f4ba22de",
+      "lastSyncedAt": "2026-08-22T13:04:24.762Z",
+      "lastSyncDeltaCount": 23,
+      "lastSyncedSourceId": "8bc5777c-018a-4ad9-bf03-f899180c3b49",
       "lastSyncedSourceName": "DL380_Gen12_SFF_OCA_Catalog_2026-08-22",
       "isolationLevel": "CHASSIS_SPECIFIC"
     },
     "DL380_Gen11": {
-      "notebookId": "",
+      "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
       "family": "ProLiant",
       "gen": "Gen11",
-      "lastSyncedAt": "2026-08-22T09:34:30.594Z",
-      "lastSyncDeltaCount": 20,
+      "lastSyncedAt": "2026-08-22T13:04:06.339Z",
+      "lastSyncDeltaCount": 23,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-08-22"
+      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-08-22",
+      "lastSyncedSourceId": "f16474bd-ba0f-4fee-9a7e-fe374fd7bf25"
     },
     "Alletra_Storage_System": {
-      "notebookId": "",
+      "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
       "family": "Alletra",
-      "gen": "Gen12",
-      "lastSyncedAt": "2026-08-22T09:51:55.886Z",
-      "lastSyncDeltaCount": 22,
+      "gen": "Storage",
+      "lastSyncedAt": "2026-08-22T13:03:36.172Z",
+      "lastSyncDeltaCount": 23,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "Alletra_Storage_System_OCA_Catalog_2026-08-22"
+      "lastSyncedSourceName": "Alletra_Storage_System_OCA_Catalog_2026-08-22",
+      "lastSyncedSourceId": "12fe15b0-8ac0-480d-b464-40ed9c50ed49"
     },
     "MSL3040_Tape": {
-      "notebookId": "",
+      "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
       "family": "StoreEver",
-      "gen": "General",
-      "lastSyncedAt": "2026-08-22T09:34:55.533Z",
-      "lastSyncDeltaCount": 20,
+      "gen": "Tape",
+      "lastSyncedAt": "2026-08-22T13:04:40.215Z",
+      "lastSyncDeltaCount": 23,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "MSL3040_Tape_OCA_Catalog_2026-08-22"
+      "lastSyncedSourceName": "MSL3040_Tape_OCA_Catalog_2026-08-22",
+      "lastSyncedSourceId": "014d9d26-5ddf-45c3-a09a-a5c996466654"
     },
     "GX5000_General_RACK": {
-      "notebookId": "",
+      "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
       "family": "Cray",
       "gen": "General",
-      "lastSyncedAt": "2026-08-22T09:34:24.987Z",
-      "lastSyncDeltaCount": 20,
+      "lastSyncedAt": "2026-08-22T13:03:51.667Z",
+      "lastSyncDeltaCount": 23,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "GX5000_General_RACK_OCA_Catalog_2026-08-22"
+      "lastSyncedSourceName": "GX5000_General_RACK_OCA_Catalog_2026-08-22",
+      "lastSyncedSourceId": "05742c94-6c9e-453b-b0c9-2c68f9f789e7"
     },
     "SY100Gb_F32_Module": {
-      "notebookId": "",
+      "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
       "family": "Synergy",
       "gen": "General",
-      "lastSyncedAt": "2026-08-22T09:35:00.619Z",
-      "lastSyncDeltaCount": 20,
+      "lastSyncedAt": "2026-08-22T13:04:55.285Z",
+      "lastSyncDeltaCount": 23,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-08-22"
+      "lastSyncedSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-08-22",
+      "lastSyncedSourceId": "099bd9d8-ca4c-44e7-bd9c-31090a4efa66"
     }
   }
 }

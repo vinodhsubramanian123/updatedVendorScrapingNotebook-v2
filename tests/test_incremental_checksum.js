@@ -68,4 +68,50 @@ if (fs.existsSync(dl380Dir)) {
   console.log(`✅ PASS: SKU Version Audit Query for ${audit.sku} (Status: ${audit.currentStatus})`);
 }
 
+// 4. Test Same-Day Re-run Idempotency in processCatalogDiff (INV-1 & INV-6)
+const { processCatalogDiff } = require('../scripts/lib/diff_catalog.js');
+const tmpTestDir = path.join(__dirname, '..', 'outputs', 'temp', `test_diff_idempotency_${Date.now()}`);
+fs.mkdirSync(tmpTestDir, { recursive: true });
+
+try {
+  const testCatalog = {
+    metadata: { scrapeDate: '2026-08-22', chassis: 'DL380 Gen12 SFF' },
+    entries: [
+      {
+        parentCategory: 'Compute',
+        subCategory: 'Processors',
+        skus: [
+          { 'Product #': 'P74573-B21', 'Unit Price (USD)': '3500.00', 'Description': 'Intel Xeon 6740E Processor', 'Current Qty': '1' },
+          { 'Product #': 'P73282-B21', 'Unit Price (USD)': '2499.00', 'Description': 'DL380 Gen12 SFF CTO Server', 'Current Qty': '1' }
+        ]
+      }
+    ]
+  };
+
+  // Run 1: Initial Baseline
+  processCatalogDiff(testCatalog, tmpTestDir);
+  // Run 2: Re-run on same day (simulating repeated scrape)
+  processCatalogDiff(testCatalog, tmpTestDir);
+  // Run 3: 3rd rerun on same day
+  processCatalogDiff(testCatalog, tmpTestDir);
+
+  const priceHistoryPath = path.join(tmpTestDir, 'price_history.json');
+  const priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
+
+  // Ensure each SKU has exactly 1 entry for 2026-08-22 (no duplicate ADDED + UNCHANGED pairs)
+  for (const [sku, trail] of Object.entries(priceHistory)) {
+    const dateCount = trail.filter(t => t.date === '2026-08-22').length;
+    assert.strictEqual(dateCount, 1, `SKU ${sku} must have exactly 1 history entry for same-day rerun, found ${dateCount}`);
+  }
+
+  // Ensure exactly 1 snapshot file was created
+  const snapshots = fs.readdirSync(tmpTestDir).filter(f => /^catalog_\d{4}-\d{2}-\d{2}\.json$/.test(f));
+  assert.strictEqual(snapshots.length, 1, `Must have exactly 1 snapshot file, found ${snapshots.length}`);
+  assert.strictEqual(snapshots[0], 'catalog_2026-08-22.json', 'Snapshot name must be normalized YYYY-MM-DD');
+
+  console.log('✅ PASS: Same-Day Re-run Idempotency (INV-1 & INV-6 Certified)');
+} finally {
+  try { fs.rmSync(tmpTestDir, { recursive: true, force: true }); } catch (_) {}
+}
+
 console.log('🎉 ALL INCREMENTAL CHECKSUM & VERSIONING TESTS PASSED!');

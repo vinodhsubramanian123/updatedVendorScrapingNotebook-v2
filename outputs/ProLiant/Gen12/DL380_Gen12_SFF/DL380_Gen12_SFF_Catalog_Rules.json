@@ -4,9 +4,9 @@
     "model": "DL380_Gen12_SFF",
     "family": "ProLiant",
     "generation": "Gen12",
-    "scrapeDate": "2026-08-22T09:47:55.195Z",
+    "scrapeDate": "2026-08-22T12:31:15.957Z",
     "totalSubcategories": 26,
-    "totalUniqueSKUs": 261,
+    "totalUniqueSKUs": 262,
     "totalTables": 66,
     "diffSummary": {
       "added": 0,
@@ -14,7 +14,7 @@
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 261,
+      "unchanged": 262,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -91,15 +91,15 @@
           "avgPrice": 370.90909090909093
         },
         "Processor": {
-          "totalSKUs": 64,
-          "totalPrice": 470787,
+          "totalSKUs": 65,
+          "totalPrice": 517138,
           "minPrice": 60,
           "maxPrice": 58094,
           "subcategories": {
             "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 32,
-              "totalPrice": 461201,
-              "avgPrice": 14412.53125
+              "totalSKUs": 33,
+              "totalPrice": 507552,
+              "avgPrice": 15380.363636363636
             },
             "Storage Controller Cable Kits": {
               "totalSKUs": 29,
@@ -112,7 +112,7 @@
               "avgPrice": 1000.6666666666666
             }
           },
-          "avgPrice": 7356.046875
+          "avgPrice": 7955.969230769231
         },
         "Memory": {
           "totalSKUs": 8,
@@ -276,16 +276,16 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 261,
-      "unchangedSkusCount": 261,
+      "totalScrapedSkus": 262,
+      "unchangedSkusCount": 262,
       "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 39150,
-      "estimatedProcessingTimeSavedMs": 52200
+      "estimatedTokensSaved": 39300,
+      "estimatedProcessingTimeSavedMs": 52400
     },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-08-22T09:47:55.436Z"
+    "rulesGeneratedAt": "2026-08-22T12:31:16.154Z"
   },
   "chassisVariants": [
     {
@@ -536,7 +536,7 @@
       "subCategory": "Tertiary PCIe Risers",
       "constraint": "max 8",
       "maxQty": 8,
-      "rule": "Nvme option not available with 8sff smart chassis choice."
+      "rule": "Define connection for 8SFF x4 Cage only needed if cage is selected."
     },
     {
       "parentCategory": "Accessories & Infrastructure",
@@ -670,13 +670,6 @@
       "constraint": "",
       "maxQty": "",
       "rule": "Not Supported ProStack Server Software"
-    },
-    {
-      "parentCategory": "Processor",
-      "subCategory": "(Sub-table)",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
     },
     {
       "parentCategory": "Learned Feedback Rules",

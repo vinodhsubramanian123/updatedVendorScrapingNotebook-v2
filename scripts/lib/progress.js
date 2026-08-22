@@ -15,16 +15,27 @@
  * @param {string} action Human-readable action description (e.g. "Expanding DOM sections")
  * @param {string} status Event status: 'started', 'in_progress', 'completed', 'error', 'skipped'
  * @param {string} detail Optional additional detail text
+ * @param {object} [extra] Optional metadata: stage, percent, itemsScraped, category, sku
  */
-function emitProgress(step, total, action, status = 'in_progress', detail = '') {
+function emitProgress(step, total, action, status = 'in_progress', detail = '', extra = {}) {
+  const percent = typeof extra.percent === 'number' 
+    ? extra.percent 
+    : Math.min(100, Math.round((step / Math.max(1, total)) * 100));
+
   if (process.env.STRUCTURED_PROGRESS === '1') {
     const event = {
       type: 'progress',
       step,
       total,
+      percent,
+      stage: extra.stage || 'IN_PROGRESS',
+      message: action + (detail ? ` — ${detail}` : ''),
       action,
       status,
       detail,
+      itemsScraped: extra.itemsScraped,
+      category: extra.category,
+      sku: extra.sku,
       timestamp: new Date().toISOString()
     };
     process.stdout.write(JSON.stringify(event) + '\n');
@@ -33,7 +44,6 @@ function emitProgress(step, total, action, status = 'in_progress', detail = '') 
                  status === 'error' ? '❌' :
                  status === 'skipped' ? '⏭️' :
                  status === 'started' ? '🚀' : '⏳';
-    const percent = Math.min(100, Math.round((step / Math.max(1, total)) * 100));
     const barWidth = 10;
     const filled = Math.round((percent / 100) * barWidth);
     const bar = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
@@ -41,7 +51,7 @@ function emitProgress(step, total, action, status = 'in_progress', detail = '') 
     if (process.stdout.isTTY) {
       console.log(`${icon} [${bar}] ${String(percent).padStart(3)}% (Step ${step}/${total}) ${action}${detail ? ' — ' + detail : ''}`);
     } else {
-      console.log(`${icon} Step ${step}/${total}: ${action}${detail ? ' — ' + detail : ''}`);
+      console.log(`${icon} Step ${step}/${total} (${percent}%): ${action}${detail ? ' — ' + detail : ''}`);
     }
   }
 }

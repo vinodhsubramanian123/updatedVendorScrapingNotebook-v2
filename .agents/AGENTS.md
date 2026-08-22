@@ -5,26 +5,28 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 
 ---
 
-## Pipeline State of Health (Last Updated: 2026-08-19)
+## Pipeline State of Health (Last Updated: 2026-08-22)
 
-### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-19)
+### ✅ Certified Products & Portfolio Status (Last Audited: 2026-08-22)
 | Product | Family | Output Prefix | Unique SKUs | Entries | QuickSpecs PDF | Status |
 |---------|--------|---------------|-------------|---------|----------------|--------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 261 HW / 603 Svc | 66 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline & Cloud NLM) |
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 261 HW / 603 Svc (864 total) | 66 (Full OCA Scrape) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline & Cloud NLM) |
 | HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
 | HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline + CTO variants) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 13 test suites.
+**Total Verified Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 17 test suites.
+
+> **SKU Count Source of Truth**: The correct HW SKU count for DL380 Gen12 SFF is **261** (unique hardware part numbers) and **603** service SKUs. The number `124` that may appear in `SCRAPED_CATALOGS.md` refers to raw DOM table groups extracted by the CDP scraper — **not** the de-duplicated unique SKU count from `catalog.json.metadata.totalUniqueSKUs`. GAP-2 was fixed on 2026-08-22 to ensure `updateScrapedRegistry()` now reads `liveCatalogJson.metadata.totalUniqueSKUs` post-promotion.
 
 ### ✅ Automated Evaluation Benchmark Suite (`scripts/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 5/5 Scenarios (100.0%)
 - **Recall Rate**: 100.0%
 - **Precision Rate**: 100.0%
 - **Strategy Matrix Tiers**: 5 Tiers Validated (Rank 1 through Rank 5)
-- **Cloud NotebookLM Grounding**: Active OAuth Profile authenticated; `DL380_Gen12_SFF_OCA_Catalog_2026-08-19` synced.
+- **Cloud NotebookLM Grounding**: Active OAuth Profile authenticated; `DL380_Gen12_SFF_OCA_Catalog_2026-08-22` synced.
 
 ---
 
@@ -165,3 +167,67 @@ vendorNotebookSolution/
 6. **Clean SKU Regex**: All SKUs must pass `isValidHpeSKU()` filtering. `Current Qty` must pass `/^\d+$/`.
 7. **5-Tier Strategy Matrix**: Always synthesize Rank 1 (Intent Preserved) through Rank 5 (Budget Minimized) without duplicate ranks or hallucinated SKUs.
 8. **Hybrid Zero-Touch Scraping Workflow**: Agents MUST NOT attempt to bypass or automate the HPE SSO login sequence. The scraper relies on a Zero-Touch `/api/launch-browser` API that spins up Chrome with a persistent `--user-data-dir`. The human user MUST manually log in and click the OCA link in that specific browser window. Once loaded, the scraper attaches to CDP port 9222 headlessly.
+
+---
+
+## Critical Technical Invariants (Fixed 2026-08-22 — Must Never Regress)
+
+The following 7 invariants were found broken in live code and fixed. Future agents MUST NOT revert these patterns.
+
+### INV-1: Price Trail `appendTrailEvent` deduplicates by DATE not (date+status)
+- **File**: `scripts/lib/diff_catalog.js` → `appendTrailEvent(trail, event)`
+- **Broken**: Was deduplicating by `(date AND status)` — same-day reruns created ghost ADDED+UNCHANGED pairs.
+- **Fixed**: Deduplicates by `date` only, using a priority table (`BASELINE < UNCHANGED < ADDED < PRICE_CHANGED` etc.). A higher-priority status **replaces** a lower-priority one for the same date. This means a same-day rerun of an unchanged SKU records exactly **one** BASELINE/UNCHANGED entry.
+- **Rule**: NEVER change `appendTrailEvent` to use both `date` AND `status` as the composite key.
+
+### INV-2: SKU Count in Registry Must Come from `liveCatalogJson`, NOT `tables.length`
+- **File**: `scripts/scrape_oca_solution.js` → Step 9, `updateScrapedRegistry()` call
+- **Broken**: Was passing `tablesCount: tables.length` (= raw DOM table count ≈ 124) instead of actual unique SKUs (≈ 780).
+- **Fixed**: After `promoteStagingDirectory()`, reads `liveCatalogJson.metadata.totalUniqueSKUs` for hardware and `liveServicesJson.metadata.totalUniqueSKUs` for services. Passes `tablesCount: totalSkuCount`, `hwSkuCount`, `serviceSkuCount` to registry.
+- **Rule**: Always read the promoted catalog JSON to get the real SKU count. Never count DOM tables as SKUs.
+
+### INV-3: Stage Stepper Uses Direct SSE Stage ID Match, Not Percent Buckets
+- **File**: `dashboard/src/components/VendorScraperProgress.jsx`
+- **Broken**: Was using `idx * 16` arithmetic (legacy 6-stage bucket math) to decide which stepper card glows — wrong for a 10-stage pipeline.
+- **Fixed**: `SCRAPER_STAGES` entries have `minPercent`/`maxPercent` ranges. The primary match is `stg.id === currentStageId` (direct SSE `stage` field match). Fallback to `pct >= stg.minPercent && pct <= stg.maxPercent` when the stage ID is unknown.
+- **Rule**: When adding stages to `SCRAPER_STAGES`, always add `minPercent`/`maxPercent` fields AND ensure the SSE `stage` field value exactly matches the `id` key.
+
+### INV-4: `master_knowledge_registry.json` Must Contain `generatedAt` and `schemaVersion`
+- **File**: `scripts/lib/knowledge_sync.js` → `buildMasterKnowledgeRegistry()`
+- **Broken**: Was emitting `lastUpdated` but not `generatedAt` (the field the dashboard reads). Schema version was absent.
+- **Fixed**: Emits both `generatedAt` (canonical, read by UI) and `lastUpdated` (backward compat), `schemaVersion: "1.0"`, and `productFamiliesSynced: [...familySet]`.
+- **Rule**: Any new top-level field added to `master_knowledge_registry.json` MUST also be documented in `.agents/DATA_DICTIONARY.md`.
+
+### INV-5: Step 10 (`sync_all_registered_catalogs`) Failure MUST Rethrow — Never Silent Warn
+- **File**: `scripts/scrape_oca_solution.js` → Step 10 catch block
+- **Broken**: Was `console.warn(...)` only — pipeline continued, emitted `percent: 100`, and exited 0 on sync failure.
+- **Fixed**: Failure now emits an `error` SSE event and **rethrows** `new Error(...)`, causing the pipeline to exit code 1 and the UI to show a failure state. The `percent: 100` SSE is emitted **only** after both sync operations succeed.
+- **Rule**: Steps 8-10 (Staging Audit, Knowledge Sync, Registry Sync) are all fail-hard. Any `catch` block in these steps that does not rethrow is a regression.
+
+### INV-6: `scrapeDate` in `build_catalog.js` Metadata MUST Be `YYYY-MM-DD` Only
+- **File**: `scripts/build_catalog.js` → `buildCatalogObject()` metadata block
+- **Broken**: Was `new Date().toISOString()` — a full ISO8601 timestamp like `2026-08-22T09:27:12.174Z`. This caused `diff_catalog.js` to write snapshot files named `catalog_2026-08-22T09:27:12.174Z.json`, creating 10+ snapshots per calendar day.
+- **Fixed**: `scrapeDate: new Date().toISOString().split('T')[0]` (stable `YYYY-MM-DD` key). Separate `scrapeTimestamp: new Date().toISOString()` for audit. The `diff_catalog.js` snapshot regex is now strict: `^catalog_\d{4}-\d{2}-\d{2}\.json$` (no ISO timestamp suffix).
+- **Rule**: `scrapeDate` is the snapshot filename key — it MUST be `YYYY-MM-DD`. Any code that reads or writes `metadata.scrapeDate` expecting a full ISO timestamp is a bug.
+
+### INV-7: Test-Chassis Sync Payloads Must Be Routed to `outputs/temp/test_payloads/`
+- **Files**: `scripts/lib/sync/sync_payload_builder.js`, `scripts/lib/post_flow_sync.js`
+- **Broken**: Test chassis names like `edge-test-*` and `hpe-chaos-test-*` (from chaos/stress tests) had no catalog on disk, so `targetDir` fell back to `OUTPUTS_ROOT` → payloads piled up in `outputs/history/` (52+ stale files found).
+- **Fixed**: `sync_payload_builder.js` detects test chassis patterns (`/^edge-test-/i`, `/^hpe-chaos-test-/i`, `/^tmp[_-]test/i`, `/^test[_-]/i`) and routes their payloads to `outputs/temp/test_payloads/`. `post_flow_sync.js` exports `cleanTestPayloads()` and calls it automatically at the end of every production sync.
+- **Rule**: If adding new test chassis patterns to chaos/stress tests, add the corresponding regex to `TEST_CHASSIS_PATTERNS` in both files. Never write test payloads to `outputs/history/`.
+
+---
+
+## History Directory Hygiene Rules
+
+The `outputs/{Family}/{Gen}/{Model}/history/` directory stores canonical diff artifacts. These files must remain clean:
+
+| File | Description | Corrupt if... |
+|------|-------------|---------------|
+| `catalog_YYYY-MM-DD.json` | One per calendar day snapshot | Named with full ISO timestamp |
+| `price_history.json` | One entry per SKU per calendar day | Multiple entries for same date+SKU |
+| `discontinued_skus.json` | Cumulative registry of removed SKUs | Contains `$0`-price unpriced CTO placeholders |
+| `attribute_history.json` | Change log per SKU per field | Contains duplicate entries |
+| `notebook_sync_payload_{chassis}.md` | Latest RAG payload | Contains test chassis names |
+
+Run `node -e "require('./scripts/lib/post_flow_sync.js').cleanTestPayloads()"` to purge stale test payloads from `outputs/history/` if they accumulate.

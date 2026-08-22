@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-22T10:02:06.678Z  
-**Total Verified SKUs**: `846` (`258` Hardware + `588` Services)  
+**Sync Timestamp**: 2026-08-22T13:45:31.420Z  
+**Total Verified SKUs**: `850` (`262` Hardware + `588` Services)  
 **Total Synced KnowledgeDeltas**: `23`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 258 | 0 | 0 | 6 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 588 | 0 | 0 | 27 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **846** | **0** | **0** | **33** | **0** | **ACTIVE** |
+| **Hardware Components** | 262 | 1 | 0 | 31 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 588 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **850** | **1** | **0** | **31** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -119,41 +119,29 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73285-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-08-22 | $6890.00 |
 | `P73286-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-08-22 | $7120.00 |
 | `P73287-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **REINSTATED** | 2026-08-22 | $7450.00 |
-| `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **DISCONTINUED** | 2026-08-22 | $164.00 |
-| `P70744-B21` | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **DISCONTINUED** | 2026-08-22 | $172.00 |
-| `P74748-B21` | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **DISCONTINUED** | 2026-08-22 | $117.00 |
-| `P73282-B21` | HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server | **DISCONTINUED** | 2026-08-22 | $5584.00 |
-| `P74568-B21` | Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE | **DISCONTINUED** | 2026-08-22 | $4242.00 |
-| `P69727-F21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | **DISCONTINUED** | 2026-08-22 | $13909.00 |
-| `P51181-B21` | Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE | **DISCONTINUED** | 2026-08-22 | $485.00 |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | **DISCONTINUED** | 2026-08-22 | $926.00 |
-| `P78145-B21` | HPE C13 - C14 250V 10Amp 2m FIO Power Cord | **DISCONTINUED** | 2026-08-22 | $11.00 |
-| `P72203-B21` | HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit | **DISCONTINUED** | 2026-08-22 | $77.00 |
-| `P48820-B21` | HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit | **DISCONTINUED** | 2026-08-22 | $972.00 |
-| `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **DISCONTINUED** | 2026-08-22 | $164.00 |
-| `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | **DISCONTINUED** | 2026-08-22 | $4.00 |
-| `P74792-B21` | HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit | **DISCONTINUED** | 2026-08-22 | $316.00 |
-| `P79552-B21` | HPE ProLiant Compute 30C Maximum Recommended Ambient Temperature Configuration Tracking | **DISCONTINUED** | 2026-08-22 | $1.00 |
+| `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-22 | $164.00 |
+| `P70744-B21` | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-22 | $172.00 |
+| `P74748-B21` | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-22 | $117.00 |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-22 | `P73285-B21` | Start Date | 2026-08-12 | **2026-08-16** |
-| 2026-08-22 | `P73286-B21` | Description | [REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server** |
-| 2026-08-22 | `P73286-B21` | Constraint | Discontinued | **System Standard (Max 1)** |
-| 2026-08-22 | `P73286-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
-| 2026-08-22 | `P73286-B21` | Max Qty | 0 | **1** |
-| 2026-08-22 | `P73286-B21` | Component Role | Discontinued Hardware | **Base Chassis** |
-| 2026-08-22 | `P73286-B21` | HPE Recommended | No | **** |
-| 2026-08-22 | `P73286-B21` | Start Date | 2026-08-12 | **2026-08-16** |
-| 2026-08-22 | `P73287-B21` | Description | [REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server** |
-| 2026-08-22 | `P73287-B21` | Constraint | Discontinued | **System Standard (Max 1)** |
-| 2026-08-22 | `P73287-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
-| 2026-08-22 | `P73287-B21` | Max Qty | 0 | **1** |
-| 2026-08-22 | `P73287-B21` | Component Role | Discontinued Hardware | **Base Chassis** |
-| 2026-08-22 | `P73287-B21` | HPE Recommended | No | **** |
-| 2026-08-22 | `P73287-B21` | Start Date | 2026-08-12 | **2026-08-16** |
+| 2026-08-22 | `P52341-B21` | Start Date |  | **11/10/2022** |
+| 2026-08-22 | `P70744-B21` | Description | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
+| 2026-08-22 | `P70744-B21` | Constraint |  | **Discontinued** |
+| 2026-08-22 | `P70744-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
+| 2026-08-22 | `P70744-B21` | Max Qty |  | **0** |
+| 2026-08-22 | `P70744-B21` | Component Role |  | **Discontinued Hardware** |
+| 2026-08-22 | `P70744-B21` | HPE Recommended |  | **No** |
+| 2026-08-22 | `P70744-B21` | Start Date |  | **02/24/2025** |
+| 2026-08-22 | `P74748-B21` | Description | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
+| 2026-08-22 | `P74748-B21` | Constraint |  | **Discontinued** |
+| 2026-08-22 | `P74748-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
+| 2026-08-22 | `P74748-B21` | Max Qty |  | **0** |
+| 2026-08-22 | `P74748-B21` | Component Role |  | **Discontinued Hardware** |
+| 2026-08-22 | `P74748-B21` | HPE Recommended |  | **No** |
+| 2026-08-22 | `P74748-B21` | Start Date |  | **02/24/2025** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 
