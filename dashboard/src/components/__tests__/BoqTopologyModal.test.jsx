@@ -117,6 +117,7 @@ describe('BoqTopologyModal', () => {
         evalResults={mockEvalResults}
         onOpenRag={vi.fn()}
         onOpenMatrix={vi.fn()}
+        onOpenAmbiguity={vi.fn()}
       />
     );
 
@@ -124,5 +125,37 @@ describe('BoqTopologyModal', () => {
     fireEvent.click(rank1Btn);
 
     expect(screen.getByText(/1 Fixes/i)).toBeInTheDocument();
+  });
+
+  it('detects unclassified ambiguous SKUs and displays HITL review alert banner', () => {
+    const ambiguousEval = {
+      ...mockEvalResults,
+      unclassifiedSkus: ['CUSTOM-UNLISTED-SKU'],
+      items: [
+        ...mockEvalResults.items,
+        { sku: 'CUSTOM-UNLISTED-SKU', description: 'Unlisted Special Custom Option Card', category: 'Unknown', isAmbiguous: true }
+      ]
+    };
+
+    const graph = buildTopologyGraph(ambiguousEval, 'BASELINE');
+    expect(graph.stats.ambiguityCount).toBeGreaterThan(0);
+    expect(graph.ambiguities.length).toBeGreaterThan(0);
+
+    const onOpenAmbiguityMock = vi.fn();
+    render(
+      <BoqTopologyModal
+        isOpen={true}
+        onClose={vi.fn()}
+        evalResults={ambiguousEval}
+        onOpenRag={vi.fn()}
+        onOpenMatrix={vi.fn()}
+        onOpenAmbiguity={onOpenAmbiguityMock}
+      />
+    );
+
+    expect(screen.getByText(/require Human-in-the-Loop clarification/i)).toBeInTheDocument();
+    const ambiguityInboxBtn = screen.getByText(/Open Ambiguity Inbox/i);
+    fireEvent.click(ambiguityInboxBtn);
+    expect(onOpenAmbiguityMock).toHaveBeenCalled();
   });
 });

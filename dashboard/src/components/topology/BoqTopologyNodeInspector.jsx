@@ -22,12 +22,13 @@ function ServerIcon(props) {
   );
 }
 
-export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag }) {
+export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag, onOpenAmbiguity }) {
   if (!node) return null;
 
   const IconComponent = SUBSYSTEM_ICONS[node.subsystem] || Cpu;
   const isGap = node.type === 'GAP_MISSING';
   const isFix = node.status === 'FIX_APPLIED';
+  const isAmbiguous = node.status === 'NEEDS_HUMAN_CLARIFICATION';
   const isRoot = node.type === 'CHASSIS_ROOT';
   const isHub = node.type === 'SUBSYSTEM_HUB';
 
@@ -39,6 +40,8 @@ export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag }) {
           <span className={`p-1.5 rounded-lg border ${
             isGap 
               ? 'bg-rose-50 border-rose-200 text-rose-700'
+              : isAmbiguous
+              ? 'bg-amber-50 border-amber-200 text-amber-700'
               : isFix
               ? 'bg-blue-50 border-blue-200 text-blue-700'
               : 'bg-emerald-50 border-emerald-200 text-emerald-700'
@@ -47,7 +50,7 @@ export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag }) {
           </span>
           <div>
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-              {isRoot ? 'Base Chassis' : isHub ? 'Subsystem Bus' : isGap ? 'Missing Gap' : 'Component SKU'}
+              {isRoot ? 'Base Chassis' : isHub ? 'Subsystem Bus' : isGap ? 'Missing Gap' : isAmbiguous ? 'Ambiguity (HITL)' : 'Component SKU'}
             </span>
             <h4 className="font-bold text-slate-900 text-sm truncate max-w-[200px]">
               {node.sku || node.label}
@@ -78,6 +81,16 @@ export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag }) {
                 <span className="text-rose-900 font-bold">{node.suggestedFix}</span>
               </div>
             )}
+          </div>
+        ) : isAmbiguous ? (
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-2 text-amber-900">
+            <div className="flex items-center gap-1.5 font-bold text-amber-950">
+              <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
+              Human-in-the-Loop Clarification Required
+            </div>
+            <p className="text-[11px] leading-relaxed text-amber-800">
+              This SKU or its subsystem connection could not be verified automatically by the local rule engine or NotebookLM. Escalating to human engineer review.
+            </p>
           </div>
         ) : isFix ? (
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1 text-blue-800">
@@ -150,7 +163,17 @@ export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag }) {
           </div>
         )}
 
-        {/* Quick Grounding Action */}
+        {/* Quick Grounding Action & Ambiguity Escalation */}
+        {isAmbiguous && onOpenAmbiguity && (
+          <button
+            onClick={() => onOpenAmbiguity(node.sku || node.label)}
+            className="w-full btn-primary text-xs flex items-center justify-center gap-1.5 mt-2 bg-amber-600 hover:bg-amber-700 text-white font-bold"
+          >
+            <AlertTriangle className="w-3.5 h-3.5" />
+            Resolve in Ambiguity Inbox (HITL)
+          </button>
+        )}
+
         {onOpenRag && (
           <button
             onClick={() => onOpenRag(node.sku || node.label)}

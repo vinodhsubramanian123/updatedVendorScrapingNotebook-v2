@@ -205,7 +205,37 @@ graph LR
 ```
 
 - **Product Family Flexibility**: Dynamically renders standard rack servers (ProLiant), composable modular infrastructure (Synergy Frame $\rightarrow$ Compute & VC Modules), controller pairs & expansion enclosures (Alletra), and tape library drawers (StoreEver).
-- **Interactive Multi-Level Canvas**: Supports drag-panning, wheel-zooming, reset-view, and subsystem filtering (`Compute`, `Memory`, `Storage`, `PCIe`, `Power`, `Services`, `Only Gaps & Fixes`).
+- **Interactive Multi-Level Canvas**: Supports drag-panning, wheel-zooming, reset-view, and subsystem filtering (`Compute`, `Memory`, `Storage`, `PCIe`, `Power`, `Services`, `Only Gaps & Fixes`, `⚠️ Ambiguities`).
 - **Telemetry & Self-Healing**: Real-time diagnostic bar tracking render latency, subsystem nodes, mapped SKUs, completeness scores, and product family identification.
+
+## 7. 3-Tier Classification, Contradiction Handling & HITL Learning Protocol
+
+To guarantee zero hallucinations and prevent ungrounded guesswork, the architecture enforces a strict **3-Tier Escalation Protocol** for any SKU, category, or physical relationship:
+
+```mermaid
+flowchart TD
+    SKU["Input SKU / Unclassified Option / BOQ Line"] --> T1{"Tier 1: Local Deterministic Engine<br/>(Catalog JSON & Aspect Rule Checkers)"}
+    
+    T1 -- "High Confidence & Verified Match" --> Res1["✅ Direct Subsystem Mapping & Validation"]
+    
+    T1 -- "Unclassified SKU, Unknown Category, or Ambiguous Rule" --> T2{"Tier 2: NotebookLM RAG Grounding<br/>(HPE QuickSpecs & Technical Source Corpus)"}
+    
+    T2 -- "RAG Verified & Unambiguous Match" --> Res2["✨ RAG Resolved & Auto-Mapped to Bus"]
+    
+    T2 -- "Low Confidence, Contradictory Rules, or Unlisted Option" --> T3["🧑‍💻 Tier 3: Human-in-the-Loop (HITL) Escalation<br/>(Ambiguity & Anomaly Resolution Inbox)"]
+    
+    T3 --> MindmapBadge["⚠️ Mindmap Node Highlighted (Amber/Orange Dashed)<br/>[HITL Review Required Badge]"]
+    T3 --> HumanReview["Engineer Reviews Context & Injects Correct Rule/Scope"]
+    HumanReview --> Delta["Persistent KnowledgeDelta Stored<br/>(master_knowledge_registry.json)"]
+    Delta --> ReEval["🔄 Re-Evaluate with 100% Deterministic Future Match"]
+```
+
+1. **Tier 1 (Deterministic Local Rule Engine)**: Checks the local catalog (`catalog.json`, `chassis_map.json`, `aspects/`). If the SKU is cataloged and satisfies physical rules (memory symmetry, TDP fans, storage batteries), it is mapped with solid Emerald status.
+2. **Tier 2 (NotebookLM RAG Grounding)**: If an SKU is unclassified, an option is ambiguous, or a companion relationship is unknown, the system automatically queries NotebookLM MCP against grounded HPE QuickSpecs. If NotebookLM clarifies the rule with high confidence, the system maps the node.
+3. **Tier 3 (Human-in-the-Loop Escalation)**: If NotebookLM cannot clarify, if confidence is low ($<0.85$), or if contradictory technical statements are found:
+   - The SKU is flagged as **`NEEDS_HUMAN_CLARIFICATION`**.
+   - In the **Visual Topology Mindmap**, it renders with a pulsing Amber/Orange dashed border and `[HITL]` badge.
+   - In the **Ambiguity Inbox**, the user is shown the exact contradiction or anomaly and can assign the category, affected SKU, and companion dependency.
+   - Upon submission, the engine writes an atomic **`KnowledgeDelta`** to `master_knowledge_registry.json`, permanently teaching the local rule engine so it never needs to ask again.
 
 

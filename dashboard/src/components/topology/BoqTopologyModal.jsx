@@ -8,7 +8,8 @@ export default function BoqTopologyModal({
   isOpen,
   evalResults,
   onOpenRag,
-  onOpenMatrix
+  onOpenMatrix,
+  onOpenAmbiguity
 }) {
   const [selectedRank, setSelectedRank] = useState('BASELINE');
   const [activeFilter, setActiveFilter] = useState('ALL');
@@ -80,8 +81,35 @@ export default function BoqTopologyModal({
               <span>{graphData.stats.gapCount} Gaps</span>
             </div>
           )}
+
+          {graphData.stats.ambiguityCount > 0 && (
+            <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-300 text-amber-900 font-bold animate-pulse">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
+              <span>{graphData.stats.ambiguityCount} Ambiguous (HITL)</span>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Ambiguity Alert Banner */}
+      {graphData.stats.ambiguityCount > 0 && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-3 text-xs text-amber-950 animate-in fade-in">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
+            <span>
+              <strong>{graphData.stats.ambiguityCount} SKU(s) / subsystem connections</strong> require Human-in-the-Loop clarification (unverified by NotebookLM / local rules).
+            </span>
+          </div>
+          {onOpenAmbiguity && (
+            <button
+              onClick={() => onOpenAmbiguity()}
+              className="btn-primary text-xs py-1 px-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold shrink-0"
+            >
+              Open Ambiguity Inbox
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Subsystem Filter Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-100/80 p-2 rounded-xl border border-slate-200 text-xs">
@@ -121,8 +149,20 @@ export default function BoqTopologyModal({
                 : 'hover:bg-rose-50'
             }`}
           >
-            ⚠️ Only Gaps & Fixes
+            ⚠️ Gaps & Fixes
           </button>
+          {graphData.stats.ambiguityCount > 0 && (
+            <button
+              onClick={() => setActiveFilter('AMBIGUITIES')}
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all text-amber-900 ${
+                activeFilter === 'AMBIGUITIES'
+                  ? 'bg-amber-200 text-amber-950 shadow-sm border border-amber-300'
+                  : 'hover:bg-amber-100 text-amber-800'
+              }`}
+            >
+              ⚠️ Ambiguities ({graphData.stats.ambiguityCount})
+            </button>
+          )}
         </div>
 
         {onOpenMatrix && (
@@ -152,6 +192,7 @@ export default function BoqTopologyModal({
               node={selectedNode}
               onClose={() => setSelectedNode(null)}
               onOpenRag={onOpenRag}
+              onOpenAmbiguity={onOpenAmbiguity}
             />
           </div>
         )}

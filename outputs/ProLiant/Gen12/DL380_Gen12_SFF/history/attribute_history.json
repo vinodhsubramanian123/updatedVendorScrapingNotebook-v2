@@ -18918,5 +18918,1965 @@
     "field": "Start Date",
     "oldValue": "",
     "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49145-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74794-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX2",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX4",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48803-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P51083-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74755-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49146-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Fan Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Fan Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "11/10/2022"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49145-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74794-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX2",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX4",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48803-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P51083-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74755-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49146-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Fan Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Fan Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "11/10/2022"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49145-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74794-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX2",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX4",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48803-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P51083-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74755-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49146-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Fan Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Fan Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "11/10/2022"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-16",
+    "newValue": "2026-08-22"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49145-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Heat Sink Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74794-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Max Performance Heat Sink Kit",
+    "newValue": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX2",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x2                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "DA8SFFX4",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "Direct Attach x4                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Networking",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice."
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48803-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Primary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P51083-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U x16/x16/x16 Secondary Riser Kit",
+    "newValue": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74755-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P49146-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 2U Standard Fan Kit",
+    "newValue": "HPE ProLiant DL380 2U Standard Fan Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "11/10/2022"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "02/24/2025"
   }
 ]

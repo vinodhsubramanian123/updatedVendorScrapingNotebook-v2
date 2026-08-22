@@ -149,6 +149,7 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
   const edges = [];
   const gaps = [];
   const fixes = [];
+  const ambiguities = [];
 
   const rawItems = evalResults.items || evalResults.bomItems || [];
   const productFamily = detectProductFamily(evalResults, rawItems);
@@ -265,7 +266,18 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
   activeItems.forEach((item, idx) => {
     const subsystem = getSubsystemForSku(item);
     const isFixInjected = item.isFixInjected || item.isResolved || (item.rule && item.rule.includes('CLIC'));
-    const status = isFixInjected ? 'FIX_APPLIED' : 'VALID';
+    const isAmbiguous = item.isAmbiguous ||
+                        item.needsHumanClarification ||
+                        item.category === 'Unknown' ||
+                        (evalResults.unclassifiedSkus && evalResults.unclassifiedSkus.includes(item.sku)) ||
+                        (evalResults.errors && evalResults.errors.some(e => typeof e === 'string' && e.includes(item.sku) && (e.includes('ambiguous') || e.includes('unknown'))));
+
+    let status = 'VALID';
+    if (isAmbiguous) {
+      status = 'NEEDS_HUMAN_CLARIFICATION';
+    } else if (isFixInjected) {
+      status = 'FIX_APPLIED';
+    }
 
     const skuNode = {
       id: `node-sku-${item.sku || idx}-${idx}`,
@@ -281,13 +293,16 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
       productFamily,
       status,
       optionType: item.optionType || 'CTO',
-      rationale: item.rationale || item.rule || null
+      rationale: item.rationale || item.rule || (isAmbiguous ? 'Requires Human-in-the-Loop review & classification.' : null)
     };
 
     nodes.push(skuNode);
 
     if (isFixInjected) {
       fixes.push(skuNode);
+    }
+    if (isAmbiguous) {
+      ambiguities.push(skuNode);
     }
 
     // Edge from Subsystem Hub to SKU Node
@@ -452,12 +467,14 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
     edges,
     gaps,
     fixes,
+    ambiguities,
     stats: {
       totalNodes: nodes.length,
       validCount,
       gapCount,
       fixCount,
-      isBuildable: gapCount === 0,
+      ambiguityCount: ambiguities.length,
+      isBuildable: gapCount === 0 && ambiguities.length === 0,
       subsystemsCount: SUBSYSTEM_DEFS.length
     },
     diagnostics: {

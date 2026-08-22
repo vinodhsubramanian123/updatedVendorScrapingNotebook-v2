@@ -217,16 +217,17 @@ export default function BoqTopologyCanvas({
 
             const isGap = path.status === 'GAP_MISSING';
             const isFix = path.status === 'FIX_APPLIED';
+            const isAmbiguous = path.status === 'NEEDS_HUMAN_CLARIFICATION';
 
             return (
               <path
                 key={path.id}
                 d={d}
                 fill="none"
-                stroke={isGap ? '#f43f5e' : isFix ? '#38bdf8' : path.type === 'BUS_LINK' ? '#10b981' : '#334155'}
-                strokeWidth={isGap ? 2.5 : path.type === 'BUS_LINK' ? 2.5 : 1.5}
-                strokeDasharray={isGap ? '6,6' : 'none'}
-                className={isGap ? 'animate-pulse' : ''}
+                stroke={isGap ? '#f43f5e' : isAmbiguous ? '#f59e0b' : isFix ? '#38bdf8' : path.type === 'BUS_LINK' ? '#10b981' : '#334155'}
+                strokeWidth={isGap || isAmbiguous ? 2.5 : path.type === 'BUS_LINK' ? 2.5 : 1.5}
+                strokeDasharray={isGap ? '6,6' : isAmbiguous ? '4,4' : 'none'}
+                className={isGap || isAmbiguous ? 'animate-pulse' : ''}
                 opacity={0.85}
               />
             );
@@ -242,6 +243,7 @@ export default function BoqTopologyCanvas({
             const isHub = node.type === 'SUBSYSTEM_HUB';
             const isGap = node.type === 'GAP_MISSING';
             const isFix = node.status === 'FIX_APPLIED';
+            const isAmbiguous = node.status === 'NEEDS_HUMAN_CLARIFICATION';
 
             if (isRoot) {
               return (
@@ -275,27 +277,28 @@ export default function BoqTopologyCanvas({
                   className="topology-interactive-node cursor-pointer group"
                 >
                   <circle
-                    r="34"
-                    fill="#0f172a"
-                    stroke={node.hasGaps ? '#f43f5e' : '#38bdf8'}
-                    strokeWidth="2.5"
+                    r="40"
+                    fill="#1e293b"
+                    stroke={node.hasGaps ? '#f43f5e' : '#0284c7'}
+                    strokeWidth="2"
+                    strokeDasharray={node.hasGaps ? '4,4' : 'none'}
                     className={node.hasGaps ? 'animate-pulse' : ''}
                   />
-                  <text y="-4" textAnchor="middle" fill="#f8fafc" fontSize="10" fontWeight="bold" fontFamily="sans-serif">
-                    {node.label.split(' ')[0]}
+                  <circle r="32" fill="#0f172a" />
+                  <text y="-4" textAnchor="middle" fill="#f8fafc" fontSize="11" fontWeight="bold">
+                    {node.subsystem.length > 8 ? node.subsystem.substring(0, 7) + '..' : node.subsystem}
                   </text>
-                  <text y="12" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="monospace">
-                    {node.itemCount} items
+                  <text y="14" textAnchor="middle" fill="#94a3b8" fontSize="9">
+                    {node.itemCount || 0} items
                   </text>
                 </g>
               );
             }
 
-            // SKU or Gap Node
-            const isLeftSide = x < (layout.width / 2);
+            // SKU Item / Gap Node
             const rectW = 200;
             const rectH = 46;
-            const rectX = isLeftSide ? -rectW : 0;
+            const rectX = -rectW / 2;
             const rectY = -rectH / 2;
 
             return (
@@ -312,23 +315,23 @@ export default function BoqTopologyCanvas({
                   width={rectW}
                   height={rectH}
                   rx="8"
-                  fill={isGap ? '#450a0a' : isFix ? '#082f49' : '#0f172a'}
-                  stroke={isSelected ? '#ffffff' : isGap ? '#f43f5e' : isFix ? '#38bdf8' : '#334155'}
-                  strokeWidth={isSelected ? 2.5 : isGap ? 2 : 1.5}
-                  strokeDasharray={isGap ? '4,4' : 'none'}
-                  className="transition-all duration-150 group-hover:stroke-emerald-400"
+                  fill={isGap ? '#450a0a' : isAmbiguous ? '#451a03' : isFix ? '#082f49' : '#0f172a'}
+                  stroke={isSelected ? '#ffffff' : isGap ? '#f43f5e' : isAmbiguous ? '#f59e0b' : isFix ? '#38bdf8' : '#10b981'}
+                  strokeWidth={isSelected ? 2.5 : 1.5}
+                  strokeDasharray={isGap ? '5,4' : isAmbiguous ? '4,3' : 'none'}
+                  className="transition-all duration-150 group-hover:stroke-white"
                 />
 
                 {/* SKU Code */}
                 <text
                   x={rectX + 12}
                   y={rectY + 18}
-                  fill={isGap ? '#fca5a5' : isFix ? '#7dd3fc' : '#34d399'}
+                  fill={isGap ? '#fca5a5' : isAmbiguous ? '#fcd34d' : isFix ? '#7dd3fc' : '#34d399'}
                   fontSize="11"
                   fontWeight="bold"
                   fontFamily="monospace"
                 >
-                  {isGap ? '⚠️ GAP' : node.sku}
+                  {isGap ? '⚠️ GAP' : isAmbiguous ? '⚠️ ' + node.sku : node.sku}
                 </text>
 
                 {/* Status Badge */}
@@ -342,6 +345,18 @@ export default function BoqTopologyCanvas({
                     fontWeight="bold"
                   >
                     [FIXED]
+                  </text>
+                )}
+                {isAmbiguous && (
+                  <text
+                    x={rectX + rectW - 10}
+                    y={rectY + 18}
+                    textAnchor="end"
+                    fill="#f59e0b"
+                    fontSize="9"
+                    fontWeight="bold"
+                  >
+                    [HITL]
                   </text>
                 )}
 
@@ -374,6 +389,10 @@ export default function BoqTopologyCanvas({
         <span className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
           Missing Dependency Gap
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+          Needs Human Review
         </span>
       </div>
     </div>

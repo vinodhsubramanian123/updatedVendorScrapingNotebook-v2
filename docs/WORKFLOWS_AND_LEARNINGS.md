@@ -323,3 +323,25 @@ ISO-timestamp snapshots removed → 28 files
 Remaining canonical snapshots   → 6 (YYYY-MM-DD format, one per scrape day)
 ```
 
+## 21. Visual Mindmap & 3-Tier Classification / Contradiction Resolution Learnings
+
+### Problem & Challenge
+- Hardware BOMs contain edge-case options, newly introduced factory codes, or unlisted SKUs where local rules may lack an exact mapping.
+- If an agent or LLM guesses or hallucinates an ungrounded connection, it can cause quote rejection on vendor portals.
+- Conversely, if contradictory statements exist between different document revisions (e.g. conflicting fan count rules between QuickSpecs version A and version B), an automated engine should never guess in silence.
+
+### Architectural Solution
+We implemented a strict **3-Tier Escalation Protocol**:
+1. **Tier 1 — Local Deterministic Rule Engine**:
+   - Resolves all known, cataloged hardware rules (memory balance, storage controllers, TDP fans) with 0 network latency.
+2. **Tier 2 — NotebookLM Cloud RAG Grounding**:
+   - For unclassified SKUs or ambiguous options, queries grounded technical QuickSpecs in Gemini NotebookLM.
+   - If NotebookLM returns a high-confidence, non-contradictory resolution, the item is auto-classified and mapped to its subsystem bus.
+3. **Tier 3 — Human-in-the-Loop (HITL) Escalation & Feedback Persistence**:
+   - If NotebookLM cannot clarify, confidence is below $0.85$, or contradictory statements are detected:
+     - The SKU is flagged as `NEEDS_HUMAN_CLARIFICATION`.
+     - Highlighted in the **Visual Topology Mindmap** with a pulsing Amber dashed border and `[HITL]` badge.
+     - Surfaced in the **Ambiguity Inbox** with context explaining the anomaly.
+     - When the human engineer injects the clarifying rule, it is saved atomically as a **`KnowledgeDelta`** to `master_knowledge_registry.json`.
+     - Future runs immediately recognize and resolve the SKU via Tier 1 without human intervention!
+

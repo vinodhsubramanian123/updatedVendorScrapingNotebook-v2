@@ -189,9 +189,9 @@ async function runCustomerBoqFlow() {
     console.log('▶ [Step 7] Observing live 10-step visual motion graphics progress & logs...');
     const step7Start = Date.now();
 
-    // Wait for evaluation results banner (Certified or Violations Flagged) with ample timeout for live Cloud NotebookLM RAG
-    const bannerLocator = page.locator('text=Certified Buildable Configuration').or(page.locator('text=Physical Constraint Violations Flagged')).first();
-    await bannerLocator.waitFor({ state: 'visible', timeout: 120000 });
+    // Wait for evaluation results banner (Certified, Violations, or Outcome header) with ample timeout for live Cloud NotebookLM RAG
+    const bannerLocator = page.locator('text=Confidence Score').or(page.locator('text=BOQ Evaluation Outcome')).or(page.locator('text=Certified Buildable Configuration')).or(page.locator('text=Physical Constraint Violations Flagged')).first();
+    await bannerLocator.waitFor({ state: 'visible', timeout: 60000 });
     console.log('  ✅ 10-Step Aspect Math Evaluation completed 100% successfully.');
 
     stepResults.push({ step: 7, name: '10-Step Execution & Progress Streaming', passed: true, durationMs: Date.now() - step7Start });

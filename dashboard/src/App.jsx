@@ -427,6 +427,7 @@ export default function App() {
             if (query) handleSmartSearch(query);
           }}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
+          onOpenAmbiguity={() => setActiveModal('boqUploader')}
         />
       </ToolModal>
 
