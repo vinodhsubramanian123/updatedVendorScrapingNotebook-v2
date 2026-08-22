@@ -12,35 +12,35 @@ stateDiagram-v2
         NavigatesToOCA --> PageLoadedInCDP : OCA WebLogic Configuration page loaded
     }
 
-    state "Phase 2: Automated CDP Attachment & DOM Traversal" as P2 {
-        PageLoadedInCDP --> ConnectCDPPort9222 : Scraper connects to http://127.0.0.1:9222/json
-        ConnectCDPPort9222 --> AutoDismissModals : Smart Auto-Accept (Dismiss Partner Portal Modals)
-        AutoDismissModals --> DeepDOMExtraction : Recursively traverse Category & Subcategory tables
-        DeepDOMExtraction --> ExtractAttributes : Extract SKU, Description, Option Type, List Price, Constraints
+    state "Phase 2: Automated CDP Attachment & DOM Traversal (Stages 1-5)" as P2 {
+        PageLoadedInCDP --> ConnectCDPPort9222 : Step 1: getOCATarget() (Prioritizes real OCA URLs, excludes localhost)
+        ConnectCDPPort9222 --> SolutionRootNav : Step 2: Solution Root Discovery & Pre-flight
+        SolutionRootNav --> CategoryDiscovery : Step 3: Priority-ordered Node Title & Menu Activation
+        CategoryDiscovery --> AdaptiveExpansion : Step 4: Full Page Section Expansion (Adaptive Threshold)
+        AdaptiveExpansion --> DeepDOMExtraction : Step 5: DOM & Row Scraping (Hardware, Services, Headers)
     }
 
-    state "Phase 3: Staging Isolation & Pre-Commit Validation" as P3 {
-        ExtractAttributes --> WriteToStagingDir : Save raw scrape to /outputs/temp/staging_{chassis}/
-        WriteToStagingDir --> SchemaValidation : Validate against CatalogMasterSchema (Zod)
-        SchemaValidation --> FormatAudit : Enforce clean regex (isValidHpeSKU, numeric Current Qty)
-        FormatAudit --> PriceTrailDiff : Calculate SHA-256 Checksum Diff & Price History Trails
+    state "Phase 3: Staging Isolation & Post-Flight Audit (Stages 6-8)" as P3 {
+        DeepDOMExtraction --> WriteToStagingDir : Save raw scrape to /outputs/temp/staging_{chassis}_{ts}/
+        WriteToStagingDir --> RulesEngineAndTSV : Step 6: Aspect Rules Parsing & TSV Intermediates
+        RulesEngineAndTSV --> BuildMasterExcel : Step 7: Build Catalog JSON & 15-20 Sheet Master Excel
+        BuildMasterExcel --> StagingQualityAudit : Step 8: 7-Check Quality Audit Gate (verify_excel_tally.js)
     }
 
     state "Phase 4: 100% Quality Certification Gate" as P4 {
-        PriceTrailDiff --> RunPortfolioAudit : Execute 15-check Excel & JSON audit (verify_all.js)
         state check_gate <<choice>>
-        RunPortfolioAudit --> check_gate
-        check_gate --> AbortRollback : ❌ Any validation failure
+        StagingQualityAudit --> check_gate
+        check_gate --> AbortRollback : ❌ Any validation failure (Mark failed_staging_*, Live 100% Intact)
         check_gate --> AtomicPromotion : ✅ 100% PASS (Zero warnings/errors)
     }
 
-    state "Phase 5: Master Promotion & Cloud RAG Sync" as P5 {
-        AtomicPromotion --> SafeWriteJsonAtomic : safeWriteJsonAtomic() -> outputs/{Family}/{Gen}/{Model}/
-        SafeWriteJsonAtomic --> GenerateMasterExcel : Generate 19-sheet Master Excel Workbook
-        GenerateMasterExcel --> KnowledgeSync : Build Markdown Charter & Upload to Google NotebookLM
-        KnowledgeSync --> TelemetryLedger : Log Action Ledger & Benchmark KPIs
+    state "Phase 5: Master Promotion & Cloud RAG Sync (Stages 9-10)" as P5 {
+        AtomicPromotion --> PromoteLiveWorkspace : Step 9: promoteStagingDirectory() with .bak Rollback Guard
+        PromoteLiveWorkspace --> KnowledgeSync : Build Markdown Payload & Sync to Google NotebookLM
+        KnowledgeSync --> RegistryAndLedgerSync : Step 10: Fail-Hard Portfolio Registry & Action Ledger Sync
+        RegistryAndLedgerSync --> TelemetryLedger : Log Telemetry Metrics & Emit 100% Complete SSE
     }
 
-    AbortRollback --> [*] : Staging cleaned up, production outputs protected
+    AbortRollback --> [*] : Staging isolated/cleaned, production outputs protected
     TelemetryLedger --> [*] : Certified Scrape Complete
 ```
