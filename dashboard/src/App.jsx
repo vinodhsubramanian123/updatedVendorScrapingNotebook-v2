@@ -89,15 +89,11 @@ export default function App() {
 
   // ── Eval State ────────────────────────────────────────────────────────────
   const [evalResults, setEvalResults] = useState(null);
+  const [intakeTopologyData, setIntakeTopologyData] = useState(null);
   const [auditReport, setAuditReport] = useState(null);
-
-  // ── RAG Drawer State ──────────────────────────────────────────────────────
-  const [isRagOpen, setIsRagOpen] = useState(false);
-  const [ragData, setRagData] = useState(null);
-  const [ragElapsedTime, setRagElapsedTime] = useState(0);
   const [isQueryingRag, setIsQueryingRag] = useState(false);
-
-  // ── Drawer / Modal State ──────────────────────────────────────────────────
+  const [isRagOpen, setIsRagOpen] = useState(false);
+  const [ragData, setRagData] = useState({ answer: null, latencyMs: null, source: null });
   const [isFeedbackDrawerOpen, setIsFeedbackDrawerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
@@ -350,8 +346,41 @@ export default function App() {
           </div>
         )}
 
-        {activeTab === 'scraper' && (
-          <div key="scraper" className="animate-tab-enter">
+        {activeTab === 'matrix' && (
+          <div key="matrix" className="animate-tab-enter space-y-6">
+            <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+              <div>
+                <span className="badge badge-emerald mb-1">5-Tier Resolution Engine</span>
+                <h2 className="text-lg font-bold text-slate-900">5-Tier Strategic Resolution Matrix</h2>
+                <p className="text-xs text-slate-500">Compare ranked candidate BOMs across CapEx budget, workload DNA intent, and strict hardware buildability.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveModal('boqTopology')}
+                  className="btn btn-secondary text-xs flex items-center gap-1.5"
+                >
+                  Visual BOQ Topology
+                </button>
+                <button
+                  onClick={() => setActiveModal('boqUploader')}
+                  className="btn btn-primary text-xs flex items-center gap-1.5"
+                >
+                  Load / Evaluate BOQ
+                </button>
+              </div>
+            </div>
+            <ResolutionMatrix
+              evalResults={evalResults}
+              onOpenPortalFeedback={setSelectedCardForFeedback}
+              selectedChassis={selectedChassis}
+              onTriggerDemoBoq={handleEvaluateBoq}
+              onOpenTopology={() => setActiveModal('boqTopology')}
+            />
+          </div>
+        )}
+
+        {(activeTab === 'pipeline' || activeTab === 'scraper') && (
+          <div key="pipeline" className="animate-tab-enter">
             <ScraperTriggerCard
               logStream={logStream} isTaskRunning={isTaskRunning}
               onTriggerScrape={handleTriggerScrape} onTriggerRebuild={handleTriggerRebuild}
@@ -395,7 +424,7 @@ export default function App() {
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
           onOpenTopology={(customData) => {
-            if (customData) setEvalResults(prev => ({ ...prev, ...customData }));
+            if (customData) setIntakeTopologyData(customData);
             setActiveModal('boqTopology');
           }}
         />
@@ -421,7 +450,7 @@ export default function App() {
         <BoqTopologyModal
           isOpen={activeModal === 'boqTopology'}
           onClose={() => setActiveModal(null)}
-          evalResults={evalResults}
+          evalResults={evalResults || intakeTopologyData}
           onOpenRag={(query) => {
             setIsRagOpen(true);
             if (query) handleSmartSearch(query);
@@ -439,7 +468,7 @@ export default function App() {
           auditReport={auditReport}
           onAuditReportChange={setAuditReport}
           onOpenTopology={(customData) => {
-            if (customData) setEvalResults(prev => ({ ...prev, ...customData }));
+            if (customData) setIntakeTopologyData(customData);
             setActiveModal('boqTopology');
           }}
         />

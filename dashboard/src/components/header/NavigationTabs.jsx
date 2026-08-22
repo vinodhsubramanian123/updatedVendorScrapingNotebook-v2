@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 
 const TABS = [
-  { id: 'evaluator', label: 'BOQ Evaluator', icon: LayoutDashboard },
+  { id: 'orchestrator', label: 'BOQ Evaluator', icon: LayoutDashboard },
   { id: 'matrix', label: 'Resolution Matrix', icon: Table },
   { id: 'catalog', label: 'Catalog Explorer', icon: FileSpreadsheet },
   { id: 'telemetry', label: 'Agentic Insights', icon: Activity },

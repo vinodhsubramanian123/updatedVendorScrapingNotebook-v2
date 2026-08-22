@@ -345,3 +345,23 @@ We implemented a strict **3-Tier Escalation Protocol**:
      - When the human engineer injects the clarifying rule, it is saved atomically as a **`KnowledgeDelta`** to `master_knowledge_registry.json`.
      - Future runs immediately recognize and resolve the SKU via Tier 1 without human intervention!
 
+---
+
+## 22. End-to-End Headed Browser Audit, Tab Routing & Topology Hydration (2026-08-23)
+
+### Problem
+- During comprehensive browser inspection, navigation tab identifiers differed between `NavigationTabs.jsx` and `App.jsx` (`evaluator` vs `orchestrator`, `pipeline` vs `scraper`), resulting in blank views when clicking header tabs.
+- Opening the `Visual BOQ Topology` mindmap directly from the Preflight Intake Audit before running the full 6-aspect math engine passed an empty object, causing the mindmap to display 0 item nodes.
+- SVG `<text>` elements in the mindmap canvas intercepted click coordinates, occasionally preventing node click events.
+
+### Architectural Solution & Invariants
+1. **Unified Tab Routing**:
+   - Standardized tab identifiers across all navigation and route components: `orchestrator` (BOQ Evaluator), `matrix` (5-Tier Strategy Matrix), `catalog` (Catalog Explorer), `telemetry` (Agentic Insights), and `pipeline` (Pipeline Ops).
+2. **Dedicated Full-Page Strategy Matrix View**:
+   - Mounted `ResolutionMatrix` directly in `App.jsx` on `activeTab === 'matrix'` with interactive rank cards, Excel download, and demo triggers.
+3. **Hybrid Preflight & Evaluation Topology Hydration**:
+   - `topologyGraphBuilder.js` extracts hardware items dynamically from `evalResults.items`, `evalResults.variations`, `evalResults.configVariations`, or `evalResults.rawVariations`, ensuring intake nodes are fully mapped into the 6 subsystem branches whether opened during preflight or post-evaluation.
+4. **SVG Click Ergonomics**:
+   - Added `pointerEvents="none"` to all SVG text nodes within interactive node containers.
+5. **Post-Evaluation Auto-Scroll**:
+   - Added `outcomeRef` in `BoqUploader.jsx` to smoothly scroll the certified buildable outcome card and action buttons into view upon SSE evaluation completion.

@@ -255,13 +255,13 @@ export default function BoqTopologyCanvas({
                 >
                   <circle r="60" fill="#0f172a" stroke="#10b981" strokeWidth="3" filter="url(#glow-emerald)" />
                   <circle r="48" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-                  <text y="-8" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="bold" fontFamily="sans-serif">
+                  <text y="-8" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="bold" fontFamily="sans-serif" pointerEvents="none">
                     DL380 Gen12
                   </text>
-                  <text y="10" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold" fontFamily="monospace">
+                  <text y="10" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold" fontFamily="monospace" pointerEvents="none">
                     {node.sku}
                   </text>
-                  <text y="24" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="sans-serif">
+                  <text y="24" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="sans-serif" pointerEvents="none">
                     CTO Base Chassis
                   </text>
                 </g>
@@ -285,10 +285,10 @@ export default function BoqTopologyCanvas({
                     className={node.hasGaps ? 'animate-pulse' : ''}
                   />
                   <circle r="32" fill="#0f172a" />
-                  <text y="-4" textAnchor="middle" fill="#f8fafc" fontSize="11" fontWeight="bold">
+                  <text y="-4" textAnchor="middle" fill="#f8fafc" fontSize="11" fontWeight="bold" pointerEvents="none">
                     {node.subsystem.length > 8 ? node.subsystem.substring(0, 7) + '..' : node.subsystem}
                   </text>
-                  <text y="14" textAnchor="middle" fill="#94a3b8" fontSize="9">
+                  <text y="14" textAnchor="middle" fill="#94a3b8" fontSize="9" pointerEvents="none">
                     {node.itemCount || 0} items
                   </text>
                 </g>
@@ -330,6 +330,7 @@ export default function BoqTopologyCanvas({
                   fontSize="11"
                   fontWeight="bold"
                   fontFamily="monospace"
+                  pointerEvents="none"
                 >
                   {isGap ? '⚠️ GAP' : isAmbiguous ? '⚠️ ' + node.sku : node.sku}
                 </text>
@@ -343,6 +344,7 @@ export default function BoqTopologyCanvas({
                     fill="#38bdf8"
                     fontSize="9"
                     fontWeight="bold"
+                    pointerEvents="none"
                   >
                     [FIXED]
                   </text>
@@ -355,6 +357,7 @@ export default function BoqTopologyCanvas({
                     fill="#f59e0b"
                     fontSize="9"
                     fontWeight="bold"
+                    pointerEvents="none"
                   >
                     [HITL]
                   </text>
@@ -367,6 +370,7 @@ export default function BoqTopologyCanvas({
                   fill="#cbd5e1"
                   fontSize="10"
                   fontFamily="sans-serif"
+                  pointerEvents="none"
                 >
                   {node.label.length > 24 ? node.label.substring(0, 22) + '...' : node.label}
                 </text>

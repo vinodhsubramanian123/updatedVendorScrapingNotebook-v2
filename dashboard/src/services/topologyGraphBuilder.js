@@ -150,8 +150,18 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
   const gaps = [];
   const fixes = [];
   const ambiguities = [];
+  const rawItems = evalResults.items?.length
+    ? evalResults.items
+    : evalResults.bomItems?.length
+    ? evalResults.bomItems
+    : (evalResults.variations && Array.isArray(evalResults.variations))
+    ? evalResults.variations.flatMap(v => v.items || [])
+    : (evalResults.configVariations && Array.isArray(evalResults.configVariations))
+    ? evalResults.configVariations.flatMap(v => v.items || [])
+    : (evalResults.rawVariations && Array.isArray(evalResults.rawVariations))
+    ? evalResults.rawVariations.flatMap(v => v.items || [])
+    : [];
 
-  const rawItems = evalResults.items || evalResults.bomItems || [];
   const productFamily = detectProductFamily(evalResults, rawItems);
   const subProducts = identifySubProducts(rawItems, productFamily);
 
@@ -159,6 +169,8 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
   const chassisSku = evalResults.conflictGraph?.chassisInfo?.chassisSku ||
                      evalResults.workloadDna?.detectedChassis ||
                      evalResults.chassis ||
+                     evalResults.detectedChassis ||
+                     evalResults.variations?.[0]?.baseChassisSku ||
                      (productFamily === 'Synergy' ? 'SY12000-FRAME' : 'P73282-B21');
 
   let chassisName = '';

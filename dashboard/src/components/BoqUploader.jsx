@@ -26,6 +26,7 @@ export default function BoqUploader({
   const [isSplitModalOpen, setIsSplitModalOpen] = useState(false);
   const [confirmedConfigSplits, setConfirmedConfigSplits] = useState(new Set());
   const logsEndRef = useRef(null);
+  const outcomeRef = useRef(null);
 
   const isEvaluating = isSubmitting || (isTaskRunning && logStream.some(l => {
     const text = typeof l === 'string' ? l : (l?.text || l?.action || '');
@@ -58,6 +59,9 @@ export default function BoqUploader({
   useEffect(() => {
     if (evalResults) {
       setIsSubmitting(false);
+      if (outcomeRef.current) {
+        outcomeRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
   }, [evalResults]);
 
@@ -233,7 +237,7 @@ export default function BoqUploader({
       />
 
       {evalResults && (
-        <div className="glass-card p-6 border border-slate-200 shadow-sm rounded-xl space-y-4 animate-in fade-in duration-200">
+        <div ref={outcomeRef} className="glass-card p-6 border border-slate-200 shadow-sm rounded-xl space-y-4 animate-in fade-in duration-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className={`p-2.5 rounded-xl border ${

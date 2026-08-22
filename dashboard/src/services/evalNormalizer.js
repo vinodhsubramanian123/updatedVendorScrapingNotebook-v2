@@ -75,6 +75,12 @@ export function normalizeEvalResult(payload) {
 
   return {
     ...data,
+    // Hoist items and SKU collections
+    items: data.items ?? inner.items ?? [],
+    bomItems: data.items ?? inner.items ?? data.bomItems ?? [],
+    unclassifiedSkus: data.unclassifiedSkus ?? inner.unclassifiedSkus ?? [],
+    chassis: data.chassisPrefix || data.chassisDir || inner.chassis || 'DL380_Gen12_SFF',
+    targetBudgetUsd: data.targetBudgetUsd ?? inner.targetBudgetUsd ?? 0,
     // Hoist inner eval fields to top level for component backward-compat
     errors: inner.errors ?? data.errors ?? [],
     warnings: inner.warnings ?? data.warnings ?? [],
