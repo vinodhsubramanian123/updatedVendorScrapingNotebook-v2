@@ -134,7 +134,8 @@ test('Bug 10: Metadata diff summary counts match actual row counts', () => {
     return row ? parseInt(row['Value'], 10) : 0;
   };
   const totalHardware = getVal('Total Hardware SKUs');
-  assert.strictEqual(totalHardware, 261, `Expected 261 Hardware SKUs in Metadata, got ${totalHardware}`);
+  assert.strictEqual(totalHardware, catalogJson.metadata.totalUniqueSKUs, `Expected Metadata sheet Total Hardware SKUs (${totalHardware}) to match catalog.json metadata.totalUniqueSKUs (${catalogJson.metadata.totalUniqueSKUs})`);
+  assert(totalHardware >= 250, `Expected >= 250 Hardware SKUs in Metadata, got ${totalHardware}`);
   const totalServices = getVal('Total Service/Software SKUs');
   assert(totalServices > 500, `Expected > 500 Service SKUs in Metadata, got ${totalServices}`);
 });
