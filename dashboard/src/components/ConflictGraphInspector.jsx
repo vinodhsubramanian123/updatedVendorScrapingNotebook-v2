@@ -160,7 +160,7 @@ export default function ConflictGraphInspector({ evalResults, chassisName, selec
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
               <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-amber-600" />
-                Vendor Portal Error &amp; CLIC Inspector
+                Vendor Portal Error & CLIC Inspector
               </h3>
               <button onClick={() => setShowClicModal(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
@@ -184,7 +184,7 @@ export default function ConflictGraphInspector({ evalResults, chassisName, selec
                   <div>
                     <p className="font-bold">Zero Portal Configuration Errors</p>
                     <p className="text-[11px] text-emerald-800 mt-0.5">
-                      The evaluated solution passes 100% of vendor portal factory constraints &amp; physical rules.
+                      The evaluated solution passes 100% of vendor portal factory constraints & physical rules.
                     </p>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-22T14:12:10.496Z  
+**Sync Timestamp**: 2026-08-22T14:41:10.209Z  
 **Total Verified SKUs**: `850` (`262` Hardware + `588` Services)  
-**Total Synced KnowledgeDeltas**: `29`  
+**Total Synced KnowledgeDeltas**: `31`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -48,6 +48,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 15. **[DELTA-1787407861089] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 16. **[DELTA-1787407868201] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 17. **[DELTA-1787407887422] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+18. **[DELTA-1787408540151] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+19. **[DELTA-1787409660176] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen12_SFF)
 

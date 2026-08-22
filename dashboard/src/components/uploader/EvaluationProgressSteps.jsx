@@ -27,7 +27,7 @@ export default function EvaluationProgressSteps({
       <div className="flex items-center justify-between">
         <div>
           <span className="badge badge-emerald">Real-time Pipeline Telemetry</span>
-          <h3 className="font-bold text-slate-900 text-sm mt-1">10-Stage Deterministic &amp; Agentic Execution</h3>
+          <h3 className="font-bold text-slate-900 text-sm mt-1">10-Stage Deterministic & Agentic Execution</h3>
         </div>
         <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
           Step {Math.min(10, Math.max(1, currentStep))} of 10

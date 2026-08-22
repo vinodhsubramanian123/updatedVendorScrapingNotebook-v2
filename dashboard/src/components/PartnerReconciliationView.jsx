@@ -101,7 +101,7 @@ export default function PartnerReconciliationView({ evalResults, selectedChassis
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-6 h-6 text-indigo-400" />
-              <h2 className="text-lg font-bold tracking-tight">HPE Partner Portal Quote Reconciliation &amp; Learning Loop</h2>
+              <h2 className="text-lg font-bold tracking-tight">HPE Partner Portal Quote Reconciliation & Learning Loop</h2>
             </div>
             <p className="text-xs text-indigo-200/80 max-w-2xl leading-relaxed">
               Upload or paste quotes directly exported from HPE OCA / CLIC Partner Portal. The engine performs bi-directional delta calculations, classifies discrepancies into <strong className="text-amber-300">TEMPORARY_SUPPLY</strong> or <strong className="text-emerald-300">PERMANENT_PHYSICAL_DEPENDENCY</strong>, writes atomic <strong className="text-indigo-200">KnowledgeDelta</strong> logs, and synchronizes learnings with NotebookLM.

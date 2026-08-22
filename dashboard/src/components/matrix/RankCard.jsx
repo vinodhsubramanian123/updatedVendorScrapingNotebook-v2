@@ -63,7 +63,7 @@ export default function RankCard({
         </div>
 
         <div className="mt-4">
-          <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">Automated Configuration &amp; Rule Fixes:</h4>
+          <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">Automated Configuration & Rule Fixes:</h4>
           <ul className="space-y-1.5 text-xs text-slate-600">
             {tier.swaps.map((swap, idx) => (
               <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded-lg border border-slate-100">

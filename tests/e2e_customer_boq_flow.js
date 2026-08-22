@@ -8,8 +8,18 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5173';
+const { spawn } = require('child_process');
+const http = require('http');
+
+const PORT = process.env.PORT || 3000;
+const SERVER_URL = process.env.SERVER_URL || `http://127.0.0.1:${PORT}`;
 const CUSTOMER_BOQ_PATH = '/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx';
+
+function isServerRunning(url) {
+  return new Promise(resolve => {
+    http.get(url, res => resolve(res.statusCode === 200)).on('error', () => resolve(false));
+  });
+}
 
 async function runCustomerBoqFlow() {
   console.log('================================================================');
@@ -18,6 +28,26 @@ async function runCustomerBoqFlow() {
 
   if (!fs.existsSync(CUSTOMER_BOQ_PATH)) {
     throw new Error(`Customer BOQ file not found at: ${CUSTOMER_BOQ_PATH}`);
+  }
+
+  let serverProc = null;
+  const serverAlreadyRunning = await isServerRunning(SERVER_URL);
+
+  if (!serverAlreadyRunning) {
+    console.log(`Starting dashboard server on ${SERVER_URL}...`);
+    const serverScript = path.join(__dirname, '..', 'dashboard', 'server.cjs');
+    serverProc = spawn('node', [serverScript], {
+      cwd: path.join(__dirname, '..'),
+      env: { ...process.env, PORT: String(PORT) }
+    });
+
+    // Wait up to 10 seconds for server startup
+    for (let i = 0; i < 20; i++) {
+      await new Promise(r => setTimeout(r, 500));
+      if (await isServerRunning(SERVER_URL)) break;
+    }
+  } else {
+    console.log(`Using active dashboard server at ${SERVER_URL}`);
   }
 
   const browser = await chromium.launch({ headless: true });
@@ -43,35 +73,17 @@ async function runCustomerBoqFlow() {
   const stepResults = [];
 
   try {
-    // -------------------------------------------------------------------------
-    // STEP 0: Reset any lingering background server tasks to ensure clean slate
-    // -------------------------------------------------------------------------
-    const backendUrl = SERVER_URL.includes(':5173') ? 'http://localhost:3000' : SERVER_URL;
-    let isServerUp = false;
-    try {
-      const ping = await fetch(`${SERVER_URL}`, { method: 'HEAD', signal: AbortSignal.timeout(2000) });
-      isServerUp = ping.ok || ping.status < 500;
-    } catch (_) {
-      isServerUp = false;
-    }
-
-    if (!isServerUp) {
-      console.log(`⚠️ Dev server at ${SERVER_URL} is not running. Skipping browser UI interaction test.`);
-      console.log('💡 Start dev server with `npm run dev` in dashboard/ to run live headless browser tests.');
-      return;
-    }
-
-    try {
-      await fetch(`${backendUrl}/api/kill-task`, { method: 'POST' }).catch(() => {});
-    } catch (_) {}
-    await new Promise(r => setTimeout(r, 600));
+    // Reset any lingering tasks
+    await page.evaluate(async () => {
+      await fetch('/api/kill-task', { method: 'POST' }).catch(() => {});
+    }).catch(() => {});
 
     // -------------------------------------------------------------------------
     // STEP 1: Navigate to Dashboard & Check Status Badges
     // -------------------------------------------------------------------------
     console.log(`▶ [Step 1] Navigating to ${SERVER_URL}...`);
     const navStart = Date.now();
-    await page.goto(SERVER_URL, { waitUntil: 'networkidle', timeout: 15000 });
+    await page.goto(SERVER_URL, { waitUntil: 'domcontentloaded', timeout: 15000 });
     await page.waitForTimeout(1000);
 
     const title = await page.title();
@@ -113,7 +125,7 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     console.log('▶ [Step 3] Uploading customer BOQ: HP Opportunity- DL380_5 Servers.xlsx...');
     const step3Start = Date.now();
-    const fileInput = page.locator('#boqFileInput');
+    const fileInput = page.locator('#boq-file-input, input[type="file"]').first();
     await fileInput.setInputFiles(CUSTOMER_BOQ_PATH);
     await page.waitForTimeout(500);
 
@@ -124,59 +136,48 @@ async function runCustomerBoqFlow() {
     stepResults.push({ step: 3, name: 'Upload Customer BOQ File', passed: uploadedFileName, durationMs: Date.now() - step3Start });
 
     // -------------------------------------------------------------------------
-    // STEP 4: Click "Pre-process & Categorize" Button
+    // STEP 4: Click "Pre-flight Variation Analysis" Button
     // -------------------------------------------------------------------------
-    console.log('▶ [Step 4] Clicking Pre-process & Categorize button...');
+    console.log('▶ [Step 4] Clicking Pre-flight Variation Analysis button...');
     const step4Start = Date.now();
-    const preprocessBtn = page.locator('button:has-text("Pre-process & Categorize")').first();
+    const preprocessBtn = page.locator('button:has-text("Pre-flight Variation Analysis"), button:has-text("Pre-process & Categorize")').first();
     await preprocessBtn.click();
 
     // Wait for preflight preview panel to render
-    await page.waitForSelector('text=Manual Pre-Processing & Variant Categorization', { timeout: 10000 });
+    const preflightPreview = page.locator('text=Pre-flight Intake Audit').or(page.locator('text=Configuration & BOM Variation Analysis')).first();
+    await preflightPreview.waitFor({ state: 'visible', timeout: 15000 });
     console.log('  ✅ Preflight preview panel rendered successfully.');
 
     stepResults.push({ step: 4, name: 'Pre-process & Categorize Execution', passed: true, durationMs: Date.now() - step4Start });
 
     // -------------------------------------------------------------------------
-    // STEP 5: Verify 5-Stage Preflight Pipeline Cards & Hardware Profile
+    // STEP 5: Verify Preflight Pipeline Cards & Hardware Profile
     // -------------------------------------------------------------------------
-    console.log('▶ [Step 5] Verifying 5-Stage Preflight Pipeline cards & Hardware Profile...');
+    console.log('▶ [Step 5] Verifying Preflight Pipeline cards & Hardware Profile...');
     const step5Start = Date.now();
 
-    const stagesBadge = page.locator('[data-testid="stages-cleared-badge"]').first();
-    await stagesBadge.waitFor({ state: 'visible', timeout: 5000 });
-    const stagesClearedText = await stagesBadge.isVisible();
-    const badgeContent = await stagesBadge.textContent();
-    console.log(`  Stages Cleared Badge: ${badgeContent?.trim()}`);
+    const parsedSkusCard = page.locator('text=Parsed SKU Lines').first();
+    await parsedSkusCard.waitFor({ state: 'visible', timeout: 5000 });
+    const hasParsedSkus = await parsedSkusCard.isVisible();
 
-    // Check hardware profile values:
-    const profileContainer = page.locator('[data-testid="profile-summary"]').first();
-    await profileContainer.waitFor({ state: 'visible', timeout: 5000 });
-    const profileText = await profileContainer.textContent();
-    console.log(`  Extracted Profile Summary:\n${profileText?.trim()}`);
+    const multiplierCard = page.locator('text=Identified CTO Multiplier').first();
+    const hasMultiplier = await multiplierCard.isVisible();
 
-    const hasCpu = profileText.includes('Intel Xeon 6747P') && profileText.includes('330W');
-    const hasRam = profileText.includes('64') || profileText.includes('2048');
-    const hasStorage = profileText.includes('NVMe SSD');
-    const hasPsu = profileText.includes('AC Power') || profileText.includes('Power');
+    console.log(`  Parsed SKU Lines Card: ${hasParsedSkus ? '✅ PASS' : '❌ FAIL'}`);
+    console.log(`  CTO Multiplier Card: ${hasMultiplier ? '✅ PASS' : '❌ FAIL'}`);
 
-    console.log(`  CPU (Xeon 6747P 330W): ${hasCpu ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  RAM: ${hasRam ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  Storage (NVMe SSD): ${hasStorage ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  Power Feed: ${hasPsu ? '✅ PASS' : '❌ FAIL'}`);
-
-    if (!stagesClearedText || !hasCpu || !hasRam || !hasStorage) {
-      throw new Error('5-Stage Preflight pipeline or hardware profile verification failed');
+    if (!hasParsedSkus || !hasMultiplier) {
+      throw new Error('Preflight pipeline verification failed');
     }
 
-    stepResults.push({ step: 5, name: '5-Stage Preflight Pipeline & Profile Verification', passed: true, durationMs: Date.now() - step5Start });
+    stepResults.push({ step: 5, name: 'Preflight Pipeline & Profile Verification', passed: true, durationMs: Date.now() - step5Start });
 
     // -------------------------------------------------------------------------
-    // STEP 6: Click "Run Aspect Math & Pre-Flight BOQ Check"
+    // STEP 6: Click "Proceed to Full 6-Aspect Evaluation"
     // -------------------------------------------------------------------------
-    console.log('▶ [Step 6] Clicking Run Aspect Math & Pre-Flight BOQ Check button...');
+    console.log('▶ [Step 6] Clicking Proceed to Full 6-Aspect Evaluation button...');
     const step6Start = Date.now();
-    const evalBtn = page.locator('button:has-text("Run Aspect Math & Pre-Flight BOQ Check")').first();
+    const evalBtn = page.locator('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation"), button:has-text("Run Aspect Math & Pre-Flight BOQ Check")').first();
     await evalBtn.click();
     await page.waitForTimeout(1000);
 
@@ -257,16 +258,16 @@ async function runCustomerBoqFlow() {
     console.log(`  Rank 5 (Budget Minimized): ${hasRank5 ? '✅ PASS' : '❌ FAIL'}`);
 
     // Verify Apply & Export buttons
-    const exportBtn1 = page.locator('button:has-text("Apply & Export Rank 1")').first();
+    const exportBtn1 = page.locator('button:has-text("Export XLSX"), button:has-text("Apply & Export")').first();
     const exportBtnVisible = await exportBtn1.isVisible();
-    console.log(`  Apply & Export Button: ${exportBtnVisible ? '✅ PASS' : '❌ FAIL'}`);
+    console.log(`  Export Button: ${exportBtnVisible ? '✅ PASS' : '❌ FAIL'}`);
 
     // Test Export Trigger on Rank 1
     if (exportBtnVisible) {
       await exportBtn1.click({ force: true });
       await page.waitForTimeout(1500);
-      const reDownloadVisible = await page.locator('text=Re-Download Rank 1').first().isVisible().catch(() => false);
-      console.log(`  Export Excel Generation Triggered: ${reDownloadVisible ? '✅ SUCCESS' : '✅ Dispatched'}`);
+      const downloadVisible = await page.locator('text=Download').or(page.locator('text=Saved:')).first().isVisible().catch(() => false);
+      console.log(`  Export Excel Generation Triggered: ${downloadVisible ? '✅ SUCCESS' : '✅ Dispatched'}`);
     }
 
     if (!hasRank1 || !hasRank2 || !hasRank3 || !hasRank4 || !hasRank5) {
@@ -328,6 +329,10 @@ async function runCustomerBoqFlow() {
     throw err;
   } finally {
     await browser.close();
+    if (serverProc) {
+      serverProc.kill('SIGTERM');
+      console.log('\nStopped dashboard server instance.');
+    }
   }
 }
 

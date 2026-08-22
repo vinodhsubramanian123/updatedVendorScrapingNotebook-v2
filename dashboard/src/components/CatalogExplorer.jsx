@@ -508,7 +508,7 @@ export default function CatalogExplorer({
               <div>
                 <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-amber-600" />
-                  Historical Price Elasticity &amp; Trend Trail
+                  Historical Price Elasticity & Trend Trail
                 </h3>
                 <p className="text-xs mono text-slate-500">{selectedSkuTrend.sku || selectedSkuTrend.partNumber}</p>
               </div>
@@ -562,7 +562,7 @@ export default function CatalogExplorer({
                 </div>
                 <h3 className="font-extrabold text-slate-900 text-base mt-1 flex items-center gap-2">
                   <History className="w-5 h-5 text-blue-600" />
-                  SKU Data Layer Versioning &amp; Mutation Audit
+                  SKU Data Layer Versioning & Mutation Audit
                 </h3>
               </div>
               <button onClick={() => { setSelectedSkuAudit(null); setSkuAuditData(null); }} className="text-slate-400 hover:text-slate-600">
@@ -571,7 +571,7 @@ export default function CatalogExplorer({
             </div>
 
             {loadingAudit ? (
-              <div className="p-8 text-center text-xs text-slate-500">Querying historical catalog snapshots &amp; checksums...</div>
+              <div className="p-8 text-center text-xs text-slate-500">Querying historical catalog snapshots & checksums...</div>
             ) : skuAuditData ? (
               <div className="space-y-4 text-xs">
                 {/* Current Status Card */}
@@ -615,7 +615,7 @@ export default function CatalogExplorer({
                 {/* Attribute Mutations */}
                 {skuAuditData.attributeMutations?.length > 0 && (
                   <div className="space-y-2">
-                    <h4 className="font-bold text-slate-800 text-xs">Attribute &amp; Specification Mutations</h4>
+                    <h4 className="font-bold text-slate-800 text-xs">Attribute & Specification Mutations</h4>
                     <div className="space-y-1.5">
                       {skuAuditData.attributeMutations.map((mut, i) => (
                         <div key={i} className="p-2.5 bg-amber-50/60 rounded-lg border border-amber-200 text-amber-900">

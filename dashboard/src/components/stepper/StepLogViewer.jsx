@@ -18,7 +18,7 @@ export default function StepLogViewer({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-emerald-400" />
-          <span className="font-bold text-white text-xs">Live Execution Console &amp; SSE Stream</span>
+          <span className="font-bold text-white text-xs">Live Execution Console & SSE Stream</span>
           <span className="bg-slate-800 text-slate-400 px-2 py-0.5 rounded text-[10px]">
             {filteredLogs.length} line(s)
           </span>

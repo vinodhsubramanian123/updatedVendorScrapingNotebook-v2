@@ -55,7 +55,7 @@ export default function TelemetryCard({ initialTelemetry, telemetry: propTelemet
     return (
       <div className="glass-card p-6 text-center text-slate-400">
         <Activity className="w-8 h-8 text-slate-300 mx-auto mb-2 animate-pulse" />
-        <p className="text-xs font-semibold text-slate-600">Loading Telemetry &amp; Observability Metrics...</p>
+        <p className="text-xs font-semibold text-slate-600">Loading Telemetry & Observability Metrics...</p>
       </div>
     );
   }

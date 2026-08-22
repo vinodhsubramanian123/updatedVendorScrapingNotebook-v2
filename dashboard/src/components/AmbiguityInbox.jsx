@@ -108,7 +108,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       >
         <div className="flex items-center gap-2 text-amber-950">
           <HelpCircle className="w-5 h-5 text-amber-900 stroke-[2.25px]" />
-          <h3 className="font-bold text-slate-900">Ambiguity &amp; Anomaly Resolution Inbox</h3>
+          <h3 className="font-bold text-slate-900">Ambiguity & Anomaly Resolution Inbox</h3>
           <span className="badge bg-amber-200 text-amber-950 font-bold border border-amber-300 ml-2">Human-In-The-Loop Required</span>
         </div>
         <button className="text-amber-900 hover:bg-amber-200 p-1 rounded transition-colors">
@@ -213,7 +213,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Human Engineer Reasoning &amp; Context</label>
+                <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Human Engineer Reasoning & Context</label>
                 <input 
                   type="text"
                   value={humanReasoning}
@@ -232,7 +232,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
                     className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white [color-scheme:light]"
                   >
                     <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. Selected Chassis)</option>
-                    <option value="FAMILY_GEN">Family &amp; Gen (e.g. ProLiant Gen12)</option>
+                    <option value="FAMILY_GEN">Family & Gen (e.g. ProLiant Gen12)</option>
                     <option value="SOLUTION_TYPE">Solution Type (e.g. Storage / Multi-Node)</option>
                     <option value="UNIVERSAL_VENDOR">Universal Vendor (All HPE)</option>
                   </select>

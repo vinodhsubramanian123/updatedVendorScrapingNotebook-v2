@@ -17,7 +17,7 @@ export default function PreflightPipelineAudit({
       <div className="flex items-center justify-between">
         <div>
           <span className="badge badge-blue mb-1">Pre-flight Intake Audit</span>
-          <h3 className="font-bold text-slate-900 text-base">Configuration &amp; BOM Variation Analysis</h3>
+          <h3 className="font-bold text-slate-900 text-base">Configuration & BOM Variation Analysis</h3>
         </div>
         {hasVariations ? (
           <span className="badge badge-amber font-bold flex items-center gap-1">
@@ -61,7 +61,7 @@ export default function PreflightPipelineAudit({
               onClick={onOpenSplitModal}
               className="text-xs font-bold text-amber-800 underline hover:text-amber-950 flex items-center gap-1"
             >
-              <Layers className="w-3.5 h-3.5" /> Review &amp; Split Configurations
+              <Layers className="w-3.5 h-3.5" /> Review & Split Configurations
             </button>
           </div>
           <p className="text-[11px] text-amber-800">

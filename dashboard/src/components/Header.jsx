@@ -132,7 +132,7 @@ export default function Header({
                 <span className="badge badge-emerald text-[9px] py-0 px-1.5 font-mono">v2.5 Dual-Brain</span>
               </h1>
               <p className="text-[10px] text-slate-400 font-medium mt-0.5">
-                BOQ Physical Math &amp; Conflict Resolution Engine
+                BOQ Physical Math & Conflict Resolution Engine
               </p>
             </div>
           </div>

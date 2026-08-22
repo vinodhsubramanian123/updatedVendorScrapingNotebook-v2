@@ -84,7 +84,7 @@ export default function MacroOrchestratorFlow({
         <div className="space-y-1">
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
             <LayoutDashboard className="w-7 h-7 text-blue-600" />
-            Autonomous BOQ Evaluation &amp; Closed-Loop Orchestrator
+            Autonomous BOQ Evaluation & Closed-Loop Orchestrator
           </h1>
           <p className="text-slate-500 text-xs max-w-2xl">
             6-aspect physical constraint math, 5-tier Strategic Resolution Matrix, dual-brain RAG verification, and Partner Portal quote reconciliation.
@@ -174,7 +174,7 @@ export default function MacroOrchestratorFlow({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-extrabold text-slate-900">Stage 1: BOQ Aspect Math &amp; Verification</h3>
+                    <h3 className="text-base font-extrabold text-slate-900">Stage 1: BOQ Aspect Math & Verification</h3>
                     {confidencePercent !== null && (
                       <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
                         confidencePercent >= 85 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
@@ -219,7 +219,7 @@ export default function MacroOrchestratorFlow({
                    disabled={isTaskRunning}
                    className="btn-primary text-xs flex items-center gap-2 shadow-sm"
                  >
-                   <FileUp className="w-4 h-4" /> Load BOQ &amp; Evaluate
+                   <FileUp className="w-4 h-4" /> Load BOQ & Evaluate
                  </button>
                  
                  {hasEval && (
@@ -258,7 +258,7 @@ export default function MacroOrchestratorFlow({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-extrabold text-slate-900">Stage 2: Partner Quote Reconciliation &amp; Closed-Loop Learning</h3>
+                    <h3 className="text-base font-extrabold text-slate-900">Stage 2: Partner Quote Reconciliation & Closed-Loop Learning</h3>
                     {hasAudit && (
                       <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
                         auditReport.is100PercentMatch ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'
@@ -306,7 +306,7 @@ export default function MacroOrchestratorFlow({
                 <div className={`w-2.5 h-2.5 rounded-full ${isTaskRunning ? 'bg-emerald-500 animate-ping' : 'bg-slate-500'} shrink-0`} />
                 <Terminal className="w-4 h-4 text-emerald-400 shrink-0" />
                 <h4 className="font-mono font-bold text-slate-200 text-xs tracking-tight">
-                  Detailed Logs &amp; Activity
+                  Detailed Logs & Activity
                 </h4>
               </div>
 

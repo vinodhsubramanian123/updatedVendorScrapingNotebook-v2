@@ -17,7 +17,7 @@ export default function MatrixToolbar({
         </div>
         <h2 className="text-xl font-bold text-slate-900 mt-1">Multi-Tier Strategic Resolution Matrix</h2>
         <p className="text-xs text-slate-500">
-          Workload-aligned configurations generated using Physical Math &amp; Conflict Graph rules.
+          Workload-aligned configurations generated using Physical Math & Conflict Graph rules.
         </p>
       </div>
 

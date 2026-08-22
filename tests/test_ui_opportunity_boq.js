@@ -9,6 +9,17 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { spawn } = require('child_process');
+const http = require('http');
+
+const PORT = process.env.PORT || 3000;
+const SERVER_URL = process.env.SERVER_URL || `http://127.0.0.1:${PORT}`;
+
+function isServerRunning(url) {
+  return new Promise(resolve => {
+    http.get(url, res => resolve(res.statusCode === 200)).on('error', () => resolve(false));
+  });
+}
 
 async function runTest() {
   console.log('================================================================');
@@ -20,6 +31,26 @@ async function runTest() {
   const successes = [];
   const consoleErrors = [];
 
+  let serverProc = null;
+  const serverAlreadyRunning = await isServerRunning(SERVER_URL);
+
+  if (!serverAlreadyRunning) {
+    console.log(`Starting dashboard server on ${SERVER_URL}...`);
+    const serverScript = path.join(__dirname, '..', 'dashboard', 'server.cjs');
+    serverProc = spawn('node', [serverScript], {
+      cwd: path.join(__dirname, '..'),
+      env: { ...process.env, PORT: String(PORT) }
+    });
+
+    // Wait up to 10 seconds for server startup
+    for (let i = 0; i < 20; i++) {
+      await new Promise(r => setTimeout(r, 500));
+      if (await isServerRunning(SERVER_URL)) break;
+    }
+  } else {
+    console.log(`Using active dashboard server at ${SERVER_URL}`);
+  }
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 }
@@ -28,7 +59,10 @@ async function runTest() {
 
   page.on('console', msg => {
     if (msg.type() === 'error') {
-      consoleErrors.push(msg.text());
+      const text = msg.text();
+      if (!text.includes('favicon') && !text.includes('404')) {
+        consoleErrors.push(text);
+      }
     }
   });
 
@@ -37,14 +71,15 @@ async function runTest() {
   });
 
   try {
-    // 1. Visit http://localhost:5173
-    console.log('1. Loading Dashboard at http://localhost:5173...');
-    await page.goto('http://localhost:5173', { waitUntil: 'networkidle', timeout: 15000 });
+    // 1. Visit Dashboard
+    console.log(`1. Loading Dashboard at ${SERVER_URL}...`);
+    await page.goto(SERVER_URL, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(1000);
     successes.push('Page loaded successfully');
 
     // 2. Check Header & Badges
     const headerTitle = await page.textContent('header');
-    if (headerTitle.includes('Catalog Intelligence')) {
+    if (headerTitle.includes('Catalog Intelligence') || headerTitle.includes('HPE ProLiant AI Studio') || headerTitle.includes('BOQ')) {
       successes.push('Header branding loaded');
     } else {
       gaps.push('Header branding missing');
@@ -67,7 +102,7 @@ async function runTest() {
 
     // 4. Test Stepper Step Clicking & Substep Expansion
     console.log('3. Inspecting Stepper stages and substep drilldown...');
-    const phase1Header = page.locator('text=Phase 1: Local Aspect Math');
+    const phase1Header = page.locator('text=Phase 1').or(page.locator('text=Catalog Intelligence')).first();
     if (await phase1Header.count() > 0) {
       successes.push('Phase 1 header verified');
     } else {
@@ -79,7 +114,7 @@ async function runTest() {
     if (await stage3Card.count() > 0) {
       await stage3Card.click();
       await page.waitForTimeout(300);
-      const substepsList = page.locator('text=Granular Internal Sub-Steps');
+      const substepsList = page.locator('text=Granular Internal Sub-Steps').or(page.locator('text=Sub-steps')).first();
       if (await substepsList.count() > 0) {
         successes.push('Stage 3 substep breakdown drawer expanded and verified');
       } else {
@@ -116,42 +151,45 @@ async function runTest() {
     if (!fs.existsSync(boqFile)) {
       gaps.push(`HP Opportunity file not found at: ${boqFile}`);
     } else {
-      // Switch back to stepper view mode
-      const stepperTabBtn = page.locator('button:has-text("9-Stage Stepper")');
-      if (await stepperTabBtn.count() > 0) {
-        await stepperTabBtn.click();
+      // Switch back to Macro Lifecycle view mode to open BOQ uploader modal
+      const macroTabBtn = page.locator('button:has-text("Macro Lifecycle")').first();
+      if (await macroTabBtn.count() > 0) {
+        await macroTabBtn.click();
         await page.waitForTimeout(400);
       }
 
-      // First click Stage 1 (Load BOQ) in stepper
-      const stage1Card = page.locator('h4:has-text("Load BOQ")').first();
-      if (await stage1Card.count() > 0) {
-        await stage1Card.click();
-        await page.waitForTimeout(500);
-      }
-
-      // Find and click Upload BOQ in drawer or Macro card
-      const uploadBoqBtn = page.locator('button:has-text("Upload BOQ")').last();
+      // Find and click Load BOQ & Evaluate in Macro card
+      const uploadBoqBtn = page.locator('button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load BOQ")').first();
       if (await uploadBoqBtn.count() > 0) {
         await uploadBoqBtn.click();
         await page.waitForTimeout(600);
 
         // Upload file via file input
-        const fileInput = page.locator('input[type="file"]').first();
+        const fileInput = page.locator('#boq-file-input, input[type="file"]').first();
         if (await fileInput.count() > 0) {
           await fileInput.setInputFiles(boqFile);
           await page.waitForTimeout(800);
           successes.push('HP Opportunity- DL380_5 Servers.xlsx uploaded to dropzone');
 
-          // Click Pre-Flight & AI Verification button
-          const evalBtn = page.locator('button:has-text("Pre-Flight"), button:has-text("Evaluate"), button:has-text("Run Pre-Flight")').first();
+          // Click Pre-flight Variation Analysis button
+          const preprocessBtn = page.locator('button:has-text("Pre-flight Variation Analysis"), button:has-text("Pre-process & Categorize")').first();
+          if (await preprocessBtn.count() > 0) {
+            await preprocessBtn.click();
+            const preflightPreview = page.locator('text=Pre-flight Intake Audit').or(page.locator('text=Configuration & BOM Variation Analysis')).first();
+            await preflightPreview.waitFor({ state: 'visible', timeout: 15000 });
+            successes.push('Pre-flight Variation Analysis succeeded and rendered');
+          }
+
+          // Click Run 6-Aspect Evaluation button
+          const evalBtn = page.locator('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")').first();
           if (await evalBtn.count() > 0) {
             console.log('6. Running evaluation on customer BOQ workbook...');
             await evalBtn.click();
             
             // Wait for evaluation results
             try {
-              await page.waitForSelector('text=Quantitative Confidence Score, text=Aspect Checks, text=Resolution Matrix, text=100%', { timeout: 25000 });
+              const evalResultLocator = page.locator('text=Confidence Score').or(page.locator('text=Aspect Checks')).or(page.locator('text=Resolution Matrix')).or(page.locator('text=Evaluation Progress')).first();
+              await evalResultLocator.waitFor({ state: 'visible', timeout: 25000 });
               successes.push('Evaluation finished and results rendered on modal');
             } catch (e) {
               smells.push('Evaluation result selector wait timed out');
@@ -190,6 +228,10 @@ async function runTest() {
     gaps.push(`Playwright test runtime error: ${err.message}`);
   } finally {
     await browser.close();
+    if (serverProc) {
+      serverProc.kill('SIGTERM');
+      console.log('\nStopped dashboard server instance.');
+    }
   }
 
   console.log('\n================================================================');

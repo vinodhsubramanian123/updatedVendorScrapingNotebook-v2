@@ -56,7 +56,7 @@ export function LearnedRulesModal({ isOpen, onClose, telemetry = {} }) {
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Learned Rules &amp; Knowledge Deltas Inspector"
+      title="Learned Rules & Knowledge Deltas Inspector"
       subtitle="Detailed ledger of rules, restrictions, and dependency overrides automatically learned from portal user feedback and evaluation validation."
       icon={Sparkles}
       iconColor="text-purple-600"
@@ -170,7 +170,7 @@ export function ConfidenceModal({ isOpen, onClose, history = [], telemetry = {} 
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Confidence Score &amp; Quality Audit"
+      title="Confidence Score & Quality Audit"
       subtitle="How the system computes overall confidence scores across conflict graph validation and RAG double-proofing."
       icon={ShieldCheck}
       iconColor="text-emerald-600"
@@ -213,7 +213,7 @@ export function DurationModal({ isOpen, onClose, history = [] }) {
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Pipeline Latency &amp; Duration Breakdown"
+      title="Pipeline Latency & Duration Breakdown"
       subtitle="Execution runtime metrics across BOQ file parsing, conflict graph matrix traversal, and RAG double-proofing."
       icon={Clock}
       iconColor="text-indigo-600"
@@ -237,11 +237,11 @@ export function DurationModal({ isOpen, onClose, history = [] }) {
           <h4 className="font-bold text-slate-900">Pipeline Processing Stages:</h4>
           <div className="space-y-2">
             <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
-              <span>1. BOQ Ingestion &amp; SKU Sanitization</span>
+              <span>1. BOQ Ingestion & SKU Sanitization</span>
               <span className="font-mono text-slate-500">~15ms</span>
             </div>
             <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
-              <span>2. Aspect Math &amp; CLIC Engine Traversal</span>
+              <span>2. Aspect Math & CLIC Engine Traversal</span>
               <span className="font-mono text-slate-500">~45ms</span>
             </div>
             <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
@@ -260,7 +260,7 @@ export function ExportsModal({ isOpen, onClose }) {
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Workflow &amp; BOQ Exports Ledger"
+      title="Workflow & BOQ Exports Ledger"
       subtitle="Complete history of generated corrected BOQ spreadsheets, XLSX artifacts, and reconciliation ledgers."
       icon={Server}
       iconColor="text-emerald-600"
@@ -278,7 +278,7 @@ export function ExportsModal({ isOpen, onClose }) {
         </div>
 
         <div className="space-y-2">
-          <h4 className="font-bold text-slate-900">Export Artifact Format &amp; Schema:</h4>
+          <h4 className="font-bold text-slate-900">Export Artifact Format & Schema:</h4>
           <div className="grid grid-cols-2 gap-2 text-[11px]">
             <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
               <strong className="text-slate-800 block">Itemized BOM Sheet</strong>
@@ -307,7 +307,7 @@ export function AccuracyModal({ isOpen, onClose }) {
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Accuracy Index &amp; Evaluation Benchmarks"
+      title="Accuracy Index & Evaluation Benchmarks"
       subtitle="Empirical accuracy and precision metrics across synthetic stress test suites and real customer quotes."
       icon={ShieldCheck}
       iconColor="text-emerald-600"
@@ -401,7 +401,7 @@ export function DomainBreakdownModal({ isOpen, onClose }) {
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Physical Rule Domains &amp; Aspect Engine"
+      title="Physical Rule Domains & Aspect Engine"
       subtitle="Detailed breakdown of the 6 physical constraint domains evaluated during BOQ validation."
       icon={BarChart2}
       iconColor="text-blue-600"

@@ -18,8 +18,8 @@ export default function ReconciliationActionPanel({
   return (
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
       <div>
-        <span className="badge badge-purple mb-1">Human Engineer Feedback &amp; Delta Learning</span>
-        <h4 className="font-bold text-slate-900 text-sm">Explain Discrepancy &amp; Teach Knowledge Engine</h4>
+        <span className="badge badge-purple mb-1">Human Engineer Feedback & Delta Learning</span>
+        <h4 className="font-bold text-slate-900 text-sm">Explain Discrepancy & Teach Knowledge Engine</h4>
         <p className="text-xs text-slate-500 mt-0.5">
           Record portal behavior to automatically generate new deterministic rules and sync to Gemini NotebookLM.
         </p>
@@ -49,7 +49,7 @@ export default function ReconciliationActionPanel({
             className="w-full text-xs border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. DL380 Gen12 only)</option>
-            <option value="FAMILY_GEN_SPECIFIC">Family &amp; Generation Wide (All Gen12 ProLiant)</option>
+            <option value="FAMILY_GEN_SPECIFIC">Family & Generation Wide (All Gen12 ProLiant)</option>
             <option value="UNIVERSAL_HPE">Universal Vendor Rule (All HPE Servers)</option>
           </select>
         </div>
@@ -57,7 +57,7 @@ export default function ReconciliationActionPanel({
 
       <div>
         <label className="block text-xs font-bold text-slate-700 mb-1">
-          Human Explanation &amp; Architecture Rationale:
+          Human Explanation & Architecture Rationale:
         </label>
         <textarea
           value={humanReasoning}

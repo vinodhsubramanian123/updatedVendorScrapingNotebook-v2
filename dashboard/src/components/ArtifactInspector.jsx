@@ -93,7 +93,7 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         <div>
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <FileCode className="w-5 h-5 text-purple-600" />
-            Pipeline Artifact &amp; Data Quality Inspector
+            Pipeline Artifact & Data Quality Inspector
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
             Full transparency into raw JSON extractions, TSVs, catalog diffs, and 7-check audit certificates.

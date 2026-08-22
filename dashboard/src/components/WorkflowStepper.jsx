@@ -105,7 +105,7 @@ export default function WorkflowStepper({
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Phase 1: Catalog Intelligence &amp; Knowledge Grounding
+                Phase 1: Catalog Intelligence & Knowledge Grounding
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -126,7 +126,7 @@ export default function WorkflowStepper({
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Phase 2: Continuous Evaluation &amp; Closed-Loop Feedback
+                Phase 2: Continuous Evaluation & Closed-Loop Feedback
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -189,7 +189,7 @@ export default function WorkflowStepper({
               {selectedStep.substeps && selectedStep.substeps.length > 0 && (
                 <div className="space-y-2">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 block">
-                    Execution Sub-steps &amp; Micro-Operations:
+                    Execution Sub-steps & Micro-Operations:
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {selectedStep.substeps.map((sub, idx) => (

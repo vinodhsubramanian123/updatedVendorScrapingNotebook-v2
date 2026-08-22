@@ -7,7 +7,7 @@ export default function NlmConsultationLedger({ nlmMetrics = {} }) {
   return (
     <div className="mt-8">
       <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-indigo-600 stroke-[2.25px]" /> Gemini Notebook RAG Consultation &amp; Double-Proofing Ledger
+        <Sparkles className="w-4 h-4 text-indigo-600 stroke-[2.25px]" /> Gemini Notebook RAG Consultation & Double-Proofing Ledger
       </h3>
       <div className="overflow-x-auto border border-slate-200 rounded-xl">
         <table className="w-full text-left text-xs">

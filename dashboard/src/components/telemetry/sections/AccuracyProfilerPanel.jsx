@@ -141,7 +141,7 @@ export default function AccuracyProfilerPanel({
         </div>
         <div className="space-y-1 text-[11px]">
           <div className="flex justify-between text-slate-600">
-            <span>Stage 1: Parsing &amp; CTO Multiplier</span>
+            <span>Stage 1: Parsing & CTO Multiplier</span>
             <span className="font-mono font-bold text-slate-800">
               {telemetry.history?.[0]?.stageBreakdown?.stage1ParsingMs ? `${telemetry.history[0].stageBreakdown.stage1ParsingMs}ms` : '~85ms'}
             </span>

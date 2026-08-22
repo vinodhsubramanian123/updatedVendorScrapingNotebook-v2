@@ -89,8 +89,8 @@ Examples:
 
   // Parse BOQ first so we can use items for auto-detection
   const tStart = Date.now();
-  emitProgress(1, 10, 'Extracting Workload DNA & BOQ Items', 'in_progress', `Parsing input file: ${path.basename(inputFile)}`);
-  const rawContent = fs.readFileSync(inputFile, 'utf-8');
+  const isExcel = inputFile.endsWith('.xlsx') || inputFile.endsWith('.xls');
+  const rawContent = isExcel ? '' : fs.readFileSync(inputFile, 'utf-8');
   const items = parseAndConsolidateBOQ(rawContent, inputFile);
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 

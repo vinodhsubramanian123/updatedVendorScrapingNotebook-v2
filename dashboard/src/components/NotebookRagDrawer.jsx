@@ -154,7 +154,7 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
             activeTab === 'QUERY' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
-          RAG Query &amp; Scenarios
+          RAG Query & Scenarios
         </button>
         <button
           onClick={() => setActiveTab('HISTORY')}
@@ -379,7 +379,7 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
               {ragData.citations && ragData.citations.length > 0 && (
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-blue-600" /> QuickSpecs Citations &amp; References:
+                    <BookOpen className="w-3.5 h-3.5 text-blue-600" /> QuickSpecs Citations & References:
                   </h4>
                   <div className="space-y-2">
                     {ragData.citations.map((cite, i) => (

@@ -7,7 +7,7 @@ export default function TelemetryHeader({ onRefresh, loading }) {
       <div>
         <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
           <Activity className="w-5 h-5 text-blue-600" />
-          System Telemetry &amp; Pipeline Observability
+          System Telemetry & Pipeline Observability
         </h2>
         <p className="text-xs text-slate-500 mt-0.5">
           Real-time telemetry captured across BOQ evaluations, knowledge deltas, confidence scores, and runtime durations.

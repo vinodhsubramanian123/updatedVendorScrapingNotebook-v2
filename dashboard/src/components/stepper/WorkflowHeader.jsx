@@ -21,7 +21,7 @@ export default function WorkflowHeader({
           )}
         </div>
         <h2 className="text-xl font-bold text-slate-900 mt-1">
-          HPE Autonomous Configuration &amp; Continuous Learning Lifecycle
+          HPE Autonomous Configuration & Continuous Learning Lifecycle
         </h2>
         <p className="text-xs text-slate-500">
           6-Stage Continuous Learning: Scrape ➔ Sync ➔ Pre-check ➔ RAG Ground ➔ Trial ➔ Learn

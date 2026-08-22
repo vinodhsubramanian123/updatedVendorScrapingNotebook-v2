@@ -177,7 +177,7 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-blue-600 shrink-0" />
           <div>
-            <h4 className="text-xs font-bold text-slate-900">Historical Snapshot &amp; Diff Summary</h4>
+            <h4 className="text-xs font-bold text-slate-900">Historical Snapshot & Diff Summary</h4>
             <p className="text-[11px] text-slate-500">Tracked changes against previous catalog snapshot</p>
           </div>
         </div>
@@ -205,7 +205,7 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
       {displayVariants.length > 0 && (
         <div className="pt-2">
           <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <Server className="w-4 h-4 text-blue-600" /> Chassis Variant &amp; Portfolio Price Matrix
+            <Server className="w-4 h-4 text-blue-600" /> Chassis Variant & Portfolio Price Matrix
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
             {displayVariants.map((variant, idx) => (

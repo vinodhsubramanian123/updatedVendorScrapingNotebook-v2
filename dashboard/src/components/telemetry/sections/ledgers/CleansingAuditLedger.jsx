@@ -5,7 +5,7 @@ export default function CleansingAuditLedger({ cleansingLogs = [] }) {
   return (
     <div className="mt-8">
       <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Activity className="w-4 h-4 text-emerald-600 stroke-[2.25px]" /> 5-Stage Cleansing &amp; Pre-Validation Subflow Audit Ledger
+        <Activity className="w-4 h-4 text-emerald-600 stroke-[2.25px]" /> 5-Stage Cleansing & Pre-Validation Subflow Audit Ledger
       </h3>
       <div className="overflow-x-auto border border-slate-200 rounded-xl">
         <table className="w-full text-left text-xs">

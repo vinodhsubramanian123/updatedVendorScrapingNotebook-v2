@@ -7,7 +7,7 @@ export default function NlmHealthTelemetry({ nlmHealth, nlmMetrics }) {
   return (
     <div className="mb-6 p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
       <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Server className="w-4 h-4 text-blue-600" /> NotebookLM RAG Observability &amp; Telemetry
+        <Server className="w-4 h-4 text-blue-600" /> NotebookLM RAG Observability & Telemetry
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
         <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100">

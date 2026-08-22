@@ -302,7 +302,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center justify-between">
           <h3 className="font-bold text-slate-800 flex items-center gap-2 text-xs uppercase tracking-wider">
             <Bookmark className="w-4 h-4 text-purple-600 stroke-[2.25px]" />
-            Active Business Rule Catalog &amp; Dependency Ledger
+            Active Business Rule Catalog & Dependency Ledger
           </h3>
           <span className="badge badge-purple text-[10px]">
             {filteredRules.length} of {totalRulesCount} Matches

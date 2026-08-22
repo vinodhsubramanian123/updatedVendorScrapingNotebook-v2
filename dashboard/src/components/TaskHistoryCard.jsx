@@ -46,7 +46,7 @@ export default function TaskHistoryCard({ tasks = [], activeProgress = null, isT
       <div className="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
           <Clock className="w-5 h-5 text-blue-600" />
-          Pipeline Task Execution Log &amp; Audit Timeline
+          Pipeline Task Execution Log & Audit Timeline
         </h3>
         <span className="mono text-[11px] text-slate-400">{combinedTasks.length} Run(s)</span>
       </div>

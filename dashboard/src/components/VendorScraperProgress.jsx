@@ -178,7 +178,7 @@ export default function VendorScraperProgress({
       <div className={`bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-slate-500 text-xs flex items-center justify-between ${className}`}>
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-slate-400" />
-          <span>Scraper status: <strong className="text-slate-700">Idle &amp; Ready</strong></span>
+          <span>Scraper status: <strong className="text-slate-700">Idle & Ready</strong></span>
         </div>
         <span className="text-[11px] bg-slate-200/60 text-slate-600 px-2 py-0.5 rounded-md font-mono">Port 9222 CDP</span>
       </div>

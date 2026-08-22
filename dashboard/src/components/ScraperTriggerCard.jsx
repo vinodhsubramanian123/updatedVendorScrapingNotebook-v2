@@ -43,7 +43,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
           <div>
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <Terminal className="w-5 h-5 text-blue-600 stroke-[2.25px]" />
-              Live CDP Scraper &amp; Pipeline Controls
+              Live CDP Scraper & Pipeline Controls
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
               Execute live browser scrapes, rebuild catalogs offline, or fetch QuickSpecs PDFs over port 9222.

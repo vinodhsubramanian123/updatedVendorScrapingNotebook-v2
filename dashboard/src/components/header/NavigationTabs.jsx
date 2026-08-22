@@ -26,6 +26,7 @@ export default function NavigationTabs({
           return (
             <button
               key={tab.id}
+              data-tab={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 isActive

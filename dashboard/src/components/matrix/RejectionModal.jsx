@@ -25,7 +25,7 @@ export default function RejectionModal({
           <div>
             <span className="badge badge-rose mb-1">Closed-Loop Learning</span>
             <h3 id="feedback-loop-title" className="text-base font-bold text-slate-900">
-              Portal Rejection &amp; Rule Feedback Loop
+              Portal Rejection & Rule Feedback Loop
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
               Tested for: <span className="font-semibold text-slate-700">{modalData.title}</span>

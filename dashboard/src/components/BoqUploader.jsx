@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ShieldCheck, AlertTriangle, ArrowRight } from 'lucide-react';
 import BoqInputZone from './uploader/BoqInputZone';
 import EvaluationProgressSteps from './uploader/EvaluationProgressSteps';
 import PreflightPipelineAudit from './uploader/PreflightPipelineAudit';
@@ -10,8 +11,8 @@ export default function BoqUploader({
   logStream = [],
   chassisDir,
   isTaskRunning = false,
-  _onOpenMatrix,
-  _onOpenReconciliation
+  onOpenMatrix,
+  onOpenReconciliation
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
@@ -228,6 +229,62 @@ export default function BoqUploader({
         logStream={logStream}
         logsEndRef={logsEndRef}
       />
+
+      {evalResults && (
+        <div className="glass-card p-6 border border-slate-200 shadow-sm rounded-xl space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className={`p-2.5 rounded-xl border ${
+                evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                  : 'bg-amber-50 border-amber-200 text-amber-700'
+              }`}>
+                {evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false ? (
+                  <ShieldCheck className="w-5 h-5" />
+                ) : (
+                  <AlertTriangle className="w-5 h-5" />
+                )}
+              </span>
+              <div>
+                <span className="badge badge-blue mb-1">BOQ Evaluation Outcome</span>
+                <h3 className="font-bold text-slate-900 text-base">
+                  {evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false
+                    ? 'Certified Buildable Configuration'
+                    : 'Physical Constraint Violations Flagged'}
+                </h3>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-[11px] text-slate-500 font-medium">Confidence Score:</span>
+              <p className="font-bold text-emerald-700 text-lg font-mono">
+                {Math.round((evalResults.confidence?.score ?? evalResults.confidenceScore ?? 0.95) * (evalResults.confidenceScore > 1 ? 1 : 100))}%
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            {onOpenReconciliation && (
+              <button
+                type="button"
+                onClick={onOpenReconciliation}
+                className="btn-secondary text-xs flex items-center gap-1.5"
+              >
+                Reconcile with Partner Quote
+              </button>
+            )}
+            {onOpenMatrix && (
+              <button
+                type="button"
+                onClick={onOpenMatrix}
+                className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
+              >
+                View 5-Tier Strategy Matrix
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <MultiConfigSplitModal
         isOpen={isSplitModalOpen}
