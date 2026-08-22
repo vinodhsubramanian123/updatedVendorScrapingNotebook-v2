@@ -20,7 +20,8 @@ module.exports = {
     logger: require('./pipeline_logger.js'),
     profileLoader: require('./profile_loader.js'),
     geminiRotator: require('./gemini_rotator.js'),
-    schemas: require('./schemas.js')
+    schemas: require('./schemas.js'),
+    errorEnvelope: require('./error_envelope.js')
   },
 
   // BOQ Processing & Evaluation Subsystem
