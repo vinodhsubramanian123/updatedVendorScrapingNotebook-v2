@@ -5,7 +5,13 @@ import MatrixComparisonTable from './matrix/MatrixComparisonTable';
 import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
 
-export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, selectedChassis, onTriggerDemoBoq }) {
+export default function ResolutionMatrix({
+  evalResults,
+  onOpenPortalFeedback,
+  selectedChassis,
+  onTriggerDemoBoq,
+  onOpenTopology
+}) {
   const [exportingRank, setExportingRank] = useState(null);
   const [exportedFiles, setExportedFiles] = useState({});
   const [exportError, setExportError] = useState(null);
@@ -240,6 +246,7 @@ export default function ResolutionMatrix({ evalResults, onOpenPortalFeedback, se
         evalResults={evalResults}
         onTriggerDemoBoq={onTriggerDemoBoq}
         exportError={exportError}
+        onOpenTopology={onOpenTopology}
       />
 
       {matrixViewMode === 'vertical-matrix' ? (

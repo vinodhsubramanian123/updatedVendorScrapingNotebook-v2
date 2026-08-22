@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, FileText, Sparkles } from 'lucide-react';
 
-export default function PartnerReconciliationView({ evalResults, selectedChassis, onTriggerScrape, auditReport: parentAuditReport, onAuditReportChange }) {
+export default function PartnerReconciliationView({
+  evalResults,
+  selectedChassis,
+  onTriggerScrape,
+  auditReport: parentAuditReport,
+  onAuditReportChange,
+  onOpenTopology
+}) {
   const [vendorText, setVendorText] = useState('');
   const [selectedRank, setSelectedRank] = useState(1);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -210,9 +217,30 @@ export default function PartnerReconciliationView({ evalResults, selectedChassis
                     </p>
                   </div>
                 </div>
-                <span className={`badge ${auditReport.is100PercentMatch ? 'badge-emerald' : 'badge-amber'}`}>
-                  {auditReport.is100PercentMatch ? 'VERIFIED_CLEAN' : 'DELTAS_LEARNED'}
-                </span>
+                <div className="flex items-center gap-2">
+                  {onOpenTopology && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenTopology({
+                        chassis: auditReport.chassisModel,
+                        items: (auditReport.vendorItems || []).map(v => ({
+                          sku: v.sku,
+                          description: v.description,
+                          quantity: v.quantity,
+                          category: v.category
+                        })),
+                        isReconciliation: true
+                      })}
+                      className="btn-secondary text-xs py-1 px-2.5 flex items-center gap-1 bg-white border border-slate-300"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>View Topology</span>
+                    </button>
+                  )}
+                  <span className={`badge ${auditReport.is100PercentMatch ? 'badge-emerald' : 'badge-amber'}`}>
+                    {auditReport.is100PercentMatch ? 'VERIFIED_CLEAN' : 'DELTAS_LEARNED'}
+                  </span>
+                </div>
               </div>
 
               {/* Fresh Scrape Trigger Warning */}

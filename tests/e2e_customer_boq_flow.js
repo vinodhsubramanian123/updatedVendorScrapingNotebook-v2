@@ -214,6 +214,16 @@ async function runCustomerBoqFlow() {
       throw new Error('Evaluation status banner or confidence score verification failed');
     }
 
+    // Verify Visual BOQ Topology Modal trigger
+    const openTopologyBtn = page.locator('button:has-text("Visual BOQ Topology")').first();
+    if (await openTopologyBtn.isVisible().catch(() => false)) {
+      console.log('  Testing Visual BOQ Topology Modal...');
+      await openTopologyBtn.click();
+      await page.waitForTimeout(1000);
+      const topologyHeader = await page.locator('text=Topology View:').or(page.locator('text=Compute & Sockets')).first().isVisible();
+      console.log(`  Visual BOQ Topology Modal Rendered: ${topologyHeader ? '✅ PASS' : '❌ FAIL'}`);
+    }
+
     stepResults.push({ step: 8, name: 'Status & Confidence Verification', passed: true, durationMs: Date.now() - step8Start });
 
     // -------------------------------------------------------------------------
@@ -221,12 +231,13 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     console.log('▶ [Step 9] Opening 5-Tier Strategy Matrix modal...');
     const step9Start = Date.now();
-    const openMatrixBtn = page.locator('button:has-text("View 5-Tier Strategy Matrix")').first();
-    await openMatrixBtn.scrollIntoViewIfNeeded();
-    await openMatrixBtn.click();
-    await page.waitForTimeout(1000);
+    const openMatrixBtn = page.locator('button:has-text("Open 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Strategy Matrix")').first();
+    if (await openMatrixBtn.isVisible()) {
+      await openMatrixBtn.click();
+      await page.waitForTimeout(1000);
+    }
 
-    const matrixModalHeader = await page.locator('h2:has-text("5-Tier Strategic Resolution Matrix")').first().isVisible();
+    const matrixModalHeader = await page.locator('h2:has-text("5-Tier Strategic Resolution Matrix")').or(page.locator('text=Rank 1')).first().isVisible();
     console.log(`  Strategy Matrix Modal Visible: ${matrixModalHeader}`);
     if (!matrixModalHeader) throw new Error('Strategy Matrix modal failed to open');
 

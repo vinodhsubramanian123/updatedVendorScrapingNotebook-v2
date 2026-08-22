@@ -1,12 +1,13 @@
 import React from 'react';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Network } from 'lucide-react';
 
 export default function MatrixToolbar({
   viewMode,
   setViewMode,
   evalResults,
   onTriggerDemoBoq,
-  exportError
+  exportError,
+  onOpenTopology
 }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -21,7 +22,17 @@ export default function MatrixToolbar({
         </p>
       </div>
 
-      <div className="flex items-center gap-2 self-start sm:self-auto">
+      <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+        {onOpenTopology && evalResults && (
+          <button
+            onClick={onOpenTopology}
+            className="btn-secondary text-xs flex items-center gap-1.5 text-emerald-800 border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100"
+          >
+            <Network className="w-3.5 h-3.5 text-emerald-600" />
+            Visual Topology
+          </button>
+        )}
+
         <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200">
           <button
             onClick={() => setViewMode('cards')}

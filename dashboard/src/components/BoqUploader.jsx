@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShieldCheck, AlertTriangle, ArrowRight } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, ArrowRight, Network } from 'lucide-react';
 import BoqInputZone from './uploader/BoqInputZone';
 import EvaluationProgressSteps from './uploader/EvaluationProgressSteps';
 import PreflightPipelineAudit from './uploader/PreflightPipelineAudit';
@@ -12,7 +12,8 @@ export default function BoqUploader({
   chassisDir,
   isTaskRunning = false,
   onOpenMatrix,
-  onOpenReconciliation
+  onOpenReconciliation,
+  onOpenTopology
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
@@ -220,6 +221,7 @@ export default function BoqUploader({
         preflightData={preflightData}
         onProceedToEvaluate={handleDirectEvaluate}
         onOpenSplitModal={() => setIsSplitModalOpen(true)}
+        onOpenTopology={onOpenTopology ? () => onOpenTopology(preflightData) : undefined}
         isEvaluating={isEvaluating}
       />
 
@@ -262,7 +264,17 @@ export default function BoqUploader({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 flex-wrap">
+            {onOpenTopology && (
+              <button
+                type="button"
+                onClick={onOpenTopology}
+                className="btn-secondary text-xs flex items-center gap-1.5 text-emerald-800 border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100"
+              >
+                <Network className="w-3.5 h-3.5 text-emerald-600" />
+                Visual BOQ Topology
+              </button>
+            )}
             {onOpenReconciliation && (
               <button
                 type="button"

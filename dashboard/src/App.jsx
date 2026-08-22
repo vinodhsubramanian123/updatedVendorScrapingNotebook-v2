@@ -16,6 +16,7 @@ import PartnerReconciliationView from './components/PartnerReconciliationView';
 import GlobalLoadingState from './components/GlobalLoadingState';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
+import BoqTopologyModal from './components/topology/BoqTopologyModal';
 
 // Extracted services & hooks (GAP-L1, GAP-L4 fixes)
 import { useSSEStream } from './hooks/useSSEStream.js';
@@ -393,6 +394,10 @@ export default function App() {
           isTaskRunning={isTaskRunning}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
+          onOpenTopology={(customData) => {
+            if (customData) setEvalResults(prev => ({ ...prev, ...customData }));
+            setActiveModal('boqTopology');
+          }}
         />
         {evalResults && (
           <div className="mt-6 space-y-6 animate-fade-in">
@@ -403,11 +408,40 @@ export default function App() {
       </ToolModal>
 
       <ToolModal isOpen={activeModal === 'resolutionMatrix'} onClose={() => setActiveModal(null)} title="Stage 1.5: 5-Tier Strategic Resolution Matrix">
-        <ResolutionMatrix evalResults={evalResults} onOpenPortalFeedback={setSelectedCardForFeedback} selectedChassis={selectedChassis} onTriggerDemoBoq={handleEvaluateBoq} />
+        <ResolutionMatrix
+          evalResults={evalResults}
+          onOpenPortalFeedback={setSelectedCardForFeedback}
+          selectedChassis={selectedChassis}
+          onTriggerDemoBoq={handleEvaluateBoq}
+          onOpenTopology={() => setActiveModal('boqTopology')}
+        />
+      </ToolModal>
+
+      <ToolModal isOpen={activeModal === 'boqTopology'} onClose={() => setActiveModal(null)} title="Visual BOQ Configuration Topology & Subsystem Mindmap">
+        <BoqTopologyModal
+          isOpen={activeModal === 'boqTopology'}
+          onClose={() => setActiveModal(null)}
+          evalResults={evalResults}
+          onOpenRag={(query) => {
+            setIsRagOpen(true);
+            if (query) handleSmartSearch(query);
+          }}
+          onOpenMatrix={() => setActiveModal('resolutionMatrix')}
+        />
       </ToolModal>
 
       <ToolModal isOpen={activeModal === 'reconciliation'} onClose={() => setActiveModal(null)} title="Stage 3: Partner Quote Reconciliation">
-        <PartnerReconciliationView evalResults={evalResults} selectedChassis={selectedChassis} onTriggerScrape={handleTriggerScrape} auditReport={auditReport} onAuditReportChange={setAuditReport} />
+        <PartnerReconciliationView
+          evalResults={evalResults}
+          selectedChassis={selectedChassis}
+          onTriggerScrape={handleTriggerScrape}
+          auditReport={auditReport}
+          onAuditReportChange={setAuditReport}
+          onOpenTopology={(customData) => {
+            if (customData) setEvalResults(prev => ({ ...prev, ...customData }));
+            setActiveModal('boqTopology');
+          }}
+        />
       </ToolModal>
 
       {/* Drawers */}

@@ -5,6 +5,7 @@ export default function PreflightPipelineAudit({
   preflightData,
   onProceedToEvaluate,
   onOpenSplitModal,
+  onOpenTopology,
   isEvaluating
 }) {
   if (!preflightData) return null;
@@ -70,7 +71,18 @@ export default function PreflightPipelineAudit({
         </div>
       )}
 
-      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+      <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+        {onOpenTopology ? (
+          <button
+            type="button"
+            onClick={onOpenTopology}
+            className="btn-secondary text-xs flex items-center gap-1.5"
+          >
+            <Layers className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Inspect Intake Topology</span>
+          </button>
+        ) : <div />}
+
         <button
           onClick={onProceedToEvaluate}
           disabled={isEvaluating}
