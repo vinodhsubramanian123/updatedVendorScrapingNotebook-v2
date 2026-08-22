@@ -395,3 +395,173 @@ STEPS EXECUTED:
   [2026-08-19T13:01:00.968Z] [SUCCESS ] Step 6: Atomic Save Output JSON
 ================================================================
 
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787390831995
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:27:11.994Z
+END TIME:     2026-08-22T09:27:12.478Z (0.48s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:27:11.995Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:27:12.373Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:27:12.381Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:27:12.478Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787390848797
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:27:28.796Z
+END TIME:     2026-08-22T09:27:29.186Z (0.39s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:27:28.797Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:27:29.095Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:27:29.104Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:27:29.185Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787390929600
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:28:49.600Z
+END TIME:     2026-08-22T09:28:50.036Z (0.44s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:28:49.600Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:28:49.924Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:28:49.932Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:28:50.036Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391295149
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:34:55.149Z
+END TIME:     2026-08-22T09:34:55.906Z (0.76s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:34:55.150Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:34:55.758Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:34:55.769Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:34:55.906Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391816141
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:43:36.140Z
+END TIME:     2026-08-22T09:43:36.779Z (0.64s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:43:36.141Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:43:36.634Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:43:36.642Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:43:36.779Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391836467
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:43:56.466Z
+END TIME:     2026-08-22T09:43:57.066Z (0.60s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:43:56.467Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:43:56.960Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:43:56.968Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:43:57.066Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391862489
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:44:22.488Z
+END TIME:     2026-08-22T09:44:23.207Z (0.72s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:44:22.489Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:44:23.056Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:44:23.065Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:44:23.207Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391885441
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:44:45.441Z
+END TIME:     2026-08-22T09:44:46.064Z (0.62s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    264
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:44:45.441Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:44:45.955Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:44:45.963Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:44:46.064Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787391908789
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:45:08.788Z
+END TIME:     2026-08-22T09:45:09.254Z (0.47s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:45:08.789Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:45:09.158Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:45:09.163Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:45:09.254Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787392075022
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-22T09:47:55.021Z
+END TIME:     2026-08-22T09:47:55.475Z (0.45s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    261
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-22T09:47:55.022Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-22T09:47:55.382Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-22T09:47:55.389Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-22T09:47:55.474Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+

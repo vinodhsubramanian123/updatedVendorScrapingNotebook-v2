@@ -144,51 +144,87 @@
   },
   "P73282-B21": {
     "productNumber": "P73282-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "5584.00",
+    "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P73283-B21": {
     "productNumber": "P73283-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "5980.00",
+    "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P73284-B21": {
     "productNumber": "P73284-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "6350.00",
+    "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P73285-B21": {
     "productNumber": "P73285-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "6890.00",
+    "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P73286-B21": {
     "productNumber": "P73286-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "7120.00",
+    "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P73287-B21": {
     "productNumber": "P73287-B21",
-    "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "7450.00",
+    "fullPriceTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-22"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -2129,26 +2165,41 @@
   "P52341-B21": {
     "productNumber": "P52341-B21",
     "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "164.00",
+    "fullPriceTrail": "2026-08-12: $164.00 → 2026-08-12: $164.00 → 2026-08-13: $164.00 → 2026-08-14: $164.00 → 2026-08-16: $164.00 → 2026-08-19: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 → 2026-08-22: $164.00 (✕ REMOVED) → 2026-08-22: $164.00 (↩ REINSTATED) → 2026-08-22: $164.00",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P70744-B21": {
     "productNumber": "P70744-B21",
     "description": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "172.00",
+    "fullPriceTrail": "2026-08-12: $172.00 → 2026-08-12: $172.00 → 2026-08-13: $172.00 → 2026-08-14: $172.00 → 2026-08-16: $172.00 → 2026-08-19: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 → 2026-08-22: $172.00 (✕ REMOVED) → 2026-08-22: $172.00 (↩ REINSTATED) → 2026-08-22: $172.00",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P74748-B21": {
     "productNumber": "P74748-B21",
     "description": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-22",
+    "daysActive": 10,
+    "lastKnownPrice": "117.00",
+    "fullPriceTrail": "2026-08-12: $117.00 → 2026-08-12: $117.00 → 2026-08-13: $117.00 → 2026-08-14: $117.00 → 2026-08-16: $117.00 → 2026-08-19: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 → 2026-08-22: $117.00 (✕ REMOVED) → 2026-08-22: $117.00 (↩ REINSTATED) → 2026-08-22: $117.00",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "S2L70C": {
     "productNumber": "S2L70C",

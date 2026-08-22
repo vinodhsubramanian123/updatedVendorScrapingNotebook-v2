@@ -148,6 +148,17 @@ async function main() {
     }
   });
 
+  // GAP FIX #6: Subcategory resolution quality advisory
+  const subTableCount = allSkusSheet.filter(r => r['Sub-Category'] === '(Sub-table)').length;
+  const resolvedSubcatCount = allSkusSheet.length - subTableCount;
+  const resolvedPct = ((resolvedSubcatCount / (allSkusSheet.length || 1)) * 100).toFixed(1);
+  if (!JSON_MODE) {
+    console.log(`  📊 Subcategory Resolution Quality: ${resolvedSubcatCount}/${allSkusSheet.length} resolved (${resolvedPct}%)`);
+    if (resolvedPct < 20) {
+      console.log(`  ℹ️  ADVISORY: ${subTableCount} SKUs are grouped under (Sub-table) fallback.`);
+    }
+  }
+
   assert(
     cleanQtyCount === allSkusSheet.length,
     `100% of SKUs (${cleanQtyCount}/${allSkusSheet.length}) pass numeric Current Qty regex (^\\d+$)`

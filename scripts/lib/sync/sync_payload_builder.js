@@ -189,7 +189,8 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     md += `| SKU | Description | Status | Discontinued Date | Last Known Price |\n`;
     md += `|-----|-------------|--------|-------------------|------------------|\n`;
     discontinuedList.forEach(d => {
-      md += `| \`${d.sku}\` | ${d.description || 'N/A'} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} |\n`;
+      const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
+      md += `| \`${skuPn}\` | ${d.description || 'N/A'} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} |\n`;
     });
     md += `\n`;
   }
@@ -202,7 +203,10 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     md += `| Timestamp | SKU | Attribute | Old Value | New Value |\n`;
     md += `|-----------|-----|-----------|-----------|-----------|\n`;
     attributeHistory.slice(-15).forEach(a => {
-      md += `| ${a.timestamp?.split('T')[0] || 'N/A'} | \`${a.sku}\` | ${a.attribute} | ${a.oldValue} | **${a.newValue}** |\n`;
+      const aSku = a.productNumber || a.sku || a['Product #'] || 'N/A';
+      const aDate = a.date || a.timestamp?.split('T')[0] || 'N/A';
+      const aField = a.field || a.attribute || 'Specification';
+      md += `| ${aDate} | \`${aSku}\` | ${aField} | ${a.oldValue} | **${a.newValue}** |\n`;
     });
     md += `\n`;
   }

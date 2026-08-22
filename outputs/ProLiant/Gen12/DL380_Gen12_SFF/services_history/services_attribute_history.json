@@ -2628,5 +2628,1105 @@
     "field": "Description",
     "oldValue": "Factory Integrated",
     "newValue": "HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "(Sub-table)",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Option Component",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "875519-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48922-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P50400-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S6B45A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "875519-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P48922-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "P50400-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S6B45A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R04AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R05AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R06AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R07AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W26AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W27AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W28AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W29AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D41AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D42AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D44AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D45AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D49AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D50AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D52AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D53AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D55AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D56AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D58AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D59AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D61AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D62AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D64AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D65AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R04AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R05AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R06AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R07AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W26AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W27AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W28AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W29AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D41AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D42AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D44AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D45AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D49AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D50AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D52AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D53AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D55AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D56AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D58AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D59AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D61AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D62AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D64AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D65AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R04AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R05AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R06AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3R07AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W26AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W27AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W28AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S3W29AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "S1A05A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "BD505A",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D41AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D42AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D44AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D45AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D49AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D50AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D52AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D53AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D55AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D56AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D58AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D59AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D61AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D62AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D64AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-08-22",
+    "productNumber": "R1D65AAE",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
   }
 ]

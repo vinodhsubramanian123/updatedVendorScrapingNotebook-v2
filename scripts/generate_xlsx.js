@@ -88,13 +88,15 @@ const servicesData = parseTSV(path.join(scrapsDir, `${filePrefix}_Services_SKUs.
 // ── Build workbook ────────────────────────────────────────────────────────────
 const wb = XLSX.utils.book_new();
 
-// ── Column widths for 23-field SKU schema (18 base + 5 diff fields) ──────────
+// ── Column widths for 24-field SKU schema (19 base + 5 diff fields) ──────────
+// GAP FIX #2: Added Subcategory Min Qty column between Constraint Text and Subcategory Max Qty
 const SKU_COL_WIDTHS = [
   { wch: 25 }, // Main Category
   { wch: 35 }, // Sub-Category
   { wch: 70 }, // Hierarchy Path
   { wch: 22 }, // Component Role
   { wch: 15 }, // Constraint Text
+  { wch: 15 }, // Subcategory Min Qty
   { wch: 15 }, // Subcategory Max Qty
   { wch: 60 }, // Table Rule/Note
   { wch: 16 }, // Product #

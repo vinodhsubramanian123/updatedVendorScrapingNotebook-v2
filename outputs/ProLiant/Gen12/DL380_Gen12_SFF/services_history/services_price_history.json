@@ -19,6 +19,16 @@
       "date": "2026-08-19",
       "price": 89,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 89,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 89,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P48922-B21": [
@@ -41,6 +51,16 @@
       "date": "2026-08-19",
       "price": 38,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 38,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 38,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50400-B21": [
@@ -63,6 +83,16 @@
       "date": "2026-08-19",
       "price": 88,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 88,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 88,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6B45A": [
@@ -85,6 +115,16 @@
       "date": "2026-08-19",
       "price": 88,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 88,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 88,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8M41A": [
@@ -105,6 +145,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3999,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3999,
       "status": "UNCHANGED"
     }
@@ -129,6 +174,11 @@
       "date": "2026-08-19",
       "price": 1650,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1650,
+      "status": "UNCHANGED"
     }
   ],
   "P08443-B21": [
@@ -149,6 +199,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1680,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1680,
       "status": "UNCHANGED"
     }
@@ -173,6 +228,11 @@
       "date": "2026-08-19",
       "price": 4373,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4373,
+      "status": "UNCHANGED"
     }
   ],
   "P26253-B21": [
@@ -193,6 +253,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1105,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1105,
       "status": "UNCHANGED"
     }
@@ -217,6 +282,11 @@
       "date": "2026-08-19",
       "price": 940,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 940,
+      "status": "UNCHANGED"
     }
   ],
   "P26262-B21": [
@@ -237,6 +307,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1184,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1184,
       "status": "UNCHANGED"
     }
@@ -261,6 +336,11 @@
       "date": "2026-08-19",
       "price": 1500,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1500,
+      "status": "UNCHANGED"
     }
   ],
   "P51178-B21": [
@@ -281,6 +361,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 485,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 485,
       "status": "UNCHANGED"
     }
@@ -305,6 +390,11 @@
       "date": "2026-08-19",
       "price": 3600,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3600,
+      "status": "UNCHANGED"
     }
   ],
   "P08458-B21": [
@@ -325,6 +415,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3770,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3770,
       "status": "UNCHANGED"
     }
@@ -349,6 +444,11 @@
       "date": "2026-08-19",
       "price": 8495,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8495,
+      "status": "UNCHANGED"
     }
   ],
   "P26264-B21": [
@@ -369,6 +469,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2598,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2598,
       "status": "UNCHANGED"
     }
@@ -393,6 +498,11 @@
       "date": "2026-08-19",
       "price": 4855,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4855,
+      "status": "UNCHANGED"
     }
   ],
   "P87940-B21": [
@@ -413,6 +523,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 11755,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 11755,
       "status": "UNCHANGED"
     }
@@ -437,6 +552,11 @@
       "date": "2026-08-19",
       "price": 9999,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9999,
+      "status": "UNCHANGED"
     }
   ],
   "S4S01A": [
@@ -457,6 +577,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5499,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5499,
       "status": "UNCHANGED"
     }
@@ -481,6 +606,11 @@
       "date": "2026-08-19",
       "price": 4675,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4675,
+      "status": "UNCHANGED"
     }
   ],
   "R2E09A": [
@@ -501,6 +631,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7410,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7410,
       "status": "UNCHANGED"
     }
@@ -525,6 +660,11 @@
       "date": "2026-08-19",
       "price": 9688,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9688,
+      "status": "UNCHANGED"
     }
   ],
   "R7N87A": [
@@ -545,6 +685,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 12800,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 12800,
       "status": "UNCHANGED"
     }
@@ -569,6 +714,11 @@
       "date": "2026-08-19",
       "price": 25844,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 25844,
+      "status": "UNCHANGED"
     }
   ],
   "S0K89C": [
@@ -589,6 +739,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7566,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7566,
       "status": "UNCHANGED"
     }
@@ -613,6 +768,11 @@
       "date": "2026-08-19",
       "price": 1334,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1334,
+      "status": "UNCHANGED"
     }
   ],
   "S6W30C": [
@@ -633,6 +793,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 15799,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 15799,
       "status": "UNCHANGED"
     }
@@ -657,6 +822,11 @@
       "date": "2026-08-19",
       "price": 112579,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 112579,
+      "status": "UNCHANGED"
     }
   ],
   "S6A73C": [
@@ -677,6 +847,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 46479,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 46479,
       "status": "UNCHANGED"
     }
@@ -701,6 +876,11 @@
       "date": "2026-08-19",
       "price": 37899,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 37899,
+      "status": "UNCHANGED"
     }
   ],
   "AF557A": [
@@ -721,6 +901,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 156,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 156,
       "status": "UNCHANGED"
     }
@@ -745,6 +930,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "P78156-B21": [
@@ -765,6 +955,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 14,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 14,
       "status": "UNCHANGED"
     }
@@ -789,6 +984,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "AF558A": [
@@ -809,6 +1009,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 65,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 65,
       "status": "UNCHANGED"
     }
@@ -833,6 +1038,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "AF560A": [
@@ -853,6 +1063,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 55,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 55,
       "status": "UNCHANGED"
     }
@@ -877,6 +1092,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "AF562A": [
@@ -897,6 +1117,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 194,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 194,
       "status": "UNCHANGED"
     }
@@ -921,6 +1146,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "AF565A": [
@@ -941,6 +1171,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 55,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 55,
       "status": "UNCHANGED"
     }
@@ -965,6 +1200,11 @@
       "date": "2026-08-19",
       "price": 55,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55,
+      "status": "UNCHANGED"
     }
   ],
   "AF567A": [
@@ -985,6 +1225,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 65,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 65,
       "status": "UNCHANGED"
     }
@@ -1009,6 +1254,11 @@
       "date": "2026-08-19",
       "price": 71,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 71,
+      "status": "UNCHANGED"
     }
   ],
   "AF569A": [
@@ -1029,6 +1279,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 65,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 65,
       "status": "UNCHANGED"
     }
@@ -1053,6 +1308,11 @@
       "date": "2026-08-19",
       "price": 60,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 60,
+      "status": "UNCHANGED"
     }
   ],
   "AF573A": [
@@ -1073,6 +1333,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 38,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 38,
       "status": "UNCHANGED"
     }
@@ -1097,6 +1362,11 @@
       "date": "2026-08-19",
       "price": 49,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 49,
+      "status": "UNCHANGED"
     }
   ],
   "P78130-B21": [
@@ -1117,6 +1387,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 10,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 10,
       "status": "UNCHANGED"
     }
@@ -1141,6 +1416,11 @@
       "date": "2026-08-19",
       "price": 10,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10,
+      "status": "UNCHANGED"
     }
   ],
   "P78144-B21": [
@@ -1161,6 +1441,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 46,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 46,
       "status": "UNCHANGED"
     }
@@ -1185,6 +1470,11 @@
       "date": "2026-08-19",
       "price": 77,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 77,
+      "status": "UNCHANGED"
     }
   ],
   "P78940-B21": [
@@ -1205,6 +1495,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 130,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 130,
       "status": "UNCHANGED"
     }
@@ -1229,6 +1524,11 @@
       "date": "2026-08-19",
       "price": 110,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 110,
+      "status": "UNCHANGED"
     }
   ],
   "R1C65A": [
@@ -1249,6 +1549,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 119,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 119,
       "status": "UNCHANGED"
     }
@@ -1273,6 +1578,11 @@
       "date": "2026-08-19",
       "price": 1,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "UNCHANGED"
     }
   ],
   "S3R04AAE": [
@@ -1295,6 +1605,16 @@
       "date": "2026-08-19",
       "price": 8316,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8316,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8316,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R05AAE": [
@@ -1317,6 +1637,16 @@
       "date": "2026-08-19",
       "price": 2078,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2078,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2078,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R06AAE": [
@@ -1339,6 +1669,16 @@
       "date": "2026-08-19",
       "price": 23700,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 23700,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 23700,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R07AAE": [
@@ -1361,6 +1701,16 @@
       "date": "2026-08-19",
       "price": 5922,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5922,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5922,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3W26AAE": [
@@ -1383,6 +1733,16 @@
       "date": "2026-08-19",
       "price": 31602,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31602,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31602,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3W27AAE": [
@@ -1405,6 +1765,16 @@
       "date": "2026-08-19",
       "price": 7896,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7896,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7896,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3W28AAE": [
@@ -1427,6 +1797,16 @@
       "date": "2026-08-19",
       "price": 39501,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 39501,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 39501,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3W29AAE": [
@@ -1449,6 +1829,16 @@
       "date": "2026-08-19",
       "price": 9871,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9871,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9871,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q2A48A": [
@@ -1469,6 +1859,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 249,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 249,
       "status": "UNCHANGED"
     }
@@ -1493,6 +1888,11 @@
       "date": "2026-08-19",
       "price": 1,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "UNCHANGED"
     }
   ],
   "R6X84AAE": [
@@ -1513,6 +1913,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 585,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 585,
       "status": "UNCHANGED"
     }
@@ -1537,6 +1942,11 @@
       "date": "2026-08-19",
       "price": 1089,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1089,
+      "status": "UNCHANGED"
     }
   ],
   "S1R56AAE": [
@@ -1557,6 +1967,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1409,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1409,
       "status": "UNCHANGED"
     }
@@ -1581,6 +1996,11 @@
       "date": "2026-08-19",
       "price": 1725,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1725,
+      "status": "UNCHANGED"
     }
   ],
   "S1R58AAE": [
@@ -1601,6 +2021,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 318,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 318,
       "status": "UNCHANGED"
     }
@@ -1625,6 +2050,11 @@
       "date": "2026-08-19",
       "price": 46200,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 46200,
+      "status": "UNCHANGED"
     }
   ],
   "S1R64AAE": [
@@ -1645,6 +2075,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 58520,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 58520,
       "status": "UNCHANGED"
     }
@@ -1669,6 +2104,11 @@
       "date": "2026-08-19",
       "price": 69300,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 69300,
+      "status": "UNCHANGED"
     }
   ],
   "S1R66AAE": [
@@ -1689,6 +2129,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 363,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 363,
       "status": "UNCHANGED"
     }
@@ -1713,6 +2158,11 @@
       "date": "2026-08-19",
       "price": 460,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 460,
+      "status": "UNCHANGED"
     }
   ],
   "S1R68AAE": [
@@ -1733,6 +2183,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 545,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 545,
       "status": "UNCHANGED"
     }
@@ -1757,6 +2212,11 @@
       "date": "2026-08-19",
       "price": 288,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 288,
+      "status": "UNCHANGED"
     }
   ],
   "S1R70AAE": [
@@ -1777,6 +2237,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 366,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 366,
       "status": "UNCHANGED"
     }
@@ -1801,6 +2266,11 @@
       "date": "2026-08-19",
       "price": 433,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 433,
+      "status": "UNCHANGED"
     }
   ],
   "S1R72AAE": [
@@ -1821,6 +2291,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 213,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 213,
       "status": "UNCHANGED"
     }
@@ -1845,6 +2320,11 @@
       "date": "2026-08-19",
       "price": 269,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 269,
+      "status": "UNCHANGED"
     }
   ],
   "S1R74AAE": [
@@ -1865,6 +2345,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 319,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 319,
       "status": "UNCHANGED"
     }
@@ -1889,6 +2374,11 @@
       "date": "2026-08-19",
       "price": 71,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 71,
+      "status": "UNCHANGED"
     }
   ],
   "S1R76AAE": [
@@ -1909,6 +2399,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 96,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 96,
       "status": "UNCHANGED"
     }
@@ -1933,6 +2428,11 @@
       "date": "2026-08-19",
       "price": 122,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 122,
+      "status": "UNCHANGED"
     }
   ],
   "S1R78AAE": [
@@ -1953,6 +2453,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 15400,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 15400,
       "status": "UNCHANGED"
     }
@@ -1977,6 +2482,11 @@
       "date": "2026-08-19",
       "price": 31332,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31332,
+      "status": "UNCHANGED"
     }
   ],
   "S2H97AAE": [
@@ -1997,6 +2507,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 46289,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 46289,
       "status": "UNCHANGED"
     }
@@ -2021,6 +2536,11 @@
       "date": "2026-08-19",
       "price": 98172,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 98172,
+      "status": "UNCHANGED"
     }
   ],
   "S2H99AAE": [
@@ -2041,6 +2561,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 196328,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 196328,
       "status": "UNCHANGED"
     }
@@ -2065,6 +2590,11 @@
       "date": "2026-08-19",
       "price": 1245749,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1245749,
+      "status": "UNCHANGED"
     }
   ],
   "S2J01AAE": [
@@ -2085,6 +2615,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 93965,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 93965,
       "status": "UNCHANGED"
     }
@@ -2109,6 +2644,11 @@
       "date": "2026-08-19",
       "price": 138836,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 138836,
+      "status": "UNCHANGED"
     }
   ],
   "S2J03AAE": [
@@ -2129,6 +2669,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 294483,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 294483,
       "status": "UNCHANGED"
     }
@@ -2153,6 +2698,11 @@
       "date": "2026-08-19",
       "price": 588951,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 588951,
+      "status": "UNCHANGED"
     }
   ],
   "S2J05AAE": [
@@ -2173,6 +2723,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3737215,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3737215,
       "status": "UNCHANGED"
     }
@@ -2197,6 +2752,11 @@
       "date": "2026-08-19",
       "price": 125281,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 125281,
+      "status": "UNCHANGED"
     }
   ],
   "S2J07AAE": [
@@ -2217,6 +2777,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 185110,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 185110,
       "status": "UNCHANGED"
     }
@@ -2241,6 +2806,11 @@
       "date": "2026-08-19",
       "price": 392639,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 392639,
+      "status": "UNCHANGED"
     }
   ],
   "S2J09AAE": [
@@ -2261,6 +2831,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 785262,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 785262,
       "status": "UNCHANGED"
     }
@@ -2285,6 +2860,11 @@
       "date": "2026-08-19",
       "price": 4982948,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4982948,
+      "status": "UNCHANGED"
     }
   ],
   "S2J11AAE": [
@@ -2305,6 +2885,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 156598,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 156598,
       "status": "UNCHANGED"
     }
@@ -2329,6 +2914,11 @@
       "date": "2026-08-19",
       "price": 231383,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 231383,
+      "status": "UNCHANGED"
     }
   ],
   "S2J13AAE": [
@@ -2349,6 +2939,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 490795,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 490795,
       "status": "UNCHANGED"
     }
@@ -2373,6 +2968,11 @@
       "date": "2026-08-19",
       "price": 981574,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 981574,
+      "status": "UNCHANGED"
     }
   ],
   "S2J15AAE": [
@@ -2393,6 +2993,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6228680,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6228680,
       "status": "UNCHANGED"
     }
@@ -2417,6 +3022,11 @@
       "date": "2026-08-19",
       "price": 14928,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 14928,
+      "status": "UNCHANGED"
     }
   ],
   "S2J17AAE": [
@@ -2437,6 +3047,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 22051,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 22051,
       "status": "UNCHANGED"
     }
@@ -2461,6 +3076,11 @@
       "date": "2026-08-19",
       "price": 46757,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 46757,
+      "status": "UNCHANGED"
     }
   ],
   "S2J19AAE": [
@@ -2481,6 +3101,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 93498,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 93498,
       "status": "UNCHANGED"
     }
@@ -2505,6 +3130,11 @@
       "date": "2026-08-19",
       "price": 593224,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 593224,
+      "status": "UNCHANGED"
     }
   ],
   "S2J21AAE": [
@@ -2525,6 +3155,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 44754,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 44754,
       "status": "UNCHANGED"
     }
@@ -2549,6 +3184,11 @@
       "date": "2026-08-19",
       "price": 66121,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 66121,
+      "status": "UNCHANGED"
     }
   ],
   "S2J23AAE": [
@@ -2569,6 +3209,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 140239,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 140239,
       "status": "UNCHANGED"
     }
@@ -2593,6 +3238,11 @@
       "date": "2026-08-19",
       "price": 280461,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 280461,
+      "status": "UNCHANGED"
     }
   ],
   "S2J25AAE": [
@@ -2613,6 +3263,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1779641,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1779641,
       "status": "UNCHANGED"
     }
@@ -2637,6 +3292,11 @@
       "date": "2026-08-19",
       "price": 59666,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 59666,
+      "status": "UNCHANGED"
     }
   ],
   "S2J27AAE": [
@@ -2657,6 +3317,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 88156,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 88156,
       "status": "UNCHANGED"
     }
@@ -2681,6 +3346,11 @@
       "date": "2026-08-19",
       "price": 186979,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 186979,
+      "status": "UNCHANGED"
     }
   ],
   "S2J29AAE": [
@@ -2701,6 +3371,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 373943,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 373943,
       "status": "UNCHANGED"
     }
@@ -2725,6 +3400,11 @@
       "date": "2026-08-19",
       "price": 2372849,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2372849,
+      "status": "UNCHANGED"
     }
   ],
   "S2J31AAE": [
@@ -2745,6 +3425,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 74579,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 74579,
       "status": "UNCHANGED"
     }
@@ -2769,6 +3454,11 @@
       "date": "2026-08-19",
       "price": 110191,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 110191,
+      "status": "UNCHANGED"
     }
   ],
   "S2J33AAE": [
@@ -2789,6 +3479,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 233720,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 233720,
       "status": "UNCHANGED"
     }
@@ -2813,6 +3508,11 @@
       "date": "2026-08-19",
       "price": 467425,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 467425,
+      "status": "UNCHANGED"
     }
   ],
   "S2J35AAE": [
@@ -2833,6 +3533,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2966057,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2966057,
       "status": "UNCHANGED"
     }
@@ -2857,6 +3562,11 @@
       "date": "2026-08-19",
       "price": 9228,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9228,
+      "status": "UNCHANGED"
     }
   ],
   "S2L39AAE": [
@@ -2877,6 +3587,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 12894,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 12894,
       "status": "UNCHANGED"
     }
@@ -2901,6 +3616,11 @@
       "date": "2026-08-19",
       "price": 16672,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 16672,
+      "status": "UNCHANGED"
     }
   ],
   "S2L41AAE": [
@@ -2921,6 +3641,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 22228,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 22228,
       "status": "UNCHANGED"
     }
@@ -2945,6 +3670,11 @@
       "date": "2026-08-19",
       "price": 26672,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 26672,
+      "status": "UNCHANGED"
     }
   ],
   "S2L43AAE": [
@@ -2965,6 +3695,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 26672,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 26672,
       "status": "UNCHANGED"
     }
@@ -2989,6 +3724,11 @@
       "date": "2026-08-19",
       "price": 36117,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 36117,
+      "status": "UNCHANGED"
     }
   ],
   "S2L45AAE": [
@@ -3009,6 +3749,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 46672,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 46672,
       "status": "UNCHANGED"
     }
@@ -3033,6 +3778,11 @@
       "date": "2026-08-19",
       "price": 61117,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 61117,
+      "status": "UNCHANGED"
     }
   ],
   "S2L47AAE": [
@@ -3053,6 +3803,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 73339,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 73339,
       "status": "UNCHANGED"
     }
@@ -3077,6 +3832,11 @@
       "date": "2026-08-19",
       "price": 33339,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 33339,
+      "status": "UNCHANGED"
     }
   ],
   "S2L49AAE": [
@@ -3097,6 +3857,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 46672,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 46672,
       "status": "UNCHANGED"
     }
@@ -3121,6 +3886,11 @@
       "date": "2026-08-19",
       "price": 60006,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 60006,
+      "status": "UNCHANGED"
     }
   ],
   "S2L51AAE": [
@@ -3141,6 +3911,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 78894,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 78894,
       "status": "UNCHANGED"
     }
@@ -3165,6 +3940,11 @@
       "date": "2026-08-19",
       "price": 95006,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 95006,
+      "status": "UNCHANGED"
     }
   ],
   "S2L53AAE": [
@@ -3185,6 +3965,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 39450,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 39450,
       "status": "UNCHANGED"
     }
@@ -3209,6 +3994,11 @@
       "date": "2026-08-19",
       "price": 55006,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 55006,
+      "status": "UNCHANGED"
     }
   ],
   "S2L55AAE": [
@@ -3229,6 +4019,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 70561,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 70561,
       "status": "UNCHANGED"
     }
@@ -3253,6 +4048,11 @@
       "date": "2026-08-19",
       "price": 93339,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 93339,
+      "status": "UNCHANGED"
     }
   ],
   "S2L57AAE": [
@@ -3273,6 +4073,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 112228,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 112228,
       "status": "UNCHANGED"
     }
@@ -3297,6 +4102,11 @@
       "date": "2026-08-19",
       "price": 159593,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 159593,
+      "status": "UNCHANGED"
     }
   ],
   "S4H93AAE": [
@@ -3317,6 +4127,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 979170,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 979170,
       "status": "UNCHANGED"
     }
@@ -3341,6 +4156,11 @@
       "date": "2026-08-19",
       "price": 903851,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 903851,
+      "status": "UNCHANGED"
     }
   ],
   "S4H97AAE": [
@@ -3361,6 +4181,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 753218,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 753218,
       "status": "UNCHANGED"
     }
@@ -3385,6 +4210,11 @@
       "date": "2026-08-19",
       "price": 443222,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 443222,
+      "status": "UNCHANGED"
     }
   ],
   "S4J00AAE": [
@@ -3405,6 +4235,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 104184,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 104184,
       "status": "UNCHANGED"
     }
@@ -3429,6 +4264,11 @@
       "date": "2026-08-19",
       "price": 629479,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 629479,
+      "status": "UNCHANGED"
     }
   ],
   "S4J04AAE": [
@@ -3449,6 +4289,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 581059,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 581059,
       "status": "UNCHANGED"
     }
@@ -3473,6 +4318,11 @@
       "date": "2026-08-19",
       "price": 484219,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 484219,
+      "status": "UNCHANGED"
     }
   ],
   "S4J08AAE": [
@@ -3493,6 +4343,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 284937,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 284937,
       "status": "UNCHANGED"
     }
@@ -3517,6 +4372,11 @@
       "date": "2026-08-19",
       "price": 79803,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 79803,
+      "status": "UNCHANGED"
     }
   ],
   "S4J11AAE": [
@@ -3537,6 +4397,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 475611,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 475611,
       "status": "UNCHANGED"
     }
@@ -3561,6 +4426,11 @@
       "date": "2026-08-19",
       "price": 439028,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 439028,
+      "status": "UNCHANGED"
     }
   ],
   "S4J15AAE": [
@@ -3581,6 +4451,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 365860,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 365860,
       "status": "UNCHANGED"
     }
@@ -3605,6 +4480,11 @@
       "date": "2026-08-19",
       "price": 215295,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 215295,
+      "status": "UNCHANGED"
     }
   ],
   "S4J18AAE": [
@@ -3625,6 +4505,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 88674,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 88674,
       "status": "UNCHANGED"
     }
@@ -3649,6 +4534,11 @@
       "date": "2026-08-19",
       "price": 44343,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 44343,
+      "status": "UNCHANGED"
     }
   ],
   "S4J20AAE": [
@@ -3669,6 +4559,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 59072,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 59072,
       "status": "UNCHANGED"
     }
@@ -3693,6 +4588,11 @@
       "date": "2026-08-19",
       "price": 29615,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 29615,
+      "status": "UNCHANGED"
     }
   ],
   "S4J22AAE": [
@@ -3713,6 +4613,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 29615,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 29615,
       "status": "UNCHANGED"
     }
@@ -3737,6 +4642,11 @@
       "date": "2026-08-19",
       "price": 14884,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 14884,
+      "status": "UNCHANGED"
     }
   ],
   "S4J25AAE": [
@@ -3757,6 +4667,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 215227,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 215227,
       "status": "UNCHANGED"
     }
@@ -3781,6 +4696,11 @@
       "date": "2026-08-19",
       "price": 143542,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 143542,
+      "status": "UNCHANGED"
     }
   ],
   "S4J29AAE": [
@@ -3801,6 +4721,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 71857,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 71857,
       "status": "UNCHANGED"
     }
@@ -3825,6 +4750,11 @@
       "date": "2026-08-19",
       "price": 126658,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 126658,
+      "status": "UNCHANGED"
     }
   ],
   "S4J33AAE": [
@@ -3845,6 +4775,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 84448,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 84448,
       "status": "UNCHANGED"
     }
@@ -3869,6 +4804,11 @@
       "date": "2026-08-19",
       "price": 42238,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 42238,
+      "status": "UNCHANGED"
     }
   ],
   "R1T30AAE": [
@@ -3889,6 +4829,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1074,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1074,
       "status": "UNCHANGED"
     }
@@ -3913,6 +4858,11 @@
       "date": "2026-08-19",
       "price": 1511,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1511,
+      "status": "UNCHANGED"
     }
   ],
   "R1T32AAE": [
@@ -3933,6 +4883,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1984,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1984,
       "status": "UNCHANGED"
     }
@@ -3957,6 +4912,11 @@
       "date": "2026-08-19",
       "price": 1984,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1984,
+      "status": "UNCHANGED"
     }
   ],
   "R7P98AAE": [
@@ -3977,6 +4937,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2630,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2630,
       "status": "UNCHANGED"
     }
@@ -4001,6 +4966,11 @@
       "date": "2026-08-19",
       "price": 4725,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4725,
+      "status": "UNCHANGED"
     }
   ],
   "S0W12AAE": [
@@ -4021,6 +4991,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 69,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 69,
       "status": "UNCHANGED"
     }
@@ -4045,6 +5020,11 @@
       "date": "2026-08-19",
       "price": 276,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 276,
+      "status": "UNCHANGED"
     }
   ],
   "S0W15AAE": [
@@ -4065,6 +5045,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 124,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 124,
       "status": "UNCHANGED"
     }
@@ -4089,6 +5074,11 @@
       "date": "2026-08-19",
       "price": 496,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 496,
+      "status": "UNCHANGED"
     }
   ],
   "S0W18AAE": [
@@ -4109,6 +5099,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 42,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 42,
       "status": "UNCHANGED"
     }
@@ -4133,6 +5128,11 @@
       "date": "2026-08-19",
       "price": 168,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 168,
+      "status": "UNCHANGED"
     }
   ],
   "S0W21AAE": [
@@ -4153,6 +5153,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 150,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 150,
       "status": "UNCHANGED"
     }
@@ -4177,6 +5182,11 @@
       "date": "2026-08-19",
       "price": 600,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 600,
+      "status": "UNCHANGED"
     }
   ],
   "S0W24AAE": [
@@ -4197,6 +5207,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 57,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 57,
       "status": "UNCHANGED"
     }
@@ -4221,6 +5236,11 @@
       "date": "2026-08-19",
       "price": 228,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 228,
+      "status": "UNCHANGED"
     }
   ],
   "S0W27AAE": [
@@ -4241,6 +5261,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 25,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 25,
       "status": "UNCHANGED"
     }
@@ -4265,6 +5290,11 @@
       "date": "2026-08-19",
       "price": 100,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 100,
+      "status": "UNCHANGED"
     }
   ],
   "S1D73AAE": [
@@ -4285,6 +5315,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 289,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 289,
       "status": "UNCHANGED"
     }
@@ -4309,6 +5344,11 @@
       "date": "2026-08-19",
       "price": 824,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 824,
+      "status": "UNCHANGED"
     }
   ],
   "S1D75AAE": [
@@ -4329,6 +5369,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1287,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1287,
       "status": "UNCHANGED"
     }
@@ -4353,6 +5398,11 @@
       "date": "2026-08-19",
       "price": 305,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 305,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q37AAE": [
@@ -4373,6 +5423,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 867,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 867,
       "status": "UNCHANGED"
     }
@@ -4397,6 +5452,11 @@
       "date": "2026-08-19",
       "price": 1149,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1149,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q39AAE": [
@@ -4417,6 +5477,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1429,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1429,
       "status": "UNCHANGED"
     }
@@ -4441,6 +5506,11 @@
       "date": "2026-08-19",
       "price": 96,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 96,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q42AAE": [
@@ -4461,6 +5531,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 241,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 241,
       "status": "UNCHANGED"
     }
@@ -4485,6 +5560,11 @@
       "date": "2026-08-19",
       "price": 37,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 37,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q46AAE": [
@@ -4505,6 +5585,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 63,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 63,
       "status": "UNCHANGED"
     }
@@ -4529,6 +5614,11 @@
       "date": "2026-08-19",
       "price": 75,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 75,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q48AAE": [
@@ -4549,6 +5639,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 89,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 89,
       "status": "UNCHANGED"
     }
@@ -4573,6 +5668,11 @@
       "date": "2026-08-19",
       "price": 89,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 89,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q51AAE": [
@@ -4593,6 +5693,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 213,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 213,
       "status": "UNCHANGED"
     }
@@ -4617,6 +5722,11 @@
       "date": "2026-08-19",
       "price": 242,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 242,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q53AAE": [
@@ -4637,6 +5747,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 274,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 274,
       "status": "UNCHANGED"
     }
@@ -4661,6 +5776,11 @@
       "date": "2026-08-19",
       "price": 184,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 184,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q67AAE": [
@@ -4681,6 +5801,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 647,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 647,
       "status": "UNCHANGED"
     }
@@ -4705,6 +5830,11 @@
       "date": "2026-08-19",
       "price": 64,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 64,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q72AAE": [
@@ -4725,6 +5855,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 180,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 180,
       "status": "UNCHANGED"
     }
@@ -4749,6 +5884,11 @@
       "date": "2026-08-19",
       "price": 35,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 35,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q77AAE": [
@@ -4769,6 +5909,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 61,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 61,
       "status": "UNCHANGED"
     }
@@ -4793,6 +5938,11 @@
       "date": "2026-08-19",
       "price": 106,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 106,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q81AAE": [
@@ -4813,6 +5963,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 266,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 266,
       "status": "UNCHANGED"
     }
@@ -4837,6 +5992,11 @@
       "date": "2026-08-19",
       "price": 530,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 530,
+      "status": "UNCHANGED"
     }
   ],
   "R3Q94AAE": [
@@ -4857,6 +6017,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 134,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 134,
       "status": "UNCHANGED"
     }
@@ -4881,6 +6046,11 @@
       "date": "2026-08-19",
       "price": 385,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 385,
+      "status": "UNCHANGED"
     }
   ],
   "R3R01AAE": [
@@ -4901,6 +6071,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 51,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 51,
       "status": "UNCHANGED"
     }
@@ -4925,6 +6100,11 @@
       "date": "2026-08-19",
       "price": 41,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 41,
+      "status": "UNCHANGED"
     }
   ],
   "R3R03AAE": [
@@ -4945,6 +6125,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 73,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 73,
       "status": "UNCHANGED"
     }
@@ -4969,6 +6154,11 @@
       "date": "2026-08-19",
       "price": 150,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 150,
+      "status": "UNCHANGED"
     }
   ],
   "R3R07AAE": [
@@ -4989,6 +6179,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 71,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 71,
       "status": "UNCHANGED"
     }
@@ -5013,6 +6208,11 @@
       "date": "2026-08-19",
       "price": 1108,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1108,
+      "status": "UNCHANGED"
     }
   ],
   "R3R21AAE": [
@@ -5033,6 +6233,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 199,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 199,
       "status": "UNCHANGED"
     }
@@ -5057,6 +6262,11 @@
       "date": "2026-08-19",
       "price": 86,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 86,
+      "status": "UNCHANGED"
     }
   ],
   "R3R27AAE": [
@@ -5077,6 +6287,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 210,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 210,
       "status": "UNCHANGED"
     }
@@ -5101,6 +6316,11 @@
       "date": "2026-08-19",
       "price": 5252,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5252,
+      "status": "UNCHANGED"
     }
   ],
   "S2S17AAE": [
@@ -5121,6 +6341,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 15755,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 15755,
       "status": "UNCHANGED"
     }
@@ -5145,6 +6370,11 @@
       "date": "2026-08-19",
       "price": 21006,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 21006,
+      "status": "UNCHANGED"
     }
   ],
   "S2S19AAE": [
@@ -5165,6 +6395,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5252,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5252,
       "status": "UNCHANGED"
     }
@@ -5189,6 +6424,11 @@
       "date": "2026-08-19",
       "price": 15755,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15755,
+      "status": "UNCHANGED"
     }
   ],
   "S2S21AAE": [
@@ -5209,6 +6449,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 26258,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 26258,
       "status": "UNCHANGED"
     }
@@ -5233,6 +6478,11 @@
       "date": "2026-08-19",
       "price": 1313,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1313,
+      "status": "UNCHANGED"
     }
   ],
   "S2S23AAE": [
@@ -5253,6 +6503,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3939,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3939,
       "status": "UNCHANGED"
     }
@@ -5277,6 +6532,11 @@
       "date": "2026-08-19",
       "price": 5252,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5252,
+      "status": "UNCHANGED"
     }
   ],
   "S2S25AAE": [
@@ -5297,6 +6557,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1313,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1313,
       "status": "UNCHANGED"
     }
@@ -5321,6 +6586,11 @@
       "date": "2026-08-19",
       "price": 3939,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3939,
+      "status": "UNCHANGED"
     }
   ],
   "S2S27AAE": [
@@ -5341,6 +6611,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6564,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6564,
       "status": "UNCHANGED"
     }
@@ -5365,6 +6640,11 @@
       "date": "2026-08-19",
       "price": 1284,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1284,
+      "status": "UNCHANGED"
     }
   ],
   "S2S29AAE": [
@@ -5385,6 +6665,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3851,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3851,
       "status": "UNCHANGED"
     }
@@ -5409,6 +6694,11 @@
       "date": "2026-08-19",
       "price": 6419,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6419,
+      "status": "UNCHANGED"
     }
   ],
   "S2S31AAE": [
@@ -5429,6 +6719,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 899,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 899,
       "status": "UNCHANGED"
     }
@@ -5453,6 +6748,11 @@
       "date": "2026-08-19",
       "price": 2696,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2696,
+      "status": "UNCHANGED"
     }
   ],
   "S2S33AAE": [
@@ -5473,6 +6773,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4494,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4494,
       "status": "UNCHANGED"
     }
@@ -5497,6 +6802,11 @@
       "date": "2026-08-19",
       "price": 1284,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1284,
+      "status": "UNCHANGED"
     }
   ],
   "S2S35AAE": [
@@ -5517,6 +6827,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3851,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3851,
       "status": "UNCHANGED"
     }
@@ -5541,6 +6856,11 @@
       "date": "2026-08-19",
       "price": 6419,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6419,
+      "status": "UNCHANGED"
     }
   ],
   "S2S37AAE": [
@@ -5561,6 +6881,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 899,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 899,
       "status": "UNCHANGED"
     }
@@ -5585,6 +6910,11 @@
       "date": "2026-08-19",
       "price": 2696,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2696,
+      "status": "UNCHANGED"
     }
   ],
   "S2S39AAE": [
@@ -5605,6 +6935,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4493,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4493,
       "status": "UNCHANGED"
     }
@@ -5629,6 +6964,11 @@
       "date": "2026-08-19",
       "price": 7884,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7884,
+      "status": "UNCHANGED"
     }
   ],
   "S7K94AAE": [
@@ -5649,6 +6989,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 10507,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 10507,
       "status": "UNCHANGED"
     }
@@ -5673,6 +7018,11 @@
       "date": "2026-08-19",
       "price": 87,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 87,
+      "status": "UNCHANGED"
     }
   ],
   "R1P40A": [
@@ -5693,6 +7043,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 87,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 87,
       "status": "UNCHANGED"
     }
@@ -5717,6 +7072,11 @@
       "date": "2026-08-19",
       "price": 248,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 248,
+      "status": "UNCHANGED"
     }
   ],
   "R1P41A": [
@@ -5737,6 +7097,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 248,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 248,
       "status": "UNCHANGED"
     }
@@ -5761,6 +7126,11 @@
       "date": "2026-08-19",
       "price": 413,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 413,
+      "status": "UNCHANGED"
     }
   ],
   "R1P42A": [
@@ -5781,6 +7151,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 413,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 413,
       "status": "UNCHANGED"
     }
@@ -5805,6 +7180,11 @@
       "date": "2026-08-19",
       "price": 138,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 138,
+      "status": "UNCHANGED"
     }
   ],
   "R2Z52AAE": [
@@ -5825,6 +7205,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 392,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 392,
       "status": "UNCHANGED"
     }
@@ -5849,6 +7234,11 @@
       "date": "2026-08-19",
       "price": 653,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 653,
+      "status": "UNCHANGED"
     }
   ],
   "R1P34AAE": [
@@ -5869,6 +7259,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2858,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2858,
       "status": "UNCHANGED"
     }
@@ -5893,6 +7288,11 @@
       "date": "2026-08-19",
       "price": 2858,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2858,
+      "status": "UNCHANGED"
     }
   ],
   "R1P37AAE": [
@@ -5913,6 +7313,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1758,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1758,
       "status": "UNCHANGED"
     }
@@ -5937,6 +7342,11 @@
       "date": "2026-08-19",
       "price": 1758,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1758,
+      "status": "UNCHANGED"
     }
   ],
   "R1P35AAE": [
@@ -5957,6 +7367,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 8145,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 8145,
       "status": "UNCHANGED"
     }
@@ -5981,6 +7396,11 @@
       "date": "2026-08-19",
       "price": 8145,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8145,
+      "status": "UNCHANGED"
     }
   ],
   "R1P38AAE": [
@@ -6001,6 +7421,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5010,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5010,
       "status": "UNCHANGED"
     }
@@ -6025,6 +7450,11 @@
       "date": "2026-08-19",
       "price": 5010,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5010,
+      "status": "UNCHANGED"
     }
   ],
   "R1P36AAE": [
@@ -6045,6 +7475,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 13575,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 13575,
       "status": "UNCHANGED"
     }
@@ -6069,6 +7504,11 @@
       "date": "2026-08-19",
       "price": 13575,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 13575,
+      "status": "UNCHANGED"
     }
   ],
   "R1P39AAE": [
@@ -6089,6 +7529,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 8350,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 8350,
       "status": "UNCHANGED"
     }
@@ -6113,6 +7558,11 @@
       "date": "2026-08-19",
       "price": 8350,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8350,
+      "status": "UNCHANGED"
     }
   ],
   "R2Z45AAE": [
@@ -6133,6 +7583,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3243,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3243,
       "status": "UNCHANGED"
     }
@@ -6157,6 +7612,11 @@
       "date": "2026-08-19",
       "price": 9242,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9242,
+      "status": "UNCHANGED"
     }
   ],
   "R2Z47AAE": [
@@ -6179,6 +7639,11 @@
       "date": "2026-08-19",
       "price": 15403,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15403,
+      "status": "UNCHANGED"
     }
   ],
   "R7A11AAE": [
@@ -6199,6 +7664,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 450,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 450,
       "status": "UNCHANGED"
     }
@@ -6238,6 +7708,16 @@
       "date": "2026-08-19",
       "price": 750,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 750,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 750,
+      "status": "UNCHANGED"
     }
   ],
   "S1A05A": [
@@ -6275,6 +7755,16 @@
       "date": "2026-08-19",
       "price": 1,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "UNCHANGED"
     }
   ],
   "S2E10AAE": [
@@ -6295,6 +7785,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1050,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1050,
       "status": "UNCHANGED"
     }
@@ -6319,6 +7814,11 @@
       "date": "2026-08-19",
       "price": 919.08,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 919.08,
+      "status": "UNCHANGED"
     }
   ],
   "S5E60AAE": [
@@ -6339,6 +7839,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1531.8,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1531.8,
       "status": "UNCHANGED"
     }
@@ -6363,6 +7868,11 @@
       "date": "2026-08-19",
       "price": 2144.52,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2144.52,
+      "status": "UNCHANGED"
     }
   ],
   "S2R34AAE": [
@@ -6383,6 +7893,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1,
       "status": "UNCHANGED"
     }
@@ -6407,6 +7922,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "S4T26A": [
@@ -6427,6 +7947,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1506,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1506,
       "status": "UNCHANGED"
     }
@@ -6451,6 +7976,11 @@
       "date": "2026-08-19",
       "price": 4519,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4519,
+      "status": "UNCHANGED"
     }
   ],
   "S4T22A": [
@@ -6471,6 +8001,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 439,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 439,
       "status": "UNCHANGED"
     }
@@ -6495,6 +8030,11 @@
       "date": "2026-08-19",
       "price": 1251,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1251,
+      "status": "UNCHANGED"
     }
   ],
   "S4T24A": [
@@ -6515,6 +8055,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 879,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 879,
       "status": "UNCHANGED"
     }
@@ -6539,6 +8084,11 @@
       "date": "2026-08-19",
       "price": 2637,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2637,
+      "status": "UNCHANGED"
     }
   ],
   "R2A03AAE": [
@@ -6559,6 +8109,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1482,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1482,
       "status": "UNCHANGED"
     }
@@ -6583,6 +8138,11 @@
       "date": "2026-08-19",
       "price": 1482,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1482,
+      "status": "UNCHANGED"
     }
   ],
   "R2A04AAE": [
@@ -6603,6 +8163,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4447,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4447,
       "status": "UNCHANGED"
     }
@@ -6627,6 +8192,11 @@
       "date": "2026-08-19",
       "price": 4447,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4447,
+      "status": "UNCHANGED"
     }
   ],
   "R2A05AAE": [
@@ -6647,6 +8217,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7411,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7411,
       "status": "UNCHANGED"
     }
@@ -6671,6 +8246,11 @@
       "date": "2026-08-19",
       "price": 7411,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7411,
+      "status": "UNCHANGED"
     }
   ],
   "R2A00AAE": [
@@ -6691,6 +8271,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 385,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 385,
       "status": "UNCHANGED"
     }
@@ -6715,6 +8300,11 @@
       "date": "2026-08-19",
       "price": 385,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 385,
+      "status": "UNCHANGED"
     }
   ],
   "R2A01AAE": [
@@ -6735,6 +8325,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1097,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1097,
       "status": "UNCHANGED"
     }
@@ -6759,6 +8354,11 @@
       "date": "2026-08-19",
       "price": 1097,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1097,
+      "status": "UNCHANGED"
     }
   ],
   "R2A02AAE": [
@@ -6779,6 +8379,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1828,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1828,
       "status": "UNCHANGED"
     }
@@ -6803,6 +8408,11 @@
       "date": "2026-08-19",
       "price": 1828,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1828,
+      "status": "UNCHANGED"
     }
   ],
   "R1D41AAE": [
@@ -6825,6 +8435,16 @@
       "date": "2026-08-19",
       "price": 1982200,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1982200,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1982200,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D42AAE": [
@@ -6847,6 +8467,16 @@
       "date": "2026-08-19",
       "price": 5649270,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5649270,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5649270,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D44AAE": [
@@ -6869,6 +8499,16 @@
       "date": "2026-08-19",
       "price": 8500,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8500,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 8500,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D45AAE": [
@@ -6891,6 +8531,16 @@
       "date": "2026-08-19",
       "price": 24225,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 24225,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 24225,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D49AAE": [
@@ -6913,6 +8563,16 @@
       "date": "2026-08-19",
       "price": 27718,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 27718,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 27718,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D50AAE": [
@@ -6935,6 +8595,16 @@
       "date": "2026-08-19",
       "price": 80726,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 80726,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 80726,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D52AAE": [
@@ -6957,6 +8627,16 @@
       "date": "2026-08-19",
       "price": 142359,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 142359,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 142359,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D53AAE": [
@@ -6979,6 +8659,16 @@
       "date": "2026-08-19",
       "price": 414608,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 414608,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 414608,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D55AAE": [
@@ -7001,6 +8691,16 @@
       "date": "2026-08-19",
       "price": 1097088,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1097088,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1097088,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D56AAE": [
@@ -7023,6 +8723,16 @@
       "date": "2026-08-19",
       "price": 3195185,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3195185,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3195185,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D58AAE": [
@@ -7045,6 +8755,16 @@
       "date": "2026-08-19",
       "price": 12738,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 12738,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 12738,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D59AAE": [
@@ -7067,6 +8787,16 @@
       "date": "2026-08-19",
       "price": 37098,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 37098,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 37098,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D61AAE": [
@@ -7089,6 +8819,16 @@
       "date": "2026-08-19",
       "price": 10608,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10608,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10608,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D62AAE": [
@@ -7111,6 +8851,16 @@
       "date": "2026-08-19",
       "price": 30896,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 30896,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 30896,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D64AAE": [
@@ -7133,6 +8883,16 @@
       "date": "2026-08-19",
       "price": 5600,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5600,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5600,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1D65AAE": [
@@ -7155,6 +8915,16 @@
       "date": "2026-08-19",
       "price": 16309,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 16309,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 16309,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R7J57A": [
@@ -7175,6 +8945,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 371,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 371,
       "status": "UNCHANGED"
     }
@@ -7199,6 +8974,11 @@
       "date": "2026-08-19",
       "price": 371,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 371,
+      "status": "UNCHANGED"
     }
   ],
   "S3Q19A": [
@@ -7219,6 +8999,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 229,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 229,
       "status": "UNCHANGED"
     }
@@ -7243,6 +9028,11 @@
       "date": "2026-08-19",
       "price": 229,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 229,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D22A": [
@@ -7263,6 +9053,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 10183,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 10183,
       "status": "UNCHANGED"
     }
@@ -7287,6 +9082,11 @@
       "date": "2026-08-19",
       "price": 6264,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6264,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D25A": [
@@ -7307,6 +9107,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2085,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2085,
       "status": "UNCHANGED"
     }
@@ -7331,6 +9136,11 @@
       "date": "2026-08-19",
       "price": 7532,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7532,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D29A": [
@@ -7351,6 +9161,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4395,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4395,
       "status": "UNCHANGED"
     }
@@ -7375,6 +9190,11 @@
       "date": "2026-08-19",
       "price": 15095,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15095,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W19A": [
@@ -7395,6 +9215,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2505,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2505,
       "status": "UNCHANGED"
     }
@@ -7419,6 +9244,11 @@
       "date": "2026-08-19",
       "price": 4072,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4072,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W21A": [
@@ -7439,6 +9269,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4175,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4175,
       "status": "UNCHANGED"
     }
@@ -7463,6 +9298,11 @@
       "date": "2026-08-19",
       "price": 6787,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6787,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W23A": [
@@ -7483,6 +9323,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 9072,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 9072,
       "status": "UNCHANGED"
     }
@@ -7507,6 +9352,11 @@
       "date": "2026-08-19",
       "price": 14516,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 14516,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W25A": [
@@ -7527,6 +9377,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 15119,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 15119,
       "status": "UNCHANGED"
     }
@@ -7551,6 +9406,11 @@
       "date": "2026-08-19",
       "price": 24194,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 24194,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U15A": [
@@ -7571,6 +9431,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 24680,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 24680,
       "status": "UNCHANGED"
     }
@@ -7595,6 +9460,11 @@
       "date": "2026-08-19",
       "price": 41134,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 41134,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U17A": [
@@ -7615,6 +9485,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 20325,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 20325,
       "status": "UNCHANGED"
     }
@@ -7639,6 +9514,11 @@
       "date": "2026-08-19",
       "price": 33874,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 33874,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U19A": [
@@ -7659,6 +9539,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6737,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6737,
       "status": "UNCHANGED"
     }
@@ -7683,6 +9568,11 @@
       "date": "2026-08-19",
       "price": 11229,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 11229,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U21A": [
@@ -7703,6 +9593,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5483,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5483,
       "status": "UNCHANGED"
     }
@@ -7727,6 +9622,11 @@
       "date": "2026-08-19",
       "price": 9139,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9139,
+      "status": "UNCHANGED"
     }
   ],
   "R8V74A": [
@@ -7747,6 +9647,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2260,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2260,
       "status": "UNCHANGED"
     }
@@ -7771,6 +9676,11 @@
       "date": "2026-08-19",
       "price": 2260,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2260,
+      "status": "UNCHANGED"
     }
   ],
   "R8V75A": [
@@ -7791,6 +9701,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6110,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6110,
       "status": "UNCHANGED"
     }
@@ -7815,6 +9730,11 @@
       "date": "2026-08-19",
       "price": 6110,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6110,
+      "status": "UNCHANGED"
     }
   ],
   "R8V76A": [
@@ -7835,6 +9755,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3980,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3980,
       "status": "UNCHANGED"
     }
@@ -7859,6 +9784,11 @@
       "date": "2026-08-19",
       "price": 3980,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3980,
+      "status": "UNCHANGED"
     }
   ],
   "R8V77A": [
@@ -7879,6 +9809,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 10800,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 10800,
       "status": "UNCHANGED"
     }
@@ -7903,6 +9838,11 @@
       "date": "2026-08-19",
       "price": 10800,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10800,
+      "status": "UNCHANGED"
     }
   ],
   "R8V78A": [
@@ -7923,6 +9863,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 18000,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 18000,
       "status": "UNCHANGED"
     }
@@ -7947,6 +9892,11 @@
       "date": "2026-08-19",
       "price": 18000,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 18000,
+      "status": "UNCHANGED"
     }
   ],
   "R8V79A": [
@@ -7967,6 +9917,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 10200,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 10200,
       "status": "UNCHANGED"
     }
@@ -7991,6 +9946,11 @@
       "date": "2026-08-19",
       "price": 268,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 268,
+      "status": "UNCHANGED"
     }
   ],
   "R8V87AAE": [
@@ -8011,6 +9971,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 806,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 806,
       "status": "UNCHANGED"
     }
@@ -8035,6 +10000,11 @@
       "date": "2026-08-19",
       "price": 724,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 724,
+      "status": "UNCHANGED"
     }
   ],
   "R8V89AAE": [
@@ -8055,6 +10025,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2180,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2180,
       "status": "UNCHANGED"
     }
@@ -8079,6 +10054,11 @@
       "date": "2026-08-19",
       "price": 1210,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1210,
+      "status": "UNCHANGED"
     }
   ],
   "S0F22AAE": [
@@ -8099,6 +10079,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3630,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3630,
       "status": "UNCHANGED"
     }
@@ -8123,6 +10108,11 @@
       "date": "2026-08-19",
       "price": 10200,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10200,
+      "status": "UNCHANGED"
     }
   ],
   "S0F25AAE": [
@@ -8143,6 +10133,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 268,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 268,
       "status": "UNCHANGED"
     }
@@ -8167,6 +10162,11 @@
       "date": "2026-08-19",
       "price": 806,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 806,
+      "status": "UNCHANGED"
     }
   ],
   "S0F27AAE": [
@@ -8187,6 +10187,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 724,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 724,
       "status": "UNCHANGED"
     }
@@ -8211,6 +10216,11 @@
       "date": "2026-08-19",
       "price": 2180,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2180,
+      "status": "UNCHANGED"
     }
   ],
   "S0F29AAE": [
@@ -8231,6 +10241,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1210,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1210,
       "status": "UNCHANGED"
     }
@@ -8255,6 +10270,11 @@
       "date": "2026-08-19",
       "price": 3630,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3630,
+      "status": "UNCHANGED"
     }
   ],
   "S7N77AAE": [
@@ -8275,6 +10295,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 18873,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 18873,
       "status": "UNCHANGED"
     }
@@ -8299,6 +10324,11 @@
       "date": "2026-08-19",
       "price": 31455,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31455,
+      "status": "UNCHANGED"
     }
   ],
   "S7N87A": [
@@ -8319,6 +10349,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 18873,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 18873,
       "status": "UNCHANGED"
     }
@@ -8343,6 +10378,11 @@
       "date": "2026-08-19",
       "price": 31455,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31455,
+      "status": "UNCHANGED"
     }
   ],
   "S7P10A": [
@@ -8363,6 +10403,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 18873,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 18873,
       "status": "UNCHANGED"
     }
@@ -8387,6 +10432,11 @@
       "date": "2026-08-19",
       "price": 31455,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 31455,
+      "status": "UNCHANGED"
     }
   ],
   "S7P12A": [
@@ -8407,6 +10457,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7803,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7803,
       "status": "UNCHANGED"
     }
@@ -8431,6 +10486,11 @@
       "date": "2026-08-19",
       "price": 13005,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 13005,
+      "status": "UNCHANGED"
     }
   ],
   "P77095-291": [
@@ -8451,6 +10511,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -8475,6 +10540,11 @@
       "date": "2026-08-19",
       "price": 1147,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1147,
+      "status": "UNCHANGED"
     }
   ],
   "P77096-291": [
@@ -8495,6 +10565,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -8519,6 +10594,11 @@
       "date": "2026-08-19",
       "price": 1147,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1147,
+      "status": "UNCHANGED"
     }
   ],
   "P77097-291": [
@@ -8539,6 +10619,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -8563,6 +10648,11 @@
       "date": "2026-08-19",
       "price": 1258,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1258,
+      "status": "UNCHANGED"
     }
   ],
   "P77105-B21": [
@@ -8583,6 +10673,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 320,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 320,
       "status": "UNCHANGED"
     }
@@ -8607,6 +10702,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77106-AB1": [
@@ -8627,6 +10727,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -8651,6 +10756,11 @@
       "date": "2026-08-19",
       "price": 164,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 164,
+      "status": "UNCHANGED"
     }
   ],
   "P77107-B21": [
@@ -8671,6 +10781,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5712,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5712,
       "status": "UNCHANGED"
     }
@@ -8695,6 +10810,11 @@
       "date": "2026-08-19",
       "price": 1434,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1434,
+      "status": "UNCHANGED"
     }
   ],
   "P77109-B21": [
@@ -8715,6 +10835,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 721,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 721,
       "status": "UNCHANGED"
     }
@@ -8739,6 +10864,11 @@
       "date": "2026-08-19",
       "price": 1147,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1147,
+      "status": "UNCHANGED"
     }
   ],
   "S6L35B": [
@@ -8759,6 +10889,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5712,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5712,
       "status": "UNCHANGED"
     }
@@ -8783,6 +10918,11 @@
       "date": "2026-08-19",
       "price": 28,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 28,
+      "status": "UNCHANGED"
     }
   ],
   "P45879-051": [
@@ -8803,6 +10943,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -8827,6 +10972,11 @@
       "date": "2026-08-19",
       "price": 28,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 28,
+      "status": "UNCHANGED"
     }
   ],
   "P45879-061": [
@@ -8847,6 +10997,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -8871,6 +11026,11 @@
       "date": "2026-08-19",
       "price": 99999,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 99999,
+      "status": "UNCHANGED"
     }
   ],
   "P45879-071": [
@@ -8891,6 +11051,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -8915,6 +11080,11 @@
       "date": "2026-08-19",
       "price": 28,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 28,
+      "status": "UNCHANGED"
     }
   ],
   "P45862-051": [
@@ -8935,6 +11105,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -8959,6 +11134,11 @@
       "date": "2026-08-19",
       "price": 20,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 20,
+      "status": "UNCHANGED"
     }
   ],
   "P45862-061": [
@@ -8979,6 +11159,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -9003,6 +11188,11 @@
       "date": "2026-08-19",
       "price": 99999,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 99999,
+      "status": "UNCHANGED"
     }
   ],
   "P45862-071": [
@@ -9023,6 +11213,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 28,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 28,
       "status": "UNCHANGED"
     }
@@ -9047,6 +11242,11 @@
       "date": "2026-08-19",
       "price": 20,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 20,
+      "status": "UNCHANGED"
     }
   ],
   "S6L45A": [
@@ -9067,6 +11267,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 20,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 20,
       "status": "UNCHANGED"
     }
@@ -9091,6 +11296,11 @@
       "date": "2026-08-19",
       "price": 20,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 20,
+      "status": "UNCHANGED"
     }
   ],
   "S6L44A": [
@@ -9111,6 +11321,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 20,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 20,
       "status": "UNCHANGED"
     }
@@ -9135,6 +11350,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "S6L48A": [
@@ -9155,6 +11375,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 33,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 33,
       "status": "UNCHANGED"
     }
@@ -9179,6 +11404,11 @@
       "date": "2026-08-19",
       "price": 33,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 33,
+      "status": "UNCHANGED"
     }
   ],
   "P77124-291": [
@@ -9199,6 +11429,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9223,6 +11458,11 @@
       "date": "2026-08-19",
       "price": 33,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 33,
+      "status": "UNCHANGED"
     }
   ],
   "P77124-B21": [
@@ -9243,6 +11483,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 33,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 33,
       "status": "UNCHANGED"
     }
@@ -9267,6 +11512,11 @@
       "date": "2026-08-19",
       "price": 33,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 33,
+      "status": "UNCHANGED"
     }
   ],
   "R6J26AAE": [
@@ -9287,6 +11537,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 21544,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 21544,
       "status": "UNCHANGED"
     }
@@ -9311,6 +11566,11 @@
       "date": "2026-08-19",
       "price": 4475,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4475,
+      "status": "UNCHANGED"
     }
   ],
   "S3Z84AAE": [
@@ -9331,6 +11591,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 53719,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 53719,
       "status": "UNCHANGED"
     }
@@ -9355,6 +11620,11 @@
       "date": "2026-08-19",
       "price": 35808,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 35808,
+      "status": "UNCHANGED"
     }
   ],
   "S3Z88AAE": [
@@ -9375,6 +11645,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 22385,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 22385,
       "status": "UNCHANGED"
     }
@@ -9399,6 +11674,11 @@
       "date": "2026-08-19",
       "price": 14999,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 14999,
+      "status": "UNCHANGED"
     }
   ],
   "S6L39A": [
@@ -9419,6 +11699,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 445,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 445,
       "status": "UNCHANGED"
     }
@@ -9443,6 +11728,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "S6L37A": [
@@ -9463,6 +11753,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7733,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7733,
       "status": "UNCHANGED"
     }
@@ -9487,6 +11782,11 @@
       "date": "2026-08-19",
       "price": 7733,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7733,
+      "status": "UNCHANGED"
     }
   ],
   "P77101-AA1": [
@@ -9507,6 +11807,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9531,6 +11836,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77101-291": [
@@ -9551,6 +11861,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9575,6 +11890,11 @@
       "date": "2026-08-19",
       "price": 5712,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5712,
+      "status": "UNCHANGED"
     }
   ],
   "P77101-021": [
@@ -9595,6 +11915,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 5712,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 5712,
       "status": "UNCHANGED"
     }
@@ -9619,6 +11944,11 @@
       "date": "2026-08-19",
       "price": 5712,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5712,
+      "status": "UNCHANGED"
     }
   ],
   "P77101-DN1": [
@@ -9639,6 +11969,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9663,6 +11998,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77100-AA1": [
@@ -9683,6 +12023,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9707,6 +12052,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77100-291": [
@@ -9727,6 +12077,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9751,6 +12106,11 @@
       "date": "2026-08-19",
       "price": 1147,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1147,
+      "status": "UNCHANGED"
     }
   ],
   "P77100-021": [
@@ -9771,6 +12131,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1147,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1147,
       "status": "UNCHANGED"
     }
@@ -9795,6 +12160,11 @@
       "date": "2026-08-19",
       "price": 1147,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1147,
+      "status": "UNCHANGED"
     }
   ],
   "P77100-DN1": [
@@ -9815,6 +12185,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -9839,6 +12214,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "S0E93AAE": [
@@ -9859,6 +12239,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 322,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 322,
       "status": "UNCHANGED"
     }
@@ -9883,6 +12268,11 @@
       "date": "2026-08-19",
       "price": 870,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 870,
+      "status": "UNCHANGED"
     }
   ],
   "S0E95AAE": [
@@ -9903,6 +12293,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1451,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1451,
       "status": "UNCHANGED"
     }
@@ -9927,6 +12322,11 @@
       "date": "2026-08-19",
       "price": 7803,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7803,
+      "status": "UNCHANGED"
     }
   ],
   "S7N76AAE": [
@@ -9947,6 +12347,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 13005,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 13005,
       "status": "UNCHANGED"
     }
@@ -9971,6 +12376,11 @@
       "date": "2026-08-19",
       "price": 1599,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1599,
+      "status": "UNCHANGED"
     }
   ],
   "S7N80AAE": [
@@ -9991,6 +12401,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1099,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1099,
       "status": "UNCHANGED"
     }
@@ -10015,6 +12430,11 @@
       "date": "2026-08-19",
       "price": 4399,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4399,
+      "status": "UNCHANGED"
     }
   ],
   "S7N82AAE": [
@@ -10035,6 +12455,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2990,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2990,
       "status": "UNCHANGED"
     }
@@ -10059,6 +12484,11 @@
       "date": "2026-08-19",
       "price": 7196,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7196,
+      "status": "UNCHANGED"
     }
   ],
   "S7N84AAE": [
@@ -10079,6 +12509,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4946,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4946,
       "status": "UNCHANGED"
     }
@@ -10103,6 +12538,11 @@
       "date": "2026-08-19",
       "price": 7803,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7803,
+      "status": "UNCHANGED"
     }
   ],
   "S7N86A": [
@@ -10123,6 +12563,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 13005,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 13005,
       "status": "UNCHANGED"
     }
@@ -10147,6 +12592,11 @@
       "date": "2026-08-19",
       "price": 1599,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1599,
+      "status": "UNCHANGED"
     }
   ],
   "S7N90A": [
@@ -10167,6 +12617,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1099,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1099,
       "status": "UNCHANGED"
     }
@@ -10191,6 +12646,11 @@
       "date": "2026-08-19",
       "price": 4399,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4399,
+      "status": "UNCHANGED"
     }
   ],
   "S7N92A": [
@@ -10211,6 +12671,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2990,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2990,
       "status": "UNCHANGED"
     }
@@ -10235,6 +12700,11 @@
       "date": "2026-08-19",
       "price": 7196,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 7196,
+      "status": "UNCHANGED"
     }
   ],
   "S7N94A": [
@@ -10255,6 +12725,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4946,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4946,
       "status": "UNCHANGED"
     }
@@ -10279,6 +12754,11 @@
       "date": "2026-08-19",
       "price": 1299,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1299,
+      "status": "UNCHANGED"
     }
   ],
   "S7N96AAE": [
@@ -10299,6 +12779,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3507,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3507,
       "status": "UNCHANGED"
     }
@@ -10323,6 +12808,11 @@
       "date": "2026-08-19",
       "price": 5846,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5846,
+      "status": "UNCHANGED"
     }
   ],
   "S7N98AAE": [
@@ -10343,6 +12833,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 699,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 699,
       "status": "UNCHANGED"
     }
@@ -10367,6 +12862,11 @@
       "date": "2026-08-19",
       "price": 1887,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1887,
+      "status": "UNCHANGED"
     }
   ],
   "S7P00AAE": [
@@ -10387,6 +12887,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3146,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3146,
       "status": "UNCHANGED"
     }
@@ -10411,6 +12916,11 @@
       "date": "2026-08-19",
       "price": 600,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 600,
+      "status": "UNCHANGED"
     }
   ],
   "S5Q82AAE": [
@@ -10431,6 +12941,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1800,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1800,
       "status": "UNCHANGED"
     }
@@ -10455,6 +12970,11 @@
       "date": "2026-08-19",
       "price": 3000,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3000,
+      "status": "UNCHANGED"
     }
   ],
   "S4R31A": [
@@ -10475,6 +12995,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4839,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4839,
       "status": "UNCHANGED"
     }
@@ -10499,6 +13024,11 @@
       "date": "2026-08-19",
       "price": 14516,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 14516,
+      "status": "UNCHANGED"
     }
   ],
   "S4R33A": [
@@ -10519,6 +13049,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 24194,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 24194,
       "status": "UNCHANGED"
     }
@@ -10543,6 +13078,11 @@
       "date": "2026-08-19",
       "price": 3024,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3024,
+      "status": "UNCHANGED"
     }
   ],
   "S4R35A": [
@@ -10563,6 +13103,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 9072,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 9072,
       "status": "UNCHANGED"
     }
@@ -10587,6 +13132,11 @@
       "date": "2026-08-19",
       "price": 15119,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15119,
+      "status": "UNCHANGED"
     }
   ],
   "S4R37A": [
@@ -10607,6 +13157,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1429,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1429,
       "status": "UNCHANGED"
     }
@@ -10631,6 +13186,11 @@
       "date": "2026-08-19",
       "price": 4072,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4072,
+      "status": "UNCHANGED"
     }
   ],
   "S4R39A": [
@@ -10651,6 +13211,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6787,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6787,
       "status": "UNCHANGED"
     }
@@ -10675,6 +13240,11 @@
       "date": "2026-08-19",
       "price": 879,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 879,
+      "status": "UNCHANGED"
     }
   ],
   "S4R41A": [
@@ -10695,6 +13265,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2505,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2505,
       "status": "UNCHANGED"
     }
@@ -10719,6 +13294,11 @@
       "date": "2026-08-19",
       "price": 4175,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4175,
+      "status": "UNCHANGED"
     }
   ],
   "S4R43A": [
@@ -10739,6 +13319,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1429,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1429,
       "status": "UNCHANGED"
     }
@@ -10763,6 +13348,11 @@
       "date": "2026-08-19",
       "price": 879,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 879,
+      "status": "UNCHANGED"
     }
   ],
   "S4R45A": [
@@ -10783,6 +13373,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2144,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2144,
       "status": "UNCHANGED"
     }
@@ -10807,6 +13402,11 @@
       "date": "2026-08-19",
       "price": 1319,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1319,
+      "status": "UNCHANGED"
     }
   ],
   "S4R47A": [
@@ -10829,6 +13429,11 @@
       "date": "2026-08-19",
       "price": 6110,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6110,
+      "status": "UNCHANGED"
     }
   ],
   "S4R48A": [
@@ -10849,6 +13454,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3759,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3759,
       "status": "UNCHANGED"
     }
@@ -10891,6 +13501,16 @@
       "price": 5584,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5584,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5584,
+      "status": "REMOVED"
     }
   ],
   "P74568-B21": [
@@ -10931,6 +13551,16 @@
       "price": 4242,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4242,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4242,
+      "status": "REMOVED"
     }
   ],
   "P69727-F21": [
@@ -10958,6 +13588,16 @@
       "date": "2026-08-19",
       "price": 13909,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 13909,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 13909,
+      "status": "REMOVED"
     }
   ],
   "P51181-B21": [
@@ -10998,6 +13638,16 @@
       "price": 485,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 485,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 485,
+      "status": "REMOVED"
     }
   ],
   "P03178-B21": [
@@ -11038,6 +13688,16 @@
       "price": 926,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 926,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 926,
+      "status": "REMOVED"
     }
   ],
   "P78145-B21": [
@@ -11065,6 +13725,16 @@
       "date": "2026-08-19",
       "price": 11,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 11,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 11,
+      "status": "REMOVED"
     }
   ],
   "BD505A": [
@@ -11105,6 +13775,16 @@
       "price": 469,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 469,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 469,
+      "status": "UNCHANGED"
     }
   ],
   "P72203-B21": [
@@ -11145,6 +13825,16 @@
       "price": 77,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 77,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 77,
+      "status": "REMOVED"
     }
   ],
   "P48820-B21": [
@@ -11185,6 +13875,16 @@
       "price": 972,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 972,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 972,
+      "status": "REMOVED"
     }
   ],
   "P52341-B21": [
@@ -11225,6 +13925,16 @@
       "price": 164,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 164,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 164,
+      "status": "REMOVED"
     }
   ],
   "P73325-B21": [
@@ -11252,6 +13962,16 @@
       "date": "2026-08-19",
       "price": 4,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4,
+      "status": "REMOVED"
     }
   ],
   "P74792-B21": [
@@ -11292,6 +14012,16 @@
       "price": 316,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
       "prevPrice": 0
+    },
+    {
+      "date": "2026-08-22",
+      "price": 316,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 316,
+      "status": "REMOVED"
     }
   ],
   "P79552-B21": [
@@ -11319,6 +14049,16 @@
       "date": "2026-08-19",
       "price": 1,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1,
+      "status": "REMOVED"
     }
   ],
   "H1SR4AS": [
@@ -11344,6 +14084,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -11373,6 +14118,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "H39VPA1": [
@@ -11398,6 +14148,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -11427,6 +14182,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "HU4A6A50C4V": [
@@ -11454,6 +14214,11 @@
       "date": "2026-08-19",
       "price": 15924,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15924,
+      "status": "UNCHANGED"
     }
   ],
   "Q9V60AAE": [
@@ -11464,6 +14229,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3500,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3500,
       "status": "UNCHANGED"
     }
@@ -11478,6 +14248,11 @@
       "date": "2026-08-19",
       "price": 108,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 108,
+      "status": "UNCHANGED"
     }
   ],
   "Q9S76AAE": [
@@ -11488,6 +14263,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 151,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 151,
       "status": "UNCHANGED"
     }
@@ -11502,6 +14282,11 @@
       "date": "2026-08-19",
       "price": 292,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 292,
+      "status": "UNCHANGED"
     }
   ],
   "Q9S77AAE": [
@@ -11512,6 +14297,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 408,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 408,
       "status": "UNCHANGED"
     }
@@ -11526,6 +14316,11 @@
       "date": "2026-08-19",
       "price": 486,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 486,
+      "status": "UNCHANGED"
     }
   ],
   "Q9S78AAE": [
@@ -11536,6 +14331,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 680,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 680,
       "status": "UNCHANGED"
     }
@@ -11550,6 +14350,11 @@
       "date": "2026-08-19",
       "price": 6737,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6737,
+      "status": "UNCHANGED"
     }
   ],
   "Q9R66A": [
@@ -11560,6 +14365,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 11229,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 11229,
       "status": "UNCHANGED"
     }
@@ -11574,6 +14384,11 @@
       "date": "2026-08-19",
       "price": 24680,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 24680,
+      "status": "UNCHANGED"
     }
   ],
   "Q9R68A": [
@@ -11584,6 +14399,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 41134,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 41134,
       "status": "UNCHANGED"
     }
@@ -11598,6 +14418,11 @@
       "date": "2026-08-19",
       "price": 1506,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1506,
+      "status": "UNCHANGED"
     }
   ],
   "G5J67AAE": [
@@ -11608,6 +14433,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4519,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4519,
       "status": "UNCHANGED"
     }
@@ -11622,6 +14452,11 @@
       "date": "2026-08-19",
       "price": 439,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 439,
+      "status": "UNCHANGED"
     }
   ],
   "G3J35AAE": [
@@ -11632,6 +14467,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1317,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1317,
       "status": "UNCHANGED"
     }
@@ -11646,6 +14486,11 @@
       "date": "2026-08-19",
       "price": 3019,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3019,
+      "status": "UNCHANGED"
     }
   ],
   "G5J69AAE": [
@@ -11656,6 +14501,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 9057,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 9057,
       "status": "UNCHANGED"
     }
@@ -11670,6 +14520,11 @@
       "date": "2026-08-19",
       "price": 879,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 879,
+      "status": "UNCHANGED"
     }
   ],
   "G3J37AAE": [
@@ -11680,6 +14535,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2637,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2637,
       "status": "UNCHANGED"
     }
@@ -11694,6 +14554,11 @@
       "date": "2026-08-19",
       "price": 2040,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2040,
+      "status": "UNCHANGED"
     }
   ],
   "M6K34AAE": [
@@ -11704,6 +14569,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2040,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2040,
       "status": "UNCHANGED"
     }
@@ -11718,6 +14588,11 @@
       "date": "2026-08-19",
       "price": 399,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 399,
+      "status": "UNCHANGED"
     }
   ],
   "512487-B21": [
@@ -11728,6 +14603,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 399,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 399,
       "status": "UNCHANGED"
     }
@@ -11742,6 +14622,11 @@
       "date": "2026-08-19",
       "price": 469,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 469,
+      "status": "UNCHANGED"
     }
   ],
   "E6U59ABE": [
@@ -11752,6 +14637,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 399,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 399,
       "status": "UNCHANGED"
     }
@@ -11766,6 +14656,11 @@
       "date": "2026-08-19",
       "price": 467,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 467,
+      "status": "UNCHANGED"
     }
   ],
   "E5Y44A": [
@@ -11776,6 +14671,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 799,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 799,
       "status": "UNCHANGED"
     }
@@ -11790,6 +14690,11 @@
       "date": "2026-08-19",
       "price": 849,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 849,
+      "status": "UNCHANGED"
     }
   ],
   "E5Y35AAE": [
@@ -11800,6 +14705,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 999,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 999,
       "status": "UNCHANGED"
     }
@@ -11814,6 +14724,11 @@
       "date": "2026-08-19",
       "price": 999,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 999,
+      "status": "UNCHANGED"
     }
   ],
   "P8B31A": [
@@ -11824,6 +14739,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 480,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 480,
       "status": "UNCHANGED"
     }
@@ -11838,6 +14758,11 @@
       "date": "2026-08-19",
       "price": 499,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 499,
+      "status": "UNCHANGED"
     }
   ],
   "P8B25A": [
@@ -11848,6 +14773,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 499,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 499,
       "status": "UNCHANGED"
     }
@@ -11862,6 +14792,11 @@
       "date": "2026-08-19",
       "price": 10183,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 10183,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D23AAE": [
@@ -11872,6 +14807,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6264,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6264,
       "status": "UNCHANGED"
     }
@@ -11886,6 +14826,11 @@
       "date": "2026-08-19",
       "price": 2085,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2085,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D26AAE": [
@@ -11896,6 +14841,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7532,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7532,
       "status": "UNCHANGED"
     }
@@ -11910,6 +14860,11 @@
       "date": "2026-08-19",
       "price": 4395,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4395,
+      "status": "UNCHANGED"
     }
   ],
   "Q0D30AAE": [
@@ -11920,6 +14875,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 15095,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 15095,
       "status": "UNCHANGED"
     }
@@ -11934,6 +14894,11 @@
       "date": "2026-08-19",
       "price": 2505,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2505,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W20AAE": [
@@ -11944,6 +14909,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4072,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4072,
       "status": "UNCHANGED"
     }
@@ -11958,6 +14928,11 @@
       "date": "2026-08-19",
       "price": 4175,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4175,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W22AAE": [
@@ -11968,6 +14943,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6787,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6787,
       "status": "UNCHANGED"
     }
@@ -11982,6 +14962,11 @@
       "date": "2026-08-19",
       "price": 9072,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9072,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W24AAE": [
@@ -11992,6 +14977,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 14516,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 14516,
       "status": "UNCHANGED"
     }
@@ -12006,6 +14996,11 @@
       "date": "2026-08-19",
       "price": 15119,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15119,
+      "status": "UNCHANGED"
     }
   ],
   "Q5W26AAE": [
@@ -12016,6 +15011,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 24194,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 24194,
       "status": "UNCHANGED"
     }
@@ -12030,6 +15030,11 @@
       "date": "2026-08-19",
       "price": 24680,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 24680,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U16AAE": [
@@ -12040,6 +15045,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 41134,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 41134,
       "status": "UNCHANGED"
     }
@@ -12054,6 +15064,11 @@
       "date": "2026-08-19",
       "price": 20325,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 20325,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U18AAE": [
@@ -12064,6 +15079,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 33874,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 33874,
       "status": "UNCHANGED"
     }
@@ -12078,6 +15098,11 @@
       "date": "2026-08-19",
       "price": 6737,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 6737,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U20AAE": [
@@ -12088,6 +15113,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 11229,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 11229,
       "status": "UNCHANGED"
     }
@@ -12102,6 +15132,11 @@
       "date": "2026-08-19",
       "price": 5483,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 5483,
+      "status": "UNCHANGED"
     }
   ],
   "Q8U22AAE": [
@@ -12112,6 +15147,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 9139,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 9139,
       "status": "UNCHANGED"
     }
@@ -12126,6 +15166,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77110-B21": [
@@ -12136,6 +15181,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 72,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 72,
       "status": "UNCHANGED"
     }
@@ -12150,6 +15200,11 @@
       "date": "2026-08-19",
       "price": 52,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 52,
+      "status": "UNCHANGED"
     }
   ],
   "P77112-AA1": [
@@ -12160,6 +15215,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 0,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 0,
       "status": "UNCHANGED"
     }
@@ -12174,6 +15234,11 @@
       "date": "2026-08-19",
       "price": 0,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 0,
+      "status": "UNCHANGED"
     }
   ],
   "P77112-B21": [
@@ -12184,6 +15249,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 322,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 322,
       "status": "UNCHANGED"
     }
@@ -12198,6 +15268,11 @@
       "date": "2026-08-19",
       "price": 226,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 226,
+      "status": "UNCHANGED"
     }
   ],
   "P77114-B21": [
@@ -12208,6 +15283,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 636,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 636,
       "status": "UNCHANGED"
     }
@@ -12222,6 +15302,11 @@
       "date": "2026-08-19",
       "price": 444,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 444,
+      "status": "UNCHANGED"
     }
   ],
   "P77116-B21": [
@@ -12232,6 +15317,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 3143,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 3143,
       "status": "UNCHANGED"
     }
@@ -12246,6 +15336,11 @@
       "date": "2026-08-19",
       "price": 2184,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2184,
+      "status": "UNCHANGED"
     }
   ],
   "P77118-B21": [
@@ -12256,6 +15351,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 280,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 280,
       "status": "UNCHANGED"
     }
@@ -12270,6 +15370,11 @@
       "date": "2026-08-19",
       "price": 201,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 201,
+      "status": "UNCHANGED"
     }
   ],
   "P77120-B21": [
@@ -12280,6 +15385,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1364,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1364,
       "status": "UNCHANGED"
     }
@@ -12294,6 +15404,11 @@
       "date": "2026-08-19",
       "price": 974,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 974,
+      "status": "UNCHANGED"
     }
   ],
   "P77122-B21": [
@@ -12304,6 +15419,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 13566,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 13566,
       "status": "UNCHANGED"
     }
@@ -12318,6 +15438,11 @@
       "date": "2026-08-19",
       "price": 9666,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9666,
+      "status": "UNCHANGED"
     }
   ],
   "G3J22AAE": [
@@ -12328,6 +15453,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4839,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4839,
       "status": "UNCHANGED"
     }
@@ -12342,6 +15472,11 @@
       "date": "2026-08-19",
       "price": 3024,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3024,
+      "status": "UNCHANGED"
     }
   ],
   "G3J24AAE": [
@@ -12352,6 +15487,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 14516,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 14516,
       "status": "UNCHANGED"
     }
@@ -12366,6 +15506,11 @@
       "date": "2026-08-19",
       "price": 9072,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 9072,
+      "status": "UNCHANGED"
     }
   ],
   "G3J26AAE": [
@@ -12376,6 +15521,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 24194,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 24194,
       "status": "UNCHANGED"
     }
@@ -12390,6 +15540,11 @@
       "date": "2026-08-19",
       "price": 15119,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 15119,
+      "status": "UNCHANGED"
     }
   ],
   "G3J28AAE": [
@@ -12400,6 +15555,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1429,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1429,
       "status": "UNCHANGED"
     }
@@ -12414,6 +15574,11 @@
       "date": "2026-08-19",
       "price": 879,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 879,
+      "status": "UNCHANGED"
     }
   ],
   "G3J30AAE": [
@@ -12424,6 +15589,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 4287,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 4287,
       "status": "UNCHANGED"
     }
@@ -12438,6 +15608,11 @@
       "date": "2026-08-19",
       "price": 2637,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 2637,
+      "status": "UNCHANGED"
     }
   ],
   "G3J32AAE": [
@@ -12448,6 +15623,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 7145,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 7145,
       "status": "UNCHANGED"
     }
@@ -12462,6 +15642,11 @@
       "date": "2026-08-19",
       "price": 4395,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 4395,
+      "status": "UNCHANGED"
     }
   ],
   "G5J62AAE": [
@@ -12472,6 +15657,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 2144,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 2144,
       "status": "UNCHANGED"
     }
@@ -12486,6 +15676,11 @@
       "date": "2026-08-19",
       "price": 1319,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 1319,
+      "status": "UNCHANGED"
     }
   ],
   "G5J64AAE": [
@@ -12496,6 +15691,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 6432,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 6432,
       "status": "UNCHANGED"
     }
@@ -12510,6 +15710,11 @@
       "date": "2026-08-19",
       "price": 3957,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 3957,
+      "status": "UNCHANGED"
     }
   ],
   "J8J35AAE": [
@@ -12522,6 +15727,11 @@
       "date": "2026-08-19",
       "price": 879,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
+      "price": 879,
+      "status": "UNCHANGED"
     }
   ],
   "J8J36AAE": [
@@ -12532,6 +15742,11 @@
     },
     {
       "date": "2026-08-19",
+      "price": 1429,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-22",
       "price": 1429,
       "status": "UNCHANGED"
     }

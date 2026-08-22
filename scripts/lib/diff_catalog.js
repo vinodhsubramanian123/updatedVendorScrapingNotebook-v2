@@ -100,9 +100,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
     }
   }
 
-  // Find previous catalog snapshots (excluding today's file if re-running same day)
+  // Find previous catalog snapshots (excluding today's file if re-running same day and excluding delta/history files)
+  const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}.*\\.json$`);
   const snapshotFiles = fs.readdirSync(historyDir)
-    .filter(f => f.startsWith(`${snapshotPrefix}_`) && f.endsWith('.json') && f !== `${snapshotPrefix}_${scrapeDate}.json`)
+    .filter(f => snapshotRegex.test(f) && f !== `${snapshotPrefix}_${scrapeDate}.json`)
     .sort();
 
   const prevSnapshotPath = snapshotFiles.length > 0

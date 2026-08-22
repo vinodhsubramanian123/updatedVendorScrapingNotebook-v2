@@ -40,7 +40,7 @@ const CoercedNumber = z.union([z.number(), z.string()]).transform((val, ctx) => 
 // ==========================================
 
 const CatalogSkuItemSchema = z.object({
-  sku: SkuString,
+  sku: z.string().optional(),
   'Product #': z.string().optional(),
   Description: z.string().default(''),
   description: z.string().optional(),
@@ -48,13 +48,20 @@ const CatalogSkuItemSchema = z.object({
   'Current Qty': z.union([z.string(), z.number()]).default('1').transform(v => String(v)),
   'Unit Price (USD)': CoercedNumber.default(0),
   'Price (USD)': CoercedNumber.optional(),
-  'Diff Status': z.enum(['UNCHANGED', 'ADDED', 'REMOVED', 'PRICE_CHANGED', 'ATTRIBUTE_CHANGED', 'REINSTATED', 'PRICE_AND_ATTRIBUTE_CHANGED']).default('UNCHANGED'),
+  'Diff Status': z.enum(['UNCHANGED', 'ADDED', 'REMOVED', 'PRICE_CHANGED', 'ATTRIBUTE_CHANGED', 'REINSTATED', 'PRICE_AND_ATTRIBUTE_CHANGED', 'BASELINE']).default('UNCHANGED'),
   'Hierarchy Path': z.string().optional(),
   'Component Role': z.string().optional(),
   'Start Date': z.string().optional(),
   'Discontinued Date': z.string().optional(),
   'Price History Trail': z.string().optional()
-}).passthrough();
+}).passthrough().transform(data => {
+  const resolvedSku = data.sku || data['Product #'] || '';
+  return {
+    ...data,
+    sku: resolvedSku,
+    'Product #': data['Product #'] || resolvedSku
+  };
+});
 
 const CatalogEntrySchema = z.object({
   parentCategory: z.string().default('Uncategorized'),

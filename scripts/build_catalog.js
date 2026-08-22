@@ -95,8 +95,10 @@ console.log(`  Chassis Root: "${chassisRoot}"${baseSKU ? ` (Base SKU: ${baseSKU}
 // ============================================================
 console.log('--- Step 1: Extracting Subcategories & Quantity Constraints ---');
 
-// Permissive regex capturing (max N), (required), (no max), (optional), (min N)
-const subcatRegex = /\n([^\n]{3,80})\s*\((max\s+(\d+)|required|no max|optional|min\s+(\d+))\)/gi;
+// GAP FIX #1 & #2: Expanded regex captures compound constraints like (min 1, max 2),
+// standalone (max N), (min N), (required), (no max), and (optional).
+// The full parenthesized content is captured as match[2] and parsed for both min + max.
+const subcatRegex = /\n([^\n]{3,80})\s*\(((?:min\s+\d+\s*,\s*)?(?:max\s+\d+|required|no max|optional)(?:\s*,\s*min\s+\d+)?|min\s+\d+)\)/gi;
 subcatRegex.lastIndex = 0;
 const subcatList = [];
 let match;
@@ -108,14 +110,21 @@ while ((match = subcatRegex.exec(fullText)) !== null) {
   if (name.includes('\t')) continue;   // Skip tab-separated data
 
   const constraintRaw = match[2].toLowerCase();
-  let maxQty = 0;
-  if (match[3]) maxQty = parseInt(match[3], 10);
-  else if (constraintRaw === 'no max') maxQty = -1;       // Unlimited sentinel
-  else if (constraintRaw === 'required') maxQty = -2;     // Required sentinel
+
+  // GAP FIX #1: Parse both minQty and maxQty from compound constraint text
+  const minMatch = constraintRaw.match(/min\s+(\d+)/);
+  const maxMatch = constraintRaw.match(/max\s+(\d+)/);
+  let minQty = minMatch ? parseInt(minMatch[1], 10) : 0;
+  let maxQty = maxMatch ? parseInt(maxMatch[1], 10) : 0;
+  if (constraintRaw.includes('no max')) maxQty = -1;         // Unlimited sentinel
+  if (constraintRaw.includes('required')) { maxQty = -2; minQty = minQty || 1; }  // Required implies min 1
+  // GAP FIX #5: (optional) gets its own sentinel instead of defaulting to maxQty=0
+  if (constraintRaw === 'optional') maxQty = -3;             // Optional sentinel
 
   subcatList.push({
     name,
     constraint: match[2],
+    minQty,     // GAP FIX #2: minQty is now stored and propagated
     maxQty,
     textIndex: match.index
   });
@@ -123,7 +132,7 @@ while ((match = subcatRegex.exec(fullText)) !== null) {
 
 console.log(`Found ${subcatList.length} subcategory headers in text.`);
 if (IS_VERBOSE) {
-  subcatList.forEach((sc, i) => console.log(`  [${i+1}] "${sc.name}" (${sc.constraint}, maxQty: ${sc.maxQty}) @ pos ${sc.textIndex}`));
+  subcatList.forEach((sc, i) => console.log(`  [${i+1}] "${sc.name}" (${sc.constraint}, minQty: ${sc.minQty}, maxQty: ${sc.maxQty}) @ pos ${sc.textIndex}`));
 }
 
 // ============================================================
@@ -294,6 +303,7 @@ for (let ti = 1; ti < tables.length; ti++) {
     const pn = rawPN.toUpperCase();
     const optionType = classifyOptionType(pn);
     obj['Product #'] = pn;
+    obj.sku = pn;
     obj['Option Type'] = optionType;
 
     // Sanitize Description field to strip raw DOM context markup and newline artifacts
@@ -349,7 +359,7 @@ for (let ti = 1; ti < tables.length; ti++) {
     continue;
   }
 
-  // Find subcategory match via text position
+  // Find subcategory match via text position (primary pass)
   let matchedSubcat = null;
   let textPos = -1;
 
@@ -372,7 +382,35 @@ for (let ti = 1; ti < tables.length; ti++) {
     }
   }
 
-  // Table-index order fallback if text position match was not found
+  // GAP FIX #3: Secondary matching pass — match subcategory name keywords
+  // against table header row cells and first SKU descriptions when primary
+  // text-position matching yields only a fallback (Sub-table) name.
+  if (!matchedSubcat && subcatList.length > 0) {
+    const headerStr = (headers || []).join(' ').toLowerCase();
+    const sampleDescs = skus.slice(0, 5).map(s => (s['Description'] || '').toLowerCase()).join(' ');
+    const searchText = headerStr + ' ' + sampleDescs;
+
+    // Score each subcategory by keyword overlap with table content
+    let bestScore = 0;
+    let bestSubcat = null;
+    for (const sc of subcatList) {
+      const words = sc.name.toLowerCase().split(/[\s\/\-,()]+/).filter(w => w.length >= 3);
+      if (words.length === 0) continue;
+      let score = 0;
+      for (const w of words) {
+        if (searchText.includes(w)) score++;
+      }
+      // Bonus: if the subcategory name appears verbatim in the table content
+      if (searchText.includes(sc.name.toLowerCase())) score += words.length;
+      if (score > bestScore) { bestScore = score; bestSubcat = sc; }
+    }
+    // Accept keyword match only if at least 2 words or 50%+ of words matched
+    if (bestSubcat && (bestScore >= 2 || bestScore >= Math.ceil(bestSubcat.name.split(/[\s\/\-,()]+/).filter(w => w.length >= 3).length * 0.5))) {
+      matchedSubcat = bestSubcat;
+    }
+  }
+
+  // Tertiary fallback: table-index proportional mapping (preserved for edge cases)
   if (!matchedSubcat && subcatList.length > 0) {
     const subcatIdx = Math.min(Math.floor((ti / tables.length) * subcatList.length), subcatList.length - 1);
     matchedSubcat   = subcatList[subcatIdx];
@@ -386,10 +424,17 @@ for (let ti = 1; ti < tables.length; ti++) {
   if (table.subTab) parentCat = table.subTab;
   if (table.label)  subCat    = table.label;
 
-  // Smart fallback: if parentCat is still 'Unknown', classify using component role & semantic taxonomy
-  if (parentCat === 'Unknown' || !parentCat) {
+  const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
+
+  // 1. Synthesize clean, descriptive subcategory name if unresolved (eliminates generic '(Sub-table)' placeholders)
+  if (!subCat || subCat === '(Sub-table)') {
+    const { synthesizeSubcategoryName } = require('./lib/product_meta.js');
+    subCat = synthesizeSubcategoryName(parentCat, sampleDesc, tableRules);
+  }
+
+  // 2. Smart fallback: if parentCat is 'Unknown' or generic 'Option Component', classify using component role & semantic taxonomy
+  if (parentCat === 'Unknown' || !parentCat || parentCat === 'Option Component' || parentCat === 'Option Components' || parentCat === 'General' || parentCat === 'MISC Hardware') {
     const { classifyComponentRole } = require('./lib/product_meta.js');
-    const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
     const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
     
     const ROLE_TO_PARENT_MAP = {
@@ -399,10 +444,11 @@ for (let ti = 1; ti < tables.length; ti++) {
       'Storage Controller': 'Storage Controllers',
       'Drive Cage / Drive': 'Drive Enclosures / Drives',
       'Network Adapter': 'Networking',
+      'Transceiver': 'Networking',
+      'Fibre Channel HBA': 'Networking',
       'PCIe Riser': 'PCIe Risers',
       'Cooling / Thermal': 'Cooling / Thermal',
       'Cable Kit': 'Cables & Enablement Kits',
-      'Transceiver': 'Networking',
       'GPU / Accelerator': 'Graphics & GPU',
       'Storage Battery': 'Storage Controllers',
       'Boot Device': 'OS Boot Device',
@@ -412,24 +458,25 @@ for (let ti = 1; ti < tables.length; ti++) {
       'Service & Support': 'Support Services'
     };
     
-    parentCat = ROLE_TO_PARENT_MAP[detectedRole] || detectedRole || 'Option Components';
+    parentCat = ROLE_TO_PARENT_MAP[detectedRole] || (detectedRole !== 'Option Component' ? detectedRole : 'Accessories & Infrastructure');
   }
 
   // Assign fallback category constraints if not explicitly captured
   const CATEGORY_DEFAULT_CONSTRAINTS = {
-    'processor': { constraint: 'max 2', maxQty: 2 },
-    'memory': { constraint: 'max 32', maxQty: 32 },
-    'power supplies': { constraint: 'max 2', maxQty: 2 },
-    'pcie risers': { constraint: 'max 3', maxQty: 3 },
-    'chassis': { constraint: 'max 1 — Mandatory Base Chassis Selection', maxQty: 1 },
-    'storage controllers': { constraint: 'max 4', maxQty: 4 },
-    'drive enclosures / drives': { constraint: 'max 24', maxQty: 24 },
-    'networking': { constraint: 'max 8', maxQty: 8 },
-    'cooling / thermal': { constraint: 'max 6', maxQty: 6 }
+    'processor': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
+    'memory': { constraint: 'max 32', minQty: 0, maxQty: 32 },
+    'power supplies': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
+    'pcie risers': { constraint: 'max 3', minQty: 0, maxQty: 3 },
+    'chassis': { constraint: 'min 1, max 1 — Mandatory Base Chassis Selection', minQty: 1, maxQty: 1 },
+    'storage controllers': { constraint: 'max 4', minQty: 0, maxQty: 4 },
+    'drive enclosures / drives': { constraint: 'max 24', minQty: 0, maxQty: 24 },
+    'networking': { constraint: 'max 8', minQty: 0, maxQty: 8 },
+    'cooling / thermal': { constraint: 'max 6', minQty: 0, maxQty: 6 }
   };
   const defaultConstraintObj = CATEGORY_DEFAULT_CONSTRAINTS[parentCat.toLowerCase()] || {};
   let finalConstraint = matchedSubcat && matchedSubcat.constraint ? matchedSubcat.constraint : (defaultConstraintObj.constraint || '');
   let finalMaxQty = matchedSubcat && matchedSubcat.maxQty ? matchedSubcat.maxQty : (defaultConstraintObj.maxQty || '');
+  let finalMinQty = matchedSubcat && matchedSubcat.minQty ? matchedSubcat.minQty : (defaultConstraintObj.minQty || 0);
 
   if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
     skus.forEach(sku => {
@@ -442,6 +489,7 @@ for (let ti = 1; ti < tables.length; ti++) {
     parentCategory: parentCat,
     subCategory:    subCat,
     constraint:     finalConstraint,
+    minQty:         finalMinQty,
     maxQty:         finalMaxQty,
     rules:          tableRules,
     headers,
@@ -506,6 +554,7 @@ for (const entry of orderedEntries) {
     entry.parentCategory = lastMatchedSubcat.parentCategory;
     entry.subCategory    = lastMatchedSubcat.subCategory;
     entry.constraint     = lastMatchedSubcat.constraint;
+    entry.minQty         = lastMatchedSubcat.minQty;
     entry.maxQty         = lastMatchedSubcat.maxQty;
     mergedSubtableCount++;
   }
@@ -547,34 +596,51 @@ const hasChassisEntry = hardwareEntries.some(e =>
   (e.subCategory || '').toLowerCase() === 'variants'
 );
 
+// GAP FIX #4: Removed hardcoded DL380 Gen12 chassis variants.
+// Instead, dynamically load from history snapshots or log a clear warning.
 if (!hasChassisEntry) {
-  const baseVariants = [
-    { sku: 'P73282-B21', desc: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server', price: '5584.00' },
-    { sku: 'P73283-B21', desc: 'HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server', price: '5980.00' },
-    { sku: 'P73284-B21', desc: 'HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server', price: '6350.00' },
-    { sku: 'P73285-B21', desc: 'HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server', price: '6890.00' },
-    { sku: 'P73286-B21', desc: 'HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server', price: '7120.00' },
-    { sku: 'P73287-B21', desc: 'HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server', price: '7450.00' }
-  ];
-  
-  const chassisSkus = baseVariants.map(v => ({
-    'Product #': v.sku,
-    'Description': v.desc,
-    'Unit Price (USD)': v.price,
-    'Option Type': 'CTO',
-    'Current Qty': '1'
-  }));
+  let injectedFromHistory = false;
+  const historyDir = path.join(targetDir, 'history');
+  if (fs.existsSync(historyDir)) {
+    const histFiles = fs.readdirSync(historyDir)
+      .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
+      .sort().reverse();
+    for (const hf of histFiles) {
+      try {
+        const hCat = JSON.parse(fs.readFileSync(path.join(historyDir, hf), 'utf-8'));
+        const hChassisEntries = (hCat.entries || []).filter(e =>
+          (e.parentCategory || '').toLowerCase() === 'chassis' ||
+          (e.subCategory || '').toLowerCase() === 'variants'
+        );
+        if (hChassisEntries.length > 0) {
+          const cleanChassisEntries = hChassisEntries.map(e => ({
+            ...e,
+            parentCategory: 'Chassis',
+            subCategory: 'Variants',
+            minQty: 1,
+            maxQty: 1,
+            skus: (e.skus || []).filter(s => {
+              const desc = (s['Description'] || s.description || '').toLowerCase();
+              return (s['Component Role'] === 'Base Chassis' || (s['Option Type'] || s.optionType) === 'CTO') &&
+                     (desc.includes('cto server') || desc.includes('base chassis') || desc.includes('server cto') || desc.includes('cto rack') || desc.includes('cto chassis'));
+            })
+          })).filter(e => e.skus.length > 0);
 
-  hardwareEntries.unshift({
-    parentCategory: 'Chassis',
-    subCategory: 'Variants',
-    constraint: 'max 1 — Mandatory Base Chassis Selection',
-    maxQty: '1',
-    rules: ['Select exactly one base CTO chassis variant'],
-    headers: ['Product #', 'Description', 'Unit Price (USD)', 'Option Type', 'Current Qty'],
-    skuCount: chassisSkus.length,
-    skus: chassisSkus
-  });
+          if (cleanChassisEntries.length > 0) {
+            hardwareEntries.unshift(...cleanChassisEntries);
+            console.log(`  📦 Chassis variants injected from history snapshot: ${hf} (${cleanChassisEntries.reduce((sum, e) => sum + e.skus.length, 0)} SKUs)`);
+            injectedFromHistory = true;
+            break;
+          }
+        }
+      } catch (_) { /* ignore corrupt history files */ }
+    }
+  }
+  if (!injectedFromHistory) {
+    console.warn(`  ⚠️  WARNING: No chassis entry found in scraped data or history for ${chassisLabel}.`);
+    console.warn(`      The catalog may be incomplete — base CTO chassis variants are missing.`);
+    console.warn(`      Ensure the OCA portal page shows the full product node menu.`);
+  }
 }
 
 const getUniqueSkuCount = (entries) => {
@@ -599,12 +665,14 @@ const buildCatalogObject = (entries) => {
       parentCategory: sc.parentCategory,
       name:           sc.name,
       constraint:     sc.constraint,
+      minQty:         sc.minQty,
       maxQty:         sc.maxQty
     })),
     entries: entries.map(e => ({
       parentCategory: e.parentCategory,
       subCategory:    e.subCategory,
       constraint:     e.constraint,
+      minQty:         e.minQty || 0,
       maxQty:         e.maxQty,
       rules:          e.rules,
       headers:        e.headers,
@@ -614,8 +682,27 @@ const buildCatalogObject = (entries) => {
   };
 };
 
+const seenHwSkus = new Set();
+hardwareEntries.forEach(e => {
+  (e.skus || []).forEach(s => {
+    const pn = s['Product #'] || s.sku;
+    if (pn) seenHwSkus.add(pn);
+  });
+});
+
+const seenServiceSkus = new Set();
+const cleanServicesEntries = servicesEntries.map(e => ({
+  ...e,
+  skus: (e.skus || []).filter(s => {
+    const pn = s['Product #'] || s.sku;
+    if (!pn || seenHwSkus.has(pn) || seenServiceSkus.has(pn)) return false;
+    seenServiceSkus.add(pn);
+    return true;
+  })
+})).filter(e => e.skus.length > 0);
+
 const catalogObj = buildCatalogObject(hardwareEntries);
-const servicesCatalogObj = buildCatalogObject(servicesEntries);
+const servicesCatalogObj = buildCatalogObject(cleanServicesEntries);
 
 // Run diff engine on HARDWARE entries
 const { enrichedCatalog } = processCatalogDiff(catalogObj, historyDir);
