@@ -4,7 +4,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Watch outputs/history directory for catalog_deltas.json
-const historyDir = path.join(__dirname, '../outputs/history');
+const historyDir = path.join(__dirname, '..', '..', 'outputs', 'history');
 
 if (!fs.existsSync(historyDir)) {
   fs.mkdirSync(historyDir, { recursive: true });
@@ -23,14 +23,14 @@ fs.watch(historyDir, (eventType, filename) => {
     
     setTimeout(() => {
       try {
-        console.log('[Feedback Listener] Running build_catalog.js...');
-        execSync('node scripts/rebuild_all.js', { stdio: 'inherit' });
+        console.log('[Feedback Listener] Running rebuild_all.js...');
+        execSync('node scripts/catalogs/rebuild_all.js', { stdio: 'inherit' });
 
-        console.log('[Feedback Listener] Running regenerate_rules.js...');
-        execSync('node scripts/regenerate_rules.js', { stdio: 'inherit' });
+        console.log('[Feedback Listener] Running sync_all_registered_catalogs.js...');
+        execSync('node scripts/catalogs/sync_all_registered_catalogs.js', { stdio: 'inherit' });
 
-        console.log('[Feedback Listener] Running regression suite...');
-        execSync('node scripts/regression_suite.js', { stdio: 'inherit' });
+        console.log('[Feedback Listener] Running portfolio certification suite...');
+        execSync('npm test', { stdio: 'inherit' });
 
         console.log('[Feedback Listener] Closed-Loop Knowledge Sync completed successfully.');
       } catch (err) {
