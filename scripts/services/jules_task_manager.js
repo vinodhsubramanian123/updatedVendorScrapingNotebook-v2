@@ -7,7 +7,7 @@
  */
 
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const JULES_API_KEY = process.env.JULES_API_KEY || '';
 const GITHUB_REPO = 'vinodhsubramanian123/updatedVendorScrapingNotebook-v2';

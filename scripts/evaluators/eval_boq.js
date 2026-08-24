@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 const { execSync } = require('child_process');
 const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
 const { calculateConfidenceScore, processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
