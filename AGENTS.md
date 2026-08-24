@@ -50,3 +50,8 @@ The system leverages Google Jules for background code review, test generation, a
 3. **PR Merge & Artifact Hygiene Standards**:
    - Before merging any PR created by Jules, the agent must inspect `git diff --stat` to ensure no accidental build artifacts (e.g. `outputs/history/*.json` dumps, temp files) were committed (Invariant INV-7 & INV-10).
    - Ensure all 17 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.
+
+4. **Post-Merge Remote Branch Pruning & Full Ownership (`INV-11`)**:
+   - Once all code and tests from a Jules PR branch are merged and certified on `main`, the AI agent takes full responsibility to delete the stale remote feature branch (`git push origin --delete <branch>`) and send a completion message to Jules.
+   - Never leave stale, abandoned, or lingering feature branches on GitHub once their work has landed on `main`.
+

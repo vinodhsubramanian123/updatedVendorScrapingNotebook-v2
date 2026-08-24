@@ -122,8 +122,29 @@ if (require.main === module) {
         }
         const details = await getSessionDetails(id);
         console.log('Session Details:', details);
+      } else if (command === 'prune') {
+        const { execSync } = require('child_process');
+        console.log('Fetching remote branches to prune merged Jules branches...');
+        const rawBranches = execSync('git branch -r', { encoding: 'utf-8' });
+        const branches = rawBranches
+          .split('\n')
+          .map(b => b.trim())
+          .filter(b => b.startsWith('origin/') && !b.includes('HEAD') && !b.endsWith('/main') && !b.endsWith('/master'))
+          .map(b => b.replace('origin/', ''));
+
+        console.log(`Found ${branches.length} remote feature branch(es) to check.`);
+        for (const branch of branches) {
+          try {
+            console.log(`Pruning remote branch: origin/${branch}...`);
+            execSync(`git push origin --delete ${branch}`, { stdio: 'inherit' });
+            console.log(`✅ Successfully pruned origin/${branch}`);
+          } catch (e) {
+            console.warn(`⚠️ Could not prune ${branch}: ${e.message}`);
+          }
+        }
+        console.log('🎉 Stale remote branches pruned cleanly.');
       } else {
-        console.log('Unknown command. Available commands: list, create, send, status');
+        console.log('Unknown command. Available commands: list, create, send, status, prune');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);

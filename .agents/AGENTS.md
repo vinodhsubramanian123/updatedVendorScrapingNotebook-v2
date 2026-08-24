@@ -233,6 +233,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Autonomous Feedback Rule**: When Jules comments with issues or failed edge cases, the agent must autonomously read the session activity (`status <sessionId>`), address the underlying pattern across the codebase, push the fix, and reply to Jules in the same session without requiring the human user to act as a relayer.
 - **Artifact Hygiene Rule**: All automated PRs created by Jules must be audited for accidental build artifacts (INV-7) before merging. Ensure 100% pass across all 17 test suites (`npm run test:all`) and zero lint errors (`npm run lint`).
 
+### INV-11: Post-Merge Stale Branch Pruning & Full Ownership Protocol
+- **Pattern**: Once a feature branch created by Jules is audited, verified, certified, and fully integrated into `main`, the agent takes full ownership of branch lifecycle management.
+- **Rule**: Agents must prune stale remote feature branches from GitHub (`git push origin --delete <branch>`) and notify Jules that the session is integrated. Never leave abandoned or dangling branches on remote once code has landed on `main`.
+
 ---
 
 ## History Directory Hygiene Rules
