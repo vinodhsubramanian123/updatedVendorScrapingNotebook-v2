@@ -74,10 +74,10 @@ function validateCatalogData(catalogObj, options = {}) {
     const subCat = entry.subCategory || 'General';
     categoriesFound.add(parentCat);
 
-    // Validate Subcategory Max Qty Bound
+    // Validate Subcategory Max Qty Bound (-1=unlimited, -2=required, -3=optional)
     if (typeof entry.maxQty === 'number') {
-      if (isNaN(entry.maxQty) || entry.maxQty < -2) {
-        errors.push(`Entry #${entryIdx} [${parentCat} > ${subCat}]: Invalid maxQty bound (${entry.maxQty}). Expected integer >= -2.`);
+      if (isNaN(entry.maxQty) || entry.maxQty < -3) {
+        errors.push(`Entry #${entryIdx} [${parentCat} > ${subCat}]: Invalid maxQty bound (${entry.maxQty}). Expected integer >= -3.`);
       }
     }
 

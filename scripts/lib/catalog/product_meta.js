@@ -96,7 +96,7 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   const desc = String(itemDescription).toLowerCase();
 
   // Explicit guard: Infrastructure accessories (rails, CMAs, bezels, insight displays) are NEVER Base Chassis
-  if (desc.includes('rail') || desc.includes('cable management') || desc.includes('cma') || desc.includes('insight display') || desc.includes('bezel kit') || desc.includes('blank kit') || cat.includes('infrastructure')) {
+  if (desc.includes('rail') || desc.includes('cable management') || desc.includes('cma') || desc.includes('insight display') || desc.includes('bezel kit') || desc.includes('blank kit') || (desc.includes('infrastructure') && !desc.includes('processor') && !desc.includes('memory') && !desc.includes('power') && !desc.includes('controller') && !desc.includes('adapter'))) {
     return 'Chassis Infrastructure';
   }
 

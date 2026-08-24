@@ -224,15 +224,61 @@ if (unclassifiedSubcats > 0) {
 // ============================================================
 console.log('\n--- Step 3: Extracting Tables & SKUs ---');
 
+let sourceTables = tables;
+if (tables.length > 1 && tables[0].rows && tables[0].rows.length > 500) {
+  sourceTables = tables.slice(1);
+}
+
+const expandedTables = [];
+for (let ti = 0; ti < sourceTables.length; ti++) {
+  const table = sourceTables[ti];
+  if (!table.rows || table.rows.length === 0) continue;
+
+  let internalSections = [];
+  let currentSec = null;
+
+  for (let ri = 0; ri < table.rows.length; ri++) {
+    const row = table.rows[ri];
+    const rowStr = row.join(' ');
+    const constraintMatch = rowStr.match(/([A-Za-z0-9\s\-_/]+)\s*\(((?:min\s+\d+\s*,\s*)?(?:max\s+\d+|required|no max|optional)(?:\s*,\s*min\s+\d+)?|min\s+\d+)\)/i);
+
+    if (constraintMatch && constraintMatch[1].trim().length >= 3 && !constraintMatch[1].includes('Product #')) {
+      if (currentSec && currentSec.rows.length > 0) internalSections.push(currentSec);
+      currentSec = {
+        tableIndex: expandedTables.length + internalSections.length,
+        label: constraintMatch[1].trim(),
+        constraintText: constraintMatch[2],
+        rows: []
+      };
+    } else if (currentSec) {
+      currentSec.rows.push(row);
+    }
+  }
+  if (currentSec && currentSec.rows.length > 0) internalSections.push(currentSec);
+
+  if (internalSections.length > 1) {
+    expandedTables.push(...internalSections);
+  } else {
+    expandedTables.push(table);
+  }
+}
+
 const allSKURows   = [];
 const allSKUMap    = new Map();
 const processedPNs = new Set();
 const tableEntries = [];
 let skippedTables  = 0;
 
-for (let ti = 1; ti < tables.length; ti++) {
-  const table = tables[ti];
+for (let ti = 0; ti < expandedTables.length; ti++) {
+  const table = expandedTables[ti];
   if (!table.rows || table.rows.length < 2) {
+    skippedTables++;
+    continue;
+  }
+
+  // Skip summary and BOM report tables that lack structured column mapping
+  const firstRowsText = (table.rows.slice(0, 3).map(r => r.join(' ')).join(' ')).toLowerCase();
+  if (firstRowsText.includes('node level quantity') || firstRowsText.includes('support install action')) {
     skippedTables++;
     continue;
   }
@@ -260,15 +306,22 @@ for (let ti = 1; ti < tables.length; ti++) {
   }
 
   if (headerIdx === -1) {
-    skippedTables++;
-    continue;
+    const { isValidHpeSKU } = require('../lib/catalog/sku.js');
+    const hasAnySku = table.rows.some(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
+    if (hasAnySku) {
+      headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
+      headerIdx = -1;
+    } else {
+      skippedTables++;
+      continue;
+    }
   }
 
   // Extract data rows
   const skus = [];
   for (let ri = headerIdx + 1; ri < table.rows.length; ri++) {
     const row = table.rows[ri];
-    if (row.length < 3) continue;
+    if (row.length < 2) continue;
 
     const obj = {};
     let offset = 0;
@@ -293,6 +346,10 @@ for (let ti = 1; ti < tables.length; ti++) {
     // Rejects internal DOM pattern IDs (e.g. dl380pat001b94fb), core count strings, and arbitrary numeric labels
     const { isValidHpeSKU } = require('../lib/catalog/sku.js');
     let rawPN = obj['Product #'] || '';
+    if (!rawPN || !isValidHpeSKU(cleanBaseSKU(rawPN))) {
+      const foundCell = row.find(c => isValidHpeSKU(cleanBaseSKU(c.trim())));
+      if (foundCell) rawPN = foundCell;
+    }
     if (rawPN) {
       rawPN = cleanBaseSKU(rawPN);
     }
@@ -309,6 +366,10 @@ for (let ti = 1; ti < tables.length; ti++) {
 
     // Sanitize Description field to strip raw DOM context markup and newline artifacts
     let descText = obj['Description'] || '';
+    if (!descText || descText === pn) {
+      const otherCells = row.filter(c => c !== pn && c.trim().length > 5);
+      if (otherCells.length > 0) descText = otherCells[0];
+    }
     if (descText.includes('context":') || descText.includes('\n') || descText.includes('\\n') || descText.includes('\t')) {
       descText = descText.replace(/context":\s*/gi, '');
       descText = descText.replace(/\\n/g, '\n').replace(/\\t/g, ' ');
@@ -325,6 +386,18 @@ for (let ti = 1; ti < tables.length; ti++) {
     const rawQty = String(obj['Current Qty'] || obj['Quantity'] || '0').replace(/\s+/g, '').trim();
     obj['Current Qty'] = /^\d+$/.test(rawQty) ? rawQty : '0';
     delete obj['Quantity'];
+
+    // Sanitize Unit Price (USD)
+    let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[\$,]/g, '').trim();
+    if (isNaN(parseFloat(priceStr)) || priceStr === pn || parseFloat(priceStr) < 0) {
+      const numCell = row.find(c => {
+        const p = c.replace(/[\$,]/g, '').trim();
+        return p && !isNaN(parseFloat(p)) && parseFloat(p) >= 0 && c !== pn;
+      });
+      priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
+    }
+    obj['Unit Price (USD)'] = priceStr;
+    obj.listPrice = parseFloat(priceStr) || 0;
 
     // Filter out TAA Compliant & GTA / #GTA SKUs for MEA (Dubai) region requirement
     if (/\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(pn) || /\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(descText)) {
@@ -433,8 +506,37 @@ for (let ti = 1; ti < tables.length; ti++) {
     subCat = synthesizeSubcategoryName(parentCat, sampleDesc, tableRules);
   }
 
-  // 2. Smart fallback: if parentCat is 'Unknown' or generic 'Option Component', classify using component role & semantic taxonomy
-  if (parentCat === 'Unknown' || !parentCat || parentCat === 'Option Component' || parentCat === 'Option Components' || parentCat === 'General' || parentCat === 'MISC Hardware') {
+  // 2. Direct semantic subcategory to parent category taxonomy mapping
+  const SUBCAT_KEYWORD_PARENT_MAP = [
+    { keywords: ['processor', 'xeon', 'epyc'], parent: 'Processor' },
+    { keywords: ['memory', 'dimm', 'ddr5', 'ddr4', 'smart memory'], parent: 'Memory' },
+    { keywords: ['power supply', 'power supplies', 'flex slot', '-48vdc'], parent: 'Power Supplies' },
+    { keywords: ['heatsink', 'heat sink', 'fan kit', 'fans', 'cooling', 'thermal'], parent: 'Cooling / Thermal' },
+    { keywords: ['riser', 'pcie riser'], parent: 'PCIe Risers' },
+    { keywords: ['storage controller', 'sas controller', 'megaraid', 'smart array', 'vroc'], parent: 'Storage Controllers' },
+    { keywords: ['drive cage', 'drive enclosure', 'drive blank', 'solid state drive', 'nvme', 'sata', 'sas'], parent: 'Drive Enclosures / Drives' },
+    { keywords: ['networking', 'ethernet', 'ocp3', 'infiniband', 'transceiver', 'fibre channel'], parent: 'Networking' },
+    { keywords: ['cable kit', 'cables', 'jumper cable'], parent: 'Cables & Enablement Kits' },
+    { keywords: ['software', 'license', 'operating system', 'windows server', 'red hat', 'suse', 'vmware', 'ilo', 'oneview'], parent: 'Software & Licenses' },
+    { keywords: ['support', 'pointnext', 'tech care', 'service'], parent: 'Support Services' },
+    { keywords: ['chassis infrastructure', 'smart chassis', 'rail', 'bezel', 'blank', 'enablement', 'options'], parent: 'Accessories & Infrastructure' },
+    { keywords: ['base chassis', 'chassis variants', 'variants'], parent: 'Chassis' },
+    { keywords: ['gpu', 'graphics', 'accelerator', 'nvidia'], parent: 'Graphics & GPU' }
+  ];
+
+  const subCatLower = (subCat || '').toLowerCase();
+  let matchedParent = null;
+  for (const mapEntry of SUBCAT_KEYWORD_PARENT_MAP) {
+    if (mapEntry.keywords.some(k => subCatLower.includes(k))) {
+      matchedParent = mapEntry.parent;
+      break;
+    }
+  }
+
+  if (matchedParent) {
+    parentCat = matchedParent;
+  } else {
+    // 3. Fallback: classify using component role & semantic taxonomy
     const { classifyComponentRole } = require('../lib/catalog/product_meta.js');
     const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
     
@@ -459,25 +561,50 @@ for (let ti = 1; ti < tables.length; ti++) {
       'Service & Support': 'Support Services'
     };
     
-    parentCat = ROLE_TO_PARENT_MAP[detectedRole] || (detectedRole !== 'Option Component' ? detectedRole : 'Accessories & Infrastructure');
+    if (detectedRole && detectedRole !== 'Option Component' && ROLE_TO_PARENT_MAP[detectedRole]) {
+      parentCat = ROLE_TO_PARENT_MAP[detectedRole];
+    } else if (!parentCat || parentCat === 'Unknown') {
+      parentCat = 'Accessories & Infrastructure';
+    }
   }
 
   // Assign fallback category constraints if not explicitly captured
   const CATEGORY_DEFAULT_CONSTRAINTS = {
     'processor': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
+    'processors': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
     'memory': { constraint: 'max 32', minQty: 0, maxQty: 32 },
     'power supplies': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
+    'power supply': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
     'pcie risers': { constraint: 'max 3', minQty: 0, maxQty: 3 },
+    'pcie riser': { constraint: 'max 3', minQty: 0, maxQty: 3 },
     'chassis': { constraint: 'min 1, max 1 — Mandatory Base Chassis Selection', minQty: 1, maxQty: 1 },
     'storage controllers': { constraint: 'max 4', minQty: 0, maxQty: 4 },
+    'storage controller': { constraint: 'max 4', minQty: 0, maxQty: 4 },
     'drive enclosures / drives': { constraint: 'max 24', minQty: 0, maxQty: 24 },
     'networking': { constraint: 'max 8', minQty: 0, maxQty: 8 },
-    'cooling / thermal': { constraint: 'max 6', minQty: 0, maxQty: 6 }
+    'cooling / thermal': { constraint: 'max 6', minQty: 0, maxQty: 6 },
+    'software & licenses': { constraint: 'no max', minQty: 0, maxQty: -1 },
+    'accessories & infrastructure': { constraint: 'optional', minQty: 0, maxQty: -3 }
   };
   const defaultConstraintObj = CATEGORY_DEFAULT_CONSTRAINTS[parentCat.toLowerCase()] || {};
   let finalConstraint = matchedSubcat && matchedSubcat.constraint ? matchedSubcat.constraint : (defaultConstraintObj.constraint || '');
   let finalMaxQty = matchedSubcat && matchedSubcat.maxQty ? matchedSubcat.maxQty : (defaultConstraintObj.maxQty || '');
   let finalMinQty = matchedSubcat && matchedSubcat.minQty ? matchedSubcat.minQty : (defaultConstraintObj.minQty || 0);
+
+  if (table.constraintText) {
+    finalConstraint = table.constraintText;
+    const minMatch = finalConstraint.match(/min\s+(\d+)/i);
+    const maxMatch = finalConstraint.match(/max\s+(\d+)/i);
+    if (minMatch) finalMinQty = parseInt(minMatch[1], 10);
+    if (maxMatch) finalMaxQty = parseInt(maxMatch[1], 10);
+    if (finalConstraint.includes('no max')) finalMaxQty = -1;
+    if (finalConstraint.includes('required')) { finalMaxQty = -2; finalMinQty = finalMinQty || 1; }
+    if (finalConstraint.includes('optional')) finalMaxQty = -3;
+  }
+
+  if (tableRules.length === 0 && finalConstraint) {
+    tableRules.push(`Selection constraint for ${subCat}: ${finalConstraint}`);
+  }
 
   if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
     skus.forEach(sku => {
@@ -847,10 +974,10 @@ const chassisVariantRows = allTSVRows.filter(r => {
   const sub = (r['Sub-Category'] || '').toLowerCase();
   const role = (r['Component Role'] || '').toLowerCase();
   const desc = (r['Description'] || '').toLowerCase();
-  const isChassisCategory = cat === 'chassis' || role === 'base chassis';
-  const isCtoServer = desc.includes('cto server') || desc.includes('cto chassis') || desc.includes('base server');
-  const isNonChassisAccessory = desc.includes('factory integrated') || desc.includes('heatsink') || desc.includes('processor') || desc.includes('fan kit') || desc.includes('cable');
-  return (isChassisCategory || isCtoServer) && !isNonChassisAccessory;
+  const isChassisCategory = cat === 'chassis' && (sub === 'variants' || sub === 'base chassis' || sub === 'chassis');
+  const isCtoServer = (desc.includes('cto server') || desc.includes('server cto') || desc.includes('cto rack') || desc.includes('cto chassis')) && desc.includes('gen12');
+  const isNonChassisAccessory = desc.includes('factory integrated') || desc.includes('heatsink') || desc.includes('processor') || desc.includes('fan kit') || desc.includes('cable') || desc.includes('riser') || desc.includes('cage') || desc.includes('cord') || desc.includes('power supply') || desc.includes('bezel') || desc.includes('rail');
+  return (isChassisCategory || isCtoServer) && !isNonChassisAccessory && role === 'base chassis';
 });
 
 const chassisVariants = chassisVariantRows.map(r => {
@@ -880,8 +1007,8 @@ for (const v of chassisVariants) {
   if (v.sku) chassisVariantMatrix[v.sku] = v;
 }
 
-// Fallback: if no chassis variants found in current TSVs, load from history catalog snapshots
-if (Object.keys(chassisVariantMatrix).length === 0) {
+// Fallback: if fewer than 6 chassis variants found in current TSVs, load missing from history catalog snapshots
+if (Object.keys(chassisVariantMatrix).length < 6) {
   const historyDir = path.join(targetDir, 'history');
   if (fs.existsSync(historyDir)) {
     const histFiles = fs.readdirSync(historyDir)
@@ -934,7 +1061,7 @@ if (Object.keys(chassisVariantMatrix).length === 0) {
             };
           }
         }
-        if (Object.keys(chassisVariantMatrix).length > 0) break;
+        if (Object.keys(chassisVariantMatrix).length >= 6) break;
       } catch (_) { /* ignore corrupt history files */ }
     }
   }

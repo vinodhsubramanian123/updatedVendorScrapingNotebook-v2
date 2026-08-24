@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-24T12:31:36.495Z  
-**Total Verified SKUs**: `850` (`262` Hardware + `588` Services)  
+**Sync Timestamp**: 2026-08-24T14:01:21.386Z  
+**Total Verified SKUs**: `945` (`302` Hardware + `643` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 262 | 1 | 0 | 31 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 588 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **850** | **1** | **0** | **31** | **0** | **ACTIVE** |
+| **Hardware Components** | 302 | 40 | 0 | 9 | 6 | **CERTIFIED** |
+| **Support Services & SLAs** | 643 | 82 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **945** | **122** | **0** | **9** | **6** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -100,35 +100,59 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P78058-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 |
 | `P78061-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 |
 | `P77943-B21` | HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P73282-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server | **REINSTATED** | 2026-08-22 | $5584.00 |
-| `P73283-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server | **REINSTATED** | 2026-08-22 | $5980.00 |
-| `P73284-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server | **REINSTATED** | 2026-08-22 | $6350.00 |
-| `P73285-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-08-22 | $6890.00 |
-| `P73286-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-08-22 | $7120.00 |
-| `P73287-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **REINSTATED** | 2026-08-22 | $7450.00 |
+| `P73282-B21` | HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server | **REINSTATED** | 2026-08-24 | $5584.00 |
+| `P73283-B21` | HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server | **REINSTATED** | 2026-08-24 | $5980.00 |
+| `P73284-B21` | HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server | **REINSTATED** | 2026-08-24 | $6350.00 |
+| `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-08-24 | $6890.00 |
+| `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-08-24 | $7120.00 |
+| `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **REINSTATED** | 2026-08-24 | $7450.00 |
 | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-22 | $164.00 |
 | `P70744-B21` | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-22 | $172.00 |
 | `P74748-B21` | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-22 | $117.00 |
+| `Q9R65A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $6737.00 |
+| `Q9R66A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $11229.00 |
+| `Q9R67A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $24680.00 |
+| `Q9R68A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $41134.00 |
+| `512485-B21` | HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
+| `BD505A` | HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $469.00 |
+| `512487-B21` | HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
+| `BD507A` | HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $469.00 |
+| `E6U59ABE` | HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
+| `E6U64ABE` | HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $467.00 |
+| `P77110-B21` | Microsoft Windows Server 2025 1 User CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $72.00 |
+| `P77111-B21` | Microsoft Windows Server 2025 1 Device CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $52.00 |
+| `P77112-B21` | Microsoft Windows Server 2025 5 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $322.00 |
+| `P77113-B21` | Microsoft Windows Server 2025 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $226.00 |
+| `P77114-B21` | Microsoft Windows Server 2025 10 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $636.00 |
+| `P77115-B21` | Microsoft Windows Server 2025 10 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $444.00 |
+| `P77116-B21` | Microsoft Windows Server 2025 50 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $3143.00 |
+| `P77117-B21` | Microsoft Windows Server 2025 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $2184.00 |
+| `P77118-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $280.00 |
+| `P77119-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $201.00 |
+| `P77120-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $1364.00 |
+| `P77121-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $974.00 |
+| `P77122-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $13566.00 |
+| `P77123-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $9666.00 |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-22 | `P52341-B21` | Start Date |  | **11/10/2022** |
-| 2026-08-22 | `P70744-B21` | Description | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
-| 2026-08-22 | `P70744-B21` | Constraint |  | **Discontinued** |
-| 2026-08-22 | `P70744-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-22 | `P70744-B21` | Max Qty |  | **0** |
-| 2026-08-22 | `P70744-B21` | Component Role |  | **Discontinued Hardware** |
-| 2026-08-22 | `P70744-B21` | HPE Recommended |  | **No** |
-| 2026-08-22 | `P70744-B21` | Start Date |  | **02/24/2025** |
-| 2026-08-22 | `P74748-B21` | Description | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
-| 2026-08-22 | `P74748-B21` | Constraint |  | **Discontinued** |
-| 2026-08-22 | `P74748-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-22 | `P74748-B21` | Max Qty |  | **0** |
-| 2026-08-22 | `P74748-B21` | Component Role |  | **Discontinued Hardware** |
-| 2026-08-22 | `P74748-B21` | HPE Recommended |  | **No** |
-| 2026-08-22 | `P74748-B21` | Start Date |  | **02/24/2025** |
+| 2026-08-24 | `P52341-B21` | Start Date | 11/10/2022 | **** |
+| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
+| 2026-08-24 | `P70744-B21` | Constraint | Discontinued | **** |
+| 2026-08-24 | `P70744-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
+| 2026-08-24 | `P70744-B21` | Max Qty | 0 | **** |
+| 2026-08-24 | `P70744-B21` | Component Role | Discontinued Hardware | **** |
+| 2026-08-24 | `P70744-B21` | HPE Recommended | No | **** |
+| 2026-08-24 | `P70744-B21` | Start Date | 02/24/2025 | **** |
+| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
+| 2026-08-24 | `P74748-B21` | Constraint | Discontinued | **** |
+| 2026-08-24 | `P74748-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
+| 2026-08-24 | `P74748-B21` | Max Qty | 0 | **** |
+| 2026-08-24 | `P74748-B21` | Component Role | Discontinued Hardware | **** |
+| 2026-08-24 | `P74748-B21` | HPE Recommended | No | **** |
+| 2026-08-24 | `P74748-B21` | Start Date | 02/24/2025 | **** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 

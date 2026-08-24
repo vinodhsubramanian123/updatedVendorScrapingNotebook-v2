@@ -599,3 +599,199 @@ STEPS EXECUTED:
   [2026-08-22T12:31:16.189Z] [SUCCESS ] Step 6: Atomic Save Output JSON
 ================================================================
 
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787578890575
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:41:30.574Z
+END TIME:     2026-08-24T13:41:31.082Z (0.51s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    289
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:41:30.575Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:41:30.992Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:41:31.000Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:41:31.081Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579177737
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:46:17.736Z
+END TIME:     2026-08-24T13:46:28.523Z (10.79s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    289
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:46:17.737Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:46:28.398Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:46:28.408Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:46:28.523Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579254501
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:47:34.500Z
+END TIME:     2026-08-24T13:47:45.524Z (11.02s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    289
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:47:34.502Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:47:45.398Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:47:45.408Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:47:45.523Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579340665
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:49:00.664Z
+END TIME:     2026-08-24T13:49:11.395Z (10.73s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    289
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:49:00.665Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:49:11.260Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:49:11.268Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:49:11.394Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579403862
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:50:03.861Z
+END TIME:     2026-08-24T13:50:14.485Z (10.62s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    289
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:50:03.863Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:50:14.368Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:50:14.378Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:50:14.485Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579601623
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:53:21.622Z
+END TIME:     2026-08-24T13:53:22.344Z (0.72s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     8
+SKUS PROC:    310
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:53:21.623Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:53:22.227Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:53:22.236Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:53:22.343Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P73282-B21] has inconsistent list prices: $5584 in [Variants] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579661215
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:54:21.215Z
+END TIME:     2026-08-24T13:54:21.968Z (0.75s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     8
+SKUS PROC:    310
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:54:21.216Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:54:21.832Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:54:21.840Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:54:21.968Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P73282-B21] has inconsistent list prices: $5584 in [Variants] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579716742
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:55:16.741Z
+END TIME:     2026-08-24T13:55:17.551Z (0.81s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     7
+SKUS PROC:    309
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:55:16.742Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:55:17.419Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:55:17.430Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:55:17.551Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+WARNINGS:
+  ⚠️ Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors].
+  ⚠️ Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors].
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579829434
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:57:09.433Z
+END TIME:     2026-08-24T13:57:10.169Z (0.74s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    302
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:57:09.434Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:57:10.036Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:57:10.046Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:57:10.169Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+
+================================================================
+RUN ID:       run_DL380_Gen12_SFF_1787579992008
+SESSION:      DL380_Gen12_SFF
+START TIME:   2026-08-24T13:59:52.007Z
+END TIME:     2026-08-24T13:59:52.730Z (0.72s)
+STATUS:       COMPLETED
+ERRORS:       0
+WARNINGS:     0
+SKUS PROC:    302
+----------------------------------------------------------------
+STEPS EXECUTED:
+  [2026-08-24T13:59:52.008Z] [SUCCESS ] Initialize Classification Engine
+  [2026-08-24T13:59:52.610Z] [SUCCESS ] Step 5: Catalog Diff Engine
+  [2026-08-24T13:59:52.618Z] [SUCCESS ] Pre-Commit Data Integrity Validation
+  [2026-08-24T13:59:52.730Z] [SUCCESS ] Step 6: Atomic Save Output JSON
+================================================================
+

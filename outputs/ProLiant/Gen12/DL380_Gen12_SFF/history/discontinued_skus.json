@@ -144,87 +144,87 @@
   },
   "P73282-B21": {
     "productNumber": "P73282-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "5584.00",
-    "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P73283-B21": {
     "productNumber": "P73283-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "5980.00",
-    "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P73284-B21": {
     "productNumber": "P73284-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "6350.00",
-    "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P73285-B21": {
     "productNumber": "P73285-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "6890.00",
-    "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P73286-B21": {
     "productNumber": "P73286-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "7120.00",
-    "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P73287-B21": {
     "productNumber": "P73287-B21",
-    "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-22",
-    "daysActive": 10,
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 12,
     "lastKnownPrice": "7450.00",
-    "fullPriceTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED)",
+    "fullPriceTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-22"
+    "reinstatedDate": "2026-08-24"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -6410,6 +6410,126 @@
     "mainCategory": "Processor",
     "subCategory": "Intel Xeon 6th Gen Scalable Processors",
     "firstSeenDate": "2026-08-22",
+    "status": "ACTIVE"
+  },
+  "E6U59ABE": {
+    "productNumber": "E6U59ABE",
+    "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "E6U64ABE": {
+    "productNumber": "E6U64ABE",
+    "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "AC120A": {
+    "productNumber": "AC120A",
+    "description": "HPE Pallet Size Customization Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "AC129A": {
+    "productNumber": "AC129A",
+    "description": "HPE Consolidation Logistic Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F69A": {
+    "productNumber": "P1F69A",
+    "description": "HPE Delivery Site Above Ground Floor Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F70A": {
+    "productNumber": "P1F70A",
+    "description": "HPE Forklift at Delivery Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F71A": {
+    "productNumber": "P1F71A",
+    "description": "HPE Special Delivery Truck Size Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F72A": {
+    "productNumber": "P1F72A",
+    "description": "HPE Two People at Delivery SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F73A": {
+    "productNumber": "P1F73A",
+    "description": "HPE Campus Delivery Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F74A": {
+    "productNumber": "P1F74A",
+    "description": "HPE Unloading Logistic Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F75A": {
+    "productNumber": "P1F75A",
+    "description": "HPE Fixed Delivery Appointment Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P1F76A": {
+    "productNumber": "P1F76A",
+    "description": "HPE Pre-Delivery Site Survey SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "AC123A": {
+    "productNumber": "AC123A",
+    "description": "HPE Special Request/ Equipment Logistic Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "BQ335A": {
+    "productNumber": "BQ335A",
+    "description": "HPE Expedite Shipment Small Logistic Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "BQ337A": {
+    "productNumber": "BQ337A",
+    "description": "HPE Expedite Shipment Large Logistic Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
     "status": "ACTIVE"
   }
 }

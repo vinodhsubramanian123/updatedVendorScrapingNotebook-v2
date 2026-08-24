@@ -1,6 +1,1031 @@
 [
   {
     "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579992008",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:59:52.007Z",
+      "endTime": "2026-08-24T13:59:52.730Z",
+      "durationMs": 723,
+      "durationSec": "0.72",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 302,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 302,
+      "validationStats": {
+        "totalEntries": 71,
+        "totalSKUs": 302,
+        "validSKUs": 302,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:59:52.008Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:59:52.610Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 302,
+          "incrementalStats": {
+            "totalScrapedSkus": 302,
+            "unchangedSkusCount": 299,
+            "modifiedSkusCount": 3,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 44850,
+            "estimatedProcessingTimeSavedMs": 59800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:59:52.618Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 71,
+            "totalSKUs": 302,
+            "validSKUs": 302,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:59:52.730Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 302,
+      "classified": 302,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579829434",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:57:09.433Z",
+      "endTime": "2026-08-24T13:57:10.169Z",
+      "durationMs": 736,
+      "durationSec": "0.74",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 302,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 296,
+      "validationStats": {
+        "totalEntries": 71,
+        "totalSKUs": 302,
+        "validSKUs": 302,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 9,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:57:09.434Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:57:10.036Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 25,
+          "totalUniqueSKUs": 296,
+          "incrementalStats": {
+            "totalScrapedSkus": 302,
+            "unchangedSkusCount": 294,
+            "modifiedSkusCount": 8,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 44100,
+            "estimatedProcessingTimeSavedMs": 58800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:57:10.046Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 71,
+            "totalSKUs": 302,
+            "validSKUs": 302,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 9,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:57:10.169Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 302,
+      "classified": 302,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579716742",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:55:16.741Z",
+      "endTime": "2026-08-24T13:55:17.551Z",
+      "durationMs": 810,
+      "durationSec": "0.81",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 309,
+      "warningCount": 7,
+      "errorCount": 0,
+      "totalUniqueSKUs": 297,
+      "validationStats": {
+        "totalEntries": 72,
+        "totalSKUs": 309,
+        "validSKUs": 309,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 8,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 73,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:55:16.742Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.419Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 25,
+          "totalUniqueSKUs": 297,
+          "incrementalStats": {
+            "totalScrapedSkus": 309,
+            "unchangedSkusCount": 294,
+            "modifiedSkusCount": 15,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 44100,
+            "estimatedProcessingTimeSavedMs": 58800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 7,
+          "stats": {
+            "totalEntries": 72,
+            "totalSKUs": 309,
+            "validSKUs": 309,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 8,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 73,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.551Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:55:17.430Z",
+        "message": "Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 309,
+      "classified": 309,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579661215",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:54:21.215Z",
+      "endTime": "2026-08-24T13:54:21.968Z",
+      "durationMs": 753,
+      "durationSec": "0.75",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 310,
+      "warningCount": 8,
+      "errorCount": 0,
+      "totalUniqueSKUs": 302,
+      "validationStats": {
+        "totalEntries": 72,
+        "totalSKUs": 310,
+        "validSKUs": 310,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 75,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:54:21.216Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.832Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 302,
+          "incrementalStats": {
+            "totalScrapedSkus": 310,
+            "unchangedSkusCount": 302,
+            "modifiedSkusCount": 8,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 45300,
+            "estimatedProcessingTimeSavedMs": 60400
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 8,
+          "stats": {
+            "totalEntries": 72,
+            "totalSKUs": 310,
+            "validSKUs": 310,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 75,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.968Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-08-24T13:54:21.839Z",
+        "message": "Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [P73282-B21] has inconsistent list prices: $5584 in [Variants] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:54:21.840Z",
+        "message": "Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 310,
+      "classified": 310,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579601623",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:53:21.622Z",
+      "endTime": "2026-08-24T13:53:22.344Z",
+      "durationMs": 722,
+      "durationSec": "0.72",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 310,
+      "warningCount": 8,
+      "errorCount": 0,
+      "totalUniqueSKUs": 302,
+      "validationStats": {
+        "totalEntries": 72,
+        "totalSKUs": 310,
+        "validSKUs": 310,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 75,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:53:21.623Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.227Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 302,
+          "incrementalStats": {
+            "totalScrapedSkus": 310,
+            "unchangedSkusCount": 16,
+            "modifiedSkusCount": 281,
+            "addedSkusCount": 13,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 2400,
+            "estimatedProcessingTimeSavedMs": 3200
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 8,
+          "stats": {
+            "totalEntries": 72,
+            "totalSKUs": 310,
+            "validSKUs": 310,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 75,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.343Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-08-24T13:53:22.235Z",
+        "message": "Duplicate SKU [P78145-B21] has inconsistent list prices: $11 in [Power Cords & Jumper Cables] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P74568-B21] has inconsistent list prices: $4242 in [Intel Xeon 6th Gen Scalable Processors] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P69727-F21] has inconsistent list prices: $13909 in [DDR5 Registered Smart Memory] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P51181-B21] has inconsistent list prices: $485 in [OCP3 Networking Adapters] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P48820-B21] has inconsistent list prices: $972 in [High Performance & Standard Fan Kits] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P03178-B21] has inconsistent list prices: $926 in [Flex Slot Power Supplies] vs $2 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [P73282-B21] has inconsistent list prices: $5584 in [Variants] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      },
+      {
+        "timestamp": "2026-08-24T13:53:22.236Z",
+        "message": "Duplicate SKU [BD505A] has inconsistent list prices: $469 in [Server Management & Operating System Licenses] vs $1 in [Intel Xeon 6th Gen Scalable Processors]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 310,
+      "classified": 310,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579403862",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:50:03.861Z",
+      "endTime": "2026-08-24T13:50:14.485Z",
+      "durationMs": 10624,
+      "durationSec": "10.62",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 289,
+      "validationStats": {
+        "totalEntries": 69,
+        "totalSKUs": 289,
+        "validSKUs": 289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:50:03.863Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:50:14.368Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 289,
+          "incrementalStats": {
+            "totalScrapedSkus": 289,
+            "unchangedSkusCount": 289,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 43350,
+            "estimatedProcessingTimeSavedMs": 57800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:50:14.378Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 69,
+            "totalSKUs": 289,
+            "validSKUs": 289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:50:14.485Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 289,
+      "classified": 289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579340665",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:49:00.664Z",
+      "endTime": "2026-08-24T13:49:11.395Z",
+      "durationMs": 10731,
+      "durationSec": "10.73",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 289,
+      "validationStats": {
+        "totalEntries": 69,
+        "totalSKUs": 289,
+        "validSKUs": 289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:49:00.665Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:49:11.260Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 289,
+          "incrementalStats": {
+            "totalScrapedSkus": 289,
+            "unchangedSkusCount": 289,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 43350,
+            "estimatedProcessingTimeSavedMs": 57800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:49:11.268Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 69,
+            "totalSKUs": 289,
+            "validSKUs": 289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:49:11.394Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 289,
+      "classified": 289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579254501",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:47:34.500Z",
+      "endTime": "2026-08-24T13:47:45.524Z",
+      "durationMs": 11024,
+      "durationSec": "11.02",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 289,
+      "validationStats": {
+        "totalEntries": 69,
+        "totalSKUs": 289,
+        "validSKUs": 289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:47:34.502Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:47:45.398Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 289,
+          "incrementalStats": {
+            "totalScrapedSkus": 289,
+            "unchangedSkusCount": 289,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 43350,
+            "estimatedProcessingTimeSavedMs": 57800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:47:45.408Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 69,
+            "totalSKUs": 289,
+            "validSKUs": 289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:47:45.523Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 289,
+      "classified": 289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787579177737",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:46:17.736Z",
+      "endTime": "2026-08-24T13:46:28.523Z",
+      "durationMs": 10787,
+      "durationSec": "10.79",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 289,
+      "validationStats": {
+        "totalEntries": 69,
+        "totalSKUs": 289,
+        "validSKUs": 289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 69,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:46:17.737Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:46:28.398Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 289,
+          "incrementalStats": {
+            "totalScrapedSkus": 289,
+            "unchangedSkusCount": 289,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 43350,
+            "estimatedProcessingTimeSavedMs": 57800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:46:28.408Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 69,
+            "totalSKUs": 289,
+            "validSKUs": 289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 69,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:46:28.523Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 289,
+      "classified": 289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_SFF_1787578890575",
+      "sessionName": "DL380_Gen12_SFF",
+      "startTime": "2026-08-24T13:41:30.574Z",
+      "endTime": "2026-08-24T13:41:31.082Z",
+      "durationMs": 508,
+      "durationSec": "0.51",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 289,
+      "validationStats": {
+        "totalEntries": 69,
+        "totalSKUs": 289,
+        "validSKUs": 289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 6,
+        "zeroPriceSKUs": 10,
+        "priceErrors": 0,
+        "ruleCount": 28,
+        "categoryCount": 2
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-08-24T13:41:30.575Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:41:30.992Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 26,
+          "totalUniqueSKUs": 289,
+          "incrementalStats": {
+            "totalScrapedSkus": 289,
+            "unchangedSkusCount": 259,
+            "modifiedSkusCount": 3,
+            "addedSkusCount": 27,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 38850,
+            "estimatedProcessingTimeSavedMs": 51800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:41:31.000Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 69,
+            "totalSKUs": 289,
+            "validSKUs": 289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 6,
+            "zeroPriceSKUs": 10,
+            "priceErrors": 0,
+            "ruleCount": 28,
+            "categoryCount": 2
+          }
+        }
+      },
+      {
+        "timestamp": "2026-08-24T13:41:31.081Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 289,
+      "classified": 289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380_Gen12_SFF_1787401875786",
       "sessionName": "DL380_Gen12_SFF",
       "startTime": "2026-08-22T12:31:15.785Z",

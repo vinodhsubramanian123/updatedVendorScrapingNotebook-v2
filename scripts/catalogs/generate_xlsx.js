@@ -507,7 +507,7 @@ const metaData = [
   { Field: 'Scrape Date',            Value: catalogMeta.scrapeDate    || new Date().toISOString() },
   { Field: 'Source',                 Value: 'OCA (Online Configuration Application)' },
   { Field: 'Total Sub-Categories',   Value: String(summaryData.data.length) },
-  { Field: 'Total Hardware SKUs',        Value: String(skuData.data.length) },
+  { Field: 'Total Hardware SKUs',        Value: String(catalogMeta.totalUniqueSKUs !== undefined ? catalogMeta.totalUniqueSKUs : skuData.data.length) },
   { Field: 'Total Service/Software SKUs', Value: String(servicesData.data.length) },
   { Field: 'Total Combined SKUs',        Value: String(allCombinedData.length) },
   { Field: 'Chassis Variant Options',    Value: String(skuData.data.filter(r => r['Main Category'] === 'Chassis').length) },
