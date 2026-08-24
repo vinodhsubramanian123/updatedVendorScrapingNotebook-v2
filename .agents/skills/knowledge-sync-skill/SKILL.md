@@ -57,13 +57,13 @@ Learnings captured from HPE OCA portal rejections (`KnowledgeDeltas`) are automa
 npm run sync:knowledge
 
 # Auto-upload payloads to Google NotebookLM for a specific chassis
-node scripts/lib/knowledge_sync.js --chassis DL380_Gen12_SFF --auto-upload-nlm
+node scripts/lib/sync/knowledge_sync.js --chassis DL380_Gen12_SFF --auto-upload-nlm
 
 # Full portfolio knowledge sync with auto-upload
-node scripts/lib/knowledge_sync.js --auto-upload-nlm
+node scripts/lib/sync/knowledge_sync.js --auto-upload-nlm
 
 # Output JSON payload for Dashboard SSE stream
-node scripts/lib/knowledge_sync.js --json
+node scripts/lib/sync/knowledge_sync.js --json
 ```
 
 ---

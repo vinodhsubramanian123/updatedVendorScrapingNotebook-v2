@@ -140,7 +140,7 @@ router.post('/eval-boq', (req, res) => {
     return res.status(400).json({ error: errorMsg });
   }
 
-  const evalScript = path.join(PROJECT_ROOT, 'scripts', 'eval_boq.js');
+  const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
   const args = [evalScript, targetPath, '--json'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
 
@@ -278,7 +278,7 @@ router.post('/audit-catalog', (req, res) => {
   if (!xlsxPath) return sendErrorResponse(res, 400, 'xlsxPath required', { source: 'EVALUATION_ROUTER' });
   let fullXlsxPath;
   try { fullXlsxPath = assertSafePath(xlsxPath.replace(/^\/artifacts\//, '')); } catch (err) { return sendErrorResponse(res, 403, err, { source: 'EVALUATION_ROUTER' }); }
-  const verifyScript = path.join(PROJECT_ROOT, 'scripts', 'verify_excel_tally.js');
+  const verifyScript = path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js');
   execFile('node', [verifyScript, fullXlsxPath, '--json'], (err, stdout) => {
     try { res.json(JSON.parse(stdout)); } catch (_) { res.json({ passed: false, error: err?.message || 'Audit output unparseable', raw: stdout }); }
   });

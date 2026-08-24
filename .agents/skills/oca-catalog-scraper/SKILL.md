@@ -19,12 +19,12 @@ This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workf
 sequenceDiagram
     autonumber
     participant Browser as HPE OCA Browser (Port 9222)
-    participant CDP as scripts/lib/cdp.js
-    participant Scraper as scripts/scrape_oca_solution.js
-    participant Builder as scripts/build_catalog.js
-    participant Excel as scripts/generate_xlsx.js
-    participant Audit as scripts/verify_excel_tally.js
-    participant Sync as scripts/lib/knowledge_sync.js
+    participant CDP as scripts/lib/scraper/cdp.js
+    participant Scraper as scripts/scrapers/scrape_oca_solution.js
+    participant Builder as scripts/catalogs/build_catalog.js
+    participant Excel as scripts/catalogs/generate_xlsx.js
+    participant Audit as tests/integration/verify_excel_tally.js
+    participant Sync as scripts/lib/sync/knowledge_sync.js
     participant NLM as Google NotebookLM Cloud
 
     Scraper->>CDP: Step 1 (10%): Connect WS on port 9222 (CDP Handshake & Setup Dialog Handler)

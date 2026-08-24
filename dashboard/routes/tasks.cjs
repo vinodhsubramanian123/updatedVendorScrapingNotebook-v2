@@ -28,7 +28,7 @@ router.post('/scrape', (req, res) => {
 
   const { mode } = req.body; // 'solution' or 'storage'
   const scriptName = mode === 'storage' ? 'scrape_oca_storage_solution.js' : 'scrape_oca_solution.js';
-  const scriptPath = path.join(PROJECT_ROOT, 'scripts', scriptName);
+  const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'scrapers', scriptName);
 
   const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   startTask(`SCRAPE_${(mode || 'solution').toUpperCase()}`, proc, res, OUTPUTS_DIR);
@@ -38,7 +38,7 @@ router.post('/scrape', (req, res) => {
 router.post('/rebuild', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER' });
 
-  const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'rebuild_all.js');
+  const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'rebuild_all.js');
   const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT });
   startTask('REBUILD_ALL', proc, res, OUTPUTS_DIR);
   // Invalidate chassis map cache after rebuild completes
@@ -49,7 +49,7 @@ router.post('/rebuild', (req, res) => {
 router.post('/navigate-oca', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER' });
 
-  const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'lib', 'navigate_oca.js');
+  const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'lib', 'scraper', 'navigate_oca.js');
   const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   startTask('NAVIGATE_OCA', proc, res, OUTPUTS_DIR);
 });
@@ -75,7 +75,7 @@ router.post('/launch-browser', (req, res) => {
 router.post('/sync-knowledge', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER', context: { task: getActiveTask()?.type } });
 
-  const syncScript = path.join(PROJECT_ROOT, 'scripts', 'lib', 'knowledge_sync.js');
+  const syncScript = path.join(PROJECT_ROOT, 'scripts', 'lib', 'sync', 'knowledge_sync.js');
   if (!fs.existsSync(syncScript)) return sendErrorResponse(res, 404, 'knowledge_sync.js not found', { source: 'TASKS_ROUTER' });
 
   const proc = spawn('node', [syncScript, '--auto-upload-nlm'], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
@@ -86,7 +86,7 @@ router.post('/sync-knowledge', (req, res) => {
 router.post('/download-pdf', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER', context: { task: getActiveTask()?.type } });
 
-  const pdfScript = path.join(PROJECT_ROOT, 'scripts', 'download_quickspecs_pdf.js');
+  const pdfScript = path.join(PROJECT_ROOT, 'scripts', 'scrapers', 'download_quickspecs_pdf.js');
   if (!fs.existsSync(pdfScript)) return sendErrorResponse(res, 404, 'download_quickspecs_pdf.js not found', { source: 'TASKS_ROUTER' });
 
   const proc = spawn('node', [pdfScript], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
@@ -117,7 +117,7 @@ router.post('/kill-task', (req, res) => {
 router.post('/verify-all', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER', context: { task: getActiveTask()?.type } });
 
-  const verifyScript = path.join(PROJECT_ROOT, 'scripts', 'verify_all.js');
+  const verifyScript = path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_all.js');
   const proc = spawn('node', [verifyScript], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   startTask('VERIFY_ALL', proc, res, OUTPUTS_DIR);
 });

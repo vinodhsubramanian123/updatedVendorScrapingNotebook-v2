@@ -5,7 +5,7 @@
 Connecting to the active Chrome instance on port 9222:
 
 ```javascript
-const { getOCATarget, connectWS } = require('./scripts/lib/cdp');
+const { getOCATarget, connectWS } = require('./scripts/lib/scraper/cdp');
 
 const target = await getOCATarget(9222);
 const ws = await connectWS(target.webSocketDebuggerUrl);

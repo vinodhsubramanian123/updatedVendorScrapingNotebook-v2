@@ -54,9 +54,9 @@ function getCachedCatalogs() {
   let convertCSVToCatalogJSON = null;
   let syncAllProducts = null;
   try {
-    const csvMod = require('../../scripts/csv_to_catalog.js');
+    const csvMod = require('../../scripts/catalogs/csv_to_catalog.js');
     convertCSVToCatalogJSON = csvMod.convertCSVToCatalogJSON;
-    const syncMod = require('../../scripts/sync_all_registered_catalogs.js');
+    const syncMod = require('../../scripts/catalogs/sync_all_registered_catalogs.js');
     syncAllProducts = syncMod.syncAllProducts;
     if (syncAllProducts) syncAllProducts();
   } catch (_) {
@@ -335,7 +335,7 @@ router.get('/cdp-status', async (req, res) => {
 });
 
 router.get('/session-observability', (req, res) => {
-  const obsScript = path.join(PROJECT_ROOT, 'scripts', 'observability_status.js');
+  const obsScript = path.join(PROJECT_ROOT, 'scripts', 'maintenance', 'observability_status.js');
   execFile('node', [obsScript, '--json'], (err, stdout) => {
     if (err) return res.status(500).json({ error: err.message, status: 'OFFLINE' });
     try { res.json(JSON.parse(stdout)); } catch (_) { res.json({ raw: stdout, status: 'RAW' }); }

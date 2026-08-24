@@ -32,7 +32,7 @@ This skill provides hands-free, zero-bloat automated navigation through the HPE 
 [4. Base Chassis Price Extracted] ─────────► [5. Clicks Customize / Configure]
                                                                │
                                                                ▼
-[6. Menu Tab Reached (scrollHeight > 5000)] ──► [7. Hand-off to scrape_oca_solution.js]
+[6. Menu Tab Reached (scrollHeight > 5000)] ──► [7. Hand-off to scripts/scrapers/scrape_oca_solution.js]
 ```
 
 ---
@@ -41,13 +41,13 @@ This skill provides hands-free, zero-bloat automated navigation through the HPE 
 
 ### 1. Launch Auto-Navigation for Target Chassis
 ```bash
-node scripts/lib/navigate_oca.js "DL380 Gen12"
+node scripts/lib/scraper/navigate_oca.js "DL380 Gen12"
 ```
 
 ### 2. End-to-End Search, Navigate & Scrape
 ```bash
 # Navigates to chassis in OCA tab, then extracts 100% complete catalog
-node scripts/lib/navigate_oca.js "Alletra 9000" && node scripts/scrape_oca_solution.js
+node scripts/lib/scraper/navigate_oca.js "Alletra 9000" && node scripts/scrapers/scrape_oca_solution.js
 ```
 
 ---

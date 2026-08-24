@@ -338,15 +338,15 @@ export function AccuracyModal({ isOpen, onClose }) {
           <h4 className="font-bold text-slate-900">Certified Test Suites:</h4>
           <div className="space-y-1.5 text-[11.5px]">
             <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-              <span>34-Test Aspect Math Suite (<code>scripts/test_all_aspects.js</code>)</span>
+              <span>34-Test Aspect Math Suite (<code>tests/integration/test_all_aspects.js</code>)</span>
               <span className="badge badge-emerald">34/34 PASS</span>
             </div>
             <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-              <span>5-Tier Strategy Benchmark (<code>scripts/test_boq_eval_benchmarks.js</code>)</span>
+              <span>5-Tier Strategy Benchmark (<code>tests/integration/test_boq_eval_benchmarks.js</code>)</span>
               <span className="badge badge-emerald">5/5 PASS</span>
             </div>
             <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-              <span>Portfolio Verification Suite (<code>scripts/verify_all.js</code>)</span>
+              <span>Portfolio Verification Suite (<code>tests/integration/verify_all.js</code>)</span>
               <span className="badge badge-emerald">785 SKUs Certified</span>
             </div>
           </div>

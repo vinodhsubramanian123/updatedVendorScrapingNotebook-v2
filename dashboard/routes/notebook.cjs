@@ -145,7 +145,7 @@ router.get('/notebook-query-status/:jobId', (req, res) => {
 
 // ── NotebookLM Health Test ────────────────────────────────────────────────────
 router.get('/test-notebooklm', (req, res) => {
-  const testScript = path.join(PROJECT_ROOT, 'scripts', 'test_notebooklm_mcp.js');
+  const testScript = path.join(PROJECT_ROOT, 'tests', 'unit', 'test_notebooklm_mcp.js');
   if (!fs.existsSync(testScript)) return sendErrorResponse(res, 404, 'test_notebooklm_mcp.js not found', { source: 'NOTEBOOK_ROUTER' });
   execFile('node', [testScript], { cwd: PROJECT_ROOT }, (err, stdout) => {
     try {

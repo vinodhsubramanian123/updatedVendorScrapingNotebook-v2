@@ -15,11 +15,11 @@ This skill defines the macro-architecture that ties all individual agentic skill
 graph TD
     subgraph "Stage 1: Ingestion (CDP Scraper)"
         A["HPE Partner Portal / OCA Session (Port 9222)"] --> B["oca-catalog-scraper"]
-        B --> C["scripts/build_catalog.js"]
+        B --> C["scripts/catalogs/build_catalog.js"]
     end
 
     subgraph "Stage 2: Knowledge Sync & Dual Safety Net"
-        C --> D["scripts/lib/diff_catalog.js (Price Trails)"]
+        C --> D["scripts/lib/catalog/diff_catalog.js (Price Trails)"]
         C --> E["*_Catalog_Rules.json (Dual Safety Net)"]
         D --> F["outputs/SCRAPED_CATALOGS.md (Master Registry)"]
         E --> G["knowledge-sync-skill (Master Registry & Scope Taxonomy)"]
@@ -28,8 +28,8 @@ graph TD
 
     subgraph "Stage 3 & 4: BOQ Eval, Workload DNA & Conflict Graph"
         I["Customer BOQ / Quote"] --> J["boq-eval-skill"]
-        J --> K["scripts/lib/boq_evaluator.js (6-Aspect Physical Math)"]
-        K --> L["scripts/lib/conflict_graph.js (5-Level Conflict Graph & Workload DNA)"]
+        J --> K["scripts/lib/boq/boq_evaluator.js (6-Aspect Physical Math)"]
+        K --> L["scripts/lib/conflict/conflict_graph.js (5-Level Conflict Graph & Workload DNA)"]
         L --> M["5-Tier Strategic Resolution Matrix (Rank 1: Intent Match)"]
         M --> N["Grounded Gemini Notebook RAG (nlm-skill)"]
     end
@@ -39,10 +39,10 @@ graph TD
         O --> P["Human-in-the-Loop (HITL) Portal Build"]
         N --> Z["AmbiguityInbox (Dashboard NotebookLM MCP Bridge)"]
         Z --> R["outputs/history/catalog_deltas.json (KnowledgeDelta)"]
-        P -- "Portal Error Rejection" --> Q["scripts/lib/feedback_loop.js"]
+        P -- "Portal Error Rejection" --> Q["scripts/lib/feedback/feedback_loop.js"]
         Q --> R
         R --> G
-        O --> S["scripts/lib/telemetry.js (outputs/history/pipeline_telemetry.json)"]
+        O --> S["scripts/lib/system/telemetry.js (outputs/history/pipeline_telemetry.json)"]
         O -.-> T["Task Trace Ledger (outputs/history/runs/{run_id}.json)"]
     end
 ```
@@ -53,11 +53,11 @@ graph TD
 
 ### 1. Ingestion (Live Scraping)
 - **Actor**: [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md)
-- **Action**: Scrapes the live HPE OCA vendor portal via Chrome DevTools Protocol (`scripts/lib/cdp.js`) over port 9222.
+- **Action**: Scrapes the live HPE OCA vendor portal via Chrome DevTools Protocol (`scripts/lib/scraper/cdp.js`) over port 9222.
 - **Output**: Generates classified JSON catalogs, standalone rules files (`*_Catalog_Rules.json`), and multi-sheet Excel workbooks (`*_OCA_Catalog.xlsx`).
 
 ### 2. Decoupled Knowledge Sync & Dual Safety Net
-- **Actor**: [`diff_catalog.js`](scripts/lib/diff_catalog.js) & [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md)
+- **Actor**: [`diff_catalog.js`](scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md)
 - **Action**: 
   - Compares newly scraped JSON against historical snapshots to log SKU additions, removals, and cumulative price trails.
   - Emits standalone `*_Catalog_Rules.json` for fast dual safety net loading.
@@ -88,7 +88,7 @@ graph TD
   - If a BOQ evaluation drops below 75% confidence, the **Ambiguity Inbox** prompts the user to Auto-Query NotebookLM via the MCP bridge to acquire missing configuration rules.
 
 ### 6. Closed-Loop Feedback & Telemetry Learning
-- **Actor**: [`feedback_loop.js`](scripts/lib/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
+- **Actor**: [`feedback_loop.js`](scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
 - **Action**:
   - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
   - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
