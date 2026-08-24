@@ -138,21 +138,21 @@ export default function BoqTopologyCanvas({
     <div className="relative w-full h-[650px] bg-slate-950 overflow-hidden select-none rounded-xl border border-slate-800">
       {/* Zoom / Canvas Controls */}
       <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-xl p-1.5 shadow-lg">
-        <button
+        <button aria-label="Zoom In"
           onClick={handleZoomIn}
           title="Zoom In"
           className="p-1.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
         >
           <ZoomIn className="w-4 h-4" />
         </button>
-        <button
+        <button aria-label="Zoom Out"
           onClick={handleZoomOut}
           title="Zoom Out"
           className="p-1.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
         >
           <ZoomOut className="w-4 h-4" />
         </button>
-        <button
+        <button aria-label="Reset View"
           onClick={handleResetView}
           title="Reset View"
           className="p-1.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"

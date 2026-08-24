@@ -42,14 +42,14 @@ export default function NavigationTabs({
       </nav>
 
       <div className="flex items-center gap-2 shrink-0">
-        <button
+        <button aria-label="HITL Feedback & Learning"
           onClick={onOpenFeedbackDrawer}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
           title="HITL Feedback & Learning"
         >
           <MessageSquare className="w-4 h-4" />
         </button>
-        <button
+        <button aria-label="Settings"
           onClick={onOpenSettings}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
           title="Settings"

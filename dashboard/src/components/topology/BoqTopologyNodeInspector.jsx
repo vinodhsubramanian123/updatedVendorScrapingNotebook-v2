@@ -57,7 +57,7 @@ export default function BoqTopologyNodeInspector({ node, onClose, onOpenRag, onO
             </h4>
           </div>
         </div>
-        <button
+        <button aria-label="Close"
           onClick={onClose}
           className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
         >

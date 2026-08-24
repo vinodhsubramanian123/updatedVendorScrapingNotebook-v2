@@ -31,7 +31,7 @@ export default function MultiConfigSplitModal({
               The engine partitioned your quote into {variations.length} distinct server build(s).
             </p>
           </div>
-          <button
+          <button aria-label="Close"
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100"
           >

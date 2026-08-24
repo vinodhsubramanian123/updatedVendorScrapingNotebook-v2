@@ -141,7 +141,7 @@ export default function RuleLogicVisualizer({ selectedChassis, evalResults, chas
             className="w-full pl-9 pr-8 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
           />
           {searchQuery && (
-            <button
+            <button aria-label="Close"
               onClick={() => setSearchQuery('')}
               className="absolute right-2 top-1.5 text-slate-400 hover:text-slate-600 p-0.5"
             >

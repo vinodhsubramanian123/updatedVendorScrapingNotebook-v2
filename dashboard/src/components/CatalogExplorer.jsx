@@ -329,7 +329,7 @@ export default function CatalogExplorer({
                 />
                 <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
                 {query && (
-                  <button
+                  <button aria-label="Close"
                     onClick={() => {
                       setQuery('');
                       setSearchResults(null);
@@ -512,7 +512,7 @@ export default function CatalogExplorer({
                 </h3>
                 <p className="text-xs mono text-slate-500">{selectedSkuTrend.sku || selectedSkuTrend.partNumber}</p>
               </div>
-              <button onClick={() => setSelectedSkuTrend(null)} className="text-slate-400 hover:text-slate-600">
+              <button aria-label="Close" onClick={() => setSelectedSkuTrend(null)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -565,7 +565,7 @@ export default function CatalogExplorer({
                   SKU Data Layer Versioning & Mutation Audit
                 </h3>
               </div>
-              <button onClick={() => { setSelectedSkuAudit(null); setSkuAuditData(null); }} className="text-slate-400 hover:text-slate-600">
+              <button aria-label="Close" onClick={() => { setSelectedSkuAudit(null); setSkuAuditData(null); }} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

@@ -35,7 +35,7 @@ export default function TraceabilityInspector({ traces = [], isOpen, onClose }) 
               <p className="text-xs text-slate-400 mt-0.5">Deep observability into Agentic MCP calls, RAG Context, and Rule Engine JSON data.</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-100 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors">
+          <button aria-label="Close" onClick={onClose} className="p-2 text-slate-400 hover:text-slate-100 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>

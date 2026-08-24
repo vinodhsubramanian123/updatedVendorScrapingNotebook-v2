@@ -31,7 +31,7 @@ export default function RejectionModal({
               Tested for: <span className="font-semibold text-slate-700">{modalData.title}</span>
             </p>
           </div>
-          <button
+          <button aria-label="Close"
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100"
           >

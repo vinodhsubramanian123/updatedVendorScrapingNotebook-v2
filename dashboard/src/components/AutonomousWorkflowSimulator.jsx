@@ -199,7 +199,7 @@ export default function AutonomousWorkflowSimulator({
             <span>{isPlaying ? 'Pause Simulation' : (currentStepIdx === ALL_STAGES.length - 1 ? 'Replay Workflow' : '▶ Run Autonomous Workflow')}</span>
           </button>
 
-          <button
+          <button aria-label="Reset to beginning"
             onClick={handleReset}
             className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors cursor-pointer"
             title="Reset to beginning"
@@ -209,7 +209,7 @@ export default function AutonomousWorkflowSimulator({
 
           <div className="h-6 w-[1px] bg-slate-200 mx-1" />
 
-          <button
+          <button aria-label="Previous Step"
             onClick={handleStepBackward}
             disabled={currentStepIdx === 0 || isPlaying}
             className={`p-2 rounded-xl transition-colors cursor-pointer ${
@@ -224,7 +224,7 @@ export default function AutonomousWorkflowSimulator({
             Step {currentStepIdx + 1} of {ALL_STAGES.length}
           </span>
 
-          <button
+          <button aria-label="Next Step"
             onClick={handleStepForward}
             disabled={currentStepIdx === ALL_STAGES.length - 1 || isPlaying}
             className={`p-2 rounded-xl transition-colors cursor-pointer ${
