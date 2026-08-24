@@ -208,7 +208,7 @@ async function main() {
 
     meta = parseProductMeta(pageHeading, pageTarget.title);
     const { loadProfile } = require('./lib/profile_loader.js');
-    const profile = loadProfile(meta.family, meta.gen);
+    const profile = await loadProfile(meta.family, meta.gen);
     console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
     const scrollThreshold = profile.scraping_tuning.scrollHeightThreshold || 15000;

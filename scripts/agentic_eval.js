@@ -10,7 +10,7 @@ const { processPortalFeedback } = lib.feedback.loop;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const MODEL_NAME = 'gemini-3.5-flash';
+const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 
 // Define strict JSON-schema for tool declarations
 const evaluationTools = [
@@ -185,9 +185,6 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
     }
 
   }
-  
-  console.log('\n✅ Agent Final Summary:');
-  console.log(response.text);
 }
 
 const args = process.argv.slice(2);

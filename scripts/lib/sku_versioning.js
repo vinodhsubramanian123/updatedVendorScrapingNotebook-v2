@@ -11,12 +11,21 @@ const path = require('path');
 const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
+const catalogPriceCache = new Map();
+
+/**
+ * Clear the internal catalog price cache (useful for tests/hot reloads).
+ */
+function _clearCatalogPriceCache() {
+  catalogPriceCache.clear();
+}
+
 /**
  * Calculate SHA-256 checksum for a string or object.
  */
-function calculateChecksum(data) {
-  const content = typeof data === 'string' ? data : JSON.stringify(data);
-  return crypto.createHash('sha256').update(content).digest('hex');
+function calculateChecksum(content) {
+  const str = typeof content === 'object' ? JSON.stringify(content) : String(content);
+  return crypto.createHash('sha256').update(str).digest('hex');
 }
 
 /**
@@ -225,15 +234,19 @@ function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
     const catalogPath = path.join(dir, `${path.basename(dir)}_Catalog.json`);
     if (fs.existsSync(catalogPath)) {
       try {
-        const cat = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-        const entries = Array.isArray(cat.entries) ? cat.entries : [];
-        for (const e of entries) {
-          const skus = Array.isArray(e.skus) ? e.skus : [];
-          const match = skus.find(s => (s.sku || s['Product #']) === cleanSku);
-          if (match) {
-            fallbackPrice = parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || 0).replace(/[^0-9.]/g, '')) || 0;
-            break;
-          }
+        if (!catalogPriceCache.has(catalogPath)) {
+          const cat = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+          const map = new Map();
+          const entries = Array.isArray(cat.entries) ? cat.entries : [];
+          entries.forEach(e => {
+            const skus = Array.isArray(e.skus) ? e.skus : [];
+            skus.forEach(s => map.set(s.sku || s['Product #'], s));
+          });
+          catalogPriceCache.set(catalogPath, map);
+        }
+        const match = catalogPriceCache.get(catalogPath).get(cleanSku);
+        if (match) {
+          fallbackPrice = parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || 0).replace(/[^0-9.]/g, '')) || 0;
         }
       } catch (_) { /* ignore fallback read error */ }
     }
@@ -458,7 +471,8 @@ module.exports = {
   getHistoricalSkuPrice,
   getHistoricalBoqPricing,
   compareBoqPricingAcrossTimeline,
-  recordVersionSnapshot
+  recordVersionSnapshot,
+  _clearCatalogPriceCache
 };
 
 

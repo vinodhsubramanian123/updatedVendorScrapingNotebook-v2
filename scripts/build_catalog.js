@@ -48,6 +48,7 @@ if (!fs.existsSync(rawInputPath)) {
   process.exit(1);
 }
 
+async function main() {
 if (!JSON_MODE) {
   console.log('================================================================');
   console.log('📦 CLASSIFICATION ENGINE — BUILD CATALOG');
@@ -75,7 +76,7 @@ const tables   = rawData.tables || [];
 const { parseProductMeta } = require('./lib/product_meta.js');
 const { loadProfile } = require('./lib/profile_loader.js');
 const meta = parseProductMeta(chassisLabel);
-const profile = loadProfile(meta.family, meta.gen);
+const profile = await loadProfile(meta.family, meta.gen);
 
 console.log(`Loaded Raw Scrape Payload:`);
 console.log(`  Page Title:   "${rawData.pageTitle || 'N/A'}"`);
@@ -605,9 +606,27 @@ if (!hasChassisEntry) {
     const histFiles = fs.readdirSync(historyDir)
       .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
       .sort().reverse();
-    for (const hf of histFiles) {
+
+    // Read history files in parallel
+    const histFilesData = await Promise.all(histFiles.map(async (hf) => {
       try {
-        const hCat = JSON.parse(fs.readFileSync(path.join(historyDir, hf), 'utf-8'));
+        const rawContent = await fs.promises.readFile(path.join(historyDir, hf), 'utf-8');
+        return { hf, rawContent };
+      } catch (_) {
+        return null;
+      }
+    }));
+
+    for (const data of histFilesData) {
+      if (!data) continue;
+      const { hf, rawContent } = data;
+      // Fast pre-check to avoid JSON parsing if file doesn't have chassis variants
+      if (!rawContent.includes('"parentCategory":"Chassis"') && !rawContent.includes('"parentCategory": "Chassis"') &&
+          !rawContent.includes('"subCategory":"Variants"') && !rawContent.includes('"subCategory": "Variants"')) {
+        continue;
+      }
+      try {
+        const hCat = JSON.parse(rawContent);
         const hChassisEntries = (hCat.entries || []).filter(e =>
           (e.parentCategory || '').toLowerCase() === 'chassis' ||
           (e.subCategory || '').toLowerCase() === 'variants'
@@ -868,9 +887,27 @@ if (Object.keys(chassisVariantMatrix).length === 0) {
     const histFiles = fs.readdirSync(historyDir)
       .filter(f => f.startsWith('catalog_') && f.endsWith('.json'))
       .sort().reverse();
-    for (const hf of histFiles) {
+
+    // Read history files in parallel
+    const histFilesData = await Promise.all(histFiles.map(async (hf) => {
       try {
-        const hCat = JSON.parse(fs.readFileSync(path.join(historyDir, hf), 'utf-8'));
+        const rawContent = await fs.promises.readFile(path.join(historyDir, hf), 'utf-8');
+        return { hf, rawContent };
+      } catch (_) {
+        return null;
+      }
+    }));
+
+    for (const data of histFilesData) {
+      if (!data) continue;
+      const { hf, rawContent } = data;
+      // Fast pre-check before JSON parsing
+      if (!rawContent.includes('"parentCategory":"Chassis"') && !rawContent.includes('"parentCategory": "Chassis"') &&
+          !rawContent.includes('"subCategory":"Variants"') && !rawContent.includes('"subCategory": "Variants"')) {
+        continue;
+      }
+      try {
+        const hCat = JSON.parse(rawContent);
         const hChassisEntries = (hCat.entries || []).filter(e =>
           (e.parentCategory || '').toLowerCase() === 'chassis' ||
           (e.subCategory || '').toLowerCase() === 'variants'
@@ -995,3 +1032,9 @@ if (JSON_MODE) {
   });
   console.log('\n✅ CLASSIFICATION COMPLETE.');
 }
+}
+
+main().catch(err => {
+  console.error('Fatal error during classification:', err);
+  process.exit(1);
+});

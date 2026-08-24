@@ -184,8 +184,9 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 ## 13. UI/UX Hierarchy: Multi-Config BOQ Engine vs Product Catalog Browsing
 - **BOQ Evaluation Engine (`orchestrator` tab)**:
   - **Product-Agnostic & Multi-Config**: A customer BOQ file (Excel/CSV/Text) often contains multiple sheets or multiple configuration sections (e.g. 4x Database Nodes with DL380 Gen12, 8x Web Nodes with DL380 Gen11, 1x Alletra Storage).
-  - The BOQ engine autonomously inspects each line item, detects the chassis variant dynamically, and runs 6-aspect math across all detected configs.
-  - The global header reflects `BOQ Engine Mode: Multi-Model Auto-Detect` to prevent the misconception that the user must choose a single product beforehand.
+  - The BOQ engine autonomously inspects each line item, detects the chassis variant dynamically, and runs 7-aspect math across all detected configs.
+  - Multi-config proposals (e.g. 5x DB Nodes + 2x Storage Nodes) are automatically split and individually evaluated.
+  - Generates 5-tier Strategic Alternative Matrix for any detected physical/rule conflicts.
 - **Product Catalog Explorer (`catalog` tab) & Scraper (`scraper` tab)**:
   - **Product-Scoped**: These views specifically browse or trigger scraping for a concrete hardware catalog.
   - An in-page **Product Line Switcher Bar** allows toggling between all 6 certified product lines (`DL380 Gen12`, `DL380 Gen11`, `Alletra`, `Synergy`, `MSL Tape`, `Cray`) directly within the view without confusing the global BOQ workflow.
@@ -351,7 +352,7 @@ We implemented a strict **3-Tier Escalation Protocol**:
 
 ### Problem
 - During comprehensive browser inspection, navigation tab identifiers differed between `NavigationTabs.jsx` and `App.jsx` (`evaluator` vs `orchestrator`, `pipeline` vs `scraper`), resulting in blank views when clicking header tabs.
-- Opening the `Visual BOQ Topology` mindmap directly from the Preflight Intake Audit before running the full 6-aspect math engine passed an empty object, causing the mindmap to display 0 item nodes.
+- Opening the `Visual BOQ Topology` mindmap directly from the Preflight Intake Audit before running the full 7-aspect math engine passed an empty object, causing the mindmap to display 0 item nodes.
 - SVG `<text>` elements in the mindmap canvas intercepted click coordinates, occasionally preventing node click events.
 
 ### Architectural Solution & Invariants
