@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Syntax check eval_boq.js
         run: node --check scripts/eval_boq.js
@@ -32,7 +32,7 @@ jobs:
         run: npm --workspace dashboard run lint
 
       - name: Run dashboard component tests
-        run: npm --workspace dashboard test
+        run: npm --workspace dashboard test -- --run
 
       - name: Run offline pipeline tests
         run: node tests/test_offline_pipeline.js
