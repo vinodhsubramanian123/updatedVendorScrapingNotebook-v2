@@ -1,8 +1,8 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-24T12:14:39.016Z",
-  "lastUpdated": "2026-08-24T12:14:39.016Z",
+  "generatedAt": "2026-08-24T12:22:13.045Z",
+  "lastUpdated": "2026-08-24T12:22:13.045Z",
   "totalLearnedRules": 13,
   "productFamiliesSynced": [
     "DL380"
@@ -16,7 +16,7 @@
   "familyGenRules": [
     {
       "deltaId": "DELTA-1787561844831",
-      "timestamp": "2026-08-24T12:04:02.149Z",
+      "timestamp": "2026-08-24T12:20:38.425Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

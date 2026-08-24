@@ -13,7 +13,7 @@ const { execSync } = require('child_process');
 const { checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
 const SYNC_ONLY = process.argv.includes('--sync-only');
 
@@ -48,19 +48,19 @@ async function main() {
     console.log('  🟢 CDP Connection ACTIVE on port 9222');
 
     // 2. Scrape with Gen12 Profile
-    runStep('1. Live Scraping DL380 Gen12 with proliant_gen12.json Profile', 'node scripts/scrape_oca_solution.js');
+    runStep('1. Live Scraping DL380 Gen12 with proliant_gen12.json Profile', 'node scripts/scrapers/scrape_oca_solution.js');
   } else {
     console.log('\n⏩ Skipping live CDP scrape (--sync-only mode enabled)');
   }
 
   // 3. Sync Catalog Registry
-  runStep('2. Synchronize Master Catalog Registry (SCRAPED_CATALOGS.md)', 'node scripts/lib/sync_registry.js');
+  runStep('2. Synchronize Master Catalog Registry (SCRAPED_CATALOGS.md)', 'node scripts/lib/catalog/sync_registry.js');
 
   // 4. Sync Knowledge to NotebookLM Payload
-  runStep('3. Synchronize Knowledge Payload for NotebookLM RAG', 'node scripts/lib/knowledge_sync.js --chassis DL380_Gen12_SFF');
+  runStep('3. Synchronize Knowledge Payload for NotebookLM RAG', 'node scripts/lib/sync/knowledge_sync.js --chassis DL380_Gen12_SFF');
 
   // 5. Run Full Gen12 Certification Gate
-  runStep('4. Execute Complete Gen12 Certification Suite', 'node scripts/certify_gen12.js');
+  runStep('4. Execute Complete Gen12 Certification Suite', 'node scripts/maintenance/certify_gen12.js');
 
   // 6. Update Maintenance Timestamp in CERTIFIED.json
   const certifiedPath = path.join(GEN12_DIR, 'CERTIFIED.json');

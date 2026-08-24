@@ -12,7 +12,7 @@ const path = require('path');
 const { listAllCatalogs, collectKnowledgeDeltas } = require('../lib/catalog/catalog_discovery.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 const TARGET_DOC = path.join(PROJECT_ROOT, '.agents', 'PORTFOLIO_STATUS.md');
 

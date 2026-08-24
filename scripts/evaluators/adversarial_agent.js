@@ -8,7 +8,7 @@ const { safeWriteJsonAtomic } = lib.system.fsCompat;
 const { listAllCatalogs } = lib.catalog.discovery;
 const geminiRotator = lib.system.geminiRotator;
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';

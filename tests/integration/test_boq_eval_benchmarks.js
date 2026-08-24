@@ -86,7 +86,7 @@ async function runBenchmarkSuite() {
   let totalFalsePositives = 0;
 
   // Write benchmark CSVs to tests/fixtures/ — the canonical location for all test input files
-  const fixturesDir = path.join(__dirname, '..', 'tests', 'fixtures');
+  const fixturesDir = path.join(__dirname, '..', 'fixtures');
   if (!fs.existsSync(fixturesDir)) fs.mkdirSync(fixturesDir, { recursive: true });
 
   const benchmarkResults = [];

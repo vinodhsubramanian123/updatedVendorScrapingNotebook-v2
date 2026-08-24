@@ -7,7 +7,7 @@ const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 
 function findCatalogJsonFiles(dir) {
@@ -49,7 +49,7 @@ function rebuildAll() {
     if (fs.existsSync(csvPath)) {
       console.log(`\nRebuilding ${fileBase} from master CSV (${path.basename(csvPath)})...`);
       try {
-        const { convertCSVToCatalogJSON } = require('../catalogs/csv_to_catalog.js');
+        const { convertCSVToCatalogJSON } = require('./csv_to_catalog.js');
         convertCSVToCatalogJSON(csvPath, jsonPath);
         console.log(`  ✅ Rebuilt: ${fileBase}`);
       } catch (err) {

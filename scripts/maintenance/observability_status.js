@@ -17,7 +17,7 @@ const path   = require('path');
 
 const { checkCdpHealth, listAllCatalogs, collectKnowledgeDeltas } = require('../lib/catalog/catalog_discovery.js');
 
-const PROJECT_ROOT  = path.resolve(__dirname, '..');
+const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const PACKAGE_JSON  = path.join(PROJECT_ROOT, 'package.json');
 const JSON_MODE     = process.argv.includes('--json');

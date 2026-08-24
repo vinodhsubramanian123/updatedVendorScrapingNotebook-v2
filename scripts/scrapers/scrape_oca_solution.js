@@ -16,7 +16,7 @@ const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
 
-const PROJECT_ROOT  = path.resolve(__dirname, '..');
+const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const JSON_MODE     = process.argv.includes('--json');
 
@@ -417,11 +417,11 @@ async function main() {
   });
 
   execSync(
-    `node "${path.join(__dirname, 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}"`,
+    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}"`,
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
   execSync(
-    `node "${path.join(__dirname, 'generate_xlsx.js')}" "${catalogXlsx}"`,
+    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'generate_xlsx.js')}" "${catalogXlsx}"`,
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
@@ -433,7 +433,7 @@ async function main() {
 
   try {
     execSync(
-      `node "${path.join(__dirname, 'verify_excel_tally.js')}" "${catalogXlsx}"`,
+      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
     console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
@@ -527,7 +527,7 @@ async function main() {
   // Pipeline exits with code 1 — not silently console.warn and exit 0.
   // percent:100 emitted AFTER this succeeds — never before.
   try {
-    execSync(`node "${path.join(__dirname, 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
+    execSync(`node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
   } catch (syncErr) {
     emitProgress(10, 10, 'Portfolio Registry Sync Failed', 'error', syncErr.message, {
       stage: 'REGISTRY_SYNC', percent: 98

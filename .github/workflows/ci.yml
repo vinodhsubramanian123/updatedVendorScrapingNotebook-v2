@@ -26,16 +26,16 @@ jobs:
         run: npm install
 
       - name: Syntax check eval_boq.js
-        run: node --check scripts/eval_boq.js
+        run: node --check scripts/evaluators/eval_boq.js
 
       - name: Run dashboard linter
-        run: npm --workspace dashboard run lint
+        run: npm run lint
 
       - name: Run dashboard component tests
         run: npm --workspace dashboard test -- --run
 
       - name: Run offline pipeline tests
-        run: node tests/test_offline_pipeline.js
+        run: node tests/chaos/test_offline_pipeline.js
 
       - name: Bootstrap Gen12 golden catalog
         run: npm run bootstrap:gen12
@@ -43,35 +43,35 @@ jobs:
       - name: Certify Gen12 golden catalog
         run: npm run certify:gen12
 
-      - name: Run SKU regex & category tests
-        run: node scripts/test_all_aspects.js
+      - name: Run 6-aspect math tests
+        run: node tests/integration/test_all_aspects.js
 
       - name: Run conflict graph tests
-        run: node tests/test_conflict_graph.js
+        run: node tests/integration/test_conflict_graph.js
 
       - name: Run end-to-end scenarios tests
-        run: node tests/test_end_to_end_scenarios.js
+        run: node tests/integration/test_end_to_end_scenarios.js
 
       - name: Run vendor portal BOM verification tests
-        run: node tests/test_vendor_bom_verifier.js
+        run: node tests/integration/test_vendor_bom_verifier.js
 
       - name: Run Gemini rotator FIFO & quota tests
-        run: node tests/test_gemini_rotator.js
+        run: node tests/unit/test_gemini_rotator.js
 
       - name: Run incremental checksum & diff tests
-        run: node tests/test_incremental_checksum.js
+        run: node tests/unit/test_incremental_checksum.js
 
       - name: Run edge cases & robustness tests
-        run: node tests/test_edge_cases.js
+        run: node tests/chaos/test_edge_cases.js
 
       - name: Run chaos & failure modes resilience tests
-        run: node tests/test_failure_modes_and_chaos.js
+        run: node tests/chaos/test_failure_modes_and_chaos.js
 
       - name: Run historical pricing timeline tests
-        run: node tests/test_historical_pricing_timeline.js
+        run: node tests/integration/test_historical_pricing_timeline.js
 
       - name: Run Master Excel alignment & audit tests
-        run: node tests/test_excel_alignment_and_audit.js
+        run: node tests/integration/test_excel_alignment_and_audit.js
 
       - name: Run full multi-family portfolio certification
-        run: node scripts/verify_all.js
+        run: node tests/integration/verify_all.js

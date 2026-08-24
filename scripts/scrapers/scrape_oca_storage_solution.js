@@ -12,7 +12,7 @@ const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
 
-const PROJECT_ROOT  = path.resolve(__dirname, '..');
+const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const JSON_MODE     = process.argv.includes('--json');
 
@@ -253,11 +253,11 @@ async function main() {
   const rawJsonPath = path.join(outputDir, 'raw_data', 'oca_raw_data_full.json');
 
   execSync(
-    `node "${path.join(__dirname, 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}" --verbose`,
+    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}" --verbose`,
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
   execSync(
-    `node "${path.join(__dirname, 'generate_xlsx.js')}" "${catalogXlsx}"`,
+    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'generate_xlsx.js')}" "${catalogXlsx}"`,
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
@@ -265,7 +265,7 @@ async function main() {
   console.log('\n--- STEP 6: Staging Post-Flight Quality Audit ---');
   try {
     execSync(
-      `node "${path.join(__dirname, 'verify_excel_tally.js')}" "${catalogXlsx}"`,
+      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
     console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
@@ -304,7 +304,7 @@ async function main() {
 
   // Re-sync all registered catalogs & chassis variants across workspace
   try {
-    execSync(`node "${path.join(__dirname, 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
+    execSync(`node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
   } catch (syncErr) {
     console.warn('Warning during sync_all_registered_catalogs execution:', syncErr.message);
   }

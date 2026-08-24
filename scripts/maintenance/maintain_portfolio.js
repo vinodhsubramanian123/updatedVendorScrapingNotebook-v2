@@ -14,7 +14,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { listAllCatalogs, checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 
 const args = process.argv.slice(2);
@@ -42,20 +42,20 @@ async function main() {
 
   if (certifyOnly) {
     console.log('\n--- Running Portfolio Certification Audit ---');
-    runCmd('Portfolio Audit (verify_all)', 'node scripts/verify_all.js');
-    runCmd('Gen12 Deep Certification Gate', 'node scripts/certify_gen12.js');
+    runCmd('Portfolio Audit (verify_all)', 'node tests/integration/verify_all.js');
+    runCmd('Gen12 Deep Certification Gate', 'node scripts/maintenance/certify_gen12.js');
     console.log('\n🎉 Portfolio Audit Passed!');
     return;
   }
 
   // 1. Sync Registry
-  runCmd('Sync Master Registry (SCRAPED_CATALOGS.md)', 'node scripts/lib/sync_registry.js');
+  runCmd('Sync Master Registry (SCRAPED_CATALOGS.md)', 'node scripts/lib/catalog/sync_registry.js');
 
   // 2. Sync Knowledge Payloads
   if (targetChassis) {
-    runCmd(`Sync Knowledge Payload (${targetChassis})`, `node scripts/lib/knowledge_sync.js --chassis "${targetChassis}"`);
+    runCmd(`Sync Knowledge Payload (${targetChassis})`, `node scripts/lib/sync/knowledge_sync.js --chassis "${targetChassis}"`);
   } else {
-    runCmd('Sync Master Knowledge Registry & Payloads', 'node scripts/lib/knowledge_sync.js');
+    runCmd('Sync Master Knowledge Registry & Payloads', 'node scripts/lib/sync/knowledge_sync.js');
   }
 
   // 3. If specific chassis requested for rescrape
@@ -66,12 +66,12 @@ async function main() {
       console.warn(`⚠️ CDP not listening on port 9222. Skipping live scrape for ${targetChassis}.`);
       console.warn(`To scrape ${targetChassis}, open Chrome on port 9222 and re-run with --chassis ${targetChassis}.`);
     } else {
-      runCmd(`Scrape ${targetChassis}`, `node scripts/scrape_oca_solution.js`);
+      runCmd(`Scrape ${targetChassis}`, `node scripts/scrapers/scrape_oca_solution.js`);
     }
   }
 
   // 4. Verify portfolio health
-  runCmd('Verify All Catalogs', 'node scripts/verify_all.js');
+  runCmd('Verify All Catalogs', 'node tests/integration/verify_all.js');
 
   console.log('\n================================================================');
   console.log('🎉 PORTFOLIO MAINTENANCE PIPELINE COMPLETE');

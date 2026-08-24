@@ -7,12 +7,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { convertCSVToCatalogJSON } = require('../catalogs/csv_to_catalog.js');
+const { convertCSVToCatalogJSON } = require('./csv_to_catalog.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const REGISTRY_FILE = path.join(OUTPUTS_DIR, 'SCRAPED_CATALOGS.md');
-const chassisMap = require('./config/chassis_map.json');
+const chassisMap = require('../config/chassis_map.json');
 
 const BLOCKED_CHASSIS = new Set([
   'Chassis Dir', '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'outputs', 'General', '', 'Date', 'Product Name'

@@ -12,7 +12,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
 const CHASSIS = 'DL380_Gen12_SFF';
 const MIN_SKU_COUNT = 200;
@@ -67,9 +67,9 @@ function main() {
   console.log(`\n  📊 Catalog: ${skuCount} unique SKUs`);
 
   const xlsxPath = path.join(GEN12_DIR, 'DL380_Gen12_SFF_OCA_Catalog.xlsx');
-  runStep('Excel Tally Audit', `node scripts/verify_excel_tally.js "${xlsxPath}"`);
-  runStep('Aspect Math Suite (34 assertions)', 'node scripts/test_all_aspects.js');
-  runStep('BOQ Evaluation Benchmarks (5 scenarios)', 'node scripts/test_boq_eval_benchmarks.js');
+  runStep('Excel Tally Audit', `node tests/integration/verify_excel_tally.js "${xlsxPath}"`);
+  runStep('Aspect Math Suite (34 assertions)', 'node tests/integration/test_all_aspects.js');
+  runStep('BOQ Evaluation Benchmarks (5 scenarios)', 'node tests/integration/test_boq_eval_benchmarks.js');
 
   const report = {
     chassis: CHASSIS,
