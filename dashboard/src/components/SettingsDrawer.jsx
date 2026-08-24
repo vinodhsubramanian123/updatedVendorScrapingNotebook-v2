@@ -82,7 +82,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
             <Settings className="w-5 h-5 text-slate-600" />
             <h3 className="font-bold text-slate-900 text-base">System Settings</h3>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-700 transition-colors">
+          <button aria-label="Close" onClick={onClose} className="text-slate-400 hover:text-slate-700 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>

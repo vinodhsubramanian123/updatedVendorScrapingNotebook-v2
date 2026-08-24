@@ -46,7 +46,7 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
             <MessageSquare className="w-5 h-5 text-blue-600" />
             Log Vendor Portal Feedback
           </h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+          <button aria-label="Close" onClick={onClose} className="text-slate-400 hover:text-slate-600">
             <X className="w-5 h-5" />
           </button>
         </div>

@@ -279,7 +279,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
                 className="px-2 pr-6 py-1 border border-slate-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 w-32"
               />
               {searchQuery && (
-                <button
+                <button aria-label="Close"
                   onClick={() => setSearchQuery('')}
                   className="absolute right-1.5 top-1.5 text-slate-400 hover:text-slate-600 p-0"
                 >

@@ -72,7 +72,7 @@ setSessionInfo({ error: 'Failed to connect to CDP observability endpoint' });
               <Info className="w-4 h-4 text-blue-600" />
               <span>CDP Session Telemetry</span>
             </div>
-            <button onClick={() => setShowPopover(false)} className="text-slate-400 hover:text-slate-600">
+            <button aria-label="Close" onClick={() => setShowPopover(false)} className="text-slate-400 hover:text-slate-600">
               <X className="w-4 h-4" />
             </button>
           </div>

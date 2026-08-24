@@ -16,17 +16,34 @@ const STOP_WORDS = new Set([
   'list', 'the', 'having', 'equal', 'more', 'than', 'less', 'with', 'what', 'are', 'is', 'for', 'and', 'or', 'to', 'in', 'of', 'on', 'a', 'an', 'show', 'get', 'find', 'all'
 ]);
 
+const SYNONYM_MAP = {
+  'high speed ram': ['ddr5'],
+  'ram': ['memory', 'ddr4', 'ddr5'],
+  'redundant power': ['rps', 'power supply', 'redundant'],
+  'nvme read intensive': ['ssd', 'nvme', 'read intensive', 'ri'],
+  'nic': ['network adapter', 'ethernet', 'ocp', 'networking'],
+  'cpu': ['processor', 'xeon', 'epyc'],
+  'disk': ['drive', 'hdd', 'ssd', 'storage']
+};
+
 function queryLocalKnowledgeBase(query, chassisName = '') {
   const citations = [];
-  const matches = [];
+  const rawMatches = [];
 
   const cleanQuery = (query || '').toLowerCase();
   const rawWords = cleanQuery.split(/[\s,;.!?'"()[\]{}]+/).filter(w => w.length > 0);
   const searchTerms = rawWords.filter(w => !STOP_WORDS.has(w) && w.length >= 2);
 
+  let expandedSearchTerms = [...searchTerms];
+  for (const [key, synonyms] of Object.entries(SYNONYM_MAP)) {
+    if (cleanQuery.includes(key)) {
+      expandedSearchTerms.push(...synonyms);
+    }
+  }
+
   const CHASSIS_NOISE_WORDS = new Set(['dl380', 'gen12', 'gen11', 'proliant', 'hpe', 'compute', 'server', 'sff', 'lff', 'edsff']);
-  const specificTerms = searchTerms.filter(w => !CHASSIS_NOISE_WORDS.has(w));
-  const activeTerms = specificTerms.length > 0 ? specificTerms : searchTerms;
+  const specificTerms = expandedSearchTerms.filter(w => !CHASSIS_NOISE_WORDS.has(w));
+  const activeTerms = specificTerms.length > 0 ? specificTerms : expandedSearchTerms;
 
   // Check if query is asking for cores threshold (e.g., "64 cores", "equal to or more than 64", ">= 64")
   let minCores = null;
@@ -47,12 +64,22 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
         const update = (rule.ruleUpdate || '').toLowerCase();
         const affected = (rule.affectedSku || '').toLowerCase();
 
-        if (activeTerms.length > 0 && activeTerms.some(term => raw.includes(term) || update.includes(term) || affected.includes(term))) {
-          matches.push(`• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`);
-          citations.push({
-            title: `Master Knowledge Registry (${rule.deltaId})`,
-            snippet: rule.rawMessage || rule.ruleUpdate,
-            url: `/artifacts/history/master_knowledge_registry.json`
+        let score = 0;
+        if (activeTerms.length > 0) {
+          activeTerms.forEach(term => {
+             if (raw.includes(term) || update.includes(term) || affected.includes(term)) score += 1;
+          });
+        }
+
+        if (score > 0) {
+          rawMatches.push({
+            score,
+            text: `• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`,
+            citation: {
+              title: `Master Knowledge Registry (${rule.deltaId})`,
+              snippet: rule.rawMessage || rule.ruleUpdate,
+              url: `/artifacts/history/master_knowledge_registry.json`
+            }
           });
         }
       }
@@ -143,12 +170,29 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
                const desc = s.description || s['Description'] || '';
                const sLower = skuPn.toLowerCase();
                const descLower = desc.toLowerCase();
-               if (activeTerms.some(term => sLower.includes(term) || descLower.includes(term))) {
+               if (activeTerms.some(term => {
+                 if (term.length <= 2) {
+                   return new RegExp(`\\b${term}\\b`, 'i').test(descLower) || new RegExp(`\\b${term}\\b`, 'i').test(sLower);
+                 }
+                 return sLower.includes(term) || descLower.includes(term);
+               })) {
                   matchedSkusInCat.push(s);
                }
             }
 
-            if (isCatMatch || matchedSkusInCat.length > 0) {
+            let catScore = isCatMatch ? 1 : 0;
+            if (activeTerms.length > 0) {
+               activeTerms.forEach(term => {
+                  if (term.length <= 2) {
+                    if (new RegExp(`\\b${term}\\b`, 'i').test(catStr)) catScore += 2;
+                  } else if (catStr.includes(term)) {
+                    catScore += 2;
+                  }
+               });
+            }
+
+            if (catScore > 0 || matchedSkusInCat.length > 0) {
+              const finalScore = catScore + (matchedSkusInCat.length * 3);
               const skusToDisplay = matchedSkusInCat.length > 0 ? matchedSkusInCat : (entry.skus || []);
               const skuList = skusToDisplay.slice(0, 4).map(s => {
                 const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
@@ -157,11 +201,14 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
                 return `${skuPn} (${desc}) - ${price}`;
               }).join('; ');
               if (skuList) {
-                matches.push(`• [${folderName} Hardware SKUs] ${entry.parentCategory} > ${entry.subCategory}: ${skuList}`);
-                citations.push({
-                  title: `${folderName} ${entry.subCategory} SKUs`,
-                  snippet: skuList,
-                  url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+                rawMatches.push({
+                  score: finalScore,
+                  text: `• [${folderName} Hardware SKUs] ${entry.parentCategory} > ${entry.subCategory}: ${skuList}`,
+                  citation: {
+                    title: `${folderName} ${entry.subCategory} SKUs`,
+                    snippet: skuList,
+                    url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+                  }
                 });
               }
             }
@@ -175,15 +222,25 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
         for (const variant of baseVariants) {
           const skuLower = (variant.sku || variant['Product #'] || '').toLowerCase();
           const descLower = (variant.description || variant['Description'] || variant.desc || '').toLowerCase();
-          if (isChassisQuery || searchTerms.some(term => skuLower.includes(term) || descLower.includes(term))) {
+
+          let varScore = 0;
+          if (isChassisQuery) varScore += 1;
+          activeTerms.forEach(term => {
+             if (skuLower.includes(term) || descLower.includes(term)) varScore += 1;
+          });
+
+          if (varScore > 0) {
             const skuPn = variant.sku || variant['Product #'] || '';
             const desc = variant.description || variant['Description'] || variant.desc || '';
             const priceStr = variant.listPriceFormatted || (variant['Unit Price (USD)'] ? `$${variant['Unit Price (USD)']}` : (variant.listPrice ? `$${variant.listPrice}` : '$0.00'));
-            matches.push(`• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`);
-            citations.push({
-              title: `${folderName} Base Chassis CTO (${skuPn})`,
-              snippet: `${skuPn}: ${desc} (${priceStr})`,
-              url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+            rawMatches.push({
+              score: varScore,
+              text: `• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`,
+              citation: {
+                title: `${folderName} Base Chassis CTO (${skuPn})`,
+                snippet: `${skuPn}: ${desc} (${priceStr})`,
+                url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+              }
             });
           }
         }
@@ -198,20 +255,34 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
         if (!line) continue;
         const lineLower = line.toLowerCase();
 
-        if (searchTerms.length > 0 && searchTerms.some(term => lineLower.includes(term))) {
+        let ruleScore = 0;
+        if (activeTerms.length > 0) {
+           activeTerms.forEach(term => {
+              if (lineLower.includes(term)) ruleScore += 2;
+           });
+        }
+
+        const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
+        if (ruleScore > 0 && isRuleQuery) {
+          ruleScore += 10;
+        }
+
+        if (ruleScore > 0) {
           const parts = line.split(',');
           const mainCat = parts[0] || '';
           const subCat = parts[1] || '';
           const constraint = parts[2] || '';
           const ruleText = parts[4] || line;
 
-          matches.push(`• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`);
-          citations.push({
-            title: `${folderName} Catalog Rules`,
-            snippet: `${mainCat} > ${subCat}: ${ruleText}`,
-            url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
+          rawMatches.push({
+            score: ruleScore,
+            text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
+            citation: {
+              title: `${folderName} Catalog Rules`,
+              snippet: `${mainCat} > ${subCat}: ${ruleText}`,
+              url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
+            }
           });
-          if (matches.length >= 12) break;
         }
       }
     }
@@ -236,7 +307,36 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
       });
     }
 
-    matches.unshift(`${heading}\n\n${procLines.join('\n')}`);
+    rawMatches.push({
+      score: matchedProcessorSkus.length * 2,
+      text: `${heading}\n\n${procLines.join('\n')}`,
+      isProcMatch: true
+    });
+  }
+
+  // Rank matches by score (descending)
+  rawMatches.sort((a, b) => b.score - a.score);
+
+  // Take top 15 matches to avoid context overload
+  const topKMatches = rawMatches.slice(0, 15);
+
+  const matches = [];
+  topKMatches.forEach(rm => {
+     matches.push(rm.text);
+     if (rm.citation) citations.push(rm.citation);
+  });
+
+  let maxScore = topKMatches.length > 0 ? topKMatches[0].score : 0;
+  let confidenceScore = maxScore > 0 ? Math.min(0.95, (maxScore / 10) + 0.5) : 0.0;
+
+  if (topKMatches.some(m => m.isProcMatch)) {
+      // Put processor text at the top
+      const procMatchIndex = matches.findIndex(m => m.includes('Matching Processor SKUs') || m.includes('Processors with'));
+      if (procMatchIndex > 0) {
+         const pMatch = matches.splice(procMatchIndex, 1)[0];
+         matches.unshift(pMatch);
+      }
+      confidenceScore = 0.95;
   }
 
   const uniqueCitations = [];
@@ -259,6 +359,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
     query,
     answer: formattedAnswer,
     citations: uniqueCitations,
+    confidenceScore: confidenceScore,
     source: 'LOCAL_CATALOG_RAG'
   };
 }

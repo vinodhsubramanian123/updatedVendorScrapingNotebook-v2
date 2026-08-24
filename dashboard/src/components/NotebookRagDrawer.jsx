@@ -141,7 +141,7 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
             )}
           </div>
         </div>
-        <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+        <button aria-label="Close" onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>

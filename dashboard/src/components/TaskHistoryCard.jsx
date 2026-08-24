@@ -127,7 +127,7 @@ export default function TaskHistoryCard({ tasks = [], activeProgress = null, isT
               {selectedRun ? `Trace: ${selectedRun}` : 'Select a run to view trace'}
             </h4>
             {selectedRun && (
-              <button onClick={() => setSelectedRun(null)} className="text-slate-500 hover:text-slate-300">
+              <button aria-label="Clear" onClick={() => setSelectedRun(null)} className="text-slate-500 hover:text-slate-300">
                 <XCircle className="w-4 h-4" />
               </button>
             )}
