@@ -359,10 +359,40 @@ We implemented a strict **3-Tier Escalation Protocol**:
 1. **Unified Tab Routing**:
    - Standardized tab identifiers across all navigation and route components: `orchestrator` (BOQ Evaluator), `matrix` (5-Tier Strategy Matrix), `catalog` (Catalog Explorer), `telemetry` (Agentic Insights), and `pipeline` (Pipeline Ops).
 2. **Dedicated Full-Page Strategy Matrix View**:
-   - Mounted `ResolutionMatrix` directly in `App.jsx` on `activeTab === 'matrix'` with interactive rank cards, Excel download, and demo triggers.
-3. **Hybrid Preflight & Evaluation Topology Hydration**:
-   - `topologyGraphBuilder.js` extracts hardware items dynamically from `evalResults.items`, `evalResults.variations`, `evalResults.configVariations`, or `evalResults.rawVariations`, ensuring intake nodes are fully mapped into the 6 subsystem branches whether opened during preflight or post-evaluation.
-4. **SVG Click Ergonomics**:
-   - Added `pointerEvents="none"` to all SVG text nodes within interactive node containers.
-5. **Post-Evaluation Auto-Scroll**:
-   - Added `outcomeRef` in `BoqUploader.jsx` to smoothly scroll the certified buildable outcome card and action buttons into view upon SSE evaluation completion.
+- **Unified Tab Routing**:
+  - Standardized tab identifiers across all navigation and route components: `orchestrator` (BOQ Evaluator), `matrix` (5-Tier Strategy Matrix), `catalog` (Catalog Explorer), `telemetry` (Agentic Insights), and `pipeline` (Pipeline Ops).
+- **Dedicated Full-Page Strategy Matrix View**:
+  - Mounted `ResolutionMatrix` directly in `App.jsx` on `activeTab === 'matrix'` with interactive rank cards, Excel download, and demo triggers.
+- **Hybrid Preflight & Evaluation Topology Hydration**:
+  - `topologyGraphBuilder.js` extracts hardware items dynamically from `evalResults.items`, `evalResults.variations`, `evalResults.configVariations`, or `evalResults.rawVariations`, ensuring intake nodes are fully mapped into the 6 subsystem branches whether opened during preflight or post-evaluation.
+- **SVG Click Ergonomics**:
+  - Added `pointerEvents="none"` to all SVG text nodes within interactive node containers.
+- **Post-Evaluation Auto-Scroll**:
+  - Added `outcomeRef` in `BoqUploader.jsx` to smoothly scroll the certified buildable outcome card and action buttons into view upon SSE evaluation completion.
+
+---
+
+## 23. Google Jules Autonomous Background Orchestration & Performance Optimizations (2026-08-24)
+
+### Architecture & Background Delegation Pattern
+- **Google Jules SDK & MCP Integration**:
+  - Integrated `@google/jules-mcp` (v0.2.0) and `@google/jules-sdk` (v0.2.0) into the Antigravity system architecture via `mcp_config.json` and persistent API authentication.
+  - Created `scripts/jules_task_manager.js` to dispatch long-running code tasks, background regression testing, and corner-case validations to Google Jules asynchronously.
+  - This enables a **Multi-Agent Coding Loop**: Antigravity orchestrates, implements, and reviews changes while Jules asynchronously generates PRs, stress-tests corner cases, and certifies builds in parallel, conserving human context tokens.
+
+### PR Review & Code Refinements
+1. **Accidental Artifact Elimination (INV-7 Enforcement)**:
+   - Automated PR branches created by AI agents must be audited before merging to prevent accidental commits of generated build JSON artifacts (e.g. 45k+ lines of catalog snapshots).
+2. **Async Parallel Catalog History Parsing (`build_catalog.js`)**:
+   - Replaced sequential `fs.readFileSync` loops with parallel `fs.promises.readFile` + `Promise.all` across history snapshots.
+   - Added fast substring pre-checks (`rawContent.includes('"parentCategory":"Chassis"')`) prior to `JSON.parse` to avoid parsing multi-megabyte JSON payloads when looking for chassis variants.
+3. **Memoized SKU Price Lookup with Invalidation (`sku_versioning.js`)**:
+   - Added `catalogPriceCache` Map memoization to `getHistoricalSkuPrice` to eliminate repetitive disk reads during multi-SKU BOM audits ($O(1)$ amortized lookups).
+   - Exported `_clearCatalogPriceCache()` helper for clean test lifecycle isolation.
+4. **Async Profile Loader with Synchronous Fallback (`profile_loader.js`)**:
+   - Converted `loadProfile` to `async/await` using `Promise.all` across profile files in `scripts/config/profiles/`.
+   - Maintained `loadProfileSync` export for backward compatibility with synchronous utilities.
+5. **Dynamic LLM Model Selection (`GEMINI_MODEL_NAME`)**:
+   - Standardized model resolution across `agentic_guardrail.js`, `agentic_eval.js`, `adversarial_agent.js`, and `ocr_service.js` to prioritize `process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash'`.
+6. **7-Aspect Physical Math Hierarchy Alignment**:
+   - Fully updated all documentation and diagrams to reflect the complete 7-aspect validation hierarchy (`compute_thermal`, `memory_channel`, `storage_controller`, `pcie_expansion`, `power_environment`, `chassis_variant`, `support_manufacturing`).

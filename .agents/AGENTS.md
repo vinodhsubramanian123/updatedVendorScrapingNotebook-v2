@@ -216,6 +216,21 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Fixed**: `sync_payload_builder.js` detects test chassis patterns (`/^edge-test-/i`, `/^hpe-chaos-test-/i`, `/^tmp[_-]test/i`, `/^test[_-]/i`) and routes their payloads to `outputs/temp/test_payloads/`. `post_flow_sync.js` exports `cleanTestPayloads()` and calls it automatically at the end of every production sync.
 - **Rule**: If adding new test chassis patterns to chaos/stress tests, add the corresponding regex to `TEST_CHASSIS_PATTERNS` in both files. Never write test payloads to `outputs/history/`.
 
+### INV-8: Fast Substring Pre-Check for Async Catalog History Parsing
+- **File**: `scripts/build_catalog.js`
+- **Pattern**: History snapshot file reading is parallelized via `Promise.all` with `fs.promises.readFile`. Prior to `JSON.parse`, files are pre-filtered via `rawContent.includes('"parentCategory":"Chassis"')` to avoid expensive JSON parsing of non-chassis catalogs.
+- **Rule**: Never revert history parsing to sequential blocking `fs.readFileSync` loops.
+
+### INV-9: Memoized SKU Price Cache with Lifecycle Reset
+- **File**: `scripts/lib/sku_versioning.js`
+- **Pattern**: `getHistoricalSkuPrice` caches catalog SKU maps in `catalogPriceCache` Map for $O(1)$ amortized lookups across multi-item BOM audits. Exported `_clearCatalogPriceCache()` clears the cache cleanly between test suites.
+- **Rule**: Never perform un-memoized full-catalog array scans on repeated SKU lookups.
+
+### INV-10: Jules Task Manager Autonomous Background Delegation
+- **File**: `scripts/jules_task_manager.js`
+- **Pattern**: Multi-agent task handoff delegates heavy test generation and edge-case validation asynchronously to Google Jules via `@google/jules-sdk` and `JULES_API_KEY`.
+- **Rule**: All automated PRs created by Jules must be audited for accidental build artifacts (INV-7) before merging.
+
 ---
 
 ## History Directory Hygiene Rules
@@ -231,3 +246,4 @@ The `outputs/{Family}/{Gen}/{Model}/history/` directory stores canonical diff ar
 | `notebook_sync_payload_{chassis}.md` | Latest RAG payload | Contains test chassis names |
 
 Run `node -e "require('./scripts/lib/post_flow_sync.js').cleanTestPayloads()"` to purge stale test payloads from `outputs/history/` if they accumulate.
+
