@@ -17,6 +17,7 @@ const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, classifyOptionType, isServiceSku } 
 const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('../lib/catalog/catalog_formatter.js');
 const { validateCatalogData } = require('../lib/system/data_validator.js');
 const PipelineLogger = require('../lib/system/pipeline_logger.js');
+const { ClassificationDiagnostics } = require('../lib/catalog/classification_diagnostics.js');
 
 // ── CLI Arguments ─────────────────────────────────────────────────────────────
 const rawInputPath   = process.argv[2];
@@ -67,11 +68,14 @@ const filePrefix      = catalogBaseName.replace(/_Catalog$/, ''); // e.g. DL380_
 const chassisLabel    = filePrefix.replace(/_/g, ' ');            // e.g. DL380 Gen12 SFF
 
 const pipelineLogger  = new PipelineLogger(filePrefix, targetDir);
-pipelineLogger.logStep('Initialize Classification Engine', 'SUCCESS', { rawInputPath, jsonOutputPath });
+pipelineLogger.logStep('Initialize Classification Engine', 'SUCCESS', { rawInputPath, jsonOutputPath, chassisLabel });
+
+const diagnostics = new ClassificationDiagnostics(filePrefix, targetDir);
 
 const rawData  = JSON.parse(fs.readFileSync(rawInputPath, 'utf-8'));
 const fullText = rawData.fullText || rawData.bodyText || '';
 const tables   = rawData.tables || [];
+diagnostics.setRawTableCount(tables.length);
 
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
 const { loadProfile } = require('../lib/system/profile_loader.js');
@@ -272,6 +276,7 @@ let skippedTables  = 0;
 for (let ti = 0; ti < expandedTables.length; ti++) {
   const table = expandedTables[ti];
   if (!table.rows || table.rows.length < 2) {
+    diagnostics.recordSkippedTable(ti, 'Table rows < 2 or empty');
     skippedTables++;
     continue;
   }
@@ -279,6 +284,7 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
   // Skip summary and BOM report tables that lack structured column mapping
   const firstRowsText = (table.rows.slice(0, 3).map(r => r.join(' ')).join(' ')).toLowerCase();
   if (firstRowsText.includes('node level quantity') || firstRowsText.includes('support install action')) {
+    diagnostics.recordSkippedTable(ti, 'BOM summary report table header');
     skippedTables++;
     continue;
   }
@@ -312,6 +318,7 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
       headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
       headerIdx = -1;
     } else {
+      diagnostics.recordSkippedTable(ti, 'No valid SKU or headers detected');
       skippedTables++;
       continue;
     }
@@ -533,13 +540,13 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
     }
   }
 
+  const { classifyComponentRole } = require('../lib/catalog/product_meta.js');
+  const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
+
   if (matchedParent) {
     parentCat = matchedParent;
   } else {
     // 3. Fallback: classify using component role & semantic taxonomy
-    const { classifyComponentRole } = require('../lib/catalog/product_meta.js');
-    const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
-    
     const ROLE_TO_PARENT_MAP = {
       'Processor': 'Processor',
       'Memory': 'Memory',
@@ -623,6 +630,19 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
     headers,
     skuCount:       skus.length,
     skus
+  });
+
+  diagnostics.recordTableDecision({
+    tableIndex: ti,
+    subCategory: subCat,
+    parentCategory: parentCat,
+    matchedVia: matchedParent ? 'direct_taxonomy_keyword' : (matchedSubcat ? 'text_position' : 'role_classifier'),
+    detectedRole,
+    constraint: finalConstraint,
+    minQty: finalMinQty,
+    maxQty: finalMaxQty,
+    skuCount: skus.length,
+    rules: tableRules
   });
 
   // Deduplicate into master SKU list with price-prioritization
@@ -1153,10 +1173,13 @@ if (JSON_MODE) {
   console.log(`  📄 ${filePrefix}_Catalog_Rules.json  (${rulesJsonData.rules.length} rules, dual safety net)`);
   console.log(`  📄 ${catalogBaseName}.json        (structured companion JSON, verified atomic)`);
 
+  diagnostics.finalize(enrichedCatalog, rulesJsonData);
+
   console.log('\n=== CATEGORY BREAKDOWN ===');
   Object.entries(catCounts).sort((a, b) => b[1] - a[1]).forEach(([cat, count]) => {
     console.log(`  • ${cat.padEnd(35)}: ${count} SKUs`);
   });
+  console.log(`  📄 classification_diagnostics.json (observability trace logged)`);
   console.log('\n✅ CLASSIFICATION COMPLETE.');
 }
 }

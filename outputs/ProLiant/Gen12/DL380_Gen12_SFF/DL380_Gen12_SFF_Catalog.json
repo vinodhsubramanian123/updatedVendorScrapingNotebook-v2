@@ -5,7 +5,7 @@
     "family": "ProLiant",
     "generation": "Gen12",
     "scrapeDate": "2026-08-24",
-    "scrapeTimestamp": "2026-08-24T13:59:52.294Z",
+    "scrapeTimestamp": "2026-08-24T14:07:31.662Z",
     "totalSubcategories": 26,
     "totalUniqueSKUs": 302,
     "totalTables": 71,
@@ -16,7 +16,7 @@
       "attributeChanged": 9,
       "priceAndAttributeChanged": 0,
       "unchanged": 253,
-      "reinstated": 6,
+      "reinstated": 0,
       "discontinuedTotal": 0
     },
     "historySnapshot": "catalog_2026-08-24.json",
@@ -265,12 +265,12 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 302,
-      "unchangedSkusCount": 299,
-      "modifiedSkusCount": 3,
+      "unchangedSkusCount": 302,
+      "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 44850,
-      "estimatedProcessingTimeSavedMs": 59800
+      "estimatedTokensSaved": 45300,
+      "estimatedProcessingTimeSavedMs": 60400
     }
   },
   "subcategories": [],

@@ -32208,5 +32208,905 @@
     "field": "Start Date",
     "oldValue": "02/24/2025",
     "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "11/10/2022",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "newValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "11/10/2022",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Constraint",
+    "oldValue": "Discontinued",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Rule/Note",
+    "oldValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Max Qty",
+    "oldValue": "0",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Component Role",
+    "oldValue": "Discontinued Hardware",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "HPE Recommended",
+    "oldValue": "No",
+    "newValue": ""
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12 SFF",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
   }
 ]

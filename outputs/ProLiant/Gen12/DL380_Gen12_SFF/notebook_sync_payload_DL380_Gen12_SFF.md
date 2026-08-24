@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-24T14:01:21.386Z  
+**Sync Timestamp**: 2026-08-24T14:08:47.457Z  
 **Total Verified SKUs**: `945` (`302` Hardware + `643` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 302 | 40 | 0 | 9 | 6 | **CERTIFIED** |
+| **Hardware Components** | 302 | 40 | 0 | 9 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 643 | 82 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **945** | **122** | **0** | **9** | **6** | **ACTIVE** |
+| **Total Portfolio** | **945** | **122** | **0** | **9** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).

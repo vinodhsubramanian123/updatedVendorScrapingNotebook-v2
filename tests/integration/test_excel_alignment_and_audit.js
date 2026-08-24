@@ -40,7 +40,16 @@ function test(name, fn) {
     passed++;
     console.log(`  ✅ PASS [Bug ${total}]: ${name}`);
   } catch (err) {
-    console.error(`  ❌ FAIL [Bug ${total}]: ${name}\n     ${err.message}`);
+    console.error(`\n  ❌ FAIL [Bug ${total}]: ${name}`);
+    console.error(`     Error: ${err.message}`);
+    if (err.actual !== undefined && err.expected !== undefined) {
+      console.error(`     📊 Introspection: Expected ${JSON.stringify(err.expected)}, but got ${JSON.stringify(err.actual)}`);
+    }
+    const diagPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/classification_diagnostics.json');
+    if (fs.existsSync(diagPath)) {
+      console.error(`     🔍 Provenance Trace: file://${diagPath}`);
+    }
+    console.error('');
   }
 }
 

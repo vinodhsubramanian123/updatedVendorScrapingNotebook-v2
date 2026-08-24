@@ -16,5 +16,6 @@ module.exports = {
   sku: require('./sku.js'),
   validator: require('../system/data_validator.js'),
   syncRegistry: require('./sync_registry.js'),
-  registry: require('./registry.js')
+  registry: require('./registry.js'),
+  diagnostics: require('./classification_diagnostics.js')
 };
