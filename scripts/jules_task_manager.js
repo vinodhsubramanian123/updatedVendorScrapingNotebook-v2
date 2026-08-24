@@ -67,6 +67,18 @@ async function getSessionDetails(sessionId) {
   return session;
 }
 
+/**
+ * Send a message / reply to an active Jules session.
+ * @param {string} sessionId
+ * @param {string} message
+ */
+async function sendMessageToSession(sessionId, message) {
+  const client = await getJulesClient();
+  const session = await client.session(sessionId);
+  await session.send(message);
+  return session;
+}
+
 // CLI runner support
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -92,6 +104,16 @@ if (require.main === module) {
         console.log(`Creating Jules session: "${title}" on branch: "${branch}"...`);
         const session = await createSession(prompt, title, branch);
         console.log('✅ Session created successfully:', session.id || session.name);
+      } else if (command === 'send') {
+        const id = args[1];
+        const message = args[2];
+        if (!id || !message) {
+          console.error('Usage: node scripts/jules_task_manager.js send <sessionId> "<message>"');
+          process.exit(1);
+        }
+        console.log(`Sending message to session: ${id}...`);
+        await sendMessageToSession(id, message);
+        console.log('✅ Message sent to Jules session successfully.');
       } else if (command === 'status') {
         const id = args[1];
         if (!id) {
@@ -101,7 +123,7 @@ if (require.main === module) {
         const details = await getSessionDetails(id);
         console.log('Session Details:', details);
       } else {
-        console.log('Unknown command. Available commands: list, create, status');
+        console.log('Unknown command. Available commands: list, create, send, status');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);
@@ -114,5 +136,6 @@ module.exports = {
   listSessions,
   createSession,
   getSessionDetails,
+  sendMessageToSession,
   getJulesClient
 };
