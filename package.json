@@ -63,7 +63,7 @@
     "test:strategy": "node tests/test_workload_strategy.js",
     "test:sync": "node tests/test_sync_knowledge.js",
     "test:dashboard_server": "node tests/test_dashboard_routes.js && node tests/test_dashboard_services.js",
-    "test:all": "node tests/test_gemini_rotator.js && node tests/test_vendor_bom_verifier.js && node tests/test_incremental_checksum.js && node tests/test_end_to_end_scenarios.js && node tests/test_conflict_graph.js && node tests/test_offline_pipeline.js && node tests/test_edge_cases.js && node tests/test_failure_modes_and_chaos.js && node tests/test_historical_pricing_timeline.js && node tests/test_excel_alignment_and_audit.js && node tests/test_sync_knowledge.js && node tests/test_workload_strategy.js && node tests/test_boq_preprocessor.js && node tests/test_cto_normalizer.js && node tests/test_variation_clusterer.js && node tests/test_cdp_dom_extract_resilience.js && node tests/test_ocr_service_resilience.js && npm run test:dashboard_server && npm run test:aspect_units && node scripts/test_all_aspects.js && node scripts/test_boq_eval_benchmarks.js && node scripts/verify_all.js",
+    "test:all": "node tests/test_gemini_rotator.js && node tests/test_vendor_bom_verifier.js && node tests/test_incremental_checksum.js && node tests/test_end_to_end_scenarios.js && node tests/test_conflict_graph.js && node tests/test_offline_pipeline.js && node tests/test_edge_cases.js && node tests/test_failure_modes_and_chaos.js && node tests/test_historical_pricing_timeline.js && node tests/test_excel_alignment_and_audit.js && node tests/test_sync_knowledge.js && node tests/test_workload_strategy.js && node tests/test_boq_preprocessor.js && node tests/test_cto_normalizer.js && node tests/test_variation_clusterer.js && node tests/test_cdp_dom_extract_resilience.js && node tests/test_ocr_service_resilience.js && npm run test:dashboard_server && npm run test:aspect_units && node scripts/test_all_aspects.js && node scripts/test_boq_eval_benchmarks.js && node scripts/verify_all.js && node tests/test_ui_workflow_e2e.js",
     "test:clic": "node scripts/test_live_clic.js",
     "dashboard": "npx -y concurrently \"node dashboard/server.cjs\" \"npm --prefix dashboard run dev\" \"node scripts/feedback_listener.js\"",
     "demo:qs": "node scripts/demo_qs_vs_menu_cdp.js",
@@ -81,6 +81,7 @@
   "devDependencies": {
     "@google/jules-mcp": "^0.2.0",
     "@google/jules-sdk": "^0.2.0",
-    "playwright": "^1.62.1"
+    "playwright": "^1.62.1",
+    "puppeteer": "^25.8.0"
   }
 }
