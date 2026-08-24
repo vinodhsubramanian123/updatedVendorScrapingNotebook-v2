@@ -50,10 +50,8 @@ async function createSession(prompt, title = 'Background Task', branch = 'main',
     prompt,
     title,
     source: {
-      github: {
-        repo: GITHUB_REPO,
-        branch
-      }
+      github: GITHUB_REPO,
+      baseBranch: branch
     },
     autoPr
   });
