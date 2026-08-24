@@ -410,4 +410,31 @@ To eliminate reliance on human intervention as a relayer between agents, Antigra
    - When Jules leaves comments or discovers failing test cases in session activity, AI agents autonomously inspect the trace (`status <sessionId>`), identify the underlying architectural pattern, implement the fix, run full regressions, push the commit, and post back into the session.
 3. **Zero-Pollution PR Merges**:
    - Automated PR branches are inspected with `git diff --stat` to guarantee no accidental build snapshots (`outputs/history/*.json`), temporary debug logs, or unstaged files are committed.
-   - Merges into `main` require 100% pass across all 17 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero linter warnings (`npm run lint`).
+   - Merges into `main` require 100% pass across all 31 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero linter warnings (`npm run lint`).
+4. **Post-Merge Remote Branch Pruning & Full Ownership (`INV-11`)**:
+   - Once code is merged and verified on `main`, AI agents take full responsibility to delete stale remote feature branches (`git push origin --delete <branch>`) and send completion confirmations to Jules.
+5. **Full Activity-Patch Audit Protocol (`INV-12`)**:
+   - Before any Jules session is retired or closed, AI agents must execute `node scripts/jules_task_manager.js audit <sessionId>` to inspect all authored `unidiffPatch` change sets and ensure zero discoveries or test suites are lost.
+
+### Master Multi-Agent Operational Harmony Protocol
+```mermaid
+flowchart TD
+    subgraph 1. Task Definition & Delegation
+        A[Antigravity: System Architect] -->|Dispatches targeted scope| B[Jules: Cloud Adversarial Scout]
+    end
+
+    subgraph 2. Background Cloud Execution
+        B --> C[Generates Stress Tests & Probes Hotspots in Parallel]
+    end
+
+    subgraph 3. Zero-Loss Activity Audit
+        C --> D[scripts/jules_task_manager.js audit: Scans unidiffPatches]
+        D -->|Guarantees 0 Lost Code| E[Antigravity Reviews & Refactors Systemic Patterns]
+    end
+
+    subgraph 4. Certification & Lifecycle Hygiene
+        E --> F[Full 31-Suite Test Matrix & Oxlint Benchmark]
+        F --> G[Merged Cleanly into main]
+        G --> H[Prunes Remote Branches & Confirms with Jules]
+    end
+```
