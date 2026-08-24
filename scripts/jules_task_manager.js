@@ -79,6 +79,56 @@ async function sendMessageToSession(sessionId, message) {
   return session;
 }
 
+/**
+ * Audit all activities, code changes, PRs, and patches in a Jules session.
+ * Ensures zero work or unpushed patches are missed before closing/retiring a session (INV-12).
+ */
+async function auditSession(sessionId) {
+  const client = await getJulesClient();
+  const session = await client.session(sessionId);
+  const activitiesRes = await session.activities.list();
+  const activities = activitiesRes.activities || [];
+  
+  const auditReport = {
+    sessionId,
+    title: session.title || session.name || 'Jules Session',
+    state: session.state || session.status || 'unknown',
+    totalActivities: activities.length,
+    commits: [],
+    pullRequests: [],
+    patches: [],
+    affectedFiles: new Set()
+  };
+
+  activities.forEach((act, idx) => {
+    if (act.gitCommit) auditReport.commits.push(act.gitCommit);
+    if (act.pullRequest) auditReport.pullRequests.push(act.pullRequest);
+    if (act.artifacts && act.artifacts.length > 0) {
+      act.artifacts.forEach(art => {
+        const patchText = art.gitPatch?.unidiffPatch || art.changeSet?.gitPatch?.unidiffPatch || art.gitPatch?.patch;
+        if (patchText) {
+          auditReport.patches.push({
+            activityIndex: idx,
+            type: art.type || act.type,
+            patch: patchText,
+            baseCommitId: art.gitPatch?.baseCommitId
+          });
+          const fileMatches = patchText.match(/diff --git a\/([^\s]+) b\/([^\s]+)/g);
+          if (fileMatches) {
+            fileMatches.forEach(m => {
+              const f = m.split(' b/')[1];
+              if (f) auditReport.affectedFiles.add(f);
+            });
+          }
+        }
+      });
+    }
+  });
+
+  auditReport.affectedFiles = Array.from(auditReport.affectedFiles);
+  return auditReport;
+}
+
 // CLI runner support
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -122,6 +172,33 @@ if (require.main === module) {
         }
         const details = await getSessionDetails(id);
         console.log('Session Details:', details);
+      } else if (command === 'audit') {
+        const id = args[1];
+        if (!id) {
+          console.error('Usage: node scripts/jules_task_manager.js audit <sessionId>');
+          process.exit(1);
+        }
+        console.log(`🔍 Auditing Jules session activities & patches for: ${id}...`);
+        const report = await auditSession(id);
+        console.log(`\n===============================================================`);
+        console.log(`📊 JULES SESSION AUDIT REPORT: ${report.sessionId}`);
+        console.log(`===============================================================`);
+        console.log(`  Title           : ${report.title}`);
+        console.log(`  Status          : ${report.state}`);
+        console.log(`  Total Activities: ${report.totalActivities}`);
+        console.log(`  Commits Found   : ${report.commits.length}`);
+        console.log(`  PRs Found       : ${report.pullRequests.length}`);
+        console.log(`  Patches/Deltas  : ${report.patches.length}`);
+        console.log(`  Affected Files  : ${report.affectedFiles.length}`);
+        if (report.affectedFiles.length > 0) {
+          console.log(`\n  📂 Files Modified/Created in Session:`);
+          report.affectedFiles.forEach(f => console.log(`     - ${f}`));
+        }
+        if (report.pullRequests.length > 0) {
+          console.log(`\n  🔗 Pull Requests:`);
+          report.pullRequests.forEach(pr => console.log(`     - PR #${pr.number || ''}: ${pr.url || pr.htmlUrl || pr.title || JSON.stringify(pr)}`));
+        }
+        console.log(`===============================================================\n`);
       } else if (command === 'prune') {
         const { execSync } = require('child_process');
         console.log('Fetching remote branches to prune merged Jules branches...');
@@ -144,7 +221,7 @@ if (require.main === module) {
         }
         console.log('🎉 Stale remote branches pruned cleanly.');
       } else {
-        console.log('Unknown command. Available commands: list, create, send, status, prune');
+        console.log('Unknown command. Available commands: list, create, send, status, audit, prune');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);
@@ -158,5 +235,7 @@ module.exports = {
   createSession,
   getSessionDetails,
   sendMessageToSession,
+  auditSession,
   getJulesClient
 };
+

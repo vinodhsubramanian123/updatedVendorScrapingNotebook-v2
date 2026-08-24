@@ -55,3 +55,8 @@ The system leverages Google Jules for background code review, test generation, a
    - Once all code and tests from a Jules PR branch are merged and certified on `main`, the AI agent takes full responsibility to delete the stale remote feature branch (`git push origin --delete <branch>`) and send a completion message to Jules.
    - Never leave stale, abandoned, or lingering feature branches on GitHub once their work has landed on `main`.
 
+5. **Full Activity-Patch Audit Protocol Before Session Retirement (`INV-12`)**:
+   - When any Jules session finishes or pauses, the AI agent must **never assume code is only on a remote git branch**.
+   - The agent MUST execute `node scripts/jules_task_manager.js audit <sessionId>` to inspect all session activities, patch deltas, and authored files.
+   - If valuable tests or code fixes exist in the session's activity log that were not pushed to GitHub, the agent must extract them, run local validation (`npm run test:all`), commit them to `main`, and certify 100% compliance.
+
