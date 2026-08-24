@@ -145,4 +145,14 @@ To prevent any ambiguity for future agents observing this system, here is the ex
 ### Who is the Workflow Orchestrator?
 To be absolutely clear, the "Orchestrator" in this architecture is context-dependent:
 - **For Human Dashboard Triggers**: The **Node.js Express Server (`server.cjs`)** is the workflow orchestrator. It listens for the HTTP trigger, spawns the evaluation scripts in isolated shells, collects the telemetry, pipes the SSE stream to the UI, and formats the final ledger.
-- **For Autonomous AI Triggers**: **You (The AI Agent reading this document)** are the workflow orchestrator. Guided by this `orchestrator-workflow-skill`, you are responsible for running the `npm` commands, parsing the console output, passing context to the NotebookLM MCP, and feeding the final decisions back to the user.
+- **For Autonomous AI Triggers & Multi-Agent Collaboration**: **You (Antigravity AI Agent)** are the system architect and master orchestrator. Guided by this `orchestrator-workflow-skill`, you are responsible for running commands, parsing output, managing the NotebookLM MCP bridge, delegating background verification to Google Jules, and ensuring final perfection.
+
+---
+
+## 🤖 7. Multi-Agent Autonomous Delegation Protocol (Antigravity ↔ Google Jules)
+
+To maximize velocity and offload heavy validation without human friction:
+1. **Smart Task Offloading**: Antigravity delegates heavy stress-testing, boundary test generation, and container environment verification to Google Jules via `@google/jules-sdk` and `scripts/services/jules_task_manager.js`.
+2. **Proactive Background Scheduling (`schedule` tool)**: When Jules tasks are in-flight, Antigravity **MUST NOT sit idle waiting for human prompts**. Antigravity registers periodic timers (`DurationSeconds=120-180`, `TimerCondition="never"`) to autonomously wake up, inspect session activities (`session.activities.list()`), answer clarifications, push remediation commits, and verify test suites.
+3. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 18 test tiers, 7 portfolio product lines, Excel alignments, and zero-warning lints before approving completion.
+

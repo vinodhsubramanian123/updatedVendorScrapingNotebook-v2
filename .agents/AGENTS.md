@@ -193,9 +193,17 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: `scripts/lib/feedback/feedback_loop.js` and `scripts/lib/notebook/knowledge_extractor.js` must deduplicate incoming rules against existing `catalog_deltas.json` and `master_knowledge_registry.json`.
 - **Rule**: Never blindly push duplicate rules. Match on `(chassis, affectedSku, requiredDependencySku, rawMessage/ruleUpdate)` and update timestamps/scores in place.
 
-### INV-14: Whole-Solution BOM Manifest Context in Grounded RAG Queries
-- **Pattern**: `formatNotebookQueryPayload` in `scripts/lib/boq/boq_evaluator.js` must always bundle the entire solution BOM manifest (comma-separated SKU quantities), detected physical issues, proposed fixes, and 5-tier strategy summaries.
-- **Rule**: Never dispatch isolated, single-SKU queries to NotebookLM/RAG for whole-solution validation. Always preserve full topological context.
+### INV-15: Proactive Multi-Agent Scheduling & Final Authority Governance
+- **Pattern**: Whenever an Antigravity AI Agent delegates work to Google Jules or has an active Jules session in flight, the agent **MUST NOT go idle or wait for the human user to prompt or relay messages**.
+- **Rule**: The agent MUST proactively schedule periodic background wakeups using the `schedule` tool (`DurationSeconds=120-180`, `TimerCondition="never"`) to inspect session progress, query activities (`session.activities.list()`), answer clarifications, push remediation code, and verify final certification until the task is complete. Antigravity is the Architect and Final Authority.
+
+### INV-16: Cross-Platform Universal Compatibility Contract
+- **Pattern**: All CI workflows, test suites, and build scripts MUST be strictly cross-platform across Ubuntu, macOS, and Windows.
+- **Rule**: Zero shell-specific binary dependencies (no `unzip`, `which`, `curl`, `grep`, or `rm -rf` via `execSync`). Use pure in-memory JavaScript (`xlsx-js-style` cell styles, `os.homedir()`, `safeWriteJsonAtomic`). Frontend tooling must pin stable production LTS releases (Vite 6, Vitest 3) and use `npm install --include=optional` in CI.
+
+### INV-17: Catalog Ingestion & Classification Diagnostics Observability
+- **Pattern**: `scripts/catalogs/build_catalog.js` must always record structured provenance traces (`outputs/{Family}/{Gen}/{Model}/history/classification_diagnostics.json`) via `ClassificationDiagnostics`.
+- **Rule**: All test assertion suites MUST provide rich introspective diff reporting linking directly to the provenance trace upon any assertion failure.
 
 ---
 

@@ -423,18 +423,43 @@ flowchart TD
         A[Antigravity: System Architect] -->|Dispatches targeted scope| B[Jules: Cloud Adversarial Scout]
     end
 
-    subgraph 2. Background Cloud Execution
-        B --> C[Generates Stress Tests & Probes Hotspots in Parallel]
+    subgraph 2. Background Cloud Execution & Proactive Scheduling
+        B --> C[Executes Tests, Rebuilds & Probes in Parallel]
+        A -->|Proactive IDE Timer: schedule 120-180s| A1[Autonomous Wakeup & Progress Polling]
     end
 
-    subgraph 3. Zero-Loss Activity Audit
+    subgraph 3. Zero-Loss Activity Audit & Closed-Loop Directives
+        A1 -->|Answers Queries & Pushes Fixes| B
         C --> D[scripts/services/jules_task_manager.js audit: Scans unidiffPatches]
         D -->|Guarantees 0 Lost Code| E[Antigravity Reviews & Refactors Systemic Patterns]
     end
 
     subgraph 4. Certification & Lifecycle Hygiene
-        E --> F[Full 31-Suite Test Matrix & Oxlint Benchmark]
-        F --> G[Merged Cleanly into main]
-        G --> H[Prunes Remote Branches & Confirms with Jules]
+        E --> F[Full 18-Suite Test Matrix, 7/7 Portfolio & Oxlint Benchmark]
+        F --> G[Merged Cleanly into main & CI Certified]
+        G --> H[Prunes Remote Branches & Confirms Final Certification with Jules]
     end
 ```
+
+## 23. Autonomous Proactive Scheduling & Hands-Free Multi-Agent Governance
+
+### 1. Hands-Free Proactive Scheduling Architecture
+- **Problem**: When Google Jules transitioned to `awaitingUserFeedback`, the turn traditionally paused until the human user manually typed in the IDE chat to wake up the Antigravity agent.
+- **Permanent Solution (`INV-15`)**:
+  - When delegating work to Google Jules or monitoring an active task, Antigravity AI **MUST NOT sit idle waiting for the human user**.
+  - The AI agent utilizes the IDE's native `schedule` tool (`DurationSeconds=120-180`, `TimerCondition="never"`) to register periodic autonomous wakeups.
+  - Upon timer expiration, the agent automatically wakes up, checks `session.activities.list()`, answers clarifying questions, pushes remediation commits, and verifies test suites until 100% completion.
+
+### 2. Antigravity as System Architect & Final Review Authority
+- Jules serves as the **Cloud Adversarial Scout and Test Generator**, while Antigravity functions as the **System Architect and Final Authority**.
+- Antigravity validates all code changes against the 18 test tiers (`npm run test:all`), audits the 7-product portfolio (`verify_all.js`), verifies Excel formatting compliance (`test_excel_alignment_and_audit.js`), and ensures zero regression before approving or merging PRs.
+
+### 3. Cross-Platform Universal Compatibility Contract (`INV-16`)
+- **Universal OS CI**: All build scripts, test suites, and CI workflows must execute identically across Ubuntu, macOS, and Windows.
+- **Zero OS Shell Tool Dependencies**: Replace shell calls (`unzip`, `which`, `curl`, `grep`) with pure in-memory JavaScript implementations (`xlsx-js-style` cell styles, `os.homedir()`, `safeWriteJsonAtomic`).
+- **Stable Production Tooling**: Pin stable LTS releases (Vite 6, Vitest 3) and configure `npm install --include=optional` in CI workflows to avoid native platform binary binding omissions across OS targets.
+
+### 4. Classification Diagnostics & Ingestion Observability (`INV-17`)
+- `build_catalog.js` emits structured provenance logs (`history/classification_diagnostics.json`) via `ClassificationDiagnostics`, recording table indices, matched taxonomy keywords, detected component roles, assigned parent categories, quantity constraints, and skipped table reasons.
+- All integration and audit test suites implement deep failure introspectors that output expected vs actual value diffs with clickable markdown links directly to the classification diagnostics trace.
+

@@ -62,3 +62,18 @@ The system leverages Google Jules for background code review, test generation, a
    - When any Jules session finishes or pauses, the AI agent must **never assume code is only on a remote git branch**.
    - The agent MUST execute `node scripts/services/jules_task_manager.js audit <sessionId>` to inspect all session activities, patch deltas, and authored files.
    - If valuable tests or code fixes exist in the session's activity log that were not pushed to GitHub, the agent must extract them, run local validation (`npm run test:all`), commit them to `main`, and certify 100% compliance.
+
+6. **Proactive Multi-Agent Scheduling & Final Authority Governance (`INV-15`)**:
+   - Whenever an Antigravity AI Agent delegates work to Google Jules or has an active Jules session in flight, the agent **MUST NOT go idle or wait for the human user to prompt or relay messages**.
+   - The agent **MUST proactively schedule periodic background wakeups** using the `schedule` tool (`DurationSeconds=120-180`, `TimerCondition="never"`) to inspect session progress, query activities (`session.activities.list()`), answer clarifications, push remediation code, and verify final certification until the task is complete.
+   - **Antigravity is the Architect & Final Authority**: Antigravity governs all multi-agent work, inspecting git diffs, certifying all 18 test tiers (`npm run test:all`), verifying 7/7 portfolio products (`verify_all.js`), auditing Excel workbooks, and ensuring zero regressions before declaring final completion.
+
+7. **Cross-Platform Universal Compatibility Contract (`INV-16`)**:
+   - All CI workflows, test suites, and build scripts MUST be strictly cross-platform across Ubuntu, macOS, and Windows.
+   - Zero shell-specific binary dependencies (no `unzip`, `which`, `curl`, `grep`, or `rm -rf` via `execSync`). Use pure in-memory JavaScript (`xlsx-js-style` cell styles, `os.homedir()`, `safeWriteJsonAtomic`).
+   - Frontend tooling must pin stable production LTS releases (Vite 6, Vitest 3) and use `npm install --include=optional` in CI to avoid native platform binding omissions in npm lockfiles.
+
+8. **Catalog Ingestion & Classification Diagnostics Observability (`INV-17`)**:
+   - `build_catalog.js` MUST always emit structured provenance traces (`outputs/{Family}/{Gen}/{Model}/history/classification_diagnostics.json`) via `ClassificationDiagnostics`.
+   - All test assertion suites MUST provide rich introspective diff reporting linking directly to the provenance trace upon any assertion failure.
+
