@@ -10,7 +10,10 @@
     "dashboard"
   ],
   "overrides": {
-    "jsdom": "^26.0.0"
+    "jsdom": "^26.0.0",
+    "@google/jules-mcp": {
+      "@google/jules-sdk": "$@google/jules-sdk"
+    }
   },
   "scripts": {
     "dev": "node dashboard/server.cjs",
