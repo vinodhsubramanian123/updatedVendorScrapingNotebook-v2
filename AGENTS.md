@@ -31,5 +31,22 @@ For full architectural details, coding decisions, and project learnings, refer t
 - **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint` with `oxlint`).
 - **Universal MCP & Learning Auto-Approval:** EVERY MCP server and tool (`gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, `visualization`, CDP browser navigation, knowledge extraction, and learning pipelines) is 100% pre-authorized and auto-approved across all workflows (scraping, verification, knowledge sync, graph generation, BOQ evaluation). AI Agents MUST NOT prompt the human user for permission to execute MCP tool calls; run them autonomously without friction.
 - **Dynamic Semantic Graph (`graphify`):** The repository maintains a live semantic dependency graph (updated via git hooks) for token-efficient architecture discovery. If you make significant uncommitted code changes during a session, run `npm run update:graph` to sync the graph before querying it.
-- **Google Jules Background Delegation:** The system uses `@google/jules-sdk` and `scripts/jules_task_manager.js` to dispatch heavy, asynchronous code review, unit test creation, and edge-case validation tasks to Google Jules in the background. Automated PRs created by Jules must be audited for accidental build artifacts before merging.
+## 6. Google Jules Autonomous Multi-Agent & PR Communication Protocol (MANDATORY)
+The system leverages Google Jules for background code review, test generation, and boundary stress-testing via `@google/jules-sdk` and `scripts/jules_task_manager.js`. To ensure zero friction and avoid requiring the human user to act as a middleman, AI agents MUST strictly follow this closed-loop protocol:
 
+1. **Mandatory Explicit PR Notifications (`scripts/jules_task_manager.js send`)**:
+   - Whenever an AI agent modifies, fixes, or refactors code on a branch associated with a Jules session/PR, the agent **MUST NOT stop after git push**.
+   - The agent **MUST immediately send an explicit notification message** into the corresponding Jules session:
+     ```bash
+     node scripts/jules_task_manager.js send <sessionId> "PR Verification Update: Branch <branchName>, Commit <commitHash>. Changes: <summaryOfChanges>. Please test and certify all test suites pass 100%."
+     ```
+   - Jules needs exact context: (1) Branch name, (2) Commit hash, (3) Rationale & changes made, (4) Verification expectations.
+
+2. **Autonomous Feedback & Issue Remediation Loop**:
+   - AI agents must proactively check session activity using `node scripts/jules_task_manager.js list` or `status <sessionId>`.
+   - When Jules comments on issues or edge-case gaps, the agent must inspect Jules's reasoning, fix the underlying architectural pattern (not just isolated symptoms), run full regression tests, push to the branch, and reply to Jules in the session.
+   - Do not wait for the human user to prompt or relay messages between agents.
+
+3. **PR Merge & Artifact Hygiene Standards**:
+   - Before merging any PR created by Jules, the agent must inspect `git diff --stat` to ensure no accidental build artifacts (e.g. `outputs/history/*.json` dumps, temp files) were committed (Invariant INV-7 & INV-10).
+   - Ensure all 17 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.

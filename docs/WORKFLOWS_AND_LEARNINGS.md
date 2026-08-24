@@ -396,3 +396,18 @@ We implemented a strict **3-Tier Escalation Protocol**:
    - Standardized model resolution across `agentic_guardrail.js`, `agentic_eval.js`, `adversarial_agent.js`, and `ocr_service.js` to prioritize `process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash'`.
 6. **7-Aspect Physical Math Hierarchy Alignment**:
    - Fully updated all documentation and diagrams to reflect the complete 7-aspect validation hierarchy (`compute_thermal`, `memory_channel`, `storage_controller`, `pcie_expansion`, `power_environment`, `chassis_variant`, `support_manufacturing`).
+
+### Closed-Loop Multi-Agent PR Communication & Feedback Protocol
+To eliminate reliance on human intervention as a relayer between agents, Antigravity and Jules follow an autonomous closed-loop protocol:
+1. **Targeted Notifications on Code Push**:
+   - Every time an agent pushes a commit to a branch tracked by a Jules session/PR, the agent immediately executes `sendMessageToSession(sessionId, message)` (or `node scripts/jules_task_manager.js send <sessionId> "<message>"`).
+   - The message payload explicitly includes:
+     - **Branch Name**: `branch: <branchName>`
+     - **Commit SHA**: `commit: <commitSha>`
+     - **Rationale & Changes Made**: Concrete summary of the fixes, refactors, and invariants enforced.
+     - **Verification Criteria**: Specific test suites or runtime assertions Jules must execute and certify.
+2. **Autonomous Issue & Comment Processing**:
+   - When Jules leaves comments or discovers failing test cases in session activity, AI agents autonomously inspect the trace (`status <sessionId>`), identify the underlying architectural pattern, implement the fix, run full regressions, push the commit, and post back into the session.
+3. **Zero-Pollution PR Merges**:
+   - Automated PR branches are inspected with `git diff --stat` to guarantee no accidental build snapshots (`outputs/history/*.json`), temporary debug logs, or unstaged files are committed.
+   - Merges into `main` require 100% pass across all 17 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero linter warnings (`npm run lint`).

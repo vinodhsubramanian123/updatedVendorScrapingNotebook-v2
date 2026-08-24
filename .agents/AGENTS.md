@@ -226,10 +226,12 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: `getHistoricalSkuPrice` caches catalog SKU maps in `catalogPriceCache` Map for $O(1)$ amortized lookups across multi-item BOM audits. Exported `_clearCatalogPriceCache()` clears the cache cleanly between test suites.
 - **Rule**: Never perform un-memoized full-catalog array scans on repeated SKU lookups.
 
-### INV-10: Jules Task Manager Autonomous Background Delegation
-- **File**: `scripts/jules_task_manager.js`
-- **Pattern**: Multi-agent task handoff delegates heavy test generation and edge-case validation asynchronously to Google Jules via `@google/jules-sdk` and `JULES_API_KEY`.
-- **Rule**: All automated PRs created by Jules must be audited for accidental build artifacts (INV-7) before merging.
+### INV-10: Jules Task Manager Autonomous Background Delegation & Closed-Loop PR Protocol
+- **Files**: `scripts/jules_task_manager.js`, `@google/jules-sdk`
+- **Pattern**: Multi-agent task handoff delegates heavy test generation, boundary stress-testing, and PR reviews asynchronously to Google Jules in the background without blocking the user.
+- **Mandatory Notification Rule**: Whenever an AI agent modifies, patches, or refactors code on a branch associated with a Jules session/PR, the agent **MUST NOT stop after git push**. The agent **MUST immediately call `sendMessageToSession(sessionId, message)`** (or `node scripts/jules_task_manager.js send <sessionId> "<message>"`) specifying the exact branch, commit hash, rationale, and verification expectations.
+- **Autonomous Feedback Rule**: When Jules comments with issues or failed edge cases, the agent must autonomously read the session activity (`status <sessionId>`), address the underlying pattern across the codebase, push the fix, and reply to Jules in the same session without requiring the human user to act as a relayer.
+- **Artifact Hygiene Rule**: All automated PRs created by Jules must be audited for accidental build artifacts (INV-7) before merging. Ensure 100% pass across all 17 test suites (`npm run test:all`) and zero lint errors (`npm run lint`).
 
 ---
 
