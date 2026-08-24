@@ -1,0 +1,16 @@
+{
+  "Q2R41A": [
+    {
+      "date": "2026-08-10",
+      "price": 4500,
+      "status": "BASELINE"
+    }
+  ],
+  "Q2R42A": [
+    {
+      "date": "2026-08-10",
+      "price": 2800,
+      "status": "BASELINE"
+    }
+  ]
+}

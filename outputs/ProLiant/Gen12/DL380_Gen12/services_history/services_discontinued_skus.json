@@ -1,0 +1,1519 @@
+{
+  "Q9R65A": {
+    "productNumber": "Q9R65A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "6737.00",
+    "fullPriceTrail": "2026-08-22: $6737.00 → 2026-08-24: $6737.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "Q9R66A": {
+    "productNumber": "Q9R66A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "11229.00",
+    "fullPriceTrail": "2026-08-22: $11229.00 → 2026-08-24: $11229.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "Q9R67A": {
+    "productNumber": "Q9R67A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "24680.00",
+    "fullPriceTrail": "2026-08-22: $24680.00 → 2026-08-24: $24680.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "Q9R68A": {
+    "productNumber": "Q9R68A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "41134.00",
+    "fullPriceTrail": "2026-08-22: $41134.00 → 2026-08-24: $41134.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "BD505A": {
+    "productNumber": "BD505A",
+    "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "469.00",
+    "fullPriceTrail": "2026-08-22: $469.00 → 2026-08-24: $469.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "BD507A": {
+    "productNumber": "BD507A",
+    "description": "HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "469.00",
+    "fullPriceTrail": "2026-08-22: $469.00 → 2026-08-24: $469.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "E6U64ABE": {
+    "productNumber": "E6U64ABE",
+    "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "467.00",
+    "fullPriceTrail": "2026-08-22: $467.00 → 2026-08-24: $467.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "512485-B21": {
+    "productNumber": "512485-B21",
+    "description": "HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "399.00",
+    "fullPriceTrail": "2026-08-22: $399.00 → 2026-08-24: $399.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "512487-B21": {
+    "productNumber": "512487-B21",
+    "description": "HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "399.00",
+    "fullPriceTrail": "2026-08-22: $399.00 → 2026-08-24: $399.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "E6U59ABE": {
+    "productNumber": "E6U59ABE",
+    "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "399.00",
+    "fullPriceTrail": "2026-08-22: $399.00 → 2026-08-24: $399.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77110-B21": {
+    "productNumber": "P77110-B21",
+    "description": "Microsoft Windows Server 2025 1 User CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "72.00",
+    "fullPriceTrail": "2026-08-22: $72.00 → 2026-08-24: $72.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77111-B21": {
+    "productNumber": "P77111-B21",
+    "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "52.00",
+    "fullPriceTrail": "2026-08-22: $52.00 → 2026-08-24: $52.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77112-B21": {
+    "productNumber": "P77112-B21",
+    "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "322.00",
+    "fullPriceTrail": "2026-08-22: $322.00 → 2026-08-24: $322.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77113-B21": {
+    "productNumber": "P77113-B21",
+    "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "226.00",
+    "fullPriceTrail": "2026-08-22: $226.00 → 2026-08-24: $226.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77114-B21": {
+    "productNumber": "P77114-B21",
+    "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "636.00",
+    "fullPriceTrail": "2026-08-22: $636.00 → 2026-08-24: $636.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77115-B21": {
+    "productNumber": "P77115-B21",
+    "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "444.00",
+    "fullPriceTrail": "2026-08-22: $444.00 → 2026-08-24: $444.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77116-B21": {
+    "productNumber": "P77116-B21",
+    "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "3143.00",
+    "fullPriceTrail": "2026-08-22: $3143.00 → 2026-08-24: $3143.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77117-B21": {
+    "productNumber": "P77117-B21",
+    "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "2184.00",
+    "fullPriceTrail": "2026-08-22: $2184.00 → 2026-08-24: $2184.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77118-B21": {
+    "productNumber": "P77118-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "280.00",
+    "fullPriceTrail": "2026-08-22: $280.00 → 2026-08-24: $280.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77119-B21": {
+    "productNumber": "P77119-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "201.00",
+    "fullPriceTrail": "2026-08-22: $201.00 → 2026-08-24: $201.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77120-B21": {
+    "productNumber": "P77120-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "1364.00",
+    "fullPriceTrail": "2026-08-22: $1364.00 → 2026-08-24: $1364.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77121-B21": {
+    "productNumber": "P77121-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "974.00",
+    "fullPriceTrail": "2026-08-22: $974.00 → 2026-08-24: $974.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77122-B21": {
+    "productNumber": "P77122-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "13566.00",
+    "fullPriceTrail": "2026-08-22: $13566.00 → 2026-08-24: $13566.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P77123-B21": {
+    "productNumber": "P77123-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU",
+    "mainCategory": "Support Services",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "9666.00",
+    "fullPriceTrail": "2026-08-22: $9666.00 → 2026-08-24: $9666.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "P73282-B21": {
+    "productNumber": "P73282-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "5584.00",
+    "fullPriceTrail": "2026-08-22: $5584.00 → 2026-08-24: $5584.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "H40CTA3": {
+    "productNumber": "H40CTA3",
+    "description": "HPE 3Y GL Flex Sol OpsRamp Base SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H33XSA1": {
+    "productNumber": "H33XSA1",
+    "description": "HPE Education - Learning Credits 1Yr SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H33XVA3": {
+    "productNumber": "H33XVA3",
+    "description": "HPE Education - Learning Credits 3Yr SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H33XWA4": {
+    "productNumber": "H33XWA4",
+    "description": "HPE Education - Learning Credits 4Yr SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H33XXA5": {
+    "productNumber": "H33XXA5",
+    "description": "HPE Education - Learning Credits 5Yr SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36VWA1": {
+    "productNumber": "H36VWA1",
+    "description": "HPE Storage VM Migration 50 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36VXA1": {
+    "productNumber": "H36VXA1",
+    "description": "HPE Storage VM Migration 150 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36WBA1": {
+    "productNumber": "H36WBA1",
+    "description": "HPE Storage VM Migration 5 VM Zerto SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36WCA1": {
+    "productNumber": "H36WCA1",
+    "description": "HPE Storage VM Migration 20 VM Zerto SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H7B28A1": {
+    "productNumber": "H7B28A1",
+    "description": "HPE Data Storage 5 Day Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU6S2A1": {
+    "productNumber": "HU6S2A1",
+    "description": "HPE Data Storage 5 Day Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU6S3A1": {
+    "productNumber": "HU6S3A1",
+    "description": "HPE Data Storage 1 Day Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H8E02A1": {
+    "productNumber": "H8E02A1",
+    "description": "HPE StoreOnce Integration Level 1 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H8E03A1": {
+    "productNumber": "H8E03A1",
+    "description": "HPE StoreOnce Integration Level 2 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1WU9A1": {
+    "productNumber": "H1WU9A1",
+    "description": "HPE Scality Integration Basic SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1WV0A1": {
+    "productNumber": "H1WV0A1",
+    "description": "HPE Scality Integration Advanced SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NSA1": {
+    "productNumber": "H46NSA1",
+    "description": "HPE SAN Fabric Int and Mig Small SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NTA1": {
+    "productNumber": "H46NTA1",
+    "description": "HPE SAN Fabric Int and Mig Medium SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NVA1": {
+    "productNumber": "H46NVA1",
+    "description": "HPE SAN Fabric Int and Mig Large SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H9Q55A1": {
+    "productNumber": "H9Q55A1",
+    "description": "HPE SDS Integration Basic SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU0U1A1": {
+    "productNumber": "HU0U1A1",
+    "description": "HPE Cloud Platform Sec 5 Day Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HY3B0A1": {
+    "productNumber": "HY3B0A1",
+    "description": "HPE MultiCloudMgmt Advisory Workshop SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H44MJA1": {
+    "productNumber": "H44MJA1",
+    "description": "HPE GL PCE PCBE Migration 50 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H44MKA1": {
+    "productNumber": "H44MKA1",
+    "description": "HPE GL PCE PCBE Migration 150 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42ZVA1": {
+    "productNumber": "H42ZVA1",
+    "description": "HPE GL Nutanix Remote SW Stup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42ZWA1": {
+    "productNumber": "H42ZWA1",
+    "description": "HPE GL Nutanix Files Remote SW Stup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42ZXA1": {
+    "productNumber": "H42ZXA1",
+    "description": "HPE GL Nutanix Objects Rmt SW Stup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42ZYA1": {
+    "productNumber": "H42ZYA1",
+    "description": "HPE GL Nutanix Aos VDI Rmt SW Stup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42ZZA1": {
+    "productNumber": "H42ZZA1",
+    "description": "HPE GL Nutanix Ndb Remote SW Startup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL263A1": {
+    "productNumber": "HL263A1",
+    "description": "HPE Networking 5 Day Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL262A1": {
+    "productNumber": "HL262A1",
+    "description": "HPE Networking 1 Day Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H40LNA1": {
+    "productNumber": "H40LNA1",
+    "description": "HPE Land Zone for Msft Az Lcl Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H40LPA1": {
+    "productNumber": "H40LPA1",
+    "description": "HPE Land Zone for Msft Az Lcl Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL017A1": {
+    "productNumber": "HL017A1",
+    "description": "HPE Predictive RF Survey without AutoCAD",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1XD7A1": {
+    "productNumber": "H1XD7A1",
+    "description": "HPE ANCIS 1-day onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42YGA1": {
+    "productNumber": "H42YGA1",
+    "description": "HPE Gen AI Impl Open Source Startup SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42YKA1": {
+    "productNumber": "H42YKA1",
+    "description": "HPE Gen AI Impl Open Source Fin Tun SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1XG7A1": {
+    "productNumber": "H1XG7A1",
+    "description": "HPE AI Video Analytics Assessment SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU7R1A1": {
+    "productNumber": "HU7R1A1",
+    "description": "HPE Depl and Intgr NVAIE Core Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU7R2A1": {
+    "productNumber": "HU7R2A1",
+    "description": "HPE Depl and Intgr NVAIE Core Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU7R3A1": {
+    "productNumber": "HU7R3A1",
+    "description": "HPE Depl and Int NVAIE Clstr Remote SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU7R4A1": {
+    "productNumber": "HU7R4A1",
+    "description": "HPE Depl and Int NVAIE Clstr Onsite SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H44KXA1": {
+    "productNumber": "H44KXA1",
+    "description": "HPE PCAI Dev Sys Adoption Accel SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL999A1": {
+    "productNumber": "HL999A1",
+    "description": "HPE Backup Efficiency Analysis SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1XF9A1": {
+    "productNumber": "H1XF9A1",
+    "description": "HPE Risk Assessment 10 Functions SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H5UN4A1": {
+    "productNumber": "H5UN4A1",
+    "description": "HPE Risk Assessment 30 Functions SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H5UN5A1": {
+    "productNumber": "H5UN5A1",
+    "description": "HPE Risk Assessment 60 Functions SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48QZA1": {
+    "productNumber": "H48QZA1",
+    "description": "HPE Zerto CRV Deploy 50VM AddOn LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48QWA1": {
+    "productNumber": "H48QWA1",
+    "description": "HPE Zerto CRV Deploy 50VM AddOn SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48QYA1": {
+    "productNumber": "H48QYA1",
+    "description": "HPE Zerto CRV Deploy Base LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48QVA1": {
+    "productNumber": "H48QVA1",
+    "description": "HPE Zerto CRV Deploy Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48RBA1": {
+    "productNumber": "H48RBA1",
+    "description": "HPE Zerto CRV Deploy BkpAddOn LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H48QXA1": {
+    "productNumber": "H48QXA1",
+    "description": "HPE Zerto CRV Deploy BkpAddOn SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H1XG0A1": {
+    "productNumber": "H1XG0A1",
+    "description": "HPE Business Imp Anlys 15 Process SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H5UN1A1": {
+    "productNumber": "H5UN1A1",
+    "description": "HPE Business Imp Anlys 30 Process SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H5UN2A1": {
+    "productNumber": "H5UN2A1",
+    "description": "HPE Business Imp Anlys 60 Process SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36PGA1": {
+    "productNumber": "H36PGA1",
+    "description": "HPE Storage Integration Zerto Quick SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36VSA1": {
+    "productNumber": "H36VSA1",
+    "description": "HPE Storage Integration Zerto Basic SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36VTA1": {
+    "productNumber": "H36VTA1",
+    "description": "HPE Storage Integration Zerto Adv SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H36VVA1": {
+    "productNumber": "H36VVA1",
+    "description": "HPE Storage Integration Zerto Addon SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HR2L6A1": {
+    "productNumber": "HR2L6A1",
+    "description": "HPE Data Migration 5 Server Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HR2L7A1": {
+    "productNumber": "HR2L7A1",
+    "description": "HPE Data Migration 10 Server Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HR2L8A1": {
+    "productNumber": "HR2L8A1",
+    "description": "HPE Data Migration 50 Server Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HR2L9A1": {
+    "productNumber": "HR2L9A1",
+    "description": "HPE Data Migration 100 Server Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HR2M0A1": {
+    "productNumber": "HR2M0A1",
+    "description": "HPE Data Migration 250 Server Base SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL3P5A1": {
+    "productNumber": "HL3P5A1",
+    "description": "HPE Data Migration Addon 10 Server SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HL3P6A1": {
+    "productNumber": "HL3P6A1",
+    "description": "HPE Data Migration Addon 50 Server SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NBA1": {
+    "productNumber": "H46NBA1",
+    "description": "HPE Data Mig 5 Srvr Base 10TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NCA1": {
+    "productNumber": "H46NCA1",
+    "description": "HPE Data Mig 10 Srvr Base 25TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NDA1": {
+    "productNumber": "H46NDA1",
+    "description": "HPE Data Mig 50 Srvr Base 100TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NFA1": {
+    "productNumber": "H46NFA1",
+    "description": "HPE Data Mig 100 Srvr Base 250TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NGA1": {
+    "productNumber": "H46NGA1",
+    "description": "HPE Data Mig 250 Srvr Base 500TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NHA1": {
+    "productNumber": "H46NHA1",
+    "description": "HPE Data Mig 10 Srvr Addon LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NJA1": {
+    "productNumber": "H46NJA1",
+    "description": "HPE Data Mig 50 Srvr Addon LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NKA1": {
+    "productNumber": "H46NKA1",
+    "description": "HPE File Data Migr AddOn - 100TB Cap SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NLA1": {
+    "productNumber": "H46NLA1",
+    "description": "HPE File Data Migr AddOn - 1 Mth SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NMA1": {
+    "productNumber": "H46NMA1",
+    "description": "HPE QuickStart File Data Mig 10TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NNA1": {
+    "productNumber": "H46NNA1",
+    "description": "HPE File Data Mig 100TB LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NQA1": {
+    "productNumber": "H46NQA1",
+    "description": "HPE File Data Mig AddOn 100TB Cap LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H46NRA1": {
+    "productNumber": "H46NRA1",
+    "description": "HPE File Data Mig AddOn 1 Month LD SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H0JD1A1": {
+    "productNumber": "H0JD1A1",
+    "description": "HPE Data Migration Readiness Assess Svc",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H0JD7A1": {
+    "productNumber": "H0JD7A1",
+    "description": "HPE Quickstart File Data Mig10TB SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H0JD9A1": {
+    "productNumber": "H0JD9A1",
+    "description": "HPE File Data Migration 100TB SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42YRA1": {
+    "productNumber": "H42YRA1",
+    "description": "HPE Automat Depl Scale-up for SAP SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42YSA1": {
+    "productNumber": "H42YSA1",
+    "description": "HPE Startup for Automat Depl for SAP SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H42YQA1": {
+    "productNumber": "H42YQA1",
+    "description": "HPE Automated Depl Toolset for SAP SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H40LXA1": {
+    "productNumber": "H40LXA1",
+    "description": "HPE Blueprint Advisory for SAP SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HF3A0A1": {
+    "productNumber": "HF3A0A1",
+    "description": "HPE Change Impact Analysis SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H50QKA1": {
+    "productNumber": "H50QKA1",
+    "description": "HPE Image Conversion Migr Factory SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H50QLA1": {
+    "productNumber": "H50QLA1",
+    "description": "HPE OS Based Migration Factory SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CFA1": {
+    "productNumber": "H56CFA1",
+    "description": "HPE Img Conv Migr Fact below 300 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CGA1": {
+    "productNumber": "H56CGA1",
+    "description": "HPE Img Conv Migr Fact b/w 300-1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CHA1": {
+    "productNumber": "H56CHA1",
+    "description": "HPE Img Conv Migr Fact above 1000 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CJA1": {
+    "productNumber": "H56CJA1",
+    "description": "HPE OS Based Migr Fact below 300 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CKA1": {
+    "productNumber": "H56CKA1",
+    "description": "HPE OS Based Migr Fact b/w 300-1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CLA1": {
+    "productNumber": "H56CLA1",
+    "description": "HPE OS Based Migr Fact above 1000 VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CMA1": {
+    "productNumber": "H56CMA1",
+    "description": "HPE Rapid Migr Tool Standalone SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CNA1": {
+    "productNumber": "H56CNA1",
+    "description": "HPE K8s-V Img Conv Mgr Fct blw 300VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CPA1": {
+    "productNumber": "H56CPA1",
+    "description": "HPE K8s-V Img Conv Mgr Fct 300-1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CQA1": {
+    "productNumber": "H56CQA1",
+    "description": "HPE K8s-V Img Conv Mgr Fct abv 1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CRA1": {
+    "productNumber": "H56CRA1",
+    "description": "HPE K8s-V OS Based Mgr Fct blw 300VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CSA1": {
+    "productNumber": "H56CSA1",
+    "description": "HPE K8s-V OS Based Mgr Fct 300-1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CTA1": {
+    "productNumber": "H56CTA1",
+    "description": "HPE K8s-V OS Based Mgr Fct abv 1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CVA1": {
+    "productNumber": "H56CVA1",
+    "description": "HPE VMware to VME Network Migration SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H56CWA1": {
+    "productNumber": "H56CWA1",
+    "description": "HPE VME Network Microsegmentation SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XRA1": {
+    "productNumber": "H58XRA1",
+    "description": "HPE Image Conv Mig Fact SVT Rmt SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XSA1": {
+    "productNumber": "H58XSA1",
+    "description": "HPE OS Based Mig Fact SVT Rmt Del SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XTA1": {
+    "productNumber": "H58XTA1",
+    "description": "HPE Bkp-rstr Mig Fct blw 300VM Rmt SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XVA1": {
+    "productNumber": "H58XVA1",
+    "description": "HPE Bkp-rstr Mig Fct 300-1K VM Rmt SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XWA1": {
+    "productNumber": "H58XWA1",
+    "description": "HPE Bkp-rstr Mig Fct above 1K VM Rmt SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XXA1": {
+    "productNumber": "H58XXA1",
+    "description": "HPE VM Based Mig Fct below 300VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XYA1": {
+    "productNumber": "H58XYA1",
+    "description": "HPE VM Based Mig Fct b/w300-1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H58XZA1": {
+    "productNumber": "H58XZA1",
+    "description": "HPE VM Based Mig Fct above 1K VM SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H49XMA3": {
+    "productNumber": "H49XMA3",
+    "description": "HPE 3Y GL Flex HO Adv Guide SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H49XMA4": {
+    "productNumber": "H49XMA4",
+    "description": "HPE 4Y GL Flex HO Adv Guide SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H49XMA5": {
+    "productNumber": "H49XMA5",
+    "description": "HPE 5Y GL Flex HO Adv Guide SVC",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "469776-715": {
+    "productNumber": "469776-715",
+    "description": "HPE Add Generic Packaging Kit",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "AL583A": {
+    "productNumber": "AL583A",
+    "description": "BOM Level ATC-1175-MSN Asset Tag",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H4F41A1": {
+    "productNumber": "H4F41A1",
+    "description": "HPE Factory Express Standard Unit of SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "H4F42A1": {
+    "productNumber": "H4F42A1",
+    "description": "HPE Factory Express Complex Unit of SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA453A1-001": {
+    "productNumber": "HA453A1-001",
+    "description": "HPE FE Proliant Svr Pkg 3 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA453A1-003": {
+    "productNumber": "HA453A1-003",
+    "description": "HPE FE Multi-node Svr Pkg 3 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA453A1-012": {
+    "productNumber": "HA453A1-012",
+    "description": "HPE FE SUS 32x0 Expansion Package 3 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA453A1-013": {
+    "productNumber": "HA453A1-013",
+    "description": "HPE FE SUS 32x0 Package 3 SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA838A1": {
+    "productNumber": "HA838A1",
+    "description": "HPE Hardware Customization Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA839A1": {
+    "productNumber": "HA839A1",
+    "description": "HPE System Settings Customization Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA840A1": {
+    "productNumber": "HA840A1",
+    "description": "HPE Supplied Asset Tag Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA841A1": {
+    "productNumber": "HA841A1",
+    "description": "HPE Customer Supplied Asset Tag Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA843A1": {
+    "productNumber": "HA843A1",
+    "description": "HPE Customer Supplied Image Load Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA844A1": {
+    "productNumber": "HA844A1",
+    "description": "HPE 3rd Party Hardware Install Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA846A1": {
+    "productNumber": "HA846A1",
+    "description": "HPE VPN Access Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA848A1": {
+    "productNumber": "HA848A1",
+    "description": "HPE Firmware Revision Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA849A1": {
+    "productNumber": "HA849A1",
+    "description": "HPE Product and Package Labeling Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA851A1": {
+    "productNumber": "HA851A1",
+    "description": "HPE Customer Furnished Equipment Handling Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA854A1": {
+    "productNumber": "HA854A1",
+    "description": "HPE Fctry Exp Virtualization Enable SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA861A1": {
+    "productNumber": "HA861A1",
+    "description": "HPE FE Personalized Install SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA867A1": {
+    "productNumber": "HA867A1",
+    "description": "HPE Standard Product Reporting Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA868A1": {
+    "productNumber": "HA868A1",
+    "description": "HPE Enhanced Product Reporting Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HA875A1": {
+    "productNumber": "HA875A1",
+    "description": "HPE Special Factory Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HC790A": {
+    "productNumber": "HC790A",
+    "description": "HPE Integration Center Routing Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HF481A1": {
+    "productNumber": "HF481A1",
+    "description": "HPE Factory Express Standard Custom SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "HU7D3A1": {
+    "productNumber": "HU7D3A1",
+    "description": "HPE FE OEM Customization UOS SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "R9S59A": {
+    "productNumber": "R9S59A",
+    "description": "HPE Server Security Optimized Service for HPE ProLiant",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU706A": {
+    "productNumber": "ZU706A",
+    "description": "HPE Server Customization Package",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU716A": {
+    "productNumber": "ZU716A",
+    "description": "HPE OEM Rebrand Basic Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU721A": {
+    "productNumber": "ZU721A",
+    "description": "HPE Verification Standard Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU723A": {
+    "productNumber": "ZU723A",
+    "description": "HPE Customization Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU727A": {
+    "productNumber": "ZU727A",
+    "description": "HPE OEM Rebrand Advanced Service",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "ZU748A": {
+    "productNumber": "ZU748A",
+    "description": "HPE Roche GPU Inventory Handling SVC",
+    "mainCategory": "Chassis",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  }
+}

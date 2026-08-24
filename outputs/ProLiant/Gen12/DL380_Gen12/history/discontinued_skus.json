@@ -1,0 +1,326 @@
+{
+  "P52341-B21": {
+    "productNumber": "P52341-B21",
+    "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P70744-B21": {
+    "productNumber": "P70744-B21",
+    "description": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P74748-B21": {
+    "productNumber": "P74748-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "Q9R65A": {
+    "productNumber": "Q9R65A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "Q9R66A": {
+    "productNumber": "Q9R66A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "Q9R67A": {
+    "productNumber": "Q9R67A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "Q9R68A": {
+    "productNumber": "Q9R68A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "BD505A": {
+    "productNumber": "BD505A",
+    "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "BD507A": {
+    "productNumber": "BD507A",
+    "description": "HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "E6U64ABE": {
+    "productNumber": "E6U64ABE",
+    "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "512485-B21": {
+    "productNumber": "512485-B21",
+    "description": "HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "512487-B21": {
+    "productNumber": "512487-B21",
+    "description": "HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "E6U59ABE": {
+    "productNumber": "E6U59ABE",
+    "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77110-AA1": {
+    "productNumber": "P77110-AA1",
+    "description": "Microsoft Windows Server 2025 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77110-B21": {
+    "productNumber": "P77110-B21",
+    "description": "Microsoft Windows Server 2025 1 User CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77111-B21": {
+    "productNumber": "P77111-B21",
+    "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77112-AA1": {
+    "productNumber": "P77112-AA1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77112-AB1": {
+    "productNumber": "P77112-AB1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77112-B21": {
+    "productNumber": "P77112-B21",
+    "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77113-B21": {
+    "productNumber": "P77113-B21",
+    "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77114-B21": {
+    "productNumber": "P77114-B21",
+    "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77115-B21": {
+    "productNumber": "P77115-B21",
+    "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77116-B21": {
+    "productNumber": "P77116-B21",
+    "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77117-B21": {
+    "productNumber": "P77117-B21",
+    "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77118-B21": {
+    "productNumber": "P77118-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77119-B21": {
+    "productNumber": "P77119-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77120-B21": {
+    "productNumber": "P77120-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77121-B21": {
+    "productNumber": "P77121-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77122-B21": {
+    "productNumber": "P77122-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P77123-B21": {
+    "productNumber": "P77123-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P73282-B21": {
+    "productNumber": "P73282-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "5584.00",
+    "fullPriceTrail": "2026-08-22: $5584.00 → 2026-08-24: $5584.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  },
+  "P73283-B21": {
+    "productNumber": "P73283-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "5980.00",
+    "fullPriceTrail": "2026-08-22: $5980.00 → 2026-08-24: $5980.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  },
+  "P73284-B21": {
+    "productNumber": "P73284-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "6350.00",
+    "fullPriceTrail": "2026-08-22: $6350.00 → 2026-08-24: $6350.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  },
+  "P73285-B21": {
+    "productNumber": "P73285-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "6890.00",
+    "fullPriceTrail": "2026-08-22: $6890.00 → 2026-08-24: $6890.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  },
+  "P73286-B21": {
+    "productNumber": "P73286-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "7120.00",
+    "fullPriceTrail": "2026-08-22: $7120.00 → 2026-08-24: $7120.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  },
+  "P73287-B21": {
+    "productNumber": "P73287-B21",
+    "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-22",
+    "discontinuedDate": "2026-08-24",
+    "daysActive": 2,
+    "lastKnownPrice": "7450.00",
+    "fullPriceTrail": "2026-08-22: $7450.00 → 2026-08-24: $7450.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-24"
+  }
+}

@@ -8,7 +8,7 @@ yarn-error.log
 .AppleDouble
 .LSOverride
 
-# ── Scrape outputs (default: ignore all generated data) ─────────────────────
+# ── Scrape outputs (track certified golden catalogs for CI, ignore temp/reports) ─────────────────────
 outputs/*
 !outputs/SCRAPED_CATALOGS.md
 !outputs/history/
@@ -16,20 +16,38 @@ outputs/history/*
 !outputs/history/rules/
 !outputs/history/rules/**
 !outputs/history/master_knowledge_registry.json
+!outputs/history/notebook_sync_payload_*.md
 
-# Gen12 certified golden catalog — tracked for clone/CI bootstrap
+# Track all certified multi-family product catalogs
+!outputs/Alletra/
+!outputs/Alletra/**
+!outputs/Cray/
+!outputs/Cray/**
 !outputs/ProLiant/
-outputs/ProLiant/*
-!outputs/ProLiant/Gen12/
-outputs/ProLiant/Gen12/*
-!outputs/ProLiant/Gen12/DL380_Gen12_SFF/
-!outputs/ProLiant/Gen12/DL380_Gen12_SFF/**/*
-# Re-ignore ephemeral / noisy Gen12 paths (JSON rules above still apply to siblings)
-outputs/ProLiant/Gen12/DL380_Gen12_SFF/reports/
-outputs/ProLiant/Gen12/DL380_Gen12_SFF/audit_result.json
-outputs/ProLiant/Gen12/DL380_Gen12_SFF/preflight_audit_log.json
-outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/pipeline_execution.log
-outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/catalog_2026-08-14T*
+!outputs/ProLiant/**
+!outputs/StoreEver/
+!outputs/StoreEver/**
+!outputs/Synergy/
+!outputs/Synergy/**
+
+# Re-ignore ephemeral / noisy runtime paths
+outputs/**/reports/
+outputs/**/audit_result.json
+outputs/**/preflight_audit_log.json
+outputs/**/history/pipeline_execution.log
+outputs/**/history/catalog_2026-08-14T*
+outputs/history/runs/
+outputs/history/screenshots_e2e/
+outputs/history/audit_screenshots/
+outputs/history/browser_eval_audit.json
+outputs/history/deep_browser_audit_report.json
+outputs/history/e2e_downloads_test_report.json
+outputs/history/e2e_report.json
+outputs/history/user_feedback_queue.json
+outputs/history/pipeline_telemetry.json
+outputs/history/visual_boq_topology_screenshot.png
+outputs/temp/
+outputs/test_boqs/
 
 # IDE / editor
 .vscode/

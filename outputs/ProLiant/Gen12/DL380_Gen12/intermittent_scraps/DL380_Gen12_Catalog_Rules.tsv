@@ -1,0 +1,64 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Chassis	Variants	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Accessories & Infrastructure	Energy Star Configuration Presets	optional	Configuration Rule	Selection constraint for Energy Star Configuration Presets: optional
+Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Mixing of Heat sink is not allowed.
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR5 Registered Smart Memory: max 32
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Mixing of x4 and x8 memory is not allowed
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	96GB Memory cannot be mixed with any other Memory.
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	128GB Memory cannot be mixed with any other Memory.
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Mixing of 3DS and non 3DS memory is not allowed.
+Memory	DDR4 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR4 Registered Smart Memory: max 32
+PCIe Risers	Secondary PCIe Risers	max 3	Configuration Rule	Selection constraint for Secondary PCIe Risers: max 3
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Supported with EDSFF CTO Server only.
+PCIe Risers	Tertiary PCIe Risers	max 3	Configuration Rule	Supported with 8LFF and 12LFF CTO Server only.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Supported with 8LFF CTO Server only.
+PCIe Risers	Tertiary PCIe Risers	max 3	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
+Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	Configuration Rule	Selection constraint for Drive Blank & FIO Enablement Kits: max 24
+PCIe Risers	Primary PCIe Risers	max 3	Configuration Rule	Selection constraint for Primary PCIe Risers: max 3
+PCIe Risers	Tertiary PCIe Risers	max 3	Configuration Rule	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.
+PCIe Risers	Primary PCIe Risers	max 3	Configuration Rule	Supported with EDSFF CTO Server only.
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4
+Storage Controllers	Smart Array SAS Controllers	max 4	Configuration Rule	These products are hidden due to Supply constraints
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
+Accessories & Infrastructure	Smart Storage Batteries	optional	Configuration Rule	Selection constraint for Smart Storage Batteries: optional
+Storage Controllers	Storage Controller Cable Kits	max 4	Configuration Rule	Selection constraint for Storage Controller Cable Kits: max 4
+Storage Controllers	Storage Controller Cable Kits	max 4	Configuration Rule	Supported with 8LFF and 12LFF CTO Server only.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Supported with 12EDSFF CTO Server only.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Supported with 8LFF CTO Server only.
+Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Supported with 12EDSFF CTO Server only.
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 8
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	These products are hidden due to Supply constraints
+Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selection constraint for Flex Slot Power Supplies: min 1, max 2
+Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Mixing of Power supplies are not allowed.
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+Cooling / Thermal	High Performance & Standard Fan Kits	max 6	Configuration Rule	Selection constraint for High Performance & Standard Fan Kits: max 6
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Product not available for HPE GreenLake for IQ configurations.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Max quantity of product limited by space available.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Not Supported ProStack Server Software
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Product not available for HPE GreenLake for IQ configurations.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Product Category Service Description Service Product Number List Price (USD) Quantity
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Compute HPE Education - Learning Credits 1Yr SVC H33XSA1 100.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Education - Learning Credits 3Yr SVC H33XVA3 100.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Education - Learning Credits 4Yr SVC H33XWA4 100.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Storage HPE Storage VM Migration 50 VM SVC H36VWA1 17,520.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Storage VM Migration 150 VM SVC H36VXA1 29,760.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Storage VM Migration 5 VM Zerto SVC H36WBA1 7,140.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Hybrid Observability HPE 3Y GL Flex HO Adv Guide SVC H49XMA3 Loading...
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Hybrid Observability HPE 4Y GL Flex HO Adv Guide SVC H49XMA4 Loading...
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Hybrid Observability HPE 5Y GL Flex HO Adv Guide SVC H49XMA5 Loading...
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Add Generic Packaging Kit 469776-715 1.00
+Accessories & Infrastructure	System Options	optional	Configuration Rule	BOM Level ATC-1175-MSN Asset Tag AL583A 0.01
+Accessories & Infrastructure	System Options	optional	Configuration Rule	HPE Factory Express Standard Unit of SVC H4F41A1 19.00

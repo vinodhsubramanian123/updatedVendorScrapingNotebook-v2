@@ -1,45 +1,45 @@
 {
   "chassis": "DL380_Gen12_SFF",
-  "certifiedAt": "2026-08-24T12:19:52.862Z",
+  "certifiedAt": "2026-08-24T14:21:25.643Z",
   "status": "PASS",
-  "totalDurationMs": 13924,
-  "totalUniqueSKUs": 262,
+  "totalDurationMs": 15971,
+  "totalUniqueSKUs": 302,
   "steps": [
     {
       "id": "pipeline_evals",
       "label": "Post-flight pipeline guardrails",
       "status": "PASS",
-      "durationMs": 1258
+      "durationMs": 1586
     },
     {
       "id": "conflict_graph",
       "label": "Conflict graph unit tests",
       "status": "PASS",
-      "durationMs": 669
+      "durationMs": 815
     },
     {
       "id": "e2e_scenarios",
       "label": "End-to-end scenario tests",
       "status": "PASS",
-      "durationMs": 1292
+      "durationMs": 1519
     },
     {
       "id": "offline_pipeline",
       "label": "Offline pipeline fallback tests",
       "status": "PASS",
-      "durationMs": 1048
+      "durationMs": 1470
     },
     {
       "id": "edge_cases",
       "label": "Edge case coverage",
       "status": "PASS",
-      "durationMs": 5123
+      "durationMs": 4949
     },
     {
       "id": "vendor_bom",
       "label": "Vendor BOM verifier tests",
       "status": "PASS",
-      "durationMs": 648
+      "durationMs": 602
     }
   ]
 }

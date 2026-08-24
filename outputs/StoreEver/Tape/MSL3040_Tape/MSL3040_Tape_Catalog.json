@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "chassis": "MSL3040 Tape",
+    "family": "StoreEver",
+    "gen": "Tape",
+    "scrapeDate": "2026-08-10",
+    "totalSubcategories": 1,
+    "totalUniqueSKUs": 2,
+    "totalTables": 1,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 2,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "source": "OCA Portal Master Registry Sync",
+    "historySnapshot": "catalog_2026-08-10.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-08-10",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 2,
+          "totalPrice": 7300,
+          "minPrice": 2800,
+          "maxPrice": 4500,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 2,
+              "totalPrice": 7300,
+              "avgPrice": 3650
+            }
+          },
+          "avgPrice": 3650
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1,
+      "rules": [
+        "Mandatory base chassis selection required for solution build"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "rows": [
+        [
+          "Q2R41A",
+          "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+          "$4,500.00",
+          "1",
+          "2026-08-10"
+        ],
+        [
+          "Q2R42A",
+          "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+          "$2,800.00",
+          "1",
+          "2026-08-10"
+        ]
+      ],
+      "skus": [
+        {
+          "Product #": "Q2R41A",
+          "Description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+          "Unit Price (USD)": "4500.00",
+          "Price (USD)": "4500.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "Q2R41A",
+          "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+          "listPrice": 4500,
+          "listPriceFormatted": "$4,500.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-08-10: $4500.00"
+        },
+        {
+          "Product #": "Q2R42A",
+          "Description": "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+          "Unit Price (USD)": "2800.00",
+          "Price (USD)": "2800.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-10",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "Q2R42A",
+          "description": "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+          "listPrice": 2800,
+          "listPriceFormatted": "$2,800.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-08-10: $2800.00"
+        }
+      ],
+      "skuCount": 2
+    }
+  ]
+}

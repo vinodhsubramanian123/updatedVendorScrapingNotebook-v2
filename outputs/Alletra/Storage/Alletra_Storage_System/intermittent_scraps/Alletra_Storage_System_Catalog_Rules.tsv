@@ -1,0 +1,3 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Chassis	Variants	max 1	Quantity Constraint	Quantity: max 1
+Chassis	Variants	Chassis Standard (Max 1)	Configuration Rule	Mandatory base chassis selection required for solution build

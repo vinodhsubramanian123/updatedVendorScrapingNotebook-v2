@@ -1,0 +1,166 @@
+{
+  "metadata": {
+    "chassis": "HPE Alletra Storage System",
+    "family": "Alletra",
+    "gen": "Storage",
+    "scrapeDate": "—",
+    "totalSubcategories": 1,
+    "totalUniqueSKUs": 3,
+    "totalTables": 1,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 3,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "source": "OCA Portal Master Registry Sync",
+    "historySnapshot": "catalog_2026-08-14.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-08-14",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 3,
+          "totalPrice": 46600,
+          "minPrice": 12500,
+          "maxPrice": 18900,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 3,
+              "totalPrice": 46600,
+              "avgPrice": 15533.333333333334
+            }
+          },
+          "avgPrice": 15533.333333333334
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1,
+      "rules": [
+        "Mandatory base chassis selection required for solution build"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "rows": [
+        [
+          "R0Q35A",
+          "HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis",
+          "$12,500.00",
+          "1",
+          "—"
+        ],
+        [
+          "R0Q36A",
+          "HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO",
+          "$18,900.00",
+          "1",
+          "—"
+        ],
+        [
+          "R0Q37A",
+          "HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis",
+          "$15,200.00",
+          "1",
+          "—"
+        ]
+      ],
+      "skus": [
+        {
+          "Product #": "R0Q35A",
+          "Description": "HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis",
+          "Unit Price (USD)": "12500.00",
+          "Price (USD)": "12500.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "R0Q35A",
+          "description": "HPE Alletra 6000 NVMe Storage Array Base System CTO Chassis",
+          "listPrice": 12500,
+          "listPriceFormatted": "$12,500.00",
+          "qty": 1,
+          "Previous List Price (USD)": "12500.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-12: $12500.00 → 2026-08-13: $12500.00 → 2026-08-14: $12500.00"
+        },
+        {
+          "Product #": "R0Q36A",
+          "Description": "HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO",
+          "Unit Price (USD)": "18900.00",
+          "Price (USD)": "18900.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "R0Q36A",
+          "description": "HPE Alletra 9000 Mission Critical NVMe Base Storage System CTO",
+          "listPrice": 18900,
+          "listPriceFormatted": "$18,900.00",
+          "qty": 1,
+          "Previous List Price (USD)": "18900.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-12: $18900.00 → 2026-08-13: $18900.00 → 2026-08-14: $18900.00"
+        },
+        {
+          "Product #": "R0Q37A",
+          "Description": "HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis",
+          "Unit Price (USD)": "15200.00",
+          "Price (USD)": "15200.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "R0Q37A",
+          "description": "HPE Alletra MP Dual-Node Storage Controller Base System CTO Chassis",
+          "listPrice": 15200,
+          "listPriceFormatted": "$15,200.00",
+          "qty": 1,
+          "Previous List Price (USD)": "15200.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-08-12: $15200.00 → 2026-08-13: $15200.00 → 2026-08-14: $15200.00"
+        }
+      ],
+      "skuCount": 3
+    }
+  ]
+}
