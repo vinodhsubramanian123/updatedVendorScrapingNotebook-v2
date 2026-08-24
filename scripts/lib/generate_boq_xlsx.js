@@ -106,10 +106,18 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
     
     // Style Data Rows
     for (let r = 1; r < rowNum - (skus.length === 0 ? 0 : 0); r++) {
-      if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true }; // SKU locked formatting
-      if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false }; // Quantities unlocked
-      if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true }, currencyStyle);
-      if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true }, currencyStyle);
+      const skuData = skus[r - 1];
+      let rowFill = null;
+      if (skuData && skuData.status === 'Discontinued') {
+        rowFill = { fgColor: { rgb: 'FFC000' } }; // Warning fill
+      }
+
+      if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true, ...(rowFill ? { fill: rowFill } : {}) }; // SKU locked formatting
+      if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false, ...(rowFill ? { fill: rowFill } : {}) }; // Quantities unlocked
+      if (ws[`C${r+1}`]) ws[`C${r+1}`].s = { ...(rowFill ? { fill: rowFill } : {}) };
+      if (ws[`D${r+1}`]) ws[`D${r+1}`].s = { ...(rowFill ? { fill: rowFill } : {}) };
+      if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
+      if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
     }
     
     // Style Total Row
