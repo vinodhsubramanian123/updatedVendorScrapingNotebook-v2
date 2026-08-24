@@ -70,8 +70,6 @@ vendorNotebookSolution/
 │   ├── DEVELOPER_GUIDE.md                 ← Local dev, testing, and API guide
 │   ├── DIRECTORY_STRUCTURE.md             ← This canonical directory map
 │   └── COMPREHENSIVE_ARCHITECTURE_REVIEW.md
-│
-├── diagrams/                              ← 22 Mermaid architecture diagrams + interactive viewer.html
 ├── AGENTS.md                              ← Root agent directives & operational invariants
 ├── GEMINI.md                              ← Gemini LLM & MCP integration guidelines
 ├── package.json                           ← NPM scripts, workspaces & dependencies

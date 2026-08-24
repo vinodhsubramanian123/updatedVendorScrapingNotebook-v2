@@ -56,7 +56,7 @@ Based on cross-layer analysis (Docs vs. Diagrams vs. Code), here are the critica
 ### 3.3 Missing State in Key Rotator (Low Severity)
 - **The Issue**: The Gemini Smart FIFO Rotator state machine diagram misses the total exhaustion state.
 - **The Reality**: The code explicitly handles a `NoActiveKeysAvailable` condition when all API keys are exhausted for the day.
-- **Recommendation**: Add the `AllKeysExhausted` state (with a Wait Until UTC Midnight self-loop) to `diagrams/fromDocs/06_gemini_smart_fifo_rotator_state_machine.md`.
+- **Recommendation**: Ensure the `AllKeysExhausted` state (with a Wait Until UTC Midnight self-loop) is documented in `docs/ARCHITECTURE_AND_DESIGN.md`.
 
 ---
 

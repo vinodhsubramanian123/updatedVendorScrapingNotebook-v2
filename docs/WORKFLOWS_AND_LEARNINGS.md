@@ -35,21 +35,21 @@
 - **Graphify API Key Resolution**: `agentic_guardrail.js` and `gemini_rotator.js` utilize a comma-separated list of Gemini API keys in `.env` for rotation. However, third-party Python tools like `graphify` expect a single valid key and will fail with `400 Invalid Auth key` if passed the raw list. Always extract a single key (e.g., `export GEMINI_API_KEY=$(grep GEMINI_API_KEY .env | cut -d '=' -f2 | awk -F',' '{print $3}')`) before running `graphify .`.
 
 ## 3. MCP Server & Tooling Workflow
-The MCP server (`scripts/mcp_server.js`) exposes the local rule engine as standardized tools. 
+The MCP server (`scripts/services/mcp_server.js`) exposes the local rule engine as standardized tools. 
 When a BOQ evaluation results in low confidence, the orchestrator triggers `runAgenticGuardrail`, which uses these tools to iteratively resolve issues until a high confidence score is achieved.
 
 ## 4. Testing & Certification Suite
-- **Smart Key Rotator Suite (`tests/test_gemini_rotator.js`)**: 7 unit and integration tests verifying queue selection, daily limit exhaustion demotion to bottom of queue, instant failover, day-rollover restoration, and live key pool connectivity.
-- **Aspect Math Unit Suite (`scripts/test_all_aspects.js`)**: 34 assertions covering physical hardware aspects (thermal, power, memory, PCIe, storage, network).
-- **Evaluation Benchmarks (`scripts/test_boq_eval_benchmarks.js`)**: 5 scenarios validating violation recall rate (100.0%) and precision rate (100.0%) across strategy matrix tiers.
-- **Portfolio Audit Suite (`scripts/verify_all.js`)**: 100% verification across all portfolio catalog outputs on disk.
-- **UI End-to-End (`tests/e2e_headless_ui_test.js`)**: Headless browser test verifying full dashboard component rendering and user interaction flows.
+- **Smart Key Rotator Suite (`tests/unit/test_gemini_rotator.js`)**: 7 unit and integration tests verifying queue selection, daily limit exhaustion demotion to bottom of queue, instant failover, day-rollover restoration, and live key pool connectivity.
+- **Aspect Math Unit Suite (`tests/integration/test_all_aspects.js`)**: 34 assertions covering physical hardware aspects (thermal, power, memory, PCIe, storage, network).
+- **Evaluation Benchmarks (`tests/integration/test_boq_eval_benchmarks.js`)**: 5 scenarios validating violation recall rate (100.0%) and precision rate (100.0%) across strategy matrix tiers.
+- **Portfolio Audit Suite (`tests/integration/verify_all.js`)**: 100% verification across all portfolio catalog outputs on disk.
+- **UI End-to-End (`tests/e2e/e2e_headless_ui_test.js`)**: Headless browser test verifying full dashboard component rendering and user interaction flows.
 
 ## 5. DL380 Gen12 E2E Perfection & Fail-Safe Pipeline Learnings
 - **Staging Isolation & Master Excel Integrity**: Live scrapes triggered from the Express dashboard execute inside isolated staging paths (`outputs/temp/staging_{chassis}_{ts}`). Promotion to live workspace (`{chassis}_OCA_Catalog.xlsx`, `{chassis}_Catalog.json`) occurs ONLY after `verify_excel_tally.js` certifies 100% row and SKU count accuracy. If any failure occurs, the live catalog remains 100% untouched while failed staging is preserved for diagnosis.
-- **NotebookLM RAG Auto-Sync**: Post-flow sync (`post_flow_sync.js`) automatically refreshes the Markdown RAG payload (`notebook_sync_payload_DL380_Gen12_SFF.md`) and updates `notebooks.json` sync status (`lastSyncedAt`, `lastSyncDeltaCount`), maintaining real-time alignment between the Dual-Brain RAG and live catalog data.
-- **Closed-Loop Telemetry & HITL Action Ledger**: Every evaluation run logs execution duration, confidence score, and domain violation counts into `pipeline_telemetry.json`. Human-in-the-loop actions (such as split confirmation or feedback drawer submissions) feed directly into `feedback_loop.js`, continuously improving evaluation precision over subsequent quote runs.
-- **100% Headless UI Perfection**: Utilizing Playwright (`tests/e2e_headless_ui_test.js`), we achieved a flawless 7/7 (100%) test pass rate on the dashboard UI, confirming zero console or page errors across complex NotebookLM RAG payloads, interactive strategy matrices, and seamless local Node.js API endpoint connectivity.
+- **NotebookLM RAG Auto-Sync**: Post-flow sync (`scripts/lib/sync/post_flow_sync.js`) automatically refreshes the Markdown RAG payload (`notebook_sync_payload_DL380_Gen12_SFF.md`) and updates `notebooks.json` sync status (`lastSyncedAt`, `lastSyncDeltaCount`), maintaining real-time alignment between the Dual-Brain RAG and live catalog data.
+- **Closed-Loop Telemetry & HITL Action Ledger**: Every evaluation run logs execution duration, confidence score, and domain violation counts into `pipeline_telemetry.json`. Human-in-the-loop actions (such as split confirmation or feedback drawer submissions) feed directly into `scripts/lib/feedback/feedback_loop.js`, continuously improving evaluation precision over subsequent quote runs.
+- **100% Headless UI Perfection**: Utilizing Playwright (`tests/e2e/e2e_headless_ui_test.js`), we achieved a flawless 7/7 (100%) test pass rate on the dashboard UI, confirming zero console or page errors across complex NotebookLM RAG payloads, interactive strategy matrices, and seamless local Node.js API endpoint connectivity.
 
 ## 7. Customer BOQ E2E Evaluation & Stream Architecture Learnings
 - **Chunk Stream Buffering Across TCP/Pipe Boundaries**: Node child processes emitting large payloads (>64KB JSON) split stdout across multiple `data` events. If chunk lines are parsed without maintaining an incomplete line buffer (`lineBuffers[streamType]`), newlines get erroneously injected in the middle of JSON strings (e.g. splitting `"isFixInjected":false` into `"isFixInjecte\n"` + `"d":false`), resulting in `SyntaxError: Unexpected end of JSON input`. `dashboard/server.cjs` now maintains stream chunk line buffering and collects pure unsegmented raw text in `stdoutBuffer`, guaranteeing 100% deterministic JSON extraction.
@@ -377,7 +377,7 @@ We implemented a strict **3-Tier Escalation Protocol**:
 ### Architecture & Background Delegation Pattern
 - **Google Jules SDK & MCP Integration**:
   - Integrated `@google/jules-mcp` (v0.2.0) and `@google/jules-sdk` (v0.2.0) into the Antigravity system architecture via `mcp_config.json` and persistent API authentication.
-  - Created `scripts/jules_task_manager.js` to dispatch long-running code tasks, background regression testing, and corner-case validations to Google Jules asynchronously.
+  - Created `scripts/services/jules_task_manager.js` to dispatch long-running code tasks, background regression testing, and corner-case validations to Google Jules asynchronously.
   - This enables a **Multi-Agent Coding Loop**: Antigravity orchestrates, implements, and reviews changes while Jules asynchronously generates PRs, stress-tests corner cases, and certifies builds in parallel, conserving human context tokens.
 
 ### PR Review & Code Refinements
@@ -400,7 +400,7 @@ We implemented a strict **3-Tier Escalation Protocol**:
 ### Closed-Loop Multi-Agent PR Communication & Feedback Protocol
 To eliminate reliance on human intervention as a relayer between agents, Antigravity and Jules follow an autonomous closed-loop protocol:
 1. **Targeted Notifications on Code Push**:
-   - Every time an agent pushes a commit to a branch tracked by a Jules session/PR, the agent immediately executes `sendMessageToSession(sessionId, message)` (or `node scripts/jules_task_manager.js send <sessionId> "<message>"`).
+   - Every time an agent pushes a commit to a branch tracked by a Jules session/PR, the agent immediately executes `sendMessageToSession(sessionId, message)` (or `node scripts/services/jules_task_manager.js send <sessionId> "<message>"`).
    - The message payload explicitly includes:
      - **Branch Name**: `branch: <branchName>`
      - **Commit SHA**: `commit: <commitSha>`
@@ -410,11 +410,11 @@ To eliminate reliance on human intervention as a relayer between agents, Antigra
    - When Jules leaves comments or discovers failing test cases in session activity, AI agents autonomously inspect the trace (`status <sessionId>`), identify the underlying architectural pattern, implement the fix, run full regressions, push the commit, and post back into the session.
 3. **Zero-Pollution PR Merges**:
    - Automated PR branches are inspected with `git diff --stat` to guarantee no accidental build snapshots (`outputs/history/*.json`), temporary debug logs, or unstaged files are committed.
-   - Merges into `main` require 100% pass across all 31 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero linter warnings (`npm run lint`).
+   - Merges into `main` require 100% pass across all 18 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero linter warnings (`npm run lint`).
 4. **Post-Merge Remote Branch Pruning & Full Ownership (`INV-11`)**:
    - Once code is merged and verified on `main`, AI agents take full responsibility to delete stale remote feature branches (`git push origin --delete <branch>`) and send completion confirmations to Jules.
 5. **Full Activity-Patch Audit Protocol (`INV-12`)**:
-   - Before any Jules session is retired or closed, AI agents must execute `node scripts/jules_task_manager.js audit <sessionId>` to inspect all authored `unidiffPatch` change sets and ensure zero discoveries or test suites are lost.
+   - Before any Jules session is retired or closed, AI agents must execute `node scripts/services/jules_task_manager.js audit <sessionId>` to inspect all authored `unidiffPatch` change sets and ensure zero discoveries or test suites are lost.
 
 ### Master Multi-Agent Operational Harmony Protocol
 ```mermaid
@@ -428,7 +428,7 @@ flowchart TD
     end
 
     subgraph 3. Zero-Loss Activity Audit
-        C --> D[scripts/jules_task_manager.js audit: Scans unidiffPatches]
+        C --> D[scripts/services/jules_task_manager.js audit: Scans unidiffPatches]
         D -->|Guarantees 0 Lost Code| E[Antigravity Reviews & Refactors Systemic Patterns]
     end
 

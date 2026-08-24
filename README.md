@@ -4,22 +4,25 @@ Welcome to the **HPE ProLiant AI Studio BOQ Evaluator**. This is a production-gr
 
 ## 📖 Documentation & Knowledge Base
 
-To ensure AI Agents and human developers operate efficiently (without wasting tokens) and with absolute clarity, we have consolidated our Canonical Engineering Knowledge Base into three highly-focused documents:
+To ensure AI Agents and human developers operate efficiently (without wasting tokens) and with absolute clarity, our Canonical Engineering Knowledge Base is organized into:
 
-### 1. [Architecture & Design](docs/ARCHITECTURE_AND_DESIGN.md)
-Contains the core systemic design:
-- The **Hybrid Dual-Brain Architecture** (Mermaid Diagram)
+### 1. [Directory Structure & Topology](docs/DIRECTORY_STRUCTURE.md)
+Comprehensive map of the modular codebase layout across `scripts/` subsystems, `scripts/lib/` domain libraries, `tests/` tiers, and dashboard services.
+
+### 2. [Architecture & Design](docs/ARCHITECTURE_AND_DESIGN.md)
+Core systemic design:
+- The **Hybrid Dual-Brain Architecture** (Mermaid Diagrams)
 - Core coding decisions (Deterministic Rule Engine Primacy, Agentic MCP Guardrails)
 - Data dictionary and key JSON schemas
 
-### 2. [Workflows, Pipelines & Full Learnings](docs/WORKFLOWS_AND_LEARNINGS.md)
-Contains operational clarity and execution pipelines:
-- **6-Stage BOQ Evaluation Workflow**
+### 3. [Workflows, Pipelines & Full Learnings](docs/WORKFLOWS_AND_LEARNINGS.md)
+Operational clarity and execution pipelines:
+- **6-Stage Continuous Learning Lifecycle**
 - MCP Server details & Tooling integrations
-- **Full Learnings Update**: Rate Limit Handling (429/503), Hallucination Prevention via Background Red-Teaming (Adversarial Agent), and autonomous resolution loops.
+- Rate Limit Handling (Smart FIFO Key Rotation), Hallucination Prevention via Adversarial Red-Teaming, and autonomous resolution loops.
 
-### 3. [Developer Guide](docs/DEVELOPER_GUIDE.md)
-Contains strict instructions on how to interact with the codebase:
+### 4. [Developer Guide](docs/DEVELOPER_GUIDE.md)
+Instructions for local development and testing:
 - Setup, execution scripts, and dashboard launch commands
 - **UI/UX standards**: Enforces the `design-taste-frontend` rules (Geist font, Emerald Green, Anti-Slop layout).
 - **Codebase Auditing**: Uses `graphify` semantic graphs for codebase comprehension and architecture validation to optimize agent tokens.
@@ -29,10 +32,11 @@ Contains strict instructions on how to interact with the codebase:
 
 ## 🤖 For AI Agents (MANDATORY START)
 
-Before reading any code or executing commands, **you MUST read `graphify-out/GRAPH_REPORT.md`**. This semantic graph prevents token waste and maps the architecture.
+Before reading code or executing commands, **query the semantic graph via `/graphify query`**.
 
-- **[AGENTS.md](AGENTS.md)**: Token-optimized root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
+- **[AGENTS.md](AGENTS.md)**: Root instruction set prioritizing atomic JSON writes, rule-engine deterministic fallbacks, and skill delegation.
 - **[GEMINI.md](GEMINI.md)**: Guidelines for Gemini LLM prompting, MCP context window management, API rate limit resilience, and NotebookLM RAG fallback.
+- **[.agents/DATA_DICTIONARY.md](.agents/DATA_DICTIONARY.md)**: Canonical schema definitions for catalog JSONs, evaluation results, and telemetry ledgers.
 
 ## 🚀 Quick Start
 
@@ -42,14 +46,18 @@ Before reading any code or executing commands, **you MUST read `graphify-out/GRA
    ```
 2. Run a CLI Evaluation (Agentic Guardrail Loop Enabled):
    ```bash
-   node scripts/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12_SFF
+   node scripts/evaluators/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12_SFF
    ```
-3. Bootstrap & certify the Gen12 golden catalog (fresh clone / after rescrape):
+3. Run all test suites (18 suites, 100% pass):
+   ```bash
+   npm run test:all
+   ```
+4. Bootstrap & certify the Gen12 golden catalog:
    ```bash
    npm run bootstrap:gen12
    npm run certify:gen12
    ```
-4. Run a single adversarial red-team pass (optional):
+5. Run a single adversarial red-team pass (optional):
    ```bash
-   node scripts/adversarial_agent.js
+   node scripts/evaluators/adversarial_agent.js
    ```

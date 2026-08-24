@@ -98,20 +98,21 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 | Aspect Math | `npm run test:aspects` | 34 | Physical hardware math (thermal, power, memory, PCIe, storage, network) |
 | BOQ Benchmarks | `npm run test:benchmarks` | 5 scenarios | End-to-end BOQ evaluation with recall/precision metrics |
 | Portfolio Audit | `npm test` | Per-product | Validates all catalog outputs on disk |
-| E2E Scenarios | `node tests/test_end_to_end_scenarios.js` | Multi | Cross-product evaluation scenarios |
-| Conflict Graph | `node tests/test_conflict_graph.js` | Per-rule | Conflict graph logic validation |
-| Offline Mode | `node tests/test_offline_pipeline.js` | Fallback | Verifies graceful degradation without APIs |
-| Edge Cases | `node tests/test_edge_cases.js` | Edge | Boundary condition coverage |
-| E2E UI | `node tests/e2e_headless_ui_test.js` | UI | Headless browser dashboard verification |
+| E2E Scenarios | `node tests/integration/test_end_to_end_scenarios.js` | Multi | Cross-product evaluation scenarios |
+| Conflict Graph | `node tests/integration/test_conflict_graph.js` | Per-rule | Conflict graph logic validation |
+| Offline Mode | `node tests/chaos/test_offline_pipeline.js` | Fallback | Verifies graceful degradation without APIs |
+| Edge Cases | `node tests/chaos/test_edge_cases.js` | Edge | Boundary condition coverage |
+| E2E UI | `node tests/e2e/e2e_headless_ui_test.js` | UI | Headless browser dashboard verification |
 
 ### Adversarial Red-Teaming
-Run `node scripts/adversarial_agent.js` to execute a single adversarial red-team pass. This stress-tests the evaluator with intentionally malformed or conflicting BOQs and logs results to `pipeline_telemetry.json`.
+Run `node scripts/evaluators/adversarial_agent.js` to execute a single adversarial red-team pass. This stress-tests the evaluator with intentionally malformed or conflicting BOQs and logs results to `pipeline_telemetry.json`.
 
 ---
 
 ## 6. Project Architecture
 
 For detailed architecture documentation, see:
+- [DIRECTORY_STRUCTURE.md](file:///home/vinodh/vendorNotebookSolution/docs/DIRECTORY_STRUCTURE.md) — Comprehensive canonical directory and subsystem layout
 - [ARCHITECTURE_AND_DESIGN.md](file:///home/vinodh/vendorNotebookSolution/docs/ARCHITECTURE_AND_DESIGN.md) — Core architecture, Dual-Brain paradigm, Mermaid diagrams
 - [WORKFLOWS_AND_LEARNINGS.md](file:///home/vinodh/vendorNotebookSolution/docs/WORKFLOWS_AND_LEARNINGS.md) — E2E pipelines, Agentic Guardrail loops
 - [DATA_DICTIONARY.md](file:///home/vinodh/vendorNotebookSolution/.agents/DATA_DICTIONARY.md) — JSON schemas and data contracts
@@ -135,7 +136,7 @@ for (const [k, trail] of Object.entries(h)) {
 console.log(bad === 0 ? '✅ No same-day duplicates' : '❌ ' + bad + ' SKUs have same-day duplicates');
 "
 ```
-**Expected**: `✅ No same-day duplicates`. If any SKU shows two entries for the same date, `appendTrailEvent` in `diff_catalog.js` is deduplicating by `(date AND status)` instead of `date` only — that's INV-1 regression.
+**Expected**: `✅ No same-day duplicates`. If any SKU shows two entries for the same date, `appendTrailEvent` in `scripts/lib/catalog/diff_catalog.js` is deduplicating by `(date AND status)` instead of `date` only — that's INV-1 regression.
 
 ### DX-2: Verify SKU Count in Registry is Real (Not DOM Table Count)
 ```bash
@@ -149,12 +150,12 @@ console.log('SCRAPED_CATALOGS.md SKU count:', match ? match[1] : 'Not found');
 console.log(parseInt(match?.[1]) > 200 ? '✅ Count looks real' : '❌ Count looks like DOM table count (~124)');
 "
 ```
-**Expected**: `totalUniqueSKUs` > 200. If SCRAPED_CATALOGS.md shows ~124, Step 9 of `scrape_oca_solution.js` is passing `tables.length` instead of reading `liveCatalogJson.metadata.totalUniqueSKUs` — that's INV-2 regression.
+**Expected**: `totalUniqueSKUs` > 200. If SCRAPED_CATALOGS.md shows ~124, Step 9 of `scripts/scrapers/scrape_oca_solution.js` is passing `tables.length` instead of reading `liveCatalogJson.metadata.totalUniqueSKUs` — that's INV-2 regression.
 
 ### DX-3: Verify Stage Stepper Has minPercent/maxPercent
 ```bash
-grep -c "minPercent" dashboard/src/components/VendorScraperProgress.jsx
-grep -c "currentStageId" dashboard/src/components/VendorScraperProgress.jsx
+grep -c "minPercent" dashboard/src/components/stepper/StepStageCard.jsx
+grep -c "currentStageId" dashboard/src/components/stepper/StepStageCard.jsx
 ```
 **Expected**: Both > 0. If 0, the stage stepper has been reverted to `idx * 16` bucket math — that's INV-3 regression.
 
@@ -171,8 +172,8 @@ console.log(r.generatedAt ? '✅ OK' : '❌ generatedAt missing — INV-4 regres
 
 ### DX-5: Verify Step 10 Failure Propagates (Not Silent Warn)
 ```bash
-grep -n "console.warn" scripts/scrape_oca_solution.js | grep -i "sync_all"
-grep -n "throw new Error" scripts/scrape_oca_solution.js | grep -i "sync_all"
+grep -n "console.warn" scripts/scrapers/scrape_oca_solution.js | grep -i "sync_all"
+grep -n "throw new Error" scripts/scrapers/scrape_oca_solution.js | grep -i "sync_all"
 ```
 **Expected**: First grep returns 0 lines; second grep returns 1 line. If the second is 0, that's INV-5 regression.
 
@@ -196,12 +197,12 @@ ls outputs/history/notebook_sync_payload_edge-test-* 2>/dev/null | wc -l
 ls outputs/history/notebook_sync_payload_hpe-chaos-test-* 2>/dev/null | wc -l
 # Both should output: 0
 # If not, run cleanup:
-node -e "require('./scripts/lib/post_flow_sync.js').cleanTestPayloads()"
+node -e "require('./scripts/lib/sync/post_flow_sync.js').cleanTestPayloads()"
 ```
 
 ### Quick Full Health Check
 Run all 7 diagnostics in sequence:
 ```bash
-npm test && node tests/e2e_headless_ui_test.js && node tests/test_failure_modes_and_chaos.js
+npm test && node tests/e2e/e2e_headless_ui_test.js && node tests/chaos/test_failure_modes_and_chaos.js
 ```
 **Expected**: All 3 pass (6/6 + 7/7 + 44/44). This is the definitive go/no-go signal before merging any changes to the scraping pipeline.
