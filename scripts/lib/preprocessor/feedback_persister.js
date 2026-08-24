@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('../fs_compat.js');
+const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 
 /**
  * Saves human validation/override rule to classification history

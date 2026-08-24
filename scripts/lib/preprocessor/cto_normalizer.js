@@ -7,7 +7,7 @@
  * get normalized to 2 per unit. Flags non-integer fractional anomalies.
  */
 
-const { cleanBaseSKU, isServiceSku } = require('../sku.js');
+const { cleanBaseSKU, isServiceSku } = require('../catalog/sku.js');
 
 // Standard CTO Chassis Base SKU prefixes / identifiers
 const KNOWN_CTO_SKU_PREFIXES = new Set([

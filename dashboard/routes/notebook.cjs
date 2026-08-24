@@ -39,21 +39,21 @@ const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const CONFIG_DIR = path.join(PROJECT_ROOT, 'scripts', 'config');
 
 // Top-level lib imports
-const { safeWriteJsonAtomic } = require('../../scripts/lib/fs_compat.js');
-const telemetryLib = require('../../scripts/lib/telemetry.js');
-const feedbackQueue = require('../../scripts/lib/feedback_queue.js');
-const { queryLocalKnowledgeBase } = require('../../scripts/lib/local_rag_search.js');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+const telemetryLib = require('../../scripts/lib/system/telemetry.js');
+const feedbackQueue = require('../../scripts/lib/feedback/feedback_queue.js');
+const { queryLocalKnowledgeBase } = require('../../scripts/lib/rag/local_rag_search.js');
 const {
   getSanitizationBreakdown,
   executeNotebookQuery,
   sanitizeNotebookQuery,
   startAsyncNotebookQueryJob,
   getAsyncNotebookQueryJobStatus
-} = require('../../scripts/lib/notebook_query_utils.js');
-const logger = require('../../scripts/lib/pipeline_logger.js');
-const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../../scripts/lib/knowledge_sync.js');
+} = require('../../scripts/lib/notebook/notebook_query_utils.js');
+const logger = require('../../scripts/lib/system/pipeline_logger.js');
+const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../../scripts/lib/sync/knowledge_sync.js');
 const { recordFeedbackTelemetry } = require('../../scripts/lib/system/telemetry.js');
-const { verifyVendorBOM } = require('../../scripts/lib/vendor_bom_verifier.js');
+const { verifyVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
 
 /** Resolve the notebookId for a chassis from notebooks.json. Returns null if not found. */
 function resolveNotebookId(chassis) {

@@ -5,7 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('../fs_compat.js');
+const { safeWriteJsonAtomic } = require('./fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
@@ -18,7 +18,7 @@ function loadTelemetry() {
   if (fs.existsSync(TELEMETRY_FILE)) {
     try {
       return JSON.parse(fs.readFileSync(TELEMETRY_FILE, 'utf-8'));
-    } catch (_) { const _logger = require('../pipeline_logger.js'); _logger.warn('ERROR', 'telemetry.js', _); }
+    } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'telemetry.js', _); }
   }
   return {
     version: '1.2.0',

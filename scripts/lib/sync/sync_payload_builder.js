@@ -8,7 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const logger = require('../pipeline_logger.js');
+const logger = require('../system/pipeline_logger.js');
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -52,7 +52,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   }
 
   // Find catalog path dynamically
-  const { findCatalogJsonFiles } = require('../sync_registry.js');
+  const { findCatalogJsonFiles } = require('../catalog/sync_registry.js');
   const allCatalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
 
   let catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName)) || null;
@@ -232,7 +232,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
 
   // 6. Cross-Chassis CTO Variant Matrix
   md += `## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix\n\n`;
-  const { getChassisMap } = require('../conflict_graph.js');
+  const { getChassisMap } = require('../conflict/conflict_graph.js');
   const chassisMap = getChassisMap();
 
   md += `| Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |\n`;

@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { isValidHpeSKU, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./lib/sku');
+const { isValidHpeSKU, cleanBaseSKU, classifyOptionType, isServiceSku } = require('./lib/catalog/sku.js');
 
 function cleanRichDescription(desc, sku) {
   if (!desc) return '';

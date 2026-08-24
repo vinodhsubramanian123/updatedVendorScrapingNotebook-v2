@@ -3,8 +3,8 @@
  * scripts/lib/aspects/memory_channel.js — Memory & Channel Symmetry Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../sku.js');
-const { classifyComponentRole } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false) {
   let memoryCount = 0;

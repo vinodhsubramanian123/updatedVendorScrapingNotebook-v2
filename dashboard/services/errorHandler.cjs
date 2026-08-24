@@ -6,7 +6,7 @@
  * and formats standard JSON error envelopes with proper HTTP status codes.
  */
 
-const { ERROR_CODES, createErrorEnvelope } = require('../../scripts/lib/error_envelope.js');
+const { ERROR_CODES, createErrorEnvelope } = require('../../scripts/lib/system/error_envelope.js');
 
 /**
  * Wraps an Express route handler to catch rejected promises and forward to next(err).

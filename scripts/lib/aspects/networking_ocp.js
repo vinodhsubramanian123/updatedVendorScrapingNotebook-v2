@@ -3,8 +3,8 @@
  * scripts/lib/aspects/networking_ocp.js — Networking & OCP 3.0 Interconnect Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../sku.js');
-const { classifyComponentRole } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalNetworkingOcp(items, catalogData = null) {
   let networkPortsCount = 0;

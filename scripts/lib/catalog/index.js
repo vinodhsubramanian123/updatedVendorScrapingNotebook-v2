@@ -12,9 +12,9 @@ module.exports = {
   rules: require('./rules.js'),
   versioning: require('./versioning.js'),
   checksum: require('./checksum.js'),
-  productMeta: require('../product_meta.js'),
-  sku: require('../sku.js'),
-  validator: require('../data_validator.js'),
-  syncRegistry: require('../sync_registry.js'),
-  registry: require('../registry.js')
+  productMeta: require('./product_meta.js'),
+  sku: require('./sku.js'),
+  validator: require('../system/data_validator.js'),
+  syncRegistry: require('./sync_registry.js'),
+  registry: require('./registry.js')
 };

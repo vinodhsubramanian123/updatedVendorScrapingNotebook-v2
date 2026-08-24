@@ -3,8 +3,8 @@
  * scripts/lib/aspects/support_manufacturing.js — Support & Manufacturing Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../sku.js');
-const { classifyComponentRole } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalSupportManufacturing(items, catalogData = null) {
   let hasSupportService = false;

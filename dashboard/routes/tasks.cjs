@@ -16,7 +16,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { isTaskRunning, getActiveTask, startTask, broadcastSSE } = require('../services/taskManager.cjs');
-const { invalidateChassisMapCache } = require('../../scripts/lib/conflict_graph.js');
+const { invalidateChassisMapCache } = require('../../scripts/lib/conflict/conflict_graph.js');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');

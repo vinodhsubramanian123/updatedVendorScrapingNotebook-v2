@@ -15,10 +15,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../sku.js');
-const { safeWriteJsonAtomic } = require('../fs_compat.js');
-const { classifyKnowledgeScope } = require('../knowledge_sync.js');
-const logger = require('../pipeline_logger.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
+const logger = require('../system/pipeline_logger.js');
 
 /**
  * Extract structured knowledge deltas from a natural language RAG answer.

@@ -9,7 +9,7 @@
  * 4. Split reason taxonomy constants.
  */
 
-const { cleanBaseSKU } = require('../sku.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
 
 /**
  * Split reason taxonomy constants

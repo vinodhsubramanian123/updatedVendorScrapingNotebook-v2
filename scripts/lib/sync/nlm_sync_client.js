@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('../fs_compat.js');
+const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');

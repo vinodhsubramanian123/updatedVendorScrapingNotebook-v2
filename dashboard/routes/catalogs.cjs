@@ -176,14 +176,14 @@ router.get('/catalog-rules', (req, res) => {
     if (found) targetPath = found;
   }
   try {
-    const { loadCatalogRules } = require('../../scripts/lib/catalog_rules.js');
+    const { loadCatalogRules } = require('../../scripts/lib/catalog/catalog_rules.js');
     res.json(loadCatalogRules(targetPath));
   } catch (err) { sendErrorResponse(res, 500, err, { source: 'CATALOGS_ROUTER' }); }
 });
 
 router.get('/chassis-sync-summary', (req, res) => {
-  const { listAllCatalogs } = require('../../scripts/lib/catalog_discovery.js');
-  const { loadCatalogRules } = require('../../scripts/lib/catalog_rules.js');
+  const { listAllCatalogs } = require('../../scripts/lib/catalog/catalog_discovery.js');
+  const { loadCatalogRules } = require('../../scripts/lib/catalog/catalog_rules.js');
   try {
     const rawCatalogs = listAllCatalogs();
     const variantsSummary = [];
@@ -307,7 +307,7 @@ router.get('/sku-version-audit', (req, res) => {
   if (!sku || !chassisDir) return res.status(400).json({ error: 'Missing sku or chassisDir parameter' });
   try {
     const safeChassisDir = assertSafePath(chassisDir);
-    const { getSkuAuditHistory } = require('../../scripts/lib/sku_versioning.js');
+    const { getSkuAuditHistory } = require('../../scripts/lib/catalog/sku_versioning.js');
     res.json(getSkuAuditHistory(sku, safeChassisDir));
   } catch (err) { res.status(err.message.startsWith('HTTP 403') ? 403 : 500).json({ error: err.message }); }
 });

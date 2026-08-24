@@ -42,13 +42,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Top-level imports for lib helpers
-const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('../../scripts/lib/boq_preprocessor.js');
-const { safeWriteJsonAtomic } = require('../../scripts/lib/fs_compat.js');
-const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr_service.js');
-const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/telemetry.js');
-const telemetryLib = require('../../scripts/lib/telemetry.js');
-const { generateProfessionalBOQ } = require('../../scripts/lib/generate_boq_xlsx.js');
-const { safeParseEvalResult } = require('../../scripts/lib/schemas.js');
+const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('../../scripts/lib/boq/boq_preprocessor.js');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr/ocr_service.js');
+const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/system/telemetry.js');
+const telemetryLib = require('../../scripts/lib/system/telemetry.js');
+const { generateProfessionalBOQ } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
+const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
 
 // ── Upload BOQ ────────────────────────────────────────────────────────────────
 router.post('/upload-boq', upload.single('boqFile'), (req, res) => {

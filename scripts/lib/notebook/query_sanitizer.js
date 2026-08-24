@@ -6,8 +6,8 @@
  * preserving hardware SKUs, part numbers, and semantic intent.
  */
 
-const { parseProductMeta } = require('../product_meta.js');
-const { cleanBaseSKU } = require('../sku.js');
+const { parseProductMeta } = require('../catalog/product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
 
 const SCRIPTING_PATTERNS = [
   /const\s+[a-zA-Z0-9_$]+\s*=/g,

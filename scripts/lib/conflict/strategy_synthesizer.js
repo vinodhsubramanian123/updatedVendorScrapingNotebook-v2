@@ -12,8 +12,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../sku.js');
-const { classifyComponentRole } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna } = require('./workload_dna.js');
 
 /**
@@ -60,7 +60,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         }
       }
     } catch (err) {
-      const _logger = require('../pipeline_logger.js');
+      const _logger = require('../system/pipeline_logger.js');
       _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse target directory catalog/price history', err);
     }
   }
@@ -140,7 +140,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     }
   } catch (err) {
-    const _logger = require('../pipeline_logger.js');
+    const _logger = require('../system/pipeline_logger.js');
     _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse strategy_addons.json', err);
   }
 
@@ -260,7 +260,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Live Local RAG Grounding Helper
   const getLiveRagGrounding = (tierName, focusTerms = [], defaultSummary = '') => {
     try {
-      const { queryLocalKnowledgeBase } = require('../local_rag_search.js');
+      const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
       const chassisName = chassisInfo.model || chassisInfo.chassis || '';
       const q = `${chassisName} ${focusTerms.join(' ')}`.trim();
       const res = queryLocalKnowledgeBase(q, chassisName);

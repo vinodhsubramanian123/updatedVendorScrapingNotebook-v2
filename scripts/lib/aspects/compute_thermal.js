@@ -3,8 +3,8 @@
  * scripts/lib/aspects/compute_thermal.js — Compute & Thermal Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../sku.js');
-const { classifyComponentRole } = require('../product_meta.js');
+const { cleanBaseSKU } = require('../catalog/sku.js');
+const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalComputeThermal(items, catalogData = null, mandatorySkus = {}) {
   let cpuCount = 0;
