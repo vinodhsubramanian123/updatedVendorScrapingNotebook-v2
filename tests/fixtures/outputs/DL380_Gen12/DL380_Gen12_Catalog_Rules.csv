@@ -1,0 +1,2 @@
+Category,SubCategory,Constraint,Severity,RuleText
+Memory,DDR5,Requires Gen12,Error,Requires Gen12 processors
