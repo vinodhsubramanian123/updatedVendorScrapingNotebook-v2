@@ -71,7 +71,7 @@ Based on cross-layer analysis (Docs vs. Diagrams vs. Code), here are the critica
 ### 4.2 Test Suite Instability Resolved
 - **The Issue**: Upon initial review, the comprehensive test suite (`npm run test:all`) failed fatally in the Chaos Suite due to two main reasons:
   1. The dependency `@google/genai` was missing from `package.json`, breaking the Gemini Rotator.
-  2. The Chaos suite (`tests/test_failure_modes_and_chaos.js`) had a fragile assertion testing cloud NotebookLM failure, expecting specific text that local mock fallbacks did not produce.
+  2. The Chaos suite (`tests/chaos/test_failure_modes_and_chaos.js`) had a fragile assertion testing cloud NotebookLM failure, expecting specific text that local mock fallbacks did not produce.
 - **The Resolution**:
   - Installed `@google/genai`.
   - Created a dummy `nlm` executable to satisfy the `hasNlmBinary` check.

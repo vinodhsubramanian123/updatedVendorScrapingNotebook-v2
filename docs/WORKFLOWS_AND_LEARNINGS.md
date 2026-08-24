@@ -71,7 +71,7 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
   12. Telemetry Metrics & Action Ledger Inspection
   13. Walkthrough Report Compilation (13/13 Steps Passed, 100% Success)
 
-- **Multi-GPU Workload DNA Profiling (G27)**: Tracked multi-GPU configurations as arrays with total counts in [`conflict_graph.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict_graph.js).
+- **Multi-GPU Workload DNA Profiling (G27)**: Tracked multi-GPU configurations as arrays with total counts in [`conflict_graph.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/conflict_graph.js).
 
 ## 7. DL380 Gen12 Combinations Suite & Positive/Negative Hardware Matrix Learnings
 - **Positive Valid Baseline**: Valid DL380 Gen12 configurations with symmetric 16-DIMM DDR5, dual Xeon CPUs, and redundant PSUs yield a 100% PASS with 0 violations and >90% baseline confidence.
@@ -114,7 +114,7 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 ### 1. 3-Tier Subcategory Synthesis & Elimination of `(Sub-table)` Placeholders
 - **The Problem**: WebLogic/OCA UI renders DOM tables asynchronously within complex iframes. Pure text-position heuristics (`innerText.indexOf(pn)`) frequently failed when table DOM order diverged from raw text flow, causing 98.5% of tables to fall back to generic `(Sub-table)` names.
 - **Downstream Impact**: NotebookLM RAG payloads indexed rules under `(Sub-table)` instead of specific component names (e.g. *Intel Xeon 6th Gen Scalable Processors* or *DDR5 Registered Smart Memory*), degrading RAG grounding accuracy.
-- **The Fix**: Implemented a 3-tier subcategory resolution engine in `scripts/lib/product_meta.js` (`synthesizeSubcategoryName`):
+- **The Fix**: Implemented a 3-tier subcategory resolution engine in `scripts/lib/catalog/product_meta.js` (`synthesizeSubcategoryName`):
   1. *Primary*: Exact text-position index match.
   2. *Secondary*: Table header and sample description keyword overlap scoring.
   3. *Tertiary*: Dynamic semantic synthesis from component descriptions and category rules.
@@ -228,8 +228,8 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
 - **Dynamic Header Offset Scanning**: Customer BOM downloads from HPE OCA or vendor portals often have 3–15 rows of introductory branding, quote metadata, or terms. `boq_parser.js` dynamically scans rows 1–20 to detect header signatures (`Product Number`, `Description`, `Quantity`, `Unit Price`), establishing column maps without brittle hardcoded row indices.
 
 ## 19. Chaos & Adversarial Red-Teaming Resilience
-- **Continuous Adversarial Verification**: `scripts/adversarial_agent.js` continuously generates subtly invalid BOQs using live `gemini-3.5-flash` (`ai.models.generateContent`) and confirms the evaluator catches 100% of injected anomalies with 100% precision.
-- **38/38 Chaos Failure Mode Certification**: `tests/test_failure_modes_and_chaos.js` validates that simulated cloud outages, API quota limits (HTTP 429), missing dependencies, and OCR vision failures are never silently suppressed and transparently fall back to local safety nets with full observability.
+- **Continuous Adversarial Verification**: `scripts/evaluators/adversarial_agent.js` continuously generates subtly invalid BOQs using live `gemini-3.6-flash` (`ai.models.generateContent`) and confirms the evaluator catches 100% of injected anomalies with 100% precision.
+- **44/44 Chaos Failure Mode Certification**: `tests/chaos/test_failure_modes_and_chaos.js` validates that simulated cloud outages, API quota limits (HTTP 429), missing dependencies, and OCR vision failures are never silently suppressed and transparently fall back to local safety nets with full observability.
 
 ## 20. Real-World Customer E2E & Server Concurrency Perfection
 - **Dynamic Server Mutex Guard (`isTaskRunning()`)**:
@@ -256,8 +256,8 @@ When a BOQ evaluation results in low confidence, the orchestrator triggers `runA
   - `scripts/lib/` modularized into domain micro-packages (`aspects/`, `conflict/`, `notebook/`, `preprocessor/`, `sync/`, `prompts/`), achieving 0 circular dependencies across all 174 modules (`madge`).
 ## 22. 10-Stage Atomic Scraping Lifecycle, Universal NotebookLM Multi-Environment Stability & Master Excel Verification
 - **10-Stage Atomic Scraping Protocol**:
-  - Refactored `scripts/scrape_oca_solution.js` to structure the scraping process into 10 explicit, decoupled atomic stages (`CDP_CONNECT`, `PORTAL_NAV`, `CATEGORY_DISCOVERY`, `PAGE_EXPAND`, `DOM_EXTRACTION`, `RULES_PARSING`, `CATALOG_GEN`, `STAGING_AUDIT`, `KNOWLEDGE_SYNC`, `REGISTRY_SYNC`).
-  - Enhanced `scripts/lib/progress.js` to emit rich JSON progress events (`percent`, `stage`, `itemsScraped`, `category`, `sku`, `message`) over SSE, enabling real-time glowing pulse animations and step clarity in `VendorScraperProgress.jsx`.
+  - Refactored `scripts/scrapers/scrape_oca_solution.js` to structure the scraping process into 10 explicit, decoupled atomic stages (`CDP_CONNECT`, `PORTAL_NAV`, `CATEGORY_DISCOVERY`, `PAGE_EXPAND`, `DOM_EXTRACTION`, `RULES_PARSING`, `CATALOG_GEN`, `STAGING_AUDIT`, `KNOWLEDGE_SYNC`, `REGISTRY_SYNC`).
+  - Enhanced `scripts/lib/system/progress.js` to emit rich JSON progress events (`percent`, `stage`, `itemsScraped`, `category`, `sku`, `message`) over SSE, enabling real-time glowing pulse animations and step clarity in `VendorScraperProgress.jsx`.
 - **Permanent Multi-Environment NotebookLM RAG Stability**:
   - Fixed notebook ID resolution in `knowledge_sync.js` and `nlm_sync_client.js` so empty strings never trigger CLI argument errors, automatically resolving to `defaultNotebookId` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
   - Added CI/GitHub Actions guardrails (`process.env.CI || process.env.GITHUB_ACTIONS`) and 3-tier fallback (`CLI` ➔ `MCP (gemini-notebook-mcp)` ➔ `Local RAG Cache`) so tests and builds run reliably in all environments.
@@ -316,9 +316,9 @@ This session performed a comprehensive live audit of the DL380 Gen12 scraping pi
 
 ### Verification Results
 ```
-npm test (verify_all.js)        → 6/6 portfolios PASS
-tests/e2e_headless_ui_test.js   → 7/7 tests PASS, 0 console errors
-tests/test_failure_modes_and_chaos.js → 44/44 PASS
+npm test (verify_all.js)               → 7/7 portfolios PASS
+tests/e2e/e2e_headless_ui_test.js      → 7/7 tests PASS, 0 console errors
+tests/chaos/test_failure_modes_and_chaos.js → 44/44 PASS
 Stale test payloads purged      → 52 files
 ISO-timestamp snapshots removed → 28 files
 Remaining canonical snapshots   → 6 (YYYY-MM-DD format, one per scrape day)

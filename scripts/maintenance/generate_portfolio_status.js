@@ -24,7 +24,7 @@ function generateMarkdown() {
   const totalSKUs = catalogs.reduce((acc, c) => acc + c.skuCount, 0);
 
   let md = `# Portfolio State of Health (Auto-Generated: ${nowStr})\n\n`;
-  md += `This document is dynamically generated from on-disk catalog metadata by \`scripts/generate_portfolio_status.js\`.\n\n`;
+  md += `This document is dynamically generated from on-disk catalog metadata by \`scripts/maintenance/generate_portfolio_status.js\`.\n\n`;
   md += `### 📊 Certified Products & Portfolio Status\n\n`;
   md += `| Product Chassis | Relative Directory | SKUs on Disk | Excel Workbook | QuickSpecs PDF | Diff History | Status |\n`;
   md += `| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n`;
