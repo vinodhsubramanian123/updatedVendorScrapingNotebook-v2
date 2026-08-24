@@ -458,7 +458,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   };
 }
 
-function formatNotebookQueryPayload(items, evalResults) {
+function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   const chassisInfo = evalResults.conflictGraph?.chassisInfo || detectChassisVariant(items);
   const issues = [
     ...(evalResults.errors || []),
@@ -466,15 +466,29 @@ function formatNotebookQueryPayload(items, evalResults) {
   ];
 
   const fixes = evalResults.missingDependencies || [];
+  const skuManifest = (items || []).map(i => `${i.sku || 'SKU'} (x${i.quantity || 1})`).join(', ');
+
+  let queryText = `Validate complete BOQ configuration compatibility for ${chassisInfo.model || chassisInfo.id || 'Server'}.\nBOM Manifest: ${skuManifest}.`;
+  if (issues.length > 0) {
+    queryText += `\nDetected Physical Checks / Conflicts (${issues.length}): ${issues.join('; ')}.`;
+  }
+  if (fixes.length > 0) {
+    queryText += `\nProposed Auxiliary Fixes: ${fixes.map(f => f.sku).join(', ')}.`;
+  }
+  if (rankedSolutions && rankedSolutions.length > 0) {
+    const rankSummary = rankedSolutions.slice(0, 3).map(r => `Rank ${r.rank} (${r.tierTitle}): $${r.estimatedCapex || 0}`).join(' | ');
+    queryText += `\nRanked Solution Options: ${rankSummary}.`;
+  }
 
   return {
     chassis: chassisInfo.id || chassisInfo.model,
-    query: `Validate compatibility for ${chassisInfo.model}. Found ${issues.length} potential issues: ${issues.join('; ')}. Proposed fixes: ${fixes.map(f => f.sku).join(', ')}.`,
+    query: queryText,
     context: {
       itemsCount: items.length,
       detectedTdp: evalResults.evalSummary?.maxCpuTdpWatts,
       memoryTotalGb: evalResults.evalSummary?.totalMemoryGb,
-      issuesCount: issues.length
+      issuesCount: issues.length,
+      skuManifest
     }
   };
 }
