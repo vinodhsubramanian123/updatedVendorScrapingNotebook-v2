@@ -237,6 +237,18 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Once a feature branch created by Jules is audited, verified, certified, and fully integrated into `main`, the agent takes full ownership of branch lifecycle management.
 - **Rule**: Agents must prune stale remote feature branches from GitHub (`git push origin --delete <branch>`) and notify Jules that the session is integrated. Never leave abandoned or dangling branches on remote once code has landed on `main`.
 
+### INV-12: Full Activity-Patch Audit Protocol Before Session Retirement
+- **Pattern**: When any Jules session finishes, pauses, or requests input, AI agents must never assume code is only on a remote git branch.
+- **Rule**: Agents MUST execute `node scripts/jules_task_manager.js audit <sessionId>` to inspect all authored `unidiffPatch` change sets, extract unpushed test suites/fixes, run local validation (`npm run test:all`), and certify 100% compliance before concluding.
+
+### INV-13: Closed-Loop Knowledge Delta Deduplication
+- **Pattern**: `feedback_loop.js` and `knowledge_extractor.js` must deduplicate incoming rules against existing `catalog_deltas.json` and `master_knowledge_registry.json`.
+- **Rule**: Never blindly push duplicate rules. Match on `(chassis, affectedSku, requiredDependencySku, rawMessage/ruleUpdate)` and update timestamps/scores in place.
+
+### INV-14: Whole-Solution BOM Manifest Context in Grounded RAG Queries
+- **Pattern**: `formatNotebookQueryPayload` in `boq_evaluator.js` must always bundle the entire solution BOM manifest (comma-separated SKU quantities), detected physical issues, proposed fixes, and 5-tier strategy summaries.
+- **Rule**: Never dispatch isolated, single-SKU queries to NotebookLM/RAG for whole-solution validation. Always preserve full topological context.
+
 ---
 
 ## History Directory Hygiene Rules
