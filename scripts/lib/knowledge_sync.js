@@ -53,7 +53,8 @@ function classifyKnowledgeScope(deltaOrText) {
       raw.includes('storage battery') || raw.includes('p01366-b21') ||
       raw.includes('high performance fan') || raw.includes('p48820-b21') ||
       (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') ||
-       c.includes('alletra') || c.includes('synergy') || c.includes('cray'))) {
+       c.includes('alletra') || c.includes('synergy') || c.includes('cray') ||
+       c.includes('storeever') || c.includes('msl'))) {
     return 'FAMILY_GEN';
   }
   return 'CHASSIS_SPECIFIC';

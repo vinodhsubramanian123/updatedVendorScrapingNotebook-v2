@@ -41,6 +41,7 @@ outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/catalog_2026-08-14T*
 
 # Scratch / temp
 *.crdownload
+tests/temp_*.json
 
 # Windows
 Thumbs.db
