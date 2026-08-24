@@ -71,6 +71,8 @@
     "xlsx-js-style": "^1.2.0"
   },
   "devDependencies": {
+    "@google/jules-mcp": "^0.2.0",
+    "@google/jules-sdk": "^0.2.0",
     "playwright": "^1.62.1"
   }
 }
