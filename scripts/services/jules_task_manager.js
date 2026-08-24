@@ -155,28 +155,39 @@ if (require.main === module) {
         const session = await createSession(prompt, title, branch);
         console.log('✅ Session created successfully:', session.id || session.name);
       } else if (command === 'send') {
-        const id = args[1];
-        const message = args[2];
+        let id = args[1];
+        let message = args[2];
+        if (!message && id && id.length > 30) {
+          // If user/agent called `send "<message>"` without sessionId
+          message = id;
+          id = 'active';
+        }
+        if (id === 'active' || id === 'current' || id === 'test-session' || !id) {
+          const list = await listSessions();
+          if (list.length > 0) {
+            id = list[0].id;
+          }
+        }
         if (!id || !message) {
-          console.error('Usage: node scripts/jules_task_manager.js send <sessionId> "<message>"');
+          console.error('Usage: node scripts/services/jules_task_manager.js send [sessionId|active] "<message>"');
           process.exit(1);
         }
         console.log(`Sending message to session: ${id}...`);
         await sendMessageToSession(id, message);
         console.log('✅ Message sent to Jules session successfully.');
       } else if (command === 'status') {
-        const id = args[1];
-        if (!id) {
-          console.error('Usage: node scripts/jules_task_manager.js status <sessionId>');
-          process.exit(1);
+        let id = args[1] || 'active';
+        if (id === 'active' || id === 'current' || id === 'test-session') {
+          const list = await listSessions();
+          if (list.length > 0) id = list[0].id;
         }
         const details = await getSessionDetails(id);
         console.log('Session Details:', details);
       } else if (command === 'audit') {
-        const id = args[1];
-        if (!id) {
-          console.error('Usage: node scripts/jules_task_manager.js audit <sessionId>');
-          process.exit(1);
+        let id = args[1] || 'active';
+        if (id === 'active' || id === 'current' || id === 'test-session') {
+          const list = await listSessions();
+          if (list.length > 0) id = list[0].id;
         }
         console.log(`🔍 Auditing Jules session activities & patches for: ${id}...`);
         const report = await auditSession(id);

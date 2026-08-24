@@ -57,6 +57,8 @@
     "maintain:gen12": "node scripts/maintenance/maintain_gen12.js",
     "maintain:portfolio": "node scripts/maintenance/maintain_portfolio.js",
     "status:sync": "node scripts/maintenance/generate_portfolio_status.js",
+    "jules:watch": "node scripts/services/jules_daemon.js",
+    "jules:status": "node scripts/services/jules_task_manager.js status active",
     "test:aspect_units": "node tests/unit/test_aspect_compute_thermal.js && node tests/unit/test_aspect_memory_channel.js && node tests/unit/test_aspect_networking_ocp.js && node tests/unit/test_aspect_pcie_riser.js && node tests/unit/test_aspect_power_environment.js && node tests/unit/test_aspect_storage_tri_mode.js && node tests/unit/test_aspect_support_manufacturing.js",
     "test:preprocessor": "node tests/unit/test_boq_preprocessor.js && node tests/unit/test_cto_normalizer.js && node tests/unit/test_variation_clusterer.js",
     "test:resilience": "node tests/chaos/test_cdp_dom_extract_resilience.js && node tests/unit/test_cdp_navigator_resilience.js && node tests/chaos/test_ocr_service_resilience.js",
