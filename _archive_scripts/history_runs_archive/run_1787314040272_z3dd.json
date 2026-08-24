@@ -1,0 +1,14 @@
+{
+  "runId": "run_1787314040272_z3dd",
+  "taskType": "FAILING_TASK",
+  "startTime": "2026-08-21T12:07:20.272Z",
+  "durationMs": 63,
+  "exitCode": 1,
+  "logs": [
+    {
+      "timestamp": "2026-08-21T12:07:20.331Z",
+      "stream": "stderr",
+      "text": "Deliberate error"
+    }
+  ]
+}

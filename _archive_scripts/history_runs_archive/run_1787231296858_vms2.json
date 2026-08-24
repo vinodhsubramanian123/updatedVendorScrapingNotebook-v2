@@ -1,0 +1,14 @@
+{
+  "runId": "run_1787231296858_vms2",
+  "taskType": "TEST_TASK",
+  "startTime": "2026-08-20T13:08:16.858Z",
+  "durationMs": 245,
+  "exitCode": 0,
+  "logs": [
+    {
+      "timestamp": "2026-08-20T13:08:16.985Z",
+      "stream": "stdout",
+      "text": "Task test log"
+    }
+  ]
+}

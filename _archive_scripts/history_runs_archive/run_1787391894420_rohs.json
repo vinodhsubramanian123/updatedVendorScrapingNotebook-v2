@@ -1,0 +1,14 @@
+{
+  "runId": "run_1787391894420_rohs",
+  "taskType": "FAILING_TASK",
+  "startTime": "2026-08-22T09:44:54.420Z",
+  "durationMs": 78,
+  "exitCode": 1,
+  "logs": [
+    {
+      "timestamp": "2026-08-22T09:44:54.493Z",
+      "stream": "stderr",
+      "text": "Deliberate error"
+    }
+  ]
+}

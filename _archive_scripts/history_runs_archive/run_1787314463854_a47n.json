@@ -1,0 +1,14 @@
+{
+  "runId": "run_1787314463854_a47n",
+  "taskType": "TEST_TASK",
+  "startTime": "2026-08-21T12:14:23.854Z",
+  "durationMs": 155,
+  "exitCode": 0,
+  "logs": [
+    {
+      "timestamp": "2026-08-21T12:14:23.901Z",
+      "stream": "stdout",
+      "text": "Task test log"
+    }
+  ]
+}

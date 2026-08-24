@@ -1,0 +1,14 @@
+{
+  "runId": "run_1787391894195_ptm2",
+  "taskType": "TEST_TASK",
+  "startTime": "2026-08-22T09:44:54.195Z",
+  "durationMs": 169,
+  "exitCode": 0,
+  "logs": [
+    {
+      "timestamp": "2026-08-22T09:44:54.253Z",
+      "stream": "stdout",
+      "text": "Task test log"
+    }
+  ]
+}

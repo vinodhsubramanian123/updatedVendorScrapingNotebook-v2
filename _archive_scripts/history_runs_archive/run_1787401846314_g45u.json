@@ -1,0 +1,1569 @@
+{
+  "runId": "run_1787401846314_g45u",
+  "taskType": "SCRAPE_SOLUTION",
+  "startTime": "2026-08-22T12:30:46.314Z",
+  "durationMs": 36845,
+  "exitCode": 0,
+  "logs": [
+    {
+      "timestamp": "2026-08-22T12:30:46.583Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:46.583Z",
+      "stream": "stdout",
+      "text": "🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:46.584Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:46.633Z",
+      "stream": "stdout",
+      "text": "Connecting via CDP: 775A778AE39AAC0EBAC8D3AB42556E25 (External OCA  | Hewlett Packard Enterprise)..."
+    },
+    {
+      "timestamp": "2026-08-22T12:30:46.675Z",
+      "stream": "stdout",
+      "text": "--- STEP 1: Solution Root Discovery & Pre-flight ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:49.815Z",
+      "stream": "stdout",
+      "text": "Discovered Solution Name: \"OCA Solution\""
+    },
+    {
+      "timestamp": "2026-08-22T12:30:49.816Z",
+      "stream": "stdout",
+      "text": "Discovered Nodes (0): []"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:49.816Z",
+      "stream": "stdout",
+      "text": "--- STEP 2: Navigating into Product Node Menu Catalog ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:30:54.886Z",
+      "stream": "stdout",
+      "text": "Active Product Node Title: \"HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server [P73282-B21]\""
+    },
+    {
+      "timestamp": "2026-08-22T12:30:54.891Z",
+      "stream": "stdout",
+      "text": "Loaded Profiler for Family: \"ProLiant\", Gen: \"Gen12\", Chassis: \"DL380_Gen12_SFF\""
+    },
+    {
+      "timestamp": "2026-08-22T12:30:54.891Z",
+      "stream": "stdout",
+      "text": "--- STEP 3: Expanding Page Sections (Threshold: 15000px) ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:02.698Z",
+      "stream": "stdout",
+      "text": "--- STEP 3.5: Checking for Solution Services & Configured BOM Tab ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:08.335Z",
+      "stream": "stdout",
+      "text": "Page Expansion Metrics: height=1134px, tables=111, rows=2757"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:08.335Z",
+      "stream": "stdout",
+      "text": "✅ Expansion verified: 111 tables, 2757 rows — Rule #19 passed."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:08.335Z",
+      "stream": "stdout",
+      "text": "--- STEP 4: Extracting DOM & Metadata ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:08.335Z",
+      "stream": "stdout",
+      "text": "Extracting page text..."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:11.263Z",
+      "stream": "stdout",
+      "text": "Extracted text: 604 chars"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:11.263Z",
+      "stream": "stdout",
+      "text": "Extracting tables (row arrays)..."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:11.721Z",
+      "stream": "stdout",
+      "text": "Extracted 124 tables."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:11.721Z",
+      "stream": "stdout",
+      "text": "Extracting DOM section headers (landmarks)..."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.554Z",
+      "stream": "stdout",
+      "text": "Extracted 4 DOM section headers."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.555Z",
+      "stream": "stdout",
+      "text": "Family: \"ProLiant\", Gen: \"Gen12\", Chassis: \"DL380_Gen12_SFF\""
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.555Z",
+      "stream": "stdout",
+      "text": "🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.555Z",
+      "stream": "stdout",
+      "text": "   /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.618Z",
+      "stream": "stdout",
+      "text": "Raw data JSON saved atomically to staging: /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/raw_data/oca_raw_data_full.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.619Z",
+      "stream": "stdout",
+      "text": "--- STEP 6: Catalog Classification & Excel Generation in Staging ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.620Z",
+      "stream": "stdout",
+      "text": "🛡️  Seeding staging from live workspace to protect previous scrape data..."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.661Z",
+      "stream": "stdout",
+      "text": "   ✅ history/ seeded (diff engine can compare against previous scrape)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.662Z",
+      "stream": "stdout",
+      "text": "   ✅ intermittent_scraps/ seeded (TSV intermediates preserved)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.662Z",
+      "stream": "stdout",
+      "text": "   ✅ DL380_Gen12_SFF_Catalog.json seeded"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.664Z",
+      "stream": "stdout",
+      "text": "   ✅ DL380_Gen12_SFF_Services.json seeded"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.664Z",
+      "stream": "stdout",
+      "text": "   ✅ DL380_Gen12_SFF_Catalog_Rules.json seeded"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.665Z",
+      "stream": "stdout",
+      "text": "   🔒 Live workspace is safe — all writes go to staging only until audit passes."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.782Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.784Z",
+      "stream": "stdout",
+      "text": "📦 CLASSIFICATION ENGINE — BUILD CATALOG"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.784Z",
+      "stream": "stdout",
+      "text": "Input:  /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/raw_data/oca_raw_data_full.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.784Z",
+      "stream": "stdout",
+      "text": "Output: /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/DL380_Gen12_SFF_Catalog.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.785Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.787Z",
+      "stream": "stdout",
+      "text": "[Pipeline SUCCESS] Initialize Classification Engine"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.821Z",
+      "stream": "stdout",
+      "text": "Loaded Raw Scrape Payload:"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.821Z",
+      "stream": "stdout",
+      "text": "  Page Title:   \"External OCA  | Hewlett Packard Enterprise\""
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.861Z",
+      "stream": "stdout",
+      "text": "  Full Text:    604 chars"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.861Z",
+      "stream": "stdout",
+      "text": "  Total Tables: 124"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.861Z",
+      "stream": "stdout",
+      "text": "  Chassis Root: \"DL380 Gen12 SFF\""
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.861Z",
+      "stream": "stdout",
+      "text": "--- Step 1: Extracting Subcategories & Quantity Constraints ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.862Z",
+      "stream": "stdout",
+      "text": "Found 0 subcategory headers in text."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.862Z",
+      "stream": "stdout",
+      "text": "--- Step 2: Mapping Parent Categories ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.863Z",
+      "stream": "stdout",
+      "text": "Discovered 0 active Main Category headers in content area:"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.863Z",
+      "stream": "stdout",
+      "text": "--- Step 3: Extracting Tables & SKUs ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.945Z",
+      "stream": "stdout",
+      "text": "Processed 98 valid product tables (25 non-SKU/wrapper tables skipped)."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.945Z",
+      "stream": "stdout",
+      "text": "Extracted 845 unique SKUs."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.946Z",
+      "stream": "stdout",
+      "text": "--- Step 4: Merging Sub-Tables & Subcategory Inheritance ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.946Z",
+      "stream": "stdout",
+      "text": "Merged 0 sub-tables into preceding parent subcategories (DOM index order)."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.946Z",
+      "stream": "stdout",
+      "text": "--- Step 5: Catalog Diff Engine & Historical Price Tracking ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.955Z",
+      "stream": "stdout",
+      "text": "  📦 Chassis variants injected from history snapshot: catalog_2026-08-22T12:29:55.574Z.json (6 SKUs)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.961Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-22.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:15.962Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.048Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.048Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-22"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.048Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         catalog_2026-08-22T12:29:55.574Z.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       262"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.049Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-22.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "--- Services Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-22"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         (Baseline - None)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       588"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.070Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       services_catalog_2026-08-22.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.086Z",
+      "stream": "stdout",
+      "text": "  ⚡ [INCREMENTAL_DIFF] Checksum Analysis: 262 Unchanged, 0 Modified, 0 Added."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.086Z",
+      "stream": "stdout",
+      "text": "  💰 [TOKEN_SAVINGS] Skipped re-classification for 262 SKUs (~39300 API tokens saved)."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.102Z",
+      "stream": "stdout",
+      "text": "[Pipeline SUCCESS] Step 5: Catalog Diff Engine"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.104Z",
+      "stream": "stdout",
+      "text": "--- Step 6: Pre-Commit Validation & Atomic File Commit ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.108Z",
+      "stream": "stdout",
+      "text": "[Pipeline SUCCESS] Pre-Commit Data Integrity Validation"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.189Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Services.json  (588 service SKUs, diff-enriched)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.190Z",
+      "stream": "stdout",
+      "text": "[Pipeline SUCCESS] Step 6: Atomic Save Output JSON"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.200Z",
+      "stream": "stdout",
+      "text": "=== FILES SAVED ATOMICALLY ==="
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.200Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Catalog_SKUs.tsv    (263 rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.200Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Catalog_Rules.tsv   (36 rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.200Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Catalog_Summary.tsv (39 rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.200Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Catalog_Rules.json  (35 rules, dual safety net)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  📄 DL380_Gen12_SFF_Catalog.json        (structured companion JSON, verified atomic)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "=== CATEGORY BREAKDOWN ==="
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Processor                          : 65 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Networking                         : 57 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Accessories & Infrastructure       : 44 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Storage Controllers                : 37 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Drive Enclosures / Drives          : 24 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Power Supplies                     : 16 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Memory                             : 8 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.201Z",
+      "stream": "stdout",
+      "text": "  • Chassis                            : 6 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.202Z",
+      "stream": "stdout",
+      "text": "  • Cooling / Thermal                  : 5 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.202Z",
+      "stream": "stdout",
+      "text": "✅ CLASSIFICATION COMPLETE."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.660Z",
+      "stream": "stdout",
+      "text": "  ✅ Sheet 'Chassis Variants' — 6 CTO base options with pricing."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.679Z",
+      "stream": "stdout",
+      "text": "  ✅ Sheet 'Hardware Accessories' — 74 accessory SKUs."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.776Z",
+      "stream": "stdout",
+      "text": "  ✅ Sheet 'Software & Licenses' — 517 consolidated software/license SKUs."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:16.790Z",
+      "stream": "stdout",
+      "text": "  ✅ Sheet 'Support Services' — 1 service/support SKUs."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.032Z",
+      "stream": "stdout",
+      "text": "  ✅ Sheet 'Discontinued SKUs' — 790 entries (0 discontinued, 22 reinstated)."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.789Z",
+      "stream": "stdout",
+      "text": "✅ Excel workbook saved: /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/DL380_Gen12_SFF_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.789Z",
+      "stream": "stdout",
+      "text": "   Hardware SKUs: 262 | Service SKUs: 588 | Rules: 35"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.789Z",
+      "stream": "stdout",
+      "text": "Sheets:"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.790Z",
+      "stream": "stdout",
+      "text": "  1. Category Summary (38 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.790Z",
+      "stream": "stdout",
+      "text": "  2. All SKUs (262 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  3. Chassis Variants (6 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  4. Rules & Constraints (35 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  5. Hardware Accessories (74 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  6. Software & Licenses (517 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  7. Support Services (1 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  8. Price History Timeline (850 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  9. Processor (65 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  10. Memory (8 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  11. Networking (57 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  12. Power Supplies (16 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  13. Chassis (6 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  14. Accessories & Infrastructure (44 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  15. Drive Enclosures  Drives (24 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.791Z",
+      "stream": "stdout",
+      "text": "  16. Storage Controllers (37 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.792Z",
+      "stream": "stdout",
+      "text": "  17. Cooling  Thermal (5 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.792Z",
+      "stream": "stdout",
+      "text": "  18. Discontinued SKUs (790 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.792Z",
+      "stream": "stdout",
+      "text": "  19. Metadata (20 data rows)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:17.814Z",
+      "stream": "stdout",
+      "text": "--- STEP 7: Staging Post-Flight Quality Audit ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.164Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.164Z",
+      "stream": "stdout",
+      "text": "🔍 COMPREHENSIVE EXCEL TALLY & PIPELINE AUDIT"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "Chassis: DL380_Gen12_SFF"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "Excel:   /home/vinodh/vendorNotebookSolution/outputs/temp/staging_DL380_Gen12_SFF_1787401875555/DL380_Gen12_SFF_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 1: Artifact File Existence & Payload Sizes ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Excel workbook exists: DL380_Gen12_SFF_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.165Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Catalog JSON companion exists: DL380_Gen12_SFF_Catalog.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.166Z",
+      "stream": "stdout",
+      "text": "  ⚠️  ADVISORY: QuickSpecs PDF not present (no QuickSpecs link on OCA page): HPE_DL380_Gen12_SFF_QuickSpecs.pdf"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.166Z",
+      "stream": "stdout",
+      "text": "  📊 Excel Workbook:  2237.9 KB"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.167Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 2: Excel Workbook Sheet Structure ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.900Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Core sheet 'Category Summary' present in workbook"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.900Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Core sheet 'All SKUs' present in workbook"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.901Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Core sheet 'Rules & Constraints' present in workbook"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.901Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Core sheet 'Metadata' present in workbook"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.901Z",
+      "stream": "stdout",
+      "text": "  Workbook contains 19 total sheets: Category Summary, All SKUs, Chassis Variants, Rules & Constraints, Hardware Accessories, Software & Licenses, Support Services, Price History Timeline, Processor, Memory, Networking, Power Supplies, Chassis, Accessories & Infrastructure, Drive Enclosures  Drives, Storage Controllers, Cooling  Thermal, Discontinued SKUs, Metadata"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.901Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 3: Master SKU Tally & Row Counts ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.928Z",
+      "stream": "stdout",
+      "text": "  JSON  totalUniqueSKUs:     262"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "  Excel 'All SKUs' rows:     262"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Excel 'All SKUs' count (262) >= JSON totalUniqueSKUs (262)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "  Category Summary SKU sum:  865"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Category Summary SKU sum (865) > 0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Category Summary has 38 subcategory rows (>= 1)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.929Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 4: Data Quality Guardrails ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.938Z",
+      "stream": "stdout",
+      "text": "  📊 Subcategory Resolution Quality: 262/262 resolved (100.0%)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.938Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 100% of SKUs (262/262) pass numeric Current Qty regex (^\\d+$)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 100% of SKUs (262/262) have 4-level Hierarchy Path (>= 3 '>' delimiters, Rule #20)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 100% of SKUs (262/262) have valid Option Type (Standard/CTO/BTO/FIO/Service, Rule #30)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 0 TAA / GTA Compliant SKUs found in export (0 violations, Rule #33 MEA Dubai Exclusion)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 0 Internal DOM pattern IDs found in export (0 violations, Rule #35 DOM Pattern Elimination)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: 100% of SKUs (262/262) pass strict HPE SKU regex (-B21 / Service SKU, Rule #35)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 5: Category-Specific Sheet SKU Tallies ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  Chassis Variants: 6 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.939Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Chassis Variants' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.941Z",
+      "stream": "stdout",
+      "text": "  Hardware Accessories: 74 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.942Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Hardware Accessories' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.956Z",
+      "stream": "stdout",
+      "text": "  Software & Licenses: 517 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.956Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Software & Licenses' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.957Z",
+      "stream": "stdout",
+      "text": "  Support Services: 1 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.957Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Support Services' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.961Z",
+      "stream": "stdout",
+      "text": "  Price History Timeline: 850 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.961Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Price History Timeline' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.963Z",
+      "stream": "stdout",
+      "text": "  Processor: 65 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.963Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Processor' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.963Z",
+      "stream": "stdout",
+      "text": "  Memory: 8 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.963Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Memory' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.964Z",
+      "stream": "stdout",
+      "text": "  Networking: 57 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.964Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Networking' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.964Z",
+      "stream": "stdout",
+      "text": "  Power Supplies: 16 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.964Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Power Supplies' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.964Z",
+      "stream": "stdout",
+      "text": "  Chassis: 6 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.965Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Chassis' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.965Z",
+      "stream": "stdout",
+      "text": "  Accessories & Infrastructure: 44 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.966Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Accessories & Infrastructure' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.966Z",
+      "stream": "stdout",
+      "text": "  Drive Enclosures  Drives: 24 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.966Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Drive Enclosures  Drives' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.967Z",
+      "stream": "stdout",
+      "text": "  Storage Controllers: 37 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.967Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Storage Controllers' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.967Z",
+      "stream": "stdout",
+      "text": "  Cooling  Thermal: 5 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.967Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Cooling  Thermal' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.973Z",
+      "stream": "stdout",
+      "text": "  Discontinued SKUs: 790 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.973Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: Sheet 'Discontinued SKUs' contains > 0 SKUs"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.973Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 6: PDF Fingerprint MD5 Cache Verification ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "  ⚠️  ADVISORY: QuickSpecs PDF not present — skipping MD5 calculation."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "--- AUDIT 7: Historical Diff & Price Trail Verification ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "  History snapshots found: 35 file(s)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: history/ directory contains valid catalog snapshots"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "  ✅ PASS: price_history.json cumulative log verified"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "🎉 ALL AUDIT CHECKS PASSED — PIPELINE 100% COMPLIANT!"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.974Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.987Z",
+      "stream": "stdout",
+      "text": "✅ Staging audit passed 100%! Ready to promote to live workspace."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:18.988Z",
+      "stream": "stdout",
+      "text": "--- STEP 8: Promoting Staging to Live Workspace & Master Knowledge Sync ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.165Z",
+      "stream": "stdout",
+      "text": "[INFO] [FS_COMPAT] Live workspace backed up to: DL380_Gen12_SFF_promotion_bak_1787401878988"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.259Z",
+      "stream": "stdout",
+      "text": "[2026-08-22T12:31:19.259Z] [INFO ] [FS_COMPAT] Promotion backup cleaned up — live workspace promoted successfully: DL380_Gen12_SFF"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.261Z",
+      "stream": "stdout",
+      "text": "Updated existing row in Master Registry for: outputs/ProLiant/Gen12/DL380_Gen12_SFF/"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.344Z",
+      "stream": "stdout",
+      "text": "Found 6 product entries in SCRAPED_CATALOGS.md"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.394Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-22.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.395Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-22"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         catalog_2026-08-22T12:31:15.957Z.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         3  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.483Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    6  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       253"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   3"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.484Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-22.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:19.504Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for DL380_Gen12_SFF (259 SKUs across 66 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.769Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.772Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-10.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.772Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-10"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         (Baseline - None)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.776Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       4"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.777Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-10.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:20.778Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for DL380_Gen11 (4 SKUs across 1 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.297Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen11/DL380_Gen11/DL380_Gen11_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.301Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-10.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.301Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-10"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         (Baseline - None)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       2"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.306Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-10.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.307Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for GX5000_General_RACK (2 SKUs across 1 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.723Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/Cray/General/GX5000_General_RACK/GX5000_General_RACK_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.725Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-10.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.725Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-10"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         (Baseline - None)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.727Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.728Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.728Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.728Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       2"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.728Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.728Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-10.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:21.729Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for MSL3040_Tape (2 SKUs across 1 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.100Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/StoreEver/Tape/MSL3040_Tape/MSL3040_Tape_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.101Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-10.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.102Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-10"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         (Baseline - None)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       3"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.105Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-10.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.106Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for SY100Gb_F32_Module (3 SKUs across 1 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.607Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/Synergy/General/SY100Gb_F32_Module/SY100Gb_F32_Module_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.609Z",
+      "stream": "stderr",
+      "text": "  ⚠️  [SAME-DAY RERUN] Snapshot catalog_2026-08-22.json already exists."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.609Z",
+      "stream": "stderr",
+      "text": "      Previous run's snapshot will be replaced with this run's data."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "--- Hardware Catalog Diff Engine Summary ---"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Scrape Date:          2026-08-22"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Previous Ref:         catalog_2026-08-21.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Added SKUs:           0  (Green)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Removed SKUs:         0  (Red + Strikethrough)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Reinstated SKUs:      0  (Gold)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Price Changed:        0  (Amber)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Attribute Changed:    0  (Blue)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Price & Attr Changed: 0  (Purple)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Unchanged SKUs:       3"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Total Discontinued:   0"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.616Z",
+      "stream": "stdout",
+      "text": "  Snapshot Saved:       catalog_2026-08-22.json"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.617Z",
+      "stream": "stdout",
+      "text": "✅ Synced catalog JSON for Alletra_Storage_System (3 SKUs across 1 categories) with Base Chassis Variants."
+    },
+    {
+      "timestamp": "2026-08-22T12:31:22.998Z",
+      "stream": "stdout",
+      "text": "  📊 Rebuilt Master Excel Catalog: /home/vinodh/vendorNotebookSolution/outputs/Alletra/Storage/Alletra_Storage_System/Alletra_Storage_System_OCA_Catalog.xlsx"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.020Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.020Z",
+      "stream": "stdout",
+      "text": "🎉 PIPELINE COMPLETED SUCCESSFULLY in 36.4s — Live Workspace Updated:"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.020Z",
+      "stream": "stdout",
+      "text": "   /home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12_SFF"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.020Z",
+      "stream": "stdout",
+      "text": "================================================================"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.027Z",
+      "stream": "stdout",
+      "text": "[2026-08-22T12:31:23.026Z] [INFO ] [POST_FLOW_SYNC] Triggering post-flow knowledge sync for DL380_Gen12_SFF (Flow: SCRAPE)"
+    },
+    {
+      "timestamp": "2026-08-22T12:31:23.137Z",
+      "stream": "stdout",
+      "text": "[2026-08-22T12:31:23.136Z] [INFO ] [POST_FLOW_SYNC] Post-flow sync complete. Status: DRIFT_DETECTED, Total Rules: 23, Unsynced: 3"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "resource": {
+    "name": "sessions/17824419637964961256",
+    "title": "[Jules Task 10] Adversarial OCR & Noisy Quote Parsing Suite",
+    "createTime": "2026-08-24T09:14:32.952980025Z",
+    "updateTime": "2026-08-24T10:39:30.556238Z",
+    "state": "completed",
+    "sourceContext": {
+      "source": "sources/github/vinodhsubramanian123/updatedVendorScrapingNotebook-v2",
+      "githubRepoContext": {
+        "startingBranch": "main"
+      },
+      "environmentVariablesEnabled": true
+    },
+    "prompt": "Create an adversarial OCR and chaotic quote parsing unit test suite in tests/test_ocr_adversarial_parser.js:\n1. Test scripts/lib/boq_parser.js and scripts/lib/ocr_service.js with noisy tabular inputs: multi-currency symbols ($/€/£), mixed whitespace, messy description lines, and missing quantity columns.\n2. Test SKU regex extraction against edge cases: truncated SKUs, lowercase prefixes, and embedded serial numbers.\n3. Test FIFO key rotation failover under rapid simulated 429 quota exhaustion.\nEnsure all tests pass and integrate into npm run test:all.",
+    "url": "https://jules.google.com/session/17824419637964961256",
+    "id": "17824419637964961256",
+    "archived": false,
+    "outputs": [],
+    "outcome": {
+      "sessionId": "17824419637964961256",
+      "title": "[Jules Task 10] Adversarial OCR & Noisy Quote Parsing Suite",
+      "state": "completed",
+      "outputs": []
+    }
+  },
+  "_lastSyncedAt": 1787574155018
+}
