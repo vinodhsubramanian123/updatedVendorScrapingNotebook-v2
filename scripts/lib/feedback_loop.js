@@ -104,7 +104,26 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     status: 'APPLIED_TO_PRECHECKS_AND_RAG'
   };
 
-  deltas.push(delta);
+  // Deduplicate before appending: if identical rule exists, update timestamp & metadata instead of adding duplicate
+  const existingIdx = deltas.findIndex(d => 
+    d.chassis === delta.chassis &&
+    d.affectedSku === delta.affectedSku &&
+    (d.requiredDependencySku === delta.requiredDependencySku || (!d.requiredDependencySku && !delta.requiredDependencySku)) &&
+    (d.rawMessage === delta.rawMessage || d.ruleUpdate === delta.ruleUpdate)
+  );
+
+  if (existingIdx >= 0) {
+    deltas[existingIdx] = {
+      ...deltas[existingIdx],
+      timestamp: delta.timestamp,
+      humanReasoning: delta.humanReasoning || deltas[existingIdx].humanReasoning,
+      preConfidenceScore: delta.preConfidenceScore ?? deltas[existingIdx].preConfidenceScore,
+      guardrailTurn: delta.guardrailTurn ?? deltas[existingIdx].guardrailTurn
+    };
+  } else {
+    deltas.push(delta);
+  }
+
   safeWriteJsonAtomic(deltaFile, deltas);
 
   // Auto-update Catalog Rules TSV / CSV if present
