@@ -83,6 +83,7 @@
     "jules": "node scripts/services/jules_task_manager.js",
     "jules:prs": "node scripts/services/jules_task_manager.js prs",
     "jules:prune": "node scripts/services/jules_task_manager.js prune",
+    "jules:archive": "node scripts/services/jules_task_manager.js archive-completed",
     "update:graph": "graphify update ."
   },
   "dependencies": {

@@ -240,14 +240,88 @@ if (require.main === module) {
           console.log(`  [PR #${String(pr.number).padEnd(3)}] [${(pr.state || '').toUpperCase().padEnd(6)}] ${pr.title}`);
           console.log(`        Branch: ${pr.branch} | Author: ${pr.author} | URL: ${pr.html_url}`);
         });
+      } else if (command === 'archive' || command === 'archive-completed') {
+        let id = args[1];
+        if (id && id !== 'all' && id !== 'completed') {
+          console.log(`🔍 Auditing and archiving single session: ${id}...`);
+          const res = await archiveSession(id);
+          console.log(`✅ Session ${id} archived successfully.`);
+        } else {
+          console.log('🔍 Auditing and archiving all completed Jules sessions...');
+          const results = await archiveCompletedSessions();
+          console.log(`\n🎉 Successfully audited and archived ${results.length} completed session(s).`);
+        }
       } else {
-        console.log('Unknown command. Available commands: list, create, send, status, audit, prune, prs');
+        console.log('Unknown command. Available commands: list, create, send, status, audit, prune, prs, archive, archive-completed');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);
       process.exit(1);
     }
   })();
+}
+
+/**
+ * Archive a specific Jules session after validating its audit report.
+ */
+async function archiveSession(sessionId) {
+  const client = await getJulesClient();
+  const auditReport = await auditSession(sessionId);
+  const session = await client.session(sessionId);
+  await session.archive();
+
+  // Log to persistent audit ledger
+  const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+  const ledgerPath = path.join(__dirname, '..', '..', 'outputs', 'history', 'jules_archived_sessions.json');
+  let ledger = [];
+  try {
+    const fs = require('fs');
+    if (fs.existsSync(ledgerPath)) {
+      ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf-8'));
+    }
+  } catch (e) {}
+
+  const entry = {
+    sessionId,
+    title: auditReport.title,
+    archivedAt: new Date().toISOString(),
+    totalActivities: auditReport.totalActivities,
+    pullRequests: auditReport.pullRequests,
+    affectedFiles: auditReport.affectedFiles
+  };
+
+  // Upsert
+  const idx = ledger.findIndex(x => x.sessionId === sessionId);
+  if (idx >= 0) {
+    ledger[idx] = entry;
+  } else {
+    ledger.push(entry);
+  }
+
+  safeWriteJsonAtomic(ledgerPath, ledger);
+  return entry;
+}
+
+/**
+ * Audit and archive all completed Jules sessions.
+ */
+async function archiveCompletedSessions() {
+  const sessions = await listSessions();
+  const completed = sessions.filter(s => s.state === 'completed');
+  console.log(`Found ${completed.length} completed session(s) to inspect and archive.`);
+
+  const archived = [];
+  for (const s of completed) {
+    try {
+      console.log(`- Auditing & archiving session: ${s.id} (${(s.title || '').substring(0, 45)})...`);
+      const entry = await archiveSession(s.id);
+      archived.push(entry);
+      console.log(`  ✅ Archived ${s.id}`);
+    } catch (err) {
+      console.warn(`  ⚠️ Failed to archive ${s.id}: ${err.message}`);
+    }
+  }
+  return archived;
 }
 
 /**
@@ -289,6 +363,8 @@ module.exports = {
   getSessionDetails,
   sendMessageToSession,
   auditSession,
+  archiveSession,
+  archiveCompletedSessions,
   listPullRequests,
   getJulesClient
 };

@@ -82,4 +82,10 @@ The system leverages Google Jules for background code review, test generation, a
    - ALWAYS use `node scripts/services/jules_task_manager.js prs` (or `npm run jules:prs`) which leverages native Node.js `fetch` against the GitHub REST API (`https://api.github.com/repos/.../pulls`) with automated token resolution and zero external dependencies.
    - For pruning remote branches, ALWAYS use `node scripts/services/jules_task_manager.js prune` (or `npm run jules:prune`).
 
+10. **Audit-Before-Archive Session Lifecycle Governance (`INV-19`)**:
+   - Completed Jules sessions MUST NOT remain in the active query pool indefinitely.
+   - AI agents MUST execute `node scripts/services/jules_task_manager.js archive-completed` (or `npm run jules:archive`).
+   - The archive procedure strictly runs a full thread and patch audit (`auditSession`) before archiving the session on the Jules API (`session.archive()`), and logs a structured trace record to `outputs/history/jules_archived_sessions.json`.
+
+
 

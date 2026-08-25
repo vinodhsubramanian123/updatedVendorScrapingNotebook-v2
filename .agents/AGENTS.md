@@ -209,6 +209,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: AI agents and developers inspect and prune Jules PR branches directly through pure Node.js services without requiring external binaries like the GitHub CLI (`gh`).
 - **Rule**: Never run `gh pr list` in shell scripts or test suites. Always use `node scripts/services/jules_task_manager.js prs` (or `npm run jules:prs`) and `node scripts/services/jules_task_manager.js prune` (or `npm run jules:prune`) which leverage native `fetch` over GitHub REST API endpoints with automated header resolution.
 
+### INV-19: Audit-Before-Archive Session Lifecycle Governance
+- **Pattern**: Completed Jules sessions are audited for activities, patches, and PR deltas, logged into `outputs/history/jules_archived_sessions.json`, and archived via `session.archive()`.
+- **Rule**: Never leave completed, fully integrated sessions lingering in the active query pool. Run `node scripts/services/jules_task_manager.js archive-completed` (or `npm run jules:archive`) after merging PRs to keep the active session pool lean and fast.
+
 ---
 
 ## History Directory Hygiene Rules
