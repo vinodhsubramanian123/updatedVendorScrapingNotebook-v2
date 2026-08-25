@@ -84,12 +84,19 @@ async function loadProfile(family, gen) {
 /**
  * Synchronous variant of loadProfile for legacy/synchronous utilities.
  */
+const _profileCacheSync = new Map();
+
 function loadProfileSync(family, gen) {
   let defaultProfile = {};
   try {
     const defaultPath = path.join(PROFILES_DIR, 'default_profile.json');
     if (fs.existsSync(defaultPath)) {
-      defaultProfile = JSON.parse(fs.readFileSync(defaultPath, 'utf-8'));
+      if (_profileCacheSync.has(defaultPath)) {
+        defaultProfile = _profileCacheSync.get(defaultPath);
+      } else {
+        defaultProfile = JSON.parse(fs.readFileSync(defaultPath, 'utf-8'));
+        _profileCacheSync.set(defaultPath, defaultProfile);
+      }
     }
   } catch (err) {
     console.warn(`⚠️ Warning: Failed to load default_profile.json: ${err.message}`);
@@ -99,9 +106,17 @@ function loadProfileSync(family, gen) {
   try {
     if (fs.existsSync(PROFILES_DIR)) {
       const files = fs.readdirSync(PROFILES_DIR).filter(f => f.endsWith('.json') && f !== 'default_profile.json');
+
       for (const file of files) {
         const filePath = path.join(PROFILES_DIR, file);
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        let data;
+        if (_profileCacheSync.has(filePath)) {
+          data = _profileCacheSync.get(filePath);
+        } else {
+          data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          _profileCacheSync.set(filePath, data);
+        }
+
         const famMatch = data.family && family && data.family.toLowerCase() === family.toLowerCase();
         const genMatch = !data.gen || data.gen === '*' || (gen && data.gen.toLowerCase() === gen.toLowerCase());
         if (famMatch && genMatch) {
