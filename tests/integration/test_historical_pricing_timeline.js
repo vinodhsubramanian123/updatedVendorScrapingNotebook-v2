@@ -1,3 +1,4 @@
+(async () => {
 'use strict';
 /**
  * tests/test_historical_pricing_timeline.js
@@ -93,27 +94,27 @@ async function runHistoricalPricingSuite() {
     console.log('\n▶ [TEST 2]: Individual SKU Historical Price Lookup Across Months');
     
     // CPU in Aug: $11,600
-    const cpuAug = getHistoricalSkuPrice('P49025-B21', '2026-08-15', testTempDir);
+    const cpuAug = await getHistoricalSkuPrice('P49025-B21', '2026-08-15', testTempDir);
     report('CPU price in August is $11,600.00', cpuAug.priceUsd === 11600 && cpuAug.status === 'BASELINE');
 
     // CPU in Sept: $12,180 (+5%)
-    const cpuSept = getHistoricalSkuPrice('P49025-B21', '2026-09-20', testTempDir);
+    const cpuSept = await getHistoricalSkuPrice('P49025-B21', '2026-09-20', testTempDir);
     report('CPU price in September reflects price increase ($12,180.00)', cpuSept.priceUsd === 12180 && cpuSept.changeFromBaselinePercent === 5);
 
     // CPU in Oct: still $12,180 (effective from Sept 15)
-    const cpuOct = getHistoricalSkuPrice('P49025-B21', '2026-10-10', testTempDir);
+    const cpuOct = await getHistoricalSkuPrice('P49025-B21', '2026-10-10', testTempDir);
     report('CPU price in October preserves effective September price ($12,180.00)', cpuOct.priceUsd === 12180 && cpuOct.effectiveDate === '2026-09-15');
 
     // CPU in Nov: $11,000 (-5.17% from baseline)
-    const cpuNov = getHistoricalSkuPrice('P49025-B21', '2026-11-15', testTempDir);
+    const cpuNov = await getHistoricalSkuPrice('P49025-B21', '2026-11-15', testTempDir);
     report('CPU price in November drops to $11,000.00', cpuNov.priceUsd === 11000 && cpuNov.status === 'PRICE_DECREASE');
 
     // Fan in Oct: Discontinued (REMOVED)
-    const fanOct = getHistoricalSkuPrice('P48820-B21', '2026-10-20', testTempDir);
+    const fanOct = await getHistoricalSkuPrice('P48820-B21', '2026-10-20', testTempDir);
     report('Fan Kit in October flagged as discontinued (REMOVED)', fanOct.isDiscontinued === true && fanOct.status === 'REMOVED');
 
     // Fan in Dec: Reinstated at $350.00
-    const fanDec = getHistoricalSkuPrice('P48820-B21', '2026-12-05', testTempDir);
+    const fanDec = await getHistoricalSkuPrice('P48820-B21', '2026-12-05', testTempDir);
     report('Fan Kit in December reinstated ($350.00)', fanDec.priceUsd === 350 && fanDec.isDiscontinued === false && fanDec.status === 'REINSTATED');
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -185,3 +186,5 @@ runHistoricalPricingSuite().catch((err) => {
   console.error('\n💥 FATAL HISTORICAL PRICING TEST FAILURE:', err);
   process.exit(1);
 });
+
+})();

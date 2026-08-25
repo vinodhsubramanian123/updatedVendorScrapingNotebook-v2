@@ -1,3 +1,4 @@
+(async () => {
 'use strict';
 /**
  * tests/test_incremental_checksum.js — Test Suite for Incremental Checksum & SKU Versioning
@@ -63,7 +64,7 @@ console.log(`✅ PASS: Incremental Hash Diff (Saved ~${diffResult.stats.estimate
 // 3. Test SKU Version Audit Query on actual chassis directory
 const dl380Dir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
 if (fs.existsSync(dl380Dir)) {
-  const audit = getSkuAuditHistory('P73282-B21', dl380Dir);
+  const audit = await getSkuAuditHistory('P73282-B21', dl380Dir);
   assert.strictEqual(audit.sku, 'P73282-B21');
   console.log(`✅ PASS: SKU Version Audit Query for ${audit.sku} (Status: ${audit.currentStatus})`);
 }
@@ -115,3 +116,5 @@ try {
 }
 
 console.log('🎉 ALL INCREMENTAL CHECKSUM & VERSIONING TESTS PASSED!');
+
+})();

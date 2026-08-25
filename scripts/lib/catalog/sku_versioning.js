@@ -34,7 +34,7 @@ function calculateChecksum(content) {
  * @param {string} chassisDir - Relative or absolute path to chassis folder
  * @returns {object} Audit trail with price history, attribute changes, snapshots, and current status
  */
-function getSkuAuditHistory(targetSku, chassisDir) {
+async function getSkuAuditHistory(targetSku, chassisDir) {
   if (!targetSku) throw new Error('Target SKU is required for version audit');
   
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
@@ -106,10 +106,22 @@ function getSkuAuditHistory(targetSku, chassisDir) {
     .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && f !== 'catalog_deltas.json')
     .sort();
 
-  for (const file of snapshots) {
+  const snapshotsData = await Promise.all(snapshots.map(async (file) => {
     const snapshotPath = path.join(historyDir, file);
     try {
-      const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+      const rawContent = await fs.promises.readFile(snapshotPath, 'utf-8');
+      return { file, rawContent };
+    } catch (_) {
+      return null;
+    }
+  }));
+
+  for (const data of snapshotsData) {
+    if (!data) continue;
+    const { file, rawContent } = data;
+    try {
+      if (!rawContent.includes(cleanSku)) continue;
+      const content = JSON.parse(rawContent);
       if (!content || typeof content !== 'object') continue;
       const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
       const checksum = calculateChecksum(content);
@@ -220,10 +232,10 @@ function formatMonthLabel(isoDate) {
  * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
  * @returns {object} Historical price details on that date
  */
-function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
+async function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
   const normalizedDate = normalizeTargetDate(targetDate);
   const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
-  const audit = getSkuAuditHistory(targetSku, dir);
+  const audit = await getSkuAuditHistory(targetSku, dir);
 
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
@@ -307,7 +319,7 @@ function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
  * @param {string} chassisDir - Path to chassis folder
  * @returns {object} Consolidated BOQ breakdown on that date
  */
-function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
+async function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   const normalizedDate = normalizeTargetDate(targetDate);
   const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
 
@@ -327,7 +339,7 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   for (const it of items) {
     const cleanSku = it.sku;
     const qty = parseInt(it.quantity, 10) || 1;
-    const hist = getHistoricalSkuPrice(cleanSku, normalizedDate, dir);
+    const hist = await getHistoricalSkuPrice(cleanSku, normalizedDate, dir);
     const unitPrice = hist.priceUsd;
     const extendedPrice = unitPrice * qty;
 
