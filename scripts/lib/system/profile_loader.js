@@ -151,5 +151,6 @@ function loadProfileSync(family, gen) {
 module.exports = {
   loadProfile,
   loadProfileSync,
-  _clearProfileCacheSync
+  _clearProfileCacheSync,
+  _clearProfileCache: _clearProfileCacheSync
 };
