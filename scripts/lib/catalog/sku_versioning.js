@@ -12,12 +12,14 @@ const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 
 const catalogPriceCache = new Map();
+const snapshotCache = new Map();
 
 /**
  * Clear the internal catalog price cache (useful for tests/hot reloads).
  */
 function _clearCatalogPriceCache() {
   catalogPriceCache.clear();
+  snapshotCache.clear();
 }
 
 /**
@@ -109,7 +111,13 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   for (const file of snapshots) {
     const snapshotPath = path.join(historyDir, file);
     try {
-      const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+      let content;
+      if (snapshotCache.has(snapshotPath)) {
+        content = snapshotCache.get(snapshotPath);
+      } else {
+        content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+        snapshotCache.set(snapshotPath, content);
+      }
       if (!content || typeof content !== 'object') continue;
       const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
       const checksum = calculateChecksum(content);

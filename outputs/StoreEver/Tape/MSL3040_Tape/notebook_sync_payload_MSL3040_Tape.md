@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `MSL3040_Tape`  
-**Sync Timestamp**: 2026-08-24T14:23:30.418Z  
+**Sync Timestamp**: 2026-08-25T12:42:36.496Z
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 

@@ -25,7 +25,7 @@
     "scrape:storage": "node scripts/scrapers/scrape_oca_storage_solution.js",
     "raw": "node scripts/scrapers/scrape_oca.js",
     "expand": "node scripts/scrapers/expand_and_rescrape.js",
-    "build:catalog": "node scripts/catalogs/build_catalog.js",
+    "build:catalog": "node scripts/build_catalog.js",
     "generate": "node scripts/catalogs/generate_xlsx.js",
     "verify": "node tests/integration/verify_excel_tally.js",
     "audit": "node tests/integration/test_pipeline_evals.js",
@@ -85,7 +85,8 @@
     "@modelcontextprotocol/sdk": "^1.30.0",
     "dotenv": "^17.4.2",
     "ws": "^8.18.0",
-    "xlsx-js-style": "^1.2.0"
+    "xlsx-js-style": "^1.2.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@google/jules-mcp": "^0.2.0",
