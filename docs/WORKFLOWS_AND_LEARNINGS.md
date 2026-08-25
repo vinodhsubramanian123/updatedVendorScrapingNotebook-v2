@@ -463,3 +463,26 @@ flowchart TD
 - `build_catalog.js` emits structured provenance logs (`history/classification_diagnostics.json`) via `ClassificationDiagnostics`, recording table indices, matched taxonomy keywords, detected component roles, assigned parent categories, quantity constraints, and skipped table reasons.
 - All integration and audit test suites implement deep failure introspectors that output expected vs actual value diffs with clickable markdown links directly to the classification diagnostics trace.
 
+## 24. Cross-Platform GitHub Pull Request Protocol (`INV-18`)
+- **Problem**: Executing shell CLI commands like `gh pr list --state all` fails whenever the host machine does not have the GitHub CLI (`gh`) binary installed, breaking automated PR workflows.
+- **Permanent Solution (`INV-18`)**:
+  - Replaced CLI binary execution with pure Node.js REST API inspection in `scripts/services/jules_task_manager.js` using native `fetch`.
+  - Automatically queries `https://api.github.com/repos/.../pulls?state=all` with token support and public fallback.
+  - Exposed dedicated CLI commands: `npm run jules:prs` (list all PRs) and `npm run jules:prune` (prune remote branches cleanly via `git push origin --delete <branch>`).
+
+## 25. Audit-Before-Archive Session Lifecycle Governance (`INV-19`)
+- **Problem**: As multi-agent sessions scale (20+ parallel Jules sessions), keeping completed sessions in the active query pool degrades API responsiveness and increases latency during background scheduling sweeps.
+- **Permanent Solution (`INV-19`)**:
+  - Implemented an automated **Audit-Before-Archive** lifecycle (`npm run jules:archive`).
+  - Prior to calling `session.archive()`, the system strictly executes `auditSession(sessionId)` to verify all activities, pull requests, patch deltas, and modified files.
+  - Emits a permanent, auditable provenance trace in `outputs/history/jules_archived_sessions.json`.
+  - Removes retired sessions from the active polling pool, keeping active sweeps lean and fast.
+
+## 26. Proactive Bug Pattern Analysis & Systematic Codebase Hardening
+- **Multi-File Pattern Auditing**: When a bug or performance bottleneck is identified in one module, the engine proactively scans the entire codebase for identical structural patterns:
+  1. **Atomic File Operations**: Replaced bare `fs.writeFileSync` in dashboard services (`taskManager.cjs`, `evaluation.cjs`) with `safeWriteJsonAtomic` from `scripts/lib/system/fs_compat.js` to eliminate race conditions and partial file corruptions.
+  2. **In-Memory Config Memoization**: Added Map/Object memoization to `loadProfileSync` (`profile_loader.js`) and `synthesize5TierRankedSolutions` (`strategy_synthesizer.js` for `strategy_addons.json`), eliminating repetitive synchronous disk reads in tight evaluation loops.
+  3. **Cross-Platform Binary Lookups**: Replaced Unix-specific `execSync('which nlm')` in `notebook_query_utils.js` and `test_pipeline_evals.js` with pure Node.js `process.env.PATH` directory inspection and `fs.existsSync`.
+  4. **Closed-Loop PR Review & Conflict Verification**: All incoming PRs and session patches are strictly audited across the 18 test tiers, verified against live catalog benchmarks, merged cleanly to `main`, and pruned on remote.
+
+
