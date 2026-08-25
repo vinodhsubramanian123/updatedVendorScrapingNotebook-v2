@@ -5,6 +5,8 @@ const path = require('path');
 
 const PROFILES_DIR = path.join(__dirname, '..', 'config', 'profiles');
 
+const profileSyncCache = new Map();
+
 /**
  * Loads the base default profile, and merges any product-specific override
  * based on the detected family and generation.
@@ -85,6 +87,11 @@ async function loadProfile(family, gen) {
  * Synchronous variant of loadProfile for legacy/synchronous utilities.
  */
 function loadProfileSync(family, gen) {
+  const cacheKey = `${family}_${gen}`;
+  if (profileSyncCache.has(cacheKey)) {
+    return profileSyncCache.get(cacheKey);
+  }
+
   let defaultProfile = {};
   try {
     const defaultPath = path.join(PROFILES_DIR, 'default_profile.json');
@@ -122,13 +129,16 @@ function loadProfileSync(family, gen) {
     }
   }
 
-  return {
+  const mergedProfile = {
     scraping_tuning: {
       ...(defaultProfile.scraping_tuning || {}),
       ...(overrideProfile.scraping_tuning || {})
     },
     component_mapping: mergedMapping
   };
+
+  profileSyncCache.set(cacheKey, mergedProfile);
+  return mergedProfile;
 }
 
 module.exports = {
