@@ -42,6 +42,46 @@ async function runTests() {
   assert.strictEqual(result[1].sku, 'SKU2');
   console.log('  ✅ Multi-product decomposition verified.');
 
+  // 4. Test identifySubProducts Edge Cases and Happy Path
+  console.log('\n▶ Test 4: identifySubProducts Edge Cases and Happy Path');
+
+  // Happy Path: multiple mocked SKUs to verify array filtering logic
+  const happyPathItems = [
+    { sku: 'NODE1', description: 'HPE ProLiant DL380 CTO Server Node 1', category: 'Chassis' },
+    { sku: 'NODE2', description: 'HPE ProLiant Compute Module Node 2', category: 'Chassis' },
+    { sku: 'RANDOM', description: 'Some random accessory', category: 'Accessory' }
+  ];
+  const happyPathResult = identifySubProducts(happyPathItems, 'ProLiant');
+  assert.strictEqual(happyPathResult.length, 2, 'Should return 2 sub-products for 2 chassis items');
+  assert.strictEqual(happyPathResult[0].sku, 'NODE1');
+  assert.strictEqual(happyPathResult[1].sku, 'NODE2');
+
+  // 0 chassis items, default product family
+  const noChassisResult = identifySubProducts([], 'ProLiant');
+  assert.strictEqual(noChassisResult.length, 0, 'Should return empty array for 0 items and ProLiant');
+
+  // Exactly 1 chassis item, non-Synergy
+  const oneChassisResult = identifySubProducts([
+    { sku: 'SKU1', description: 'HPE ProLiant DL380 Gen12 CTO Server', category: 'Chassis' }
+  ], 'ProLiant');
+  assert.strictEqual(oneChassisResult.length, 0, 'Should return empty array for 1 item and ProLiant');
+
+  // Synergy product family with < 2 chassis items
+  const synergyResult = identifySubProducts([
+    { sku: 'SKU1', description: 'Random Item', category: 'Accessory' }
+  ], 'Synergy');
+  assert.strictEqual(synergyResult.length, 2, 'Should return 2 hardcoded sub-products for Synergy');
+  assert.strictEqual(synergyResult[0].sku, 'SY480-GEN11');
+  assert.strictEqual(synergyResult[1].sku, 'SY100Gb_F32_Module');
+
+  // Empty items array, but with 'Synergy' product family
+  const emptySynergyResult = identifySubProducts([], 'Synergy');
+  assert.strictEqual(emptySynergyResult.length, 2, 'Should return 2 hardcoded sub-products for Synergy even with empty items');
+  assert.strictEqual(emptySynergyResult[0].sku, 'SY480-GEN11');
+  assert.strictEqual(emptySynergyResult[1].sku, 'SY100Gb_F32_Module');
+
+  console.log('  ✅ identifySubProducts edge cases verified.');
+
   console.log('\n🎉 ALL TOPOLOGY GRAPH BUILDER TESTS PASSED (100%)!');
 }
 
