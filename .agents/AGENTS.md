@@ -205,6 +205,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: `scripts/catalogs/build_catalog.js` must always record structured provenance traces (`outputs/{Family}/{Gen}/{Model}/history/classification_diagnostics.json`) via `ClassificationDiagnostics`.
 - **Rule**: All test assertion suites MUST provide rich introspective diff reporting linking directly to the provenance trace upon any assertion failure.
 
+### INV-18: Cross-Platform Pull Request & Branch Inspection Protocol
+- **Pattern**: AI agents and developers inspect and prune Jules PR branches directly through pure Node.js services without requiring external binaries like the GitHub CLI (`gh`).
+- **Rule**: Never run `gh pr list` in shell scripts or test suites. Always use `node scripts/services/jules_task_manager.js prs` (or `npm run jules:prs`) and `node scripts/services/jules_task_manager.js prune` (or `npm run jules:prune`) which leverage native `fetch` over GitHub REST API endpoints with automated header resolution.
+
 ---
 
 ## History Directory Hygiene Rules

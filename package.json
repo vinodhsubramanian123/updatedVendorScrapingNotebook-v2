@@ -81,6 +81,8 @@
     "start:listener": "node scripts/services/feedback_listener.js",
     "mcp:server": "node scripts/services/mcp_server.js",
     "jules": "node scripts/services/jules_task_manager.js",
+    "jules:prs": "node scripts/services/jules_task_manager.js prs",
+    "jules:prune": "node scripts/services/jules_task_manager.js prune",
     "update:graph": "graphify update ."
   },
   "dependencies": {

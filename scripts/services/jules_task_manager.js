@@ -231,8 +231,17 @@ if (require.main === module) {
           }
         }
         console.log('🎉 Stale remote branches pruned cleanly.');
+      } else if (command === 'prs' || command === 'pr:list') {
+        const state = args[1] || 'all';
+        console.log(`Fetching pull requests from GitHub (State: ${state})...`);
+        const prs = await listPullRequests(state);
+        console.log(`\nFound ${prs.length} pull request(s) on ${GITHUB_REPO}:`);
+        prs.forEach(pr => {
+          console.log(`  [PR #${String(pr.number).padEnd(3)}] [${(pr.state || '').toUpperCase().padEnd(6)}] ${pr.title}`);
+          console.log(`        Branch: ${pr.branch} | Author: ${pr.author} | URL: ${pr.html_url}`);
+        });
       } else {
-        console.log('Unknown command. Available commands: list, create, send, status, audit, prune');
+        console.log('Unknown command. Available commands: list, create, send, status, audit, prune, prs');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);
@@ -241,12 +250,46 @@ if (require.main === module) {
   })();
 }
 
+/**
+ * List Pull Requests from GitHub via REST API (cross-platform, zero gh binary dependency).
+ */
+async function listPullRequests(state = 'all') {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/pulls?state=${state}&per_page=50`;
+  const headers = { 'User-Agent': 'Antigravity-Agent' };
+  if (process.env.GITHUB_TOKEN || process.env.GH_TOKEN) {
+    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN || process.env.GH_TOKEN}`;
+  }
+  try {
+    const res = await fetch(url, { headers });
+    if (!res.ok) {
+      console.warn(`GitHub API returned status ${res.status}: ${res.statusText}`);
+      return [];
+    }
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+    return data.map(pr => ({
+      number: pr.number,
+      title: pr.title,
+      state: pr.state,
+      branch: pr.head?.ref || '',
+      author: pr.user?.login || 'unknown',
+      html_url: pr.html_url || '',
+      created_at: pr.created_at || '',
+      merged_at: pr.merged_at || null
+    }));
+  } catch (err) {
+    console.warn(`Failed to fetch pull requests: ${err.message}`);
+    return [];
+  }
+}
+
 module.exports = {
   listSessions,
   createSession,
   getSessionDetails,
   sendMessageToSession,
   auditSession,
+  listPullRequests,
   getJulesClient
 };
 

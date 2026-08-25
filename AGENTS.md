@@ -77,3 +77,9 @@ The system leverages Google Jules for background code review, test generation, a
    - `build_catalog.js` MUST always emit structured provenance traces (`outputs/{Family}/{Gen}/{Model}/history/classification_diagnostics.json`) via `ClassificationDiagnostics`.
    - All test assertion suites MUST provide rich introspective diff reporting linking directly to the provenance trace upon any assertion failure.
 
+9. **Cross-Platform Pull Request & Branch Inspection Protocol (`INV-18`)**:
+   - AI agents MUST NOT execute shell-dependent CLI binaries like `gh pr list` which fail when `gh` is uninstalled.
+   - ALWAYS use `node scripts/services/jules_task_manager.js prs` (or `npm run jules:prs`) which leverages native Node.js `fetch` against the GitHub REST API (`https://api.github.com/repos/.../pulls`) with automated token resolution and zero external dependencies.
+   - For pruning remote branches, ALWAYS use `node scripts/services/jules_task_manager.js prune` (or `npm run jules:prune`).
+
+
