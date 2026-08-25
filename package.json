@@ -85,7 +85,8 @@
     "@modelcontextprotocol/sdk": "^1.30.0",
     "dotenv": "^17.4.2",
     "ws": "^8.18.0",
-    "xlsx-js-style": "^1.2.0"
+    "xlsx-js-style": "^1.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@google/jules-mcp": "^0.2.0",

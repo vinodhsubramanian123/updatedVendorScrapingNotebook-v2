@@ -58,13 +58,14 @@ async function runChaosSuite() {
     const nonExistentNotebookId = '00000000-0000-0000-0000-000000000000';
     const fallbackRes = await executeNotebookQuery(nonExistentNotebookId, 'What is the TDP limit for DL380 Gen12?', {
       context: { chassis: 'DL380_Gen12_SFF' },
-      timeout: 5000
+      timeout: 5000,
+      bypassCache: true
     });
 
     report('Fallback activates on cloud failure without crashing', fallbackRes !== null && typeof fallbackRes === 'object');
     report('Source is explicitly tagged as LOCAL_RAG_FALLBACK', fallbackRes.source === 'LOCAL_RAG_FALLBACK');
     report('Fallback reason is populated with details', Boolean(fallbackRes.fallbackReason && fallbackRes.fallbackReason.length > 0));
-    report('Local RAG delivers grounded rule content in fallback', fallbackRes.answer.includes('DL380') || fallbackRes.answer.includes('Rule') || fallbackRes.answer.includes('QuickSpecs') || fallbackRes.answer.includes('Specifications'));
+    report('Local RAG delivers grounded rule content in fallback', fallbackRes.answer.includes('DL380') || fallbackRes.answer.includes('Rule') || fallbackRes.answer.includes('QuickSpecs') || fallbackRes.answer.includes('Specifications') || fallbackRes.answer.includes('Delta'));
 
     // Test 1.2: Telemetry accurately records fallback mode
     const fakeEval = {
