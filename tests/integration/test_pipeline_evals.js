@@ -371,10 +371,12 @@ async function main() {
   const homeDir = process.env.HOME || '';
   const nlmUserPath = path.join(homeDir, '.local', 'bin', 'nlm');
   const hasNlmBinary = fs.existsSync(nlmUserPath) || (() => {
-    try {
-      require('child_process').execSync('which nlm', { stdio: 'ignore' });
-      return true;
-    } catch (_) { return false; }
+    const isWin = process.platform === 'win32';
+    const binaryName = isWin ? 'nlm.cmd' : 'nlm';
+    const pathDirs = (process.env.PATH || '').split(path.delimiter).filter(Boolean);
+    return pathDirs.some(dir => {
+      try { return fs.existsSync(path.join(dir, binaryName)); } catch (_) { return false; }
+    });
   })();
 
   const profileDir = path.join(homeDir, '.notebooklm-mcp-cli', 'profiles', 'default');

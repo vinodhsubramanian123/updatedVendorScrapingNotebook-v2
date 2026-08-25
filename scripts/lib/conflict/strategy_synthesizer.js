@@ -16,6 +16,12 @@ const { cleanBaseSKU } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna } = require('./workload_dna.js');
 
+let _strategyAddonsCache = null;
+
+function _clearStrategyAddonsCache() {
+  _strategyAddonsCache = null;
+}
+
 /**
  * Synthesize 5-Tier Strategic Resolution Matrix based on Workload DNA and Multi-Metric Tradeoffs.
  *
@@ -132,16 +138,21 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const rank1Parts = [...baseParts, ...fixParts];
   const rank1Cost = rank1Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
 
-  // Load Strategy Config
+  // Load Strategy Config (Memoized)
   let strategyConfig = { default: { rank2: [], rank3: [], rank4: [] } };
-  try {
-    const configPath = path.join(__dirname, '..', '..', 'config', 'strategy_addons.json');
-    if (fs.existsSync(configPath)) {
-      strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  if (_strategyAddonsCache) {
+    strategyConfig = _strategyAddonsCache;
+  } else {
+    try {
+      const configPath = path.join(__dirname, '..', '..', 'config', 'strategy_addons.json');
+      if (fs.existsSync(configPath)) {
+        strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        _strategyAddonsCache = strategyConfig;
+      }
+    } catch (err) {
+      const _logger = require('../system/pipeline_logger.js');
+      _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse strategy_addons.json', err);
     }
-  } catch (err) {
-    const _logger = require('../system/pipeline_logger.js');
-    _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse strategy_addons.json', err);
   }
 
   const modelKey = (chassisInfo.model || '').toLowerCase();
@@ -434,5 +445,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
 module.exports = {
   synthesize5TierRankedSolutions,
-  synthesizeStrategies: synthesize5TierRankedSolutions
+  synthesizeStrategies: synthesize5TierRankedSolutions,
+  _clearStrategyAddonsCache
 };

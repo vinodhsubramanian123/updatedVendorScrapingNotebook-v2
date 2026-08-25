@@ -94,13 +94,16 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     let hasNlm = fs.existsSync(nlmUserPath);
 
     if (!hasNlm) {
-      try {
-        const { execSync } = require('child_process');
-        execSync('which nlm', { env: { ...process.env, PATH: extendedPath }, stdio: 'ignore' });
-        hasNlm = true;
-      } catch (_) {
-        hasNlm = false;
-      }
+      const isWin = process.platform === 'win32';
+      const binaryName = isWin ? 'nlm.cmd' : 'nlm';
+      const searchDirs = extendedPath.split(path.delimiter).filter(Boolean);
+      hasNlm = searchDirs.some(dir => {
+        try {
+          return fs.existsSync(path.join(dir, binaryName));
+        } catch (_) {
+          return false;
+        }
+      });
     }
 
     if (!hasNlm) {

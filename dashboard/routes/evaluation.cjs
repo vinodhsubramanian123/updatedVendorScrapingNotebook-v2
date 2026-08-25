@@ -132,8 +132,12 @@ router.post('/eval-boq', (req, res) => {
   if (!targetPath || !fs.existsSync(targetPath)) {
     const errorMsg = 'Valid BOQ file or text input is required';
     const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');
-    if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-    fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date().toISOString(), durationMs: 0, exitCode: 1, logs }, null, 2));
+    try {
+      const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date().toISOString(), durationMs: 0, exitCode: 1, logs });
+    } catch (_) {
+      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date().toISOString(), durationMs: 0, exitCode: 1, logs }, null, 2));
+    }
     broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
     broadcastSSE({ type: 'LOG', text: errorMsg, stream: 'stderr' });
     broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: 'EVAL_BOQ', runId, durationMs: 0 });
@@ -201,7 +205,12 @@ router.post('/eval-boq', (req, res) => {
     // Persist trace
     const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');
     if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-    fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs }, null, 2));
+    try {
+      const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs });
+    } catch (_) {
+      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs }, null, 2));
+    }
 
     // Extract and broadcast EVAL_RESULT from stdout
     try {
@@ -267,7 +276,12 @@ router.post('/export-boq', (req, res) => {
   const historyExportsDir = path.join(OUTPUTS_DIR, 'history', 'exports');
   if (!fs.existsSync(historyExportsDir)) fs.mkdirSync(historyExportsDir, { recursive: true });
   const metadata = { id: `${timestamp}-${tier}`, filename: exportFilename, chassisId: chassisId || 'Unknown', rank: tier, solutionName: rankedSolution?.name || 'N/A', estimatedCostUsd: rankedSolution?.estimatedCostUsd || 0, downloadPath: `/artifacts/temp/exports/${exportFilename}`, exportedAt: new Date(timestamp).toISOString() };
-  fs.writeFileSync(path.join(historyExportsDir, `${timestamp}-${tier}.json`), JSON.stringify(metadata, null, 2));
+  try {
+    const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+    safeWriteJsonAtomic(path.join(historyExportsDir, `${timestamp}-${tier}.json`), metadata);
+  } catch (_) {
+    fs.writeFileSync(path.join(historyExportsDir, `${timestamp}-${tier}.json`), JSON.stringify(metadata, null, 2));
+  }
   try { telemetryLib.recordExportTelemetry(metadata); } catch (_) {}
   res.json({ message: `Rank ${tier} corrected BOQ Excel exported`, filename: exportFilename, downloadPath: metadata.downloadPath, exportedAt: metadata.exportedAt });
 });

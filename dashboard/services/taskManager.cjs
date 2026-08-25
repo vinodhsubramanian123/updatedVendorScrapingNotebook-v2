@@ -123,17 +123,29 @@ function startTask(type, proc, res, outputsDir) {
     const durationMs = taskRef ? Date.now() - taskRef.startTime : 0;
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
 
-    // Persist trace log
+    // Persist trace log atomically
     const traceDir = path.join(outputsDir, 'history', 'runs');
     if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-    fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({
-      runId,
-      taskType: type,
-      startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
-      durationMs,
-      exitCode: code,
-      logs
-    }, null, 2));
+    try {
+      const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
+        runId,
+        taskType: type,
+        startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
+        durationMs,
+        exitCode: code,
+        logs
+      });
+    } catch (_) {
+      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({
+        runId,
+        taskType: type,
+        startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
+        durationMs,
+        exitCode: code,
+        logs
+      }, null, 2));
+    }
   });
 
   res.json({ message: `${type} task started`, runId, pid: proc.pid });
