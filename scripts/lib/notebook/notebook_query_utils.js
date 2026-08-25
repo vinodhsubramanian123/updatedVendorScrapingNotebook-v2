@@ -140,7 +140,18 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
         }
       }
 
-      const processed = postProcessNotebookResult(stdout, sanitizedQuery);
+      let processed = postProcessNotebookResult(stdout, sanitizedQuery);
+      if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
+        try {
+          const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
+          const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+          processed = {
+            ...localRes,
+            source: 'LOCAL_RAG_FALLBACK',
+            fallbackReason: 'Empty response from NotebookLM'
+          };
+        } catch (e) {}
+      }
       if (processed && processed.answer) {
         queryCache.set(cacheKey, processed);
         persistRagCache();

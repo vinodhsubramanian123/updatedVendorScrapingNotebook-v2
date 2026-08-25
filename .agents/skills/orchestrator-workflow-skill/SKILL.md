@@ -154,5 +154,16 @@ To be absolutely clear, the "Orchestrator" in this architecture is context-depen
 To maximize velocity and offload heavy validation without human friction:
 1. **Smart Task Offloading**: Antigravity delegates heavy stress-testing, boundary test generation, and container environment verification to Google Jules via `@google/jules-sdk` and `scripts/services/jules_task_manager.js`.
 2. **Proactive Background Scheduling (`schedule` tool)**: When Jules tasks are in-flight, Antigravity **MUST NOT sit idle waiting for human prompts**. Antigravity registers periodic timers (`DurationSeconds=120-180`, `TimerCondition="never"`) to autonomously wake up, inspect session activities (`session.activities.list()`), answer clarifications, push remediation commits, and verify test suites.
-3. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 18 test tiers, 7 portfolio product lines, Excel alignments, and zero-warning lints before approving completion.
+3. **Rigorous Code Review & Patch Audit (INV-10 & INV-12)**:
+   - Inspect all authored changesets and git diffs (`git diff --stat origin/main..<branch>`).
+   - Guard against unwanted build artifacts (`outputs/history/*.json` dumps, temp test files) before integrating.
+   - Verify that all architectural invariants (domain directories, sync/async contracts, atomic writes) are strictly maintained.
+4. **Full Automated Certification (INV-16 & INV-17)**:
+   - Run the full test suite (`npm run test:all`) across all 18 test tiers.
+   - Run portfolio certification (`npm test`) across all 7/7 product lines.
+   - Verify zero lint errors (`npm run lint`).
+   - Run dashboard component tests (`npm --workspace dashboard test -- --run`).
+5. **Post-Merge Remote Branch Pruning (INV-11)**:
+   - Once changes are audited and merged to `main`, prune stale remote feature branches (`git push origin --delete <branch>`) to maintain repository hygiene.
+6. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all test tiers, portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
 

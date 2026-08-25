@@ -1,7 +1,7 @@
 [
   {
     "deltaId": "DELTA-1787561844831",
-    "timestamp": "2026-08-24T14:21:11.981Z",
+    "timestamp": "2026-08-25T13:51:48.913Z",
     "chassis": "DL380_Gen12_SFF",
     "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

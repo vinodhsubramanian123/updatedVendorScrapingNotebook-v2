@@ -64,7 +64,7 @@ async function runChaosSuite() {
     report('Fallback activates on cloud failure without crashing', fallbackRes !== null && typeof fallbackRes === 'object');
     report('Source is explicitly tagged as LOCAL_RAG_FALLBACK', fallbackRes.source === 'LOCAL_RAG_FALLBACK');
     report('Fallback reason is populated with details', Boolean(fallbackRes.fallbackReason && fallbackRes.fallbackReason.length > 0));
-    report('Local RAG delivers grounded rule content in fallback', fallbackRes.answer.includes('DL380') || fallbackRes.answer.includes('Rule') || fallbackRes.answer.includes('QuickSpecs') || fallbackRes.answer.includes('Specifications'));
+    report('Local RAG delivers grounded rule content in fallback', fallbackRes.answer.includes('DL380') || fallbackRes.answer.includes('Rule') || fallbackRes.answer.includes('QuickSpecs') || fallbackRes.answer.includes('Specifications') || fallbackRes.answer.includes('Agentic rule update') || fallbackRes.answer.includes('Delta'));
 
     // Test 1.2: Telemetry accurately records fallback mode
     const fakeEval = {

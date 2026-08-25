@@ -247,8 +247,48 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
       } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
     }
 
-    // Search Rules CSV
-    if (fs.existsSync(rulesCsv) && !isProcessorQuery) {
+    // Search Rules JSON/CSV
+    const rulesJson = path.join(cDir, `${folderName}_Catalog_Rules.json`);
+
+    if (fs.existsSync(rulesJson) && !isProcessorQuery) {
+      try {
+        const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
+        const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
+
+        for (const rule of rulesArray) {
+          const mainCat = rule.category || rule.parentCategory || '';
+          const subCat = rule.subCategory || '';
+          const constraint = rule.constraint || rule.ruleType || '';
+          const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
+
+          const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
+
+          let ruleScore = 0;
+          if (activeTerms.length > 0) {
+             activeTerms.forEach(term => {
+                if (ruleStringLower.includes(term)) ruleScore += 2;
+             });
+          }
+
+          const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
+          if (ruleScore > 0 && isRuleQuery) {
+            ruleScore += 10;
+          }
+
+          if (ruleScore > 0) {
+            rawMatches.push({
+              score: ruleScore,
+              text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
+              citation: {
+                title: `${folderName} Catalog Rules`,
+                snippet: `${mainCat} > ${subCat}: ${ruleText}`,
+                url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
+              }
+            });
+          }
+        }
+      } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e); }
+    } else if (fs.existsSync(rulesCsv) && !isProcessorQuery) {
       const csvLines = fs.readFileSync(rulesCsv, 'utf-8').split(/\r?\n/);
       for (let i = 1; i < csvLines.length; i++) {
         const line = csvLines[i];
