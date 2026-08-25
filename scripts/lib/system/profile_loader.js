@@ -5,6 +5,15 @@ const path = require('path');
 
 const PROFILES_DIR = path.join(__dirname, '..', 'config', 'profiles');
 
+const profileCache = new Map();
+
+/**
+ * Clears the internal profile cache (useful for testing or hot reloading).
+ */
+function _clearProfileCache() {
+  profileCache.clear();
+}
+
 /**
  * Loads the base default profile, and merges any product-specific override
  * based on the detected family and generation.
@@ -85,6 +94,11 @@ async function loadProfile(family, gen) {
  * Synchronous variant of loadProfile for legacy/synchronous utilities.
  */
 function loadProfileSync(family, gen) {
+  const cacheKey = `${family || 'none'}_${gen || 'none'}`.toLowerCase();
+  if (profileCache.has(cacheKey)) {
+    return profileCache.get(cacheKey);
+  }
+
   let defaultProfile = {};
   try {
     const defaultPath = path.join(PROFILES_DIR, 'default_profile.json');
@@ -122,16 +136,20 @@ function loadProfileSync(family, gen) {
     }
   }
 
-  return {
+  const finalProfile = {
     scraping_tuning: {
       ...(defaultProfile.scraping_tuning || {}),
       ...(overrideProfile.scraping_tuning || {})
     },
     component_mapping: mergedMapping
   };
+
+  profileCache.set(cacheKey, finalProfile);
+  return finalProfile;
 }
 
 module.exports = {
   loadProfile,
-  loadProfileSync
+  loadProfileSync,
+  _clearProfileCache
 };
