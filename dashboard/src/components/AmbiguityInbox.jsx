@@ -111,7 +111,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
           <h3 className="font-bold text-slate-900">Ambiguity & Anomaly Resolution Inbox</h3>
           <span className="badge bg-amber-200 text-amber-950 font-bold border border-amber-300 ml-2">Human-In-The-Loop Required</span>
         </div>
-        <button className="text-amber-900 hover:bg-amber-200 p-1 rounded transition-colors">
+        <button aria-label={isOpen ? "Collapse Inbox" : "Expand Inbox"} className="text-amber-900 hover:bg-amber-200 p-1 rounded transition-colors">
           {isOpen ? <ChevronUp className="w-5 h-5 stroke-[2.25px]" /> : <ChevronDown className="w-5 h-5 stroke-[2.25px]" />}
         </button>
       </div>
