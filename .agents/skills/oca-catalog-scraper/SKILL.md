@@ -65,14 +65,14 @@ sequenceDiagram
 
 | Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
 |---------|--------|---------------|-------------|--------|-------|-----------------|
-| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 262 HW / 518 Svc | 20 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 261 HW / 603 Svc (864 total) | 20 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 
-**Total Portfolio Intelligence**: **6/6 Product Lines Certified** across 5 families.
+**Total Portfolio Intelligence**: **7/7 Product Lines Certified** across 5 families.
 
 ---
 

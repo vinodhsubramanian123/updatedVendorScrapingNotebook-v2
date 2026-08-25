@@ -163,7 +163,13 @@ To maximize velocity and offload heavy validation without human friction:
    - Run portfolio certification (`npm test`) across all 7/7 product lines.
    - Verify zero lint errors (`npm run lint`).
    - Run dashboard component tests (`npm --workspace dashboard test -- --run`).
-5. **Post-Merge Remote Branch Pruning (INV-11)**:
-   - Once changes are audited and merged to `main`, prune stale remote feature branches (`git push origin --delete <branch>`) to maintain repository hygiene.
-6. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all test tiers, portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
+5. **Post-Merge Remote Branch Pruning (INV-11 & INV-18)**:
+   - Use cross-platform pure Node.js REST API inspection (`npm run jules:prs`) to discover and track all open and closed pull requests with zero dependency on `gh` binary.
+   - Once changes are audited and merged to `main`, prune stale remote feature branches cleanly via `npm run jules:prune` (`node scripts/services/jules_task_manager.js prune`) to maintain repository hygiene.
+6. **Audit-Before-Archive Lifecycle Governance (INV-19)**:
+   - Run `npm run jules:archive` (`node scripts/services/jules_task_manager.js archive-completed`) to audit session threads, verify patch deltas, archive finished sessions on the Jules API, and log immutable trace records to `outputs/history/jules_archived_sessions.json`.
+7. **Proactive Codebase-Wide Bug Pattern Remediation**:
+   - When a bug or bottleneck is discovered in any subsystem, proactively audit the entire repository for the same structural pattern (e.g. non-atomic JSON writes, un-memoized synchronous config loops, or Unix-only shell commands like `which`) and eliminate them across all modules.
+8. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 18 test tiers, 7/7 portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
+
 
