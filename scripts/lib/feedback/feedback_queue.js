@@ -141,10 +141,13 @@ function formatAgentTaskPrompt(entry) {
 }
 
 module.exports = {
+  loadQueue,
+  saveQueue,
   appendFeedback,
   listFeedback,
   markProcessed,
   getQueueStats,
+  getQueueSummary: getQueueStats,
   getNextPendingFeedback,
   formatAgentTaskPrompt,
   QUEUE_FILE
