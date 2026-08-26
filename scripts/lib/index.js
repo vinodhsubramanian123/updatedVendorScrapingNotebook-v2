@@ -31,6 +31,8 @@ module.exports = {
     preprocessor: require('./boq/boq_preprocessor.js'),
     parser: require('./boq/boq_parser.js'),
     conflictGraph: require('./conflict/conflict_graph.js'),
+    workloadDna: require('./conflict/workload_dna.js'),
+    strategySynthesizer: require('./conflict/strategy_synthesizer.js'),
     budgetOptimizer: require('./boq/budget_optimizer.js'),
     vendorBomVerifier: require('./boq/vendor_bom_verifier.js'),
     xlsxExporter: require('./boq/generate_boq_xlsx.js')
@@ -59,7 +61,8 @@ module.exports = {
     notebookQuery: require('./notebook/notebook_query_utils.js'),
     localSearch: require('./rag/local_rag_search.js'),
     postFlowSync: require('./sync/post_flow_sync.js'),
-    agenticGuardrail: require('./rag/agentic_guardrail.js')
+    agenticGuardrail: require('./rag/agentic_guardrail.js'),
+    guardrailPrompt: require('./prompts/guardrail_prompt.js')
   },
 
   // Scraper Subsystem
@@ -73,5 +76,12 @@ module.exports = {
   feedback: {
     loop: require('./feedback/feedback_loop.js'),
     queue: require('./feedback/feedback_queue.js')
+  },
+
+  // Preprocessor Subsystem
+  preprocessor: {
+    ctoNormalizer: require('./preprocessor/cto_normalizer.js'),
+    variationClusterer: require('./preprocessor/variation_clusterer.js'),
+    feedbackPersister: require('./preprocessor/feedback_persister.js')
   }
 };

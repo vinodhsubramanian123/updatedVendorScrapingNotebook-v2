@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Auto-generated semantic graph cache
+src/graphify-out/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

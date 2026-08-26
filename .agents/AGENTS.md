@@ -89,7 +89,6 @@ vendorNotebookSolution/
 │   ├── ARCHITECTURE_AND_DESIGN.md         ← Core architecture, Dual-Brain paradigm, schemas & diagrams
 │   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines, agentic guardrails & learning loops
 │   └── DEVELOPER_GUIDE.md                 ← Local dev, testing tiers & API documentation
-├── _archive_scripts/                      ← Deprecated one-time scripts
 ├── outputs/                               ← ALL scrape outputs live here
 │   ├── SCRAPED_CATALOGS.md                ← Master registry of every scrape
 │   ├── history/                           ← Telemetry ledgers, run logs, sync payloads

@@ -31,6 +31,7 @@ export default function SmartSearchInput({
             type="button"
             onClick={() => { setSearchQuery(''); setIsSearchOpen(false); }}
             className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs"
+            aria-label="Clear search"
           >
             ×
           </button>
