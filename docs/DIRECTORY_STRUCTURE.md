@@ -20,7 +20,7 @@ vendorNotebookSolution/
 │
 ├── scripts/                               ← Primary operational scripts & CLI tools
 │   ├── scrapers/                          ← 10-stage solution & storage CDP scrapers
-│   ├── evaluators/                        ← 6-aspect BOQ math evaluators & strategy synthesizers
+│   ├── evaluators/                        ← 7-aspect BOQ math evaluators & strategy synthesizers
 │   ├── catalogs/                          ← Catalog compiler, diff engine & Excel generators
 │   ├── maintenance/                       ← Portfolio lifecycle, certification & sync
 │   ├── services/                          ← MCP server, Jules orchestrator & feedback listeners
@@ -39,14 +39,14 @@ vendorNotebookSolution/
 │   │   ├── rag/                           ← Dual-brain local RAG & agentic guardrails
 │   │   ├── scraper/                       ← CDP connection kernel & DOM extractors
 │   │   ├── sync/                          ← Knowledge payload builder & drift sync hook
-│   │   ├── system/                        ← Telemetry, atomic FS, key rotator & Zod schemas
+│   │   ├── system/                        ← Telemetry, atomic FS, key rotator, Zod schemas, data validator & error envelope
 │   │   └── index.js                       ← Master barrel re-export
 │   └── README.md                          ← Scripts directory guide
 │
-├── tests/                                 ← 18 comprehensive test suites (100% PASS)
-│   ├── unit/                              ← Aspect math, token rotators, Zod schemas
-│   ├── chaos/                             ← Chaos failure modes, memory fuzz, mutex tests
-│   ├── integration/                       ← BOM audits, pricing history, pipeline evals
+├── tests/                                 ← 50+ comprehensive test suites across 4 tiers (100% PASS)
+│   ├── unit/                              ← Aspect math, token rotators, Zod schemas, data validator, error envelope, drift inspector, feedback persister, query sanitizer, jules task manager
+│   ├── chaos/                             ← Chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
+│   ├── integration/                       ← BOM audits, pricing history, pipeline evals, eval_multi_boq, DL380 combinations, BOQ benchmarks
 │   ├── e2e/                               ← Headless browser UI automation & download flows
 │   ├── fixtures/                          ← Benchmark CSVs, customer quotes & raw JSON
 │   └── README.md                          ← Test execution & benchmark index
@@ -88,8 +88,8 @@ vendorNotebookSolution/
 │
 ├── docs/                                  ← Consolidated project documentation
 │   ├── ARCHITECTURE_AND_DESIGN.md         ← Core architecture, Dual-Brain paradigm & diagrams
-│   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines, agentic guardrails & learnings
-│   ├── DEVELOPER_GUIDE.md                 ← Local dev, testing, and API guide
+│   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines, agentic guardrails & 28 comprehensive learnings
+│   ├── DEVELOPER_GUIDE.md                 ← Local dev, testing tiers, debugging playbook, and API guide
 │   ├── DIRECTORY_STRUCTURE.md             ← This canonical directory map
 │   └── COMPREHENSIVE_ARCHITECTURE_REVIEW.md
 │

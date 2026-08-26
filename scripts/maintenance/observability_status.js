@@ -43,7 +43,7 @@ async function main() {
   // 3.5 Telemetry & Audit Observability
   let telemetryData = null;
   try {
-    const { loadTelemetry } = require('../lib/telemetry.js');
+    const { loadTelemetry } = require('../lib/system/telemetry.js');
     telemetryData = loadTelemetry();
   } catch (_) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('ERROR', 'observability_status.js', _); }
 

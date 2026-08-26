@@ -17,7 +17,7 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **7/7 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 18 test suites.
+**Total Verified Portfolio Intelligence**: **7/7 Product Lines Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 50+ test suites.
 
 > **SKU Count Source of Truth**: The correct HW SKU count for DL380 Gen12 SFF is **261** (unique hardware part numbers) and **603** service SKUs. The number `124` that may appear in `SCRAPED_CATALOGS.md` refers to raw DOM table groups extracted by the CDP scraper — **not** the de-duplicated unique SKU count from `catalog.json.metadata.totalUniqueSKUs`. GAP-2 was fixed on 2026-08-22 to ensure `updateScrapedRegistry()` now reads `liveCatalogJson.metadata.totalUniqueSKUs` post-promotion.
 
@@ -67,7 +67,7 @@ vendorNotebookSolution/
 │   │   ├── sync/                          ← NLM sync client, payload builder, drift inspector, post-flow sync
 │   │   └── system/                        ← Telemetry ledger, atomic fs_compat, rotator, Zod schemas, logger
 │   └── README.md                          ← Subsystem catalog guide
-├── tests/                                 ← 18 comprehensive test suites (100% PASS)
+├── tests/                                 ← 50+ comprehensive test suites across 4 tiers (100% PASS)
 │   ├── unit/                              ← Aspect math, preprocessors, schemas, rotator, checksums, topology (23 tests)
 │   ├── chaos/                             ← Chaos & failure modes, edge cases, memory fuzzing, mutex, offline (9 tests)
 │   ├── integration/                       ← E2E scenarios, BOM verifier, Excel audit, portfolio certification (15 tests)

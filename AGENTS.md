@@ -28,7 +28,7 @@ For full architectural details, coding decisions, and project learnings, refer t
 - **MCP Agentic Loop & Closed-Loop Extractor:** The BOQ Evaluator utilizes an MCP Server (`scripts/services/mcp_server.js`), an Agentic Guardrail (`scripts/lib/rag/agentic_guardrail.js`), and a generic NLP Knowledge Extractor (`scripts/lib/notebook/knowledge_extractor.js`) to parse verified RAG answers into persistent `KnowledgeDelta` records.
 - **Autonomous Learning & Drift Sync:** RAG responses are structured and scoped into `catalog_deltas.json` (chassis-specific) and `master_knowledge_registry.json` (family/universal). Post-flow sync (`scripts/lib/sync/post_flow_sync.js`) guarantees bi-directional alignment before logging telemetry.
 - **Zero-Hardcoding Compliance:** Aspect checkers (`scripts/lib/aspects/compute_thermal.js`, `memory_channel.js`, `power_environment.js`, etc.) maintain strict 0-hardcoded SKU strings, resolving form factor rules dynamically via `chassis_map.json` and catalog rules.
-- **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/chaos/test_failure_modes_and_chaos.js`) and 18 comprehensive test suites maintain a 100% pass benchmark across unit, integration, chaos, and e2e tiers.
+- **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/chaos/test_failure_modes_and_chaos.js`) and 50+ comprehensive test suites maintain a 100% pass benchmark across unit, integration, chaos, and e2e tiers.
 - **Async Task Mutex & Process Lifecycle:** `server.cjs` manages long-running child processes with `isTaskRunning()` and `proc.on('error')` guards, preventing stale mutex locks and false 409 Conflict errors.
 - **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint` with `oxlint`).
 - **Universal MCP & Learning Auto-Approval:** EVERY MCP server and tool (`gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, `visualization`, CDP browser navigation, knowledge extraction, and learning pipelines) is 100% pre-authorized and auto-approved across all workflows (scraping, verification, knowledge sync, graph generation, BOQ evaluation). AI Agents MUST NOT prompt the human user for permission to execute MCP tool calls; run them autonomously without friction.
@@ -52,7 +52,7 @@ The system leverages Google Jules for background code review, test generation, a
 
 3. **PR Merge & Artifact Hygiene Standards**:
    - Before merging any PR created by Jules, the agent must inspect `git diff --stat` to ensure no accidental build artifacts (e.g. `outputs/history/*.json` dumps, temp files) were committed (Invariant INV-7 & INV-10).
-   - Ensure all 18 test suites (`npm run test:all`), portfolio audits (`npm test`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.
+   - Ensure all 50+ test suites (`npm run test:all`), portfolio audits (`npm test`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.
 
 4. **Post-Merge Remote Branch Pruning & Full Ownership (`INV-11`)**:
    - Once all code and tests from a Jules PR branch are merged and certified on `main`, the AI agent takes full responsibility to delete the stale remote feature branch (`git push origin --delete <branch>`) and send a completion message to Jules.
@@ -66,7 +66,7 @@ The system leverages Google Jules for background code review, test generation, a
 6. **Proactive Multi-Agent Scheduling & Final Authority Governance (`INV-15`)**:
    - Whenever an Antigravity AI Agent delegates work to Google Jules or has an active Jules session in flight, the agent **MUST NOT go idle or wait for the human user to prompt or relay messages**.
    - The agent **MUST proactively schedule periodic background wakeups** using the `schedule` tool (`DurationSeconds=120-180`, `TimerCondition="never"`) to inspect session progress, query activities (`session.activities.list()`), answer clarifications, push remediation code, and verify final certification until the task is complete.
-   - **Antigravity is the Architect & Final Authority**: Antigravity governs all multi-agent work, inspecting git diffs, certifying all 18 test tiers (`npm run test:all`), verifying 7/7 portfolio products (`verify_all.js`), auditing Excel workbooks, and ensuring zero regressions before declaring final completion.
+   - **Antigravity is the Architect & Final Authority**: Antigravity governs all multi-agent work, inspecting git diffs, certifying all 50+ test tiers (`npm run test:all`), verifying 7/7 portfolio products (`verify_all.js`), auditing Excel workbooks, and ensuring zero regressions before declaring final completion.
 
 7. **Cross-Platform Universal Compatibility Contract (`INV-16`)**:
    - All CI workflows, test suites, and build scripts MUST be strictly cross-platform across Ubuntu, macOS, and Windows.

@@ -94,7 +94,8 @@ Output of `eval_boq.js` / `/api/eval-boq` consumed by `App.jsx`, `ResolutionMatr
     "memory": { "status": "PASS", "totalDimms": 16, "channelsPerCpu": 8, "symmetry": "100% Balanced (1DPC)" },
     "pcie": { "status": "PASS", "lanesRequired": 48, "lanesAvailable": 64 },
     "storage": { "status": "PASS", "controller": "MR416i-o", "batteryRequired": true, "batterySku": "P01366-B21" },
-    "network": { "status": "PASS", "adapter": "1Gb 4-port BASE-T OCP3" }
+    "network": { "status": "PASS", "adapter": "1Gb 4-port BASE-T OCP3" },
+    "support": { "status": "PASS", "careLevel": "Pointnext Tech Care Essential 3Y", "sla": "24x7 4h Onsite" }
   },
   "workloadDna": {
     "primaryWorkload": "High-Throughput Virtualization / Database",

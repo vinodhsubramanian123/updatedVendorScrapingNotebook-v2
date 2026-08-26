@@ -11,28 +11,36 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
+let XLSX;
 try {
-  require.resolve('xlsx');
-} catch (e) {
-  console.error('❌ ERROR: Missing required dependency "xlsx". Run: npm install xlsx');
-  process.exit(1);
+  XLSX = require('xlsx-js-style');
+} catch (_) {
+  try {
+    XLSX = require('xlsx');
+  } catch (e) {
+    console.error('❌ ERROR: Missing required dependency "xlsx-js-style" or "xlsx". Run: npm install xlsx-js-style');
+    process.exit(1);
+  }
 }
-const XLSX = require('xlsx');
 
 const args = process.argv.slice(2);
 const inputFile = args.find(a => !a.startsWith('--'));
 const JSON_MODE = args.includes('--json');
+const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
 
 if (!inputFile || !fs.existsSync(inputFile)) {
   console.error('❌ ERROR: Please provide a valid BOQ file path.');
-  console.log('Usage: npm run eval:multi <path/to/boq.xlsx> [--json]');
+  console.log('Usage: npm run eval:multi <path/to/boq.xlsx> [--json] [--offline]');
   process.exit(1);
 }
 
 async function evaluateSheetParallel(filePath, sheetName) {
   return new Promise((resolve) => {
     const evalScript = path.join(__dirname, 'eval_boq.js');
-    const child = spawn('node', [evalScript, filePath, '--json', '--sheet', sheetName], {
+    const childArgs = [evalScript, filePath, '--json', '--sheet', sheetName];
+    if (OFFLINE_MODE) childArgs.push('--offline');
+
+    const child = spawn('node', childArgs, {
       env: { ...process.env, STRUCTURED_PROGRESS: '0' } // Suppress progress spam in parallel
     });
 

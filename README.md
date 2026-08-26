@@ -19,10 +19,10 @@ Core systemic design:
 Operational clarity and execution pipelines:
 - **6-Stage Continuous Learning Lifecycle**
 - MCP Server details & Tooling integrations
-- Rate Limit Handling (Smart FIFO Key Rotation), Hallucination Prevention via Adversarial Red-Teaming, and autonomous resolution loops.
+- Rate Limit Handling (Smart FIFO Key Rotation), Hallucination Prevention via Adversarial Red-Teaming, and 28 comprehensive system learnings.
 
 ### 4. [Developer Guide](docs/DEVELOPER_GUIDE.md)
-Instructions for local development and testing:
+Instructions for local development, debugging playbook, and testing:
 - Setup, execution scripts, and dashboard launch commands
 - **UI/UX standards**: Enforces the `design-taste-frontend` rules (Geist font, Emerald Green, Anti-Slop layout).
 - **Codebase Auditing**: Uses `graphify` semantic graphs for codebase comprehension and architecture validation to optimize agent tokens.
@@ -42,22 +42,26 @@ Before reading code or executing commands, **query the semantic graph via `/grap
 
 1. Start the real-time telemetry dashboard:
    ```bash
-   cd dashboard && npm run dev
+   npm run dashboard
    ```
 2. Run a CLI Evaluation (Agentic Guardrail Loop Enabled):
    ```bash
    node scripts/evaluators/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12_SFF
    ```
-3. Run all test suites (18 suites, 100% pass):
+3. Run all test suites (50+ test suites across 4 tiers, 100% pass):
    ```bash
    npm run test:all
    ```
-4. Bootstrap & certify the Gen12 golden catalog:
+4. Check pipeline and portfolio observability status:
+   ```bash
+   npm run status
+   ```
+5. Bootstrap & certify the Gen12 golden catalog:
    ```bash
    npm run bootstrap:gen12
    npm run certify:gen12
    ```
-5. Run a single adversarial red-team pass (optional):
+6. Run a single adversarial red-team pass (optional):
    ```bash
    node scripts/evaluators/adversarial_agent.js
    ```

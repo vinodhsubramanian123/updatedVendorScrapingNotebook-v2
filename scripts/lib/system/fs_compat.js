@@ -8,7 +8,6 @@
 
 const fs   = require('fs');
 const path = require('path');
-const logger = require('./pipeline_logger.js');
 
 /**
  * Move a file cross-platform. Handles EXDEV error when moving across drive boundaries on Windows.
@@ -220,12 +219,12 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
     copyDirRecursive(stagingDir, liveTargetDir);
     if (backupCreated && fs.existsSync(backupDir)) {
       fs.rmSync(backupDir, { recursive: true, force: true });
-      logger.info('FS_COMPAT', `Promotion backup cleaned up — live workspace promoted successfully: ${path.basename(liveTargetDir)}`);
+      console.log(`[INFO] [FS_COMPAT] Promotion backup cleaned up — live workspace promoted successfully: ${path.basename(liveTargetDir)}`);
     }
     return { success: true, liveTargetDir };
   } catch (err) {
     if (backupCreated && fs.existsSync(backupDir)) {
-      logger.warn('FS_COMPAT', `Promotion failed — restoring live workspace from backup: ${liveTargetDir}`);
+      console.warn(`[WARN] [FS_COMPAT] Promotion failed — restoring live workspace from backup: ${liveTargetDir}`);
       fs.rmSync(liveTargetDir, { recursive: true, force: true });
       copyDirRecursive(backupDir, liveTargetDir);
       fs.rmSync(backupDir, { recursive: true, force: true });

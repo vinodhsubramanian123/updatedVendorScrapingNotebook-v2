@@ -84,6 +84,15 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
       });
     }
 
+    if (process.env.USE_LOCAL_RAG_ONLY === '1' || process.env.LOCAL_EVAL_ONLY === '1') {
+      const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+      return resolve({
+        ...localRes,
+        source: 'LOCAL_RAG_FALLBACK',
+        fallbackReason: 'Local evaluation mode explicitly configured (USE_LOCAL_RAG_ONLY/LOCAL_EVAL_ONLY)'
+      });
+    }
+
     const envPath = process.env.PATH || '';
     const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
     const nvmBin = path.join(process.env.HOME || '', '.nvm', 'versions', 'node', 'v22.12.0', 'bin');

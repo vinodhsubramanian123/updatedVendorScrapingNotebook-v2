@@ -20,16 +20,18 @@ scripts/
 
 ## 2. Core CLI Commands
 
-| Command | Path | Description |
+| Command | Canonical Path | Description |
 |---|---|---|
-| `npm run scrape` | `scripts/scrape_oca_solution.js` | 10-stage solution catalog scraper |
-| `npm run eval:boq` | `scripts/eval_boq.js` | 6-aspect BOQ physical math evaluator |
-| `npm test` | `scripts/verify_all.js` | Portfolio health & Excel integrity audit |
-| `npm run test:all` | `scripts/test_pipeline_evals.js` | 17 comprehensive test suites |
-| `npm run build:catalog` | `scripts/build_catalog.js` | Raw JSON to catalog.json compiler |
-| `npm run generate` | `scripts/generate_xlsx.js` | Excel workbook generator |
+| `npm run scrape` | `scripts/scrapers/scrape_oca_solution.js` | 10-stage solution catalog scraper |
+| `npm run eval:boq` | `scripts/evaluators/eval_boq.js` | 7-aspect BOQ physical math evaluator |
+| `npm test` | `tests/integration/verify_all.js` | Portfolio health & Excel integrity audit (7/7 certified) |
+| `npm run test:all` | Defined in `package.json` | 50+ comprehensive test suites across 4 tiers |
+| `npm run build:catalog` | `scripts/catalogs/build_catalog.js` | Raw JSON to catalog.json compiler |
+| `npm run generate` | `scripts/catalogs/generate_xlsx.js` | Excel workbook generator |
+| `npm run status` | `scripts/maintenance/observability_status.js` | Single-terminal observability overview |
+| `npm run status:sync` | `scripts/maintenance/generate_portfolio_status.js` | Re-sync live portfolio documentation |
 
 ## 3. Critical Invariants
-- **Atomic Operations**: All JSON modifications must use `safeWriteJsonAtomic` from `scripts/lib/fs_compat.js`.
+- **Atomic Operations**: All JSON modifications must use `safeWriteJsonAtomic` from `scripts/lib/system/fs_compat.js`.
 - **Zero-Touch SSO**: Never automate SSO credentials; piggyback on authenticated CDP session (port 9222).
-- **Error Envelope**: API responses and script exits must conform to `error_envelope.js`.
+- **Error Envelope**: API responses and script exits must conform to `scripts/lib/system/error_envelope.js`.

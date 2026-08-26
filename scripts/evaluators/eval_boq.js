@@ -461,7 +461,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- тЪая
   };
 
   // Record Pipeline Telemetry for Observability Dashboard (after sync so syncStatus is present)
-  const { recordEvaluationTelemetry } = require('../lib/telemetry.js');
+  const { recordEvaluationTelemetry } = require('../lib/system/telemetry.js');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
 

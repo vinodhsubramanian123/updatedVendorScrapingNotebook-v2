@@ -11,9 +11,111 @@ const fs     = require('fs');
 const path   = require('path');
 const http   = require('http');
 const crypto = require('crypto');
+const { cleanBaseSKU } = require('./sku.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
+
+// ── Cache for Chassis Map ───────────────────────────────────────────────────
+let _chassisMapCache = null;
+
+function invalidateChassisMapCache() {
+  _chassisMapCache = null;
+}
+
+function getChassisMap() {
+  if (_chassisMapCache) return _chassisMapCache;
+
+  const defaultMap = {
+    "DL380_Gen12_SFF": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12 8SFF" },
+    "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
+    "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
+    "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
+    "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
+    "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "baseSku": "R0Q21A", "model": "Alletra Storage System" }
+  };
+
+  const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
+  let loaded = {};
+  if (fs.existsSync(mapPath)) {
+    try {
+      loaded = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+    } catch (err) {
+      try {
+        const _logger = require('../system/pipeline_logger.js');
+        _logger.warn('CATALOG_DISCOVERY', 'Failed to parse chassis_map.json', err);
+      } catch (_) { /* ignore */ }
+    }
+  }
+
+  const aggregated = { ...defaultMap };
+  if (loaded.chassis_base_skus && typeof loaded.chassis_base_skus === 'object') {
+    for (const [sku, v] of Object.entries(loaded.chassis_base_skus)) {
+      aggregated[sku] = { ...v, baseSku: sku, model: v.model || sku };
+    }
+  }
+  for (const [k, v] of Object.entries(loaded)) {
+    if (k === 'chassis_base_skus' || k === 'chassis_base_skus_by_family_gen') continue;
+    if (typeof v === 'string') {
+      aggregated[k] = { model: v, family: "ProLiant", gen: "Gen12", formFactor: "Rack", baseSku: k };
+    } else if (typeof v === 'object' && v !== null) {
+      aggregated[k] = { ...v, baseSku: v.baseSku || k, model: v.model || k };
+    }
+  }
+  _chassisMapCache = aggregated;
+  return _chassisMapCache;
+}
+
+/**
+ * Detect chassis variant and generation from raw BOQ items or override.
+ * @param {Array<object>} items - Parsed BOQ items
+ * @param {string} overrideVariant - Optional CLI override
+ * @returns {object} Chassis information metadata
+ */
+function detectChassisVariant(items, overrideVariant = '') {
+  const chassisMap = getChassisMap();
+
+  if (overrideVariant) {
+    if (chassisMap[overrideVariant]) {
+      return { ...chassisMap[overrideVariant], id: overrideVariant };
+    }
+    const found = Object.values(chassisMap).find(c =>
+      (c.formFactor && c.formFactor.toLowerCase() === overrideVariant.toLowerCase()) ||
+      (c.model && c.model.toLowerCase().includes(overrideVariant.toLowerCase()))
+    );
+    if (found) {
+      return { ...found, id: overrideVariant, formFactor: overrideVariant };
+    }
+    return { family: 'ProLiant', gen: 'Gen12', formFactor: overrideVariant, model: overrideVariant, id: overrideVariant };
+  }
+
+  // Scan items for direct base chassis SKU match
+  for (const it of (items || [])) {
+    const clean = cleanBaseSKU(it.sku);
+    if (chassisMap[clean]) {
+      return { ...chassisMap[clean], id: clean };
+    }
+    for (const [id, info] of Object.entries(chassisMap)) {
+      if (clean === info.baseSku || (it.description && it.description.toLowerCase().includes(id.toLowerCase()))) {
+        return { ...info, id };
+      }
+    }
+  }
+
+  // Check descriptions
+  for (const it of (items || [])) {
+    const desc = (it.description || '').toLowerCase();
+    if (desc.includes('dl380') && desc.includes('gen12')) return { ...chassisMap['DL380_Gen12_SFF'], id: 'DL380_Gen12_SFF' };
+    if (desc.includes('dl380') && desc.includes('gen11')) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
+    if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
+    if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };
+    if (desc.includes('cray') || desc.includes('gx5000')) return { ...chassisMap['GX5000_General_RACK'], id: 'GX5000_General_RACK' };
+    if (desc.includes('synergy')) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
+  }
+
+  // Default fallback
+  return { ...chassisMap['DL380_Gen12_SFF'], id: 'DL380_Gen12_SFF' };
+}
 
 /**
  * Check if CDP port 9222 is alive and return list of open page targets.
@@ -177,7 +279,6 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
  */
 function autoDetectChassisDetailed(boqItems = []) {
   try {
-    const { detectChassisVariant } = require('../conflict/conflict_graph.js');
     const variant = detectChassisVariant(boqItems);
 
     const catalogs = listAllCatalogs();
@@ -276,5 +377,8 @@ module.exports = {
   getCatalogDetail,
   collectKnowledgeDeltas,
   autoDetectChassisDir,
-  autoDetectChassisDetailed
+  autoDetectChassisDetailed,
+  getChassisMap,
+  invalidateChassisMapCache,
+  detectChassisVariant
 };
