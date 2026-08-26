@@ -45,18 +45,25 @@ npm run dev
 |---------|-------------|
 | `npm run dev` | Start Express backend server on configured PORT |
 | `npm run build` | Build production dashboard assets via Vite |
-| `npm run lint` | Run `oxlint` on dashboard source files |
-| `npm test` | Run portfolio verification audit (`verify_all.js`) |
-| `npm run test:rotator` | Run Smart Gemini Key Rotator test suite (`test_gemini_rotator.js`) |
-| `npm run test:all` | Run ALL test suites (E2E, conflicts, offline, edges, aspects, audit) |
-| `npm run test:aspects` | Run 34-assertion aspect math verification |
+| `npm run lint` | Run `oxlint` on dashboard source files (0-warning gate) |
+| `npm test` | Run portfolio verification audit (`verify_all.js`) across 7 products |
+| `npm run test:all` | Run complete regression matrix across 25+ test suites (100% PASS) |
+| `npm run test:aspect_units` | Run 7 modular physical hardware aspect unit checkers |
+| `npm run test:preprocessor` | Run BOQ preprocessor, CTO normalizer, and boundary fuzzing suites |
+| `npm run test:guardrail_prompts` | Run guardrail system prompt factory and query sanitizer tests |
+| `npm run test:notebook_job_diagnostics` | Run async query job manager, failure diagnosis, and drift tests |
+| `npm run test:schemas` | Run Zod runtime schema validators for data contracts |
+| `npm run test:knowledge_extractor` | Run RAG closed-loop knowledge extraction and deduplication tests |
+| `npm run test:dl380_combinations` | Run 8 comprehensive DL380 Gen12 combination and workflow tests |
 | `npm run test:benchmarks` | Run 5-scenario BOQ evaluation benchmarks |
 | `npm run eval:boq -- <file>` | Run CLI BOQ evaluator against a quote file |
 | `npm run scrape` | Execute live OCA portal scrape via CDP |
 | `npm run rebuild` | Rebuild all catalogs from raw_data |
 | `npm run sync:knowledge` | Sync knowledge payloads to NotebookLM |
-| `npm run bootstrap:gen12` | Verify Gen12 golden catalog artifacts and run offline sanity tests |
-| `npm run certify:gen12` | Full Gen12 certification gate (bootstrap + pipeline + unit suites) |
+| `npm run update:graph` | Rebuild dynamic semantic dependency graph (`graphify`) |
+| `npm run jules:prs` | Inspect open pull requests on GitHub via REST API |
+| `npm run jules:prune` | Prune merged remote feature branches from GitHub |
+| `npm run jules:archive` | Audit and archive completed Jules sessions |
 
 ---
 

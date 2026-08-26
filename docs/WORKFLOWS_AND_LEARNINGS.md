@@ -485,4 +485,14 @@ flowchart TD
   3. **Cross-Platform Binary Lookups**: Replaced Unix-specific `execSync('which nlm')` in `notebook_query_utils.js` and `test_pipeline_evals.js` with pure Node.js `process.env.PATH` directory inspection and `fs.existsSync`.
   4. **Closed-Loop PR Review & Conflict Verification**: All incoming PRs and session patches are strictly audited across the 18 test tiers, verified against live catalog benchmarks, merged cleanly to `main`, and pruned on remote.
 
+## 27. CTO Boundary Normalization & High-TDP Interleaving Rule Synthesis
+- **CTO Base Memory Rules**: In HPE Factory Integrated (CTO) server base builds, memory SKUs must be Factory Integrated Option (FIO) parts (`-F21` or description containing `FIO`) rather than standalone BTO (`-B21`) parts. Memory Channel validation flags `-B21` as a CLIC violation in CTO chassis.
+- **Dual-Socket Memory Interleaving Symmetry**: Dual-socket servers (e.g. DL380 Gen12 with 2x Intel Xeon CPUs) require 16 DIMMs (8 channels per socket) to achieve 100% memory symmetry and optimal interleaving performance without memory balance warnings.
+- **CTO Boundary Fuzzing**: Complex multi-node quotes often present fractional multipliers, mixed whitespace, unicode punctuation (e.g., non-breaking hyphens, curly quotes), and nested rolls. `cto_normalizer.js` and `variation_clusterer.js` are certified with `tests/unit/test_cto_normalizer_boundaries.js` across extreme boundary cases.
+
+## 28. Prompt Template Construction, NLP Query Sanitization, & Async RAG Lifecycle
+- **Query Sanitization & Injection Guards (`query_sanitizer.js`)**: Real-world customer queries often contain noisy characters, accidental code snippets (`const fs = ...`), markdown fences, or shell escapes. The NLP Query Sanitizer strips scripting keywords and metacharacters while extracting and preserving valid HPE SKUs, prepending product scope headers (`[Product Scope: Server | Family: ProLiant | Gen: Gen12 | Chassis: DL380_Gen12_SFF]`).
+- **Async Non-Blocking RAG Query Lifecycle (`job_manager.js`, `query_diagnostics.js`)**: Gemini NotebookLM queries run asynchronously via `startAsyncNotebookQueryJob`, returning an instant job token (`JOB_NLM_*`). The dashboard UI polls non-blocking status while tracking `ragElapsedTime` via standard React state hooks without blocking the event loop or causing render freezes.
+- **100% Master Barrel Coverage**: All 13 library subdomains in `scripts/lib/` (`aspects`, `boq`, `catalog`, `conflict`, `feedback`, `notebook`, `ocr`, `preprocessor`, `prompts`, `rag`, `scraper`, `sync`, `system`) and all 8 frontend component subdirectories are exposed through structured, cohesive barrel indices with zero orphaned modules.
+
 
