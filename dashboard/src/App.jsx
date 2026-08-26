@@ -93,6 +93,7 @@ export default function App() {
   const [auditReport, setAuditReport] = useState(null);
   const [isQueryingRag, setIsQueryingRag] = useState(false);
   const [isRagOpen, setIsRagOpen] = useState(false);
+  const [ragElapsedTime, setRagElapsedTime] = useState(0);
   const [ragData, setRagData] = useState({ answer: null, latencyMs: null, source: null });
   const [isFeedbackDrawerOpen, setIsFeedbackDrawerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);

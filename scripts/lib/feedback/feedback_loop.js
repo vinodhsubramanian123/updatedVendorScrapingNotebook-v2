@@ -146,7 +146,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     console.warn('⚠️ Master Knowledge Sync advisory:', err.message);
   }
 
-  return delta;
+  return existingIdx >= 0 ? deltas[existingIdx] : delta;
 }
 
 /**
