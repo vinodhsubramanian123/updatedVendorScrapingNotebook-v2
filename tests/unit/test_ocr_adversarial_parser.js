@@ -7,7 +7,9 @@ const { parseSkuLines } = require('../../scripts/lib/boq/boq_parser.js');
 const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr/ocr_service.js');
 const { GeminiKeyRotator } = require('../../scripts/lib/system/gemini_rotator.js');
 
-const TEST_STATE_FILE = path.join(__dirname, 'temp_adv_test_keys_state.json');
+const TEST_DIR = path.join(__dirname, '..', '..', 'outputs', 'temp', 'test_payloads');
+if (!fs.existsSync(TEST_DIR)) fs.mkdirSync(TEST_DIR, { recursive: true });
+const TEST_STATE_FILE = path.join(TEST_DIR, 'temp_adv_test_keys_state.json');
 
 function cleanup() {
   if (fs.existsSync(TEST_STATE_FILE)) fs.unlinkSync(TEST_STATE_FILE);

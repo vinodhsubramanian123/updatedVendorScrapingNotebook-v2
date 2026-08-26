@@ -9,7 +9,9 @@ const path = require('path');
 const { GeminiKeyRotator, maskKey, DEFAULT_MODEL } = require('../../scripts/lib/system/gemini_rotator.js');
 const { GoogleGenAI } = require('@google/genai');
 
-const TEST_STATE_FILE = path.join(__dirname, 'temp_test_keys_state.json');
+const TEST_DIR = path.join(__dirname, '..', '..', 'outputs', 'temp', 'test_payloads');
+if (!fs.existsSync(TEST_DIR)) fs.mkdirSync(TEST_DIR, { recursive: true });
+const TEST_STATE_FILE = path.join(TEST_DIR, 'temp_test_keys_state.json');
 
 function cleanup() {
   if (fs.existsSync(TEST_STATE_FILE)) fs.unlinkSync(TEST_STATE_FILE);
@@ -154,6 +156,7 @@ async function runTests() {
     console.log(`  [Pos ${k.queuePosition}] ${k.fingerprint} | Status: ${k.status.padEnd(16)} | Successes: ${k.totalSuccess} | Failures: ${k.totalFailures}`);
   });
 
+  cleanup();
   console.log(`\n🎉 All 7 Gemini Key Rotator Tests Passed Successfully!`);
 }
 
