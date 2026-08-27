@@ -82,8 +82,25 @@ function collectAllDeltas() {
             if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
               d.chassis = inferredChassis;
             }
-            const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
-            if (!seenIds.has(key)) {
+            const rawText = d.rawMessage || d.ruleUpdate || '';
+            const key = `${d.chassis}|${d.affectedSku}|${d.requiredDependencySku || ''}|${rawText}`;
+            
+            const existingIdx = deltas.findIndex(existing => {
+              const existingRaw = existing.rawMessage || existing.ruleUpdate || '';
+              return existing.chassis === d.chassis && 
+                     existing.affectedSku === d.affectedSku &&
+                     (existing.requiredDependencySku === d.requiredDependencySku || (!existing.requiredDependencySku && !d.requiredDependencySku)) &&
+                     (existingRaw === rawText);
+            });
+
+            if (existingIdx >= 0) {
+              const existingD = deltas[existingIdx];
+              const dTime = d.timestamp ? new Date(d.timestamp).getTime() : 0;
+              const eTime = existingD.timestamp ? new Date(existingD.timestamp).getTime() : 0;
+              if (dTime > eTime) {
+                deltas[existingIdx] = d;
+              }
+            } else {
               seenIds.add(key);
               deltas.push(d);
             }
@@ -241,5 +258,6 @@ module.exports = {
   inspectKnowledgeDrift,
   classifyKnowledgeScope,
   loadNotebookConfig,
-  getNotebookIdForChassis
+  getNotebookIdForChassis,
+  collectAllDeltas
 };
