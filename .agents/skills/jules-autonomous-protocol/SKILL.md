@@ -92,6 +92,8 @@ When Jules opens a Pull Request:
 
 ---
 
+---
+
 ## 8. Stage 6: Audit-Before-Archive Session Lifecycle (INV-19)
 Completed and integrated Jules sessions MUST NOT linger in the active query pool:
 1. Execute `node scripts/services/jules_task_manager.js archive-completed` (or `npm run jules:archive`).
@@ -99,7 +101,18 @@ Completed and integrated Jules sessions MUST NOT linger in the active query pool
 
 ---
 
-## 9. Quick Reference CLI Commands
+## 9. Stage 7: Post-Archive Final PR & Remote Ref Sweep (INV-20)
+Due to potential race conditions where Jules pushes a branch or triggers a GitHub PR right as a session is concluding:
+1. **Mandatory Final Sweep**: After archiving sessions, ALWAYS run a final sweep against GitHub REST API:
+   ```bash
+   node -e 'require("./scripts/services/jules_task_manager.js").listPullRequests("open").then(prs => console.log("Open PRs:", prs.length))'
+   ```
+2. **Fetch and Prune**: Run `git fetch origin --prune && npm run jules:prune`.
+3. **Verify Zero Open**: Assert that `open_prs.length === 0` and `git branch -r` contains only `origin/main`.
+
+---
+
+## 10. Quick Reference CLI Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -109,3 +122,4 @@ Completed and integrated Jules sessions MUST NOT linger in the active query pool
 | `npm run jules:archive` | Audit and archive all completed Jules sessions |
 | `node scripts/services/jules_task_manager.js send <id> "<msg>"` | Send unblocking reply/instructions to a session |
 | `node scripts/services/jules_task_manager.js audit <id>` | Extract activities, patches, and files from a session |
+
