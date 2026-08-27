@@ -160,7 +160,7 @@ Saved in `outputs/{Family}/{Gen}/{Model}/history/catalog_deltas.json` and consol
   "affectedSku": "P55415-B21",
   "requiredDependencySku": "P01366-B21",
   "scope": "FAMILY_GEN",
-  "scopeTaxonomy": "FAMILY_GEN_RULES",
+  "scopeTaxonomy": "FAMILY_GEN",
   "errorType": "MANDATORY_STORAGE_BATTERY",
   "ruleUpdate": "HPE MR416i-o Tri-Mode Controller requires P01366-B21 96W Smart Storage Battery for write-back cache enablement.",
   "humanReasoning": "Partner Portal rejects configuration if write-back cache battery is omitted.",

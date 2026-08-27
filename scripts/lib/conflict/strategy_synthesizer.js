@@ -167,9 +167,16 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
   const tierConfig = strategyConfig[key] || strategyConfig.default;
 
-  // DNA-Driven Rank 3 & 4 Addon Fallback Generator
+  // DNA-Driven Rank 2, 3 & 4 Addon Fallback Generator
   // When strategy_addons.json tierConfig is empty, generate addons from Workload DNA
   // so Ranks 2–4 are always meaningfully differentiated.
+  const buildDnaFallbackRank2 = () => {
+    return [
+      { sku: 'HPE-CABLE-MGMT-DNA', description: 'HPE Standard Factory Cable Management Arm Kit (DNA: Baseline Default)', quantity: 1, unitPriceUsd: 120, category: 'Factory Baseline Accessory' },
+      { sku: 'HPE-RAIL-KIT-DNA', description: 'HPE Standard Easy Install Rail Kit (DNA: Baseline Default)', quantity: 1, unitPriceUsd: 180, category: 'Factory Baseline Accessory' }
+    ];
+  };
+
   const buildDnaFallbackRank3 = () => {
     const addons = [];
     const storageWorkload = (dna.storageWorkload || '').toLowerCase();
@@ -202,7 +209,10 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   };
 
   // Rank 2: Standard Baseline + Default Factory Accessories
-  const rank2Addons = (tierConfig.rank2 || []).map(a => {
+  // Falls back to DNA-driven baseline accessories if tierConfig.rank2 is missing/empty
+  const rank2ConfigAddons = tierConfig.rank2 || [];
+  const rank2RawList = rank2ConfigAddons.length > 0 ? rank2ConfigAddons : buildDnaFallbackRank2();
+  const rank2Addons = rank2RawList.map(a => {
     const price = getPrice(a.sku, 'Standard Accessory', a.unitPriceUsd || a.defaultPrice || 120);
     return {
       sku: cleanBaseSKU(a.sku),
@@ -309,7 +319,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       ragSecondOpinion: getLiveRagGrounding(
         'Intent Preserved',
         fixes.map(f => f.sku).concat(['thermal', 'power']),
-        `✅ Grounded in QuickSpecs: Workload intent (${dna.workloadDescription || 'Balanced Enterprise'}) preserved with ${fixes.length} mandatory physical fix(es).`
+        `✅ Local Rule Engine Validated: Workload intent (${dna.workloadDescription || 'Balanced Enterprise'}) preserved with ${fixes.length} mandatory physical fix(es).`
       ),
       reasoning: `Selected as Rank 1 because it directly preserves customer ${dna.workloadDescription || 'workload'} intent without unrequested over/under-provisioning, injecting only mandatory physical thermal/power fixes.`
     },
@@ -336,7 +346,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       ragSecondOpinion: getLiveRagGrounding(
         'Standardized CTO Baseline',
         rank2Addons.map(a => a.sku).concat(['cable', 'rail', 'chassis']),
-        `✅ Grounded in QuickSpecs: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
+        `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
       ),
       reasoning: `Standardizes baseline options with factory default cable and rail accessories for maximum factory assembly stability.`
     },
@@ -363,7 +373,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       ragSecondOpinion: getLiveRagGrounding(
         'High-IOPS Storage Performance',
         rank3Addons.map(a => a.sku).concat(['battery', 'cache', 'storage']),
-        `✅ Grounded in QuickSpecs: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
+        `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
       ),
       reasoning: `Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.`
     },
@@ -390,7 +400,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       ragSecondOpinion: getLiveRagGrounding(
         'Future Scalability Expansion',
         rank4Addons.map(a => a.sku).concat(['riser', 'fan', 'pcie']),
-        '✅ Grounded in QuickSpecs: Secondary & tertiary riser lane allocation and cooling envelope verified.'
+        '✅ Local Rule Engine Validated: Secondary & tertiary riser lane allocation and cooling envelope verified.'
       ),
       reasoning: `Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU accelerator and 2nd CPU socket expansions.`
     },
@@ -417,7 +427,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       ragSecondOpinion: getLiveRagGrounding(
         'Minimal CapEx Baseline',
         ['minimal', 'baseline', 'chassis'],
-        `✅ Grounded in QuickSpecs: 100% buildable certified baseline without unrequested add-ons (${rank1Parts.length} essential parts).`
+        `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${rank1Parts.length} essential parts).`
       ),
       reasoning: `Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable.`
     }

@@ -107,10 +107,16 @@ stateDiagram-v2
     state DemotedToBottom {
         [*] --> LockCooldown: Cooldown Until Next UTC Day
         LockCooldown --> PromoteNextHead: Pop Next Active Key to Top
+        LockCooldown --> AllKeysExhausted: Zero Active Keys Left in Pool
+    }
+
+    state AllKeysExhausted {
+        [*] --> WaitUTCMidnight: Raise ApiQuotaExhaustedError & Fallback to Local RAG
+        WaitUTCMidnight --> RestoreAllKeys: UTC 00:00:00 Rollover
     }
 
     PromoteNextHead --> ActiveHead: Immediate Retry on New Head
-
+    RestoreAllKeys --> ActiveHead: Auto-Restore All Configured Keys
     DemotedToBottom --> ActiveHead: UTC Midnight Rollover (Auto-Restore All Keys)
 ```
 
@@ -147,8 +153,8 @@ sequenceDiagram
 
 ## 2. Core Architectural Decisions
 - **Deterministic Rule Engine Primacy**: The local engine (e.g., `boq_evaluator.js`) executes fast, hardcoded physical hardware math without relying on external LLMs. This ensures a 100% functional fallback if APIs go offline.
-- **Smart Key Rotation & Quota Management (FIFO Queue)**: API traffic is governed by `gemini_rotator.js`. Instead of random key selection, it uses a deterministic FIFO queue. When a key encounters a 429 or daily quota exhaustion, it is marked exhausted and pushed to the bottom of the queue while the next active key immediately pops up to complete the call. Keys automatically restore to active status on UTC day rollover.
-- **Agentic MCP Guardrail**: Instead of brittle LLM single-pass prompting, the system uses a stateful Model Context Protocol (MCP) tool-calling loop (`agentic_guardrail.js`). The LLM actively hypothesizes fixes, calls the local rule engine via `simulate_build`, and checks NotebookLM before committing.
+- **Smart Key Rotation & Quota Management (FIFO Queue)**: API traffic is governed by `gemini_rotator.js`. Instead of random key selection, it uses a deterministic FIFO queue. When a key encounters a 429 or daily quota exhaustion, it is marked exhausted and pushed to the bottom of the queue while the next active key immediately pops up to complete the call. If all keys are exhausted, the engine cleanly throws `ApiQuotaExhaustedError` and falls back to deterministic local RAG. Keys automatically restore to active status on UTC day rollover.
+- **Agentic MCP Guardrail**: Instead of brittle LLM single-pass prompting, the system uses a stateful Model Context Protocol (MCP) tool-calling loop (`agentic_guardrail.js`). The LLM actively hypothesizes fixes, calls the local rule engine via `simulate_build`, and checks NotebookLM (`query_notebooklm`) before committing.
 - **Loose Coupling via Barrel Exports**: All backend subsystems (BOQ Engine, RAG, Scraper, Feedback) are strictly decoupled and routed through a master barrel export (`scripts/lib/index.js`). This eliminates "God Nodes" and tight coupling, preventing brittle cross-dependencies.
 - **Continuous Structural Auditing (Dynamic Truth)**: While this document provides the *static* conceptual design, the system architecture is actively audited using the `graphify` skill. The resulting semantic graph (`graphify-out/GRAPH_REPORT.md`) is the *dynamic source of truth* for file dependencies and god nodes. Agents MUST query this graph rather than relying solely on static docs.
 - **Decoupled Data Architecture**: SKUs are strictly classified (e.g., base chassis vs. options). Atomic JSON writes (`safeWriteJsonAtomic`) ensure database files are never corrupted.
@@ -188,13 +194,14 @@ The frontend incorporates a decoupled, high-density SVG visualizer located in [`
 graph LR
     subgraph "Solution Hierarchy & Modular Decomposition"
         Root["Chassis / Frame Root<br/>(e.g., Synergy 12000 / DL380 Gen12)"] --> Modules["Sub-Product Modules<br/>(Compute Blades, VC Interconnects, Storage Trays)"]
-        Modules --> Busses["6 Canonical Subsystem Busses"]
+        Modules --> Busses["7 Canonical Subsystem Busses"]
     end
-    subgraph "6 Subsystems"
+    subgraph "7 Subsystems"
         Busses --> Comp["Compute & Sockets (CPUs, Fans, Heatsinks)"]
         Busses --> Mem["Memory Channels (DIMMs, Symmetrical Channels)"]
         Busses --> Stor["Storage & Controllers (Backplane, MR/SR RAID, Batteries)"]
-        Busses --> PCIe["PCIe & Network (Risers, OCP3, Adapters, GPUs)"]
+        Busses --> PCIe["PCIe Expansion (Primary, Secondary, Tertiary Risers, GPUs)"]
+        Busses --> Net["Networking & OCP (OCP 3.0, NICs, Ports)"]
         Busses --> Pwr["Power & Thermal (Flex Slot PSUs, -48VDC Lugs, PDUs)"]
         Busses --> Svc["Services & Care (Pointnext Tech Care, Installation)"]
     end

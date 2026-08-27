@@ -316,7 +316,7 @@ function recordOcrTelemetry(ocrMeta) {
     fileSizeBytes: ocrMeta.fileSizeBytes || 0,
     charLength: ocrMeta.charLength || 0,
     extractedSkusCount: ocrMeta.extractedSkusCount || 0,
-    modelUsed: ocrMeta.modelUsed || 'gemini-3.5-flash',
+    modelUsed: ocrMeta.modelUsed || process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash',
     durationMs: ocrMeta.durationMs || 0
   };
 

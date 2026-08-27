@@ -26,15 +26,18 @@ async function getJulesClient() {
 async function listSessions() {
   const client = await getJulesClient();
   const sessions = await client.sessions().all();
-  return sessions.map(s => ({
-    id: s.id || s.name,
-    title: s.title || 'Untitled Session',
-    state: s.state || s.status || 'unknown',
-    createdAt: s.createTime || s.createdAt || '',
-    updatedAt: s.updateTime || s.updatedAt || '',
-    branch: s.source?.branch || s.branch || '',
-    pullRequest: s.pullRequest || null
-  }));
+  return sessions.map(s => {
+    const rawId = s.id || (s.name ? s.name.replace(/^sessions\//, '') : 'unknown');
+    return {
+      id: rawId,
+      title: s.title || s.outcome?.title || (s.prompt ? s.prompt.substring(0, 55).replace(/\n/g, ' ') + '...' : 'Untitled Session'),
+      state: s.state || s.status || 'unknown',
+      createdAt: s.createTime || s.createdAt || '',
+      updatedAt: s.updateTime || s.updatedAt || '',
+      branch: s.source?.branch || s.sourceContext?.githubRepoContext?.startingBranch || s.branch || 'main',
+      pullRequest: s.pullRequest || null
+    };
+  });
 }
 
 /**
@@ -55,6 +58,9 @@ async function createSession(prompt, title = 'Background Task', branch = 'main',
     },
     autoPr
   });
+  // Normalize session object fields
+  session.id = session.id || (session.name ? session.name.replace(/^sessions\//, '') : '');
+  session.title = session.title || title;
   return session;
 }
 

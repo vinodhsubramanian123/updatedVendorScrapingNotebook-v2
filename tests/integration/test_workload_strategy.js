@@ -65,6 +65,20 @@ const ragResponse = queryLocalKnowledgeBase('NVIDIA H100 80GB', 'DL380 Gen12');
 assert(ragResponse && ragResponse.answer, 'Returns a valid RAG response');
 assert(ragResponse.source === 'LOCAL_CATALOG_RAG', 'Properly falls back to local catalog search when no Gemini/OpenAI API is available');
 
+// 4. DNA-Driven Strategy Synthesizer Fallback (Empty Config Resilience)
+console.log('\n--- 4. DNA-Driven Fallback Resilience (No Strategy Addons Config) ---');
+const { _clearStrategyAddonsCache } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
+_clearStrategyAddonsCache();
+const customDnaSkus = [
+  { sku: 'P73282-B21', description: 'Base Chassis', quantity: 1 },
+  { sku: 'P49610-B21', description: 'Intel Xeon 6430 270W Processor', quantity: 2 },
+  { sku: 'P48820-B21', description: 'HPE High Performance Fan Kit', quantity: 1 },
+  { sku: 'P58124-B21', description: 'HPE 3.2TB NVMe Mixed Use SSD', quantity: 8 }
+];
+const customStrategies = synthesizeStrategies(customDnaSkus, {}, { resolvedFixes: [] }, { model: 'NonExistentModel' });
+assert(Array.isArray(customStrategies) && customStrategies.length === 5, 'Generates 5 distinct tiers under DNA fallback');
+assert(customStrategies[0].rank === 1 && customStrategies[1].rank === 2 && customStrategies[2].rank === 3, 'Maintains rank sequence 1 to 5');
+assert(customStrategies.every(s => typeof s.ragSecondOpinion === 'string' && s.ragSecondOpinion.length > 0), 'Every tier contains valid grounding text');
 
 console.log('\n================================================================');
 console.log(`📊 WORKLOAD & STRATEGY TEST SUMMARY: ${passed} passed, ${failed} failed`);

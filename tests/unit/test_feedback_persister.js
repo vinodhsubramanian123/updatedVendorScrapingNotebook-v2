@@ -83,3 +83,34 @@ test('savePreprocessingRuleFeedback recovers gracefully from corrupt history JSO
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 });
+
+// GAP-B MISS-2 Regression: canonical scopeTaxonomy keys must not carry _RULES suffix.
+// Guards against regression where processPortalFeedback produces stale taxonomy values
+// that would corrupt buildMasterKnowledgeRegistry bucket routing.
+test('processPortalFeedback generates KnowledgeDelta with canonical scopeTaxonomy (no _RULES suffix)', () => {
+  const { processPortalFeedback } = require('../../scripts/lib/feedback/feedback_loop.js');
+  const tmpDir = path.join(os.tmpdir(), `test_scope_taxonomy_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`);
+  fs.mkdirSync(tmpDir, { recursive: true });
+
+  try {
+    const portalError = 'P55415-B21 requires P01366-B21 Smart Storage Battery for write-back cache.';
+    const delta = processPortalFeedback(portalError, tmpDir, {
+      scopeTaxonomy: 'FAMILY_GEN',
+      ruleUpdate: 'MR416i-o Tri-Mode Controller requires P01366-B21 battery kit.'
+    });
+
+    const CANONICAL_SCOPES = ['UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC'];
+
+    assert.ok(delta, 'Delta must be returned');
+    assert.ok(
+      CANONICAL_SCOPES.includes(delta.scopeTaxonomy),
+      `scopeTaxonomy "${delta.scopeTaxonomy}" must be one of [${CANONICAL_SCOPES.join(', ')}] — no _RULES suffix allowed`
+    );
+    assert.ok(
+      CANONICAL_SCOPES.includes(delta.scope),
+      `scope "${delta.scope}" must be one of [${CANONICAL_SCOPES.join(', ')}] — no _RULES suffix allowed`
+    );
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});

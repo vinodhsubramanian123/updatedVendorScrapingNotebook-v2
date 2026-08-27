@@ -5,7 +5,7 @@
  * Implements strict runtime validation and automatic repair/coercion for:
  * 1. Catalog Master Schema ({Model}_Catalog.json)
  * 2. BOQ Input & Parsed Items
- * 3. 6-Aspect Physical Math Results
+ * 3. 7-Aspect Physical Math Results
  * 4. Conflict Graph & 5-Tier Strategy Resolution Matrix
  * 5. Master Knowledge Delta Schema
  */
@@ -178,13 +178,20 @@ const NetworkAspectSchema = z.object({
   violations: z.array(z.string()).default([])
 }).passthrough();
 
+const SupportAspectSchema = z.object({
+  hasSupportService: z.boolean().default(false),
+  status: z.enum(['PASS', 'WARN', 'FAIL']).default('PASS'),
+  violations: z.array(z.string()).default([])
+}).passthrough();
+
 const AspectMathSchema = z.object({
   thermal: ThermalAspectSchema.default({}),
   power: PowerAspectSchema.default({}),
   memory: MemoryAspectSchema.default({}),
   pcie: PcieAspectSchema.default({}),
   storage: StorageAspectSchema.default({}),
-  network: NetworkAspectSchema.default({})
+  network: NetworkAspectSchema.default({}),
+  support: SupportAspectSchema.default({})
 });
 
 // ==========================================
@@ -258,15 +265,18 @@ const KnowledgeDeltaSchema = z.object({
   deltaId: z.string().default(() => `DELTA-${Date.now()}`),
   chassis: z.string().min(1, 'Chassis identifier is required'),
   affectedSku: SkuString,
-  requiredDependencySku: SkuString,
+  requiredDependencySku: z.union([SkuString, z.null()]).optional(),
   scope: z.enum(['UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC']).default('FAMILY_GEN'),
-  scopeTaxonomy: z.enum(['UNIVERSAL_VENDOR_RULES', 'FAMILY_GEN_RULES', 'CHASSIS_SPECIFIC_RULES']).default('FAMILY_GEN_RULES'),
+  scopeTaxonomy: z.enum([
+    'UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC',
+    'UNIVERSAL_VENDOR_RULES', 'FAMILY_GEN_RULES', 'CHASSIS_SPECIFIC_RULES'
+  ]).default('FAMILY_GEN'),
   errorType: z.string().default('MISSING_MANDATORY_DEPENDENCY'),
   ruleUpdate: z.string().min(1, 'Rule description is required'),
   humanReasoning: z.string().default(''),
   confidence: z.number().min(0).max(1).default(1.0),
   timestamp: z.string().default(() => new Date().toISOString())
-});
+}).passthrough();
 
 // ==========================================
 // 7. Safe Runtime Parsers with Error Recovery

@@ -441,7 +441,7 @@ Instructions:
 
     const response = await geminiRotator.executeWithSmartRotation(async ({ ai }) => {
       return await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash',
         contents: prompt
       });
     });

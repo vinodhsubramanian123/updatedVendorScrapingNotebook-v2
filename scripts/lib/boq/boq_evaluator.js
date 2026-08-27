@@ -2,7 +2,7 @@
 /**
  * scripts/lib/boq_evaluator.js — Multi-Aspect Physical Validation & Rule Engine
  *
- * Implements 6 physical math pre-checks:
+ * Implements 7 physical math pre-checks:
  * 1. Compute & Thermal: TDP watts vs High Performance Fan Kit
  * 2. Memory & Channels: Interleaving, 1DPC/2DPC symmetry
  * 3. Storage Tri-Mode: Drive cage, controller & Smart Storage Battery
@@ -440,7 +440,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   };
 
   if (confidence.confidenceReasons.length === 0) {
-    confidence.confidenceReasons.push('All 6 physical aspects passed deterministic evaluation and graph rules.');
+    confidence.confidenceReasons.push('All 7 physical aspects passed deterministic evaluation and graph rules.');
   }
 
   return {

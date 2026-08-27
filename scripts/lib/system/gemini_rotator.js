@@ -21,8 +21,8 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const STATE_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'gemini_keys_state.json');
 
 // Standard recommended models per GEMINI.md directives
-const DEFAULT_MODEL = 'gemini-3.5-flash';
-const REASONING_MODEL = 'gemini-3.5-flash';
+const DEFAULT_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
+const REASONING_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 
 /**
  * Mask API key for logs and audit reports.

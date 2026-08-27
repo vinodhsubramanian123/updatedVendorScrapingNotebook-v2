@@ -199,7 +199,7 @@ export default function MacroOrchestratorFlow({
                  <div className={`p-3 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs ${hasEval || (isEvaluating && activeProgress?.currentStep >= 2) ? 'border-blue-300 bg-blue-50/60 shadow-2xs' : 'border-slate-200 bg-slate-50/80 hover:border-slate-300'}`}>
                     <ShieldCheck className={`w-4 h-4 mb-1.5 ${hasEval || (isEvaluating && activeProgress?.currentStep >= 2) ? 'text-blue-600' : 'text-slate-400'}`} />
                     <h4 className="text-[11px] font-bold text-slate-800">2. Physical Math</h4>
-                    <p className="text-[10px] text-slate-500 truncate">{hasEval ? (violationsCount === 0 ? 'All 6 Aspects Passed' : `${violationsCount} Violations Flagged`) : 'Thermal / Power / RAM'}</p>
+                    <p className="text-[10px] text-slate-500 truncate">{hasEval ? (violationsCount === 0 ? 'All 7 Aspects Passed' : `${violationsCount} Violations Flagged`) : 'Thermal / Power / RAM'}</p>
                  </div>
                  <div className={`p-3 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs ${hasEval || (isEvaluating && activeProgress?.currentStep >= 4) ? 'border-blue-300 bg-blue-50/60 shadow-2xs' : 'border-slate-200 bg-slate-50/80 hover:border-slate-300'}`}>
                     <Layers className={`w-4 h-4 mb-1.5 ${hasEval || (isEvaluating && activeProgress?.currentStep >= 4) ? 'text-blue-600' : 'text-slate-400'}`} />

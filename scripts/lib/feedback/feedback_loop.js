@@ -104,6 +104,9 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     status: 'APPLIED_TO_PRECHECKS_AND_RAG'
   };
 
+  // Mirror scopeTaxonomy → scope so both fields are always populated and canonical
+  delta.scope = delta.scopeTaxonomy;
+
   // Deduplicate before appending: if identical rule exists, update timestamp & metadata instead of adding duplicate
   const existingIdx = deltas.findIndex(d => 
     d.chassis === delta.chassis &&

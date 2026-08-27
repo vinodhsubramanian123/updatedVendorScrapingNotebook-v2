@@ -74,12 +74,15 @@ const sampleDelta = {
   chassis: 'DL380_Gen12_SFF',
   affectedSku: 'P55415-B21',
   requiredDependencySku: 'P01366-B21',
+  scope: 'UNIVERSAL_VENDOR',
+  scopeTaxonomy: 'UNIVERSAL_VENDOR',
   ruleUpdate: 'MR416i-o Tri-Mode controller requires P01366-B21 battery kit.'
 };
 const parsedDelta = safeParseKnowledgeDelta(sampleDelta);
 assert.strictEqual(parsedDelta.success, true, `Knowledge delta validation failed: ${JSON.stringify(parsedDelta.errors)}`);
-assert.strictEqual(parsedDelta.data.scope, 'FAMILY_GEN', 'Default scope should be FAMILY_GEN');
-console.log('✅ [4/5] KnowledgeDeltaSchema validates learning records with automated ID generation.');
+assert.strictEqual(parsedDelta.data.scope, 'UNIVERSAL_VENDOR', 'Explicit scope should be preserved');
+assert.strictEqual(parsedDelta.data.scopeTaxonomy, 'UNIVERSAL_VENDOR', 'Explicit scopeTaxonomy should be preserved');
+console.log('✅ [4/5] KnowledgeDeltaSchema validates learning records with canonical taxonomy enums.');
 
 // Test 5: Rejection of Malformed Inputs
 const malformedBoq = {
@@ -89,6 +92,24 @@ const malformedBoq = {
 };
 const badBoqRes = safeParseBOQ(malformedBoq);
 assert.strictEqual(badBoqRes.success, false, 'Malformed BOQ should have failed');
-console.log('✅ [5/5] Safe parsers properly reject malformed inputs without throwing uncaught exceptions.\n');
+console.log('✅ [5/6] Safe parsers properly reject malformed inputs without throwing uncaught exceptions.');
 
-console.log('🎉 ALL 5 ZOD SCHEMA VALIDATION TESTS PASSED PERFECTLY!\n');
+// Test 6: 7-Aspect Math Schema Validation
+const sampleAspectEval = safeParseEvalResult({
+  status: 'PASS',
+  confidenceScore: 1.0,
+  aspectMath: {
+    thermal: { status: 'PASS' },
+    power: { status: 'PASS' },
+    memory: { status: 'PASS' },
+    pcie: { status: 'PASS' },
+    storage: { status: 'PASS' },
+    network: { status: 'PASS' },
+    support: { hasSupportService: true, status: 'PASS' }
+  }
+});
+assert.strictEqual(sampleAspectEval.success, true, '7-Aspect Math validation failed');
+assert.strictEqual(sampleAspectEval.data.aspectMath.support.hasSupportService, true, 'Support aspect parsed correctly');
+console.log('✅ [6/6] AspectMathSchema validates all 7 canonical physical & service aspect contracts.\n');
+
+console.log('🎉 ALL 6 ZOD SCHEMA VALIDATION TESTS PASSED PERFECTLY!\n');
