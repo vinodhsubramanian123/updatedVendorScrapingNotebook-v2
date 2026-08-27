@@ -428,7 +428,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const finalRanked = [];
 
   rawCandidates.forEach(cand => {
-    const skuSignature = cand.skuPartsList
+    const skuSignature = `${cand.name}|` + cand.skuPartsList
       .map(p => `${p.sku}:${p.quantity}:${p.category || ''}`)
       .sort()
       .join('|');

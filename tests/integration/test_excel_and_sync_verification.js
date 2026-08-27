@@ -82,15 +82,19 @@ async function testMasterExcelWorkbook() {
 async function testCandidateBoqExcelExport() {
   console.log(`\n${C.bold}${C.blue}▶ [TEST 2] Auditing Candidate Corrected BOQ Multi-Sheet Excel Export${C.reset}`);
   
-  const sampleCsv = path.join(PROJECT_ROOT, 'outputs', 'test_boqs', 'combo_2_thermal_missing_fan.csv');
+  const sampleCsv = path.join(PROJECT_ROOT, 'tests', 'fixtures', 'BENCH-01-HIGH-TDP-THERMAL.csv');
   const evalResults = evaluateBOQMultiAspect(sampleCsv);
 
   const exportPath = path.join(PROJECT_ROOT, 'outputs', 'test_boqs', 'test_corrected_boq_rank1.xlsx');
+
+  // Ensure the directory exists before generating the file
+  fs.mkdirSync(path.dirname(exportPath), { recursive: true });
+
   generateProfessionalBOQ(evalResults, exportPath, 'DL380_Gen12_SFF', 1);
 
   assertTest('Corrected BOQ Excel file generated', fs.existsSync(exportPath), exportPath);
 
-  const wb = XLSX.readFile(exportPath);
+  const wb = XLSX.readFile(exportPath, { cellFormula: true, cellStyles: true, cellNF: true });
   const sheetNames = wb.SheetNames;
   
   assertTest("Exported workbook contains 'Summary' sheet", sheetNames.includes('Summary'));
@@ -104,6 +108,7 @@ async function testCandidateBoqExcelExport() {
 
   const missingDepsSheet = wb.Sheets['Missing Dependencies'];
   const missingDepsJson = XLSX.utils.sheet_to_json(missingDepsSheet);
+  // High TDP Thermal processor missing fan should trigger missing dependencies.
   assertTest("'Missing Dependencies' has injected High-Perf Fan Kit", missingDepsJson.some(r => String(r.SKU || '').includes('P48820') || String(r.Description || '').toLowerCase().includes('fan')));
 }
 
