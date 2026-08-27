@@ -29,6 +29,8 @@ const { evalNetworkingOcp } = require('../aspects/networking_ocp.js');
 const { evalPcieRiserSlots } = require('../aspects/pcie_riser.js');
 const { evalPowerEnvironment } = require('../aspects/power_environment.js');
 const { evalSupportManufacturing } = require('../aspects/support_manufacturing.js');
+const { evalSupportServices } = require('../aspects/support_services.js');
+const { generateLifecycleRecommendations } = require('../conflict/resolution_matrix.js');
 
 const HIGH_TDP_THRESHOLD_WATTS = 240;
 
@@ -168,6 +170,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData);
+  const lifecycle = evalSupportServices(items, catalogData);
+  const lifecycleRecommendations = generateLifecycleRecommendations(items, catalogData);
 
   const errors = [];
   const warnings = [];
@@ -402,6 +406,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     requiredPcieCards: pcie.requiredPcieCards,
     totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
     hasSupportService: support.hasSupportService,
+    lifecycleRisks: lifecycle,
+    lifecycleRecommendations,
     errors,
     warnings,
     mathDeductions,
