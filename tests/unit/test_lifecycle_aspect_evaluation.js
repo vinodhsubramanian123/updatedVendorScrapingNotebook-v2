@@ -77,4 +77,30 @@ describe('BOQ Lifecycle Aspect Flagging & Strategy Matrix Resolution', () => {
     assert.strictEqual(tiers[0].rank, 1, 'First tier must be Rank 1 (Intent Preserved)');
     assert.strictEqual(tiers[4].rank, 5, 'Last tier must be Rank 5 (Budget Minimized)');
   });
+
+  it('should propagate EOL risk alerts and 90-Day warnings into the resolution strategy matrix', () => {
+    const mockBomItems = [
+      { sku: 'P49654-B21', description: 'HPE 1.6TB SAS MU SFF BC SSD [EOL]', quantity: 2, unitPrice: 1500, category: 'Storage', lifecycleStatus: 'End of Life (EOL)' },
+      { sku: 'P49639-B21', description: 'HPE 3.2TB SAS MU SFF BC SSD [90]', quantity: 4, unitPrice: 2800, category: 'Storage', lifecycleStatus: 'EOL Warning (90-Day)' }
+    ];
+
+    const mockEvalResults = { missingDependencies: [] };
+    const tiers = synthesize5TierRankedSolutions(mockBomItems, mockEvalResults, {}, { name: 'DL380_Gen11' });
+
+    assert.ok(Array.isArray(tiers), 'Must return an array of solution tiers');
+    assert.strictEqual(tiers.length, 5, 'Must return exactly 5 ranked tiers');
+
+    const rank1Parts = tiers[0].skuPartsList;
+    const eolPart = rank1Parts.find(p => p.sku === 'P49654-B21');
+    const warningPart = rank1Parts.find(p => p.sku === 'P49639-B21');
+
+    assert.ok(eolPart, 'EOL part should be processed and retained in the matrix');
+    assert.ok(warningPart, '90-Day Warning part should be processed and retained in the matrix');
+
+    // Check if cleanBaseSKU works for EOL and 90 in various formats
+    assert.strictEqual(cleanBaseSKU('EOL P49654-B21'), 'P49654-B21', 'Should strip EOL prefix');
+    assert.strictEqual(cleanBaseSKU('[EOL] P49654-B21'), 'P49654-B21', 'Should strip [EOL] prefix');
+    assert.strictEqual(cleanBaseSKU('90 P49639-B21'), 'P49639-B21', 'Should strip 90 prefix');
+    assert.strictEqual(cleanBaseSKU('[90] P49639-B21'), 'P49639-B21', 'Should strip [90] prefix');
+  });
 });
