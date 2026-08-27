@@ -1,84 +1,49 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Unknown	Processors	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Heatsink Kit	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Memory	max 32	Quantity Constraint	Quantity: max 32
-Unknown	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Factory Configuration Settings	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Logical Size Settings	max 1	Quantity Constraint	Quantity: max 1
-Unknown	NVMe Enablement Setting	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Identifier/Tracking SKUs	max 2	Quantity Constraint	Quantity: max 2
-Unknown	vSAN Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
-Unknown	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
-Unknown	SAS Controller	max 7	Quantity Constraint	Quantity: max 7
-Unknown	Smart Storage Battery	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Storage Controller Cables	max 2	Quantity Constraint	Quantity: max 2
-Unknown	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Drive Cage	max 8	Quantity Constraint	Quantity: max 8
-Unknown	SSD - Read Intensive	max 8	Quantity Constraint	Quantity: max 8
-Unknown	SSD - Mixed Use	max 8	Quantity Constraint	Quantity: max 8
-Unknown	HDD - Enterprise 15K/10K	max 8	Quantity Constraint	Quantity: max 8
-Unknown	HDD - Midline - 7.2K	max 8	Quantity Constraint	Quantity: max 8
-Unknown	NVMe - SSD and AIC - Read Intensive	max 8	Quantity Constraint	Quantity: max 8
-Unknown	NVMe - SSD and AIC - Mixed Use	max 8	Quantity Constraint	Quantity: max 8
-Unknown	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Riser Cards	max 3	Quantity Constraint	Quantity: max 3
-Unknown	Riser Cards Accessories	max 3	Quantity Constraint	Quantity: max 3
-Unknown	InfiniBand PCIe	max 6	Quantity Constraint	Quantity: max 6
-Unknown	Ethernet PCIe	max 6	Quantity Constraint	Quantity: max 6
-Unknown	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Fibre Channel HBA	max 6	Quantity Constraint	Quantity: max 6
-Unknown	Fibre Channel Cables and SFP	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Transceivers	max 16	Quantity Constraint	Quantity: max 16
-Unknown	OCP Upgrades	max 2	Quantity Constraint	Quantity: max 2
-Unknown	OCP Infiniband	max 2	Quantity Constraint	Quantity: max 2
-Unknown	OS Boot Device	max 3	Quantity Constraint	Quantity: max 3
-Unknown	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Graphics	max 8	Quantity Constraint	Quantity: max 8
-Unknown	Graphics Accessories	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Power Cooling Options	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Power Supplies	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Power Cords	max 2	Quantity Constraint	Quantity: max 2
-Unknown	INTEL VROC Products-FIO	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	INTEL VROC Products-BTO	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Manufacturing Services	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Pensando DSP (SW)	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMware NSX	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VCenter Srm Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VCenter Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare Client Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VSphere Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VSphere Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare Core Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Security Hardware	max 4	Quantity Constraint	Quantity: max 4
-Unknown	Rack Options	max 3	Quantity Constraint	Quantity: max 3
-Unknown	Compute Ops Management SKUs	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Data Management Framework DMF	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	MS Windows Server Additional License	max 999	Quantity Constraint	Quantity: max 999
-Unknown	MS Windows Server CALs	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	MS Windows Server Not Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	MS Windows Server Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Red Hat Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Red Hat SAP Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Red Hat-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE SAP Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
-Unknown	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Integrated Lights Out Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Hadoop Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Linux Value Added Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Partner Software - Operating System 8pks	max 30969	Quantity Constraint	Quantity: max 30969
-Unknown	OEM Software	max 999	Quantity Constraint	Quantity: max 999
-Unknown	Reseller Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	max 1	Quantity Constraint	Quantity: max 1
+Cooling / Thermal	Heatsink Kit	max 2	Quantity Constraint	Quantity: max 2
+Processor	Processors	max 2	Quantity Constraint	Quantity: max 2
+Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
+Accessories & Infrastructure	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
+Accessories & Infrastructure	Factory Configuration Settings	max 1	Quantity Constraint	Quantity: max 1
+Accessories & Infrastructure	Logical Size Settings	max 1	Quantity Constraint	Quantity: max 1
+Drive Enclosures / Drives	NVMe Enablement Setting	max 1	Quantity Constraint	Quantity: max 1
+Accessories & Infrastructure	Identifier/Tracking SKUs	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	vSAN Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
+Software & Licenses	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Storage Controllers	SAS Controller	max 7	Quantity Constraint	Quantity: max 7
+Networking	InfiniBand PCIe	max 6	Quantity Constraint	Quantity: max 6
+Storage Controllers	Storage Controller Cables	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	Smart Storage Battery	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Drive Enclosures / Drives	Drive Cage	max 8	Quantity Constraint	Quantity: max 8
+Accessories & Infrastructure	SSD - Read Intensive	max 8	Quantity Constraint	Quantity: max 8
+Accessories & Infrastructure	SSD - Mixed Use	max 8	Quantity Constraint	Quantity: max 8
+Accessories & Infrastructure	HDD - Enterprise 15K/10K	max 8	Quantity Constraint	Quantity: max 8
+Accessories & Infrastructure	HDD - Midline - 7.2K	max 8	Quantity Constraint	Quantity: max 8
+Drive Enclosures / Drives	NVMe - SSD and AIC - Read Intensive	max 8	Quantity Constraint	Quantity: max 8
+Drive Enclosures / Drives	NVMe - SSD and AIC - Mixed Use	max 8	Quantity Constraint	Quantity: max 8
+Accessories & Infrastructure	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
+PCIe Risers	Riser Cards	max 3	Quantity Constraint	Quantity: max 3
+PCIe Risers	Riser Cards Accessories	max 3	Quantity Constraint	Quantity: max 3
+Networking	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+Networking	Transceivers	max 16	Quantity Constraint	Quantity: max 16
+Networking	Fibre Channel Cables and SFP	max 1	Quantity Constraint	Quantity: max 1
+Accessories & Infrastructure	OCP Upgrades	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	OS Boot Device	max 3	Quantity Constraint	Quantity: max 3
+Accessories & Infrastructure	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
+Memory	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
+Graphics & GPU	Graphics Accessories	max 1	Quantity Constraint	Quantity: max 1
+Cooling / Thermal	Power Cooling Options	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Supplies	max 2	Quantity Constraint	Quantity: max 2
+Accessories & Infrastructure	Security Hardware	max 4	Quantity Constraint	Quantity: max 4
+Accessories & Infrastructure	Rack Options	max 3	Quantity Constraint	Quantity: max 3
+Software & Licenses	MS Windows Server CALs	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software & Licenses	MS Windows Server Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software & Licenses	Integrated Lights Out Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software & Licenses	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+Graphics & GPU	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	Chassis Standard (Max 1)	Configuration Rule	Mandatory base chassis selection required for solution build
 Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	If 'HPE Energy Star4.0 configuration FIO kit' selected, then these Power Supply cannot be selected and to be hidden.
 Processor	Processors	max 2	Configuration Rule	Selection constraint for Processors: max 2
 Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	Selection constraint for Heatsink Kit: max 2
@@ -152,64 +117,3 @@ Software & Licenses	Integrated Lights Out Software	no max	Configuration Rule	Sel
 Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Selection constraint for Proliant Software Media Kits: no max
 Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
 Accessories & Infrastructure	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
-Chassis	Variants	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Networking	Ethernet PCIe	max 6	Configuration Rule	Selection constraint for Ethernet PCIe: max 6
-Networking	Fibre Channel HBA	max 6	Configuration Rule	Selection constraint for Fibre Channel HBA: max 6
-Graphics & GPU	Graphics	max 8	Configuration Rule	Selection constraint for Graphics: max 8
-Accessories & Infrastructure	Power Cords	max 2	Configuration Rule	Selection constraint for Power Cords: max 2
-Storage Controllers	INTEL VROC Products-FIO	no max	Configuration Rule	Selection constraint for INTEL VROC Products-FIO: no max
-Storage Controllers	INTEL VROC Products-BTO	no max	Configuration Rule	Selection constraint for INTEL VROC Products-BTO: no max
-Support Services	Manufacturing Services	max 1	Configuration Rule	Selection constraint for Manufacturing Services: max 1
-Accessories & Infrastructure	Pensando DSP (SW)	no max	Configuration Rule	Selection constraint for Pensando DSP (SW): no max
-Software & Licenses	VMware NSX	no max	Configuration Rule	Selection constraint for VMware NSX: no max
-Software & Licenses	VMWare VCenter Srm Products	no max	Configuration Rule	Selection constraint for VMWare VCenter Srm Products: no max
-Software & Licenses	VMWare VCloud Products	no max	Configuration Rule	Selection constraint for VMWare VCloud Products: no max
-Software & Licenses	VMWare VCenter Products	no max	Configuration Rule	Selection constraint for VMWare VCenter Products: no max
-Software & Licenses	VMWare Client Virtualization	no max	Configuration Rule	Selection constraint for VMWare Client Virtualization: no max
-Software & Licenses	VMWare VSphere Editions	no max	Configuration Rule	Selection constraint for VMWare VSphere Editions: no max
-Software & Licenses	VMWare VSphere Kits	no max	Configuration Rule	Selection constraint for VMWare VSphere Kits: no max
-Software & Licenses	VMWare Core Editions	no max	Configuration Rule	Selection constraint for VMWare Core Editions: no max
-Accessories & Infrastructure	Compute Ops Management SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management SKUs: max 1
-Accessories & Infrastructure	Data Management Framework DMF	no max	Configuration Rule	Selection constraint for Data Management Framework DMF: no max
-Software & Licenses	MS Windows Server Additional License	max 999	Configuration Rule	Selection constraint for MS Windows Server Additional License: max 999
-Software & Licenses	MS Windows Server Not Preinstalled	no max	Configuration Rule	Selection constraint for MS Windows Server Not Preinstalled: no max
-Software & Licenses	Red Hat Operating Systems	no max	Configuration Rule	Selection constraint for Red Hat Operating Systems: no max
-Software & Licenses	Red Hat SAP Operating System	no max	Configuration Rule	Selection constraint for Red Hat SAP Operating System: no max
-Software & Licenses	Red Hat-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat-Virtualization: no max
-Software & Licenses	SUSE Add-ons	no max	Configuration Rule	Selection constraint for SUSE Add-ons: no max
-Software & Licenses	SUSE containers	no max	Configuration Rule	Selection constraint for SUSE containers: no max
-Software & Licenses	SUSE Operating Systems	no max	Configuration Rule	Selection constraint for SUSE Operating Systems: no max
-Software & Licenses	SUSE SAP Operating Systems	no max	Configuration Rule	Selection constraint for SUSE SAP Operating Systems: no max
-Software & Licenses	OneView Management Software	max 1	Configuration Rule	Selection constraint for OneView Management Software: max 1
-Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Not Supported ProStack Server Software
-Software & Licenses	Hadoop Software	no max	Configuration Rule	Selection constraint for Hadoop Software: no max
-Software & Licenses	Linux Value Added Software	no max	Configuration Rule	Selection constraint for Linux Value Added Software: no max
-Accessories & Infrastructure	AI-at-Scale	no max	Configuration Rule	Selection constraint for AI-at-Scale: no max
-Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
-Software & Licenses	Partner Software - Operating System 8pks	max 30969	Configuration Rule	Selection constraint for Partner Software - Operating System 8pks: max 30969
-Software & Licenses	OEM Software	max 999	Configuration Rule	Selection constraint for OEM Software: max 999
-Accessories & Infrastructure	Reseller Option Kit	no max	Configuration Rule	Selection constraint for Reseller Option Kit: no max
-Unknown	InfiniBand PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
-Unknown	Ethernet PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
-Unknown	OCP Ethernet		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
-Unknown	Transceivers		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
-Unknown	VMWare Core Editions		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	MS Windows Server Not Preinstalled		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	MS Windows Server Preinstalled		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	Red Hat Operating Systems		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	Red Hat-Virtualization		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	SUSE containers		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	SUSE Operating Systems		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	Partner Software - Operating System 8pks		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	Reseller Option Kit		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Unknown	VMWare Core Editions		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	MS Windows Server Not Preinstalled		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	MS Windows Server Preinstalled		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	Red Hat Operating Systems		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	Red Hat-Virtualization		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	SUSE containers		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	SUSE Operating Systems		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	Partner Software - Operating System 8pks		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	Reseller Option Kit		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
-Unknown	Power Supplies		Selection Guide	In order to select the right size power supply for your ProLiant Server it is 'highly recommended' that you use the 'HPE Power Advisor' located at https://poweradvisorext.it.hpe.com/?Page=Index (Power Supplies)

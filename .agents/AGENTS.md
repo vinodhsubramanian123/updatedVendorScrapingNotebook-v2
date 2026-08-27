@@ -252,6 +252,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Large multi-node tenders (e.g. 60x DL380 nodes) require comprehensive data center infrastructure synthesis.
 - **Rule**: `boq_evaluator.js` and `multi_cluster_splitter.js` MUST emit `clusterSizing` containing: (1) Total Rack Units (`serverCount * 2U`), (2) Standard 42U Rack Count (`ceil(totalRU / 42)`), (3) Peak Facility Power Envelope (`(serverCount * psuWattage) / 1000` kW), (4) Rail Kit Coverage (`P52341-B21` Easy Install Rail Kit 1 per node), and (5) High-line 200V-240V utility power derating protection when estimated node draw exceeds 800W.
 
+### INV-30: OCP Form-Factor Controller & Multi-Device Physical Slot Budget
+- **Pattern**: Standard 2U rack servers (DL380 Gen11 / Gen12) have a physical maximum of TWO (2) OCP 3.0 slots (OCP1 and OCP2).
+- **Rule**: `networking_ocp.js` and `boq_evaluator.js` MUST count both OCP storage controllers (`-o` suffix, e.g. `MR408i-o`, `MR216i-o`, `SR-series`) AND OCP network adapters against `maxOcpSlots = 2`. When an OCP storage controller occupies Slot 1 and an OCP NIC occupies Slot 2, adding a 3rd OCP device (e.g. `P10115-B21`) is physically unbuildable and MUST be rejected or converted to a standard PCIe standup adapter (`P26262-B21`).
+
+### INV-31: FIO Root Part Number Whitelisting vs Suffix Relabeling
+- **Pattern**: In HPE CLIC/OCA, BTO memory SKUs (`-B21`) are strictly restricted from standalone quotes in CTO base models under global supply constraint rules (Rules 81354490 & 91001655).
+- **Rule**: Rule engines and tender generators MUST NEVER synthesize an FIO component by simply appending `" 0D1"` to an un-whitelisted BTO part number (e.g. `P64707-B21 0D1`). CTO configurations require true FIO root part numbers (`-F21`, e.g. `P64707-F21`) or explicit `#0D1`-whitelisted companion Smart Kits (`P73148-B21 #0D1`).
+
 ---
 
 ## History Directory Hygiene Rules

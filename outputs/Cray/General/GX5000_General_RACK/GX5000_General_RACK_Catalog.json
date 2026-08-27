@@ -24,17 +24,17 @@
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 2,
-          "totalPrice": 32500,
-          "minPrice": 14500,
-          "maxPrice": 18000,
+          "totalPrice": 37500,
+          "minPrice": 18000,
+          "maxPrice": 19500,
           "subcategories": {
             "Variants": {
               "totalSKUs": 2,
-              "totalPrice": 32500,
-              "avgPrice": 16250
+              "totalPrice": 37500,
+              "avgPrice": 18750
             }
           },
-          "avgPrice": 16250
+          "avgPrice": 18750
         }
       }
     }
@@ -65,24 +65,24 @@
       ],
       "rows": [
         [
-          "P48820-B21",
-          "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "P57100-B21",
+          "HPE Cray Supercomputing GX5000 General Rack CTO Chassis",
           "$18,000.00",
           "1",
           "2026-08-10"
         ],
         [
-          "P48821-B21",
-          "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
-          "$14,500.00",
+          "P57101-B21",
+          "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "$19,500.00",
           "1",
           "2026-08-10"
         ]
       ],
       "skus": [
         {
-          "Product #": "P48820-B21",
-          "Description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "Product #": "P57100-B21",
+          "Description": "HPE Cray Supercomputing GX5000 General Rack CTO Chassis",
           "Unit Price (USD)": "18000.00",
           "Price (USD)": "18000.00",
           "Current Qty": "1",
@@ -92,8 +92,8 @@
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
           "Component Role": "Base Chassis",
-          "sku": "P48820-B21",
-          "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "sku": "P57100-B21",
+          "description": "HPE Cray Supercomputing GX5000 General Rack CTO Chassis",
           "listPrice": 18000,
           "listPriceFormatted": "$18,000.00",
           "qty": 1,
@@ -105,10 +105,10 @@
           "Price History Trail": "2026-08-10: $18000.00"
         },
         {
-          "Product #": "P48821-B21",
-          "Description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
-          "Unit Price (USD)": "14500.00",
-          "Price (USD)": "14500.00",
+          "Product #": "P57101-B21",
+          "Description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "Unit Price (USD)": "19500.00",
+          "Price (USD)": "19500.00",
           "Current Qty": "1",
           "Option Type": "CTO",
           "Start Date": "2026-08-10",
@@ -116,17 +116,17 @@
           "Constraint Text": "System Standard (Max 1)",
           "Subcategory Max Qty": "1",
           "Component Role": "Base Chassis",
-          "sku": "P48821-B21",
-          "description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
-          "listPrice": 14500,
-          "listPriceFormatted": "$14,500.00",
+          "sku": "P57101-B21",
+          "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+          "listPrice": 19500,
+          "listPriceFormatted": "$19,500.00",
           "qty": 1,
           "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "None",
-          "Price History Trail": "2026-08-10: $14500.00"
+          "Price History Trail": "2026-08-10: $19500.00"
         }
       ],
       "skuCount": 2

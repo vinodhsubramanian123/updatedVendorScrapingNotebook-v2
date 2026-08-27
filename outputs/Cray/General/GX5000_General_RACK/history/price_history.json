@@ -12,5 +12,19 @@
       "price": 14500,
       "status": "BASELINE"
     }
+  ],
+  "P57100-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 18000,
+      "status": "BASELINE"
+    }
+  ],
+  "P57101-B21": [
+    {
+      "date": "2026-08-10",
+      "price": 19500,
+      "status": "BASELINE"
+    }
   ]
 }

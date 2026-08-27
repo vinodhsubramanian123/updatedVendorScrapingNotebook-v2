@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-08-27T21:06:50.715Z  
-**Total Verified SKUs**: `1587` (`472` Hardware + `1115` Services)  
+**Sync Timestamp**: 2026-08-27T23:24:13.326Z  
+**Total Verified SKUs**: `1593` (`478` Hardware + `1115` Services)  
 **Total Synced KnowledgeDeltas**: `18`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 472 | 472 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 478 | 474 | 0 | 3 | 4 | **CERTIFIED** |
 | **Support Services & SLAs** | 1115 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1587** | **472** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **1593** | **474** | **0** | **3** | **4** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -45,10 +45,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | SKU | Description | Status | Discontinued Date | Last Known Price |
 |-----|-------------|--------|-------------------|------------------|
-| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $1650.00 |
-| `P52535-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $1900.00 |
-| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $2250.00 |
-| `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $2050.00 |
+| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **REINSTATED** | 2026-08-27 | $1650.00 |
+| `P52535-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **REINSTATED** | 2026-08-27 | $2100.00 |
+| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **REINSTATED** | 2026-08-27 | $2250.00 |
+| `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **REINSTATED** | 2026-08-27 | $2050.00 |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

@@ -17,8 +17,9 @@
     "daysActive": 17,
     "lastKnownPrice": "1650.00",
     "fullPriceTrail": "2026-08-10: $1650.00 → 2026-08-27: $1650.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-27"
   },
   "P52535-B21": {
     "productNumber": "P52535-B21",
@@ -28,10 +29,11 @@
     "firstSeenDate": "2026-08-10",
     "discontinuedDate": "2026-08-27",
     "daysActive": 17,
-    "lastKnownPrice": "1900.00",
+    "lastKnownPrice": "2100.00",
     "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-27"
   },
   "P52536-B21": {
     "productNumber": "P52536-B21",
@@ -43,8 +45,9 @@
     "daysActive": 17,
     "lastKnownPrice": "2250.00",
     "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-27"
   },
   "P52537-B21": {
     "productNumber": "P52537-B21",
@@ -56,8 +59,9 @@
     "daysActive": 17,
     "lastKnownPrice": "2050.00",
     "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-27"
   },
   "P52532-B21": {
     "productNumber": "P52532-B21",

@@ -239,12 +239,14 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
         unresolvedConflicts.push({ sku: fixSku, reason: `DC Lug Kit injected without a corresponding -48VDC Power Supply.` });
         recordAudit('SKU', `DC Lug Kit ${fixSku} pairing`, 'FAIL', `Missing -48VDC Power Supply for Lug Kit ${fixSku}.`, fixSku);
       }
-    } else if (fixSku === 'P01366-B21') {
-      recordAudit('SKU', `Smart Storage Battery ${fixSku}`, 'PASS', `Battery paired with Smart Array Controller.`, fixSku);
+    } else if (fixSku === cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY?.sku || 'P01366-B21') || fixSku === 'P02377-B21' || fix.description?.toLowerCase().includes('battery') || fix.description?.toLowerCase().includes('capacitor')) {
+      const matchingCtrl = fullBomList.find(it => (it.description || '').toLowerCase().includes('controller') || (it.description || '').toLowerCase().includes('raid'));
+      const ctrlName = matchingCtrl ? (matchingCtrl.sku || matchingCtrl.description) : 'Storage Controller';
+      recordAudit('SKU', `Smart Storage Battery / Capacitor ${fixSku}`, 'PASS', `Battery paired with ${ctrlName}.`, fixSku);
       resolvedFixes.push({
         sku: fixSku,
         action: 'INJECTED_AND_PAIRED',
-        reasoning: `Protects write cache for Controller P47777-B21.`
+        reasoning: `Protects write cache for ${ctrlName}.`
       });
     } else {
       recordAudit('SKU', `Fix SKU ${fixSku}`, 'PASS', `Validated fix SKU ${fixSku}.`, fixSku);

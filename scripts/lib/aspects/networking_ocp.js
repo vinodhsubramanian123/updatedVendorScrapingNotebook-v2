@@ -32,19 +32,30 @@ function evalNetworkingOcp(items, catalogData = null) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    if (sku === 'P51911-B21' || (desc.includes('cpu1') && desc.includes('ocp2'))) {
+    // Detect CPU1/CPU2 OCP2 Enablement Cables semantically
+    const isCpu1OcpCable = /\bcpu1.*ocp2\b/i.test(desc) || (desc.includes('cpu1') && desc.includes('ocp2'));
+    const isCpu2OcpCable = /\bcpu2.*ocp2\b/i.test(desc) || (desc.includes('cpu2') && desc.includes('ocp2'));
+    if (isCpu1OcpCable) {
       hasCpu1Ocp2Cable = true;
       ocpCableItems.push(it);
     }
-    if (sku === 'P48830-B21' || (desc.includes('cpu2') && desc.includes('ocp2'))) {
+    if (isCpu2OcpCable) {
       hasCpu2Ocp2Cable = true;
       ocpCableItems.push(it);
     }
 
+    // Account for OCP-form-factor storage controllers (e.g. MR408i-o, SR-series) which occupy an OCP slot
+    const isOcpStorage = (role === 'Storage Controller' || desc.includes('controller') || desc.includes('raid')) && 
+                         (desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc) || desc.includes('-o'));
+    if (isOcpStorage) {
+      ocpAdapterCount += (it.quantity || 1);
+    }
+
     if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) continue;
 
-    if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || desc.includes('bcm5719') || desc.includes('bcm57504') || desc.includes('e810') || desc.includes('cx6')) {
-      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('ocp3');
+    // Detect all Network Adapters generically (Ethernet, OCP, InfiniBand, Slingshot, SFP/BASE-T)
+    if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || desc.includes('nic') || desc.includes('sfp') || desc.includes('infiniband') || desc.includes('slingshot')) {
+      const isOcp = desc.includes('ocp') || desc.includes('flr') || desc.includes('flexlom') || desc.includes('ocp3');
       if (isOcp) {
         hasOcpAdapter = true;
         ocpAdapterCount += (it.quantity || 1);
