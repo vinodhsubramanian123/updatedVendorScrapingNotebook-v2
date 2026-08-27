@@ -438,11 +438,13 @@ class GeminiKeyRotator {
         }
 
         // For non-rate-limit errors or after retries exhausted, throw
-        throw err;
+        if (!isRateLimit) {
+          throw err;
+        }
       }
     }
 
-    throw lastError || new Error(`Operation failed after ${attempt} attempts across Gemini key pool.`);
+    throw new ApiQuotaExhaustedError(`All keys exhausted. Operation failed after ${attempt} attempts across Gemini key pool.`);
   }
 
   /**
@@ -489,12 +491,20 @@ class GeminiKeyRotator {
 // Singleton global instance for the application process
 const globalRotator = new GeminiKeyRotator();
 
+class ApiQuotaExhaustedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ApiQuotaExhaustedError';
+  }
+}
+
 module.exports = {
   GeminiKeyRotator,
   globalRotator,
   DEFAULT_MODEL,
   REASONING_MODEL,
   maskKey,
+  ApiQuotaExhaustedError,
   getActiveKey: () => globalRotator.getActiveKey(),
   getClient: (opts) => globalRotator.getClient(opts),
   markKeyExhausted: (key, err, opts) => globalRotator.markKeyExhausted(key, err, opts),

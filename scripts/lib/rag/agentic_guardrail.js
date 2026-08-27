@@ -214,7 +214,12 @@ async function sendWithRotation(message, rotationState, maxRetries, startTime) {
         await sleep(10000);
         retries++;
       } else {
-        throw err;
+        if (err.name === 'ApiQuotaExhaustedError') {
+          logger.warn('AGENTIC_GUARDRAIL', 'All keys exhausted. Falling back to deterministic local RAG search.');
+          throw err;
+        } else {
+          throw err;
+        }
       }
     }
   }
@@ -287,6 +292,11 @@ async function runAgenticGuardrail(items, chassisDir) {
       startTime
     );
   } catch (err) {
+    if (err.name === 'ApiQuotaExhaustedError') {
+       logger.warn('AGENTIC_GUARDRAIL', 'All keys exhausted during initial prompt. Falling back to deterministic local RAG search.');
+       const localFallbackResult = await queryLocalKnowledgeBase("fallback validation", chassisId);
+       return { error: 'ApiQuotaExhaustedError', fallbackUsed: true, localFallbackResult };
+    }
     return { error: err.message };
   }
 
@@ -330,6 +340,11 @@ async function runAgenticGuardrail(items, chassisDir) {
     try {
       response = await sendWithRotation(toolResponses, rotationState, maxRetries, startTime);
     } catch (err) {
+      if (err.name === 'ApiQuotaExhaustedError') {
+         logger.warn('AGENTIC_GUARDRAIL', 'All keys exhausted during tool response phase. Falling back to deterministic local RAG search.');
+         const localFallbackResult = await queryLocalKnowledgeBase("fallback validation", chassisId);
+         return { error: 'ApiQuotaExhaustedError', fallbackUsed: true, localFallbackResult, turns: ctx.turns, executedToolCalls };
+      }
       logger.warn('AGENTIC_GUARDRAIL', 'Agentic loop chat error', err);
       return { error: err.message, text: response ? response.text : '', turns: ctx.turns, executedToolCalls };
     }
