@@ -29,6 +29,8 @@ const { evalNetworkingOcp } = require('../aspects/networking_ocp.js');
 const { evalPcieRiserSlots } = require('../aspects/pcie_riser.js');
 const { evalPowerEnvironment } = require('../aspects/power_environment.js');
 const { evalSupportManufacturing } = require('../aspects/support_manufacturing.js');
+const { evalSupportServices } = require('../aspects/support_services.js');
+const { generateLifecycleRecommendations } = require('../conflict/resolution_matrix.js');
 
 const HIGH_TDP_THRESHOLD_WATTS = 240;
 
@@ -168,11 +170,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData);
+  const lifecycle = evalSupportServices(items, catalogData);
+  const lifecycleRecommendations = generateLifecycleRecommendations(items, catalogData);
 
   const errors = [];
   const warnings = [];
   const missingDependencies = [];
   const mathDeductions = [];
+
+  if (lifecycle.hasObsoleteRisk) {
+    warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');
+  }
+  if (lifecycle.hasEolWarning) {
+    warnings.push('Lifecycle Advisory: 90-Day EOL component(s) detected in BOM. Advance migration recommended.');
+  }
 
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
   const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
@@ -402,6 +413,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     requiredPcieCards: pcie.requiredPcieCards,
     totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
     hasSupportService: support.hasSupportService,
+    lifecycleRisks: lifecycle,
+    lifecycleRecommendations,
     errors,
     warnings,
     mathDeductions,
