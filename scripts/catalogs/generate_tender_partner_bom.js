@@ -6,7 +6,8 @@
  * the partitioned customer tender GID-RFQS-HPE-2026-006.xlsx.
  * 
  * Formatted with:
- * - Columns: Part Number, Category, Description, Qty (Per Node), Set/Multiplier, Total Order Qty
+ * - Columns: Part Number, Category, Description, Qty (Per Node), Set / Multiplier, Total Order Qty
+ * - Set / Multiplier is a merged vertical span across the entire configuration block.
  * - Config 1 (Cluster A - 20x Platinum 8580) and Config 2 (Cluster B - 40x Gold 6530)
  *   clearly separated by 2 blank lines and visual cluster header banners.
  * - Styled with Emerald Green / Slate professional palette via xlsx-js-style.
@@ -23,7 +24,7 @@ const OUTPUT_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen11', 'DL38
 // Style definitions
 const STYLES = {
   title: {
-    font: { name: 'Calibri', sz: 16, bold: true, color: { rgb: 'FFFFFF' } },
+    font: { name: 'Calibri', sz: 15, bold: true, color: { rgb: 'FFFFFF' } },
     fill: { fgColor: { rgb: '0F172A' } }, // Slate 900
     alignment: { horizontal: 'center', vertical: 'center' }
   },
@@ -46,6 +47,28 @@ const STYLES = {
       bottom: { style: 'medium', color: { rgb: '059669' } },
       left: { style: 'thin', color: { rgb: 'CBD5E1' } },
       right: { style: 'thin', color: { rgb: 'CBD5E1' } }
+    }
+  },
+  multiplierSpanA: {
+    font: { name: 'Calibri', sz: 13, bold: true, color: { rgb: '065F46' } }, // Dark Emerald
+    fill: { fgColor: { rgb: 'ECFDF5' } }, // Emerald 50
+    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    border: {
+      top: { style: 'medium', color: { rgb: '059669' } },
+      bottom: { style: 'medium', color: { rgb: '059669' } },
+      left: { style: 'medium', color: { rgb: '059669' } },
+      right: { style: 'medium', color: { rgb: '059669' } }
+    }
+  },
+  multiplierSpanB: {
+    font: { name: 'Calibri', sz: 13, bold: true, color: { rgb: '1E40AF' } }, // Dark Blue
+    fill: { fgColor: { rgb: 'EFF6FF' } }, // Blue 50
+    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    border: {
+      top: { style: 'medium', color: { rgb: '2563EB' } },
+      bottom: { style: 'medium', color: { rgb: '2563EB' } },
+      left: { style: 'medium', color: { rgb: '2563EB' } },
+      right: { style: 'medium', color: { rgb: '2563EB' } }
     }
   },
   rowEven: {
@@ -113,11 +136,6 @@ const STYLES = {
       left: { style: 'thin', color: { rgb: 'E2E8F0' } },
       right: { style: 'thin', color: { rgb: 'E2E8F0' } }
     }
-  },
-  summaryTotal: {
-    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
-    fill: { fgColor: { rgb: '0F172A' } },
-    alignment: { horizontal: 'right', vertical: 'center' }
   }
 };
 
@@ -201,10 +219,16 @@ function generatePartnerPortalWorkbook() {
   // Table Headers
   wsData.push(['Part Number (SKU)', 'Category', 'Description', 'Qty (Per Node)', 'Set / Multiplier', 'Total Order Qty']);
 
-  // Table Rows for Cluster A
-  CLUSTER_A_ITEMS.forEach(item => {
-    wsData.push([item.sku, item.category, item.desc, item.qty, item.mult, item.total]);
+  // Table Rows for Cluster A (First row gets multiplier label, following rows empty for span merge)
+  const dataStartRowA = wsData.length;
+  CLUSTER_A_ITEMS.forEach((item, idx) => {
+    const multLabel = idx === 0 ? '20x Server Nodes\n(Multiplier: 20)' : '';
+    wsData.push([item.sku, item.category, item.desc, item.qty, multLabel, item.total]);
   });
+  const dataEndRowA = wsData.length - 1;
+
+  // Add Multiplier Column Vertical Merge for Config 1
+  merges.push({ s: { r: dataStartRowA, c: 4 }, e: { r: dataEndRowA, c: 4 } });
 
   // ==========================================
   // 2 BLANK LINES SEPARATING CONFIGURATIONS
@@ -222,10 +246,16 @@ function generatePartnerPortalWorkbook() {
   // Table Headers
   wsData.push(['Part Number (SKU)', 'Category', 'Description', 'Qty (Per Node)', 'Set / Multiplier', 'Total Order Qty']);
 
-  // Table Rows for Cluster B
-  CLUSTER_B_ITEMS.forEach(item => {
-    wsData.push([item.sku, item.category, item.desc, item.qty, item.mult, item.total]);
+  // Table Rows for Cluster B (First row gets multiplier label, following rows empty for span merge)
+  const dataStartRowB = wsData.length;
+  CLUSTER_B_ITEMS.forEach((item, idx) => {
+    const multLabel = idx === 0 ? '40x Server Nodes\n(Multiplier: 40)' : '';
+    wsData.push([item.sku, item.category, item.desc, item.qty, multLabel, item.total]);
   });
+  const dataEndRowB = wsData.length - 1;
+
+  // Add Multiplier Column Vertical Merge for Config 2
+  merges.push({ s: { r: dataStartRowB, c: 4 }, e: { r: dataEndRowB, c: 4 } });
 
   // Convert to worksheet
   const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -237,7 +267,7 @@ function generatePartnerPortalWorkbook() {
     { wch: 22 }, // Category
     { wch: 72 }, // Description
     { wch: 16 }, // Qty (Per Node)
-    { wch: 18 }, // Set / Multiplier
+    { wch: 22 }, // Set / Multiplier (Span)
     { wch: 18 }  // Total Order Qty
   ];
 
@@ -274,17 +304,26 @@ function generatePartnerPortalWorkbook() {
       else if (R === startRowA + 1 || R === startRowB + 1) {
         cell.s = STYLES.tableHeader;
       }
-      // Data Rows
-      else if (R > startRowA + 1 && R <= startRowA + 1 + CLUSTER_A_ITEMS.length) {
-        const isEven = (R - startRowA) % 2 === 0;
+      // Multiplier Span for Cluster A
+      else if (R >= dataStartRowA && R <= dataEndRowA && C === 4) {
+        cell.s = STYLES.multiplierSpanA;
+      }
+      // Multiplier Span for Cluster B
+      else if (R >= dataStartRowB && R <= dataEndRowB && C === 4) {
+        cell.s = STYLES.multiplierSpanB;
+      }
+      // Data Rows for Cluster A
+      else if (R >= dataStartRowA && R <= dataEndRowA) {
+        const isEven = (R - dataStartRowA) % 2 === 0;
         if (C === 0) cell.s = isEven ? STYLES.skuEven : STYLES.skuOdd;
-        else if (C === 3 || C === 4 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
+        else if (C === 3 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
         else cell.s = isEven ? STYLES.rowEven : STYLES.rowOdd;
       }
-      else if (R > startRowB + 1 && R <= startRowB + 1 + CLUSTER_B_ITEMS.length) {
-        const isEven = (R - startRowB) % 2 === 0;
+      // Data Rows for Cluster B
+      else if (R >= dataStartRowB && R <= dataEndRowB) {
+        const isEven = (R - dataStartRowB) % 2 === 0;
         if (C === 0) cell.s = isEven ? STYLES.skuEven : STYLES.skuOdd;
-        else if (C === 3 || C === 4 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
+        else if (C === 3 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
         else cell.s = isEven ? STYLES.rowEven : STYLES.rowOdd;
       }
     }
@@ -302,7 +341,7 @@ function generatePartnerPortalWorkbook() {
   XLSX.writeFile(wb, downloadsPath);
   XLSX.writeFile(wb, outputsPath);
 
-  console.log(`✅ Partner Portal BOM Excel generated successfully!`);
+  console.log(`✅ Partner Portal BOM Excel generated successfully with Multiplier Vertical Spans!`);
   console.log(`   📁 Downloads Path : ${downloadsPath}`);
   console.log(`   📁 Workspace Path : ${outputsPath}`);
   return { downloadsPath, outputsPath };
