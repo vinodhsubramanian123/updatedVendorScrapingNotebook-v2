@@ -345,12 +345,29 @@ function autoDetectChassisDetailed(boqItems = []) {
 
     // 3. Match by family + gen + form factor (e.g. ProLiant + Gen12 + SFF)
     if (variant.family && variant.gen) {
+      // First try strict family + gen + formFactor match
       for (const cat of catalogs) {
         const catPath = cat.catalogDir.toLowerCase();
         const famMatch = catPath.includes(variant.family.toLowerCase());
         const genMatch = catPath.includes(variant.gen.toLowerCase());
-        const ffMatch = !baseFormFactor || catPath.includes(baseFormFactor.toLowerCase()) || cat.id.toLowerCase().includes(baseFormFactor.toLowerCase());
+        const ffMatch = baseFormFactor && (catPath.includes(baseFormFactor.toLowerCase()) || cat.id.toLowerCase().includes(baseFormFactor.toLowerCase()));
         if (famMatch && genMatch && ffMatch) {
+          return {
+            chassisDir: cat.catalogDir,
+            matchType: 'FAMILY_GEN_FF_MATCH',
+            confidenceScore: 0.95,
+            requiresUserConfirmation: false,
+            detectedVariant: variant
+          };
+        }
+      }
+
+      // Then try family + gen match (e.g. ProLiant + Gen11 -> DL380_Gen11)
+      for (const cat of catalogs) {
+        const catPath = cat.catalogDir.toLowerCase();
+        const famMatch = catPath.includes(variant.family.toLowerCase());
+        const genMatch = catPath.includes(variant.gen.toLowerCase());
+        if (famMatch && genMatch) {
           return {
             chassisDir: cat.catalogDir,
             matchType: 'FAMILY_GEN_MATCH',

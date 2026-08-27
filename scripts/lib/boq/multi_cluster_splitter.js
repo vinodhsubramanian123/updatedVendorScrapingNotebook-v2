@@ -101,7 +101,7 @@ function extractRawItemsFromWorkbook(filePath) {
           });
         } else if (l.toLowerCase().includes('server') || l.toLowerCase().includes('chassis') || l.toLowerCase().includes('configure-to-order')) {
           rawItems.push({
-            sku: 'DL380_Gen11_8SFF_NC_CTO',
+            sku: 'P52534-B21',
             description: l,
             quantity: lineQty || 1,
             category: 'Base Chassis',
@@ -133,7 +133,7 @@ function extractRawItemsFromWorkbook(filePath) {
  */
 function analyzeAndPartitionClusters(rawItems) {
   // Find total chassis count
-  const chassisItem = rawItems.find(i => i.category === 'Base Chassis' || i.sku === 'DL380_Gen11_8SFF_NC_CTO');
+  const chassisItem = rawItems.find(i => i.category === 'Base Chassis' || i.sku === 'P52534-B21' || i.sku === 'DL380_Gen11_8SFF_NC_CTO');
   const totalChassis = chassisItem ? chassisItem.quantity : 60;
 
   // Identify CPU items
@@ -186,9 +186,9 @@ function analyzeAndPartitionClusters(rawItems) {
   clusters.forEach((cluster) => {
     const mult = cluster.multiplier;
 
-    // 1. Add Base Chassis
+    // 1. Add Base Chassis (P52534-B21)
     cluster.items.push({
-      sku: 'DL380_Gen11_8SFF_NC_CTO',
+      sku: 'P52534-B21',
       description: 'HPE ProLiant DL380 Gen11 8SFF NC Configure-to-order Server',
       quantity: 1, // Per-server quantity
       totalQuantity: mult,
@@ -223,16 +223,18 @@ function analyzeAndPartitionClusters(rawItems) {
 
     // 4. Distribute Common Infrastructure Options
     rawItems.forEach(item => {
-      if (item.sku === cluster.cpuSku || psuItems.some(p => p.sku === item.sku) || item.category === 'Base Chassis' || item.sku === 'DL380_Gen11_8SFF_NC_CTO') {
+      const clean = cleanBaseSKU(item.sku);
+      if (clean === cluster.cpuSku || psuItems.some(p => cleanBaseSKU(p.sku) === clean) || item.category === 'Base Chassis' || clean === 'P52534-B21' || clean === 'DL380_GEN11_8SFF_NC_CTO') {
         return; // Handled separately
       }
 
       // Memory (480 total DIMMs across 60 servers = 8 DIMMs per server)
+      // Must be Factory Integrated Option (0D1) in CTO chassis to avoid CLIC 81354490 & 91001655
       if (item.description.toLowerCase().includes('dimm') || item.description.toLowerCase().includes('memory') || item.category.toLowerCase().includes('memory')) {
         const perServerDimms = Math.round(item.quantity / totalChassis);
         cluster.items.push({
-          sku: item.sku,
-          description: item.description,
+          sku: 'P64707-B21 0D1',
+          description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit',
           quantity: perServerDimms,
           totalQuantity: mult * perServerDimms,
           category: 'Memory'
@@ -248,18 +250,18 @@ function analyzeAndPartitionClusters(rawItems) {
           category: 'Compute & Thermal'
         });
       }
-      // Fans (6 fans per server)
-      else if (item.description.toLowerCase().includes('fan kit') || item.description.toLowerCase().includes('fans')) {
+      // Fans (CLIC Rule 81354654: P48820-B21 is a kit containing all 6 fans -> 1 kit per server)
+      else if (item.description.toLowerCase().includes('fan kit') || item.description.toLowerCase().includes('fans') || clean === 'P48820-B21') {
         cluster.items.push({
-          sku: item.sku,
-          description: item.description,
-          quantity: 6,
-          totalQuantity: mult * 6,
+          sku: 'P48820-B21',
+          description: 'HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit',
+          quantity: 1,
+          totalQuantity: mult * 1,
           category: 'Compute & Thermal'
         });
       }
       // FC HBAs (120 across 60 servers = 2 per server)
-      else if (item.description.toLowerCase().includes('fiber channel') || item.sku === 'R2E09A') {
+      else if (item.description.toLowerCase().includes('fiber channel') || clean === 'R2E09A') {
         cluster.items.push({
           sku: item.sku,
           description: item.description,
@@ -269,7 +271,7 @@ function analyzeAndPartitionClusters(rawItems) {
         });
       }
       // 10/25Gb PCIe Adapters (160 total: Cluster A gets 2, Cluster B gets 3)
-      else if (item.description.toLowerCase().includes('adapter') && item.sku === 'P26262-B21') {
+      else if (item.description.toLowerCase().includes('adapter') && clean === 'P26262-B21') {
         const nicQty = cluster.multiplier === 20 ? 2 : 3;
         cluster.items.push({
           sku: item.sku,
@@ -279,8 +281,8 @@ function analyzeAndPartitionClusters(rawItems) {
           category: 'Network Controller'
         });
       }
-      // SFP28 Transceivers (1 per port)
-      else if (item.sku === '845398-B21') {
+      // SFP28 Transceivers (1 per port: Cluster A has 6 ports, Cluster B has 8 ports)
+      else if (clean === '845398-B21') {
         const nicQty = cluster.multiplier === 20 ? 2 : 3;
         const portsPerServer = (nicQty * 2) + 2; // (PCIe NICs * 2) + OCP 2p = 6 or 8
         cluster.items.push({
@@ -291,8 +293,16 @@ function analyzeAndPartitionClusters(rawItems) {
           category: 'Network Controller'
         });
       }
-      // Standard 1-per-server infrastructure (Risers, Boot devices, Cables, Controllers)
-      else if (item.quantity === totalChassis) {
+      // OCP2 Enablement: Exclude P51911-B21 (CPU1 to OCP2) to avoid CLIC Rule 81355854 conflict; retain P48830-B21 (CPU2 to OCP2)
+      else if (clean === 'P51911-B21') {
+        return; // Exclude conflicting duplicate OCP enablement kit
+      }
+      // Storage Cables: Exclude P48832-B21 (Tri-Mode Y-Cable) to avoid CLIC Rules 81354627 & 81354632; P48918-B21 is retained for MR408i-o
+      else if (clean === 'P48832-B21') {
+        return; // Exclude incompatible Y-Cable
+      }
+      // Standard 1-per-server infrastructure (Risers, Boot devices, Cables, Controllers, Racking)
+      else if (item.quantity === totalChassis || item.quantity === 60) {
         cluster.items.push({
           sku: item.sku,
           description: item.description,
@@ -301,6 +311,34 @@ function analyzeAndPartitionClusters(rawItems) {
           category: item.category
         });
       }
+    });
+
+    // 5. Add Required Riser Cable Enablement Kits (CLIC Rules 81016755, 81354683, 81170920, 81356091)
+    // Primary 3x16 Cable Kit enables Slot 1
+    cluster.items.push({
+      sku: 'P56073-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
+      quantity: 1,
+      totalQuantity: mult,
+      category: 'PCI-Express Slot'
+    });
+
+    // Secondary 3x16 Cable Kit enables Slot 4
+    cluster.items.push({
+      sku: 'P56074-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
+      quantity: 1,
+      totalQuantity: mult,
+      category: 'PCI-Express Slot'
+    });
+
+    // 6. Add Mandatory Management SaaS License (CLIC Rule 81322276)
+    cluster.items.push({
+      sku: 'R7A11AAE',
+      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
+      quantity: 1,
+      totalQuantity: mult,
+      category: 'Operating System / License'
     });
   });
 

@@ -1259,6 +1259,34 @@
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Selection constraint for Reseller Option Kit: no max"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "PORTAL",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "If PORTAL is present, P52534-B21 is mandatory."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "PORTAL",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "If PORTAL is present, P64707-B21 is mandatory."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "PORTAL",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Portal validation flagged restriction on PORTAL."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "PORTAL",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "If PORTAL is present, P58335-B21 is mandatory."
     }
   ]
 }

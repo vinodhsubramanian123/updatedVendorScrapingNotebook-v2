@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-08-27T18:08:59.911Z  
+**Sync Timestamp**: 2026-08-27T19:47:24.523Z  
 **Total Verified SKUs**: `1587` (`472` Hardware + `1115` Services)  
-**Total Synced KnowledgeDeltas**: `13`  
+**Total Synced KnowledgeDeltas**: `18`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -27,12 +27,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (Applies Across All HPE Product Lines)
 
-*No universal vendor restrictions logged yet. Baseline CTO/BTO mode rules active.*
+1. **[DELTA-1787856163549]**: If PORTAL is present, P64707-B21 is mandatory. *(Type: TEMPORARY_SUPPLY_CONSTRAINT)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)
 
-1. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-2. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+1. **[DELTA-1787856163365] DL380_Gen11**: If PORTAL is present, P52534-B21 is mandatory. *(Affected SKU: PORTAL)*
+2. **[DELTA-1787856163672] DL380_Gen11**: Portal validation flagged restriction on PORTAL. *(Affected SKU: PORTAL)*
+3. **[DELTA-1787856163759] DL380_Gen11**: If PORTAL is present, P58335-B21 is mandatory. *(Affected SKU: PORTAL)*
+4. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+5. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen11)
 
@@ -92,11 +95,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |
 | **R0Q36A** | Alletra | Storage | Storage Chassis | `R0Q36A` |
 | **R0Q37A** | Alletra | Storage | Storage Controller | `R0Q37A` |
-| **P48820-B21** | Cray | General | Blade | `P48820-B21` |
-| **P48821-B21** | Cray | General | 4U Rack | `P48821-B21` |
 | **Q2R41A** | StoreEver | Tape | Base Module | `Q2R41A` |
 | **Q2R42A** | StoreEver | Tape | Expansion Module | `Q2R42A` |
 | **P25902-B21** | Synergy | General | Compute Module | `P25902-B21` |
 | **797740-B21** | Synergy | General | Frame Chassis | `797740-B21` |
 | **P06584-B21** | Synergy | General | Interconnect Module | `P06584-B21` |
+| **P57100-B21** | Cray | General | Rack | `P57100-B21` |
+| **P57101-B21** | Cray | General | Blade | `P57101-B21` |
 

@@ -72,7 +72,7 @@ function emitProgress(step, total, label, status = 'in_progress', detail = '') {
   }
 }
 
-function parseAndConsolidateBOQ(rawInput, filePath = '') {
+function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
   let lines = [];
   const targetPath = (filePath && typeof filePath === 'string')
     ? filePath
@@ -82,7 +82,8 @@ function parseAndConsolidateBOQ(rawInput, filePath = '') {
 
   if (targetPath && (targetPath.endsWith('.xlsx') || targetPath.endsWith('.xls'))) {
     const workbook = xlsx.readFile(targetPath);
-    workbook.SheetNames.forEach(sheetName => {
+    const sheetNames = targetSheet ? (workbook.SheetNames.includes(targetSheet) ? [targetSheet] : workbook.SheetNames) : workbook.SheetNames;
+    sheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];
       const csvText = xlsx.utils.sheet_to_csv(sheet);
       lines.push(...csvText.split(/\r?\n/));
@@ -155,7 +156,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   }
 
   emitProgress(2, 10, 'Compute & Thermal Profiling', 'in_progress', `Analyzing ${items.length} SKUs for high-TDP processor constraints and heatsink counts.`);
-  const compute = evalComputeThermal(items, catalogData, mandatorySkus);
+  const compute = evalComputeThermal(items, catalogData, mandatorySkus, serverCount);
 
   emitProgress(3, 10, 'Memory Channel Math', 'in_progress', `Validating 1DPC / 2DPC symmetry and balanced memory population.`);
   const memory = evalMemoryChannel(items, compute.cpuCount, catalogData);
@@ -188,7 +189,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
   const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
   const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
+  const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
   const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
+  const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
   const psuPerServer = power.psuCount / serverCount;
 
   // Rule: OCP Slot Capacity Math
@@ -198,11 +201,50 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     mathDeductions.push(reason);
   }
 
-  // Rule: PCIe Slot Capacity vs Riser Math
-  if (isExceedingPcie) {
-    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} available slots across ${serverCount} server(s).`;
+  // CLIC Rule 81355854: Mutual Exclusivity between CPU1 to OCP2 and CPU2 to OCP2 enablement cables
+  if (network.hasConflictingOcpCables) {
+    const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (P51911-B21) and CPU2/OCP2 Enablement Kit (P48830-B21) cannot be selected together. Unselect P51911-B21 on dual-CPU DL380 servers.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  // Rule: PCIe Slot Capacity vs Active Riser Math (CLIC Rules 81016755 & 81354683)
+  if (isExceedingActivePcie) {
+    const reason = `PCIe Active Slot Math Failed (CLIC Rule 81016755 / 81354683): ${pcie.requiredPcieCards} cards exceeds ${activePcieSlotsClusterMax} electrically active slots across ${serverCount} server(s). Slot 1 and/or Slot 4 require Riser Cable Kits to be enabled.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  } else if (isExceedingPcie) {
+    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} total mechanical slots across ${serverCount} server(s).`;
     warnings.push(reason);
     mathDeductions.push(reason);
+  }
+
+  // Inject Primary Riser Cable Kit if needed
+  if (pcie.needsPrimaryCableKit) {
+    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (P56073-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'PRIMARY_RISER_CABLE_KIT',
+      rule: 'CLIC Rule 81356091: Primary 3x16 Riser Cable Enablement',
+      sku: 'P56073-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  // Inject Secondary Riser Cable Kit if needed
+  if (pcie.needsSecondaryCableKit) {
+    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (P56074-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SECONDARY_RISER_CABLE_KIT',
+      rule: 'CLIC Rule 81170920: Secondary 3x16 Riser Cable Enablement',
+      sku: 'P56074-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
   }
 
   // Rule: CPU 2 PCIe Lane Allocation requirement for Secondary/Tertiary Risers
@@ -228,6 +270,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     });
   }
 
+  // CLIC Rule 81354654: Fan kit contains all 6 fans; max 1 fan kit allowed per base chassis
+  if (compute.fanKitExceedsMax) {
+    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
   // Rule 2: Drive-less server requirement
   if (storage.driveCount === 0 && !storage.hasNoDriveKit) {
     const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
@@ -241,6 +290,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       quantity: serverCount,
       reasoning: reason
     });
+  }
+
+  // CLIC Rules 81354627 & 81354632: Tri-Mode Y-Cable compatibility
+  if (storage.hasIncompatibleYCable) {
+    const reason = `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) requires PCIe-type RAID controller (MR416i-p/SR932i-p) and Premium Cage (P48814-B21). Not compatible with OCP storage controllers or standard cages. Remove P48832-B21 and use P48918-B21.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
   }
 
   // Rule 3: DC Power Supply Lug Kit requirement
@@ -278,7 +334,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
   });
   const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
-  const hasDriveCageKit = items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21');
+  const hasDriveCageKit = storage.hasDriveCage || items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21' || cleanBaseSKU(it.sku) === 'P48813-B21');
 
   if (hasBaseChassis && storage.driveCount === 0 && !hasNoDriveFioKit && !hasDriveCageKit) {
     const reason = `CLIC Rule 81392308: Chassis ${chassisInfo.baseSku || 'CTO'} without drives requires ${mandatorySkus.NO_DRIVE_FIO_KIT.sku} FIO Kit.`;
@@ -290,6 +346,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
       quantity: serverCount,
       reason: `UNBUILDABLE CONFIGURATION (Rule 81392308): Base chassis ordered without drives requires FIO Kit or an explicit Front Drive Cage Kit.`,
+      reasoning: reason
+    });
+  }
+
+  // CLIC Rule 81322276: Mandatory Cloud Ops Management (COM) or OneView License on Gen11/Gen12 CTO models
+  if (hasBaseChassis && !support.hasManagementLicense) {
+    const reason = `CLIC Rule 81322276: CTO Chassis (${chassisInfo.baseSku || 'CTO'}) requires at least 1 Cloud Ops Management (COM) or OneView license per server (Base: R7A11AAE / E5Y43A).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'MANAGEMENT_LICENSE_COM',
+      rule: 'CLIC Rule 81322276: Mandatory CTO Management License',
+      sku: 'R7A11AAE',
+      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
+      quantity: serverCount,
       reasoning: reason
     });
   }
@@ -307,6 +377,46 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       quantity: serverCount,
       reasoning: reason
     });
+  }
+
+  // Advanced Enterprise Rule: Storage Expander & Port Channel Math
+  if (storage.needsSasExpander) {
+    const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SAS_EXPANDER_CARD',
+      rule: 'Storage Expander & Multi-Drive Channel Rule',
+      sku: 'P48835-B21',
+      description: 'HPE ProLiant DL380 Gen11 24SFF SAS Expander Card Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  // Advanced Enterprise Rule: GPU Accelerator Auxiliary Power Cable Kit
+  if (pcie.needsGpuPowerCableKit) {
+    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires GPU Auxiliary Power Cable Kit (P48816-B21 / P76450-B21) to connect to power distribution board.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'GPU_AUX_POWER_CABLE_KIT',
+      rule: 'GPU Accelerator Auxiliary Power Rule',
+      sku: 'P48816-B21',
+      description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  // Advanced Enterprise Rule: Windows Server Core Licensing Multiplier
+  if (support.needsAdditionalWindowsCores) {
+    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
+    warnings.push(reason);
+  }
+
+  // Advanced Enterprise Rule: High-Line 220V Utility Power Advisory
+  if (power.needsHighLine220v) {
+    const reason = `Power Derating Advisory: Estimated node power draw (${power.estimatedNodeWattage}W) requires 200V-240V high-line utility circuits to prevent single-PSU derating on ${power.maxPsuWattage}W power supplies.`;
+    warnings.push(reason);
   }
 
   // Rule 5: Memory Channel Balance & CTO FIO Memory requirement
@@ -332,47 +442,68 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     mathDeductions.push(reason);
   }
 
-
   const aspectChecks = [
     {
       id: 1,
       name: 'Thermal & Compute Math',
       iconType: 'Cpu',
-      defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules',
-      status: compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans ? 'FAIL' : 'PASS',
-      detail: compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.` : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope.`
+      defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
+      status: (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      detail: compute.fanKitExceedsMax
+        ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
+        : (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans)
+        ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
+        : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with valid fan kit count.`
     },
     {
       id: 2,
       name: 'Memory & Channel Balance',
       iconType: 'Memory',
-      defaultRule: 'Memory interleaving, channel balance & population rules',
+      defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
       status: (memory.memoryCount > 0 && !memory.isBalancedChannel) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
-      detail: memory.hasBtoMemoryInCto ? `Memory Option Rule Failed: Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is not allowed in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).` : (memory.memoryCount > 0 && !memory.isBalancedChannel) ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.` : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
+      detail: memory.hasBtoMemoryInCto
+        ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
+        : (memory.memoryCount > 0 && !memory.isBalancedChannel)
+        ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`
+        : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
     },
     {
       id: 3,
       name: 'Storage & Controller Cabling',
       iconType: 'HardDrive',
-      defaultRule: 'Storage controller, drive cage & cable kit compatibility checks',
-      status: (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
-      detail: (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.' : storage.hasStorageController && !storage.hasSmartBattery ? 'Storage Math Failed: Storage controller requires Smart Storage Battery.' : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
+      defaultRule: 'Storage controller, drive cage & cable kit compatibility checks (CLIC Rules 81354627 & 81354632)',
+      status: storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
+      detail: storage.hasIncompatibleYCable
+        ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (P48918-B21) is the correct cable.`
+        : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
+        ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
+        : storage.hasStorageController && !storage.hasSmartBattery
+        ? 'Storage Math Failed: Storage controller requires Smart Storage Battery / Capacitor Kit.'
+        : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
     },
     {
       id: 4,
       name: 'PCIe Riser & Slot Expansion Math',
       iconType: 'Layers',
-      defaultRule: 'PCIe slot capacity, riser lane allocation & GPU expansion rules',
-      status: isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
-      detail: isExceedingPcie ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.` : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2 ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.' : `Verified ${pcie.requiredPcieCards} PCIe cards fit within available slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node).`
+      defaultRule: 'PCIe slot capacity, active riser cabling & slot expansion rules (CLIC Rules 81016755 & 81354683)',
+      status: isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
+      detail: isExceedingActivePcie
+        ? `PCIe Active Slot Math Failed (CLIC Rule 81016755): ${pcie.requiredPcieCards} required cards exceeds ${activePcieSlotsClusterMax} electrically cabled active slots. Slot 1 and/or Slot 4 require Riser Cable Kits (P56073-B21 / P56074-B21).`
+        : isExceedingPcie
+        ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.`
+        : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2
+        ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.'
+        : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${activePcieSlotsClusterMax} active cabled slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node).`
     },
     {
       id: 5,
       name: 'Networking & OCP Interconnect',
       iconType: 'Zap',
-      defaultRule: 'OCP 3.0 network adapter slots and port allocation rules',
-      status: isExceedingOcp ? 'FAIL' : 'PASS',
-      detail: isExceedingOcp
+      defaultRule: 'OCP 3.0 network adapter slots and port allocation rules (CLIC Rule 81355854)',
+      status: isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
+      detail: network.hasConflictingOcpCables
+        ? `CLIC Rule 81355854 Failed: CPU1 to OCP2 (P51911-B21) and CPU2 to OCP2 (P48830-B21) enablement kits cannot be selected together.`
+        : isExceedingOcp
         ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} slots.`
         : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
     },
@@ -386,11 +517,15 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     },
     {
       id: 7,
-      name: 'Vendor Support Taxonomy',
+      name: 'Vendor Support Taxonomy & Licensing',
       iconType: 'Award',
-      defaultRule: 'Hardware SKU validation against mandatory support SLA tiers',
-      status: support.hasSupportService ? 'PASS' : 'FAIL',
-      detail: support.hasSupportService ? 'Verified mandatory support services included.' : 'Support Taxonomy Failed: Missing required support service SLA.'
+      defaultRule: 'Hardware SKU validation against mandatory support SLA tiers & COM licensing (CLIC Rule 81322276)',
+      status: support.hasSupportService && support.hasManagementLicense ? 'PASS' : 'WARN',
+      detail: !support.hasManagementLicense
+        ? 'Management License Advisory (CLIC Rule 81322276): CTO models require at least 1 COM or OneView license (R7A11AAE / E5Y43A).'
+        : support.hasSupportService
+        ? 'Verified mandatory support services and management licensing included.'
+        : 'Support Taxonomy Advisory: Missing Pointnext / Tech Care service line.'
     }
   ];
 
@@ -415,6 +550,23 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     hasSupportService: support.hasSupportService,
     lifecycleRisks: lifecycle,
     lifecycleRecommendations,
+    // Nested aspect sub-objects for detailed observability & testability
+    compute,
+    memory,
+    storage,
+    networking: network,
+    pcie,
+    power,
+    support,
+    // Cluster Infrastructure Sizing Matrix
+    clusterSizing: {
+      serverCount,
+      totalRackUnits: serverCount * 2,
+      standard42uRacksRequired: Math.ceil((serverCount * 2) / 42),
+      totalFacilityPowerKw: parseFloat(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
+      estimatedNodeWattage: power.estimatedNodeWattage,
+      needsHighLine220v: power.needsHighLine220v
+    },
     errors,
     warnings,
     mathDeductions,

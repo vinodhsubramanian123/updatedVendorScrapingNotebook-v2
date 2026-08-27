@@ -10,6 +10,11 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   let hasDcPowerSupply = false;
   let hasDcLugKit = false;
   let psuCount = 0;
+  let maxPsuWattage = 800;
+  let estimatedCpuWatts = 0;
+  let estimatedGpuWatts = 0;
+  let estimatedMemoryWatts = 0;
+  let estimatedStorageWatts = 0;
 
   const dcLugSku = cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21');
 
@@ -23,8 +28,33 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
+    if (role === 'Processor' || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
+      const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
+      const tdp = tdpMatch ? parseInt(tdpMatch[1], 10) : 205;
+      estimatedCpuWatts += (tdp * (it.quantity || 1));
+    }
+
+    if (role === 'GPU / Accelerator' || desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || desc.includes('h100') || desc.includes('gpu')) {
+      estimatedGpuWatts += (300 * (it.quantity || 1));
+    }
+
+    if (role === 'Memory' || desc.includes('rdimm') || desc.includes('ddr5')) {
+      estimatedMemoryWatts += (8 * (it.quantity || 1));
+    }
+
+    if (role === 'Drive Cage / Drive' || desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme')) {
+      if (!desc.includes('cage') && !desc.includes('controller')) {
+        estimatedStorageWatts += (15 * (it.quantity || 1));
+      }
+    }
+
     if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
       psuCount += (it.quantity || 1);
+      const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
+      if (psuWMatch) {
+        const w = parseInt(psuWMatch[1], 10);
+        if (w > maxPsuWattage) maxPsuWattage = w;
+      }
       if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
         hasDcPowerSupply = true;
       }
@@ -34,7 +64,20 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     }
   }
 
-  return { hasDcPowerSupply, hasDcLugKit, psuCount };
+  // Estimated node power draw (including 150W baseboard + fans)
+  const estimatedNodeWattage = estimatedCpuWatts + estimatedGpuWatts + estimatedMemoryWatts + estimatedStorageWatts + 150;
+  // High-line 220V Advisory: High-capacity PSUs (>=1600W) derate to 800W on 110V low-line power.
+  // If estimated draw exceeds 800W, 200V-240V utility circuits are strongly advised.
+  const needsHighLine220v = estimatedNodeWattage > 800 && maxPsuWattage >= 1600;
+
+  return {
+    hasDcPowerSupply,
+    hasDcLugKit,
+    psuCount,
+    maxPsuWattage,
+    estimatedNodeWattage,
+    needsHighLine220v
+  };
 }
 
 module.exports = {

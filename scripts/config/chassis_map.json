@@ -161,22 +161,22 @@
       "gen": "General",
       "modelFamily": "GX5000 General RACK",
       "skus": {
-        "P48820-B21": {
+        "P57100-B21": {
+          "model": "GX5000 General RACK",
+          "formFactor": "Rack",
+          "family": "Cray",
+          "gen": "General",
+          "description": "HPE Cray Supercomputing GX5000 General Rack CTO Chassis",
+          "listPrice": 18000,
+          "optionType": "CTO"
+        },
+        "P57101-B21": {
           "model": "GX5000 Liquid-Cooled Node",
           "formFactor": "Blade",
           "family": "Cray",
           "gen": "General",
           "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
-          "listPrice": 18000,
-          "optionType": "CTO"
-        },
-        "P48821-B21": {
-          "model": "GX5000 Air-Cooled Node",
-          "formFactor": "4U Rack",
-          "family": "Cray",
-          "gen": "General",
-          "description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
-          "listPrice": 14500,
+          "listPrice": 19500,
           "optionType": "CTO"
         }
       }
@@ -377,24 +377,6 @@
       "listPrice": 15200,
       "optionType": "CTO"
     },
-    "P48820-B21": {
-      "model": "GX5000 Liquid-Cooled Node",
-      "formFactor": "Blade",
-      "family": "Cray",
-      "gen": "General",
-      "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
-      "listPrice": 18000,
-      "optionType": "CTO"
-    },
-    "P48821-B21": {
-      "model": "GX5000 Air-Cooled Node",
-      "formFactor": "4U Rack",
-      "family": "Cray",
-      "gen": "General",
-      "description": "HPE Cray Supercomputing GX5000 Air-Cooled 4U Rack CTO Chassis",
-      "listPrice": 14500,
-      "optionType": "CTO"
-    },
     "Q2R41A": {
       "model": "MSL3040 Base Module",
       "formFactor": "Base Module",
@@ -438,6 +420,24 @@
       "gen": "General",
       "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
       "listPrice": 5400,
+      "optionType": "CTO"
+    },
+    "P57100-B21": {
+      "model": "GX5000 General RACK",
+      "formFactor": "Rack",
+      "family": "Cray",
+      "gen": "General",
+      "description": "HPE Cray Supercomputing GX5000 General Rack CTO Chassis",
+      "listPrice": 18000,
+      "optionType": "CTO"
+    },
+    "P57101-B21": {
+      "model": "GX5000 Liquid-Cooled Node",
+      "formFactor": "Blade",
+      "family": "Cray",
+      "gen": "General",
+      "description": "HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis",
+      "listPrice": 19500,
       "optionType": "CTO"
     }
   }

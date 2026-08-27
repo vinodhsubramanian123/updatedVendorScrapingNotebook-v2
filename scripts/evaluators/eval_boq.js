@@ -95,9 +95,11 @@ Examples:
 
   // Parse BOQ first so we can use items for auto-detection
   const tStart = Date.now();
+  const shIdx = args.indexOf('--sheet');
+  const targetSheetName = (shIdx !== -1 && args[shIdx + 1]) ? args[shIdx + 1] : null;
   const isExcel = inputFile.endsWith('.xlsx') || inputFile.endsWith('.xls');
   const rawContent = isExcel ? '' : fs.readFileSync(inputFile, 'utf-8');
-  const items = parseAndConsolidateBOQ(rawContent, inputFile);
+  const items = parseAndConsolidateBOQ(rawContent, inputFile, targetSheetName);
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
   // Auto-detect chassis from BOQ items if --chassis not provided

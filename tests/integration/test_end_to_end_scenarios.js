@@ -49,11 +49,12 @@ P01366-B21\tHPE 96W Smart Storage Battery\t1
 P63829-B21\tHPE 1.92TB NVMe Gen4 High Speed Read Intensive SFF SSD\t2
 P03178-B21\tHPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit\t2
 P78145-B21\tHPE C13 - C14 WW 250V 10A Gray 2.0m Jumper Cord\t2
+R7A11AAE\tHPE Compute Ops Management Enhanced 3-year SaaS\t1
 H7J34A3\tHPE 3Y Tech Care Essential Support Service\t1
 `;
 
 const posItems = parseAndConsolidateBOQ(positiveBoqText);
-assert(posItems.length === 11, 'Parsed 11 valid consolidated hardware & service SKUs');
+assert(posItems.length === 12, 'Parsed 12 valid consolidated hardware & service SKUs');
 
 const posEval = evaluatePhysicalMath(posItems);
 assert(posEval.confidence.score === 1.0, `Positive build scored 1.0 / 1.00 confidence (Actual: ${posEval.confidence.score})`);

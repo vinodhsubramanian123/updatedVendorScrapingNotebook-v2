@@ -139,6 +139,48 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         } catch (_) { /* non-fatal */ }
       }
 
+      // Upload shared universal knowledge charter to this notebook
+      // This ensures EVERY notebook has cross-product vendor rules, CLIC learnings,
+      // and architectural gotchas — not just chassis-specific catalog data.
+      const charterPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_universal_knowledge_charter.md');
+      if (fs.existsSync(charterPath)) {
+        const charterSourceName = `HPE_Universal_Knowledge_Charter_${scrapeDate}`;
+        try {
+          // Remove stale charter sources from this notebook
+          const listOutput2 = execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
+            encoding: 'utf-8',
+            timeout: 15000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          const sources2 = JSON.parse(listOutput2);
+          const staleCharters = Array.isArray(sources2) ? sources2.filter(s => {
+            const title = String(s.title || s.filename || '');
+            return title.includes('Universal_Knowledge_Charter') && s.id !== undefined;
+          }) : [];
+          for (const stale of staleCharters) {
+            try {
+              execFileSync('nlm', ['source', 'delete', stale.id, '--confirm'], {
+                encoding: 'utf-8',
+                timeout: 10000,
+                env: { ...process.env, PATH: extendedPath }
+              });
+            } catch (_) { /* ignore */ }
+          }
+
+          // Upload fresh charter
+          execFileSync('nlm', [
+            'source', 'add', effectiveNotebookId,
+            '--file', charterPath,
+            '--title', charterSourceName,
+            '--wait'
+          ], {
+            encoding: 'utf-8',
+            timeout: 120000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+        } catch (_) { /* non-fatal: charter sync is best-effort */ }
+      }
+
       // If a Google Drive Sheet source is configured, sync it in-place
       if (cfgEntry && cfgEntry.driveSourceId) {
         try {

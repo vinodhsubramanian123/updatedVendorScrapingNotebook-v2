@@ -6,14 +6,69 @@
  * parses Rule#, Product#, Error Message, Root Cause, Action Required, and logs KnowledgeDelta.
  */
 
+const fs = require('fs');
+const path = require('path');
+const xlsx = require('xlsx-js-style');
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
-async function main() {
-  console.log(`================================================================`);
-  console.log(`🔍 CLIC MODAL ADVICE TEXT PARSER & UNBUILDABLE ROOT CAUSE LOG`);
-  console.log(`================================================================\n`);
+/**
+ * Parse an exported CLIC Advice Excel file (e.g. CLIC_Advice_TempUCID.xlsx)
+ * @param {string} excelPath Path to CLIC advice workbook
+ * @param {string} targetCatalogDir Target catalog directory
+ */
+function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Gen11/DL380_Gen11') {
+  if (!fs.existsSync(excelPath)) {
+    throw new Error(`CLIC Advice Excel file not found: ${excelPath}`);
+  }
 
+  const wb = xlsx.readFile(excelPath);
+  const adviceSheet = wb.Sheets['Advice_Text'] || wb.Sheets['Advice Text'] || wb.Sheets[wb.SheetNames[0]];
+  if (!adviceSheet) {
+    throw new Error(`Could not find Advice_Text sheet in ${excelPath}`);
+  }
+
+  const rows = xlsx.utils.sheet_to_json(adviceSheet);
+  console.log(`📑 Ingesting ${rows.length} CLIC advice items from: ${excelPath}`);
+
+  const results = [];
+  const seenRules = new Set();
+
+  for (const r of rows) {
+    const ruleNum = String(r['Rule#'] || r['Rule #'] || r['Rule'] || '').trim();
+    const productNum = String(r['Product#'] || r['Product #'] || r['Product'] || '').trim();
+    const adviceText = String(r['Advice Text'] || r['AdviceText'] || r['Message'] || '').trim();
+    const desc = String(r['Description'] || '').trim();
+
+    if (!adviceText || adviceText.length < 5) continue;
+
+    const dedupKey = `${ruleNum}_${productNum}_${adviceText.substring(0, 40)}`;
+    if (seenRules.has(dedupKey)) continue;
+    seenRules.add(dedupKey);
+
+    const feedbackPayload = `[CLIC RULE ${ruleNum || 'PORTAL'}] Product ${productNum}: ${adviceText}`;
+    try {
+      const delta = processPortalFeedback(feedbackPayload, targetCatalogDir);
+      results.push({
+        ruleNum,
+        productNum,
+        description: desc,
+        adviceText,
+        deltaId: delta.deltaId,
+        ruleUpdate: delta.ruleUpdate
+      });
+      console.log(`  ✅ Logged Rule ${ruleNum.padEnd(10)} | SKU: ${productNum.padEnd(12)} -> Delta: ${delta.deltaId}`);
+    } catch (err) {
+      console.warn(`  ⚠️ Failed to log feedback for rule ${ruleNum}:`, err.message);
+    }
+  }
+
+  return results;
+}
+
+async function parseLiveCdpModal(targetCatalogDir = 'outputs/ProLiant/Gen12/DL380_Gen12_SFF') {
+  console.log(`🔍 Connecting to live browser on port 9222...`);
   let target = await getOCATarget();
   if (!target) target = await getAnyPageTarget();
 
@@ -24,65 +79,54 @@ async function main() {
 
   const ws = await connectWS(target.webSocketDebuggerUrl);
 
-  // Extract Advice Text from CLIC modal
   const adviceRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      // Target Advice Text box or table inside CLIC dialog
       const adviceBox = document.querySelector('.advice-text, [class*="AdviceText"], [class*="advice"], #adviceTextContainer, .ui-dialog-content');
       const tableRows = Array.from(document.querySelectorAll('table tr')).map(r => r.innerText.trim());
-
       const fullText = document.body ? document.body.innerText : '';
       return {
         fullTextSnippet: fullText.substring(0, 1500),
-        tableRowsSnippet: tableRows.filter(t => t.includes('Unbuildable') || t.includes('P73282-B21') || t.includes('Rule#')).join('\n')
+        tableRowsSnippet: tableRows.filter(t => t.includes('Unbuildable') || t.includes('Rule#')).join('\n')
       };
     })()`,
     returnByValue: true
   });
 
   const adviceData = (adviceRes && adviceRes.result) ? adviceRes.result.value : {};
-
-  // Exact parsed error details from live modal screenshot
-  const parsedError = {
-    overallStatus: 'Unbuildable',
-    affectedSku: 'P73282-B21',
-    skuDescription: 'HPE ProLiant Compute DL380 Gen12 SFF NC',
-    ruleNumber: '81392308',
-    itemSubitem: '0100/01',
-    severity: 'Unbuildable',
-    errorTitle: 'UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL',
-    errorMessage: "We've identified an error in this configuration as its includes P73282-B21 - HPE ProLiant Compute DL380 Gen12 SFF NC without 873763-B21 FIO HPE 8SFF Front Remove SPEC Perf FIO that requires to be ordered with 8SFF Front Cage.",
-    actionRequired: 'Please update your configuration to include 8SFF Front Cage.',
-    recommendedSkuFix: '873763-B21 / P75741-B21 (8SFF Front Cage Kit)'
-  };
-
-  console.log(`📋 PARSED UNBUILDABLE CLIC ERROR DETAILS:`);
-  console.log(`  • Overall Status    : ${parsedError.overallStatus}`);
-  console.log(`  • Affected Base SKU : ${parsedError.affectedSku} (${parsedError.skuDescription})`);
-  console.log(`  • Rule Number       : ${parsedError.ruleNumber} (Item/Subitem: ${parsedError.itemSubitem})`);
-  console.log(`  • Error Title       : ${parsedError.errorTitle}`);
-  console.log(`  • Root Cause        : ${parsedError.errorMessage}`);
-  console.log(`  • Action Required   : ${parsedError.actionRequired}`);
-  console.log(`  • Recommended Fix   : ${parsedError.recommendedSkuFix}\n`);
-
-  // Log KnowledgeDelta into catalog_deltas.json
-  console.log(`🛡️ Ingesting into Closed-Loop Feedback Engine...`);
-  const rawLogText = `[CLIC RULE ${parsedError.ruleNumber}] Product ${parsedError.affectedSku}: ${parsedError.errorTitle}. ${parsedError.errorMessage} Action: ${parsedError.actionRequired} Recommended Fix: ${parsedError.recommendedSkuFix}`;
-  
-  const delta = processPortalFeedback(rawLogText, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
-
-  console.log(`✅ KnowledgeDelta Created Successfully:`);
-  console.log(`  • Delta ID      : ${delta.deltaId}`);
-  console.log(`  • Target Catalog: ${delta.catalogPath}`);
-  console.log(`  • Rule Delta    : ${delta.ruleUpdate}`);
+  console.log(`📋 Live Advice Scraped:`, adviceData.tableRowsSnippet || adviceData.fullTextSnippet);
 
   ws.close();
+}
+
+async function main() {
+  console.log(`================================================================`);
+  console.log(`🔍 CLIC ADVICE INGESTION & UNBUILDABLE ROOT CAUSE LOGGER`);
+  console.log(`================================================================\n`);
+
+  const args = process.argv.slice(2);
+  const excelFile = args.find(a => a.endsWith('.xlsx') || a.endsWith('.xls') || a.endsWith('.csv'));
+
+  if (excelFile) {
+    const targetDir = args.find(a => a.startsWith('outputs/')) || 'outputs/ProLiant/Gen11/DL380_Gen11';
+    const deltas = parseClicAdviceExcel(excelFile, targetDir);
+    console.log(`\n🎉 Processed ${deltas.length} CLIC knowledge rules successfully.`);
+  } else {
+    await parseLiveCdpModal();
+  }
+
   console.log(`\n================================================================`);
-  console.log(`🎉 UNBUILDABLE CLIC ERROR SUCCESSFULLY PARSED & LOGGED`);
+  console.log(`🎉 CLIC ADVICE PROCESSING COMPLETE`);
   console.log(`================================================================\n`);
 }
 
-main().catch(err => {
-  console.error('Error parsing CLIC modal:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Error parsing CLIC modal:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  parseClicAdviceExcel,
+  parseLiveCdpModal
+};

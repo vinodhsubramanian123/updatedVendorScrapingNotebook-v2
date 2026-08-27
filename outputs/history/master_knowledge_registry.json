@@ -1,22 +1,96 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-27T18:09:10.114Z",
-  "lastUpdated": "2026-08-27T18:09:10.114Z",
-  "totalLearnedRules": 13,
+  "generatedAt": "2026-08-27T19:47:33.426Z",
+  "lastUpdated": "2026-08-27T19:47:33.426Z",
+  "totalLearnedRules": 18,
   "productFamiliesSynced": [
-    "DL380"
+    "DL380",
+    "DL380 Gen11"
   ],
   "counts": {
-    "universal": 0,
-    "familyGen": 2,
-    "chassisSpecific": 11
+    "universal": 1,
+    "familyGen": 5,
+    "chassisSpecific": 12
   },
-  "universalRules": [],
+  "universalRules": [
+    {
+      "deltaId": "DELTA-1787856163549",
+      "timestamp": "2026-08-27T18:42:43.549Z",
+      "chassis": "DL380_Gen11",
+      "rawMessage": "[CLIC RULE PORTAL] Product : We've identified an error in this configuration as it\nincludes Standalone\nP64707-B21 - HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600,\nthat is unavailable due to global memory supply constraints\nand very limited inventory available as a Standalone SKU.\n\nIf you continue with this configuration a CLIC Process\nControl will appear at Quote (NGQ/DQM) and Convert-to-Order\nstages",
+      "errorType": "TEMPORARY_SUPPLY_CONSTRAINT",
+      "affectedSku": "PORTAL",
+      "requiredDependencySku": "P64707-B21",
+      "ruleUpdate": "If PORTAL is present, P64707-B21 is mandatory.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "UNIVERSAL_VENDOR"
+    }
+  ],
   "familyGenRules": [
     {
+      "deltaId": "DELTA-1787856163365",
+      "timestamp": "2026-08-27T18:42:43.897Z",
+      "chassis": "DL380_Gen11",
+      "rawMessage": "[CLIC RULE PORTAL] Product : UNBUILDABLE CONFIGURATION:OVERRIDE REQUIRES FACTORY APPROVAL\nWhen ordering P52534-B21 - HPE ProLiant DL380 Gen11 8SFF NC\nConfigu,\nMinimum 1 quantity and Maximum 16 quantities of\nMemory must be ordered per processor.\n\nMemory:\nP90550-F21\tFIO\tHPE 256GB 4Rx4 PC5-4800B-R 3DS FIO Kit\nP90554-F21\tFIO\tHPE 256GB 4Rx4 PC5-5600B-R 3DS FIO Kit\nP90550-B21\t0D1\tHPE 256GB 4Rx4 PC5-4800B-R 3DS Smart Kit\nP90554-B21\t0D1\tHPE 256GB 4Rx4 PC5-5600B-R 3DS Smart Kit\nP43322-F21\tFIO HPE 16GB 1Rx8 PC5-4800B-R Smart FIO Kit\nP43328-F21\tFIO HPE 32GB 2Rx8 PC5-4800B-R Smart FIO Kit\nP43331-F21\tFIO HPE 64GB 2Rx4 PC5-4800B-R Smart FIO Kit\nP43337-F21\tFIO HPE 256GB 8Rx4 PC5-4800B-R 3DS FIO Kit\nP66675-F21\tFIO HPE 96GB 2Rx4 PC5-4800B-R Smart FIO Kit\nP69974-F21\tFIO HPE 128GB 2Rx4 PC5-4800B-R Smart FIO Kit\nP64705-F21\tFIO HPE 16GB 1Rx8 PC5-5600B-R Smart FIO Kit\nP64706-F21\tFIO HPE 32GB 2Rx8 PC5-5600B-R Smart FIO Kit\nP64707-F21\tFIO HPE 64GB 2Rx4 PC5-5600B-R Smart FIO Kit\nP64708-F21\tFIO HPE 96GB 2Rx4 PC5-5600B-R Smart FIO Kit\nP64710-F21\tFIO HPE 256GB 8Rx4 PC5-5600B-R 3DS FIO Kit\nP69976-F21\tFIO HPE 128GB 2Rx4 PC5-5600B-R Smart FIO Kit\nP73117-B21\t0D1\tHPE 16GB 1Rx8 PC5-4800B-R Smart Kit\nP73118-B21\t0D1\tSamsung 16GB 1Rx8 PC5-4800B-R Kit HPE\nP73120-B21\t0D1\tHPE 32GB 2Rx8 PC5-4800B-R Smart Kit\nP73121-B21\t0D1\tSamsung 32GB 2Rx8 PC5-4800B-R Kit HPE\nP73122-B21\t0D1\tHPE 64GB 2Rx4 PC5-4800B-R Smart Kit\nP73123-B21\t0D1\tSamsung 64GB 2Rx4 PC5-4800B-R Kit HPE\nP73124-B21\t0D1\tHPE 96GB 2Rx4 PC5-4800B-R Smart Kit\nP73127-B21\t0D1\tHPE 128GB 2Rx4 PC5-4800B-R Smart Kit\nP73128-B21\t0D1\tHPE 256GB 8Rx4 PC5-4800B-R 3DS Smart Kit\nP73143-B21\t0D1\tHPE 16GB 1Rx8 PC5-5600B-R Smart Kit\nP73145-B21\t0D1\tSamsung 16GB 1Rx8 PC5-5600B-R Kit HPE\nP73146-B21\t0D1\tHPE 32GB 2Rx8 PC5-5600B-R Smart Kit\nP73147-B21\t0D1\tSamsung 32GB 2Rx8 PC5-5600B-R Kit HPE\nP73148-B21\t0D1\tHPE 64GB 2Rx4 PC5-5600B-R Smart Kit\nP73149-B21\t0D1\tSamsung 64GB 2Rx4 PC5-5600B-R Kit HPE\nP73150-B21\t0D1\tHPE 96GB 2Rx4 PC5-5600B-R Smart Kit\nP73152-B21\t0D1\tHPE 128GB 2Rx4 PC5-5600B-R Smart Kit\nP73153-B21\t0D1\tHPE 256GB 8Rx4 PC5-5600B-R 3DS Smart Kit\nS1F57A\t\t0D1\tHPE 32GB 1Rx4 DDR5-4800R Smart Kit\nS1F58A\t\t0D1\tHPE 32GB 2Rx8 DDR5-4800R Smart Kit\nS1F59A\t\t0D1\tHPE 64GB 2Rx4 DDR5-4800R Smart Kit\nS1F60A\t\t0D1\tHPE 128GB 4Rx4 DDR5-4800R 3DS Smart Kit\nS1F61A\t\t0D1\tHPE 256GB 8Rx4 DDR5-4800R 3DS Smart Kit\nP64710-B21\t0D1\tHPE 256GB 8Rx4 PC5-5600B-R 3DS Smart Kit\nP43322-B21\t0D1\tHPE 16GB 1Rx8 PC5-4800B-R Smart Kit\nP43325-B21\t0D1\tHPE 32GB 1Rx4 PC5-4800B-R Smart Kit\nP43328-B21\t0D1\tHPE 32GB 2RX8 PC5-4800B-R Smart Kit\nP43331-B21\t0D1\tHPE 64GB 2RX4 PC5-4800B-R Smart Kit\nP66675-B21\t0D1\tHPE 96GB 2Rx4 PC5-4800B-R Smart Kit\nP43334-B21\t0D1\tHPE 128GB 4RX4 PC5-4800B-R 3DS Smart Kit\nP43337-B21\t0D1\tHPE 256GB 8RX4 PC5-4800B-R 3DS Smart Kit\nP50444-B21\t0D1\tSamsung 16GB 1Rx8 PC5-4800B-R HPE Kit\nP50446-B21\t0D1\tSamsung 32GB 2Rx8 PC5-4800B-R HPE Kit\nP50448-B21\t0D1\tSamsung 64GB 2Rx4 PC5-4800B-R HPE Kit\n\nNOTE: Total memory selection must be in quantities of\n1/ 2/ 4/ 6/ 8/ 12/ 16 per processor",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "PORTAL",
+      "requiredDependencySku": "P52534-B21",
+      "ruleUpdate": "If PORTAL is present, P52534-B21 is mandatory.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1787856163672",
+      "timestamp": "2026-08-27T18:42:44.020Z",
+      "chassis": "DL380_Gen11",
+      "rawMessage": "[CLIC RULE PORTAL] Product : It is recommended to select an Operating System.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "PORTAL",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on PORTAL.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1787856163759",
+      "timestamp": "2026-08-27T18:42:43.758Z",
+      "chassis": "DL380_Gen11",
+      "rawMessage": "[CLIC RULE PORTAL] Product : When ordering     P58335-B21  0D1 - Factory Integrated\n,\nMegaRAID Tools cannot be used to script and configure\nSmartRAID (formerly known as SmartArray) controllers\nused on HPE Gen9/10/10 Plus servers.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "PORTAL",
+      "requiredDependencySku": "P58335-B21",
+      "ruleUpdate": "If PORTAL is present, P58335-B21 is mandatory.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
       "deltaId": "DELTA-1787561844831",
-      "timestamp": "2026-08-27T18:08:44.810Z",
+      "timestamp": "2026-08-27T19:47:12.566Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -50,6 +124,20 @@
     }
   ],
   "chassisSpecificRules": [
+    {
+      "deltaId": "DELTA_RAG_CARRYOVER_P48183-B21_1787856180158",
+      "chassis": "DL380 Gen11",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "CARRY_OVER_VALIDATED",
+      "affectedSku": "P48183-B21",
+      "requiredDependencySku": null,
+      "reasoning": "Grounding Verification: Part P48183-B21 is officially validated as a supported carry-over component in DL380 Gen11 QuickSpecs.",
+      "rawMessage": "P48183-B21`)** [cite: 250] is fully supported",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-27T18:43:00.158Z",
+      "solutionType": "DL380 Gen11 CTO Server"
+    },
     {
       "deltaId": "DELTA-1786705957681",
       "timestamp": "2026-08-14T11:12:37.681Z",
@@ -150,7 +238,7 @@
     },
     {
       "deltaId": "DELTA-1786706928358",
-      "timestamp": "2026-08-27T18:07:59.544Z",
+      "timestamp": "2026-08-27T19:46:29.815Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

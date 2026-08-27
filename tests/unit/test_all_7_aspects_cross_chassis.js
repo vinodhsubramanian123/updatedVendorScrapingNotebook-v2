@@ -16,7 +16,7 @@ const testProducts = [
   { name: 'DL380 Gen12 SFF', sku: 'P73282-B21', expectedFamily: 'ProLiant', expectedGen: 'Gen12' },
   { name: 'DL380 Gen11', sku: 'P52534-B21', expectedFamily: 'ProLiant', expectedGen: 'Gen11' },
   { name: 'MSL3040 Tape', sku: 'Q2R41A', expectedFamily: 'StoreEver', expectedGen: 'Tape' },
-  { name: 'GX5000 Rack', sku: 'P48821-B21', expectedFamily: 'Cray', expectedGen: 'General' },
+  { name: 'GX5000 Rack', sku: 'P57100-B21', expectedFamily: 'Cray', expectedGen: 'General' },
   { name: 'Synergy 12000 Frame', sku: '797740-B21', expectedFamily: 'Synergy', expectedGen: 'General' },
   { name: 'Alletra Storage', sku: 'R0Q35A', expectedFamily: 'Alletra', expectedGen: 'Storage' }
 ];

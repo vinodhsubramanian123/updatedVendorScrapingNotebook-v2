@@ -328,3 +328,22 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   2. Ground-truth live OCA scraped master catalogs (22-sheet Excel companions, master CSVs, and classified markdown rules)
   3. Verified, deduplicated `KnowledgeDelta` learning payloads emitted by the closed-loop feedback engine
 - **Transient Runtime Evaluation**: Customer BOQs are treated exclusively as transient runtime inputs evaluated against this ground-truth baseline, guaranteeing 100% clean RAG grounding across all product lines.
+
+---
+
+## 32. Enterprise BOQ Intelligence, CLIC Forensic Learnings & Universal Knowledge Charter Sync (`INV-25` through `INV-29`)
+- **Forensic CLIC Failure Analysis & Universal Remediation**:
+  1. **Container Tree Memory Option Types (Rules 81354490 & 91001655)**: Memory inside CTO server containers must use Factory Integrated Option (`#0D1` / `-F21`) SKUs rather than standalone BTO (`-B21`) SKUs.
+  2. **Storage Tri-Mode Cabling Compatibility (Rules 81354627 & 81354632)**: OCP storage controllers (`-o` suffix, e.g. `MR408i-o`) on standard 8SFF cages require Controller Enablement Cable `P48918-B21`. Tri-Mode Y-Splitter Cable `P48832-B21` is exclusively for PCIe riser cards (`-p`) on Premium U.3 NVMe cages (`P48814-B21`).
+  3. **Thermal Fan Kit Bundle Cardinality (Rule 81354654)**: High-Performance Fan Kit `P48820-B21` contains all 6 chassis fans; maximum allowed quantity is strictly 1 kit per base chassis.
+  4. **OCP2 Enablement Mutual Exclusion (Rule 81355854)**: Dual-socket servers must utilize CPU2/OCP2 cable `P48830-B21`, as CPU1/OCP2 cable `P51911-B21` is mutually exclusive in 2P builds.
+  5. **PCIe Riser Active Slot Enablement (Rules 81016755 & 81354683)**: High PCIe card density requires Primary Cable Kit `P56073-B21` (Slot 1) and Secondary Cable Kit `P56074-B21` (Slot 4) to activate physical slots via motherboard SlimSAS connections.
+  6. **Mandatory SaaS Management Licensing (Rule 81322276)**: CTO base servers require at least 1 Compute Ops Management (`R7A11AAE`) or OneView license per node.
+- **Shared Universal Knowledge Charter Sync Pattern**: In `nlm_sync_client.js`, the sync engine automatically uploads `master_universal_knowledge_charter.md` to **every** NotebookLM notebook with automated title-based deduplication (`HPE_Universal_Knowledge_Charter_{date}`). Universal vendor rules, licensing constraints, and physical gotchas are available across all product generation notebooks.
+- **Description-Primary Zero-Hardcoding Architecture**: Aspect checkers (`compute_thermal.js`, `storage_tri_mode.js`, `pcie_riser.js`) match description patterns primarily (`"fan kit"`, `"primary riser"`, `"gpu power cable"`, `"controller enablement"`) and use SKU constants as secondary reinforcement, allowing future product lines (Gen13+) to evaluate correctly with zero code changes.
+- **Enterprise Intelligence Dimensions**:
+  - **Storage Expander Math**: Directly addresses up to 8 drives per controller; flags `needsSasExpander` for >8 drives and injects SAS Expander `P48835-B21` or Tri-Mode Switch `P55806-B21`.
+  - **GPU Auxiliary Power Cabling**: Detects PCIe GPU accelerators (NVIDIA L40S, A100, H100) and mandates dedicated GPU power cable kits `P48816-B21` / `P76450-B21`.
+  - **OS Core Licensing Multipliers**: Calculates physical CPU cores and validates 16-core base licenses plus add-on packs.
+  - **Power Derating & 220V Utility Advisory**: Aggregates node power draw and flags `needsHighLine220v` for draws >800W on >=1600W PSUs.
+  - **Cluster Infrastructure Sizing Matrix**: Emits total Rack Units, 42U rack counts, peak facility power (kW), and rail kit coverage in `evalSummary.clusterSizing`.

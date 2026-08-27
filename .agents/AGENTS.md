@@ -232,6 +232,26 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Unverified customer BOQs and tender spreadsheets inherently contain human errors, invalid component quantities, deprecated part numbers, or missing enablement kits.
 - **Rule**: Customer BOQ, quote, or tender files MUST NEVER be added or synced to NotebookLM knowledge sources directly. Ingesting raw customer BOQs directly would poison the RAG intent brain with unverified errors. Cloud NotebookLM sources are strictly reserved for: (1) Official vendor QuickSpecs PDFs, (2) Ground-truth live OCA scraped master catalogs (22-sheet Excel companions and master CSVs), and (3) Verified, deduplicated `KnowledgeDelta` learning payloads emitted by the closed-loop feedback engine. Customer BOQs are treated exclusively as runtime evaluation inputs tested against this ground-truth baseline.
 
+### INV-25: Multi-Chassis Container Tree & Option Placement Protocol
+- **Pattern**: Every server configuration in HPE OCA/CLIC is a structured container tree. Components inside a CTO chassis must carry the `#0D1` (Factory Integrated Option / FIO) suffix.
+- **Rule**: `multi_cluster_splitter.js` and `boq_evaluator.js` MUST enforce FIO option tagging (`#0D1` / `-F21`) for all internal components nested inside a CTO base chassis container. Standalone BTO components (e.g. `P64707-B21` memory) placed outside the server container will fail CLIC validation with unbuildable errors (Rules 81354490 & 91001655).
+
+### INV-26: Storage Expander & Tri-Mode Controller Port Channel Math
+- **Pattern**: Dedicated Tri-Mode RAID controllers have strict direct-attach drive limits (8-port controllers like `MR408i-o` / `MR216i-p` directly address up to 8 physical drives).
+- **Rule**: Configurations with 16 or 24 drives on a single controller MUST include a SAS Expander Card (`P48835-B21`) or Tri-Mode Switch Card (`P55806-B21`). Controller enablement cables (`P48918-B21`) MUST be used for OCP controllers on standard 8SFF cages; Y-splitter cables (`P48832-B21`) are strictly restricted to PCIe riser cards on Premium cages (Rules 81354627 & 81354632).
+
+### INV-27: GPU Accelerator Auxiliary Power & Thermal Envelope Protocol
+- **Pattern**: High-power PCIe GPUs (NVIDIA L40S, A100, H100) require dedicated auxiliary power cabling to the internal power distribution board.
+- **Rule**: The presence of PCIe GPU accelerators mandates GPU Auxiliary Power Cable Kits (`P48816-B21` / `P76450-B21`), High-Performance Fan Kits (`P48820-B21`), High-Performance Heatsinks, and redundant power supplies (>=1600W).
+
+### INV-28: OS & Hypervisor Physical Core Multiplier Licensing Protocol
+- **Pattern**: Microsoft Windows Server and VMware vSphere Foundation/Cloud Foundation are licensed per physical CPU core with strict base minimums (Windows Server: 16 cores per server minimum; VMware: 16 cores per socket minimum).
+- **Rule**: `support_manufacturing.js` MUST calculate total physical socket cores (`cpuCount * coresPerCpu`) and validate that base licenses plus additional core packs (`2-core` / `4-core` / `16-core` add-ons) equal or exceed total server cores.
+
+### INV-29: Multi-Node Cluster Infrastructure & Power Sizing Matrix
+- **Pattern**: Large multi-node tenders (e.g. 60x DL380 nodes) require comprehensive data center infrastructure synthesis.
+- **Rule**: `boq_evaluator.js` and `multi_cluster_splitter.js` MUST emit `clusterSizing` containing: (1) Total Rack Units (`serverCount * 2U`), (2) Standard 42U Rack Count (`ceil(totalRU / 42)`), (3) Peak Facility Power Envelope (`(serverCount * psuWattage) / 1000` kW), (4) Rail Kit Coverage (`P52341-B21` Easy Install Rail Kit 1 per node), and (5) High-line 200V-240V utility power derating protection when estimated node draw exceeds 800W.
+
 ---
 
 ## History Directory Hygiene Rules

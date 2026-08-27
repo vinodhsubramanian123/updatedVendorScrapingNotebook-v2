@@ -93,12 +93,20 @@ Output of `eval_boq.js` / `/api/eval-boq` consumed by `App.jsx`, `ResolutionMatr
   },
   "aspectMath": {
     "thermal": { "status": "PASS", "maxTdpW": 250, "heatsinkType": "High Performance Fan Kit Required", "fanKitSku": "P48820-B21" },
-    "power": { "status": "PASS", "requiredWatts": 1600, "suppliedWatts": 2000, "redundancy": "1+1", "dcLugKitRequired": false },
+    "power": { "status": "PASS", "requiredWatts": 1600, "suppliedWatts": 2000, "redundancy": "1+1", "dcLugKitRequired": false, "estimatedNodeWattage": 950, "needsHighLine220v": true },
     "memory": { "status": "PASS", "totalDimms": 16, "channelsPerCpu": 8, "symmetry": "100% Balanced (1DPC)" },
-    "pcie": { "status": "PASS", "lanesRequired": 48, "lanesAvailable": 64 },
-    "storage": { "status": "PASS", "controller": "MR416i-o", "batteryRequired": true, "batterySku": "P01366-B21" },
+    "pcie": { "status": "PASS", "lanesRequired": 48, "lanesAvailable": 64, "gpuCount": 2, "needsGpuPowerCableKit": true, "gpuPowerCableSku": "P48816-B21" },
+    "storage": { "status": "PASS", "controller": "MR416i-o", "batteryRequired": true, "batterySku": "P01366-B21", "driveCount": 16, "needsSasExpander": true, "sasExpanderSku": "P48835-B21" },
     "network": { "status": "PASS", "adapter": "1Gb 4-port BASE-T OCP3" },
-    "support": { "status": "PASS", "careLevel": "Pointnext Tech Care Essential 3Y", "sla": "24x7 4h Onsite" }
+    "support": { "status": "PASS", "careLevel": "Pointnext Tech Care Essential 3Y", "sla": "24x7 4h Onsite", "physicalCores": 64, "needsAdditionalWindowsCores": true, "additionalWindowsCores": 48 }
+  },
+  "clusterSizing": {
+    "totalNodes": 60,
+    "totalRackUnits": 120,
+    "racksRequired42U": 3,
+    "peakPowerKw": 108.0,
+    "railKitCoverage": 60,
+    "cmaCoverage": 60
   },
   "workloadDna": {
     "primaryWorkload": "High-Throughput Virtualization / Database",
