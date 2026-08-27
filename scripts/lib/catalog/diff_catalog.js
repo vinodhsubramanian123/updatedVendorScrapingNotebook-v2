@@ -201,7 +201,7 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
       if (!pn) continue;
       currSkuMap.set(pn, sku);
 
-      const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)']);
+      const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
 
       // Price trail history initialization
       if (!priceHistory[pn]) priceHistory[pn] = [];
@@ -259,7 +259,7 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
       } else {
         // SKU present in both current and previous
         const prevSku   = prevSkuMap.get(pn);
-        const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
+        const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
         sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
 
         // ── GAP FIX #3: Attribute history now includes subCategory & mainCategory ─

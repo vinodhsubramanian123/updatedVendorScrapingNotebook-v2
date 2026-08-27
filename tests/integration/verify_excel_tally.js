@@ -219,11 +219,29 @@ async function main() {
   if (!JSON_MODE) console.log('\n--- AUDIT 7: Historical Diff & Price Trail Verification ---');
   const historyDir = path.join(targetDir, 'history');
   if (fs.existsSync(historyDir)) {
-    const snapshots = fs.readdirSync(historyDir).filter(f => f.startsWith('catalog_') && f.endsWith('.json'));
+    const snapshots = fs.readdirSync(historyDir).filter(f => f.startsWith('catalog_') && f.endsWith('.json')).sort();
     if (!JSON_MODE) console.log(`  History snapshots found: ${snapshots.length} file(s)`);
     assert(snapshots.length > 0, 'history/ directory contains valid catalog snapshots');
     if (fs.existsSync(path.join(historyDir, 'price_history.json'))) {
       if (!JSON_MODE) console.log('  ✅ PASS: price_history.json cumulative log verified');
+    }
+
+    // GAP FIX / INV-23: Catastrophic SKU Drop & Anomaly Pre-Promotion Guardrail
+    if (snapshots.length >= 2) {
+      const priorSnapshotFile = snapshots[snapshots.length - 2];
+      try {
+        const priorJson = JSON.parse(fs.readFileSync(path.join(historyDir, priorSnapshotFile), 'utf-8'));
+        const priorCount = priorJson.metadata?.totalUniqueSKUs || 0;
+        if (priorCount >= 50) {
+          const dropRatio = allSkusSheet.length / priorCount;
+          assert(
+            dropRatio >= 0.70,
+            `INV-23 Anomaly Alert: SKU count dropped drastically from ${priorCount} to ${allSkusSheet.length} (${(dropRatio * 100).toFixed(1)}% of prior baseline). Promotion aborted to protect master Excel.`
+          );
+        }
+      } catch (err) {
+        if (err.message.includes('INV-23 Anomaly Alert')) throw err;
+      }
     }
   } else {
     if (!JSON_MODE) console.log('  ⚠️  ADVISORY: history/ directory not yet established for this chassis.');
