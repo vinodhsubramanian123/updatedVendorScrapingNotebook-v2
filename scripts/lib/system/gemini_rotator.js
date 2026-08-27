@@ -20,6 +20,13 @@ const logger = require('./pipeline_logger.js');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const STATE_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'gemini_keys_state.json');
 
+class ApiQuotaExhaustedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ApiQuotaExhaustedError';
+  }
+}
+
 // Standard recommended models per GEMINI.md directives
 const DEFAULT_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 const REASONING_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
@@ -435,6 +442,7 @@ class GeminiKeyRotator {
             logger.info('GEMINI_ROTATOR', `Rotating to next active key in pool (Attempt ${attempt + 1}/${maxRetries})...`);
             continue;
           }
+          throw new ApiQuotaExhaustedError(`All keys exhausted. Operation failed after ${attempt} attempts across Gemini key pool: ${errMessage}`);
         }
 
         // For non-rate-limit errors or after retries exhausted, throw
@@ -442,7 +450,7 @@ class GeminiKeyRotator {
       }
     }
 
-    throw lastError || new Error(`Operation failed after ${attempt} attempts across Gemini key pool.`);
+    throw lastError || new ApiQuotaExhaustedError(`Operation failed after ${attempt} attempts across Gemini key pool.`);
   }
 
   /**
@@ -495,6 +503,7 @@ module.exports = {
   DEFAULT_MODEL,
   REASONING_MODEL,
   maskKey,
+  ApiQuotaExhaustedError,
   getActiveKey: () => globalRotator.getActiveKey(),
   getClient: (opts) => globalRotator.getClient(opts),
   markKeyExhausted: (key, err, opts) => globalRotator.markKeyExhausted(key, err, opts),

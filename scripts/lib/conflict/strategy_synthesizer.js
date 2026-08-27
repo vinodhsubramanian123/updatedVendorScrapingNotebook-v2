@@ -433,24 +433,11 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     }
   ];
 
-  // DEDUPLICATION & VALIDATION FILTER (No hallucination, no duplicate ranks)
-  const uniqueRankedMap = new Map();
-  const finalRanked = [];
-
-  rawCandidates.forEach(cand => {
-    const skuSignature = cand.skuPartsList
-      .map(p => `${p.sku}:${p.quantity}:${p.category || ''}`)
-      .sort()
-      .join('|');
-
-    if (!uniqueRankedMap.has(skuSignature)) {
-      uniqueRankedMap.set(skuSignature, true);
-      cand.rank = finalRanked.length + 1;
-      finalRanked.push(cand);
-    }
+  // Normalize ranks 1 through 5 and return all 5 strategy tiers
+  return rawCandidates.map((cand, idx) => {
+    cand.rank = idx + 1;
+    return cand;
   });
-
-  return finalRanked;
 }
 
 module.exports = {

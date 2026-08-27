@@ -15,10 +15,11 @@
  * @returns {object} Drift metrics
  */
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, cfg = {}, generatePayloadFn = null) {
-  const entry = cfg.notebooks && cfg.notebooks[chassisName];
+  const entry = cfg && cfg.notebooks && cfg.notebooks[chassisName];
+  const defaultId = (cfg && cfg.defaultNotebookId !== undefined) ? cfg.defaultNotebookId : "17cb979a-14d2-430c-a99f-7c1514757e79";
   const notebookId = (entry && typeof entry === 'object')
     ? entry.notebookId
-    : (entry || cfg.defaultNotebookId || "17cb979a-14d2-430c-a99f-7c1514757e79");
+    : (entry !== undefined && entry !== null ? entry : defaultId);
 
   const lastSyncDeltaCount = (typeof entry === 'object' && entry !== null && typeof entry.lastSyncDeltaCount === 'number')
     ? entry.lastSyncDeltaCount

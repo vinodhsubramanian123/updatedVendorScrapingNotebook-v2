@@ -56,7 +56,6 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const allCatalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
 
   let catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName)) || null;
-  if (!catalogPath && allCatalogFiles.length > 0) catalogPath = allCatalogFiles[0];
 
   let catalogData = null;
   // GAP-7 FIX: Detect ephemeral/test chassis names and route their payloads
