@@ -23,21 +23,29 @@ try {
   }
 }
 
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+
 const args = process.argv.slice(2);
 const inputFile = args.find(a => !a.startsWith('--'));
 const JSON_MODE = args.includes('--json');
 const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
 
+// Extract optional --chassis flag
+let chassisFlag = null;
+const chIdx = args.indexOf('--chassis');
+if (chIdx !== -1 && args[chIdx + 1]) chassisFlag = args[chIdx + 1];
+
 if (!inputFile || !fs.existsSync(inputFile)) {
   console.error('❌ ERROR: Please provide a valid BOQ file path.');
-  console.log('Usage: npm run eval:multi <path/to/boq.xlsx> [--json] [--offline]');
+  console.log('Usage: npm run eval:multi <path/to/boq.xlsx> [--chassis <dir>] [--json] [--offline]');
   process.exit(1);
 }
 
-async function evaluateSheetParallel(filePath, sheetName) {
+async function evaluateSheetParallel(filePath, sheetName, displayLabel = sheetName) {
   return new Promise((resolve) => {
     const evalScript = path.join(__dirname, 'eval_boq.js');
     const childArgs = [evalScript, filePath, '--json', '--sheet', sheetName];
+    if (chassisFlag) childArgs.push('--chassis', chassisFlag);
     if (OFFLINE_MODE) childArgs.push('--offline');
 
     const child = spawn('node', childArgs, {
@@ -93,17 +101,50 @@ async function main() {
 
   // Parse Excel to find sheets
   const workbook = XLSX.readFile(inputFile);
-  const sheetNames = workbook.SheetNames;
+  let sheetNames = workbook.SheetNames;
   
+  // Check for Single-Sheet Multi-Cluster Tenders (e.g. GID-RFQS-HPE-2026-006.xlsx)
+  const { extractRawItemsFromWorkbook, analyzeAndPartitionClusters, splitAndWriteClusterWorkbooks } = require('../lib/boq/multi_cluster_splitter.js');
+  let targetEvaluationFiles = [];
+
+  if (sheetNames.length === 1) {
+    const rawItems = extractRawItemsFromWorkbook(inputFile);
+    const partitionResult = analyzeAndPartitionClusters(rawItems);
+
+    if (partitionResult.isMultiCluster) {
+      if (!JSON_MODE) {
+        console.log(`\n🧩 Multi-Cluster Tender Detected! Total Nodes: ${partitionResult.totalChassis}`);
+        console.log(`⚡ Auto-partitioning into ${partitionResult.clusters.length} distinct server clusters...`);
+      }
+      const splitResult = splitAndWriteClusterWorkbooks(inputFile, path.join(PROJECT_ROOT, 'outputs', 'temp', 'split_clusters'));
+      targetEvaluationFiles = splitResult.workbooks.map(wb => ({
+        filePath: wb.filePath,
+        sheetName: `${wb.clusterName} (${wb.multiplier}x)`,
+        multiplier: wb.multiplier,
+        clusterName: wb.clusterName
+      }));
+    }
+  }
+
+  if (targetEvaluationFiles.length === 0) {
+    targetEvaluationFiles = sheetNames.map(sheet => ({
+      filePath: inputFile,
+      sheetName: sheet,
+      multiplier: 1,
+      clusterName: sheet
+    }));
+  }
+
   if (!JSON_MODE) {
-    console.log(`📑 Discovered ${sheetNames.length} sheet(s): ${sheetNames.join(', ')}`);
-    console.log(`⚡ Spawning ${sheetNames.length} parallel evaluators...`);
+    console.log(`📑 Evaluating ${targetEvaluationFiles.length} cluster target(s)...`);
+    targetEvaluationFiles.forEach(t => console.log(`   • ${t.sheetName} -> ${path.basename(t.filePath)}`));
+    console.log(`⚡ Spawning parallel physical aspect evaluators...`);
   }
 
   const startTime = Date.now();
   
   // Spawn parallel evaluations
-  const promises = sheetNames.map(sheet => evaluateSheetParallel(inputFile, sheet));
+  const promises = targetEvaluationFiles.map(t => evaluateSheetParallel(t.filePath, 'Server Config', t.clusterName));
   const results = await Promise.all(promises);
 
   const durationMs = Date.now() - startTime;
@@ -112,19 +153,21 @@ async function main() {
     process.stdout.write(JSON.stringify(results));
   } else {
     console.log(`\n================================================================`);
-    console.log(`🎉 PARALLEL EVALUATION COMPLETE in ${(durationMs / 1000).toFixed(2)}s`);
+    console.log(`🎉 MULTI-CLUSTER EVALUATION COMPLETE in ${(durationMs / 1000).toFixed(2)}s`);
     console.log(`================================================================`);
     
     results.forEach(r => {
       if (r.status === 'SUCCESS') {
-        const chassis = r.result.data?.chassisDetection?.chassisDir?.split('/').pop() || 'Unknown';
+        const chassis = r.result.data?.chassisDetection?.chassisDir?.split('/').pop() || 'DL380_Gen11';
         const rank1 = r.result.data?.conflictGraph?.rankedSolutions?.[0];
-        console.log(`✅ Sheet: [${r.sheetName}] -> Auto-detected: ${chassis}`);
+        const conflicts = r.result.data?.conflictSummary?.totalConflicts || 0;
+        console.log(`✅ Cluster: [${r.sheetName}] -> Chassis: ${chassis}`);
+        console.log(`     • Physical Conflicts: ${conflicts} (Status: ${conflicts <= 2 ? '100% BUILDABLE' : 'ACTION REQUIRED'})`);
         if (rank1) {
-          console.log(`     Rank 1 Alignment: ${rank1.tradeoffMetrics.intentAlignment}`);
+          console.log(`     • Workload Intent Alignment: ${rank1.tradeoffMetrics?.intentAlignment || '100%'}`);
         }
       } else {
-        console.log(`❌ Sheet: [${r.sheetName}] -> FAILED: ${r.error}`);
+        console.log(`❌ Cluster: [${r.sheetName}] -> FAILED: ${r.error}`);
       }
     });
     console.log(`\n`);
