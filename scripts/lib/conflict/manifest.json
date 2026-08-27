@@ -1,0 +1,15 @@
+{
+  "subsystem": "conflict",
+  "domain": "Workload DNA & 5-Tier Strategy Synthesis",
+  "description": "Classifies customer workload intent and synthesizes 5 non-collapsing resolution tiers (Rank 1 Intent Preserved to Rank 5 Budget Minimized)",
+  "invariants": [
+    "NON_COLLAPSING_TIERS: All 5 ranks must remain distinct and dynamically generated",
+    "TRUTHFUL_GROUNDING: Grounding badges must truthfully distinguish between QuickSpecs RAG matches and local rule engine fallbacks"
+  ],
+  "modules": [
+    "conflict_graph.js",
+    "workload_dna.js",
+    "strategy_synthesizer.js"
+  ],
+  "primaryTestSuite": "tests/integration/test_workload_strategy.js"
+}

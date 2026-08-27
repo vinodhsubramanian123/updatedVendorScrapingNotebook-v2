@@ -1,0 +1,23 @@
+{
+  "subsystem": "catalog",
+  "domain": "Catalog Ingestion, Snapshot Diffing & Versioning",
+  "description": "Manages scraped product catalogs, price history timelines, attribute modifications, and historical snapshots",
+  "invariants": [
+    "INV-1: appendTrailEvent deduplicates by DATE using STATUS_PRIORITY table",
+    "INV-6: scrapeDate snapshot keys must be strictly YYYY-MM-DD",
+    "INV-9: Memoized catalog price cache with lifecycle reset"
+  ],
+  "modules": [
+    "catalog_rules.js",
+    "catalog_discovery.js",
+    "catalog_formatter.js",
+    "diff_catalog.js",
+    "product_meta.js",
+    "sku.js",
+    "registry.js",
+    "checksum_diff.js",
+    "sku_versioning.js",
+    "sync_registry.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_all_system_invariants.js"
+}

@@ -1,0 +1,17 @@
+{
+  "subsystem": "sync",
+  "domain": "Bi-Directional Knowledge Synchronization & Payload Generation",
+  "description": "Compiles master knowledge registry, detects drift, and formats Markdown sync charters for Gemini NotebookLM",
+  "invariants": [
+    "INV-4: master_knowledge_registry.json contains generatedAt and schemaVersion",
+    "INV-7: Test-chassis sync payloads strictly routed to outputs/temp/test_payloads/"
+  ],
+  "modules": [
+    "knowledge_sync.js",
+    "drift_inspector.js",
+    "sync_payload_builder.js",
+    "nlm_sync_client.js",
+    "post_flow_sync.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_all_system_invariants.js"
+}

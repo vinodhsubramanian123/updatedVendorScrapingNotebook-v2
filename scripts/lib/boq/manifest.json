@@ -1,0 +1,18 @@
+{
+  "subsystem": "boq",
+  "domain": "BOQ Ingestion, Preprocessing, Evaluation & Export",
+  "description": "Parses customer quotes, normalizes CTO configurations, validates physical math, and generates styled multi-sheet Excel reports",
+  "invariants": [
+    "EXCEL_AUDIT: All generated Excel sheets must match master SKU tallies",
+    "CLEAN_SKU_REGEX: All hardware part numbers must pass strict HPE SKU filters"
+  ],
+  "modules": [
+    "boq_evaluator.js",
+    "boq_parser.js",
+    "boq_preprocessor.js",
+    "budget_optimizer.js",
+    "vendor_bom_verifier.js",
+    "generate_boq_xlsx.js"
+  ],
+  "primaryTestSuite": "tests/integration/test_pipeline_evals.js"
+}

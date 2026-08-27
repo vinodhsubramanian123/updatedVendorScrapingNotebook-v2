@@ -1,0 +1,20 @@
+{
+  "subsystem": "system",
+  "domain": "Core System Infrastructure, Telemetry & Key Management",
+  "description": "Provides atomic filesystem I/O, smart FIFO Gemini key rotation, Zod runtime schemas, structured logging, and error envelopes",
+  "invariants": [
+    "ATOMIC_WRITES: All JSON modifications must use safeWriteJsonAtomic to prevent file corruption",
+    "DAILY_QUOTA_RESET: Exhausted API keys demote to bottom of FIFO queue and auto-restore at UTC midnight"
+  ],
+  "modules": [
+    "telemetry.js",
+    "fs_compat.js",
+    "progress.js",
+    "pipeline_logger.js",
+    "gemini_rotator.js",
+    "schemas.js",
+    "error_envelope.js",
+    "data_validator.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_schemas.js"
+}

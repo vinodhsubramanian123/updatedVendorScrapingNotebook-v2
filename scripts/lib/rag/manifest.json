@@ -1,0 +1,15 @@
+{
+  "subsystem": "rag",
+  "domain": "Dual-Brain Agentic Guardrail & Local RAG Search",
+  "description": "Orchestrates multi-turn MCP verification guardrail loops, vision OCR SKU extraction, and local deterministic RAG search",
+  "invariants": [
+    "DUAL_BRAIN_FALLBACK: When API quota is exhausted, system must cleanly fall back to local deterministic RAG search without breaking frontend",
+    "OCR_PAYLOAD_LIMIT: Images exceeding 25MB must be safely downscaled before transmission"
+  ],
+  "modules": [
+    "agentic_guardrail.js",
+    "local_rag_search.js",
+    "ocr_service.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_local_rag_search_comprehensive.js"
+}

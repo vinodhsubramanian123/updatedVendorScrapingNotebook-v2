@@ -1,0 +1,14 @@
+{
+  "subsystem": "feedback",
+  "domain": "HITL Feedback Learning & Knowledge Delta Persistence",
+  "description": "Processes HPE Partner Portal configuration rejections, generates persistent KnowledgeDelta records, and auto-syncs knowledge registries",
+  "invariants": [
+    "INV-13: Deduplicates incoming feedback in place by (chassis, affectedSku, requiredDependencySku)",
+    "CANONICAL_SCOPE: scope and scopeTaxonomy must strictly use canonical enums (UNIVERSAL_VENDOR, FAMILY_GEN, CHASSIS_SPECIFIC)"
+  ],
+  "modules": [
+    "feedback_loop.js",
+    "feedback_queue.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_feedback_persister.js"
+}

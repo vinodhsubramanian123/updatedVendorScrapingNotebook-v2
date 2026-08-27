@@ -1,0 +1,19 @@
+{
+  "subsystem": "aspects",
+  "domain": "Deterministic Physical Rule Validation",
+  "description": "Validates 7 hardware physics aspects across HPE enterprise server portfolio",
+  "invariants": [
+    "ZERO_HARDCODED_SKUS: Rules must resolve dynamically from chassis_map.json and catalog metadata",
+    "PURE_VALIDATION: Does not mutate input items or make external API calls"
+  ],
+  "checkers": [
+    "compute_thermal.js",
+    "memory_channel.js",
+    "storage_tri_mode.js",
+    "pcie_riser.js",
+    "networking_ocp.js",
+    "power_environment.js",
+    "support_manufacturing.js"
+  ],
+  "primaryTestSuite": "tests/unit/test_aspect_checkers_comprehensive.js"
+}
