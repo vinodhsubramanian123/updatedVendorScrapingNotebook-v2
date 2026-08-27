@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-27T19:47:18.736Z  
+**Sync Timestamp**: 2026-08-27T20:48:30.066Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `18`  
 

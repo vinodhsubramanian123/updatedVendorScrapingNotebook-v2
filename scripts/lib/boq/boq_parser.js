@@ -200,7 +200,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
  * Fallback free-form text line extractor.
  */
 function extractFreeFormSkuRows(line) {
-  const normalizedLine = line.replace(/[\/\|;\+]|--/g, ' ');
+  const normalizedLine = line.replace(/[\/\|;\+,]|--/g, ' ');
   const rawMatches = normalizedLine.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [];
   const validMatches = rawMatches.map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
   if (validMatches.length === 0) return [];
@@ -280,9 +280,11 @@ function parseSkuLines(lines) {
       continue;
     }
 
+    const allLineSkus = (line.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || []).map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
+
     // Try structured delimited parsing first
     let extractedRows = [];
-    if (delimiter) {
+    if (delimiter && (activeColumnMap || allLineSkus.length <= 1)) {
       const parts = splitStructuredRow(line, delimiter);
       if (parts.length >= 2) {
         const row = extractStructuredSkuRow(parts, activeColumnMap);
