@@ -69,8 +69,21 @@ async function createSession(prompt, title = 'Background Task', branch = 'main',
  */
 async function getSessionDetails(sessionId) {
   const client = await getJulesClient();
-  const session = await client.session(sessionId);
-  return session;
+  const rawId = String(sessionId).replace(/^sessions\//, '');
+  const session = await client.session(rawId);
+  let info = {};
+  if (typeof session.info === 'function') {
+    try {
+      info = await session.info();
+    } catch (_) {}
+  }
+  return {
+    ...info,
+    id: rawId,
+    title: info.title || info.outcome?.title || session.title || 'Untitled Session',
+    state: info.state || info.status || session.state || 'unknown',
+    url: info.url || `https://jules.google.com/session/${rawId}`
+  };
 }
 
 /**
