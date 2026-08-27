@@ -301,3 +301,30 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Dual-Brain Fast Path & Offline Determinism**: In `scripts/lib/notebook/notebook_query_utils.js`, `executeNotebookQuery` checks `process.env.USE_LOCAL_RAG_ONLY === '1'` or `process.env.LOCAL_EVAL_ONLY === '1'` to immediately route to the local RAG fallback, eliminating test execution latency and cloud timeout waits.
 - **Cross-Platform In-Memory XLSX Engine (`INV-16`)**: Replaced external `xlsx` imports in `scripts/evaluators/eval_multi_boq.js` with `xlsx-js-style` (with graceful fallback), ensuring zero runtime dependency errors across environments.
 - **Observability Subsystem Require Discipline**: Corrected require paths in `scripts/maintenance/observability_status.js` and `scripts/evaluators/eval_boq.js` to point to domain library `scripts/lib/system/telemetry.js`, guaranteeing 100% clean pipeline health checks via `npm run status`.
+
+---
+
+## 29. WebLogic Dynamic DOM Expansion & Lifecycle Badge Separation (`INV-20` & `INV-21`)
+- **Dynamic DOM Sub-Choice Triggering (`INV-20`)**: WebLogic OCA configuration tables hide processor and option choices behind `showmore_*` checkboxes and toolbar toggles (`#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price`). `cdp.js` automatically checks all toolbar toggles and dispatches jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`), forcing the WebLogic client runtime to render all hidden sub-choice tables before DOM serialization.
+- **Lifecycle Badge & Clean PID Separation (`INV-21`)**: WebLogic renders status badges (`OB` Obsolete, `DS` Direct Ship / Discontinued, `90` 90-Day Warning) alongside product numbers inside `<td class="item_prod">`. `dom_extract.js` and `build_catalog.js` parse these badges into dedicated metadata fields (`lifecycleStatus`, `isObsolete`, `isDiscontinued`) while preserving the pristine SKU string, preventing regex rejections in `isValidHpeSKU()`.
+
+---
+
+## 30. Multi-Cluster Tender Mathematical Partitioning & Partner Portal BOM Standard
+- **Enterprise Tender Disaggregation (`multi_cluster_splitter.js`)**: Complex tender requests (e.g. `GID-RFQS-HPE-2026-006.xlsx`) often bundle multiple server clusters with mixed CPU families (e.g. 40x Platinum 8580 + 80x Gold 6530) into a single 60-node quote. The engine solves the Diophantine system of integer equations:
+  $$2 \cdot N_{\text{Platinum}} = 40 \implies N_{\text{Platinum}} = 20 \text{ Nodes}$$
+  $$2 \cdot N_{\text{Gold}} = 80 \implies N_{\text{Gold}} = 40 \text{ Nodes}$$
+  $$N_{\text{Platinum}} + N_{\text{Gold}} = 60 \text{ Total Nodes}$$
+- **Thermal & Electrical Affinity Matching**: Matches high-TDP processors (350W Platinum) with 1800W-2200W Titanium PSUs and standard processors (270W Gold) with 1600W Platinum PSUs.
+- **Multi-Line Bundled Cell Extraction**: Parses bundled accessory cells containing up to 13 discrete SKUs in a single Excel row using `isValidHpeSKU()` filtering.
+- **Partner Portal BOM Formatting**: Exports final workbooks with vertically merged spans for `Set / Multiplier` (`20x Server Nodes` / `40x Server Nodes`) and exactly 2 blank separator lines between configurations for automated ingestion into vendor ordering portals.
+
+---
+
+## 31. Ground-Truth Grounding & Customer BOQ Isolation Protocol (`INV-24`)
+- **Customer BOQ Poisoning Prevention**: Customer spreadsheets and proposals inherently contain human errors, invalid component quantities, deprecated part numbers, or missing enablement kits. Uploading customer BOQs directly into NotebookLM would poison the RAG intent brain with customer-side errors.
+- **Ground-Truth Source Exclusivity**: Cloud NotebookLM sources are strictly reserved for:
+  1. Official vendor QuickSpecs PDFs (manufacturer ground-truth specifications)
+  2. Ground-truth live OCA scraped master catalogs (22-sheet Excel companions, master CSVs, and classified markdown rules)
+  3. Verified, deduplicated `KnowledgeDelta` learning payloads emitted by the closed-loop feedback engine
+- **Transient Runtime Evaluation**: Customer BOQs are treated exclusively as transient runtime inputs evaluated against this ground-truth baseline, guaranteeing 100% clean RAG grounding across all product lines.

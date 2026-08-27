@@ -170,6 +170,36 @@ To maximize velocity and offload heavy validation without human friction:
    - Run `npm run jules:archive` (`node scripts/services/jules_task_manager.js archive-completed`) to audit session threads, verify patch deltas, archive finished sessions on the Jules API, and log immutable trace records to `outputs/history/jules_archived_sessions.json`.
 7. **Proactive Codebase-Wide Bug Pattern Remediation**:
    - When a bug or bottleneck is discovered in any subsystem, proactively audit the entire repository for the same structural pattern (e.g. non-atomic JSON writes, un-memoized synchronous config loops, or Unix-only shell commands like `which`) and eliminate them across all modules.
-8. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 18 test tiers, 7/7 portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
+8. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 50+ test tiers, 7/7 portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
+
+---
+
+## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-24`)
+
+| Invariant ID | Title | Summary & Guardrail Contract |
+| :--- | :--- | :--- |
+| **`INV-1`** | Price Trail Deduplication | Deduplicates price history by `DATE` only using priority table; never creates duplicate same-day trails. |
+| **`INV-2`** | Promoted SKU Count Registry | Reads actual unique hardware and service counts from promoted `catalog.json.metadata.totalUniqueSKUs`. |
+| **`INV-3`** | Direct SSE Stage ID Matching | Stepper cards match directly on SSE stage ID string rather than legacy percentage math. |
+| **`INV-4`** | Knowledge Registry Timestamps | Emits both canonical `generatedAt` (read by UI) and `lastUpdated`, plus `schemaVersion: "1.0"`. |
+| **`INV-5`** | Step 10 Sync Fail-Hard Contract| Knowledge Sync failures in Step 10 MUST rethrow and exit 1; never emit 100% on failure. |
+| **`INV-6`** | Snapshot `scrapeDate` Format | Snapshot filenames strictly follow `catalog_YYYY-MM-DD.json` (`YYYY-MM-DD` string key). |
+| **`INV-7`** | Test Payload Routing | Test chassis sync payloads route to `outputs/temp/test_payloads/`; `outputs/history/` stays clean. |
+| **`INV-8`** | Parallel History JSON Parsing | Parallelizes snapshot parsing via `Promise.all` with fast substring pre-checks. |
+| **`INV-9`** | Memoized SKU Price Cache | Caches SKU pricing in `Map` for $O(1)$ amortized lookups across multi-item BOM audits. |
+| **`INV-10`**| Jules Background PR Delegation | Async multi-agent delegation with mandatory explicit notifications on commit updates. |
+| **`INV-11`**| Remote Branch Pruning | AI agents delete merged remote feature branches cleanly via `jules_task_manager.js prune`. |
+| **`INV-12`**| Patch Audit Before Retirement | Audits all unidiff patches in Jules session logs before retiring sessions. |
+| **`INV-13`**| Knowledge Delta Deduplication | Deduplicates incoming rules against `catalog_deltas.json` and master registry. |
+| **`INV-15`**| Proactive Background Scheduling| AI agents register background `schedule` timers rather than sitting idle waiting for humans. |
+| **`INV-16`**| Cross-Platform Compatibility | Zero shell-specific binary dependencies (no `grep`, `unzip`, `which`, `curl` via execSync). |
+| **`INV-17`**| Ingestion Diagnostics Traces | `build_catalog.js` emits structured provenance traces for introspective test reporting. |
+| **`INV-18`**| Node.js Native PR Inspection | Cross-platform GitHub REST API inspection (`jules:prs`) with zero dependency on `gh` binary. |
+| **`INV-19`**| Audit-Before-Archive Protocol | Audits threads/patches and logs to `jules_archived_sessions.json` before archiving sessions. |
+| **`INV-20`**| WebLogic DOM Sub-Choice Trigger| Clicks toolbar toggles and dispatches jQuery `change` events on all `showmore_*` selectors. |
+| **`INV-21`**| PID & Badge Separation Protocol| Separates lifecycle badges (`OB`, `DS`, `90`) into dedicated fields while preserving clean SKUs. |
+| **`INV-22`**| Category Cardinality Assertion | Minimum cardinality thresholds for flagship servers (e.g. >=30 CPUs) before promotion. |
+| **`INV-23`**| Catastrophic Drop Guardrail | Pre-promotion check halts Step 8 if SKU count drops >30% below previous baseline. |
+| **`INV-24`**| Customer BOQ Knowledge Isolation| Customer BOQs/BOMs MUST NEVER be added to NotebookLM sources; RAG is grounded on ground truth only. |
 
 

@@ -79,3 +79,30 @@ node scripts/lib/sync/knowledge_sync.js --json
 | `MSL3040_Tape` | StoreEver | Tape | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
 | `GX5000_General_RACK` | Cray | General | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
 | **Default Fallback** | Universal | All | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
+
+---
+
+## 6. Ground-Truth Invariant: Customer BOQ Isolation (`INV-24`)
+
+> [!IMPORTANT]
+> **CUSTOMER BOQ / BOM FILES MUST NEVER BE ADDED OR SYNCED TO NOTEBOOKLM SOURCES.**
+
+1. **Isolation Rationale**: Customer spreadsheets, quotes, and tender RFQs (e.g. `GID-RFQS-HPE-2026-006.xlsx`) inherently contain human typos, mismatched processor pairs, invalid power supply quantities, or missing enablement kits. Uploading unverified customer BOQs directly into NotebookLM would poison the RAG intent brain with customer-side errors.
+2. **Approved Ground-Truth Sources**: Cloud NotebookLM sources are strictly reserved for:
+   - Official vendor QuickSpecs PDFs (manufacturer ground-truth specifications)
+   - Live scraped OCA master catalogs (22-sheet Excel companions, master CSVs, and classified markdown rules)
+   - Verified, deduplicated `KnowledgeDelta` learning payloads emitted by the closed-loop feedback engine
+3. **Runtime Handling**: Customer BOQs are treated exclusively as transient runtime inputs evaluated against the ground-truth baseline.
+
+---
+
+## 7. Master SKU Reconciliation & RAG Verification Protocol
+
+Before certifying any product line, agents MUST verify that the local master 22-sheet workbook, master CSV, Google Sheet, and NotebookLM sources are in 100% agreement:
+
+1. **Verify Exact SKU Tallies per Category**:
+   - Processors, Memory, Networking, Drive Enclosures/Drives, Cooling & Thermal, Storage Controllers, PCIe Risers, Power Supplies, Chassis Variants, Accessories, and Pointnext Services.
+2. **Execute Live Grounding RAG Queries**:
+   - Run `nlm notebook query <notebookId> "<test query>" --json` to verify that answers cite the QuickSpecs PDF and classified OCA markdown/CSV payloads with zero hallucinated part numbers.
+3. **Obsolete SKU Tracking**:
+   - Ensure legacy QuickSpecs SKUs flagged as `OB` (Obsolete) or `90` (90-Day Warning) are preserved in `discontinued_skus.json` and the 22-sheet workbook's *Discontinued SKUs* tab.

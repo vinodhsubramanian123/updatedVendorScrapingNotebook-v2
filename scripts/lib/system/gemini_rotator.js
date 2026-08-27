@@ -432,10 +432,11 @@ class GeminiKeyRotator {
         lastError = err;
         const errMessage = err?.message || String(err);
         const status = err?.status || (err?.response ? err.response.status : null);
-        const isRateLimit = status === 429 || /quota|resource_exhausted|rate limit|429/i.test(errMessage);
+        const isRotatableKeyError = status === 429 || status === 403 || status === 401 ||
+          /quota|resource_exhausted|rate limit|429|permission_denied|api_key_invalid|unauthenticated/i.test(errMessage);
 
-        if (isRateLimit) {
-          logger.warn('GEMINI_ROTATOR', `Rate limit / quota error on key ${active.fingerprint}: ${errMessage.slice(0, 120)}`);
+        if (isRotatableKeyError) {
+          logger.warn('GEMINI_ROTATOR', `Rate limit / key access error on key ${active.fingerprint} (status ${status || 'N/A'}): ${errMessage.slice(0, 120)}`);
           this.markKeyExhausted(active.apiKey, err, { isDailyLimit: true });
           
           if (attempt < maxRetries) {
@@ -445,7 +446,7 @@ class GeminiKeyRotator {
           throw new ApiQuotaExhaustedError(`All keys exhausted. Operation failed after ${attempt} attempts across Gemini key pool: ${errMessage}`);
         }
 
-        // For non-rate-limit errors or after retries exhausted, throw
+        // For non-rotatable errors or after retries exhausted, throw
         throw err;
       }
     }
