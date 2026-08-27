@@ -60,18 +60,39 @@ async function evaluateSheetParallel(filePath, sheetName, displayLabel = sheetNa
 
     child.on('close', (code) => {
       try {
-        // Find the last complete JSON object in stdout (eval_boq outputs structured JSON at the end)
-        const lines = stdoutData.split('\n').filter(l => l.trim().startsWith('{'));
-        const lastJsonLine = lines[lines.length - 1];
+        let parsedResult = null;
         
-        if (lastJsonLine) {
-          const result = JSON.parse(lastJsonLine);
-          resolve({ sheetName, status: 'SUCCESS', result });
+        // 1. Primary: Extract between __EVAL_RESULT_JSON__ markers
+        const marker = '__EVAL_RESULT_JSON__';
+        if (stdoutData.includes(marker)) {
+          const parts = stdoutData.split(marker);
+          if (parts.length >= 3) {
+            try {
+              parsedResult = JSON.parse(parts[1]);
+            } catch (_) {}
+          }
+        }
+
+        // 2. Fallback: Search for outer JSON block
+        if (!parsedResult) {
+          const startIdx = stdoutData.indexOf('{');
+          const lastIdx = stdoutData.lastIndexOf('}');
+          if (startIdx !== -1 && lastIdx !== -1 && lastIdx > startIdx) {
+            try {
+              parsedResult = JSON.parse(stdoutData.substring(startIdx, lastIdx + 1));
+            } catch (_) {}
+          }
+        }
+        
+        if (parsedResult && parsedResult.status !== 'ERROR') {
+          resolve({ sheetName: displayLabel || sheetName, status: 'SUCCESS', result: parsedResult });
+        } else if (parsedResult && parsedResult.status === 'ERROR') {
+          resolve({ sheetName: displayLabel || sheetName, status: 'ERROR', error: parsedResult.error || 'Evaluation error', stderr: stderrData });
         } else {
-          resolve({ sheetName, status: 'ERROR', error: 'No JSON payload returned', stderr: stderrData });
+          resolve({ sheetName: displayLabel || sheetName, status: 'ERROR', error: 'No JSON payload returned', stderr: stderrData });
         }
       } catch (err) {
-        resolve({ sheetName, status: 'ERROR', error: err.message, stderr: stderrData });
+        resolve({ sheetName: displayLabel || sheetName, status: 'ERROR', error: err.message, stderr: stderrData });
       }
     });
   });
