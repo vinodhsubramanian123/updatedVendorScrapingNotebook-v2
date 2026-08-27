@@ -101,7 +101,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         }
       } catch (_) { /* non-fatal */ }
 
-      // Upload fresh source
+      // Upload fresh markdown knowledge payload
       const stdout = execFileSync('nlm', [
         'source', 'add', effectiveNotebookId,
         '--file', payloadPath,
@@ -112,6 +112,46 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         timeout: 120000,
         env: { ...process.env, PATH: extendedPath }
       });
+
+      // Also check for Excel workbook and upload tabular CSV representation
+      const payloadDir = path.dirname(payloadPath);
+      const possibleExcel = path.join(payloadDir, `${chassisName}_OCA_Catalog.xlsx`);
+      if (fs.existsSync(possibleExcel)) {
+        try {
+          const xlsx = require('xlsx-js-style');
+          const wb = xlsx.readFile(possibleExcel);
+          const sheet = wb.Sheets['All SKUs'] || wb.Sheets[wb.SheetNames[0]];
+          if (sheet) {
+            const csvData = xlsx.utils.sheet_to_csv(sheet);
+            const csvPath = path.join(payloadDir, `${chassisName}_Master_Catalog.csv`);
+            fs.writeFileSync(csvPath, csvData, 'utf-8');
+            execFileSync('nlm', [
+              'source', 'add', effectiveNotebookId,
+              '--file', csvPath,
+              '--title', `${chassisName}_Master_Catalog.csv`,
+              '--wait'
+            ], {
+              encoding: 'utf-8',
+              timeout: 120000,
+              env: { ...process.env, PATH: extendedPath }
+            });
+          }
+        } catch (_) { /* non-fatal */ }
+      }
+
+      // If a Google Drive Sheet source is configured, sync it in-place
+      if (cfgEntry && cfgEntry.driveSourceId) {
+        try {
+          execFileSync('nlm', [
+            'source', 'sync', cfgEntry.driveSourceId,
+            '--confirm'
+          ], {
+            encoding: 'utf-8',
+            timeout: 60000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+        } catch (_) { /* non-fatal */ }
+      }
 
       let newSourceId = null;
       const idMatch = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
@@ -124,7 +164,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         mode: 'CLI',
         newSourceId,
         newSourceName: canonicalSourceName,
-        message: `Replaced old source(s) and synced "${canonicalSourceName}" to NotebookLM (${effectiveNotebookId}) via nlm CLI.`
+        message: `Replaced old source(s) and synced "${canonicalSourceName}" and Master Catalog CSV to NotebookLM (${effectiveNotebookId}) via nlm CLI.`
       };
     } catch (cliErr) {
       result = {

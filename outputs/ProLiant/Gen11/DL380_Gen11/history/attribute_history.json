@@ -1,1 +1,352 @@
-[]
+[
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "newValue": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-27",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-10",
+    "newValue": "2026-08-27"
+  }
+]

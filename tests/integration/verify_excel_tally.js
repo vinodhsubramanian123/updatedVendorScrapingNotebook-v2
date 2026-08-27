@@ -194,6 +194,16 @@ async function main() {
     assert(rows.length > 0, `Sheet '${sheetName}' contains > 0 SKUs`);
   });
 
+  // GAP FIX / INV-22: Minimum Category Cardinality Assertions for Dual-Socket Flagship Servers
+  const isFlagshipServer = filePrefix.toLowerCase().includes('dl380') || filePrefix.toLowerCase().includes('dl360');
+  if (isFlagshipServer) {
+    const procSheet = wb.Sheets['Processor'];
+    if (procSheet) {
+      const procRows = XLSX.utils.sheet_to_json(procSheet);
+      assert(procRows.length >= 30, `Flagship Server Cardinality: Sheet 'Processor' must contain >= 30 SKUs (found: ${procRows.length})`);
+    }
+  }
+
   // ── AUDIT 6: PDF Fingerprint MD5 ─────────────────────────────────────────
   if (!JSON_MODE) console.log('\n--- AUDIT 6: PDF Fingerprint MD5 Cache Verification ---');
   if (hasPdf) {

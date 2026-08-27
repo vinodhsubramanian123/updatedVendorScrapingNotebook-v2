@@ -228,25 +228,50 @@ async function dismissDOMModals(ws) {
 
 /**
  * Expand all sections and "Show More" checkboxes on active page.
+ * Recursively reveals all hidden categories, additional processor/memory choices,
+ * and column/date options (Show PLC dates, Show Obsolete Date, Show extra columns).
  */
 async function expandSections(ws) {
   await dismissDOMModals(ws);
   await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      Array.from(document.querySelectorAll('a, button, span')).forEach(el => {
-        const t = el.innerText ? el.innerText.trim() : '';
-        if (t === 'Expand All' || t === 'Expand Subsections') el.click();
+      // 1. Expand all collapsed sections and headers
+      Array.from(document.querySelectorAll('a, button, span, div.expander, .section_header')).forEach(el => {
+        const t = (el.innerText || '').trim();
+        if (t === 'Expand All' || t === 'Expand Subsections' || t === 'Expand' || el.classList.contains('collapsed')) {
+          el.click();
+        }
       });
-      document.querySelectorAll('input[id*="showmore"]').forEach(i => {
-        if (!i.checked) i.click();
+
+      // 2. Click toolbar option toggles for complete column visibility
+      ['show_extra_columns', 'show_dates', 'show_obsolete_date', 'show_cost', 'show_price'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('active') && !el.checked) {
+          el.click();
+        }
       });
-      document.querySelectorAll('label[for*="showmore"]').forEach(label => {
-        const inp = document.getElementById(label.getAttribute('for'));
-        if (inp && !inp.checked) label.click();
+
+      // 3. Find and check all showmore checkboxes (native + jQuery dispatch)
+      const showmoreInputs = Array.from(document.querySelectorAll('input[type="checkbox"][id*="showmore"], input[type="checkbox"][name*="showmore"], input[type="checkbox"][id*="show_"], input[type="checkbox"][id*="expand"]'));
+      showmoreInputs.forEach(i => {
+        if (!i.checked) {
+          i.checked = true;
+          i.click();
+          i.dispatchEvent(new Event('change', { bubbles: true }));
+          if (typeof jQuery !== 'undefined') {
+            jQuery(i).prop('checked', true).trigger('change');
+          }
+        }
+      });
+
+      // 4. Click any remaining label/span wrappers
+      document.querySelectorAll('label[for*="showmore"], label[for*="show_"], .showmore_container, a.showmore, span.showmore_text').forEach(el => {
+        el.click();
       });
     })()`,
     returnByValue: true
   });
+  await sleep(1500);
 }
 
 /**

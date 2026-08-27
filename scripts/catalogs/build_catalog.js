@@ -346,8 +346,12 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
       let header  = headers[hi];
       const cellIdx = hi + offset;
       if (header && cellIdx < row.length) {
-        if (header === 'List Price') {
+        if (header === 'List Price' || header === 'Price') {
           header = 'Unit Price (USD)';
+        } else if (header === 'Product Description') {
+          header = 'Description';
+        } else if (header === 'Qty' || header === 'Quantity') {
+          header = 'Current Qty';
         }
         let val = row[cellIdx].replace(/\n/g, ' ').trim();
         if (header === 'Unit Price (USD)') {
@@ -365,6 +369,19 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
       const foundCell = row.find(c => isValidHpeSKU(cleanBaseSKU(c.trim())));
       if (foundCell) rawPN = foundCell;
     }
+
+    // Extract embedded lifecycle badge (e.g. "OB P49631-B21", "DS P49632-B21", "90 P49639-B21", "P49631-B21 [OB]")
+    let lifecycleStatus = 'Active';
+    let lifecycleBadge = '';
+    const badgeMatch = String(rawPN).match(/^(OB|DS|90|EOL)\b/i) || String(rawPN).match(/\[(OB|DS|90|EOL)\]/i);
+    if (badgeMatch) {
+      lifecycleBadge = badgeMatch[1].toUpperCase();
+      if (lifecycleBadge === 'OB') lifecycleStatus = 'Obsolete (OB)';
+      else if (lifecycleBadge === 'DS') lifecycleStatus = 'Direct Ship (DS)';
+      else if (lifecycleBadge === '90') lifecycleStatus = 'EOL Warning (90-Day)';
+      else if (lifecycleBadge === 'EOL') lifecycleStatus = 'End of Life (EOL)';
+    }
+
     if (rawPN) {
       rawPN = cleanBaseSKU(rawPN);
     }
@@ -378,6 +395,18 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
     obj['Product #'] = pn;
     obj.sku = pn;
     obj['Option Type'] = optionType;
+    obj['CLIC Status'] = lifecycleStatus;
+    obj.lifecycleStatus = lifecycleStatus;
+    obj.lifecycleBadge = lifecycleBadge;
+
+    // Extract Start and Discontinued dates from row cells
+    const dateMatches = row.filter(c => /^\d{2}\/\d{2}\/\d{4}$/.test(c.trim()));
+    if (dateMatches.length >= 1 && !obj['Start Date']) {
+      obj['Start Date'] = dateMatches[0].trim();
+    }
+    if (dateMatches.length >= 2 && !obj['Discontinued Date']) {
+      obj['Discontinued Date'] = dateMatches[1].trim();
+    }
 
     // Sanitize Description field to strip raw DOM context markup and newline artifacts
     let descText = obj['Description'] || '';

@@ -28,11 +28,20 @@ const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
 /**
  * Load notebook ID from config file or use hardcoded fallback.
  */
-function getDefaultNotebookId() {
-  const configPath = path.join(__dirname, 'config', 'notebooks.json');
+/**
+ * Load notebook ID from config file for a specific chassis or use default.
+ * @param {string} [chassisName]
+ */
+function getDefaultNotebookId(chassisName = '') {
+  const configPath = path.join(__dirname, '..', 'config', 'notebooks.json');
   if (fs.existsSync(configPath)) {
     try {
       const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      if (chassisName && cfg.notebooks && cfg.notebooks[chassisName]) {
+        const entry = cfg.notebooks[chassisName];
+        const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
+        if (id && String(id).trim()) return String(id).trim();
+      }
       return cfg.defaultNotebookId || cfg.default || '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
     } catch (e) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('ERROR', 'eval_boq.js', e); }
   }
@@ -71,11 +80,8 @@ Examples:
     process.exit(1);
   }
 
-  let notebookId = getDefaultNotebookId();
   const nbIdx = args.indexOf('--notebook-id');
-  if (nbIdx !== -1 && args[nbIdx + 1]) {
-    notebookId = args[nbIdx + 1];
-  }
+  const explicitNotebookId = (nbIdx !== -1 && args[nbIdx + 1]) ? args[nbIdx + 1] : null;
 
   const inputBase = path.basename(inputFile, path.extname(inputFile));
 
@@ -132,6 +138,9 @@ Examples:
     
     process.exit(1);
   }
+
+  const detectedChassisName = path.basename(chassisDir || '');
+  const notebookId = explicitNotebookId || getDefaultNotebookId(detectedChassisName);
 
   const defaultReportsDir = path.join(chassisDir, 'reports');
   if (!fs.existsSync(defaultReportsDir)) {
@@ -248,7 +257,7 @@ Examples:
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
   const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
     context: {
-      chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'DL380_Gen12_SFF',
+      chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || (chassisDetection && chassisDetection.detectedVariant && chassisDetection.detectedVariant.model) || detectedChassisName,
       skus: items.map(i => i.sku).filter(Boolean),
       items: items
     },

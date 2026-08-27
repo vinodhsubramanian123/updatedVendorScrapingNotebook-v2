@@ -67,6 +67,10 @@ function isValidHpeSKU(skuStr) {
 function cleanBaseSKU(skuStr) {
   if (!skuStr) return '';
   let str = String(skuStr).trim();
+  // Strip trailing bracketed badges like [OB], [DS], [90], [EOL]
+  str = str.replace(/\s*\[(?:OB|DS|90|EOL|NA|N\/A)\]\s*$/i, '').trim();
+  // Strip leading lifecycle / status badges (e.g. "OB\n P49631-B21", "DS P49632-B21", "90\n P49639-B21", "EOL P49654-B21")
+  str = str.replace(/^(?:OB|DS|90|EOL|NA|N\/A|BTO|CTO|FIO)\s+/i, '').trim();
   // Strip leading DOM target element prefix 't' or 'T' if followed by valid SKU pattern starting with P, Q, R, or digit (e.g. tP69726-B21 or TP73111-B21 -> P69726-B21)
   if (/^[tT][PQR0-9][A-Z0-9]{4,6}(-[A-Z0-9]+)?$/i.test(str)) {
     str = str.substring(1);

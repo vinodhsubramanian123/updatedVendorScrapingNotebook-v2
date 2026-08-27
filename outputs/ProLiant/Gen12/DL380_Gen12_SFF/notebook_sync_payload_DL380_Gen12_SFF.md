@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-27T13:53:21.896Z  
+**Sync Timestamp**: 2026-08-27T16:16:32.352Z  
 **Total Verified SKUs**: `945` (`302` Hardware + `643` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
@@ -106,9 +106,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-08-24 | $6890.00 |
 | `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-08-24 | $7120.00 |
 | `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **REINSTATED** | 2026-08-24 | $7450.00 |
-| `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-22 | $164.00 |
-| `P70744-B21` | HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-22 | $172.00 |
-| `P74748-B21` | HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-22 | $117.00 |
+| `P52341-B21` | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-24 | $164.00 |
+| `P70744-B21` | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-24 | $172.00 |
+| `P74748-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-24 | $117.00 |
 | `Q9R65A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $6737.00 |
 | `Q9R66A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $11229.00 |
 | `Q9R67A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $24680.00 |
@@ -138,21 +138,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-24 | `P52341-B21` | Start Date | 11/10/2022 | **** |
-| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
-| 2026-08-24 | `P70744-B21` | Constraint | Discontinued | **** |
-| 2026-08-24 | `P70744-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
-| 2026-08-24 | `P70744-B21` | Max Qty | 0 | **** |
-| 2026-08-24 | `P70744-B21` | Component Role | Discontinued Hardware | **** |
-| 2026-08-24 | `P70744-B21` | HPE Recommended | No | **** |
-| 2026-08-24 | `P70744-B21` | Start Date | 02/24/2025 | **** |
-| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
-| 2026-08-24 | `P74748-B21` | Constraint | Discontinued | **** |
-| 2026-08-24 | `P74748-B21` | Rule/Note | [DISCONTINUED] SKU removed from latest HPE OCA portal catalog | **** |
-| 2026-08-24 | `P74748-B21` | Max Qty | 0 | **** |
-| 2026-08-24 | `P74748-B21` | Component Role | Discontinued Hardware | **** |
-| 2026-08-24 | `P74748-B21` | HPE Recommended | No | **** |
-| 2026-08-24 | `P74748-B21` | Start Date | 02/24/2025 | **** |
+| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P52341-B21` | Description | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit** |
+| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
+| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
+| 2026-08-24 | `P73282-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73283-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73284-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P52341-B21` | Description | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit** |
+| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
+| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 
@@ -170,8 +170,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
 | **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
 | **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
+| **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
+| **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
 | **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **P52535-B21** | ProLiant | Gen11 | 12LFF | `P52535-B21` |
+| **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
 | **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
 | **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |

@@ -87,5 +87,17 @@ The system leverages Google Jules for background code review, test generation, a
    - AI agents MUST execute `node scripts/services/jules_task_manager.js archive-completed` (or `npm run jules:archive`).
    - The archive procedure strictly runs a full thread and patch audit (`auditSession`) before archiving the session on the Jules API (`session.archive()`), and logs a structured trace record to `outputs/history/jules_archived_sessions.json`.
 
+11. **WebLogic OCA Dynamic DOM Expansion & Full Sub-Choice Trigger Protocol (`INV-20`)**:
+   - WebLogic-based OCA menus contain collapsed sub-choice groups (`showmore_*`), toolbar toggles (`#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price`), and deferred table panes.
+   - `cdp.js` must click all toolbar toggles, check all `showmore_*` inputs, and dispatch jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`) to force the WebLogic client runtime to render all hidden sub-choice tables (e.g. `ProcessorSection_AdditionalProcessorsChoice`). Never rely solely on scroll height or top-level table counts.
+
+12. **Lifecycle Status Tag & Clean PID Separation Protocol (`INV-21`)**:
+   - WebLogic OCA renders lifecycle status badges inside `<td class="item_prod">` as `<span class="td_prod">OB</span>` or `<span class="td_prod">90</span>` alongside `<span class="_pid">SKU</span>`.
+   - `dom_extract.js` and `build_catalog.js` MUST separate lifecycle status tags (`OB` Obsolete, `DS` Direct Ship / Discontinued, `90` 90-Day Warning, `EOL` End of Life) from the clean SKU string. SKUs must never have un-stripped leading or trailing text that causes regex rejections in `isValidHpeSKU()`. All extracted lifecycle statuses, effective start dates, and discontinued/obsolete dates MUST be preserved in the catalog JSON, TSV, and 22-sheet Excel workbooks.
+
+13. **Category Cardinality & Proactive Provenance Pre-Commit Assertion (`INV-22`)**:
+   - Staging validation (`verify_excel_tally.js`, `test_pipeline_evals.js`) must not just check `totalUniqueSKUs > 0`. Flagship servers (DL380, DL360, Synergy, Cray) have mandatory minimum cardinality thresholds for key categories (e.g. Flagship 2P servers require >= 40 processor SKUs).
+   - If a flagship server catalog contains fewer than the expected minimum category options, the staging audit must fail hard in Step 8, aborting promotion of an incomplete catalog to live workspace and preventing knowledge drift.
+
 
 

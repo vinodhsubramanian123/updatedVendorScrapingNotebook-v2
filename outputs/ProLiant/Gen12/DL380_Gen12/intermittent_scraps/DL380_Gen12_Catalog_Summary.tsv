@@ -1,7 +1,7 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Chassis	Variants	Discontinued	1	1	6	Yes	1
+Chassis	Variants	Chassis Standard (Max 1)	0	1	6	Yes	1
 Accessories & Infrastructure	Energy Star Configuration Presets	optional	0	Optional	1	Yes	1
-Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	1	2	37	Yes	2
+Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	0	2	33	Yes	1
 Cooling / Thermal	Standard & Performance Heat Sinks	max 6	0	6	6	Yes	2
 Memory	DDR5 Registered Smart Memory	max 32	0	32	8	Yes	7
 Memory	DDR4 Registered Smart Memory	max 32	0	32	1	Yes	1
@@ -12,16 +12,15 @@ Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	0	24	3	Yes	2
 PCIe Risers	Primary PCIe Risers	max 3	0	3	9	Yes	3
 Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	0	4	8	Yes	1
 Storage Controllers	Smart Array SAS Controllers	max 4	0	4	1	Yes	1
-Accessories & Infrastructure	System Options	optional	0	Optional	205	Yes	37
+Accessories & Infrastructure	System Options	optional	0	Optional	36	Yes	15
 Accessories & Infrastructure	Smart Storage Batteries	optional	0	Optional	4	Yes	1
 Storage Controllers	Storage Controller Cable Kits	max 4	0	4	38	Yes	3
-Software & Licenses	Server Management & Operating System Licenses	no max	0	Unlimited	541	Yes	32
-Networking	PCIe Networking Adapters	max 8	0	8	31	Yes	4
+Software & Licenses	Server Management & Operating System Licenses	no max	0	Unlimited	31	Yes	8
+Networking	PCIe Networking Adapters	max 8	0	8	25	Yes	3
 Networking	OCP3 Networking Adapters	max 8	0	8	17	Yes	2
-Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	0	24	21	Yes	2
-Cables & Enablement Kits	Power Cords & Jumper Cables		0	N/A	31	Yes	2
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	0	Optional	7	Yes	2
-Power Supplies	Flex Slot Power Supplies	min 1, max 2	1	2	1	Yes	1
-Processor	Intel Xeon Scalable Processors	min 1, max 2	1	2	3	Yes	1
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	3	Yes	3
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	0	24	6	Yes	1
+Cables & Enablement Kits	Power Cords & Jumper Cables	System Option	0	32	6	Yes	1
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	0	2	1	Yes	1
+Processor	Intel Xeon Scalable Processors	min 1, max 2	0	2	3	Yes	1
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	0	2	3	Yes	3
 Cooling / Thermal	High Performance & Standard Fan Kits	max 6	0	6	5	Yes	1

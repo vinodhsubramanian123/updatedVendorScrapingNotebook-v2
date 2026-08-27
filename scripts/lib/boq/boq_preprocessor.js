@@ -286,7 +286,6 @@ function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
     let vendor = 'HPE';
     let family = 'ProLiant';
     let gen = 'Gen12';
-    let notebookId = '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
 
     const allSkus = v.items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
     const allDescs = v.items.map(i => (i.description || '').toLowerCase()).join(' ');
@@ -295,41 +294,51 @@ function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
       chassisName = 'Alletra Storage System';
       solutionType = 'STORAGE';
       family = 'Alletra';
-      gen = 'Gen12';
-      notebookId = '';
+      gen = 'Storage';
     } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
       chassisName = 'SY100Gb F32 Module';
       solutionType = 'NETWORKING';
       family = 'Synergy';
       gen = 'General';
-      notebookId = '';
     } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
       chassisName = 'GX5000 General RACK';
       solutionType = 'HPC';
       family = 'Cray';
       gen = 'General';
-      notebookId = '';
     } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
       chassisName = 'MSL3040 Tape';
       solutionType = 'TAPE';
       family = 'StoreEver';
-      gen = 'General';
-      notebookId = '';
+      gen = 'Tape';
     } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
       chassisName = 'DL380 Gen11';
       solutionType = 'SERVER';
       family = 'ProLiant';
       gen = 'Gen11';
-      notebookId = '';
     } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732') || s.startsWith('P767')))) {
       chassisName = 'DL380 Gen12 SFF';
       solutionType = 'SERVER';
       family = 'ProLiant';
       gen = 'Gen12';
-      notebookId = '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
     } else if (options && options.chassisHint) {
       chassisName = options.chassisHint;
     }
+
+    // Resolve notebook ID dynamically from notebooks.json
+    let notebookId = '';
+    try {
+      const configPath = path.join(__dirname, '..', '..', 'config', 'notebooks.json');
+      if (fs.existsSync(configPath)) {
+        const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const cleanChassisKey = chassisName.replace(/\s+/g, '_');
+        if (cfg.notebooks && cfg.notebooks[cleanChassisKey]) {
+          const entry = cfg.notebooks[cleanChassisKey];
+          notebookId = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
+        } else if (cfg.defaultNotebookId) {
+          notebookId = cfg.defaultNotebookId;
+        }
+      }
+    } catch (_) { /* ignore */ }
 
     const tempVar = {
       configId: v.configId,

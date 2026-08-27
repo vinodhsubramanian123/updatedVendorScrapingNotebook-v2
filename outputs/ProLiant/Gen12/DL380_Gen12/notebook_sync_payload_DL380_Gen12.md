@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12`  
-**Sync Timestamp**: 2026-08-27T13:53:17.550Z  
-**Total Verified SKUs**: `997` (`289` Hardware + `708` Services)  
+**Sync Timestamp**: 2026-08-27T16:16:28.600Z  
+**Total Verified SKUs**: `994` (`286` Hardware + `708` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 289 | 30 | 0 | 6 | 0 | **CERTIFIED** |
+| **Hardware Components** | 286 | 27 | 0 | 6 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 708 | 149 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **997** | **179** | **0** | **6** | **0** | **ACTIVE** |
+| **Total Portfolio** | **994** | **176** | **0** | **6** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -123,21 +123,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-24 | `P73284-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-24 | `P73284-B21` | Max Qty | 1 | **0** |
-| 2026-08-24 | `P73284-B21` | HPE Recommended |  | **No** |
-| 2026-08-24 | `P73285-B21` | Description | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server** |
-| 2026-08-24 | `P73285-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-24 | `P73285-B21` | Max Qty | 1 | **0** |
-| 2026-08-24 | `P73285-B21` | HPE Recommended |  | **No** |
-| 2026-08-24 | `P73286-B21` | Description | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server** |
-| 2026-08-24 | `P73286-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-24 | `P73286-B21` | Max Qty | 1 | **0** |
-| 2026-08-24 | `P73286-B21` | HPE Recommended |  | **No** |
-| 2026-08-24 | `P73287-B21` | Description | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server** |
-| 2026-08-24 | `P73287-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-24 | `P73287-B21` | Max Qty | 1 | **0** |
-| 2026-08-24 | `P73287-B21` | HPE Recommended |  | **No** |
+| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73282-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73283-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73284-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73282-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73283-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73284-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
+| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 
@@ -155,8 +155,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
 | **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
 | **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
+| **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
+| **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
 | **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **P52535-B21** | ProLiant | Gen11 | 12LFF | `P52535-B21` |
+| **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
 | **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
 | **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |

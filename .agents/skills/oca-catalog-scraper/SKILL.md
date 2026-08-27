@@ -65,8 +65,10 @@ sequenceDiagram
 
 | Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
 |---------|--------|---------------|-------------|--------|-------|-----------------|
+| Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
+|---------|--------|---------------|-------------|--------|-------|-----------------|
 | HPE ProLiant DL380 Gen12 SFF | ProLiant | `DL380_Gen12_SFF` | 261 HW / 603 Svc (864 total) | 20 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 4 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 476 HW / 1115 Svc (1591 total) | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
@@ -76,39 +78,50 @@ sequenceDiagram
 
 ---
 
-## 5. Master Excel Workbook Architecture (20 Validated Sheets)
+## 5. Master Excel Workbook Architecture (22 Validated Sheets)
 
-1. `Category Summary`: 34 subcategories with quantity limits and category roles.
+1. `Category Summary`: Subcategories with quantity limits, constraint texts, and category roles.
 2. `All SKUs`: Full 24-column metadata structure for every hardware component.
-3. `Chassis Variants`: 6 CTO Base Chassis Models (`P73282-B21` to `P73287-B21`).
-4. `Rules & Constraints`: 44 Aspect & constraint rules across the 5 hierarchy levels.
+3. `Chassis Variants`: CTO Base Chassis Models (`P52534-B21`, etc.).
+4. `Rules & Constraints`: Aspect & constraint rules across the hierarchy levels.
 5. `Hardware Accessories`: Form-factor brackets, blanks, security bezels, cable kits.
-6. `Software & Licenses`: Pointnext, Tech Care tiers, iLO Advanced, and OS licenses.
+6. `Software & Licenses`: Pointnext, Tech Care tiers, iLO Advanced, OS licenses.
 7. `Support Services`: Proactive care & startup services configuration table.
 8. `Catalog Diffs`: Differential SKU delta tracking with color-coded diff status badges.
-9. `Price History Timeline`: 850 chronological snapshot price data points.
-10. `Processor`: All 6th Gen Intel Xeon Scalable processors with thermal constraints.
+9. `Price History Timeline`: Chronological snapshot price data points.
+10. `Processor`: All Intel Xeon Scalable processors with thermal constraints and lifecycle status (`OB`, `DS`, `90`).
 11. `Memory`: DDR5 Registered Smart Memory modules with memory channel rules.
 12. `Networking`: High-speed OCP 3.0 & PCIe adapters (10GbE to 200GbE).
 13. `Power Supplies`: Titanium, Platinum & -48VDC Flex Slot PSUs with power budget mappings.
-14. `Chassis`: Server chassis configurations and backplane topologies.
+14. `Cooling & Thermal`: High Performance & Standard Fan Kits and Performance Heat Sinks.
 15. `Accessories & Infrastructure`: Energy Star presets, rail kits, and cable management arms.
 16. `Drive Enclosures & Drives`: SFF cage bundles, NVMe drive enclosures, SAS/SATA backplanes.
 17. `Storage Controllers`: Tri-Mode MegaRAID & Smart Array storage controllers.
-18. `Cooling & Thermal`: High Performance & Standard Fan Kits and Performance Heat Sinks.
-19. `Discontinued SKUs`: 790 tracked historical SKUs with EOL dates and price trails.
-20. `Metadata`: Scrape metadata, session timestamps, and SHA-256 catalog checksum.
+18. `PCIe Risers`: Primary, secondary, tertiary PCIe risers.
+19. `Graphics & GPU`: Enterprise GPU enablement kits and accelerators.
+20. `Chassis`: Server chassis configurations and backplane topologies.
+21. `Discontinued SKUs`: Tracked historical SKUs with EOL dates and price trails.
+22. `Metadata`: Scrape metadata, session timestamps, and SHA-256 catalog checksum.
 
 ---
 
-## 6. Execution Commands
+## 6. WebLogic DOM Extraction & Lifecycle Intelligence Protocol (INV-20 to INV-22)
+
+1. **Sub-Choice Group Expansion (`INV-20`)**:
+   - `expandSections` in `cdp.js` automatically toggles `#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price` and checks all `input[id*="showmore"]` inputs, dispatching jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`) to trigger full WebLogic client rendering of sub-choices (e.g., `AdditionalProcessorsChoice`).
+2. **Lifecycle Status Tag & Clean PID Separation (`INV-21`)**:
+   - WebLogic OCA DOM places status tags (`OB`, `DS`, `90`) inside `<td class="item_prod">` as `<span class="td_prod">OB</span>` alongside `<span class="_pid">P49631-B21</span>`.
+   - `dom_extract.js` and `build_catalog.js` extract both clean SKUs and separate lifecycle statuses (`Obsolete (OB)`, `Direct Ship (DS)`, `EOL Warning (90-Day)`, `Active`), start effective dates, and discontinued/obsolete dates into catalog JSON and Excel columns.
+3. **Category Cardinality Assertion (`INV-22`)**:
+   - Staging audits (`verify_excel_tally.js`, `test_pipeline_evals.js`) enforce category cardinality thresholds for flagship dual-socket systems (e.g. DL380 requires >= 40 processor SKUs) to fail hard if an incomplete DOM expansion is encountered.
+
+---
+
+## 7. Execution Commands
 
 ```bash
-# E2E Server/Solution Scrape (DL380 Gen12 / Synergy / Cray)
-npm run scrape
-
-# E2E Storage Solution Wizard Scrape (Alletra / Nimble / StoreOnce)
-npm run scrape:storage
+# E2E Server/Solution Scrape (DL380 Gen11 / Gen12 / Synergy / Cray)
+node scripts/scrapers/scrape_oca_solution.js --chassis DL380_Gen11
 
 # Rebuild all scraped catalogs & regenerate workbooks
 npm run rebuild

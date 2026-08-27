@@ -39,6 +39,11 @@
       "date": "2026-08-22",
       "price": 12500,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-27",
+      "price": 12500,
+      "status": "UNCHANGED"
     }
   ],
   "R0Q36A": [
@@ -81,6 +86,11 @@
       "date": "2026-08-22",
       "price": 18900,
       "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-27",
+      "price": 18900,
+      "status": "UNCHANGED"
     }
   ],
   "R0Q37A": [
@@ -121,6 +131,11 @@
     },
     {
       "date": "2026-08-22",
+      "price": 15200,
+      "status": "UNCHANGED"
+    },
+    {
+      "date": "2026-08-27",
       "price": 15200,
       "status": "UNCHANGED"
     }

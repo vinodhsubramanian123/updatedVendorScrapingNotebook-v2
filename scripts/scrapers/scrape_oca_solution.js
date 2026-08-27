@@ -54,15 +54,25 @@ async function main() {
     }
   }
 
+  const chassisArgIdx = process.argv.indexOf('--chassis');
+  const queryArgIdx = process.argv.indexOf('--query');
+  const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
+    ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
+    : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
+
+  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
+  await ensureChromeBrowserRunning(9222);
+
   let pageTarget;
   try {
     pageTarget = await getOCATarget();
   } catch (err) {
     console.log(`⚠️ Active OCA tab not found: ${err.message}`);
-    console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
+    const navQuery = targetChassisQuery || 'DL380 Gen12';
+    console.log(`🧭 Attempting smart auto-navigation via Partner Portal for "${navQuery}"...`);
     try {
       const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-      await navigateToOCAChassis('DL380 Gen12');
+      await navigateToOCAChassis(navQuery);
       pageTarget = await getOCATarget();
     } catch (navErr) {
       throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
@@ -96,18 +106,45 @@ async function main() {
       stage: 'PORTAL_NAV', percent: 20
     });
 
-    await sendCommand(ws, 'Runtime.evaluate', {
+    const targetHint = (targetChassisQuery || 'DL380 Gen11').toLowerCase();
+
+    // Check if the browser is already inside the server Menu configuration view
+    const menuStateRes = await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
-        const upBtn = document.querySelector('#nav_up, .icon-arrow-up3');
-        if (upBtn) upBtn.click();
-        const compTab = Array.from(document.querySelectorAll('a'))
-          .find(a => a.innerText.trim() === 'Components');
-        if (compTab) compTab.click();
+        const tableCount = document.querySelectorAll('table').length;
+        const hasMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') || tableCount > 40);
+        return { hasMenu, tableCount };
       })()`,
       returnByValue: true
     });
 
-    await sleep(2500);
+    const { hasMenu: alreadyAtMenu, tableCount: currentTables } = menuStateRes.result.value || {};
+    console.log(`Current Page State: hasMenu=${alreadyAtMenu}, tableCount=${currentTables}`);
+
+    if (!alreadyAtMenu) {
+      await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          const target = ${JSON.stringify(targetHint)};
+          const allEls = Array.from(document.querySelectorAll('a, button, span, tr, td, li, .fancytree-title'));
+          const matchingEls = allEls.filter(e => {
+            const t = (e.innerText || '').trim().toLowerCase();
+            return t.includes(target) && !t.includes('messages') && !t.includes('export');
+          });
+          if (matchingEls.length > 0) {
+            matchingEls[0].click();
+            const evt = new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window });
+            matchingEls[0].dispatchEvent(evt);
+          }
+
+          const compTab = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
+            .find(a => (a.innerText || '').trim() === 'Components');
+          if (compTab) compTab.click();
+        })()`,
+        returnByValue: true
+      });
+
+      await sleep(2500);
+    }
 
     const treeInfoRes = await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
@@ -133,28 +170,45 @@ async function main() {
       stage: 'CATEGORY_DISCOVERY', percent: 30
     });
 
-    await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        // Try clicking Menu tab in OCA configuration view
-        const menuTab = Array.from(document.querySelectorAll('a, button, span, li'))
-          .find(el => el.innerText && el.innerText.trim() === 'Menu');
-        if (menuTab) menuTab.click();
-
-        if (typeof jQuery !== 'undefined') {
-          const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
-            const t = jQuery(el).text();
-            return t.includes('Gen12') || t.includes('Gen11') || t.includes('#1');
+    if (!alreadyAtMenu) {
+      await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          const target = ${JSON.stringify(targetHint)};
+          const allEls = Array.from(document.querySelectorAll('a, button, span, tr, td, li, .fancytree-title'));
+          const matchingEls = allEls.filter(e => {
+            const t = (e.innerText || '').trim().toLowerCase();
+            return t.includes(target) && !t.includes('messages') && !t.includes('export');
           });
-          if (titleSpan.length > 0) titleSpan.trigger('click').trigger('dblclick');
-          const lastVal = jQuery('#selectNavTreeOption option').last().val();
-          if (lastVal) jQuery('#selectNavTreeOption').val(lastVal).trigger('change');
-          jQuery('a[href*="extended_overview_menu"]').click();
-        }
-        const extMenuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
-        if (extMenuTab) extMenuTab.click();
-      })()`,
-      returnByValue: true
-    });
+          if (matchingEls.length > 0) {
+            matchingEls[0].click();
+            const evt = new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window });
+            matchingEls[0].dispatchEvent(evt);
+          }
+
+          // Try clicking Menu tab in OCA configuration view
+          const menuTabs = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
+            .filter(el => (el.innerText || '').trim() === 'Menu');
+          if (menuTabs.length > 0) menuTabs[0].click();
+
+          if (typeof jQuery !== 'undefined') {
+            const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
+              const t = jQuery(el).text().toLowerCase();
+              if (target && t.includes(target)) return true;
+              return t.includes('gen11') || t.includes('gen12') || t.includes('#1');
+            });
+            if (titleSpan.length > 0) titleSpan.first().trigger('click').trigger('dblclick');
+            const lastVal = jQuery('#selectNavTreeOption option').last().val();
+            if (lastVal) jQuery('#selectNavTreeOption').val(lastVal).trigger('change');
+            jQuery('a[href*="extended_overview_menu"]').click();
+          }
+          const extMenuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
+          if (extMenuTab) extMenuTab.click();
+        })()`,
+        returnByValue: true
+      });
+
+      await sleep(4000);
+    }
 
     await sleep(4000);
 
@@ -203,10 +257,22 @@ async function main() {
       })()`,
       returnByValue: true
     });
-    const { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
+    let { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
+    if (!pageHeading || pageHeading.includes('External OCA') || pageHeading.includes('OCA Solution') || pageHeading.includes('General')) {
+      if (targetChassisQuery) {
+        pageHeading = targetChassisQuery;
+      }
+    }
     console.log(`Active Product Node Title: "${pageHeading}"`);
 
-    meta = parseProductMeta(pageHeading, pageTarget.title);
+    meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
+    if (targetChassisQuery && (!meta.gen || meta.gen === 'General')) {
+      const overrideMeta = parseProductMeta(targetChassisQuery);
+      meta.family = overrideMeta.family || meta.family;
+      meta.gen = overrideMeta.gen || meta.gen;
+      meta.cleanName = overrideMeta.cleanName || meta.cleanName;
+    }
+
     const { loadProfile } = require('../lib/system/profile_loader.js');
     const profile = await loadProfile(meta.family, meta.gen);
     console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);

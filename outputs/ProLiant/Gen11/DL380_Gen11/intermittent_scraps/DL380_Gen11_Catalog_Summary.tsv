@@ -1,2 +1,161 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Chassis	Variants	Chassis Standard (Max 1)	0	1	4	Yes	1
+Unknown	Processors	max 2	0	2	0	No	0
+Unknown	Heatsink Kit	max 2	0	2	0	No	0
+Unknown	Memory	max 32	0	32	0	No	0
+Unknown	Trusted Supply Chain	max 1	0	1	0	No	0
+Unknown	Factory Configuration Settings	max 1	0	1	0	No	0
+Unknown	Logical Size Settings	max 1	0	1	0	No	0
+Unknown	NVMe Enablement Setting	max 1	0	1	0	No	0
+Unknown	Identifier/Tracking SKUs	max 2	0	2	0	No	0
+Unknown	vSAN Tracking SKUs	max 1	0	1	0	No	0
+Unknown	iLO Common Password	max 1	0	1	0	No	0
+Unknown	SAS Controller	max 7	0	7	0	No	0
+Unknown	Smart Storage Battery	max 2	0	2	0	No	0
+Unknown	Storage Controller Cables	max 2	0	2	0	No	0
+Unknown	RAID Settings	max 1	0	1	0	No	0
+Unknown	Drive Cage	max 8	0	8	0	No	0
+Unknown	SSD - Read Intensive	max 8	0	8	0	No	0
+Unknown	SSD - Mixed Use	max 8	0	8	0	No	0
+Unknown	HDD - Enterprise 15K/10K	max 8	0	8	0	No	0
+Unknown	HDD - Midline - 7.2K	max 8	0	8	0	No	0
+Unknown	NVMe - SSD and AIC - Read Intensive	max 8	0	8	0	No	0
+Unknown	NVMe - SSD and AIC - Mixed Use	max 8	0	8	0	No	0
+Unknown	Optical Drive	max 1	0	1	0	No	0
+Unknown	Riser Cards	max 3	0	3	0	No	0
+Unknown	Riser Cards Accessories	max 3	0	3	0	No	0
+Unknown	InfiniBand PCIe	max 6	0	6	0	No	0
+Unknown	Ethernet PCIe	max 6	0	6	0	No	0
+Unknown	OCP Ethernet	max 2	0	2	0	No	0
+Unknown	Fibre Channel HBA	max 6	0	6	0	No	0
+Unknown	Fibre Channel Cables and SFP	max 1	0	1	0	No	0
+Unknown	Transceivers	max 16	0	16	0	No	0
+Unknown	OCP Upgrades	max 2	0	2	0	No	0
+Unknown	OCP Infiniband	max 2	0	2	0	No	0
+Unknown	OS Boot Device	max 3	0	3	0	No	0
+Unknown	Management Hardware	max 1	0	1	0	No	0
+Unknown	Memory Setting	max 1	0	1	0	No	0
+Unknown	Graphics	max 8	0	8	0	No	0
+Unknown	Graphics Accessories	max 1	0	1	0	No	0
+Unknown	Power Cooling Options	max 2	0	2	0	No	0
+Unknown	Power Supplies	max 2	0	2	0	No	0
+Unknown	Power Cords	max 2	0	2	0	No	0
+Unknown	INTEL VROC Products-FIO	no max	0	Unlimited	0	No	0
+Unknown	INTEL VROC Products-BTO	no max	0	Unlimited	0	No	0
+Unknown	Manufacturing Services	max 1	0	1	0	No	0
+Unknown	Pensando DSP (SW)	no max	0	Unlimited	0	No	0
+Unknown	VMware NSX	no max	0	Unlimited	0	No	0
+Unknown	HPE Virtualization	no max	0	Unlimited	0	No	0
+Unknown	VMWare VCenter Srm Products	no max	0	Unlimited	0	No	0
+Unknown	VMWare VCloud Products	no max	0	Unlimited	0	No	0
+Unknown	VMWare VCenter Products	no max	0	Unlimited	0	No	0
+Unknown	VMWare Client Virtualization	no max	0	Unlimited	0	No	0
+Unknown	VMWare VSphere Editions	no max	0	Unlimited	0	No	0
+Unknown	VMWare VSphere Kits	no max	0	Unlimited	0	No	0
+Unknown	VMWare Core Editions	no max	0	Unlimited	0	No	0
+Unknown	Security Hardware	max 4	0	4	0	No	0
+Unknown	Rack Options	max 3	0	3	0	No	0
+Unknown	Compute Ops Management SKUs	max 1	0	1	0	No	0
+Unknown	Data Management Framework DMF	no max	0	Unlimited	0	No	0
+Unknown	MS Windows Server Additional License	max 999	0	999	0	No	0
+Unknown	MS Windows Server CALs	no max	0	Unlimited	0	No	0
+Unknown	MS Windows Server Not Preinstalled	no max	0	Unlimited	0	No	0
+Unknown	MS Windows Server Preinstalled	no max	0	Unlimited	0	No	0
+Unknown	Red Hat Operating Systems	no max	0	Unlimited	0	No	0
+Unknown	Red Hat SAP Operating System	no max	0	Unlimited	0	No	0
+Unknown	Red Hat-Virtualization	no max	0	Unlimited	0	No	0
+Unknown	SUSE Add-ons	no max	0	Unlimited	0	No	0
+Unknown	SUSE containers	no max	0	Unlimited	0	No	0
+Unknown	SUSE Operating Systems	no max	0	Unlimited	0	No	0
+Unknown	SUSE SAP Operating Systems	no max	0	Unlimited	0	No	0
+Unknown	OneView Management Software	max 1	0	1	0	No	0
+Unknown	NVIDIA GPU SW	no max	0	Unlimited	0	No	0
+Unknown	Integrated Lights Out Software	no max	0	Unlimited	0	No	0
+Unknown	Hadoop Software	no max	0	Unlimited	0	No	0
+Unknown	Proliant Software Media Kits	no max	0	Unlimited	0	No	0
+Unknown	Linux Value Added Software	no max	0	Unlimited	0	No	0
+Unknown	AI-at-Scale	no max	0	Unlimited	0	No	0
+Unknown	HPC Software Products	no max	0	Unlimited	0	No	0
+Unknown	High Availability Computing - Cluster Software	no max	0	Unlimited	0	No	0
+Unknown	Partner Software - Operating System 8pks	max 30969	0	30969	0	No	0
+Unknown	OEM Software	max 999	0	999	0	No	0
+Unknown	Reseller Option Kit	no max	0	Unlimited	0	No	0
+Cooling / Thermal	Heatsink Kit	max 2	0	2	90	Yes	15
+Processor	Processors	max 2	1	2	66	Yes	1
+Memory	Memory	max 32	0	32	30	Yes	6
+Accessories & Infrastructure	Trusted Supply Chain	max 1	0	1	1	Yes	1
+Accessories & Infrastructure	Factory Configuration Settings	max 1	0	1	1	Yes	1
+Accessories & Infrastructure	Logical Size Settings	max 1	0	1	1	Yes	1
+Drive Enclosures / Drives	NVMe Enablement Setting	max 1	0	1	8	Yes	1
+Accessories & Infrastructure	Identifier/Tracking SKUs	max 2	0	2	1	Yes	1
+Accessories & Infrastructure	vSAN Tracking SKUs	max 1	0	1	2	Yes	1
+Software & Licenses	iLO Common Password	max 1	0	1	2	Yes	2
+Storage Controllers	SAS Controller	max 7	0	7	7	Yes	1
+Networking	InfiniBand PCIe	max 6	0	6	18	Yes	3
+Storage Controllers	Storage Controller Cables	max 2	0	2	7	Yes	2
+Accessories & Infrastructure	Smart Storage Battery	max 2	0	2	4	Yes	2
+Accessories & Infrastructure	RAID Settings	max 1	0	1	6	Yes	1
+Drive Enclosures / Drives	Drive Cage	max 8	0	8	13	Yes	5
+Accessories & Infrastructure	SSD - Read Intensive	max 8	0	8	35	Yes	1
+Accessories & Infrastructure	SSD - Mixed Use	max 8	0	8	21	Yes	1
+Accessories & Infrastructure	HDD - Enterprise 15K/10K	max 8	0	8	7	Yes	1
+Accessories & Infrastructure	HDD - Midline - 7.2K	max 8	0	8	3	Yes	1
+Drive Enclosures / Drives	NVMe - SSD and AIC - Read Intensive	max 8	0	8	37	Yes	1
+Drive Enclosures / Drives	NVMe - SSD and AIC - Mixed Use	max 8	0	8	32	Yes	1
+Accessories & Infrastructure	Optical Drive	max 1	0	1	3	Yes	2
+PCIe Risers	Riser Cards	max 3	0	3	4	Yes	1
+PCIe Risers	Riser Cards Accessories	max 3	0	3	3	Yes	1
+Networking	OCP Ethernet	max 2	0	2	12	Yes	2
+Accessories & Infrastructure	HPE Virtualization	no max	0	Unlimited	34	Yes	6
+Networking	Transceivers	max 16	0	16	5	Yes	1
+Networking	Fibre Channel Cables and SFP	max 1	0	1	10	Yes	1
+Accessories & Infrastructure	OCP Upgrades	max 2	0	2	4	Yes	2
+Accessories & Infrastructure	OS Boot Device	max 3	0	3	4	Yes	1
+Accessories & Infrastructure	Management Hardware	max 1	0	1	1	Yes	1
+Memory	Memory Setting	max 1	0	1	2	Yes	1
+Graphics & GPU	Graphics Accessories	max 1	0	1	3	Yes	1
+Cooling / Thermal	Power Cooling Options	max 2	0	2	4	Yes	1
+Power Supplies	Power Supplies	max 2	1	2	1	Yes	1
+Accessories & Infrastructure	Security Hardware	max 4	0	4	4	Yes	1
+Accessories & Infrastructure	Rack Options	max 3	0	3	3	Yes	1
+Software & Licenses	MS Windows Server CALs	no max	0	Unlimited	30	Yes	1
+Software & Licenses	MS Windows Server Preinstalled	no max	0	Unlimited	4	Yes	1
+Software & Licenses	Integrated Lights Out Software	no max	0	Unlimited	22	Yes	2
+Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	9	Yes	2
+Graphics & GPU	NVIDIA GPU SW	no max	0	Unlimited	68	Yes	2
+Chassis	Variants	Discontinued	0	Discontinued	4	Yes	1
+Networking	Ethernet PCIe	max 6	0	6	19	Yes	1
+Networking	Fibre Channel HBA	max 6	0	6	8	Yes	1
+Graphics & GPU	Graphics	max 8	0	8	9	Yes	1
+Accessories & Infrastructure	Power Cords	max 2	0	2	20	Yes	1
+Storage Controllers	INTEL VROC Products-FIO	no max	0	Unlimited	3	Yes	1
+Storage Controllers	INTEL VROC Products-BTO	no max	0	Unlimited	3	Yes	1
+Support Services	Manufacturing Services	max 1	0	1	1	Yes	1
+Accessories & Infrastructure	Pensando DSP (SW)	no max	0	Unlimited	4	Yes	1
+Software & Licenses	VMware NSX	no max	0	Unlimited	22	Yes	1
+Software & Licenses	VMWare VCenter Srm Products	no max	0	Unlimited	7	Yes	1
+Software & Licenses	VMWare VCloud Products	no max	0	Unlimited	16	Yes	1
+Software & Licenses	VMWare VCenter Products	no max	0	Unlimited	35	Yes	1
+Software & Licenses	VMWare Client Virtualization	no max	0	Unlimited	26	Yes	1
+Software & Licenses	VMWare VSphere Editions	no max	0	Unlimited	69	Yes	1
+Software & Licenses	VMWare VSphere Kits	no max	0	Unlimited	16	Yes	1
+Software & Licenses	VMWare Core Editions	no max	0	Unlimited	38	Yes	1
+Accessories & Infrastructure	Compute Ops Management SKUs	max 1	0	1	8	Yes	2
+Accessories & Infrastructure	Data Management Framework DMF	no max	0	Unlimited	27	Yes	1
+Software & Licenses	MS Windows Server Additional License	max 999	0	999	18	Yes	1
+Software & Licenses	MS Windows Server Not Preinstalled	no max	0	Unlimited	9	Yes	1
+Software & Licenses	Red Hat Operating Systems	no max	0	Unlimited	67	Yes	1
+Software & Licenses	Red Hat SAP Operating System	no max	0	Unlimited	32	Yes	1
+Software & Licenses	Red Hat-Virtualization	no max	0	Unlimited	12	Yes	1
+Software & Licenses	SUSE Add-ons	no max	0	Unlimited	12	Yes	2
+Software & Licenses	SUSE containers	no max	0	Unlimited	46	Yes	2
+Software & Licenses	SUSE Operating Systems	no max	0	Unlimited	54	Yes	1
+Software & Licenses	SUSE SAP Operating Systems	no max	0	Unlimited	4	Yes	1
+Software & Licenses	OneView Management Software	max 1	0	1	7	Yes	1
+Software & Licenses	Hadoop Software	no max	0	Unlimited	41	Yes	2
+Software & Licenses	Linux Value Added Software	no max	0	Unlimited	32	Yes	1
+Accessories & Infrastructure	AI-at-Scale	no max	0	Unlimited	28	Yes	1
+Software & Licenses	HPC Software Products	no max	0	Unlimited	148	Yes	1
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	55	Yes	1
+Software & Licenses	Partner Software - Operating System 8pks	max 30969	0	30969	31	Yes	1
+Software & Licenses	OEM Software	max 999	0	999	1	Yes	1
+Accessories & Infrastructure	Reseller Option Kit	no max	0	Unlimited	58	Yes	2

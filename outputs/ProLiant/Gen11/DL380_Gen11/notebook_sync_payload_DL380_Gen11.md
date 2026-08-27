@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-08-27T13:53:13.535Z  
-**Total Verified SKUs**: `4` (`4` Hardware + `0` Services)  
+**Sync Timestamp**: 2026-08-27T16:16:24.688Z  
+**Total Verified SKUs**: `1587` (`472` Hardware + `1115` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 4 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **4** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 472 | 472 | 0 | 0 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 1115 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1587** | **472** | **0** | **0** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -40,11 +40,32 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for DL380_Gen11. All cataloged SKUs are active.*
+| SKU | Description | Status | Discontinued Date | Last Known Price |
+|-----|-------------|--------|-------------------|------------------|
+| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $1650.00 |
+| `P52535-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $1900.00 |
+| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $2250.00 |
+| `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **DISCONTINUED** | 2026-08-27 | $2050.00 |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
-*No attribute or specification changes recorded across catalog snapshots.*
+| Timestamp | SKU | Attribute | Old Value | New Value |
+|-----------|-----|-----------|-----------|-----------|
+| 2026-08-27 | `P52534-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52535-B21` | Description | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server** |
+| 2026-08-27 | `P52535-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52536-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52537-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52534-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52535-B21` | Description | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server** |
+| 2026-08-27 | `P52535-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52536-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52537-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52534-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52535-B21` | Description | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server** |
+| 2026-08-27 | `P52535-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52536-B21` | Start Date | 2026-08-10 | **2026-08-27** |
+| 2026-08-27 | `P52537-B21` | Start Date | 2026-08-10 | **2026-08-27** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 
@@ -62,8 +83,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
 | **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
 | **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
+| **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
+| **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
 | **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **P52535-B21** | ProLiant | Gen11 | 12LFF | `P52535-B21` |
+| **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
 | **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
 | **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |

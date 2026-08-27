@@ -86,7 +86,20 @@ function detectChassisVariant(items, overrideVariant = '') {
     if (found) {
       return { ...found, id: overrideVariant, formFactor: overrideVariant };
     }
-    return { family: 'ProLiant', gen: 'Gen12', formFactor: overrideVariant, model: overrideVariant, id: overrideVariant };
+    // Dynamic metadata detection for unknown overrides
+    try {
+      const { parseProductMeta } = require('./product_meta.js');
+      const meta = parseProductMeta(overrideVariant);
+      return {
+        family: meta.family || 'ProLiant',
+        gen: meta.gen || 'General',
+        formFactor: overrideVariant,
+        model: overrideVariant,
+        id: overrideVariant
+      };
+    } catch (_) {
+      return { family: 'ProLiant', gen: 'General', formFactor: overrideVariant, model: overrideVariant, id: overrideVariant };
+    }
   }
 
   // Scan items for direct base chassis SKU match
@@ -113,8 +126,18 @@ function detectChassisVariant(items, overrideVariant = '') {
     if (desc.includes('synergy')) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
   }
 
-  // Default fallback
-  return { ...chassisMap['DL380_Gen12_SFF'], id: 'DL380_Gen12_SFF' };
+  // If no chassis can be identified, trigger Human-in-the-Loop confirmation instead of silent Gen12 assumption
+  return {
+    unknown: true,
+    requiresUserConfirmation: true,
+    confidenceScore: 0.0,
+    family: 'Unknown',
+    gen: 'Unknown',
+    formFactor: 'Unknown',
+    model: 'Unknown Chassis Variant',
+    id: 'UNKNOWN',
+    baseSku: 'UNKNOWN'
+  };
 }
 
 /**

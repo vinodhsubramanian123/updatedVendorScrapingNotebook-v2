@@ -380,6 +380,16 @@ function syncAllProducts() {
         const { execSync } = require('child_process');
         execSync(`node "${generateXlsxScript}" "${xlsxPath}"`, { stdio: 'pipe' });
         console.log(`  📊 Rebuilt Master Excel Catalog: ${xlsxPath}`);
+
+        try {
+          const xlsx = require('xlsx-js-style');
+          const wb = xlsx.readFile(xlsxPath);
+          const sheet = wb.Sheets['All SKUs'] || wb.Sheets[wb.SheetNames[0]];
+          if (sheet) {
+            const csvData = xlsx.utils.sheet_to_csv(sheet);
+            fs.writeFileSync(path.join(prod.fullOutputDir, `${prod.chassisShorthand}_Master_Catalog.csv`), csvData, 'utf-8');
+          }
+        } catch (_) { /* non-fatal */ }
       }
     } catch (err) {
       console.warn(`  ⚠️ TSV/Excel generation warning for ${prod.chassisShorthand}: ${err.message}`);

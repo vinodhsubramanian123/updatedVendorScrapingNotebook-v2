@@ -82,7 +82,9 @@ async function runAgenticEval(inputFile) {
   const items = parseAndConsolidateBOQ(rawText);
   console.log(`Found ${items.length} items.\n`);
   
-  const chassisMatch = rawText.match(/DL380_Gen12_SFF/i) ? 'DL380_Gen12_SFF' : 'DL380_Gen12_SFF';
+  const { autoDetectChassisDetailed, findCatalogDirectory } = require('../lib/catalog/catalog_discovery.js');
+  const detection = autoDetectChassisDetailed(items);
+  const chassisMatch = detection.detectedVariant?.id || 'DL380_Gen12_SFF';
 
   const systemInstruction = `You are the HPE BOQ Evaluation Orchestrator (Intent Brain) with a Guardrail Loop.
 Your task is to analyze the user's BOQ configuration.
@@ -136,7 +138,7 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
           }
 
           case 'record_knowledge_delta': {
-            const outputDir = path.join(__dirname, '..', 'outputs', 'ProLiant', 'Gen12', args.chassis_id);
+            const outputDir = findCatalogDirectory(args.chassis_id) || path.join(__dirname, '..', '..', 'outputs', 'ProLiant', 'Gen12', args.chassis_id);
             if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
             result = processPortalFeedback("Agentic rule update", outputDir, {
               affectedSku: args.affected_sku,

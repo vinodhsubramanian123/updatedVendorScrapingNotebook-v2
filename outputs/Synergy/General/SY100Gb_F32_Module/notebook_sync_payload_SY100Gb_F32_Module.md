@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-08-27T13:53:24.487Z  
+**Sync Timestamp**: 2026-08-27T16:16:34.793Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `13`  
 
@@ -62,8 +62,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
 | **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
 | **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
+| **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
+| **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
 | **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **P52535-B21** | ProLiant | Gen11 | 12LFF | `P52535-B21` |
+| **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
 | **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
 | **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |

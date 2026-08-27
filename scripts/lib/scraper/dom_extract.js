@@ -51,7 +51,17 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
         const rows = [];
         table.querySelectorAll('tr').forEach(tr => {
           const cells = [];
-          tr.querySelectorAll('td, th').forEach(cell => cells.push((cell.innerText || '').trim()));
+          const badgeSpan = tr.querySelector('.td_prod');
+          const badge = badgeSpan ? (badgeSpan.innerText || '').trim() : '';
+          tr.querySelectorAll('td, th').forEach(cell => {
+            const pidSpan = cell.querySelector('._pid, .item_prod span._pid');
+            if (pidSpan) {
+              const pid = (pidSpan.innerText || '').trim();
+              cells.push(badge ? (pid + ' [' + badge + ']') : pid);
+            } else {
+              cells.push((cell.innerText || '').trim());
+            }
+          });
           if (cells.length > 0) rows.push(cells);
         });
         if (rows.length > 0) result.push({ tableIndex: idx, rowCount: rows.length, rows });

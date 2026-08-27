@@ -104,14 +104,37 @@ function loadCatalogRules(targetDir) {
   }
 
   if (!resolvedDir) {
-    resolvedDir = path.join(__dirname, '..', '..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+    return {
+      metadata: {},
+      parsedRules: [],
+      subcategoryConstraints: [],
+      sourceFile: 'NONE',
+      isFallback: false
+    };
   } else if (!fs.existsSync(resolvedDir)) {
-    // If it's a model name like 'DL380_Gen12_SFF'
+    // If it's a model name or chassis ID like 'DL380_Gen11' or 'DL380_Gen12_SFF'
     try {
       const { findCatalogDirectory } = require('./catalog_discovery.js');
       const found = findCatalogDirectory(resolvedDir);
       if (found) resolvedDir = found;
-    } catch (_) {}
+      else {
+        return {
+          metadata: {},
+          parsedRules: [],
+          subcategoryConstraints: [],
+          sourceFile: 'NONE',
+          isFallback: false
+        };
+      }
+    } catch (_) {
+      return {
+        metadata: {},
+        parsedRules: [],
+        subcategoryConstraints: [],
+        sourceFile: 'NONE',
+        isFallback: false
+      };
+    }
   }
 
   const prefix = path.basename(resolvedDir);

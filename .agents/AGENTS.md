@@ -212,6 +212,18 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Completed Jules sessions are audited for activities, patches, and PR deltas, logged into `outputs/history/jules_archived_sessions.json`, and archived via `session.archive()`.
 - **Rule**: Never leave completed, fully integrated sessions lingering in the active query pool. Run `node scripts/services/jules_task_manager.js archive-completed` (or `npm run jules:archive`) after merging PRs to keep the active session pool lean and fast.
 
+### INV-20: WebLogic OCA Dynamic DOM Expansion & Full Sub-Choice Trigger Protocol
+- **Pattern**: WebLogic-based OCA menus contain collapsed sub-choice groups (`showmore_*`), toolbar toggles (`#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price`), and deferred table panes.
+- **Rule**: `cdp.js` must click all toolbar toggles, check all `showmore_*` inputs, and dispatch jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`) to force the WebLogic client runtime to render all hidden sub-choice tables (e.g. `ProcessorSection_AdditionalProcessorsChoice`). Never rely solely on scroll height or top-level table counts.
+
+### INV-21: Lifecycle Status Tag & Clean PID Separation Protocol
+- **Pattern**: WebLogic OCA renders lifecycle status badges inside `<td class="item_prod">` as `<span class="td_prod">OB</span>` or `<span class="td_prod">90</span>` alongside `<span class="_pid">SKU</span>`.
+- **Rule**: `dom_extract.js` and `build_catalog.js` MUST separate lifecycle status tags (`OB` Obsolete, `DS` Direct Ship / Discontinued, `90` 90-Day Warning, `EOL` End of Life) from the clean SKU string. SKUs must never have un-stripped leading or trailing text that causes regex rejections in `isValidHpeSKU()`. All extracted lifecycle statuses, effective start dates, and discontinued/obsolete dates MUST be preserved in the catalog JSON, TSV, and 22-sheet Excel workbooks.
+
+### INV-22: Category Cardinality & Proactive Provenance Pre-Commit Assertion
+- **Pattern**: Staging validation (`verify_excel_tally.js`, `test_pipeline_evals.js`) must not just check `totalUniqueSKUs > 0`. Flagship servers (DL380, DL360, Synergy, Cray) have mandatory minimum cardinality thresholds for key categories (e.g. Flagship 2P servers require >= 40 processor SKUs).
+- **Rule**: If a flagship server catalog contains fewer than the expected minimum category options, the staging audit must fail hard in Step 8, aborting promotion of an incomplete catalog to live workspace and preventing knowledge drift.
+
 ---
 
 ## History Directory Hygiene Rules

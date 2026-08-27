@@ -41,7 +41,7 @@ async function runTests() {
   console.log('🧪 Starting CDP Navigator Resilience Tests...');
   let wss;
   try {
-    wss = new WebSocket.Server({ port: 9222 });
+    wss = new WebSocket.Server({ port: 18999 });
     
     wss.on('connection', ws => {
       activeConnections.push(ws);
@@ -72,7 +72,7 @@ async function runTests() {
         id: 'login-page',
         url: 'https://partner.hpe.com/login',
         title: 'Login',
-        webSocketDebuggerUrl: 'ws://localhost:9222'
+        webSocketDebuggerUrl: 'ws://localhost:18999'
       }
     ];
 
@@ -88,14 +88,14 @@ async function runTests() {
               id: 'partner-page',
               url: 'https://partner.hpe.com/home',
               title: 'Partner Home',
-              webSocketDebuggerUrl: 'ws://localhost:9222'
+              webSocketDebuggerUrl: 'ws://localhost:18999'
             },
             {
               type: 'page',
               id: 'oca-page',
               url: 'https://oca.ext.hpe.com',
               title: 'OCA Menu',
-              webSocketDebuggerUrl: 'ws://localhost:9222'
+              webSocketDebuggerUrl: 'ws://localhost:18999'
             }
           ];
         }
@@ -120,7 +120,7 @@ async function runTests() {
         id: 'partner-home-page',
         url: 'https://partner.hpe.com/home',
         title: 'Partner Home',
-        webSocketDebuggerUrl: 'ws://localhost:9222'
+        webSocketDebuggerUrl: 'ws://localhost:18999'
       }
     ];
 
@@ -140,7 +140,7 @@ async function runTests() {
               id: 'new-oca-page',
               url: 'https://oca.ext.hpe.com',
               title: 'OCA Menu',
-              webSocketDebuggerUrl: 'ws://localhost:9222'
+              webSocketDebuggerUrl: 'ws://localhost:18999'
             });
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
           } else {

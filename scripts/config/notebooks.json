@@ -15,11 +15,15 @@
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
       "family": "ProLiant",
       "gen": "Gen11",
-      "lastSyncedAt": "2026-08-22T13:04:06.339Z",
-      "lastSyncDeltaCount": 23,
+      "driveSheetId": "1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w",
+      "driveFolderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
+      "driveSourceId": "652f11dd-d260-4a8e-8c82-baca6c45da50",
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w/edit",
+      "lastSyncedAt": "2026-08-27T16:04:50.292Z",
+      "lastSyncDeltaCount": 13,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-08-22",
-      "lastSyncedSourceId": "f16474bd-ba0f-4fee-9a7e-fe374fd7bf25"
+      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-08-27",
+      "lastSyncedSourceId": "f1adb275-0918-4af2-97a6-253f32bd4eb1"
     },
     "Alletra_Storage_System": {
       "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",

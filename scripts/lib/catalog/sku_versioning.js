@@ -222,8 +222,8 @@ function formatMonthLabel(isoDate) {
  */
 function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
   const normalizedDate = normalizeTargetDate(targetDate);
-  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
-  const audit = getSkuAuditHistory(targetSku, dir);
+  const dir = chassisDir || '';
+  const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
 
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
@@ -309,7 +309,7 @@ function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
  */
 function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   const normalizedDate = normalizeTargetDate(targetDate);
-  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+  const dir = chassisDir || '';
 
   let items = [];
   if (Array.isArray(boqInput)) {
@@ -370,7 +370,7 @@ function compareBoqPricingAcrossTimeline(boqInput, timelineDates, chassisDir) {
     ? timelineDates
     : ['2026-08-01', '2026-09-01', '2026-10-01', '2026-11-01', '2026-12-01'];
 
-  const dir = chassisDir || path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+  const dir = chassisDir || '';
 
   const monthlySnapshots = dates.map(d => getHistoricalBoqPricing(boqInput, d, dir));
   const baselineCapEx = monthlySnapshots[0]?.totalCapExUsd || 0;

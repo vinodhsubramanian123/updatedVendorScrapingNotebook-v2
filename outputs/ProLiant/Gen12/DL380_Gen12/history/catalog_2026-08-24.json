@@ -6,11 +6,11 @@
     "generation": "Gen12",
     "scrapeDate": "2026-08-24",
     "scrapeTimestamp": "2026-08-24T14:07:29.221Z",
-    "totalSubcategories": 26,
-    "totalUniqueSKUs": 289,
-    "totalTables": 71,
+    "totalSubcategories": 70,
+    "totalUniqueSKUs": 286,
+    "totalTables": 70,
     "diffSummary": {
-      "added": 30,
+      "added": 27,
       "removed": 0,
       "priceChanged": 0,
       "attributeChanged": 6,
@@ -38,8 +38,8 @@
           "avgPrice": 6562.333333333333
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 44,
-          "totalPrice": 5394,
+          "totalSKUs": 41,
+          "totalPrice": 4941,
           "minPrice": 1,
           "maxPrice": 1839,
           "subcategories": {
@@ -57,14 +57,9 @@
               "totalSKUs": 4,
               "totalPrice": 942,
               "avgPrice": 235.5
-            },
-            "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 3,
-              "totalPrice": 453,
-              "avgPrice": 151
             }
           },
-          "avgPrice": 122.5909090909091
+          "avgPrice": 120.51219512195122
         },
         "Processor": {
           "totalSKUs": 36,
@@ -271,193 +266,637 @@
       "removedSkusCount": 0,
       "estimatedTokensSaved": 43350,
       "estimatedProcessingTimeSavedMs": 57800
-    },
-    "snapshotChecksum": "f9bfd33e765afdb5d584db6f7a2ae28541c5edf857413ccde265dd5ba8d78bc7",
-    "snapshotTimestamp": "2026-08-24T14:07:29.413Z"
+    }
   },
-  "subcategories": [],
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "Energy Star Configuration Presets",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Processor",
+      "name": "Intel Xeon 6th Gen Scalable Processors",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "name": "Standard & Performance Heat Sinks",
+      "constraint": "max 6",
+      "maxQty": 6
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "name": "Standard & Performance Heat Sinks",
+      "constraint": "max 6",
+      "maxQty": 6
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR4 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Secondary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "SFF Drive Cages & Enablement",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Tertiary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "SFF Drive Cages & Enablement",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Tertiary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "Drive Blank & FIO Enablement Kits",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Primary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Tertiary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Primary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "name": "Primary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "name": "Tri-Mode MegaRAID Storage Controllers",
+      "constraint": "max 4",
+      "maxQty": 4
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "name": "Smart Array SAS Controllers",
+      "constraint": "max 4",
+      "maxQty": 4
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "Smart Storage Batteries",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "name": "Storage Controller Cable Kits",
+      "constraint": "max 4",
+      "maxQty": 4
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "name": "Storage Controller Cable Kits",
+      "constraint": "max 4",
+      "maxQty": 4
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "SFF Drive Cages & Enablement",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "Drive Blank & FIO Enablement Kits",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "name": "Storage Controller Cable Kits",
+      "constraint": "max 4",
+      "maxQty": 4
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "SFF Drive Cages & Enablement",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "PCIe Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "PCIe Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "PCIe Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "OCP3 Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "OCP3 Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "name": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 24",
+      "maxQty": 24
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "name": "Power Cords & Jumper Cables",
+      "constraint": "System Option",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "name": "System Options",
+      "constraint": "optional",
+      "maxQty": -3
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "Flex Slot Power Supplies",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Processor",
+      "name": "Intel Xeon Scalable Processors",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "name": "High Performance & Standard Fan Kits",
+      "constraint": "max 6",
+      "maxQty": 6
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "name": "Power Cords & Jumper Cables",
+      "constraint": "System Option",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "name": "Power Cords & Jumper Cables",
+      "constraint": "System Option",
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "min 1, max 2",
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "name": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1
+    }
+  ],
   "entries": [
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
-      "constraint": "Discontinued",
-      "minQty": 1,
+      "constraint": "Chassis Standard (Max 1)",
       "maxQty": 1,
       "rules": [
-        "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+        "Mandatory base chassis selection required for solution build"
       ],
       "headers": [
         "Product #",
         "Description",
-        "Current Qty",
-        "Unit Price (USD)",
-        "Days Active"
+        "List Price",
+        "Qty",
+        "Start Date"
       ],
-      "skuCount": 6,
+      "rows": [
+        [
+          "P73282-B21",
+          "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "$5,584.00",
+          "1",
+          "2026-08-24"
+        ],
+        [
+          "P73283-B21",
+          "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "$5,980.00",
+          "1",
+          "2026-08-24"
+        ],
+        [
+          "P73284-B21",
+          "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "$6,350.00",
+          "1",
+          "2026-08-24"
+        ],
+        [
+          "P73285-B21",
+          "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "$6,890.00",
+          "1",
+          "2026-08-24"
+        ],
+        [
+          "P73286-B21",
+          "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "$7,120.00",
+          "1",
+          "2026-08-24"
+        ],
+        [
+          "P73287-B21",
+          "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "$7,450.00",
+          "1",
+          "2026-08-24"
+        ]
+      ],
       "skus": [
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73282-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
           "Unit Price (USD)": "5584.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "5584.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73282-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "listPrice": 5584,
+          "listPriceFormatted": "$5,584.00",
+          "qty": 1,
           "Previous List Price (USD)": "5584.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $5584.00 → 2026-08-24: $5584.00 (✕ REMOVED)"
         },
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73283-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
           "Unit Price (USD)": "5980.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "5980.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73283-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "listPrice": 5980,
+          "listPriceFormatted": "$5,980.00",
+          "qty": 1,
           "Previous List Price (USD)": "5980.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $5980.00 → 2026-08-24: $5980.00 (✕ REMOVED)"
         },
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73284-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
           "Unit Price (USD)": "6350.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "6350.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73284-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "listPrice": 6350,
+          "listPriceFormatted": "$6,350.00",
+          "qty": 1,
           "Previous List Price (USD)": "6350.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $6350.00 → 2026-08-24: $6350.00 (✕ REMOVED)"
         },
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73285-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
           "Unit Price (USD)": "6890.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "6890.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73285-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "listPrice": 6890,
+          "listPriceFormatted": "$6,890.00",
+          "qty": 1,
           "Previous List Price (USD)": "6890.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $6890.00 → 2026-08-24: $6890.00 (✕ REMOVED)"
         },
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73286-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
           "Unit Price (USD)": "7120.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "7120.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73286-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "listPrice": 7120,
+          "listPriceFormatted": "$7,120.00",
+          "qty": 1,
           "Previous List Price (USD)": "7120.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $7120.00 → 2026-08-24: $7120.00 (✕ REMOVED)"
         },
         {
-          "Main Category": "Chassis",
-          "Sub-Category": "Variants",
-          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
-          "Component Role": "Base Chassis",
-          "Constraint Text": "System Standard (Max 1)",
-          "Subcategory Max Qty": "0",
-          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
-          "Option Type": "CTO",
           "Product #": "P73287-B21",
-          "Description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
-          "Current Qty": "0",
+          "Description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
           "Unit Price (USD)": "7450.00",
-          "Price Delta (USD)": "-",
-          "Extended Price (USD)": "0.00",
-          "Price per GB (USD)": "-",
-          "HPE Recommended": "No",
-          "Start Date": "2026-08-22",
-          "Discontinued Date": "2026-08-24",
-          "Days Active": "2",
-          "Diff Status": "ATTRIBUTE_CHANGED",
+          "Price (USD)": "7450.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "2026-08-24",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73287-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "listPrice": 7450,
+          "listPriceFormatted": "$7,450.00",
+          "qty": 1,
           "Previous List Price (USD)": "7450.00",
+          "Attribute Deltas": "Start Date: \"2026-08-22\" → \"2026-08-24\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "Description: \"HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server\" → \"[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server\" | Rule/Note: \"(None)\" → \"[DISCONTINUED] SKU removed from latest HPE OCA portal catalog\" | Max Qty: \"1\" → \"0\" | HPE Recommended: \"(None)\" → \"No\"",
           "Price History Trail": "2026-08-22: $7450.00 → 2026-08-24: $7450.00 (✕ REMOVED)"
         }
-      ]
+      ],
+      "skuCount": 6
     },
     {
       "parentCategory": "Accessories & Infrastructure",
@@ -496,7 +935,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12042023.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12042023.00 (▲)",
+          "description": "ENERGY STAR 4.0 FIO Trigger Configuration Kit for HPE"
         }
       ]
     },
@@ -541,7 +981,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $6096.00 → 2026-08-24: $1854.00 (▼)"
+          "Price History Trail": "2026-08-22: $6096.00 → 2026-08-24: $1854.00 (▼)",
+          "description": "Intel Xeon 6710E 2.4GHz 64-core 205W Processor for HPE"
         },
         {
           "Product #": "P73834-B21",
@@ -562,7 +1003,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $22485.00 → 2026-08-24: $18243.00 (▼)"
+          "Price History Trail": "2026-08-22: $22485.00 → 2026-08-24: $18243.00 (▼)",
+          "description": "Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE"
         },
         {
           "Product #": "P74506-B21",
@@ -583,7 +1025,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2457.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2457.00 → 2026-08-24: (no price)",
+          "description": "Intel Xeon 6515P 2.3GHz 16-core 150W Processor for HPE"
         },
         {
           "Product #": "P74508-B21",
@@ -604,7 +1047,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8941.00 → 2026-08-24: $4699.00 (▼)"
+          "Price History Trail": "2026-08-22: $8941.00 → 2026-08-24: $4699.00 (▼)",
+          "description": "Intel Xeon 6714P 4.0GHz 8-core 165W Processor for HPE"
         },
         {
           "Product #": "P74509-B21",
@@ -625,7 +1069,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $11074.00 → 2026-08-24: $6832.00 (▼)"
+          "Price History Trail": "2026-08-22: $11074.00 → 2026-08-24: $6832.00 (▼)",
+          "description": "Intel Xeon 6724P 3.6GHz 16-core 210W Processor for HPE"
         },
         {
           "Product #": "P74570-B21",
@@ -646,7 +1091,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8123.00 → 2026-08-24: $3881.00 (▼)"
+          "Price History Trail": "2026-08-22: $8123.00 → 2026-08-24: $3881.00 (▼)",
+          "description": "Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE"
         },
         {
           "Product #": "P74571-B21",
@@ -667,7 +1113,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $6830.00 → 2026-08-24: $2588.00 (▼)"
+          "Price History Trail": "2026-08-22: $6830.00 → 2026-08-24: $2588.00 (▼)",
+          "description": "Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE"
         },
         {
           "Product #": "P71118-B21",
@@ -688,7 +1135,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7062.00 → 2026-08-24: $2820.00 (▼)"
+          "Price History Trail": "2026-08-22: $7062.00 → 2026-08-24: $2820.00 (▼)",
+          "description": "Intel Xeon 6731E 2.2GHz 96-core 250W Processor for HPE"
         },
         {
           "Product #": "P71120-B21",
@@ -709,7 +1157,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8965.00 → 2026-08-24: $4723.00 (▼)"
+          "Price History Trail": "2026-08-22: $8965.00 → 2026-08-24: $4723.00 (▼)",
+          "description": "Intel Xeon 6746E 2.0GHz 112-core 250W Processor for HPE"
         },
         {
           "Product #": "P71119-B21",
@@ -730,7 +1179,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8459.00 → 2026-08-24: $4217.00 (▼)"
+          "Price History Trail": "2026-08-22: $8459.00 → 2026-08-24: $4217.00 (▼)",
+          "description": "Intel Xeon 6740E 2.4GHz 96-core 250W Processor for HPE"
         },
         {
           "Product #": "P71121-B21",
@@ -751,7 +1201,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $11891.00 → 2026-08-24: $7649.00 (▼)"
+          "Price History Trail": "2026-08-22: $11891.00 → 2026-08-24: $7649.00 (▼)",
+          "description": "Intel Xeon 6756E 1.8GHz 128-core 225W Processor for HPE"
         },
         {
           "Product #": "P71122-B21",
@@ -772,7 +1223,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14473.00 → 2026-08-24: $10231.00 (▼)"
+          "Price History Trail": "2026-08-22: $14473.00 → 2026-08-24: $10231.00 (▼)",
+          "description": "Intel Xeon 6766E 1.9GHz 144-core 250W Processor for HPE"
         },
         {
           "Product #": "P71124-B21",
@@ -793,7 +1245,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $16019.00 → 2026-08-24: $11777.00 (▼)"
+          "Price History Trail": "2026-08-22: $16019.00 → 2026-08-24: $11777.00 (▼)",
+          "description": "Intel Xeon 6780E 2.2GHz 144-core 330W Processor for HPE"
         },
         {
           "Product #": "P73829-B21",
@@ -814,7 +1267,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $13124.00 → 2026-08-24: $8882.00 (▼)"
+          "Price History Trail": "2026-08-22: $13124.00 → 2026-08-24: $8882.00 (▼)",
+          "description": "Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE"
         },
         {
           "Product #": "P73831-B21",
@@ -835,7 +1289,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $16595.00 → 2026-08-24: $12353.00 (▼)"
+          "Price History Trail": "2026-08-22: $16595.00 → 2026-08-24: $12353.00 (▼)",
+          "description": "Intel Xeon 6747P 2.7GHz 48-core 330W Processor for HPE"
         },
         {
           "Product #": "P73832-B21",
@@ -856,7 +1311,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $16517.00 → 2026-08-24: $12275.00 (▼)"
+          "Price History Trail": "2026-08-22: $16517.00 → 2026-08-24: $12275.00 (▼)",
+          "description": "Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE"
         },
         {
           "Product #": "P73835-B21",
@@ -877,7 +1333,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $48922.00 → 2026-08-24: $44680.00 (▼)"
+          "Price History Trail": "2026-08-22: $48922.00 → 2026-08-24: $44680.00 (▼)",
+          "description": "Intel Xeon 6768P 2.4GHz 64-core 330W Processor for HPE"
         },
         {
           "Product #": "P73837-B21",
@@ -898,7 +1355,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $23285.00 → 2026-08-24: $19043.00 (▼)"
+          "Price History Trail": "2026-08-22: $23285.00 → 2026-08-24: $19043.00 (▼)",
+          "description": "Intel Xeon 6787P 2.0GHz 86-core 350W Processor for HPE"
         },
         {
           "Product #": "P73838-B21",
@@ -919,7 +1377,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $58094.00 → 2026-08-24: $53852.00 (▼)"
+          "Price History Trail": "2026-08-22: $58094.00 → 2026-08-24: $53852.00 (▼)",
+          "description": "Intel Xeon 6788P 2.0GHz 86-core 350W Processor for HPE"
         },
         {
           "Product #": "P74503-B21",
@@ -940,7 +1399,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1756.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1756.00 → 2026-08-24: (no price)",
+          "description": "Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE"
         },
         {
           "Product #": "P74504-B21",
@@ -961,7 +1421,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2293.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2293.00 → 2026-08-24: (no price)",
+          "description": "Intel Xeon 6507P 3.5GHz 8-core 150W Processor for HPE"
         },
         {
           "Product #": "P74507-B21",
@@ -982,7 +1443,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3734.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3734.00 → 2026-08-24: (no price)",
+          "description": "Intel Xeon 6517P 3.2GHz 16-core 190W Processor for HPE"
         },
         {
           "Product #": "P74568-B21",
@@ -1003,7 +1465,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4242.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4242.00 → 2026-08-24: (no price)",
+          "description": "Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE"
         },
         {
           "Product #": "P74572-B21",
@@ -1024,7 +1487,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7493.00 → 2026-08-24: $3251.00 (▼)"
+          "Price History Trail": "2026-08-22: $7493.00 → 2026-08-24: $3251.00 (▼)",
+          "description": "Intel Xeon 6728P 2.7GHz 24-core 210W Processor for HPE"
         },
         {
           "Product #": "P74573-B21",
@@ -1045,7 +1509,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $10516.00 → 2026-08-24: $6274.00 (▼)"
+          "Price History Trail": "2026-08-22: $10516.00 → 2026-08-24: $6274.00 (▼)",
+          "description": "Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE"
         },
         {
           "Product #": "P74575-B21",
@@ -1066,7 +1531,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $10247.00 → 2026-08-24: $6005.00 (▼)"
+          "Price History Trail": "2026-08-22: $10247.00 → 2026-08-24: $6005.00 (▼)",
+          "description": "Intel Xeon 6736P 2.0GHz 36-core 205W Processor for HPE"
         },
         {
           "Product #": "P74576-B21",
@@ -1087,7 +1553,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14682.00 → 2026-08-24: $10440.00 (▼)"
+          "Price History Trail": "2026-08-22: $14682.00 → 2026-08-24: $10440.00 (▼)",
+          "description": "Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE"
         },
         {
           "Product #": "P74577-B21",
@@ -1108,7 +1575,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $17305.00 → 2026-08-24: $13063.00 (▼)"
+          "Price History Trail": "2026-08-22: $17305.00 → 2026-08-24: $13063.00 (▼)",
+          "description": "Intel Xeon 6738P 2.9GHz 32-core 270W Processor for HPE"
         },
         {
           "Product #": "P74578-B21",
@@ -1129,7 +1597,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $13581.00 → 2026-08-24: $9339.00 (▼)"
+          "Price History Trail": "2026-08-22: $13581.00 → 2026-08-24: $9339.00 (▼)",
+          "description": "Intel Xeon 6732P 3.8GHz 32-core 350W Processor for HPE"
         },
         {
           "Product #": "P74579-B21",
@@ -1150,7 +1619,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $38913.00 → 2026-08-24: $34671.00 (▼)"
+          "Price History Trail": "2026-08-22: $38913.00 → 2026-08-24: $34671.00 (▼)",
+          "description": "Intel Xeon 6748P 2.5GHz 48-core 300W Processor for HPE"
         },
         {
           "Product #": "P81591-B21",
@@ -1171,7 +1641,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14818.00 → 2026-08-24: $10576.00 (▼)"
+          "Price History Trail": "2026-08-22: $14818.00 → 2026-08-24: $10576.00 (▼)",
+          "description": "Intel Xeon 6745P 3.1GHz 32-core 300W Processor for HPE"
         },
         {
           "Product #": "P87302-B21",
@@ -1192,7 +1663,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $12209.00 → 2026-08-24: $7967.00 (▼)"
+          "Price History Trail": "2026-08-22: $12209.00 → 2026-08-24: $7967.00 (▼)",
+          "description": "Intel Xeon 6725P 3.7GHz 16-core 235W Processor for HPE"
         },
         {
           "Product #": "P90157-B21",
@@ -1213,7 +1685,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $46351.00 → 2026-08-24: $42109.00 (▼)"
+          "Price History Trail": "2026-08-22: $46351.00 → 2026-08-24: $42109.00 (▼)",
+          "description": "Intel Xeon 6762P 2.9GHz 64-core 350W Processor for HPE"
         }
       ]
     },
@@ -1254,7 +1727,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $316.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $316.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 2U High Performance Heat Sink Kit"
         }
       ]
     },
@@ -1295,7 +1769,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $133.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $133.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant DL380 2U Standard Heat Sink Kit"
         },
         {
           "Product #": "P74204-B21",
@@ -1314,7 +1789,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2027.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $2027.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Cold Plate Module FIO Kit from PCIe NS204-u"
         },
         {
           "Product #": "P74208-B21",
@@ -1333,7 +1809,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1996.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1996.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 Cold Plate Module FIO Kit from PCIe"
         },
         {
           "Product #": "P74787-B21",
@@ -1352,7 +1829,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $293.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $293.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit"
         },
         {
           "Product #": "P74794-B21",
@@ -1371,7 +1849,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $624.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $624.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 2U Max Performance Heat Sink Kit"
         }
       ]
     },
@@ -1416,7 +1895,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $13909.00 → 2026-08-24: $434.66 (▼)"
+          "Price History Trail": "2026-08-22: $13909.00 → 2026-08-24: $434.66 (▼)",
+          "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
         }
       ]
     },
@@ -1461,7 +1941,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $28532.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $28532.00 → 2026-08-24: (no price)",
+          "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
         }
       ]
     },
@@ -1506,7 +1987,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7439.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $7439.00 → 2026-08-24: (no price)",
+          "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit"
         },
         {
           "Product #": "P69726-F21",
@@ -1527,7 +2009,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7439.00 → 2026-08-24: $464.94 (▼)"
+          "Price History Trail": "2026-08-22: $7439.00 → 2026-08-24: $464.94 (▼)",
+          "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
         }
       ]
     },
@@ -1572,7 +2055,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $47056.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $47056.00 → 2026-08-24: (no price)",
+          "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
         }
       ]
     },
@@ -1617,7 +2101,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $60190.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $60190.00 → 2026-08-24: (no price)",
+          "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit"
         }
       ]
     },
@@ -1662,7 +2147,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $133186.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $133186.00 → 2026-08-24: (no price)",
+          "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit"
         }
       ]
     },
@@ -1703,7 +2189,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $129.00 → 2026-08-24: $10012018.00 (▲)"
+          "Price History Trail": "2026-08-22: $129.00 → 2026-08-24: $10012018.00 (▲)",
+          "description": "HPE DDR4 DIMM Blank Kit"
         }
       ]
     },
@@ -1744,7 +2231,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $233.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $233.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF Rear Primary/Secondary Riser Cage Kit"
         },
         {
           "Product #": "P74743-B21",
@@ -1763,7 +2251,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $198.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $198.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 Rear 2SFF U.3 HDD Stacking Drive Cage Kit"
         },
         {
           "Product #": "P74749-B21",
@@ -1782,7 +2271,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $152.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $152.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 SFF Universal Media Bay Kit"
         },
         {
           "Product #": "P75740-B21",
@@ -1801,7 +2291,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $260.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $260.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit"
         },
         {
           "Product #": "P75741-B21",
@@ -1820,7 +2311,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $355.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $355.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit"
         },
         {
           "Product #": "P75807-B21",
@@ -1839,7 +2331,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $179.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $179.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 Front SFF for 2SFF Enablement U.3 HDD Front Cage Kit"
         },
         {
           "Product #": "P76449-B21",
@@ -1858,7 +2351,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 Multipurpose Drive Cage Kit"
         },
         {
           "Product #": "P76450-B21",
@@ -1877,7 +2371,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $169.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $169.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute Gen12 4EDSFF Drive Cage Kit"
         }
       ]
     },
@@ -1918,7 +2413,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $488.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $488.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 12EDSFF Drive Cage Kit"
         }
       ]
     },
@@ -1959,7 +2455,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $262.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $262.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 4LFF SAS/SATA LP Midplane Drive Cage Kit"
         },
         {
           "Product #": "P74746-B21",
@@ -1978,7 +2475,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $182.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $182.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear Primary Drive Cage Kit"
         },
         {
           "Product #": "P75411-B21",
@@ -1997,7 +2495,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $714.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $714.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear/Tertiary Drive Cage Kit"
         },
         {
           "Product #": "P76875-B21",
@@ -2016,7 +2515,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $182.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $182.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear Secondary Drive Cage Kit"
         }
       ]
     },
@@ -2057,7 +2557,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $224.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $224.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL3XX Gen12 Front LFF for 2SFF Enablement Side-by-Side U.3 HDD Front Cage Kit"
         }
       ]
     },
@@ -2100,7 +2601,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "Direct Attach x2                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "DA8SFFX4",
@@ -2120,7 +2622,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "Direct Attach x4                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77955-B21",
@@ -2140,7 +2643,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77958-B21",
@@ -2160,7 +2664,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77931-B21",
@@ -2180,7 +2685,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P78064-B21",
@@ -2200,7 +2706,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77934-B21",
@@ -2220,7 +2727,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77937-B21",
@@ -2240,7 +2748,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77940-B21",
@@ -2260,7 +2769,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77961-B21",
@@ -2280,7 +2790,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P78070-B21",
@@ -2300,7 +2811,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P78047-B21",
@@ -2320,7 +2832,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P78058-B21",
@@ -2340,7 +2853,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P78061-B21",
@@ -2360,7 +2874,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         },
         {
           "Product #": "P77943-B21",
@@ -2380,7 +2895,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
         }
       ]
     },
@@ -2423,7 +2939,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $14.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 No Drive Configuration FIO Kit"
         }
       ]
     },
@@ -2464,7 +2981,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $265.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $265.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant DL380 Gen11 2U x8/x16/x8 Secondary Riser Kit"
         },
         {
           "Product #": "P48803-B21",
@@ -2483,7 +3001,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $262.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $262.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
         },
         {
           "Product #": "P51083-B21",
@@ -2502,7 +3021,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $343.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $343.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
         },
         {
           "Product #": "P76451-B21",
@@ -2521,7 +3041,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $619.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $619.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2U 2x16 Tertiary Riser Kit"
         }
       ]
     },
@@ -2562,7 +3083,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $506.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $506.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2U x8/x16 Tertiary Riser Kit"
         }
       ]
     },
@@ -2603,7 +3125,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $625.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $625.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Secondary Riser Paddle Card FIO Kit"
         },
         {
           "Product #": "P83356-B21",
@@ -2622,7 +3145,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $590.00 → 2026-08-24: $8042025.00 (▲)"
+          "Price History Trail": "2026-08-22: $590.00 → 2026-08-24: $8042025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Primary Riser Paddle Card FIO Kit"
         }
       ]
     },
@@ -2663,7 +3187,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $89.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $89.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 x8 Riser Enablement Cable Kit"
         },
         {
           "Product #": "P78117-B21",
@@ -2682,7 +3207,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Primary Riser x16 FIO Bundle Kit"
         },
         {
           "Product #": "P78120-B21",
@@ -2701,7 +3227,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Secondary Riser x16 FIO Bundle Kit"
         }
       ]
     },
@@ -2744,7 +3271,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4699.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4699.00 → 2026-08-24: (no price)",
+          "description": "HPE MR408i-p Gen11 x8 Lanes 4GB Cache PCI SPDM Plug-in Storage Controller"
         },
         {
           "Product #": "P47777-B21",
@@ -2764,7 +3292,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $5999.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $5999.00 → 2026-08-24: (no price)",
+          "description": "HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller"
         },
         {
           "Product #": "P47789-B21",
@@ -2784,7 +3313,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3449.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3449.00 → 2026-08-24: (no price)",
+          "description": "HPE MR216i-o Gen11 x16 Lanes without Cache OCP SPDM Storage Controller"
         },
         {
           "Product #": "P75697-B21",
@@ -2804,7 +3334,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $11399.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $11399.00 → 2026-08-24: (no price)",
+          "description": "HPE MR932i-p x32 Lanes PCIe Gen5 SPDM Plug-in Storage Controller"
         },
         {
           "Product #": "P25527-B21",
@@ -2824,7 +3355,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $633.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $633.00 → 2026-08-24: (no price)",
+          "description": "HPE DL385 Gen10 Plus 12Gb NVMe 2-port Adapter"
         },
         {
           "Product #": "P47781-B21",
@@ -2844,7 +3376,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $5699.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $5699.00 → 2026-08-24: (no price)",
+          "description": "HPE MR416i-o Gen11 x16 Lanes 8GB Cache OCP SPDM Storage Controller"
         },
         {
           "Product #": "P47785-B21",
@@ -2864,7 +3397,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3499.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3499.00 → 2026-08-24: (no price)",
+          "description": "HPE MR216i-p Gen11 x16 Lanes without Cache PCI SPDM Plug-in Storage Controller"
         },
         {
           "Product #": "P58335-B21",
@@ -2884,7 +3418,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4599.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4599.00 → 2026-08-24: (no price)",
+          "description": "HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller"
         }
       ]
     },
@@ -2927,7 +3462,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1775.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1775.00 → 2026-08-24: (no price)",
+          "description": "HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller"
         }
       ]
     },
@@ -2970,7 +3506,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking"
         },
         {
           "Product #": "P79564-B21",
@@ -2990,7 +3527,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking"
         },
         {
           "Product #": "P79561-B21",
@@ -3010,7 +3548,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking"
         },
         {
           "Product #": "P79558-B21",
@@ -3030,7 +3569,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking"
         },
         {
           "Product #": "P79555-B21",
@@ -3050,7 +3590,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 27C Maximum Recommended Ambient Temperature Configuration Tracking"
         },
         {
           "Product #": "P79552-B21",
@@ -3070,7 +3611,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $1.00",
+          "description": "HPE ProLiant Compute 30C Maximum Recommended Ambient Temperature Configuration Tracking"
         }
       ]
     },
@@ -3113,7 +3655,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $110.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $110.00 → 2026-08-24: (no price)",
+          "description": "HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit"
         },
         {
           "Product #": "P02377-B21",
@@ -3133,7 +3676,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $397.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $397.00 → 2026-08-24: (no price)",
+          "description": "HPE Smart Storage Hybrid Capacitor with 145mm Cable Kit"
         },
         {
           "Product #": "P48918-B21",
@@ -3153,7 +3697,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $38.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $38.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Storage Controller Enablement Cable Kit"
         },
         {
           "Product #": "P65038-B21",
@@ -3173,7 +3718,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $397.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $397.00 → 2026-08-24: (no price)",
+          "description": "HPE 16W Smart Hybrid Capacitor with 145mm Cable"
         }
       ]
     },
@@ -3216,7 +3762,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $96.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $96.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit"
         },
         {
           "Product #": "P76454-B21",
@@ -3236,7 +3783,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $212.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $212.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 OROC 8SFF x2 Controller Cable Kit"
         },
         {
           "Product #": "P76456-B21",
@@ -3256,7 +3804,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $215.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $215.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit"
         },
         {
           "Product #": "P76461-B21",
@@ -3276,7 +3825,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $243.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $243.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 1 for 2 Processors Cable Kit"
         },
         {
           "Product #": "P76462-B21",
@@ -3296,7 +3846,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $238.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $238.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 2 Cable Kit"
         },
         {
           "Product #": "P76463-B21",
@@ -3316,7 +3867,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $603.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $603.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 2x Gen4 Retimer Card Box 1/3 Cable Kit"
         },
         {
           "Product #": "P76464-B21",
@@ -3336,7 +3888,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $925.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $925.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 36EDSFF x2 Direct Attach Cable Kit"
         },
         {
           "Product #": "P76465-B21",
@@ -3356,7 +3909,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $414.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $414.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF x4 Direct Attach Box 2 Cable Kit"
         },
         {
           "Product #": "P76467-B21",
@@ -3376,7 +3930,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $296.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $296.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF x2 Direct Attach Box 1/2 Cable Kit"
         },
         {
           "Product #": "P76468-B21",
@@ -3396,7 +3951,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $230.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $230.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 Front 8SFF x4 Direct Attach Box 1/3 Cable Kit"
         },
         {
           "Product #": "P76475-B21",
@@ -3416,7 +3972,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $97.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $97.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 PCIe Box 6 Cable Kit"
         },
         {
           "Product #": "P77476-B21",
@@ -3436,7 +3993,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $173.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $173.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 4EDSFF Front Cable Kit"
         },
         {
           "Product #": "P77477-B21",
@@ -3456,7 +4014,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $71.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $71.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 OROC Box 6 OCP Cable Kit"
         },
         {
           "Product #": "P77478-B21",
@@ -3476,7 +4035,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF HDD Stacking Drive Direct Attach Cable Kit"
         },
         {
           "Product #": "P77482-B21",
@@ -3496,7 +4056,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $165.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $165.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF Rear PCIe Cable Kit"
         },
         {
           "Product #": "P77483-B21",
@@ -3516,7 +4077,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $70.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $70.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF Rear OROC Cable Kit"
         },
         {
           "Product #": "P77486-B21",
@@ -3536,7 +4098,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $169.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $169.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x2 Direct Attach Cable Kit"
         },
         {
           "Product #": "P77488-B21",
@@ -3556,7 +4119,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $347.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $347.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 PCIe for 2 Controllers Box 1/2 Cable Kit"
         },
         {
           "Product #": "P77489-B21",
@@ -3576,7 +4140,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $246.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $246.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 2/3 for 1P Cable Kit"
         },
         {
           "Product #": "P77490-B21",
@@ -3596,7 +4161,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $165.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $165.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 4EDSFF x4 Direct Attach Box 1 Cable Kit"
         },
         {
           "Product #": "P77492-B21",
@@ -3616,7 +4182,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $626.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $626.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 1x Gen4 Retimer Card Box 1/3 Direct Attach Cable Kit"
         },
         {
           "Product #": "P77493-B21",
@@ -3636,7 +4203,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $67.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $67.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 Direct Attach Box 6 Cable Kit"
         },
         {
           "Product #": "P76452-B21",
@@ -3656,7 +4224,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $60.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $60.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB OROC Cable Kit"
         },
         {
           "Product #": "P77491-B21",
@@ -3676,7 +4245,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $167.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $167.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 4EDSFF x4 Direct Attach Box 3 Cable Kit"
         },
         {
           "Product #": "P83800-B21",
@@ -3696,7 +4266,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $237.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $237.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x4 Cable Kit"
         },
         {
           "Product #": "P83801-B21",
@@ -3716,7 +4287,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $183.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $183.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x2 Cable Kit"
         },
         {
           "Product #": "P84481-B21",
@@ -3736,7 +4308,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $68.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $68.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x1 Cable Kit"
         },
         {
           "Product #": "P87235-B21",
@@ -3756,7 +4329,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $64.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $64.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p Rear 2SFF Box 4/5 Cable Kit"
         },
         {
           "Product #": "P87236-B21",
@@ -3776,7 +4350,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $64.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $64.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p Rear 2SFF Box 6 Cable Kit"
         }
       ]
     },
@@ -3819,7 +4394,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $56.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $56.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF PCIe Controller Box 2/3 Cable Kit"
         },
         {
           "Product #": "P76474-B21",
@@ -3839,7 +4415,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $60.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $60.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 2/3 Cable Kit"
         },
         {
           "Product #": "P77474-B21",
@@ -3859,7 +4436,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $55.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $55.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF PCIe Box 1/7 Cable Kit"
         },
         {
           "Product #": "P77475-B21",
@@ -3879,7 +4457,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $61.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $61.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 1/7 Cable Kit"
         },
         {
           "Product #": "P77484-B21",
@@ -3899,7 +4478,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $80.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $80.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear PCIe Cable Kit"
         },
         {
           "Product #": "P77485-B21",
@@ -3919,7 +4499,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $97.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $97.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear OROC Cable Kit"
         }
       ]
     },
@@ -3962,7 +4543,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $102.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $102.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 U.3 Side-by-Side Cable Kit"
         },
         {
           "Product #": "P77481-B21",
@@ -3982,7 +4564,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $73.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2SFF U.3 Side-by-Side Direct Attach Cable Kit"
         },
         {
           "Product #": "P77480-B21",
@@ -4002,7 +4585,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $67.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $67.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 OROC 2SFF U.3 Side-by-Side Cable Kit"
         }
       ]
     },
@@ -4045,7 +4629,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $198.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $198.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x4 Signal Cable Kit"
         },
         {
           "Product #": "P83799-B21",
@@ -4065,7 +4650,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $123.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $123.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x2 Signal Cable Kit"
         },
         {
           "Product #": "P87968-B21",
@@ -4085,7 +4671,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $20.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $20.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF Power Cable Kit"
         }
       ]
     },
@@ -4126,7 +4713,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)",
+          "description": "HPE RAID 0 Drive 1 FIO Setting"
         },
         {
           "Product #": "339778-B21",
@@ -4145,7 +4733,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8142003.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8142003.00 (▲)",
+          "description": "HPE RAID 1 Drive 1 FIO Setting"
         },
         {
           "Product #": "339779-B21",
@@ -4164,7 +4753,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $9072016.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $9072016.00 (▲)",
+          "description": "HPE RAID 5 Drive 1 FIO Setting"
         },
         {
           "Product #": "339780-B21",
@@ -4183,7 +4773,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)",
+          "description": "HPE Raid 5 w/SP Drive 1 FIO Setting"
         },
         {
           "Product #": "339781-B21",
@@ -4202,7 +4793,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8012008.00 (▲)",
+          "description": "HPE RAID FIO Advanced Data Guarding Option"
         },
         {
           "Product #": "389692-B21",
@@ -4221,7 +4813,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2022005.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2022005.00 (▲)",
+          "description": "HPE Customer Defined RAID Setting Service"
         }
       ]
     },
@@ -4262,7 +4855,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $124.00 → 2026-08-24: $9092014.00 (▲)"
+          "Price History Trail": "2026-08-22: $124.00 → 2026-08-24: $9092014.00 (▲)",
+          "description": "HPE 9.5mm SATA DVD-ROM Optical Drive"
         },
         {
           "Product #": "726537-B21",
@@ -4281,7 +4875,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $161.00 → 2026-08-24: $9092014.00 (▲)"
+          "Price History Trail": "2026-08-22: $161.00 → 2026-08-24: $9092014.00 (▲)",
+          "description": "HPE 9.5mm SATA DVD-RW Optical Drive"
         }
       ]
     },
@@ -4322,7 +4917,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $203.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $203.00 → 2026-08-24: (no price)",
+          "description": "HPE Mobile USB DVD-RW Optical Drive"
         }
       ]
     },
@@ -4365,7 +4961,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $55.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $55.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 Optical Disk Drive USB to SATA Signal Cable Kit"
         }
       ]
     },
@@ -4408,7 +5005,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $105.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $105.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 LFF ODD/Display Port Enablement Kit"
         }
       ]
     },
@@ -4449,7 +5047,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $32.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $32.00 → 2026-08-24: (no price)",
+          "description": "HPE Gen9 LFF HDD Spade Blank Kit"
         },
         {
           "Product #": "666987-B21",
@@ -4468,7 +5067,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $18.00 → 2026-08-24: $3062012.00 (▲)"
+          "Price History Trail": "2026-08-22: $18.00 → 2026-08-24: $3062012.00 (▲)",
+          "description": "HPE Small Form Factor Hard Drive Blank Kit"
         }
       ]
     },
@@ -4509,7 +5109,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $10052020.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $10052020.00 (▲)",
+          "description": "HPE CE Mark Removal FIO Enablement Kit"
         }
       ]
     },
@@ -4550,7 +5151,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1839.00 → 2026-08-24: $9082020.00 (▲)"
+          "Price History Trail": "2026-08-22: $1839.00 → 2026-08-24: $9082020.00 (▲)",
+          "description": "HPE Trusted Supply Chain for HPE ProLiant"
         }
       ]
     },
@@ -4591,7 +5193,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 1P Multiple Purpose Cage FIO Bundle Kit"
         },
         {
           "Product #": "P79379-B21",
@@ -4610,7 +5213,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 2P Multiple Purpose Cage FIO Bundle Kit"
         }
       ]
     },
@@ -4651,7 +5255,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 16SFF Drive Cage Box 1/2 FIO Kit"
         },
         {
           "Product #": "P79311-B21",
@@ -4670,7 +5275,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF Drive Cage Box 1 FIO Kit"
         },
         {
           "Product #": "P79314-B21",
@@ -4689,7 +5295,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF Drive Cage Box 2 FIO Kit"
         }
       ]
     },
@@ -4730,7 +5337,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF Drive Cage Box 3 FIO Kit"
         },
         {
           "Product #": "P92742-B21",
@@ -4749,7 +5357,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8032026.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $8032026.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 x2 EDSFF Controller Attach FIO Kit"
         }
       ]
     },
@@ -4790,7 +5399,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $6212021.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $6212021.00 (▲)",
+          "description": "HPE ProLiant Platform Certificate and IDevID iLO FIO Setting"
         }
       ]
     },
@@ -4831,7 +5441,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $5012023.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $5012023.00 (▲)",
+          "description": "HPE ProLiant vSAN ReadyNode Express Storage Architecture FIO Tracking"
         }
       ]
     },
@@ -4872,7 +5483,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant DL300 Gen10 Plus Platform RAS OS Control FIO Setting"
         }
       ]
     },
@@ -4913,7 +5525,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12022019.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12022019.00 (▲)",
+          "description": "HPE iLO Common Password FIO Setting"
         }
       ]
     },
@@ -4956,7 +5569,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8910.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $8910.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand XDR/Ethernet 2x400GbE 1-port OSFP PCIe6 x16 HHHL CX8 Crypto Adapter"
         },
         {
           "Product #": "P79115-H21",
@@ -4976,7 +5590,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $8910.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $8910.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand XDR400/Ethernet 400GbE 2-port QSFP112 PCIe6 x16 HHHL CX8 Crypto Adapter"
         },
         {
           "Product #": "P45641-H23",
@@ -4996,7 +5611,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $6377.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $6377.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Adapter"
         },
         {
           "Product #": "P45641-H24",
@@ -5016,7 +5632,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $6517.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $6517.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Generic Adapter"
         },
         {
           "Product #": "P45642-H23",
@@ -5036,7 +5653,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4904.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4904.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Generic Adapter"
         },
         {
           "Product #": "P65333-H21",
@@ -5056,7 +5674,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7331.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $7331.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR200/Ethernet 200GbE 2-port QSFP112 PCIe5 x16 MCX755106AC-HEAT Adapter"
         },
         {
           "Product #": "P81264-H21",
@@ -5076,7 +5695,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $734.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $734.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand XDR PCIe Gen6 x16 Multi Host/Socket Direct Auxiliary Card with 250mm MCIO Cable Kit"
         }
       ]
     },
@@ -5119,7 +5739,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3495.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3495.00 → 2026-08-24: (no price)",
+          "description": "HPE 100GbE QSFP28 500m 1310mm PSM4 Transceiver"
         },
         {
           "Product #": "Q9S71A",
@@ -5139,7 +5760,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1899.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1899.00 → 2026-08-24: (no price)",
+          "description": "HPE 100GbE QSFP28 to QSFP28 5m Active Optical Cable"
         },
         {
           "Product #": "453151-B21",
@@ -5159,7 +5781,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $427.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $427.00 → 2026-08-24: (no price)",
+          "description": "HPE BladeSystem c-Class Virtual Connect 1G SFP SX Transceiver"
         },
         {
           "Product #": "453154-B21",
@@ -5179,7 +5802,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $426.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $426.00 → 2026-08-24: (no price)",
+          "description": "HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver"
         },
         {
           "Product #": "455883-B21",
@@ -5199,7 +5823,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $842.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $842.00 → 2026-08-24: (no price)",
+          "description": "HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver"
         },
         {
           "Product #": "455886-B21",
@@ -5219,7 +5844,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1751.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1751.00 → 2026-08-24: (no price)",
+          "description": "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver"
         },
         {
           "Product #": "845398-B21",
@@ -5239,7 +5865,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2110.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2110.00 → 2026-08-24: (no price)",
+          "description": "HPE 25Gb SFP28 SR 100m Transceiver"
         },
         {
           "Product #": "845966-B21",
@@ -5259,7 +5886,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4252.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4252.00 → 2026-08-24: (no price)",
+          "description": "HPE 100Gb QSFP28 MPO SR4 100m Transceiver"
         },
         {
           "Product #": "P49764-B21",
@@ -5279,7 +5907,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1866.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1866.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR/Ethernet 1x400Gb OSFP Multi-mode 50m HCA-side Transceiver"
         },
         {
           "Product #": "P65334-B21",
@@ -5299,7 +5928,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3875.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3875.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR/Ethernet 400G QSFP112 MPO12 850nm Multi-mode 50m APC Transceiver"
         },
         {
           "Product #": "P79829-B21",
@@ -5319,7 +5949,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4259.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4259.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand XDR/Ethernet 400GbE QSFP112 1-port Single-mode 500m Transceiver"
         },
         {
           "Product #": "P82314-B21",
@@ -5339,7 +5970,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4939.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4939.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand XDR/Ethernet 800GbE OSFP 1-port Single-mode 500m HCA-side Transceiver"
         },
         {
           "Product #": "P86377-B21",
@@ -5359,7 +5991,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3682.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3682.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand/Ethernet 2x400GbE OSFP 2-port Multi-mode 50m Flat-Top Transceiver"
         },
         {
           "Product #": "P87585-B21",
@@ -5379,7 +6012,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $7359.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $7359.00 → 2026-08-24: (no price)",
+          "description": "HPE InfiniBand NDR/Ethernet 400Gb OSFP 1-port Single-mode 100m HCA-side Flat-Top Transceiver"
         },
         {
           "Product #": "P89422-B21",
@@ -5399,7 +6033,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2400.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2400.00 → 2026-08-24: (no price)",
+          "description": "HPE Ethernet 1x400Gb OSFP 1-port Multi-mode 50m NIC-side Flat-Top Transceiver"
         },
         {
           "Product #": "P89423-B21",
@@ -5419,7 +6054,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2428.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2428.00 → 2026-08-24: (no price)",
+          "description": "HPE Ethernet 1x400Gb QSFP112 1-port Multi-mode 50m NIC-side Flat-Top Transceiver"
         },
         {
           "Product #": "Q2F19A",
@@ -5439,7 +6075,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2425.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2425.00 → 2026-08-24: (no price)",
+          "description": "HPE 100GbE QSFP28 SR4 100m Transceiver"
         }
       ]
     },
@@ -5482,7 +6119,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $227.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $227.00 → 2026-08-24: (no price)",
+          "description": "HPE QSFP28 to SFP28 Adapter"
         }
       ]
     },
@@ -5525,7 +6163,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1231.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1231.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P42041-B21",
@@ -5545,7 +6184,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1398.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1398.00 → 2026-08-24: (no price)",
+          "description": "Mellanox MCX631432AS-ADAI Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P51181-B21",
@@ -5565,7 +6205,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $485.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $485.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE"
         },
         {
           "Product #": "P22767-B21",
@@ -5585,7 +6226,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3600.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3600.00 → 2026-08-24: (no price)",
+          "description": "Intel E810-CQDA2 Ethernet 100Gb 2-port QSFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P26256-B21",
@@ -5605,7 +6247,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $940.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $940.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM57412 Ethernet 10Gb 2-port SFP+ OCP3 Adapter for HPE"
         },
         {
           "Product #": "P10097-B21",
@@ -5625,7 +6268,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1105.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1105.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T OCP3 Adapter for HPE"
         },
         {
           "Product #": "P10106-B21",
@@ -5645,7 +6289,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1680.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1680.00 → 2026-08-24: (no price)",
+          "description": "Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P26269-B21",
@@ -5665,7 +6310,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $2598.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $2598.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM57504 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P41614-B21",
@@ -5685,7 +6331,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3770.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $3770.00 → 2026-08-24: (no price)",
+          "description": "Intel E810-XXVDA4 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P73114-B21",
@@ -5705,7 +6352,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4855.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $4855.00 → 2026-08-24: (no price)",
+          "description": "Broadcom BCM57608 Ethernet 100Gb 2-port QSFP112 OCP3 Adapter for HPE"
         },
         {
           "Product #": "P79833-B21",
@@ -5725,7 +6373,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1580.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1580.00 → 2026-08-24: (no price)",
+          "description": "Intel E610-IT4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE"
         }
       ]
     },
@@ -5768,7 +6417,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $65.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $65.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable"
         },
         {
           "Product #": "AJ836A",
@@ -5788,7 +6438,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable"
         },
         {
           "Product #": "AJ838A",
@@ -5808,7 +6459,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $208.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $208.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable"
         },
         {
           "Product #": "AJ839A",
@@ -5828,7 +6480,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $253.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $253.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable"
         },
         {
           "Product #": "AJ834A",
@@ -5848,7 +6501,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $70.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $70.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable"
         },
         {
           "Product #": "AJ837A",
@@ -5868,7 +6522,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $162.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $162.00 → 2026-08-24: (no price)",
+          "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable"
         }
       ]
     },
@@ -5911,7 +6566,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotA x16 Cable Kit"
         },
         {
           "Product #": "P72203-B21",
@@ -5931,7 +6587,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $77.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $77.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit"
         },
         {
           "Product #": "P72205-B21",
@@ -5951,7 +6608,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU2 to Rear OCP SlotB x8 Cable Kit"
         },
         {
           "Product #": "P72207-B21",
@@ -5971,7 +6629,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $164.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $164.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU2 to Rear OCP SlotB x16 Cable Kit"
         },
         {
           "Product #": "P74757-B21",
@@ -5991,7 +6650,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 Front Primary OCP Box2 Bay9 Enablement Kit"
         },
         {
           "Product #": "P74758-B21",
@@ -6011,7 +6671,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: (no price) → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 Front Secondary OCP Box2 Bay11 Enablement Kit"
         }
       ]
     },
@@ -6052,7 +6713,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $28.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $28.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Rear Serial Cable Kit"
         }
       ]
     },
@@ -6095,7 +6757,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE Smart Memory Fast Fault Tolerance FIO Setting"
         }
       ]
     },
@@ -6138,7 +6801,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $9199.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $9199.00 → 2026-08-24: (no price)",
+          "description": "HPE NS204i-u v2 480GB NVMe Hot Plug Boot Optimized Storage Device"
         },
         {
           "Product #": "P74755-B21",
@@ -6158,7 +6822,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $82.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $82.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit"
         },
         {
           "Product #": "P74759-B21",
@@ -6178,7 +6843,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $108.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $108.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Gen12 NS204i-u Front Enablement Kit"
         },
         {
           "Product #": "P77928-B21",
@@ -6198,7 +6864,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Access FIO Enablement Kit"
         },
         {
           "Product #": "P81160-B21",
@@ -6218,7 +6885,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14299.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $14299.00 → 2026-08-24: (no price)",
+          "description": "HPE NS204i-u v2 960GB NVMe Hot Plug Boot Optimized Storage Device"
         },
         {
           "Product #": "P81162-B21",
@@ -6238,7 +6906,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $14299.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $14299.00 → 2026-08-24: (no price)",
+          "description": "HPE NS204i-u v2 960GB NVMe SED Hot Plug Boot Optimized Storage Device"
         }
       ]
     },
@@ -6277,7 +6946,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12172009.00 (▲)"
+          "Price History Trail": "2026-08-22: $1.00 → 2026-08-24: $12172009.00 (▲)",
+          "description": "HPE Remove Standard Power Cords"
         },
         {
           "Product #": "P60283-B21",
@@ -6296,7 +6966,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $99.00 → 2026-08-24: $3062023.00 (▲)"
+          "Price History Trail": "2026-08-22: $99.00 → 2026-08-24: $3062023.00 (▲)",
+          "description": "HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit"
         },
         {
           "Product #": "P73325-B21",
@@ -6315,86 +6986,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $4.00 → 2026-08-24: $2242025.00 (▲)"
-        }
-      ]
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Chassis Infrastructure & Rail Kits",
-      "constraint": "optional",
-      "minQty": 0,
-      "maxQty": -3,
-      "rules": [
-        "Selection constraint for Chassis Infrastructure & Rail Kits: optional"
-      ],
-      "headers": [
-        "Product #",
-        "Description",
-        "Quantity",
-        "Price (USD)",
-        "Extended Price (USD)",
-        "Start",
-        "Discontinued"
-      ],
-      "skuCount": 3,
-      "skus": [
-        {
-          "Product #": "P52341-B21",
-          "Description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
-          "Price (USD)": "164.00",
-          "Extended Price (USD)": "164.00",
-          "Start": "11/10/2022",
-          "Discontinued": "05/31/2029",
-          "sku": "P52341-B21",
-          "Option Type": "Standard",
-          "Current Qty": "1",
-          "Unit Price (USD)": "164.00",
-          "listPrice": 164,
-          "Diff Status": "ADDED",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "+$164.00",
-          "Price Change (%)": "+100.00%",
-          "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-22: $164.00 → 2026-08-24: $164.00"
-        },
-        {
-          "Product #": "P70744-B21",
-          "Description": "HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
-          "Price (USD)": "172.00",
-          "Extended Price (USD)": "NA",
-          "Start": "02/24/2025",
-          "Discontinued": "06/30/2028",
-          "sku": "P70744-B21",
-          "Option Type": "Standard",
-          "Current Qty": "0",
-          "Unit Price (USD)": "172.00",
-          "listPrice": 172,
-          "Diff Status": "ADDED",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "+$172.00",
-          "Price Change (%)": "+100.00%",
-          "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-22: $172.00 → 2026-08-24: $172.00"
-        },
-        {
-          "Product #": "P74748-B21",
-          "Description": "HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
-          "Price (USD)": "117.00",
-          "Extended Price (USD)": "NA",
-          "Start": "02/24/2025",
-          "Discontinued": "06/30/2029",
-          "sku": "P74748-B21",
-          "Option Type": "Standard",
-          "Current Qty": "0",
-          "Unit Price (USD)": "117.00",
-          "listPrice": 117,
-          "Diff Status": "ADDED",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "+$117.00",
-          "Price Change (%)": "+100.00%",
-          "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-22: $117.00 → 2026-08-24: $117.00"
+          "Price History Trail": "2026-08-22: $4.00 → 2026-08-24: $2242025.00 (▲)",
+          "description": "HPE ProLiant Compute Localization FIO Kit"
         }
       ]
     },
@@ -6437,7 +7030,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $84.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute Double Wide GPU Power Cable Kit"
         },
         {
           "Product #": "P77896-B21",
@@ -6457,7 +7051,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: (no price)",
+          "description": "HPE ProLiant Compute 8-pin GPU Power Cable Kit"
         },
         {
           "Product #": "P93055-B21",
@@ -6477,7 +7072,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $53.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $53.00 → 2026-08-24: (no price)",
+          "description": "HPE GPU 16-pin Power Cable Kit"
         }
       ]
     },
@@ -6520,7 +7116,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $926.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $926.00 → 2026-08-24: (no price)",
+          "description": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit"
         }
       ]
     },
@@ -6563,7 +7160,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $524.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $524.00 → 2026-08-24: (no price)",
+          "description": "HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit"
         },
         {
           "Product #": "P38997-B21",
@@ -6583,7 +7181,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $890.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $890.00 → 2026-08-24: (no price)",
+          "description": "HPE 1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit"
         },
         {
           "Product #": "P44712-B21",
@@ -6603,7 +7202,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1588.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1588.00 → 2026-08-24: (no price)",
+          "description": "HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit"
         }
       ]
     },
@@ -6646,7 +7246,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1561.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $1561.00 → 2026-08-24: (no price)",
+          "description": "HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit"
         }
       ]
     },
@@ -6687,7 +7288,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $972.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $972.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit"
         },
         {
           "Product #": "P49146-B21",
@@ -6706,7 +7308,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: $1102023.00 (▲)"
+          "Price History Trail": "2026-08-22: $115.00 → 2026-08-24: $1102023.00 (▲)",
+          "description": "HPE ProLiant DL380 2U Standard Fan Kit"
         },
         {
           "Product #": "P62038-B21",
@@ -6725,7 +7328,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1200.00 → 2026-08-24: $4032023.00 (▲)"
+          "Price History Trail": "2026-08-22: $1200.00 → 2026-08-24: $4032023.00 (▲)",
+          "description": "HPE ProLiant Compute Direct Liquid Cooling 0.65m Quick Disconnect Tube Set FIO Kit"
         },
         {
           "Product #": "P62042-B21",
@@ -6744,7 +7348,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $1213.00 → 2026-08-24: $4032023.00 (▲)"
+          "Price History Trail": "2026-08-22: $1213.00 → 2026-08-24: $4032023.00 (▲)",
+          "description": "HPE ProLiant DL3XX Gen11 Direct Liquid Cooling 55cm Quick Disconnect Tube Set FIO Kit"
         },
         {
           "Product #": "P81130-B21",
@@ -6763,7 +7368,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $559.00 → 2026-08-24: $8042025.00 (▲)"
+          "Price History Trail": "2026-08-22: $559.00 → 2026-08-24: $8042025.00 (▲)",
+          "description": "HPE ProLiant Compute DL380 Gen12 GPU Cooling Upgrade Enablement Kit"
         }
       ]
     },
@@ -6806,7 +7412,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $135.00 → 2026-08-24: (no price)"
+          "Price History Trail": "2026-08-22: $135.00 → 2026-08-24: (no price)",
+          "description": "HPE 1600W -48VDC Power Cable Lug Kit"
         }
       ]
     },
@@ -6847,7 +7454,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $11.00 → 2026-08-24: $11.00"
+          "Price History Trail": "2026-08-22: $11.00 → 2026-08-24: $11.00",
+          "description": "HPE C13 - C14 250V 10Amp 2m FIO Power Cord"
         }
       ]
     },
@@ -6890,7 +7498,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $78.00 → 2026-08-24: $78.00"
+          "Price History Trail": "2026-08-22: $78.00 → 2026-08-24: $78.00",
+          "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord"
         },
         {
           "Product #": "A0K02A",
@@ -6910,7 +7519,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $34.00 → 2026-08-24: $34.00"
+          "Price History Trail": "2026-08-22: $34.00 → 2026-08-24: $34.00",
+          "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord"
         }
       ]
     },
@@ -6953,7 +7563,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $818.00 → 2026-08-24: $818.00"
+          "Price History Trail": "2026-08-22: $818.00 → 2026-08-24: $818.00",
+          "description": "HPE 1600W -48VDC 600V 3.5m Power Cable Kit"
         }
       ]
     },
@@ -6994,7 +7605,8 @@
           "Price Change (USD)": "+$6737.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $6737.00"
+          "Price History Trail": "2026-08-24: $6737.00",
+          "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU"
         },
         {
           "Product #": "Q9R66A",
@@ -7013,7 +7625,8 @@
           "Price Change (USD)": "+$11229.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $11229.00"
+          "Price History Trail": "2026-08-24: $11229.00",
+          "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU"
         },
         {
           "Product #": "Q9R67A",
@@ -7032,7 +7645,8 @@
           "Price Change (USD)": "+$24680.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $24680.00"
+          "Price History Trail": "2026-08-24: $24680.00",
+          "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU"
         },
         {
           "Product #": "Q9R68A",
@@ -7051,7 +7665,8 @@
           "Price Change (USD)": "+$41134.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $41134.00"
+          "Price History Trail": "2026-08-24: $41134.00",
+          "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU"
         }
       ]
     },
@@ -7092,7 +7707,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $3390.00 → 2026-08-24: $3390.00"
+          "Price History Trail": "2026-08-22: $3390.00 → 2026-08-24: $3390.00",
+          "description": "SUSE Linux Enterprise High Availability Extension 1-2 Sockets 5yr Subscription Flexible LTU"
         }
       ]
     },
@@ -7133,7 +7749,8 @@
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-22: $752.00 → 2026-08-24: $752.00"
+          "Price History Trail": "2026-08-22: $752.00 → 2026-08-24: $752.00",
+          "description": "SUSE Linux Enterprise High Availability Extension 1-2 Sockets 1yr Subscription Flexible LTU"
         }
       ]
     },
@@ -7174,7 +7791,8 @@
           "Price Change (USD)": "+$469.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $469.00"
+          "Price History Trail": "2026-08-24: $469.00",
+          "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features"
         },
         {
           "Product #": "BD507A",
@@ -7193,7 +7811,8 @@
           "Price Change (USD)": "+$469.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $469.00"
+          "Price History Trail": "2026-08-24: $469.00",
+          "description": "HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features"
         },
         {
           "Product #": "E6U64ABE",
@@ -7212,7 +7831,8 @@
           "Price Change (USD)": "+$467.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $467.00"
+          "Price History Trail": "2026-08-24: $467.00",
+          "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features"
         }
       ]
     },
@@ -7253,7 +7873,8 @@
           "Price Change (USD)": "+$399.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $399.00"
+          "Price History Trail": "2026-08-24: $399.00",
+          "description": "HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features"
         },
         {
           "Product #": "512487-B21",
@@ -7272,7 +7893,8 @@
           "Price Change (USD)": "+$399.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $399.00"
+          "Price History Trail": "2026-08-24: $399.00",
+          "description": "HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features"
         },
         {
           "Product #": "E6U59ABE",
@@ -7291,7 +7913,8 @@
           "Price Change (USD)": "+$399.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $399.00"
+          "Price History Trail": "2026-08-24: $399.00",
+          "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features"
         }
       ]
     },
@@ -7332,7 +7955,8 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: (no price)"
+          "Price History Trail": "2026-08-24: (no price)",
+          "description": "Microsoft Windows Server 2025 1 User CAL Chinese Simplified LTU"
         },
         {
           "Product #": "P77110-B21",
@@ -7351,7 +7975,8 @@
           "Price Change (USD)": "+$72.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $72.00"
+          "Price History Trail": "2026-08-24: $72.00",
+          "description": "Microsoft Windows Server 2025 1 User CAL WW LTU"
         },
         {
           "Product #": "P77111-B21",
@@ -7370,7 +7995,8 @@
           "Price Change (USD)": "+$52.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $52.00"
+          "Price History Trail": "2026-08-24: $52.00",
+          "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU"
         },
         {
           "Product #": "P77112-AA1",
@@ -7389,7 +8015,8 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: (no price)"
+          "Price History Trail": "2026-08-24: (no price)",
+          "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Simplified LTU"
         },
         {
           "Product #": "P77112-AB1",
@@ -7408,7 +8035,8 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: (no price)"
+          "Price History Trail": "2026-08-24: (no price)",
+          "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Traditional LTU"
         },
         {
           "Product #": "P77112-B21",
@@ -7427,7 +8055,8 @@
           "Price Change (USD)": "+$322.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $322.00"
+          "Price History Trail": "2026-08-24: $322.00",
+          "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU"
         },
         {
           "Product #": "P77113-B21",
@@ -7446,7 +8075,8 @@
           "Price Change (USD)": "+$226.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $226.00"
+          "Price History Trail": "2026-08-24: $226.00",
+          "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU"
         },
         {
           "Product #": "P77114-B21",
@@ -7465,7 +8095,8 @@
           "Price Change (USD)": "+$636.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $636.00"
+          "Price History Trail": "2026-08-24: $636.00",
+          "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU"
         },
         {
           "Product #": "P77115-B21",
@@ -7484,7 +8115,8 @@
           "Price Change (USD)": "+$444.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $444.00"
+          "Price History Trail": "2026-08-24: $444.00",
+          "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU"
         },
         {
           "Product #": "P77116-B21",
@@ -7503,7 +8135,8 @@
           "Price Change (USD)": "+$3143.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $3143.00"
+          "Price History Trail": "2026-08-24: $3143.00",
+          "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU"
         },
         {
           "Product #": "P77117-B21",
@@ -7522,7 +8155,8 @@
           "Price Change (USD)": "+$2184.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $2184.00"
+          "Price History Trail": "2026-08-24: $2184.00",
+          "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU"
         },
         {
           "Product #": "P77118-B21",
@@ -7541,7 +8175,8 @@
           "Price Change (USD)": "+$280.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $280.00"
+          "Price History Trail": "2026-08-24: $280.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU"
         },
         {
           "Product #": "P77119-B21",
@@ -7560,7 +8195,8 @@
           "Price Change (USD)": "+$201.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $201.00"
+          "Price History Trail": "2026-08-24: $201.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU"
         },
         {
           "Product #": "P77120-B21",
@@ -7579,7 +8215,8 @@
           "Price Change (USD)": "+$1364.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $1364.00"
+          "Price History Trail": "2026-08-24: $1364.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU"
         },
         {
           "Product #": "P77121-B21",
@@ -7598,7 +8235,8 @@
           "Price Change (USD)": "+$974.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $974.00"
+          "Price History Trail": "2026-08-24: $974.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU"
         },
         {
           "Product #": "P77122-B21",
@@ -7617,7 +8255,8 @@
           "Price Change (USD)": "+$13566.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $13566.00"
+          "Price History Trail": "2026-08-24: $13566.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU"
         },
         {
           "Product #": "P77123-B21",
@@ -7636,7 +8275,8 @@
           "Price Change (USD)": "+$9666.00",
           "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-24: $9666.00"
+          "Price History Trail": "2026-08-24: $9666.00",
+          "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU"
         }
       ]
     }
