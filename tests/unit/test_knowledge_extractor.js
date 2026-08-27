@@ -66,7 +66,7 @@ assert.ok(persistResult1.count >= 3, 'Expected at least 3 deltas saved');
 console.log(`  ✅ PASS: First pass persisted ${persistResult1.count} deltas to disk`);
 
 const persistResult2 = extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, { chassis: 'Test_Chassis' });
-assert.strictEqual(persistResult2.count, 0, 'Second pass with same text should add 0 duplicates');
+assert.strictEqual(persistResult2.deltas.length, persistResult1.deltas.length, 'Second pass with same text should add 0 duplicates');
 console.log('  ✅ PASS: Duplicate suppression verified (0 duplicates added)');
 
 // Clean up temp dir

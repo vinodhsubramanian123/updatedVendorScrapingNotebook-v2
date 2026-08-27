@@ -152,25 +152,37 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
   }
 
   let addedCount = 0;
+  let updatedCount = 0;
   deltas.forEach(newDelta => {
-    // Avoid duplicate rules
-    const exists = existingDeltas.some(d =>
+    // Deduplicate rules semantically: check chassis, SKUs, and rule semantics
+    const existingIdx = existingDeltas.findIndex(d =>
+      d.chassis === newDelta.chassis &&
       d.affectedSku === newDelta.affectedSku &&
-      d.requiredDependencySku === newDelta.requiredDependencySku &&
-      d.ruleType === newDelta.ruleType
+      (d.requiredDependencySku === newDelta.requiredDependencySku || (!d.requiredDependencySku && !newDelta.requiredDependencySku)) &&
+      ((d.rawMessage || d.ruleUpdate || d.ruleType || '') === (newDelta.rawMessage || newDelta.ruleUpdate || newDelta.ruleType || ''))
     );
-    if (!exists) {
+
+    if (existingIdx >= 0) {
+      // Update existing entry with newer timestamp and reasoning
+      existingDeltas[existingIdx] = {
+        ...existingDeltas[existingIdx],
+        timestamp: newDelta.timestamp || existingDeltas[existingIdx].timestamp,
+        reasoning: newDelta.reasoning || existingDeltas[existingIdx].reasoning,
+        rawMessage: newDelta.rawMessage || existingDeltas[existingIdx].rawMessage
+      };
+      updatedCount++;
+    } else {
       existingDeltas.push(newDelta);
       addedCount++;
     }
   });
 
-  if (addedCount > 0) {
+  if (addedCount > 0 || updatedCount > 0) {
     safeWriteJsonAtomic(deltaFile, existingDeltas);
-    logger.info('KNOWLEDGE_EXTRACTOR', `Learned and persisted ${addedCount} new knowledge deltas from NotebookLM grounding to ${path.basename(deltaFile)}`);
+    logger.info('KNOWLEDGE_EXTRACTOR', `Learned and persisted ${addedCount} new knowledge deltas (updated ${updatedCount} existing) from NotebookLM grounding to ${path.basename(deltaFile)}`);
   }
 
-  return { count: addedCount, deltas: existingDeltas };
+  return { count: addedCount + updatedCount, deltas: existingDeltas };
 }
 
 module.exports = {

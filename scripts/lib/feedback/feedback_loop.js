@@ -107,12 +107,34 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
   // Mirror scopeTaxonomy → scope so both fields are always populated and canonical
   delta.scope = delta.scopeTaxonomy;
 
-  // Deduplicate before appending: if identical rule exists, update timestamp & metadata instead of adding duplicate
+  // Deduplicate against master_knowledge_registry.json globally
+  let isGlobalDuplicate = false;
+  try {
+    const registryPath = path.join(outputDir, '..', '..', '..', 'outputs', 'history', 'master_knowledge_registry.json');
+    if (fs.existsSync(registryPath)) {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+      const allRules = [
+        ...(registry.universalRules || []),
+        ...(registry.familyGenRules || []),
+        ...(registry.chassisSpecificRules || [])
+      ];
+      isGlobalDuplicate = allRules.some(r =>
+        r.chassis === delta.chassis &&
+        r.affectedSku === delta.affectedSku &&
+        (r.requiredDependencySku === delta.requiredDependencySku || (!r.requiredDependencySku && !delta.requiredDependencySku)) &&
+        ((r.rawMessage || r.ruleUpdate || '') === (delta.rawMessage || delta.ruleUpdate || ''))
+      );
+    }
+  } catch (_) {
+    // Ignore global deduplication failure
+  }
+
+  // Deduplicate before appending locally: if identical rule exists, update timestamp & metadata instead of adding duplicate
   const existingIdx = deltas.findIndex(d => 
     d.chassis === delta.chassis &&
     d.affectedSku === delta.affectedSku &&
     (d.requiredDependencySku === delta.requiredDependencySku || (!d.requiredDependencySku && !delta.requiredDependencySku)) &&
-    (d.rawMessage === delta.rawMessage || d.ruleUpdate === delta.ruleUpdate)
+    ((d.rawMessage || d.ruleUpdate || '') === (delta.rawMessage || delta.ruleUpdate || ''))
   );
 
   if (existingIdx >= 0) {
@@ -123,11 +145,17 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
       preConfidenceScore: delta.preConfidenceScore ?? deltas[existingIdx].preConfidenceScore,
       guardrailTurn: delta.guardrailTurn ?? deltas[existingIdx].guardrailTurn
     };
-  } else {
+  } else if (!isGlobalDuplicate) {
     deltas.push(delta);
+  } else {
+    // If it's a global duplicate but not found locally, we shouldn't persist it redundantly.
+    // However, we still return the existing logic flow so that telemetry and build happens.
+    // We update the timestamp if it exists, but in this case we'll just skip adding locally.
   }
 
-  safeWriteJsonAtomic(deltaFile, deltas);
+  if (existingIdx >= 0 || !isGlobalDuplicate) {
+    safeWriteJsonAtomic(deltaFile, deltas);
+  }
 
   // Auto-update Catalog Rules TSV / CSV if present
   updateCatalogRulesFile(outputDir, delta);
