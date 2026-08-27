@@ -140,6 +140,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
 
   // Detect server / chassis node count for multi-node orders
   let serverCount = 1;
+  let railKitCount = 0;
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
     const clean = cleanBaseSKU(it.sku);
@@ -151,7 +152,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       CTO_BASE_SKUS.has(clean)
     ) {
       serverCount = Math.max(1, parseInt(it.quantity, 10) || 1);
-      break;
+    }
+    if (desc.includes('rack rail') || desc.includes('rail kit') || clean === 'P52341-B21') {
+      railKitCount += parseInt(it.quantity, 10) || 1;
     }
   }
 
@@ -529,6 +532,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     }
   ];
 
+  const formFactorRU = chassisInfo.formFactor === '1U' ? 1 :
+                       chassisInfo.formFactor === '4U' ? 4 : 2;
+
   const evalSummary = {
     cpuCount: compute.cpuCount,
     maxCpuTdpWatts: compute.maxCpuTdpWatts,
@@ -561,10 +567,16 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     // Cluster Infrastructure Sizing Matrix
     clusterSizing: {
       serverCount,
-      totalRackUnits: serverCount * 2,
-      standard42uRacksRequired: Math.ceil((serverCount * 2) / 42),
-      totalFacilityPowerKw: parseFloat(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
-      estimatedNodeWattage: power.estimatedNodeWattage,
+      totalRackUnits: serverCount * formFactorRU,
+      standard42uRacksRequired: Math.ceil((serverCount * formFactorRU) / 42),
+      totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
+      railKitCoverage: {
+        required: serverCount,
+        recommendedSku: 'P52341-B21',
+        description: 'HPE ProLiant DL380 Gen11 Easy Install Rail Kit',
+        providedCount: railKitCount || 0,
+        isCompliant: (railKitCount || 0) >= serverCount
+      },
       needsHighLine220v: power.needsHighLine220v
     },
     errors,

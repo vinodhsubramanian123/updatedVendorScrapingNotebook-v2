@@ -143,11 +143,65 @@ function analyzeAndPartitionClusters(rawItems) {
     return d.includes('processor') || d.includes('xeon') || c.includes('processor') || c.includes('processors');
   });
 
+  function getClusterSizing(multiplier, items) {
+    let psuWattage = 800;
+    let railKitCount = 0;
+    let cpuWatts = 0;
+    let gpuWatts = 0;
+    let memWatts = 0;
+    let storageWatts = 0;
+
+    items.forEach(it => {
+      const desc = (it.description || '').toLowerCase();
+      const clean = cleanBaseSKU(it.sku);
+      if (desc.includes('power supply') || desc.includes('flex slot')) {
+        const wMatch = desc.match(/(\d{3,4})\s*w/i);
+        if (wMatch) psuWattage = Math.max(psuWattage, parseInt(wMatch[1], 10));
+      }
+      if (desc.includes('rack rail') || desc.includes('rail kit') || clean === 'P52341-B21') {
+        railKitCount += (parseInt(it.totalQuantity || it.quantity, 10) || 1);
+      }
+      if (desc.includes('processor') || desc.includes('xeon')) {
+        const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
+        cpuWatts += (tdpMatch ? parseInt(tdpMatch[1], 10) : 205) * (it.quantity || 1);
+      }
+      if (desc.includes('nvidia') || desc.includes('gpu')) {
+        gpuWatts += 300 * (it.quantity || 1);
+      }
+      if (desc.includes('memory') || desc.includes('rdimm')) {
+        memWatts += 8 * (it.quantity || 1);
+      }
+      if (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme')) {
+        if (!desc.includes('cage') && !desc.includes('controller')) {
+          storageWatts += 15 * (it.quantity || 1);
+        }
+      }
+    });
+
+    const estimatedNodeWattage = cpuWatts + gpuWatts + memWatts + storageWatts + 150;
+    const needsHighLine220v = estimatedNodeWattage > 800 && psuWattage >= 1600;
+
+    return {
+      serverCount: multiplier,
+      totalRackUnits: multiplier * 2,
+      standard42uRacksRequired: Math.ceil((multiplier * 2) / 42),
+      totalFacilityPowerKw: Number(((multiplier * (psuWattage || 800)) / 1000).toFixed(1)),
+      railKitCoverage: {
+        required: multiplier,
+        recommendedSku: 'P52341-B21',
+        description: 'HPE ProLiant DL380 Gen11 Easy Install Rail Kit',
+        providedCount: railKitCount,
+        isCompliant: railKitCount >= multiplier
+      },
+      needsHighLine220v
+    };
+  }
+
   if (cpuItems.length <= 1) {
     return {
       isMultiCluster: false,
       totalChassis,
-      clusters: [{ name: 'Default_Cluster', multiplier: totalChassis, items: rawItems }]
+      clusters: [{ name: 'Default_Cluster', multiplier: totalChassis, items: rawItems, clusterSizing: getClusterSizing(totalChassis, rawItems) }]
     };
   }
 
@@ -340,6 +394,10 @@ function analyzeAndPartitionClusters(rawItems) {
       totalQuantity: mult,
       category: 'Operating System / License'
     });
+  });
+
+  clusters.forEach(c => {
+    c.clusterSizing = getClusterSizing(c.multiplier, c.items);
   });
 
   return {
