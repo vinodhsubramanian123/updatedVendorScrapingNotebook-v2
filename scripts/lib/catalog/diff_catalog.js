@@ -499,4 +499,4 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   return { enrichedCatalog: catalogData, diffSummary, prevSnapshotPath };
 }
 
-module.exports = { processCatalogDiff, parsePrice };
+module.exports = { processCatalogDiff, parsePrice, appendTrailEvent };

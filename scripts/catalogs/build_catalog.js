@@ -19,44 +19,52 @@ const { validateCatalogData } = require('../lib/system/data_validator.js');
 const PipelineLogger = require('../lib/system/pipeline_logger.js');
 const { ClassificationDiagnostics } = require('../lib/catalog/classification_diagnostics.js');
 
-// ── CLI Arguments ─────────────────────────────────────────────────────────────
-const rawInputPath   = process.argv[2];
-const jsonOutputPath = process.argv[3];
-const IS_VERBOSE = process.argv.includes('--verbose') || process.argv.includes('-v');
-const JSON_MODE  = process.argv.includes('--json');
-
-if (JSON_MODE) {
-  console.log = () => {};
-  console.warn = () => {};
-  console.info = () => {};
-  console.error = () => {};
+function createCatalogMetadata(family = 'ProLiant', gen = 'Gen12', model = 'DL380_Gen12_SFF') {
+  return {
+    chassis: model.replace(/_/g, ' '),
+    model: model,
+    family: family,
+    generation: gen,
+    scrapeDate: new Date().toISOString().split('T')[0],
+    scrapeTimestamp: new Date().toISOString()
+  };
 }
 
-if (!rawInputPath || !jsonOutputPath) {
+async function main(rawInputPath = process.argv[2], jsonOutputPath = process.argv[3]) {
+  const IS_VERBOSE = process.argv.includes('--verbose') || process.argv.includes('-v');
+  const JSON_MODE  = process.argv.includes('--json');
+
   if (JSON_MODE) {
-    process.stdout.write(JSON.stringify({ status: 'ERROR', error: 'Missing required CLI arguments rawInputPath and jsonOutputPath' }));
-  } else {
-    console.error('Usage: node scripts/build_catalog.js <raw_data/oca_raw_data_full.json> <outputs/.../Catalog.json> [--verbose]');
+    console.log = () => {};
+    console.warn = () => {};
+    console.info = () => {};
+    console.error = () => {};
   }
-  process.exit(1);
-}
-if (!fs.existsSync(rawInputPath)) {
-  if (JSON_MODE) {
-    process.stdout.write(JSON.stringify({ status: 'ERROR', error: `Raw input file not found: ${rawInputPath}` }));
-  } else {
-    console.error(`❌ ERROR: Raw input file not found: ${rawInputPath}`);
-  }
-  process.exit(1);
-}
 
-async function main() {
-if (!JSON_MODE) {
-  console.log('================================================================');
-  console.log('📦 CLASSIFICATION ENGINE — BUILD CATALOG');
-  console.log(`Input:  ${rawInputPath}`);
-  console.log(`Output: ${jsonOutputPath}`);
-  console.log('================================================================\n');
-}
+  if (!rawInputPath || !jsonOutputPath) {
+    if (JSON_MODE) {
+      process.stdout.write(JSON.stringify({ status: 'ERROR', error: 'Missing required CLI arguments rawInputPath and jsonOutputPath' }));
+    } else {
+      console.error('Usage: node scripts/build_catalog.js <raw_data/oca_raw_data_full.json> <outputs/.../Catalog.json> [--verbose]');
+    }
+    process.exit(1);
+  }
+  if (!fs.existsSync(rawInputPath)) {
+    if (JSON_MODE) {
+      process.stdout.write(JSON.stringify({ status: 'ERROR', error: `Raw input file not found: ${rawInputPath}` }));
+    } else {
+      console.error(`❌ ERROR: Raw input file not found: ${rawInputPath}`);
+    }
+    process.exit(1);
+  }
+
+  if (!JSON_MODE) {
+    console.log('================================================================');
+    console.log('📦 CLASSIFICATION ENGINE — BUILD CATALOG');
+    console.log(`Input:  ${rawInputPath}`);
+    console.log(`Output: ${jsonOutputPath}`);
+    console.log('================================================================\n');
+  }
 
 const targetDir = path.dirname(jsonOutputPath);
 const scrapsDir = path.join(targetDir, 'intermittent_scraps');
@@ -1179,12 +1187,19 @@ if (JSON_MODE) {
   Object.entries(catCounts).sort((a, b) => b[1] - a[1]).forEach(([cat, count]) => {
     console.log(`  • ${cat.padEnd(35)}: ${count} SKUs`);
   });
-  console.log(`  📄 classification_diagnostics.json (observability trace logged)`);
-  console.log('\n✅ CLASSIFICATION COMPLETE.');
-}
+    console.log(`  📄 classification_diagnostics.json (observability trace logged)`);
+    console.log('\n✅ CLASSIFICATION COMPLETE.');
+  }
 }
 
-main().catch(err => {
-  console.error('Fatal error during classification:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error during classification:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  main,
+  createCatalogMetadata
+};
