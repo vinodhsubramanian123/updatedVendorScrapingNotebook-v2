@@ -157,16 +157,23 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     const textLower = rule.ruleText.toLowerCase();
 
     if (textLower.includes('edsff') && chassisInfo.formFactor !== 'EDSFF') {
-      const matchingItems = fullBomList.filter(it => it.description.toLowerCase().includes(rule.subCategory.toLowerCase()));
+      const matchingItems = fullBomList.filter(it => (it.description || '').toLowerCase().includes('edsff'));
       if (matchingItems.length > 0) {
-        const err = `Subcategory '${rule.subCategory}' requires EDSFF chassis, but current build is ${chassisInfo.formFactor}.`;
+        const err = `Item '${matchingItems[0].sku}' requires EDSFF chassis, but current build is ${chassisInfo.formFactor}.`;
         conflicts.push({ level: 'CHASSIS', type: 'FORM_FACTOR_GATE', message: err });
         recordAudit('CHASSIS', rule.ruleText, 'FAIL', err);
       } else {
-        recordAudit('CHASSIS', rule.ruleText, 'PASS', `Compliant: No unsupported ${rule.subCategory} items selected for ${chassisInfo.formFactor}.`);
+        recordAudit('CHASSIS', rule.ruleText, 'PASS', `Compliant: No unsupported EDSFF items selected for ${chassisInfo.formFactor}.`);
       }
-    } else if (textLower.includes('8lff') && chassisInfo.formFactor === 'SFF') {
-      recordAudit('CHASSIS', rule.ruleText, 'PASS', `Gated rule verified for ${chassisInfo.formFactor} chassis.`);
+    } else if (textLower.includes('8lff') && chassisInfo.formFactor !== '8LFF' && chassisInfo.formFactor !== 'LFF') {
+      const matchingItems = fullBomList.filter(it => (it.description || '').toLowerCase().includes('8lff') || (it.description || '').toLowerCase().includes('lff drive cage'));
+      if (matchingItems.length > 0) {
+        const err = `Item '${matchingItems[0].sku}' requires 8LFF chassis, but current build is ${chassisInfo.formFactor}.`;
+        conflicts.push({ level: 'CHASSIS', type: 'FORM_FACTOR_GATE', message: err });
+        recordAudit('CHASSIS', rule.ruleText, 'FAIL', err);
+      } else {
+        recordAudit('CHASSIS', rule.ruleText, 'PASS', `Gated rule verified for ${chassisInfo.formFactor} chassis.`);
+      }
     } else {
       recordAudit('CHASSIS', rule.ruleText, 'PASS', `Chassis gate passed for ${chassisInfo.formFactor}.`);
     }
