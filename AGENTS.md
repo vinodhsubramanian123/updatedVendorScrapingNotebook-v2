@@ -103,3 +103,7 @@ The system leverages Google Jules for background code review, test generation, a
     - Staging validation (`verify_excel_tally.js`) compares staging SKU counts against the previous baseline snapshot before promotion.
     - If a staging catalog experiences an unexpected drop (>30% drop below previous baseline without explicit decommissioning), the pipeline MUST raise a hard `INV-23 Anomaly Alert` in Step 8 and abort promotion.
     - The existing live master Excel workbook, JSON companion, and history snapshots remain untouched and completely protected against corruption.
+
+15. **Knowledge Base Grounding & Customer BOQ Isolation Protocol (`INV-24`)**:
+    - Customer BOQ, quote, or tender files MUST NEVER be added or synced to NotebookLM knowledge sources directly. Customer inputs inherently contain human errors, invalid component quantities, deprecated part numbers, or missing enablement kits. Ingesting raw customer BOQs directly would poison the RAG intent brain with unverified errors.
+    - Cloud NotebookLM sources are strictly reserved for: (1) Official vendor QuickSpecs PDFs, (2) Ground-truth live OCA scraped master catalogs (22-sheet Excel companions and master CSVs), and (3) Verified, deduplicated `KnowledgeDelta` learning payloads emitted by the closed-loop feedback engine. Customer BOQs are treated exclusively as runtime evaluation inputs tested against this ground-truth baseline.
