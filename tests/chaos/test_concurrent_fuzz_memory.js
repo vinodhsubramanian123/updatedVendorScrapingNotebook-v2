@@ -16,7 +16,7 @@ const { getHistoricalBoqPricing } = require('../../scripts/lib/catalog/sku_versi
 
 const NUM_ITERATIONS = 25; // 20+ parallel runs
 const CHASSIS_MODELS = [
-  'DL380_Gen12_SFF',
+  'DL380_Gen12',
   'DL380_Gen11',
   'MSL3040_Tape',
   'SY100Gb_F32_Module',

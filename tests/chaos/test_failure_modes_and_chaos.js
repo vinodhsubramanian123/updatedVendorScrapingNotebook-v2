@@ -57,7 +57,7 @@ async function runChaosSuite() {
     // Test 1.1: Invalid notebook ID execution
     const nonExistentNotebookId = '00000000-0000-0000-0000-000000000000';
     const fallbackRes = await executeNotebookQuery(nonExistentNotebookId, 'What is the TDP limit for DL380 Gen12?', {
-      context: { chassis: 'DL380_Gen12_SFF' },
+      context: { chassis: 'DL380_Gen12' },
       timeout: 5000
     });
 
@@ -150,10 +150,10 @@ async function runChaosSuite() {
     report('Valid delta processed and stored in feedback queue', resValid !== null && resValid.deltaId !== undefined);
 
     // Test Drift Detection & Knowledge Sync Trigger
-    const driftReport = inspectKnowledgeDrift('DL380_Gen12_SFF');
+    const driftReport = inspectKnowledgeDrift('DL380_Gen12');
     report('Drift Engine calculates drift status without exceptions', ['SYNCHRONIZED', 'DRIFT_DETECTED', 'BASELINE_READY'].includes(driftReport.status));
 
-    const syncReport = triggerPostFlowSync('DL380_Gen12_SFF', 'CHAOS_TEST');
+    const syncReport = triggerPostFlowSync('DL380_Gen12', 'CHAOS_TEST');
     report('Post-flow sync completes without errors', syncReport.success === true);
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -300,22 +300,22 @@ Services:
 - 2x HPE 3Y Tech Care Essential (HV6D7E)
 `;
     // Stage 1 & 2: Preprocess & Grouping
-    const preprocRes = preprocessAndGroupBOQ(rawQuoteUnstructured, 'DL380_Gen12_SFF');
+    const preprocRes = preprocessAndGroupBOQ(rawQuoteUnstructured, 'DL380_Gen12');
     const firstVariation = preprocRes.variations[0];
     report('Stage 1/2 E2E: Preprocessing successfully parsed multi-line unstructured RFP', preprocRes.variations.length >= 1 && firstVariation.items.length >= 4);
     report('Stage 1/2 E2E: Detected 2-chassis multiplier', firstVariation.chassisMultiplier === 2 || preprocRes.variations.length >= 1);
 
     // Stage 3: Multi-aspect physical math
-    const e2eMathRes = evaluatePhysicalMath(firstVariation.items, { chassis: 'DL380_Gen12_SFF' });
+    const e2eMathRes = evaluatePhysicalMath(firstVariation.items, { chassis: 'DL380_Gen12' });
     report('Stage 3 E2E: Physical math flagged thermal & storage battery dependencies', e2eMathRes.missingDependencies.length >= 1);
 
     // Stage 4: Conflict Graph & Resolution
-    const e2eGraphRes = validateConflictGraph(firstVariation.items, e2eMathRes.missingDependencies, { chassis: 'DL380_Gen12_SFF' });
+    const e2eGraphRes = validateConflictGraph(firstVariation.items, e2eMathRes.missingDependencies, { chassis: 'DL380_Gen12' });
     report('Stage 4 E2E: Conflict graph evaluated rules & detected dependencies', typeof e2eGraphRes.isWholeSolutionValid === 'boolean');
 
     // Stage 5: Strategy Synthesis
     const { synthesizeStrategies } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
-    const stratRes = synthesizeStrategies(firstVariation.items, e2eMathRes, { isWholeSolutionValid: e2eGraphRes.isWholeSolutionValid, conflicts: e2eGraphRes.conflicts }, { model: 'DL380_Gen12_SFF' });
+    const stratRes = synthesizeStrategies(firstVariation.items, e2eMathRes, { isWholeSolutionValid: e2eGraphRes.isWholeSolutionValid, conflicts: e2eGraphRes.conflicts }, { model: 'DL380_Gen12' });
     const candidates = Array.isArray(stratRes) ? stratRes : (stratRes.candidates || []);
     report('Stage 5 E2E: 5-Tier Strategy matrix synthesized with live RAG grounding', candidates.length === 5);
     report('Stage 5 E2E: Rank 1 contains live RAG grounding', candidates.length > 0 && typeof candidates[0].ragSecondOpinion === 'string' && candidates[0].ragSecondOpinion.length > 0);

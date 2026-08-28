@@ -95,7 +95,7 @@ assert(confidence.isHitlTriggered === true, `HITL review triggered automatically
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 5: Closed-Loop Portal Feedback & KnowledgeDelta Logging`);
 const portalErrorMsg = "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.";
-const testOutputDir = 'outputs/ProLiant/Gen12/DL380_Gen12_SFF';
+const testOutputDir = 'outputs/ProLiant/Gen12/DL380_Gen12';
 
 const delta = processPortalFeedback(portalErrorMsg, testOutputDir);
 assert(delta.deltaId.startsWith('DELTA-'), `Generated unique KnowledgeDelta ID (${delta.deltaId})`);

@@ -1,16 +1,16 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-28T17:33:03.013Z",
-  "lastUpdated": "2026-08-28T17:33:03.013Z",
-  "totalLearnedRules": 26,
+  "generatedAt": "2026-08-28T17:50:11.245Z",
+  "lastUpdated": "2026-08-28T17:50:11.245Z",
+  "totalLearnedRules": 28,
   "productFamiliesSynced": [
     "DL380",
     "DL380 Gen11"
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 11,
+    "familyGen": 13,
     "chassisSpecific": 14
   },
   "universalRules": [
@@ -220,6 +220,42 @@
       "scopeTaxonomy": "FAMILY_GEN",
       "solutionType": "General Server",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    },
+    {
+      "deltaId": "DELTA-1787939245188",
+      "timestamp": "2026-08-28T17:49:05.819Z",
+      "chassis": "DL380_Gen12",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76449-B21",
+      "requiredDependencySku": "P76450-B21",
+      "ruleUpdate": "Portal validation flagged restriction on P76450-B21.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1787939298644",
+      "timestamp": "2026-08-28T17:49:54.908Z",
+      "chassis": "DL380_Gen12",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Portal validation flagged restriction on P76453-B21.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
     }
   ],
   "chassisSpecificRules": [

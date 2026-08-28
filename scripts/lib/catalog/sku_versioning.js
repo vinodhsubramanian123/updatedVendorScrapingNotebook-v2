@@ -220,11 +220,23 @@ function formatMonthLabel(isoDate) {
  * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
  * @returns {object} Historical price details on that date
  */
-function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
-  const normalizedDate = normalizeTargetDate(targetDate);
-  const dir = chassisDir || '';
-  const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
+function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
+  let normalizedDate;
+  let dir = '';
 
+  if (maybeChassisDir !== undefined) {
+    normalizedDate = normalizeTargetDate(targetDateOrDir);
+    dir = maybeChassisDir || '';
+  } else if (typeof targetDateOrDir === 'string' && (targetDateOrDir.includes('/') || targetDateOrDir.includes('\\') || !targetDateOrDir.includes('-'))) {
+    // 2-arg signature: (targetSku, chassisDir)
+    dir = targetDateOrDir;
+    normalizedDate = normalizeTargetDate(new Date().toISOString().split('T')[0]);
+  } else {
+    normalizedDate = normalizeTargetDate(targetDateOrDir);
+    dir = '';
+  }
+
+  const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
 
@@ -285,7 +297,14 @@ function getHistoricalSkuPrice(targetSku, targetDate, chassisDir) {
   }
 
   const effectiveEvent = eventsOnOrBefore[eventsOnOrBefore.length - 1];
-  const effectivePrice = effectiveEvent.price || 0;
+  let effectivePrice = effectiveEvent.price || 0;
+  if (effectivePrice === 0) {
+    // Fall back to latest non-zero price recorded in trail on or before target date
+    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && (e.date || '') <= normalizedDate);
+    if (nonZeroEvents.length > 0) {
+      effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
+    }
+  }
   const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
 
   return {

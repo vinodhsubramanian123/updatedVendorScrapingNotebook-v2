@@ -56,7 +56,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
 
   await t.test('INV-6: scrapeDate in catalog metadata is strictly YYYY-MM-DD', () => {
     const { createCatalogMetadata } = require('../../scripts/catalogs/build_catalog.js');
-    const metadata = createCatalogMetadata('ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+    const metadata = createCatalogMetadata('ProLiant', 'Gen12', 'DL380_Gen12');
     assert.ok(metadata, 'Metadata object must be returned');
     assert.match(metadata.scrapeDate, /^\d{4}-\d{2}-\d{2}$/, 'scrapeDate must strictly match YYYY-MM-DD');
     assert.doesNotMatch(metadata.scrapeDate, /T\d{2}:\d{2}:\d{2}/, 'scrapeDate must NOT contain full ISO timestamp');
@@ -111,6 +111,34 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
+  });
+
+  await t.test('INV-34: Dynamic GPL Price Baseline Preservation Across Unbundled Views', () => {
+    // When an active scrape returns $0.00 for a known SKU, historical price map resolves list price
+    const gen11Dir = path.join(process.cwd(), 'outputs', 'ProLiant', 'Gen11', 'DL380_Gen11');
+    const priceRecord = getHistoricalSkuPrice('P67088-B21', gen11Dir);
+    assert.ok(priceRecord, 'Price record must exist');
+    assert.strictEqual(priceRecord.priceUsd, 23877, 'Must preserve $23,877 GPL list price for Xeon Platinum 8580');
+  });
+
+  await t.test('INV-35: Obsolete Vendor Description Badge & Concatenation Sanitization', () => {
+    // Test cleaning logic on corrupted DOM string
+    const rawDesc = 'Product is obsolete: P74214-B21Product is obsolete: P74214-B21 HPE 64GB 2Rx4 DDR5-5600 Smart Memory';
+    let cleanDesc = rawDesc.replace(/(?:(?:Product\s+)?is\s+obsolete:\s*[A-Z0-9-]*\s*)+/gi, '').trim();
+    cleanDesc = cleanDesc.replace(/^(?:OB|DS|90|EOL)\s+/i, '').trim();
+    assert.strictEqual(cleanDesc, 'HPE 64GB 2Rx4 DDR5-5600 Smart Memory', 'Must strip repeated vendor obsolete prefix');
+  });
+
+  await t.test('INV-36: Universal Dynamic Product Generation Hierarchy', () => {
+    // DL380_Gen12 and DL380_Gen11 directories exist as single product generation level
+    const gen12Dir = path.join(process.cwd(), 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+    const gen11Dir = path.join(process.cwd(), 'outputs', 'ProLiant', 'Gen11', 'DL380_Gen11');
+    assert.ok(fs.existsSync(gen12Dir), 'DL380_Gen12 canonical product generation directory must exist');
+    assert.ok(fs.existsSync(gen11Dir), 'DL380_Gen11 canonical product generation directory must exist');
+    
+    // Ensure no fragmented form factor directories exist
+    const staleGen12Sff = path.join(process.cwd(), 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+    assert.strictEqual(fs.existsSync(staleGen12Sff), false, 'Fragmented form-factor directory DL380_Gen12_SFF must not exist');
   });
 
 });

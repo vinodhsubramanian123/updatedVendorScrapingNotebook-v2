@@ -268,6 +268,18 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: When 5 or more physical PCIe expansion cards are populated across risers (e.g. 2x FC HBAs + 2x PCIe NICs + 1x RAID controller), physical Slot 1 on Primary Riser `P48803-B21` requires auxiliary cable enablement.
 - **Rule**: `pcie_riser.js` and `boq_evaluator.js` MUST inject Primary Cable Kit `P56073-B21` to supply dedicated power and PCIe lanes to Slot 1 (Rules 81016755 & 81354683).
 
+### INV-34: Dynamic GPL Price Baseline Preservation Across Unbundled Views
+- **Pattern**: WebLogic OCA portal renders temporary unbundled views or $0.00 prices during certain configurator state transitions.
+- **Rule**: `build_catalog.js` and `diff_catalog.js` MUST load `historyPriceMap` from `price_history.json` and prior snapshots. Verified historical Global List Prices (GPL) are preserved so no pricing data is lost or zeroed out between runs.
+
+### INV-35: Obsolete Vendor Description Badge & Concatenation Sanitization
+- **Pattern**: WebLogic DOM rendering occasionally concatenates vendor error strings inside `<td class="item_desc">` (e.g. `Product is obsolete: <SKU>`).
+- **Rule**: `build_catalog.js` and `dom_extract.js` MUST strip all `Product is obsolete:\s*[A-Z0-9-]+\s*` and embedded status badges (`OB`, `DS`, `90`, `EOL`) from descriptions, isolating obsolete parts cleanly into the `Discontinued SKUs` sheet and metadata.
+
+### INV-36: Universal Dynamic Product Generation Hierarchy
+- **Pattern**: Product lines must not be fragmented into ad-hoc form-factor subdirectories.
+- **Rule**: The repository enforces a strict 3-tier taxonomy: `{Family}/{Gen}/{Model}/`. All chassis form-factor variants (8SFF, 24SFF, 8LFF, 12LFF, EDSFF, etc.) MUST be contained within the single product generation directory (e.g. `outputs/ProLiant/Gen12/DL380_Gen12/` and `outputs/ProLiant/Gen11/DL380_Gen11/`). No duplicate or fragmented form-factor directories.
+
 ---
 
 ## History Directory Hygiene Rules

@@ -45,7 +45,7 @@ function test(name, fn) {
     if (err.actual !== undefined && err.expected !== undefined) {
       console.error(`     📊 Introspection: Expected ${JSON.stringify(err.expected)}, but got ${JSON.stringify(err.actual)}`);
     }
-    const diagPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/classification_diagnostics.json');
+    const diagPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/history/classification_diagnostics.json');
     if (fs.existsSync(diagPath)) {
       console.error(`     🔍 Provenance Trace: file://${diagPath}`);
     }

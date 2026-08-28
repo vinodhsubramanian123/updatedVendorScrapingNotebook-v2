@@ -364,3 +364,22 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Side-by-Side Executive Reconciliation Matrix Architecture**:
   - Original customer RFP spreadsheets (`GID-RFQS-HPE-2026-006.xlsx`) are preserved with untouched description and quantity columns, side-by-side proposed SKUs, compliance status pills, and executive remarks with embedded color coding keys (🟢 Exact Match, 🟡 Quantity Right-Sized, 🔵 Tech Optimized, 🟣 Mandatory Addition, 🟪 Cluster Partition).
 
+---
+
+## 34. Dynamic GPL Price Baseline Preservation Across Unbundled OCA Views (`INV-34`)
+- **Root Cause & Discovery**: When scraping live Oracle WebLogic OCA configurators, certain interactive UI views (e.g. unbundled option selectors or temporary transition states) render components with blank or `$0.00` price fields even though the server is fully configurable.
+- **Dynamic Solution**: `build_catalog.js` and `diff_catalog.js` maintain an active `historyPriceMap` that cross-references `price_history.json` and prior date-stamped snapshots (`catalog_YYYY-MM-DD.json`). If a live scrape returns `$0.00` for a known component, the engine automatically resolves the verified Global List Price (GPL), preventing data loss and price zeroing between runs.
+
+---
+
+## 35. Obsolete Vendor Badge & Concatenation String Sanitization (`INV-35`)
+- **Root Cause & Discovery**: In Oracle WebLogic OCA DOM tables, obsolete parts occasionally have raw server error strings concatenated inside the description cell (e.g. `Product is obsolete: P74214-B21Product is obsolete: P74214-B21 HPE 64GB...`).
+- **Dynamic Solution**: `build_catalog.js` and `dom_extract.js` implement regex sanitization (`/(?:(?:Product\s+)?is\s+obsolete:\s*[A-Z0-9-]*\s*)+/gi`) that cleans all vendor error prefixes and lifecycle badges (`OB`, `DS`, `90`, `EOL`), isolating obsolete parts cleanly into the `Discontinued SKUs` sheet and metadata.
+
+---
+
+## 36. Universal Dynamic Product Generation Hierarchy (`INV-36`)
+- **Single Generation Namespace**: Products are strictly organized at the Product Generation level: `outputs/{Family}/{Gen}/{Model}/` (e.g. `outputs/ProLiant/Gen12/DL380_Gen12/` and `outputs/ProLiant/Gen11/DL380_Gen11/`).
+- **Form-Factor Variant Ingestion**: All chassis form-factor variants (8SFF, 24SFF, 8LFF, 12LFF, EDSFF, High Power) are tracked internally within the product generation catalog and companion workbooks with zero fragmentation or duplicate directories.
+
+

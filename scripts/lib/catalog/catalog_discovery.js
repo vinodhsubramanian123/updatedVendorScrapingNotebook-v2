@@ -27,7 +27,7 @@ function getChassisMap() {
   if (_chassisMapCache) return _chassisMapCache;
 
   const defaultMap = {
-    "DL380_Gen12_SFF": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12 8SFF" },
+    "DL380_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12" },
     "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
     "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
     "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
@@ -118,7 +118,7 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
-    if (desc.includes('dl380') && desc.includes('gen12')) return { ...chassisMap['DL380_Gen12_SFF'], id: 'DL380_Gen12_SFF' };
+    if (desc.includes('dl380') && desc.includes('gen12')) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
     if (desc.includes('dl380') && desc.includes('gen11')) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
     if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
     if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };

@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `MSL3040_Tape`  
-**Sync Timestamp**: 2026-08-28T17:33:03.005Z  
+**Sync Timestamp**: 2026-08-28T17:50:09.699Z  
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `26`  
+**Total Synced KnowledgeDeltas**: `28`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -42,6 +42,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 9. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380 Gen11**: undefined *(Affected SKU: P02377-B21)*
 10. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 11. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
+13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (MSL3040_Tape)
 
@@ -59,7 +61,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
-| **DL380_Gen12_SFF** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
+| **DL380_Gen12** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
 | **DL380_Gen11** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
 | **MSL3040_Tape** | StoreEver | Gen1 | Rack | `Q6Q67A` |
 | **GX5000_General_RACK** | Cray | Gen1 | Rack | `P57100-B21` |

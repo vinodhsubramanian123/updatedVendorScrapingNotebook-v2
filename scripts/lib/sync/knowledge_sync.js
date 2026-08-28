@@ -251,7 +251,7 @@ async function main() {
     ? [chassis] 
     : (allCatalogFiles.length > 0 
         ? allCatalogFiles.map(f => path.basename(f, '_Catalog.json')) 
-        : ['DL380_Gen12_SFF']);
+        : ['DL380_Gen12']);
 
   const results = [];
   for (const ch of targetChassisList) {

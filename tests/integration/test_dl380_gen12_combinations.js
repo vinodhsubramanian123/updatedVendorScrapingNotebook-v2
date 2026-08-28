@@ -283,7 +283,7 @@ P03178-B21,HPE 1000W Flex Slot Titanium Power Supply,2`);
   // -------------------------------------------------------------
   console.log(`\n${C.bold}${C.blue}▶ [COMBINATION 8] Closed-Loop Partner Portal Reconciliation & Knowledge Learning${C.reset}`);
   
-  const chassisDir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+  const chassisDir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
   const delta = processPortalFeedback(
     'ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.',
     chassisDir,

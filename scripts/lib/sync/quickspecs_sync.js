@@ -105,7 +105,7 @@ function computePdfFingerprint(filePath) {
 function findLocalQuickSpecsPdf(chassisName) {
   const possiblePaths = [
     path.join(OUTPUTS_ROOT, 'ProLiant', 'Gen11', 'DL380_Gen11', `HPE_${chassisName}_QuickSpecs.pdf`),
-    path.join(OUTPUTS_ROOT, 'ProLiant', 'Gen12', 'DL380_Gen12_SFF', `HPE_${chassisName}_QuickSpecs.pdf`),
+    path.join(OUTPUTS_ROOT, 'ProLiant', 'Gen12', 'DL380_Gen12', `HPE_${chassisName}_QuickSpecs.pdf`),
     path.join(OUTPUTS_ROOT, 'ProLiant', 'Gen11', chassisName, `HPE_${chassisName}_QuickSpecs.pdf`),
     path.join(OUTPUTS_ROOT, 'ProLiant', 'Gen12', chassisName, `HPE_${chassisName}_QuickSpecs.pdf`)
   ];

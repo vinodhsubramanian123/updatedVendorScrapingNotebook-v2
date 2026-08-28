@@ -30,8 +30,8 @@ const sampleRagResponse = `
 `;
 
 // Test 1: BTO -> FIO Option Extraction
-const deltas = extractKnowledgeFromRagAnswer(sampleRagResponse, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF', {
-  chassis: 'DL380_Gen12_SFF'
+const deltas = extractKnowledgeFromRagAnswer(sampleRagResponse, 'outputs/ProLiant/Gen12/DL380_Gen12', {
+  chassis: 'DL380_Gen12'
 });
 
 console.log(`▶ Extracted ${deltas.length} Knowledge Deltas:`);

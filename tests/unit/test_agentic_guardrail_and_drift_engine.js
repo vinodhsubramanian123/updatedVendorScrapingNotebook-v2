@@ -11,7 +11,7 @@ const { generateNotebookSyncPayload } = require('../../scripts/lib/sync/sync_pay
 test('Test extractKnowledgeFromRagAnswer()', async (t) => {
   await t.test('Extract BTO -> FIO option substitution', () => {
     const markdown = "The component P69728-B21 (BTO) is not allowed in CTO. You must use FIO SKU P69728-F21 instead.";
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 1);
     assert.strictEqual(deltas[0].affectedSku, 'P69728-B21');
     assert.strictEqual(deltas[0].requiredDependencySku, 'P69728-F21');
@@ -20,7 +20,7 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
 
   await t.test('Extract Cross-Generation Carry-Over Validation', () => {
     const markdown = "Part P48918-B21 is fully supported and validated inside DL380 Gen12.";
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 1);
     assert.strictEqual(deltas[0].affectedSku, 'P48918-B21');
     assert.strictEqual(deltas[0].ruleType, 'CARRY_OVER_VALIDATED');
@@ -28,7 +28,7 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
 
   await t.test('Extract Hardware Dependency Chain', () => {
     const markdown = "Using P47777-B21 mandates P76453-B21 for routing.";
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 1);
     assert.strictEqual(deltas[0].affectedSku, 'P47777-B21');
     assert.strictEqual(deltas[0].requiredDependencySku, 'P76453-B21');
@@ -37,13 +37,13 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
 
   await t.test('Handling responses with no rules', () => {
     const markdown = "There are no rules mentioned here. Just a normal response.";
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 0);
   });
 
   await t.test('Handling ambiguous text without clear SKUs', () => {
     const markdown = "The component requires a cable, but I don't know the SKU.";
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 0);
   });
 
@@ -53,7 +53,7 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
       Also, P69728-B21 (BTO) is not allowed in CTO. You must use FIO SKU P69728-F21 instead.
       Part P48918-B21 is fully supported and validated inside DL380 Gen12.
     `;
-    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
     assert.strictEqual(deltas.length, 3);
     
     const types = deltas.map(d => d.ruleType).sort();

@@ -144,3 +144,16 @@ The system leverages Google Jules for background code review, test generation, a
     - All configurators, workbook generators, and evaluation engines MUST resolve SKU list prices dynamically via `getHistoricalSkuPrice()` or `catalog.json` / `price_history.json`.
     - NEVER declare standalone, hardcoded price arrays or mock budgetary placeholders in scripts. All pricing data must reside exclusively within certified catalog and price history data layers.
 
+25. **Dynamic GPL Price Baseline Preservation Across Unbundled Views (`INV-34`)**:
+    - When scraping WebLogic OCA portals where prices may temporarily render as `$0.00` in unbundled views or during UI state transitions, `build_catalog.js` and `diff_catalog.js` MUST load `historyPriceMap` from `price_history.json` and prior snapshots.
+    - Verified historical Global List Prices (GPL) are preserved so no pricing data is lost or zeroed out between runs.
+
+26. **Obsolete Vendor Description Badge & Concatenation Sanitization (`INV-35`)**:
+    - WebLogic DOM rendering occasionally concatenates vendor error strings inside `<td class="item_desc">` (e.g. `Product is obsolete: <SKU>`).
+    - `build_catalog.js` and `dom_extract.js` MUST strip all `Product is obsolete:\s*[A-Z0-9-]+\s*` and embedded status badges (`OB`, `DS`, `90`, `EOL`) from descriptions, isolating obsolete parts cleanly into the `Discontinued SKUs` sheet and metadata.
+
+27. **Universal Dynamic Product Generation Hierarchy (`INV-36`)**:
+    - The repository enforces a strict 3-tier taxonomy: `{Family}/{Gen}/{Model}/`. All chassis form-factor variants (8SFF, 24SFF, 8LFF, 12LFF, EDSFF, etc.) MUST be contained within the single product generation directory (e.g. `outputs/ProLiant/Gen12/DL380_Gen12/` and `outputs/ProLiant/Gen11/DL380_Gen11/`).
+    - No duplicate or fragmented form-factor model directories.
+
+
