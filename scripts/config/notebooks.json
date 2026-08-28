@@ -5,10 +5,10 @@
       "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
       "family": "ProLiant",
       "gen": "Gen12",
-      "lastSyncedAt": "2026-08-28T13:04:24.762Z",
+      "lastSyncedAt": "2026-08-28T17:16:15.000Z",
       "lastSyncDeltaCount": 23,
-      "lastSyncedSourceId": "8bc5777c-018a-4ad9-bf03-f899180c3b49",
-      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-08-28",
+      "lastSyncedSourceId": "db72a668-a271-42ab-bedc-0a82abc1d609",
+      "lastSyncedSourceName": "notebook_sync_payload_DL380_Gen12.md",
       "isolationLevel": "CHASSIS_SPECIFIC"
     },
     "DL380_Gen11": {
