@@ -507,9 +507,27 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     }
   ];
 
+  // Dynamically score and sort candidates so the solution CLOSEST to customer requirements is always Rank 1
+  const requestedSkuSet = new Set(items.map(it => cleanBaseSKU(it.sku)).filter(Boolean));
+
+  rawCandidates.forEach(cand => {
+    const matchedCount = cand.skuPartsList.filter(p => requestedSkuSet.has(cleanBaseSKU(p.sku))).length;
+    const matchRatio = requestedSkuSet.size > 0 ? (matchedCount / requestedSkuSet.size) : 1.0;
+    cand.intentMatchRatio = parseFloat(matchRatio.toFixed(2));
+    // Dynamic score gives highest weight to fulfilling customer's exact part numbers
+    cand.dynamicScore = parseFloat(((matchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
+  });
+
+  // Sort by dynamic score descending
+  rawCandidates.sort((a, b) => b.dynamicScore - a.dynamicScore);
+
   // Normalize ranks 1 through 5 and return all 5 strategy tiers
   return rawCandidates.map((cand, idx) => {
     cand.rank = idx + 1;
+    // Update name to reflect dynamic rank
+    if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
+      cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);
+    }
     return cand;
   });
 }
