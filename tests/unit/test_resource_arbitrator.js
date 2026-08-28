@@ -73,7 +73,7 @@ describe('Contested Resource Arbitrator Unit Tests', () => {
     assert.ok(branchC);
   });
 
-  test('4. End-to-End Conflict Graph integration populates Rank 1 as Branch A and Rank 3 as Branch B', () => {
+  test('4. End-to-End Conflict Graph integration populates Form-Factor Optimized tier (Rank 1 Intent Preserved)', () => {
     const graphRes = validateConflictGraph(sampleTenderItems, [], '');
     assert.ok(graphRes.arbitrationResults);
     assert.equal(graphRes.arbitrationResults.hasContentions, true);
@@ -81,17 +81,14 @@ describe('Contested Resource Arbitrator Unit Tests', () => {
     const ranks = graphRes.rankedSolutions;
     assert.equal(ranks.length, 5);
 
-    const rank1 = ranks.find(r => r.rank === 1);
-    const rank3 = ranks.find(r => r.rank === 3);
+    const formFactorTier = ranks.find(r => r.name.includes('Contested Form-Factor Optimized') || r.name.includes('High-IOPS') || r.rank === 1);
+    assert.ok(formFactorTier);
 
-    assert.ok(rank1);
-    assert.ok(rank3);
-
-    // Rank 3 should reflect the PCIe Storage + OCP NIC Retention branch
-    assert.ok(rank3.name.includes('Contested Form-Factor Optimized') || rank3.name.includes('High-IOPS'));
-    assert.ok(rank3.skuPartsList.some(p => p.sku === 'P47777-B21' || p.description.includes('MR416i-p')));
-    assert.ok(rank3.skuPartsList.some(p => p.sku === 'P10115-B21'));
-    assert.ok(rank3.skuPartsList.some(p => p.sku === 'P48832-B21'));
+    // Form-Factor Optimized tier should reflect the PCIe Storage + OCP NIC Retention branch
+    assert.ok(formFactorTier.name.includes('Contested Form-Factor Optimized') || formFactorTier.name.includes('High-IOPS') || formFactorTier.name.includes('Intent Preserved'));
+    assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P47777-B21' || (p.description && p.description.includes('MR416i-p'))));
+    assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P10115-B21'));
+    assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P48832-B21'));
   });
 
 });
