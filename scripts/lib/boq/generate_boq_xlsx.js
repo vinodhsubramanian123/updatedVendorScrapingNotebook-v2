@@ -160,4 +160,156 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
   return exportPath;
 }
 
-module.exports = { generateProfessionalBOQ };
+/**
+ * Generate standardized Partner Portal Upload & Reconciliation BOM (INV-32).
+ * Formats data with exact 7-column contract required by ReactVendorSolution:
+ * ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
+ *
+ * @param {Array<object>} clusters - Array of cluster objects [{ name, multiplier, items }]
+ * @param {string} exportPath - Output xlsx file path
+ * @param {object} [options] - Optional title/config metadata
+ */
+function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
+  const wb = XLSX.utils.book_new();
+  const portalData = [];
+
+  const C_DARK = '0B192C';
+  const C_EMERALD = '008559';
+  const C_SLATE = '1E3E62';
+  const C_ROW_ALT = 'F4F8F6';
+  const C_WHITE = 'FFFFFF';
+  const C_BORDER = 'DDE4E1';
+
+  const borderThin = {
+    top: { style: 'thin', color: { rgb: C_BORDER } },
+    bottom: { style: 'thin', color: { rgb: C_BORDER } },
+    left: { style: 'thin', color: { rgb: C_BORDER } },
+    right: { style: 'thin', color: { rgb: C_BORDER } }
+  };
+
+  const fontBase = (bold = false, color = '000000', size = 10) => ({
+    name: 'Segoe UI',
+    sz: size,
+    bold,
+    color: { rgb: color }
+  });
+
+  const cellStyle = (fillRgb = C_WHITE, bold = false, align = 'left', textRgb = '000000', size = 10) => ({
+    fill: { fgColor: { rgb: fillRgb } },
+    font: fontBase(bold, textRgb, size),
+    alignment: { horizontal: align, vertical: 'center', wrapText: true },
+    border: borderThin
+  });
+
+  const headerStyle = (fillRgb = C_DARK, textRgb = C_WHITE, size = 10) => ({
+    fill: { fgColor: { rgb: fillRgb } },
+    font: fontBase(true, textRgb, size),
+    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    border: borderThin
+  });
+
+  // Ensure clusters is an array
+  const clusterList = Array.isArray(clusters) ? clusters : [{ name: 'Default_Cluster', multiplier: 1, items: clusters || [] }];
+  let grandTotal = 0;
+  let totalServerNodes = 0;
+
+  clusterList.forEach((cluster, cIdx) => {
+    const mult = cluster.multiplier || 1;
+    totalServerNodes += mult;
+
+    if (cIdx > 0) {
+      // 2-line gap between configurations
+      portalData.push([]);
+      portalData.push([]);
+      portalData.push([`CONFIGURATION #${cIdx + 1}: ${mult}x ${cluster.name || 'Server Node'}`]);
+      portalData.push([`Scope: ${mult} Servers | 100% Factory Buildable`]);
+      portalData.push(['Part No', 'Qty', 'Total Qty', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+    } else {
+      portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+    }
+
+    let configSubtotal = 0;
+    const items = cluster.items || [];
+
+    items.forEach(it => {
+      const perServerQty = it.quantity || 1;
+      const unitPrice = it.unitPriceUsd || it.price || it.unitPrice || 0;
+      const ext = perServerQty * mult * unitPrice;
+      configSubtotal += ext;
+
+      portalData.push([
+        it.sku || it['Product #'] || '',
+        perServerQty,
+        mult,
+        it.description || it.desc || '',
+        unitPrice,
+        ext,
+        '100% Validated in CLIC'
+      ]);
+    });
+
+    grandTotal += configSubtotal;
+    portalData.push(['', '', `CONFIG #${cIdx + 1} SUBTOTAL:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
+  });
+
+  if (clusterList.length > 1) {
+    portalData.push([]);
+    portalData.push([]);
+    portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, '100% Validated & Certified for HPE Partner Portal Upload']);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(portalData);
+  ws['!cols'] = [
+    { wch: 18 }, { wch: 8 }, { wch: 22 }, { wch: 65 }, { wch: 22 }, { wch: 22 }, { wch: 32 }
+  ];
+
+  // Apply cell styling to headers and numeric values
+  for (let r = 0; r < portalData.length; r++) {
+    const row = portalData[r];
+    if (!row || row.length === 0) continue;
+
+    const firstCell = String(row[0] || '');
+    const isHeader = row[0] === 'Part No';
+    const isSubtotal = String(row[2] || '').includes('SUBTOTAL:');
+    const isGrandTotal = firstCell.startsWith('GRAND TOTAL');
+    const isTitle = firstCell.startsWith('CONFIGURATION #');
+    const isScope = firstCell.startsWith('Scope:');
+
+    for (let c = 0; c < 7; c++) {
+      const addr = XLSX.utils.encode_cell({ r, c });
+      if (!ws[addr]) continue;
+
+      if (isHeader) {
+        ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
+      } else if (isSubtotal) {
+        ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
+        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+      } else if (isGrandTotal) {
+        ws[addr].s = cellStyle(C_DARK, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
+        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+      } else if (isTitle) {
+        ws[addr].s = headerStyle(C_DARK, C_WHITE, 11);
+      } else if (isScope) {
+        ws[addr].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
+      } else {
+        const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
+        const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
+        ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
+        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+      }
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Partner Portal Upload BOM');
+  if (exportPath) {
+    const outDir = path.dirname(exportPath);
+    if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+    XLSX.writeFile(wb, exportPath);
+  }
+  return wb;
+}
+
+module.exports = {
+  generateProfessionalBOQ,
+  generatePartnerPortalUploadBOM
+};

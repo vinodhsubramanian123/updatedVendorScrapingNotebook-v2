@@ -6,6 +6,7 @@
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
+// Mandatory Process Control License SKUs (e.g. CLIC Rule 81322276)
 const VALID_MANAGEMENT_SKUS = new Set([
   'R7A11AAE', // Base COM 3yr SaaS
   'R7A12AAE', // COM 5yr
@@ -17,6 +18,27 @@ const VALID_MANAGEMENT_SKUS = new Set([
   'P8B31A'    // OneView Advanced w/o iLO FIO
 ]);
 
+// Unsolicited Optional Services & Software (INV-32: Never inject unless explicitly requested)
+const UNSOLICITED_OPTIONAL_SERVICE_SKUS = new Set([
+  'S1A05A',    // Optional SaaS / Software add-on
+  'HA114A1',   // HPE Installation and Startup Service
+  'HA114A1 5A6', // HPE ProLiant DL/ML ONS Startup SVC
+  'HA124A1',   // HPE Premier Installation Service
+  'H7J38A1'    // HPE Implementation Service
+]);
+
+function isUnsolicitedOptionalService(sku, description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = (description || '').toLowerCase();
+  if (UNSOLICITED_OPTIONAL_SERVICE_SKUS.has(clean) || UNSOLICITED_OPTIONAL_SERVICE_SKUS.has(sku)) {
+    return true;
+  }
+  if (desc.includes('installation and startup') || desc.includes('ons startup svc') || desc.includes('startup service')) {
+    return true;
+  }
+  return false;
+}
+
 function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 0) {
   let hasSupportService = false;
   let hasManagementLicense = false;
@@ -24,10 +46,19 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   let windowsBaseLicenses = 0;
   let windowsAddonCores = 0;
   let detectedCpuCores = totalSocketCores;
+  const unsolicitedOptionalItems = [];
 
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
+
+    if (isUnsolicitedOptionalService(it.sku, it.description)) {
+      unsolicitedOptionalItems.push({
+        sku: it.sku,
+        description: it.description,
+        reason: 'Optional software / startup service not requested by customer (INV-32)'
+      });
+    }
 
     let role = classifyComponentRole('', desc);
     if (catalogData && catalogData.entries) {
@@ -81,11 +112,15 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     totalWindowsLicensedCores,
     needsAdditionalWindowsCores,
     missingCoreLicenses,
+    unsolicitedOptionalItems,
+    defaultSupportSku: 'HU4B2A3',
     defaultManagementSku: 'R7A11AAE'
   };
 }
 
 module.exports = {
   evalSupportManufacturing,
-  VALID_MANAGEMENT_SKUS
+  isUnsolicitedOptionalService,
+  VALID_MANAGEMENT_SKUS,
+  UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };

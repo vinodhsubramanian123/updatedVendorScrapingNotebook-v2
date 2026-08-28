@@ -406,26 +406,18 @@ function buildPartnerPortalWorkbook() {
   // =============================================================
   // SECTION 1: CONFIGURATION #1 (20x Platinum 8580 Nodes)
   // =============================================================
-  portalData.push(['CONFIGURATION #1: 20x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Platinum 8580 / 120 Cores Tier)']);
-  portalData.push(['Scope: 20 Servers | Dual Platinum 8580 (60C/350W), 512GB DDR5-5600, MR416i-p PCIe, Dual 1800W Titanium PSUs | 100% Factory Buildable']);
-  portalData.push(['Item #', 'Parent Line', 'Option Type', 'Product # (SKU)', 'Qty / Server', 'Total Qty (20 Nodes)', 'Product Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+  portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
 
-  let lineCounterA = 100;
   let config1Total = 0;
 
   clusterA_items.forEach(it => {
     const ext = (it.qA * 20) * it.price;
     config1Total += ext;
-    const lineNum = String(lineCounterA).padStart(4, '0');
-    lineCounterA += 1;
 
     portalData.push([
-      lineNum,
-      '0100',
-      it.sku.includes('-F21') ? 'Factory Integrated' : (it.sku === 'P52534-B21' ? 'Base Chassis' : 'Standard Option'),
       it.sku,
       it.qA,
-      it.qA * 20,
+      20,
       it.desc,
       it.price,
       ext,
@@ -433,7 +425,7 @@ function buildPartnerPortalWorkbook() {
     ]);
   });
 
-  portalData.push(['', '', '', '', '', 'CONFIG #1 SUBTOTAL:', '', '', config1Total, '20 Platinum Nodes Ready for Portal Feed']);
+  portalData.push(['', '', 'CONFIG #1 SUBTOTAL:', '', '', config1Total, '20 Platinum Nodes Ready for Portal Feed']);
 
   // =============================================================
   // 2-LINE SEPARATOR GAP
@@ -446,24 +438,18 @@ function buildPartnerPortalWorkbook() {
   // =============================================================
   portalData.push(['CONFIGURATION #2: 40x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Gold 6530 / 64 Cores Tier)']);
   portalData.push(['Scope: 40 Servers | Dual Gold 6530 (32C/270W), 512GB DDR5-5600, MR416i-p PCIe + P56073 Cable, Dual 1600W Platinum PSUs | 100% Factory Buildable']);
-  portalData.push(['Item #', 'Parent Line', 'Option Type', 'Product # (SKU)', 'Qty / Server', 'Total Qty (40 Nodes)', 'Product Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+  portalData.push(['Part No', 'Qty', 'Total Qty', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
 
-  let lineCounterB = 200;
   let config2Total = 0;
 
   clusterB_items.forEach(it => {
     const ext = (it.qB * 40) * it.price;
     config2Total += ext;
-    const lineNum = String(lineCounterB).padStart(4, '0');
-    lineCounterB += 1;
 
     portalData.push([
-      lineNum,
-      '0200',
-      it.sku.includes('-F21') ? 'Factory Integrated' : (it.sku === 'P52534-B21' ? 'Base Chassis' : 'Standard Option'),
       it.sku,
       it.qB,
-      it.qB * 40,
+      40,
       it.desc,
       it.price,
       ext,
@@ -471,7 +457,7 @@ function buildPartnerPortalWorkbook() {
     ]);
   });
 
-  portalData.push(['', '', '', '', '', 'CONFIG #2 SUBTOTAL:', '', '', config2Total, '40 Gold Nodes Ready for Portal Feed']);
+  portalData.push(['', '', 'CONFIG #2 SUBTOTAL:', '', '', config2Total, '40 Gold Nodes Ready for Portal Feed']);
 
   // =============================================================
   // 2-LINE SEPARATOR GAP
@@ -483,40 +469,38 @@ function buildPartnerPortalWorkbook() {
   // SECTION 3: GRAND TOTAL (60 NODES COMBINED)
   // =============================================================
   const grandTotal = config1Total + config2Total;
-  portalData.push(['GRAND TOTAL CONSOLIDATED TENDER ORDER VALUE (60 NODES):', '', '', '', '', '', '', '', grandTotal, 'ALL 60 NODES 100% VALIDATED & ORDERABLE']);
+  portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', '60 Total Server Nodes', '', '', grandTotal, '100% Validated & Certified for HPE Partner Portal Upload']);
 
   const ws = xlsx.utils.aoa_to_sheet(portalData);
   ws['!cols'] = [
-    { wch: 10 }, { wch: 12 }, { wch: 20 }, { wch: 18 }, { wch: 14 }, { wch: 22 }, { wch: 55 }, { wch: 18 }, { wch: 22 }, { wch: 32 }
+    { wch: 18 }, { wch: 8 }, { wch: 22 }, { wch: 65 }, { wch: 22 }, { wch: 22 }, { wch: 32 }
   ];
 
-  // Apply rich styling to Configuration 1
-  ws['A1'].s = headerStyle(C_DARK, C_WHITE, 12);
-  ws['A2'].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
-  for (let c = 0; c < 10; c++) {
-    const addr = xlsx.utils.encode_cell({ r: 2, c });
+  // Style Header 1
+  for (let c = 0; c < 7; c++) {
+    const addr = xlsx.utils.encode_cell({ r: 0, c });
     if (ws[addr]) ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
 
-  const rStartA = 3;
+  const rStartA = 1;
   const rEndA = rStartA + clusterA_items.length;
   for (let r = rStartA; r < rEndA; r++) {
     const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-    for (let c = 0; c < 10; c++) {
+    for (let c = 0; c < 7; c++) {
       const addr = xlsx.utils.encode_cell({ r, c });
       if (!ws[addr]) continue;
-      const align = (c === 0 || c === 1 || c === 4 || c === 5) ? 'center' : (c === 7 || c === 8) ? 'right' : 'left';
-      ws[addr].s = cellStyle(bg, c === 3 || c === 8, align, '000000', 9);
-      if (c === 7 || c === 8) ws[addr].z = '$#,##0.00';
+      const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
+      ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
+      if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
     }
   }
 
   const subtotalRowA = rEndA;
-  for (let c = 0; c < 10; c++) {
+  for (let c = 0; c < 7; c++) {
     const addr = xlsx.utils.encode_cell({ r: subtotalRowA, c });
     if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_EMERALD, true, (c === 7 || c === 8) ? 'right' : 'left', C_WHITE, 10);
-    if (c === 7 || c === 8) ws[addr].z = '$#,##0.00';
+    ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
   }
 
   // Calculate Configuration 2 starting row index
@@ -528,40 +512,40 @@ function buildPartnerPortalWorkbook() {
 
   const addrB1 = xlsx.utils.encode_cell({ r: rStartB_Title, c: 0 });
   const addrB2 = xlsx.utils.encode_cell({ r: rStartB_Sub, c: 0 });
-  if (ws[addrB1]) ws[addrB1].s = headerStyle(C_DARK, C_WHITE, 12);
+  if (ws[addrB1]) ws[addrB1].s = headerStyle(C_DARK, C_WHITE, 11);
   if (ws[addrB2]) ws[addrB2].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
 
-  for (let c = 0; c < 10; c++) {
+  for (let c = 0; c < 7; c++) {
     const addr = xlsx.utils.encode_cell({ r: rStartB_Head, c });
     if (ws[addr]) ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
 
   for (let r = rStartB_Data; r < rEndB; r++) {
     const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-    for (let c = 0; c < 10; c++) {
+    for (let c = 0; c < 7; c++) {
       const addr = xlsx.utils.encode_cell({ r, c });
       if (!ws[addr]) continue;
-      const align = (c === 0 || c === 1 || c === 4 || c === 5) ? 'center' : (c === 7 || c === 8) ? 'right' : 'left';
-      ws[addr].s = cellStyle(bg, c === 3 || c === 8, align, '000000', 9);
-      if (c === 7 || c === 8) ws[addr].z = '$#,##0.00';
+      const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
+      ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
+      if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
     }
   }
 
   const subtotalRowB = rEndB;
-  for (let c = 0; c < 10; c++) {
+  for (let c = 0; c < 7; c++) {
     const addr = xlsx.utils.encode_cell({ r: subtotalRowB, c });
     if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_EMERALD, true, (c === 7 || c === 8) ? 'right' : 'left', C_WHITE, 10);
-    if (c === 7 || c === 8) ws[addr].z = '$#,##0.00';
+    ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
   }
 
   // Grand Total row styling
   const grandTotalRow = subtotalRowB + 3;
-  for (let c = 0; c < 10; c++) {
+  for (let c = 0; c < 7; c++) {
     const addr = xlsx.utils.encode_cell({ r: grandTotalRow, c });
     if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_DARK, true, (c === 7 || c === 8) ? 'right' : 'left', C_WHITE, 11);
-    if (c === 7 || c === 8) ws[addr].z = '$#,##0.00';
+    ws[addr].s = cellStyle(C_DARK, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
   }
 
   xlsx.utils.book_append_sheet(wb, ws, 'Partner Portal Upload BOM');

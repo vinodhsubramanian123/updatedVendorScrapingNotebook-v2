@@ -135,3 +135,8 @@ The system leverages Google Jules for background code review, test generation, a
 22. **PCIe Riser 5th Slot Power Delivery Cable Protocol (`INV-31`)**:
     - When 5 or more physical PCIe expansion cards are populated across risers (e.g. 2x FC HBAs + 2x PCIe NICs + 1x RAID controller), physical Slot 1 on Primary Riser `P48803-B21` requires the dedicated Primary Cable Kit `P56073-B21` to supply power and PCIe lanes (Rules 81016755 & 81354683).
 
+23. **Zero Unsolicited Software, Startup Services & Standardized Reconciliation BOM Protocol (`INV-32`)**:
+    - Optional software licenses (e.g. `S1A05A` SaaS packages) and optional on-site services (e.g. `HA114A1` Installation and Startup Service, `HA114A1 5A6` ONS Startup SVC) MUST NEVER be automatically injected into customer BOMs or Rank 1 intent builds unless explicitly requested by the customer.
+    - Support service evaluation defaults to standard 3-year basic care (`HU4B2A3` / `HU4B2A300DK` or base Tech Care) without bundling unsolicited installation services.
+    - All generated Partner Portal Upload and Tender BOM workbooks MUST conform to the standardized 7-column header contract required by `ReactVendorSolution` and automated reconciliation engines: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`, with per-cluster subtotal rows (`CONFIG #N SUBTOTAL:`) and 2-line separator gaps.
+
