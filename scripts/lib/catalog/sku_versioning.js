@@ -29,6 +29,38 @@ function calculateChecksum(content) {
 }
 
 /**
+ * Resolve relative or model-name chassis directory to its path in outputs/
+ */
+function resolveChassisDirectory(dir) {
+  if (!dir) return '';
+  if (fs.existsSync(dir)) return dir;
+  
+  const outputsRoot = path.join(__dirname, '..', '..', '..', 'outputs');
+  if (fs.existsSync(outputsRoot)) {
+    const cleanDir = path.basename(dir).trim();
+    function findDirRecursive(current) {
+      try {
+        const entries = fs.readdirSync(current, { withFileTypes: true });
+        for (const ent of entries) {
+          if (ent.isDirectory()) {
+            const full = path.join(current, ent.name);
+            if (ent.name === cleanDir || ent.name.toLowerCase() === cleanDir.toLowerCase()) {
+              return full;
+            }
+            const found = findDirRecursive(full);
+            if (found) return found;
+          }
+        }
+      } catch (_) {}
+      return null;
+    }
+    const match = findDirRecursive(outputsRoot);
+    if (match) return match;
+  }
+  return dir;
+}
+
+/**
  * Get comprehensive audit timeline and version history for a given SKU.
  * @param {string} targetSku - Cleaned HPE SKU (e.g. 'P73282-B21' or 'P02498-B21')
  * @param {string} chassisDir - Relative or absolute path to chassis folder
@@ -37,12 +69,13 @@ function calculateChecksum(content) {
 function getSkuAuditHistory(targetSku, chassisDir) {
   if (!targetSku) throw new Error('Target SKU is required for version audit');
   
+  const resolvedChassisDir = resolveChassisDirectory(chassisDir);
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
-  const historyDir = path.join(chassisDir, 'history');
+  const historyDir = path.join(resolvedChassisDir, 'history');
   
   const auditResult = {
     sku: cleanSku,
-    chassisDir,
+    chassisDir: resolvedChassisDir,
     auditedAt: new Date().toISOString(),
     currentStatus: 'UNKNOWN',
     latestDetails: null,
@@ -236,6 +269,7 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     dir = '';
   }
 
+  dir = resolveChassisDirectory(dir);
   const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
