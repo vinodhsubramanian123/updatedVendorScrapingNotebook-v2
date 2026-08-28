@@ -80,7 +80,7 @@ vendorNotebookSolution/
 │
 ├── outputs/                               ← All scrape outputs, catalogs & telemetry
 │   ├── SCRAPED_CATALOGS.md                ← Master markdown registry of certified catalogs
-│   ├── {Family}/{Gen}/{Model}_{FormFactor}/  ← Promoted catalog artifacts (.xlsx, .json, PDF)
+│   ├── {Family}/{Gen}/{Model}/            ← Promoted catalog artifacts (.xlsx, .json, PDF, all form factor variants)
 │   ├── history/                           ← Persistent telemetry, state, sync payloads & reports
 │   ├── test_boqs/                         ← Standard test BOQ combinations (combos 1 to 6)
 │   ├── temp/                              ← Ephemeral uploads, exports & test sinks (git-ignored)

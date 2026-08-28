@@ -46,7 +46,7 @@ Before reading code or executing commands, **query the semantic graph via `/grap
    ```
 2. Run a CLI Evaluation (Agentic Guardrail Loop Enabled):
    ```bash
-   node scripts/evaluators/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12_SFF
+   node scripts/evaluators/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --chassis outputs/ProLiant/Gen12/DL380_Gen12
    ```
 3. Run all test suites (50+ test suites across 4 tiers, 100% pass):
    ```bash

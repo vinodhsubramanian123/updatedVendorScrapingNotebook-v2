@@ -7,6 +7,6 @@
     "targetTabsRegex": "pointnext|services|support services|tech care|^bom$"
   },
   "component_mapping": {
-    "Storage Controller": ["sr932i", "mr408i", "mr216i"]
+    "Storage Controller": ["sr932i", "mr416i", "mr408i", "mr216i"]
   }
 }
