@@ -11,35 +11,21 @@
     "totalTables": 85,
     "diffSummary": {
       "added": 31,
-      "removed": 2,
-      "priceChanged": 23,
-      "attributeChanged": 20,
+      "removed": 20,
+      "priceChanged": 25,
+      "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 428,
-      "reinstated": 20,
-      "discontinuedTotal": 2
+      "unchanged": 433,
+      "reinstated": 0,
+      "discontinuedTotal": 20
     },
     "historySnapshot": "catalog_2026-08-28.json",
     "priceAnalytics": {
       "scrapeDate": "2026-08-28",
       "categoryBreakdown": {
-        "Chassis": {
-          "totalSKUs": 6,
-          "totalPrice": 11700,
-          "minPrice": 1650,
-          "maxPrice": 2250,
-          "subcategories": {
-            "Variants": {
-              "totalSKUs": 6,
-              "totalPrice": 11700,
-              "avgPrice": 1950
-            }
-          },
-          "avgPrice": 1950
-        },
         "Accessories & Infrastructure": {
-          "totalSKUs": 6,
-          "totalPrice": 1329,
+          "totalSKUs": 4,
+          "totalPrice": 1076,
           "minPrice": 44,
           "maxPrice": 816,
           "subcategories": {
@@ -58,18 +44,18 @@
               "totalPrice": 0,
               "avgPrice": 0
             },
+            "Chassis Infrastructure & Rail Kits": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
             "HPE Virtualization": {
               "totalSKUs": 4,
               "totalPrice": 1076,
               "avgPrice": 269
-            },
-            "Rack Options": {
-              "totalSKUs": 2,
-              "totalPrice": 253,
-              "avgPrice": 126.5
             }
           },
-          "avgPrice": 221.5
+          "avgPrice": 269
         },
         "Processor": {
           "totalSKUs": 0,
@@ -270,6 +256,20 @@
             }
           },
           "avgPrice": 0
+        },
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 11700,
+          "minPrice": 1650,
+          "maxPrice": 2250,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 11700,
+              "avgPrice": 1950
+            }
+          },
+          "avgPrice": 1950
         },
         "Graphics & GPU": {
           "totalSKUs": 10,

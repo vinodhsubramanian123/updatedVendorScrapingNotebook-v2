@@ -13,27 +13,27 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-27",
-    "daysActive": 17,
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 18,
     "lastKnownPrice": "1650.00",
-    "fullPriceTrail": "2026-08-10: $1650.00 → 2026-08-27: $1650.00 (✕ REMOVED)",
+    "fullPriceTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-27"
+    "reinstatedDate": "2026-08-28"
   },
   "P52535-B21": {
     "productNumber": "P52535-B21",
-    "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+    "description": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-27",
-    "daysActive": 17,
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 18,
     "lastKnownPrice": "2100.00",
-    "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲)",
+    "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-27"
+    "reinstatedDate": "2026-08-28"
   },
   "P52536-B21": {
     "productNumber": "P52536-B21",
@@ -41,13 +41,13 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-27",
-    "daysActive": 17,
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 18,
     "lastKnownPrice": "2250.00",
-    "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED)",
+    "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-27"
+    "reinstatedDate": "2026-08-28"
   },
   "P52537-B21": {
     "productNumber": "P52537-B21",
@@ -55,13 +55,13 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-27",
-    "daysActive": 17,
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 18,
     "lastKnownPrice": "2050.00",
-    "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED)",
+    "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED)",
     "status": "REINSTATED",
     "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-27"
+    "reinstatedDate": "2026-08-28"
   },
   "P52532-B21": {
     "productNumber": "P52532-B21",
@@ -69,7 +69,13 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "1750.00",
+    "fullPriceTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52533-B21": {
     "productNumber": "P52533-B21",
@@ -77,7 +83,13 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "1900.00",
+    "fullPriceTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -2387,9 +2399,14 @@
     "productNumber": "P22020-B21",
     "description": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
     "mainCategory": "Accessories & Infrastructure",
-    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "subCategory": "Rack Options",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "89.00",
+    "fullPriceTrail": "2026-08-27: $89.00 → 2026-08-28: (no price)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P48819-B21": {
     "productNumber": "P48819-B21",
@@ -2403,9 +2420,14 @@
     "productNumber": "P52341-B21",
     "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
     "mainCategory": "Accessories & Infrastructure",
-    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "subCategory": "Rack Options",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "164.00",
+    "fullPriceTrail": "2026-08-27: $164.00 → 2026-08-28: (no price)",
+    "status": "DISCONTINUED",
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P77110-AA1": {
     "productNumber": "P77110-AA1",
@@ -3757,7 +3779,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "7.00",
+    "fullPriceTrail": "2026-08-27: $7.00 → 2026-08-28: $7.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC121A": {
     "productNumber": "AC121A",
@@ -3765,7 +3793,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "104.00",
+    "fullPriceTrail": "2026-08-27: $104.00 → 2026-08-28: $104.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC129A": {
     "productNumber": "AC129A",
@@ -3773,7 +3807,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "26.00",
+    "fullPriceTrail": "2026-08-27: $26.00 → 2026-08-28: $26.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F69A": {
     "productNumber": "P1F69A",
@@ -3781,7 +3821,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "289.00",
+    "fullPriceTrail": "2026-08-27: $289.00 → 2026-08-28: $289.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F70A": {
     "productNumber": "P1F70A",
@@ -3789,7 +3835,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "1399.00",
+    "fullPriceTrail": "2026-08-27: $1399.00 → 2026-08-28: $1399.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F71A": {
     "productNumber": "P1F71A",
@@ -3797,7 +3849,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "292.00",
+    "fullPriceTrail": "2026-08-27: $292.00 → 2026-08-28: $292.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F72A": {
     "productNumber": "P1F72A",
@@ -3805,7 +3863,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-08-27: $466.00 → 2026-08-28: $466.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F73A": {
     "productNumber": "P1F73A",
@@ -3813,7 +3877,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "104.00",
+    "fullPriceTrail": "2026-08-27: $104.00 → 2026-08-28: $104.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F74A": {
     "productNumber": "P1F74A",
@@ -3821,7 +3891,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "350.00",
+    "fullPriceTrail": "2026-08-27: $350.00 → 2026-08-28: $350.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F75A": {
     "productNumber": "P1F75A",
@@ -3829,7 +3905,13 @@
     "mainCategory": "Graphics & GPU",
     "subCategory": "NVIDIA GPU SW",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-08-27: $466.00 → 2026-08-28: $466.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC123A": {
     "productNumber": "AC123A",
@@ -3837,7 +3919,13 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "HPE Virtualization",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "816.00",
+    "fullPriceTrail": "2026-08-27: $816.00 → 2026-08-28: $816.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "BQ335A": {
     "productNumber": "BQ335A",
@@ -3845,7 +3933,13 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "HPE Virtualization",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "44.00",
+    "fullPriceTrail": "2026-08-27: $44.00 → 2026-08-28: $44.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "BQ337A": {
     "productNumber": "BQ337A",
@@ -3853,7 +3947,13 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "HPE Virtualization",
     "firstSeenDate": "2026-08-27",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "100.00",
+    "fullPriceTrail": "2026-08-27: $100.00 → 2026-08-28: $100.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F77A": {
     "productNumber": "P1F77A",
@@ -3861,6 +3961,252 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "HPE Virtualization",
     "firstSeenDate": "2026-08-27",
+    "discontinuedDate": "2026-08-28",
+    "daysActive": 1,
+    "lastKnownPrice": "116.00",
+    "fullPriceTrail": "2026-08-27: $116.00 → 2026-08-28: $116.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
+  },
+  "P74214-B21": {
+    "productNumber": "P74214-B21",
+    "description": "SKH 128G 4Rx4 5600B-R Spl Smart FIO Kit                       Product is obsolete: P74214-B21Product is obsolete: P74214-B21",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P74216-B21": {
+    "productNumber": "P74216-B21",
+    "description": "SKH 32G 2Rx8 5600B-R Spl Smart FIO Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P74346-B21": {
+    "productNumber": "P74346-B21",
+    "description": "SKH 64G 2Rx4 5600B-R Spl Smart FIO Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P84565-B21": {
+    "productNumber": "P84565-B21",
+    "description": "HPE DL380G11 E1.S SSD Spl Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P47028-B21": {
+    "productNumber": "P47028-B21",
+    "description": "HPE 1.92TB SATA MU SFF Spl BC MV SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P47032-B21": {
+    "productNumber": "P47032-B21",
+    "description": "HPE 3.84TB SATA MU SFF Spl BC MV SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P74218-B21": {
+    "productNumber": "P74218-B21",
+    "description": "HPE 480GB SATA MU SFF BC spl FIO SV SSD                       Product is obsolete: P74218-B21Product is obsolete: P74218-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P74221-B21": {
+    "productNumber": "P74221-B21",
+    "description": "HPE 960GB SATA MU SFF BC spl FIO SV SSD                       Product is obsolete: P74221-B21Product is obsolete: P74221-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P40432-B21": {
+    "productNumber": "P40432-B21",
+    "description": "HPE 900GB SAS 12G Mission Critical 15K SFF BC 3-year Warranty Multi Vendor HDD                       Product is obsolete: P40432-B21Product is obsolete: P40432-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P53560-B21": {
+    "productNumber": "P53560-B21",
+    "description": "HPE 600GB SAS 12G Mission Critical 15K SFF BC 3-year Warranty Multi Vendor HDD                       Product is obsolete: P53560-B21Product is obsolete: P53560-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P72156-B21": {
+    "productNumber": "P72156-B21",
+    "description": "HPE 7.68TB NVMe RI BC U.3 PM1733 spl SSD                       Product is obsolete: P72156-B21Product is obsolete: P72156-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P77079-B21": {
+    "productNumber": "P77079-B21",
+    "description": "HPE 15.36TB NVMe RI BC U.3 MV SPL SSD                       Product is obsolete: P77079-B21Product is obsolete: P77079-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P71146-B21": {
+    "productNumber": "P71146-B21",
+    "description": "HPE 6.4TB NVMe MU SFF BC Spl SSD                       Product is obsolete: P71146-B21Product is obsolete: P71146-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P71301-B21": {
+    "productNumber": "P71301-B21",
+    "description": "HPE 3.2TB NVMe MU SFF BC Spl SSD                       Product is obsolete: P71301-B21Product is obsolete: P71301-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P81553-B21": {
+    "productNumber": "P81553-B21",
+    "description": "HPE 1.6TB NVMe MU SFF BC U.3ST Spl SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P83497-B21": {
+    "productNumber": "P83497-B21",
+    "description": "HPE 1.6TB NVMe MU BC U.3ST SPDM SPL SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P83500-B21": {
+    "productNumber": "P83500-B21",
+    "description": "HPE 3.2TB NVMe MU BC U.3ST SPDM SPL SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P83503-B21": {
+    "productNumber": "P83503-B21",
+    "description": "HPE 6.4TB NVMe MU BC U.3ST SPDM SPL SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P69134-B21": {
+    "productNumber": "P69134-B21",
+    "description": "HPE DL380G11 2U 3x16 R13 Spl Sec Riser",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Secondary PCIe Risers",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P71078-B21": {
+    "productNumber": "P71078-B21",
+    "description": "DL380 Gen11 KLA Sec Riser FIO SPL",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Secondary PCIe Risers",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P69136-B21": {
+    "productNumber": "P69136-B21",
+    "description": "HPE DL380 Gen11 Spl Sec/Tert Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P31618-B21": {
+    "productNumber": "P31618-B21",
+    "description": "Intel X710-T4L Ethernet 10Gb 4-port BASE-T Special Adapter for HPE                       Product is obsolete: P31618-B21Product is obsolete: P31618-B21",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P65078-B21": {
+    "productNumber": "P65078-B21",
+    "description": "HPE 10/25G 2P SFP28 MCX5ADAT Spl Adp                       Product is obsolete: P65078-B21Product is obsolete: P65078-B21",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P75398-B21": {
+    "productNumber": "P75398-B21",
+    "description": "HPE DL380G11 B3220 Spl Dpu Kit                       Product is obsolete: P75398-B21Product is obsolete: P75398-B21",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P80855-B21": {
+    "productNumber": "P80855-B21",
+    "description": "HPE 50/25G 4PSFP56 MCX713104AS Spl Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P72536-B21": {
+    "productNumber": "P72536-B21",
+    "description": "BCM 957504-N1IB 100G 1p Spl OCP3 Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P61852-B21": {
+    "productNumber": "P61852-B21",
+    "description": "HPE NS204i-u Gen11 960GB Spl Boot Dev",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P73722-B21": {
+    "productNumber": "P73722-B21",
+    "description": "HPE NS204i-u SKH 960GB Spl Boot Dev                       Product is obsolete: P73722-B21Product is obsolete: P73722-B21",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P39103-B21": {
+    "productNumber": "P39103-B21",
+    "description": "HPE ProLiant DL300 Gen10 Plus GPU 8x 6-pin Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P55209-B21": {
+    "productNumber": "P55209-B21",
+    "description": "HPE Gen10 Plus GPU 8Pto6P Spl Cable Kit                       Product is obsolete: P55209-B21Product is obsolete: P55209-B21",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-08-28",
     "status": "ACTIVE"
   }
 }
