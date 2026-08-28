@@ -4,7 +4,7 @@ scripts/catalogs/annotate_customer_rfp_excel.py
 
 Annotates the original customer tender RFP spreadsheet (/home/vinodh/Downloads/GID-RFQS-HPE-2026-006.xlsx)
 with comprehensive, executive-ready technical remarks, cluster split explanations,
-pricing, and visual highlight badges for seamless discussions with customer leadership and management.
+pricing, and visual color-coded highlight indicators for seamless discussions with customer leadership and management.
 """
 
 import openpyxl
@@ -25,15 +25,34 @@ C_EMERALD = "008559"
 C_SLATE_HEADER = "1E3E62"
 C_WHITE = "FFFFFF"
 C_BORDER_LIGHT = "D1D5DB"
-C_ALT_ROW = "F8FAFC"
+C_BORDER_MEDIUM = "9CA3AF"
 
-# Status Badges Styling Tokens
-STYLE_EXACT = {"fill": "D1FAE5", "text": "065F46"}      # Soft Green
-STYLE_RIGHTSIZED = {"fill": "FEF3C7", "text": "92400E"}   # Soft Amber/Yellow
-STYLE_PIVOT = {"fill": "E0F2FE", "text": "0369A1"}       # Soft Sky Blue
-STYLE_ADDED = {"fill": "EDE9FE", "text": "5B21B6"}       # Soft Purple
-STYLE_DROPPED = {"fill": "FEE2E2", "text": "991B1B"}     # Soft Red
-STYLE_SPLIT = {"fill": "F3E8FF", "text": "6B21A8"}       # Soft Violet
+# Color Code Legend & Row Styling Tokens
+# 1. Exact Match (Green)
+STYLE_EXACT = {
+    "badge_fill": "DCFCE7", "badge_text": "166534",
+    "row_tint": "F0FDF4", "title_prefix": "🟢 100% EXACT MATCH"
+}
+# 2. Right-Sized / Cost Saved (Amber)
+STYLE_RIGHTSIZED = {
+    "badge_fill": "FEF3C7", "badge_text": "92400E",
+    "row_tint": "FFFBEB", "title_prefix": "🟡 QUANTITY RIGHT-SIZED"
+}
+# 3. Form-Factor / Tech Optimization (Blue)
+STYLE_PIVOT = {
+    "badge_fill": "E0F2FE", "badge_text": "0369A1",
+    "row_tint": "F0F9FF", "title_prefix": "🔵 TECH / FORM-FACTOR OPTIMIZATION"
+}
+# 4. Mandatory Factory Addition (Purple)
+STYLE_ADDED = {
+    "badge_fill": "EDE9FE", "badge_text": "5B21B6",
+    "row_tint": "FAF5FF", "title_prefix": "🟣 MANDATORY FACTORY ADDITION"
+}
+# 5. Scope & Cluster Partition (Violet)
+STYLE_SPLIT = {
+    "badge_fill": "F3E8FF", "badge_text": "6B21A8",
+    "row_tint": "FAF5FF", "title_prefix": "🟪 CLUSTER PARTITION"
+}
 
 border_thin = Border(
     left=Side(style='thin', color=C_BORDER_LIGHT),
@@ -42,6 +61,60 @@ border_thin = Border(
     bottom=Side(style='thin', color=C_BORDER_LIGHT)
 )
 
+border_medium = Border(
+    left=Side(style='medium', color=C_BORDER_MEDIUM),
+    right=Side(style='medium', color=C_BORDER_MEDIUM),
+    top=Side(style='medium', color=C_BORDER_MEDIUM),
+    bottom=Side(style='medium', color=C_BORDER_MEDIUM)
+)
+
+# -------------------------------------------------------------
+# 1. Executive Title Banner (Row 1)
+# -------------------------------------------------------------
+for col_idx in range(1, 10):
+    c = ws.cell(1, col_idx)
+    c.fill = PatternFill(start_color=C_DARK_NAVY, end_color=C_DARK_NAVY, fill_type="solid")
+    c.border = border_thin
+title_cell = ws.cell(1, 1, "HPE ProLiant DL380 Gen11 Tender Proposal — Customer RFP Reconciliation & Technical Remarks Matrix")
+title_cell.font = Font(name=FONT_FAMILY, size=13, bold=True, color=C_WHITE)
+title_cell.alignment = Alignment(horizontal="center", vertical="center")
+ws.merge_cells("A1:I1")
+ws.row_dimensions[1].height = 36
+
+# -------------------------------------------------------------
+# 2. Visual Color Code Legend (Rows 2 & 3)
+# -------------------------------------------------------------
+legend_items = [
+    ("A2:B2", "🟢 100% Direct Match", "Exact 1:1 match to RFP description, SKU, and specs", STYLE_EXACT),
+    ("C2:D2", "🟡 Quantity Right-Sized", "Optimized to factory kit packaging (Eliminates $291k excess)", STYLE_RIGHTSIZED),
+    ("E2:F2", "🔵 Tech / Form-Factor Optimized", "FIO SKU standards, PCIe pivot & U.3 Premium cage", STYLE_PIVOT),
+    ("G2:H2", "🟣 Mandatory Factory Addition", "Required physical cables & licenses for buildability", STYLE_ADDED),
+    ("I2:I2", "🟪 Cluster Split", "20x Platinum + 40x Gold", STYLE_SPLIT)
+]
+
+for cell_range, label, desc, style in legend_items:
+    start_col = cell_range.split(":")[0][0]
+    end_col = cell_range.split(":")[1][0] if ":" in cell_range else start_col
+    sc_idx = openpyxl.utils.column_index_from_string(start_col)
+    ec_idx = openpyxl.utils.column_index_from_string(end_col)
+    for c_i in range(sc_idx, ec_idx + 1):
+        c = ws.cell(2, c_i)
+        c.fill = PatternFill(start_color=style["badge_fill"], end_color=style["badge_fill"], fill_type="solid")
+        c.border = border_thin
+    cell = ws.cell(2, sc_idx, f"{label}\n({desc})")
+    cell.font = Font(name=FONT_FAMILY, size=8, bold=True, color=style["badge_text"])
+    cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    if sc_idx != ec_idx:
+        ws.merge_cells(cell_range)
+
+ws.row_dimensions[2].height = 28
+
+# Empty separator row (Row 3)
+ws.row_dimensions[3].height = 8
+
+# -------------------------------------------------------------
+# 3. Table Column Headers (Row 4)
+# -------------------------------------------------------------
 headers = [
     "Item No.",
     "Category",
@@ -54,10 +127,20 @@ headers = [
     "Compliance Status"
 ]
 
-ws.append(headers)
+for col_idx, h_text in enumerate(headers, 1):
+    cell = ws.cell(4, col_idx, h_text)
+    cell.fill = PatternFill(start_color=C_SLATE_HEADER, end_color=C_SLATE_HEADER, fill_type="solid")
+    cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=C_WHITE)
+    cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    cell.border = border_thin
 
+ws.row_dimensions[4].height = 32
+
+# -------------------------------------------------------------
+# 4. Data Rows
+# -------------------------------------------------------------
 rows_data = [
-    # Row 1: SKU Number / Scope Split
+    # Row 1: Scope Split
     (
         "1",
         "Tender Scope / Architecture",
@@ -79,39 +162,16 @@ rows_data = [
     (
         "2",
         "Model Name (Bundled Options)",
-        "ProLiant DL380 Gen11 8SFF NC Configure-to-order Server\n"
-        "• ProLiant DL360 Gen11 CPU1 to OCP2 x8 Enablement Kit (P51911-B21)\n"
-        "• ProLiant DL3XX Gen11 CPU2 to OCP2 x8 Enablement Kit (P48830-B21)\n"
-        "• MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller (P58335-B21)\n"
-        "• Smart Storage Hybrid Capacitor with 145mm Cable Kit (P02377-B21)\n"
-        "• NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device (P48183-B21)\n"
-        "• ProLiant DL380 Gen11 NS204i-u Internal 40 Cable Kit (P52152-B21)\n"
-        "• ProLiant DL380 Gen11 NS204i-u FIO Bundle Kit (P54542-B21)\n"
-        "• Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE (P51181-B21)\n"
-        "• Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE (P10115-B21)\n"
-        "• HPE iLO 6\n"
-        "• ProLiant DL3XX Gen11 Easy Install Rail 3 Kit (P52341-B21)\n"
-        "• DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit (P22020-B21)",
+        "HPE ProLiant DL380 Gen11 8SFF NC CTO Server (P52534-B21) bundled with 12 factory cables, controllers, boot devices, and rails",
         "60",
-        "Fully Mapped & De-Bundled Across All 60 Nodes:\n"
-        "• P52534-B21: Base CTO Chassis (Qty 60)\n"
-        "• P47777-B21: MR416i-p PCIe RAID 8GB Cache (Qty 60)\n"
-        "• P02377-B21: Smart Storage Hybrid Capacitor (Qty 60)\n"
-        "• P48183-B21: NS204i-u Boot Device (Qty 60) + Cables (Qty 60)\n"
-        "• P51181-B21: 1Gb 4p BASE-T OCP3 in Slot 2 (Qty 60)\n"
-        "• P10115-B21: 10/25Gb 2p SFP28 OCP3 in Slot 1 (Qty 60)\n"
-        "• P48830-B21: CPU2 to OCP2 Cable Kit (Qty 60)\n"
-        "• P52341-B21: Rail Kit (Qty 60) + P22020-B21 CMA (Qty 60)",
+        "P52534-B21 (Qty: 60 CTO Chassis)\n• Cluster A (Platinum): 20 Base Chassis\n• Cluster B (Gold): 40 Base Chassis\n• 12 Bundled Items Unbundled into Verified Discrete Lines",
         5070.00,
         304200.00,
-        "DE-BUNDLED FACTORY INTEGRATION & FORM-FACTOR OPTIMIZATION:\n"
-        "All 12 items bundled in this cell are 100% fulfilled under discrete HPE factory line items with 3 critical engineering enhancements:\n"
-        "1. STORAGE CONTROLLER FORM-FACTOR PIVOT: The customer requested both 1Gb OCP (P51181-B21) and 10/25Gb OCP (P10115-B21) in addition to storage. "
-        "Because DL380 Gen11 has 2 OCP slots, the storage controller is pivoted from OCP (MR408i-o) to PCIe standup (MR416i-p P47777-B21 in PCIe Slot 3). "
-        "This frees OCP Slot 1 to house the customer's P10115-B21 OCP NIC, doubles cache to 8GB with an x16 bus, and validates the customer's P48832-B21 Tri-Mode cable.\n"
-        "2. DUAL OCP NETWORKING: Both requested OCP cards (P51181-B21 in Slot 2 and P10115-B21 in Slot 1) are 100% active and included on every server.\n"
-        "3. MUTUAL-EXCLUSIVITY RESOLUTION: P51911-B21 (CPU1 to OCP2) and P48830-B21 (CPU2 to OCP2) cannot be selected together (CLIC Rule 81355854). P48830-B21 is retained for dual-socket balance, and conflicting P51911-B21 is dropped.\n"
-        "4. OS BOOT & RAILS: Dedicated rear hot-plug OS RAID1 (NS204i-u) and tool-less rail/CMA kits are fully provided.",
+        "100% COMPONENT FULFILLMENT (FORM-FACTOR OPTIMIZED FOR DUAL OCP):\n"
+        "The customer's RFP item #2 bundled 12 separate hardware options inside a single chassis line. "
+        "We have extracted all 12 options into discrete factory lines and resolved the critical OCP bus conflict: "
+        "In the customer's draft, using an OCP controller (MR408i-o) blocked OCP Slot 1, preventing installation of the requested P10115-B21 10/25Gb OCP NIC. "
+        "We have pivoted the storage controller to the PCIe standup MR416i-p (P47777-B21, 8GB Cache), which frees OCP Slot 1 and allows both OCP NICs (P10115-B21 in Slot 1 + P51181-B21 in Slot 2) to be 100% active and functional.",
         "100% Fulfilled & Form-Factor Optimized",
         STYLE_PIVOT
     ),
@@ -271,7 +331,7 @@ rows_data = [
         "Power Supply (Cluster B)",
         "1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit (P38997-B21)",
         "80",
-        "P38997-B21 (Qty: 80)\n• Cluster A: 0 PSUs\n• Cluster B: 2 PSUs/node × 40 nodes = 80 PSUs",
+        "P38997-B21 (Qty: 80)\n• Cluster A: 0 PSUs\n• Cluster B: 2 PSUs/node × 40 nodes = 80",
         1150.00,
         92000.00,
         "100% DIRECT MATCH:\n"
@@ -385,7 +445,7 @@ rows_data = [
         "Factory Regulatory Setting (EU Lot 9)",
         STYLE_ADDED
     ),
-    # Row 14: Storage Cache Hybrid Capacitor (Explicit Confirmation)
+    # Row 15: Storage Cache Hybrid Capacitor (Explicit Confirmation)
     (
         "[Ref 1]",
         "Storage Cache Protection",
@@ -399,13 +459,13 @@ rows_data = [
         "100% Exact Match",
         STYLE_EXACT
     ),
-    # Row 15: Boot OS Device (Explicit Confirmation)
+    # Row 16: Boot OS Device (Explicit Confirmation)
     (
         "[Ref 2]",
         "Rear OS Boot Device",
-        "HPE NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device (P48183-B21) + Cable (P52152-B21) + FIO (P54542-B21)",
+        "HPE NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device (P48183-B21)",
         "60 (Bundled in Item 2)",
-        "P48183-B21 (Qty 60) + P52152-B21 (Qty 60) + P54542-B21 (Qty 60)\n• Cluster A: 1 set/node × 20 nodes = 20\n• Cluster B: 1 set/node × 40 nodes = 40",
+        "P48183-B21 + Cables + FIO Bracket (Qty: 60)\n• Cluster A: 1/node × 20 nodes = 20\n• Cluster B: 1/node × 40 nodes = 40",
         7964.00,
         477840.00,
         "100% DIRECT MATCH (INCLUDED IN BUNDLE):\n"
@@ -415,7 +475,9 @@ rows_data = [
     )
 ]
 
-for row_tuple in rows_data:
+start_row = 5
+for idx, row_tuple in enumerate(rows_data):
+    current_r = start_row + idx
     ws.append(row_tuple[:9])
 
 # Calculate grand total
@@ -434,61 +496,61 @@ ws.append([
     "100% Certified Orderable"
 ])
 
-# Styling & Formatting Application
-header_fill = PatternFill(start_color=C_DARK_NAVY, end_color=C_DARK_NAVY, fill_type="solid")
-header_font = Font(name=FONT_FAMILY, size=10, bold=True, color=C_WHITE)
-header_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
-
-for col_idx in range(1, 10):
-    cell = ws.cell(1, col_idx)
-    cell.fill = header_fill
-    cell.font = header_font
-    cell.alignment = header_align
-    cell.border = border_thin
-
-ws.row_dimensions[1].height = 32
-
-for row_idx in range(2, ws.max_row + 1):
+# -------------------------------------------------------------
+# 5. Styling & Visual Color Tone Application
+# -------------------------------------------------------------
+for row_idx in range(start_row, ws.max_row + 1):
     is_total_row = (row_idx == ws.max_row)
-    data_idx = row_idx - 2
+    data_idx = row_idx - start_row
     row_style = rows_data[data_idx][9] if data_idx < len(rows_data) else None
 
-    ws.row_dimensions[row_idx].height = 42 if not is_total_row else 30
+    ws.row_dimensions[row_idx].height = 46 if not is_total_row else 32
 
     for col_idx in range(1, 10):
         cell = ws.cell(row_idx, col_idx)
         cell.border = border_thin
         
-        # Base font
+        # Background fill
         if is_total_row:
             cell.font = Font(name=FONT_FAMILY, size=10, bold=True, color="000000")
             cell.fill = PatternFill(start_color="DCFCE7", end_color="DCFCE7", fill_type="solid")
         else:
+            # Apply subtle row tint from matching style
+            row_tint_color = row_style["row_tint"] if row_style else C_WHITE
+            cell.fill = PatternFill(start_color=row_tint_color, end_color=row_tint_color, fill_type="solid")
             cell.font = Font(name=FONT_FAMILY, size=9, bold=False, color="000000")
-            if row_idx % 2 == 1:
-                cell.fill = PatternFill(start_color=C_ALT_ROW, end_color=C_ALT_ROW, fill_type="solid")
-            else:
-                cell.fill = PatternFill(start_color=C_WHITE, end_color=C_WHITE, fill_type="solid")
 
-        # Alignment
-        if col_idx in [1, 4, 9]:
+        # Alignment & Formatting
+        if col_idx == 1: # Item No.
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-        elif col_idx in [6, 7]:
+            if not is_total_row and row_style:
+                cell.fill = PatternFill(start_color=row_style["badge_fill"], end_color=row_style["badge_fill"], fill_type="solid")
+                cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=row_style["badge_text"])
+        elif col_idx == 2: # Category
+            cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+            cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color="1F2937")
+        elif col_idx == 4: # Customer Qty
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color="111827")
+        elif col_idx == 5: # Proposed SKU & Qty
+            cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+            cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color="0F172A")
+        elif col_idx in [6, 7]: # Prices
             cell.alignment = Alignment(horizontal="right", vertical="center")
             if isinstance(cell.value, (int, float)) and cell.value > 0:
                 cell.number_format = '$#,##0.00'
             elif cell.value == 0:
                 cell.value = "$0.00 (Included)"
-        else:
+        elif col_idx == 8: # Remarks
             cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
-
-        # Status badge column (Col 9)
-        if col_idx == 9 and row_style and not is_total_row:
-            cell.fill = PatternFill(start_color=row_style["fill"], end_color=row_style["fill"], fill_type="solid")
-            cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=row_style["text"])
-        elif col_idx == 9 and is_total_row:
-            cell.fill = PatternFill(start_color="15803D", end_color="15803D", fill_type="solid")
-            cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=C_WHITE)
+        elif col_idx == 9: # Status badge column
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            if row_style and not is_total_row:
+                cell.fill = PatternFill(start_color=row_style["badge_fill"], end_color=row_style["badge_fill"], fill_type="solid")
+                cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=row_style["badge_text"])
+            elif is_total_row:
+                cell.fill = PatternFill(start_color="15803D", end_color="15803D", fill_type="solid")
+                cell.font = Font(name=FONT_FAMILY, size=9, bold=True, color=C_WHITE)
 
 # Column Widths Optimization
 col_widths = {
@@ -499,7 +561,7 @@ col_widths = {
     "E": 44,  # HPE Proposed Solution
     "F": 16,  # Unit Price
     "G": 18,  # Total Price
-    "H": 58,  # HPE Remarks & Rationale
+    "H": 60,  # HPE Remarks & Rationale
     "I": 28   # Compliance Status
 }
 
@@ -507,4 +569,4 @@ for col_letter, width in col_widths.items():
     ws.column_dimensions[col_letter].width = width
 
 wb.save(TARGET_FILE)
-print(f"✅ Successfully formatted and annotated customer tender spreadsheet: {TARGET_FILE}")
+print(f"✅ Successfully formatted and annotated customer tender spreadsheet with visual color legend: {TARGET_FILE}")
