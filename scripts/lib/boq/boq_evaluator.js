@@ -382,6 +382,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     });
   }
 
+  // CLIC Rule 81354652: Storage Controller Enablement Cable Kit required for Hybrid Capacitor / Battery Backup
+  if (storage.needsCapacitorCable) {
+    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery requires Storage Controller Enablement Cable Kit (P48918-B21) to connect power to the controller.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'STORAGE_CONTROLLER_ENABLEMENT_CABLE',
+      rule: 'CLIC Rule 81354652: Capacitor Power Link Requirement',
+      sku: 'P48918-B21',
+      description: 'HPE ProLiant Storage Controller Enablement Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
   // Advanced Enterprise Rule: Storage Expander & Port Channel Math
   if (storage.needsSasExpander) {
     const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).`;

@@ -91,6 +91,9 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   // CLIC Rules 81354627 & 81354632: P48832-B21 (Y-Cable) requires a PCIe-type controller (-p) and Premium Cage (P48814-B21)
   const hasIncompatibleYCable = hasYCable && (!hasPcieController || !hasPremiumCage);
 
+  // CLIC Rule 81354652: P02377-B21 / P01366-B21 (Hybrid Capacitor / Smart Battery) requires P48918-B21 Storage Enablement Cable Kit
+  const needsCapacitorCable = hasSmartBattery && !hasOcpCable;
+
   return {
     driveCount,
     hasStorageController,
@@ -106,6 +109,7 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     hasSasExpander,
     hasTriModeSwitch,
     needsSasExpander,
+    needsCapacitorCable,
     controllerDirectCapacity,
     conflictingCableItems
   };
