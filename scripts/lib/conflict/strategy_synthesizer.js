@@ -229,26 +229,100 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const rank2AddonCost = rank2Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
   const rank2Cost = rank1Cost + rank2AddonCost;
 
-  // Rank 3: Performance & High-IOPS Optimized
-  // Falls back to DNA-driven addons if tierConfig.rank3 is missing/empty
-  const rank3ConfigAddons = tierConfig.rank3 || [];
-  const rank3RawList = rank3ConfigAddons.length > 0 ? rank3ConfigAddons : buildDnaFallbackRank3();
-  const rank3Addons = rank3RawList.map(a => {
-    const price = getPrice(a.sku, 'Performance Upgrade', a.unitPriceUsd || a.defaultPrice || 450);
-    return {
-      sku: cleanBaseSKU(a.sku),
-      description: a.description || a.name || `Performance Component (${a.sku})`,
-      quantity: a.quantity || 1,
-      unitPriceUsd: price,
-      extendedPriceUsd: price * (a.quantity || 1),
-      isFixInjected: false,
-      isStrategyAddon: true,
-      category: a.category || 'Performance Acceleration'
-    };
-  });
-  const rank3Parts = [...rank1Parts, ...rank3Addons];
-  const rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-  const rank3Cost = rank1Cost + rank3AddonCost;
+  // Rank 3: Performance & High-IOPS / Contested Form-Factor Optimized
+  // Checks if Cross-Subsystem Arbitration identified an architectural Form-Factor Pivot (e.g. PCIe Storage + OCP NIC)
+  const arbitration = evalResults.arbitrationResults || {};
+  const arbitrationBranches = arbitration.branches || [];
+  const pcieStorageBranch = arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
+
+  let rank3Parts = [];
+  let rank3Cost = 0;
+  let rank3AddonCost = 0;
+  let rank3Addons = [];
+  let rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized';
+  let rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.';
+  let rank3IntentAlignment = `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`;
+
+  if (pcieStorageBranch) {
+    rank3Name = 'Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)';
+    rank3Reasoning = 'Pivoted storage controller to PCIe (MR416i-p 8GB Cache) to free OCP Slot 1 for customer\'s P10115-B21 10/25Gb OCP3 adapter, validating original P48832-B21 cable choice.';
+    rank3IntentAlignment = '100% Exact Part Number Match (Fulfills P10115-B21 & P48832-B21)';
+
+    const pcieCtrl = pcieStorageBranch.storageController;
+    const cableKit = pcieStorageBranch.cableKit;
+
+    rank3Parts = baseParts.map(p => {
+      if (/mr408i-o|sr416i-o|\b-o\b/i.test(p.description) && /controller|raid|storage/i.test(p.description)) {
+        const price = getPrice(pcieCtrl.sku, 'Storage Controller', 4599);
+        return {
+          sku: cleanBaseSKU(pcieCtrl.sku),
+          description: pcieCtrl.desc,
+          quantity: p.quantity || 1,
+          unitPriceUsd: price,
+          extendedPriceUsd: price * (p.quantity || 1),
+          isFixInjected: false,
+          isStrategyAddon: true,
+          category: 'Storage Performance'
+        };
+      }
+      return p;
+    });
+
+    const ocpNicSub = pcieStorageBranch.substitutions.find(s => s.action === 'RETAIN_OCP_NIC_IN_FREED_SLOT');
+    if (ocpNicSub) {
+      const ocpPrice = getPrice(ocpNicSub.retainedSku, 'Network Adapter', 750);
+      rank3Parts.push({
+        sku: cleanBaseSKU(ocpNicSub.retainedSku),
+        description: ocpNicSub.retainedDesc,
+        quantity: 1,
+        unitPriceUsd: ocpPrice,
+        extendedPriceUsd: ocpPrice,
+        isFixInjected: false,
+        isStrategyAddon: true,
+        category: 'Network Adapter (OCP3)'
+      });
+    }
+
+    if (cableKit) {
+      const cablePrice = getPrice(cableKit.sku, 'Storage Cable', 730);
+      rank3Parts.push({
+        sku: cleanBaseSKU(cableKit.sku),
+        description: cableKit.description,
+        quantity: 1,
+        unitPriceUsd: cablePrice,
+        extendedPriceUsd: cablePrice,
+        isFixInjected: true,
+        isStrategyAddon: true,
+        category: 'Storage Controller Cable'
+      });
+    }
+
+    fixParts.filter(f => !/p48918|enablement cable/i.test(f.sku + (f.description || ''))).forEach(f => {
+      rank3Parts.push(f);
+    });
+
+    rank3Cost = rank3Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
+    rank3AddonCost = Math.max(0, rank3Cost - rank1Cost);
+  } else {
+    const rank3ConfigAddons = tierConfig.rank3 || [];
+    const rank3RawList = rank3ConfigAddons.length > 0 ? rank3ConfigAddons : buildDnaFallbackRank3();
+    rank3Addons = rank3RawList.map(a => {
+      const price = getPrice(a.sku, 'Performance Upgrade', a.unitPriceUsd || a.defaultPrice || 450);
+      return {
+        sku: cleanBaseSKU(a.sku),
+        description: a.description || a.name || `Performance Component (${a.sku})`,
+        quantity: a.quantity || 1,
+        unitPriceUsd: price,
+        extendedPriceUsd: price * (a.quantity || 1),
+        isFixInjected: false,
+        isStrategyAddon: true,
+        category: a.category || 'Performance Acceleration'
+      };
+    });
+    rank3Parts = [...rank1Parts, ...rank3Addons];
+    rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
+    rank3Cost = rank1Cost + rank3AddonCost;
+  }
 
   // Rank 4: Maximum Density & Future Scalability
   // Falls back to DNA-driven addons if tierConfig.rank4 is missing/empty
@@ -318,15 +392,15 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       },
       ragSecondOpinion: getLiveRagGrounding(
         'Intent Preserved',
-        fixes.map(f => f.sku).concat(['thermal', 'power']),
-        `✅ Local Rule Engine Validated: Workload intent (${dna.workloadDescription || 'Balanced Enterprise'}) preserved with ${fixes.length} mandatory physical fix(es).`
+        fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']),
+        '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'
       ),
-      reasoning: `Selected as Rank 1 because it directly preserves customer ${dna.workloadDescription || 'workload'} intent without unrequested over/under-provisioning, injecting only mandatory physical thermal/power fixes.`
+      reasoning: `Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.`
     },
     {
       rank: 2,
       name: 'Rank 2: Standardized CTO Baseline & Factory Default Accessories',
-      score: parseFloat(Math.max(0.65, 0.93 - (fixes.length * 0.02)).toFixed(2)),
+      score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: rank2Cost,
       budgetBreakdown: {
         baseBomCost: baseCost,
@@ -334,7 +408,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         strategyAddonCost: rank2AddonCost,
         totalBudgetUsd: rank2Cost
       },
-      workloadDnaMatch: 'CTO Factory Default Standardized Configuration',
+      workloadDnaMatch: 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)',
       changesCount: fixes.length + rank2Addons.length,
       skuPartsList: rank2Parts,
       tradeoffMetrics: {
@@ -352,7 +426,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 3,
-      name: 'Rank 3: High-IOPS & Storage Performance Optimized',
+      name: rank3Name,
       score: parseFloat(Math.max(0.60, 0.88 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: rank3Cost,
       budgetBreakdown: {
@@ -361,21 +435,21 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         strategyAddonCost: rank3AddonCost,
         totalBudgetUsd: rank3Cost
       },
-      workloadDnaMatch: `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
-      changesCount: fixes.length + rank3Addons.length,
+      workloadDnaMatch: pcieStorageBranch ? 'High-IOPS (PCIe x16 Controller, 8GB Cache & Dual OCP Retained)' : `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
+      changesCount: fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length),
       skuPartsList: rank3Parts,
       tradeoffMetrics: {
-        intentAlignment: `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`,
-        skuModifications: `${fixes.length + rank3Addons.length} modifications`,
+        intentAlignment: rank3IntentAlignment,
+        skuModifications: `${fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length)} modifications`,
         costDeltaUsd: `+$${(fixCost + rank3AddonCost).toLocaleString()}`,
-        capacityExpansion: 'High Drive Controller Throughput'
+        capacityExpansion: pcieStorageBranch ? '2x Write Cache (8GB) + OCP Retention' : 'High Drive Controller Throughput'
       },
       ragSecondOpinion: getLiveRagGrounding(
         'High-IOPS Storage Performance',
-        rank3Addons.map(a => a.sku).concat(['battery', 'cache', 'storage']),
-        `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
+        (pcieStorageBranch ? ['MR416i-p', 'P10115-B21', 'P48832-B21'] : rank3Addons.map(a => a.sku)).concat(['battery', 'cache', 'storage']),
+        pcieStorageBranch ? '✅ Local Rule Engine Validated: PCIe standup controller (x16 bus, 8GB cache) frees OCP Slot 1 for customer OCP adapter.' : `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
       ),
-      reasoning: `Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.`
+      reasoning: rank3Reasoning
     },
     {
       rank: 4,

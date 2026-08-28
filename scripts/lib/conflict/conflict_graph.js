@@ -17,6 +17,7 @@ const { loadCatalogRules, getMandatorySkusForChassis } = require('../catalog/cat
 
 // Modular subcomponents
 const { extractWorkloadDna } = require('./workload_dna.js');
+const { arbitrateContestedResources } = require('./resource_arbitrator.js');
 const { synthesize5TierRankedSolutions } = require('./strategy_synthesizer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
@@ -258,10 +259,30 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     }
   });
 
+  // 5. CONTESTED RESOURCE ARBITRATION (Cross-Subsystem Shared Slots & Form Factor Duals)
+  const arbitrationResults = arbitrateContestedResources(
+    boqItems,
+    { missingDependencies: depsList },
+    chassisInfo,
+    catalogData
+  );
+
+  if (arbitrationResults.hasContentions) {
+    arbitrationResults.contentions.forEach(con => {
+      recordAudit('CONTESTED_RESOURCE', `Contested Resource: ${con.resourceType}`, 'INFO', con.tradeoffSummary);
+    });
+  }
+
   const isWholeSolutionValid = conflicts.length === 0 && unresolvedConflicts.length === 0;
 
-  // Synthesize 5-Tier Ranked Solutions
-  const rankedSolutions = synthesize5TierRankedSolutions(boqItems, { missingDependencies: depsList }, { isWholeSolutionValid, conflicts }, chassisInfo, targetDir);
+  // Synthesize 5-Tier Ranked Solutions with Cross-Subsystem Arbitration Branches
+  const rankedSolutions = synthesize5TierRankedSolutions(
+    boqItems,
+    { missingDependencies: depsList, arbitrationResults },
+    { isWholeSolutionValid, conflicts },
+    chassisInfo,
+    targetDir
+  );
 
   return {
     chassisInfo,
@@ -271,6 +292,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     conflicts,
     resolvedFixes,
     unresolvedConflicts,
+    arbitrationResults,
     rankedSolutions,
     auditLog,
     rulesSource: catalogData.sourceFile,
@@ -281,6 +303,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
 module.exports = {
   detectChassisVariant,
   extractWorkloadDna,
+  arbitrateContestedResources,
   synthesize5TierRankedSolutions,
   validateConflictGraph,
   invalidateChassisMapCache,

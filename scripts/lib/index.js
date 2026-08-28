@@ -32,6 +32,7 @@ module.exports = {
     parser: require('./boq/boq_parser.js'),
     conflictGraph: require('./conflict/conflict_graph.js'),
     workloadDna: require('./conflict/workload_dna.js'),
+    resourceArbitrator: require('./conflict/resource_arbitrator.js'),
     strategySynthesizer: require('./conflict/strategy_synthesizer.js'),
     budgetOptimizer: require('./boq/budget_optimizer.js'),
     vendorBomVerifier: require('./boq/vendor_bom_verifier.js'),
