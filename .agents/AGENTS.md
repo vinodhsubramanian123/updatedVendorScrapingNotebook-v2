@@ -260,6 +260,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: In HPE CLIC/OCA, BTO memory SKUs (`-B21`) are strictly restricted from standalone quotes in CTO base models under global supply constraint rules (Rules 81354490 & 91001655).
 - **Rule**: Rule engines and tender generators MUST NEVER synthesize an FIO component by simply appending `" 0D1"` to an un-whitelisted BTO part number (e.g. `P64707-B21 0D1`). CTO configurations require true FIO root part numbers (`-F21`, e.g. `P64707-F21`) or explicit `#0D1`-whitelisted companion Smart Kits (`P73148-B21 #0D1`).
 
+### INV-32: EU Ecodesign Lot 9 Regulatory Compliance & Platinum PSU Enablement Protocol
+- **Pattern**: Dual-socket servers with high-draw TDP configurations default to EU Ecodesign Regulation 2019/424 (ErP Lot 9) in HPE OCA, requiring 96% Titanium power supplies.
+- **Rule**: When ordering 94% Platinum PSUs (`P38997-B21`), `power_environment.js` and `boq_evaluator.js` MUST inject `P35876-B21` (HPE CE Mark Removal FIO Enablement Kit, $1 list) in Factory Configuration Settings for non-EU/global deployment to clear regulatory software prompts without altering the customer's requested PSU model.
+
+### INV-33: PCIe Riser 5th Slot Power Delivery Cable Protocol
+- **Pattern**: When 5 or more physical PCIe expansion cards are populated across risers (e.g. 2x FC HBAs + 2x PCIe NICs + 1x RAID controller), physical Slot 1 on Primary Riser `P48803-B21` requires auxiliary cable enablement.
+- **Rule**: `pcie_riser.js` and `boq_evaluator.js` MUST inject Primary Cable Kit `P56073-B21` to supply dedicated power and PCIe lanes to Slot 1 (Rules 81016755 & 81354683).
+
 ---
 
 ## History Directory Hygiene Rules

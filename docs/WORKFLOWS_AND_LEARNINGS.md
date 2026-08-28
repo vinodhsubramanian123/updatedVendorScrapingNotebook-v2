@@ -347,3 +347,20 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - **OS Core Licensing Multipliers**: Calculates physical CPU cores and validates 16-core base licenses plus add-on packs.
   - **Power Derating & 220V Utility Advisory**: Aggregates node power draw and flags `needsHighLine220v` for draws >800W on >=1600W PSUs.
   - **Cluster Infrastructure Sizing Matrix**: Emits total Rack Units, 42U rack counts, peak facility power (kW), and rail kit coverage in `evalSummary.clusterSizing`.
+
+---
+
+## 33. Live Partner Portal Validation, Form-Factor Bus Arbitrated Ranking & EU Lot 9 Learnings
+- **Form-Factor Bus Arbitrated Ranking (Path B)**:
+  - Complex customer tenders often specify conflicting form-factor choices (e.g. drafting an OCP storage controller `MR408i-o` while simultaneously asking for an OCP network adapter `P10115-B21` and a secondary OCP adapter `P51181-B21` in a server chassis that only has 2 physical OCP slots).
+  - Rather than artificially dropping customer networking, the engine pivots the storage controller to standard PCIe standup (`MR416i-p`, `P47777-B21`), freeing OCP Slot 1 and enabling 100% of requested OCP NICs to remain active.
+  - `strategy_synthesizer.js` scores resolution tiers by **Exact Intent SKU Overlap**, guaranteeing that the build retaining the closest match to the customer's drafted part numbers dynamically ranks #1 without hardcoded rules.
+- **Physical Enclosure & Cabling Interlocks**:
+  - **Tri-Mode Y-Cable (`P48832-B21`) Mandates Premium Drive Cage (`P48814-B21`)**: Replaces basic x1 cage `P48813-B21` to deliver full x4 PCIe Gen4 NVMe/SAS4 bandwidth to front drives.
+  - **Capacitor Enablement Cable Kit (`P48918-B21`) Mandate**: Connects the `P02377-B21` Smart Storage Hybrid Capacitor to the `MR416i-p` RAID controller.
+  - **Primary Cable Kit (`P56073-B21`) Mandate for 5+ PCIe Cards**: Powers physical Slot 1 on Primary Riser `P48803-B21` when 5 cards are populated.
+- **EU Ecodesign Regulation 2019/424 (ErP Lot 9) & Platinum PSU Enablement**:
+  - For high-draw dual-socket configurations using Platinum PSUs (`P38997-B21`), `P35876-B21` (*HPE CE Mark Removal FIO Enablement Kit*) clears the regional European Lot 9 software prompt in HPE Partner Portal for global/non-EU delivery ($1 list / $0 net).
+- **Side-by-Side Executive Reconciliation Matrix Architecture**:
+  - Original customer RFP spreadsheets (`GID-RFQS-HPE-2026-006.xlsx`) are preserved with untouched description and quantity columns, side-by-side proposed SKUs, compliance status pills, and executive remarks with embedded color coding keys (🟢 Exact Match, 🟡 Quantity Right-Sized, 🔵 Tech Optimized, 🟣 Mandatory Addition, 🟪 Cluster Partition).
+

@@ -127,3 +127,11 @@ The system leverages Google Jules for background code review, test generation, a
 20. **Multi-Node Cluster Infrastructure & Power Sizing Matrix (`INV-29`)**:
     - Large multi-node tenders (e.g. 60x DL380 nodes) require comprehensive data center infrastructure synthesis.
     - `boq_evaluator.js` and `multi_cluster_splitter.js` MUST emit `clusterSizing` containing: (1) Total Rack Units (`serverCount * 2U`), (2) Standard 42U Rack Count (`ceil(totalRU / 42)`), (3) Peak Facility Power Envelope (`(serverCount * psuWattage) / 1000` kW), (4) Rail Kit Coverage (`P52341-B21` Easy Install Rail Kit 1 per node), and (5) High-line 200V-240V utility power derating protection when estimated node draw exceeds 800W.
+
+21. **EU Ecodesign Lot 9 & Regulatory Platinum PSU Enablement Protocol (`INV-30`)**:
+    - Dual-socket servers with high-draw TDP configurations default to EU Ecodesign Regulation 2019/424 (ErP Lot 9) in HPE OCA, requiring 96% Titanium power supplies.
+    - When ordering 94% Platinum PSUs (`P38997-B21`), `power_environment.js` and `boq_evaluator.js` MUST inject `P35876-B21` (HPE CE Mark Removal FIO Enablement Kit, $1 list) in Factory Configuration Settings for non-EU/global deployment to clear regulatory software prompts without altering the customer's requested PSU model.
+
+22. **PCIe Riser 5th Slot Power Delivery Cable Protocol (`INV-31`)**:
+    - When 5 or more physical PCIe expansion cards are populated across risers (e.g. 2x FC HBAs + 2x PCIe NICs + 1x RAID controller), physical Slot 1 on Primary Riser `P48803-B21` requires the dedicated Primary Cable Kit `P56073-B21` to supply power and PCIe lanes (Rules 81016755 & 81354683).
+
