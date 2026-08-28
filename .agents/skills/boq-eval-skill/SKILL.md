@@ -159,3 +159,6 @@ When evaluating or auto-remediating BOQs across any product family:
    - Optional software (`S1A05A`) and on-site startup/installation services (`HA114A1`, `HA114A1 5A6`) MUST NEVER be automatically injected into BOMs or Rank 1 intent builds unless explicitly requested by the customer.
    - Support services default to standard 3-year basic care (`HU4B2A3` / `HU4B2A300DK` or base Tech Care) without bundling unrequested installation services.
    - All partner portal upload and tender workbooks conform to the standardized 7-column header contract required by `ReactVendorSolution`: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`.
+9. **Single Source of Pricing Truth & Zero Standalone Price Hardcoding (`INV-33`)**:
+   - All SKU prices must resolve dynamically via `getHistoricalSkuPrice()` reading from `catalog.json` and `price_history.json`.
+   - Never use static mock prices or standalone price dictionaries in generator scripts.

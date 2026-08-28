@@ -140,3 +140,7 @@ The system leverages Google Jules for background code review, test generation, a
     - Support service evaluation defaults to standard 3-year basic care (`HU4B2A3` / `HU4B2A300DK` or base Tech Care) without bundling unsolicited installation services.
     - All generated Partner Portal Upload and Tender BOM workbooks MUST conform to the standardized 7-column header contract required by `ReactVendorSolution` and automated reconciliation engines: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`, with per-cluster subtotal rows (`CONFIG #N SUBTOTAL:`) and 2-line separator gaps.
 
+24. **Single Source of Pricing Truth & Zero Standalone Price Hardcoding (`INV-33`)**:
+    - All configurators, workbook generators, and evaluation engines MUST resolve SKU list prices dynamically via `getHistoricalSkuPrice()` or `catalog.json` / `price_history.json`.
+    - NEVER declare standalone, hardcoded price arrays or mock budgetary placeholders in scripts. All pricing data must reside exclusively within certified catalog and price history data layers.
+
