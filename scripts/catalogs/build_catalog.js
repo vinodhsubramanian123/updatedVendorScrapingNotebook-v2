@@ -80,6 +80,29 @@ pipelineLogger.logStep('Initialize Classification Engine', 'SUCCESS', { rawInput
 
 const diagnostics = new ClassificationDiagnostics(filePrefix, targetDir);
 
+// Load verified historical price baseline to protect against unbundled/0-price views in OCA
+const historyPriceMap = new Map();
+const historyDir = path.join(targetDir, 'history');
+if (fs.existsSync(historyDir)) {
+  const priceHistoryPath = path.join(historyDir, 'price_history.json');
+  if (fs.existsSync(priceHistoryPath)) {
+    try {
+      const ph = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
+      for (const [k, trail] of Object.entries(ph)) {
+        if (Array.isArray(trail)) {
+          for (let i = trail.length - 1; i >= 0; i--) {
+            const p = parseFloat(trail[i].price);
+            if (!isNaN(p) && p > 0) {
+              historyPriceMap.set(k.toUpperCase(), p.toFixed(2));
+              break;
+            }
+          }
+        }
+      }
+    } catch (_) {}
+  }
+}
+
 const rawData  = JSON.parse(fs.readFileSync(rawInputPath, 'utf-8'));
 const fullText = rawData.fullText || rawData.bodyText || '';
 const tables   = rawData.tables || [];
@@ -408,7 +431,7 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
       obj['Discontinued Date'] = dateMatches[1].trim();
     }
 
-    // Sanitize Description field to strip raw DOM context markup and newline artifacts
+    // Sanitize Description field to strip raw DOM context markup, vendor badges and obsolete prefixes
     let descText = obj['Description'] || '';
     if (!descText || descText === pn) {
       const otherCells = row.filter(c => c !== pn && c.trim().length > 5);
@@ -421,6 +444,8 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
       descText = firstLine.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
       descText = descText.replace(/^["\s]+|["\s]+$/g, '');
     }
+    descText = descText.replace(/(?:Product is obsolete:\s*[A-Z0-9-]+\s*)+/gi, '').trim();
+    descText = descText.replace(/^(?:OB|DS|90|EOL)\s+/i, '').trim();
     if (!descText || descText.length < 5 || descText === pn) {
       descText = `HPE ProLiant Server Option (${pn})`;
     }
@@ -431,7 +456,7 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
     obj['Current Qty'] = /^\d+$/.test(rawQty) ? rawQty : '0';
     delete obj['Quantity'];
 
-    // Sanitize Unit Price (USD)
+    // Sanitize Unit Price (USD) with Historical Baseline Preservation
     let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[\$,]/g, '').trim();
     if (isNaN(parseFloat(priceStr)) || priceStr === pn || parseFloat(priceStr) < 0) {
       const numCell = row.find(c => {
@@ -439,6 +464,9 @@ for (let ti = 0; ti < expandedTables.length; ti++) {
         return p && !isNaN(parseFloat(p)) && parseFloat(p) >= 0 && c !== pn;
       });
       priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
+    }
+    if ((!priceStr || parseFloat(priceStr) === 0) && historyPriceMap.has(pn)) {
+      priceStr = historyPriceMap.get(pn);
     }
     obj['Unit Price (USD)'] = priceStr;
     obj.listPrice = parseFloat(priceStr) || 0;
@@ -755,7 +783,7 @@ console.log(`Merged ${mergedSubtableCount} sub-tables into preceding parent subc
 // ============================================================
 console.log('\n--- Step 5: Catalog Diff Engine & Historical Price Tracking ---');
 
-const historyDir = path.join(targetDir, 'history');
+// historyDir initialized above
 
 function isServiceEntry(e) {
   const pc = (e.parentCategory || '').toLowerCase();

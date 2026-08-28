@@ -5,18 +5,18 @@
     "family": "ProLiant",
     "generation": "Gen11",
     "scrapeDate": "2026-08-28",
-    "scrapeTimestamp": "2026-08-28T17:25:22.452Z",
+    "scrapeTimestamp": "2026-08-28T17:32:52.412Z",
     "totalSubcategories": 26,
     "totalUniqueSKUs": 489,
     "totalTables": 84,
     "diffSummary": {
       "added": 31,
       "removed": 20,
-      "priceChanged": 25,
+      "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 433,
-      "reinstated": 0,
+      "unchanged": 458,
+      "reinstated": 2,
       "discontinuedTotal": 20
     },
     "historySnapshot": "catalog_2026-08-28.json",
@@ -24,9 +24,9 @@
       "scrapeDate": "2026-08-28",
       "categoryBreakdown": {
         "Accessories & Infrastructure": {
-          "totalSKUs": 4,
-          "totalPrice": 1076,
-          "minPrice": 44,
+          "totalSKUs": 10,
+          "totalPrice": 1766,
+          "minPrice": 1,
           "maxPrice": 816,
           "subcategories": {
             "Energy Star Configuration Presets": {
@@ -35,19 +35,19 @@
               "avgPrice": 0
             },
             "System Options": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 3,
+              "totalPrice": 399,
+              "avgPrice": 133
             },
             "Smart Storage Batteries": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 38,
+              "avgPrice": 38
             },
             "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 253,
+              "avgPrice": 126.5
             },
             "HPE Virtualization": {
               "totalSKUs": 4,
@@ -55,56 +55,56 @@
               "avgPrice": 269
             }
           },
-          "avgPrice": 269
+          "avgPrice": 176.6
         },
         "Processor": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 3,
+          "totalPrice": 29700,
+          "minPrice": 890,
+          "maxPrice": 23877,
           "subcategories": {
             "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 28810,
+              "avgPrice": 14405
             },
             "Intel Xeon Scalable Processors": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 890,
+              "avgPrice": 890
             }
           },
-          "avgPrice": 0
+          "avgPrice": 9900
         },
         "Cooling / Thermal": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 2,
+          "totalPrice": 1205,
+          "minPrice": 233,
+          "maxPrice": 972,
           "subcategories": {
             "Standard & Performance Heat Sinks": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 233,
+              "avgPrice": 233
             },
             "High Performance & Standard Fan Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 972,
+              "avgPrice": 972
             }
           },
-          "avgPrice": 0
+          "avgPrice": 602.5
         },
         "Memory": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 28532,
+          "minPrice": 28532,
+          "maxPrice": 28532,
           "subcategories": {
             "DDR5 Registered Smart Memory": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 28532,
+              "avgPrice": 28532
             },
             "DDR4 Registered Smart Memory": {
               "totalSKUs": 0,
@@ -112,18 +112,18 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 28532
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 3,
+          "totalPrice": 8693,
+          "minPrice": 164,
+          "maxPrice": 7799,
           "subcategories": {
             "Solid State Drives (NVMe/SAS/SATA)": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 3,
+              "totalPrice": 8693,
+              "avgPrice": 2897.6666666666665
             },
             "Drive Blank & FIO Enablement Kits": {
               "totalSKUs": 0,
@@ -141,7 +141,7 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 2897.6666666666665
         },
         "Software & Licenses": {
           "totalSKUs": 0,
@@ -158,15 +158,15 @@
           "avgPrice": 0
         },
         "Storage Controllers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 5999,
+          "minPrice": 5999,
+          "maxPrice": 5999,
           "subcategories": {
             "Tri-Mode MegaRAID Storage Controllers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 5999,
+              "avgPrice": 5999
             },
             "Tri-Mode SmartRAID Storage Controllers": {
               "totalSKUs": 0,
@@ -179,61 +179,61 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 5999
         },
         "PCIe Risers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 4,
+          "totalPrice": 1430,
+          "minPrice": 262,
+          "maxPrice": 416,
           "subcategories": {
             "Secondary PCIe Risers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 759,
+              "avgPrice": 379.5
             },
             "Primary PCIe Risers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 262,
+              "avgPrice": 262
             },
             "Tertiary PCIe Risers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 409,
+              "avgPrice": 409
             }
           },
-          "avgPrice": 0
+          "avgPrice": 357.5
         },
         "Networking": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 4,
+          "totalPrice": 3941,
+          "minPrice": 115,
+          "maxPrice": 2110,
           "subcategories": {
             "PCIe Networking Adapters": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 2110,
+              "avgPrice": 2110
             },
             "OCP3 Networking Adapters": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 3,
+              "totalPrice": 1831,
+              "avgPrice": 610.3333333333334
             }
           },
-          "avgPrice": 0
+          "avgPrice": 985.25
         },
         "Power Supplies": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 1588,
+          "minPrice": 1588,
+          "maxPrice": 1588,
           "subcategories": {
             "Flex Slot Power Supplies": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1588,
+              "avgPrice": 1588
             },
             "-48VDC Power Supplies & Cable Kits": {
               "totalSKUs": 0,
@@ -241,21 +241,21 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 1588
         },
         "Cables & Enablement Kits": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
           "subcategories": {
             "Power Cords & Jumper Cables": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             }
           },
-          "avgPrice": 0
+          "avgPrice": 1
         },
         "Chassis": {
           "totalSKUs": 6,
@@ -289,15 +289,15 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 509,
-      "unchangedSkusCount": 425,
-      "modifiedSkusCount": 53,
-      "addedSkusCount": 31,
+      "unchangedSkusCount": 458,
+      "modifiedSkusCount": 46,
+      "addedSkusCount": 5,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 63750,
-      "estimatedProcessingTimeSavedMs": 85000
+      "estimatedTokensSaved": 68700,
+      "estimatedProcessingTimeSavedMs": 91600
     },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-08-28T17:25:22.837Z"
+    "rulesGeneratedAt": "2026-08-28T17:32:52.806Z"
   },
   "chassisVariants": [
     {
@@ -878,6 +878,41 @@
       "constraint": "min 1, max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Reseller Option Kit",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE Add-ons",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE containers",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Integrated Lights Out Software",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
     },
     {
       "parentCategory": "Learned Feedback Rules",
