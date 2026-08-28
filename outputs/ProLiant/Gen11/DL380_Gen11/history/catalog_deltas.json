@@ -147,5 +147,21 @@
     "sourceAgent": "LIVE_PORTAL_VERIFIED",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG",
     "scope": "FAMILY_GEN"
+  },
+  {
+    "deltaId": "DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11",
+    "timestamp": "2026-08-28T10:04:08.703Z",
+    "chassis": "DL380_Gen11",
+    "errorType": "REGULATORY_COMPLIANCE_ATTACH",
+    "ruleType": "REGULATORY_ENABLEMENT",
+    "affectedSku": "P38997-B21",
+    "requiredDependencySku": "P35876-B21",
+    "ruleUpdate": "When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21).",
+    "reasoning": "EU Ecodesign Regulation 2019/424 (ErP Lot 9): High-draw dual-socket servers default to 96% Titanium PSUs. To deploy with Platinum PSUs (P38997-B21) outside the EU, P35876-B21 (CE Mark Removal FIO Enablement Kit) must be selected in Factory Configuration Settings.",
+    "rawMessage": "[CLIC LOT 9 RULE] This system does not meet EU Lot9 energy efficiency requirements. 96% efficient Titanium PSUs mandated, or select P35876-B21 CE Mark Removal Kit.",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "sourceAgent": "LIVE_PORTAL_VERIFIED",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+    "scope": "FAMILY_GEN"
   }
 ]

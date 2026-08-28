@@ -1,16 +1,16 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-28T09:53:35.495Z",
-  "lastUpdated": "2026-08-28T09:53:35.495Z",
-  "totalLearnedRules": 22,
+  "generatedAt": "2026-08-28T10:04:09.191Z",
+  "lastUpdated": "2026-08-28T10:04:09.191Z",
+  "totalLearnedRules": 23,
   "productFamiliesSynced": [
     "DL380",
     "DL380 Gen11"
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 9,
+    "familyGen": 10,
     "chassisSpecific": 12
   },
   "universalRules": [
@@ -150,6 +150,23 @@
       "ruleUpdate": "When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1.",
       "reasoning": "HPE CLIC Rule 81016755 & 81354683: When 5 or more physical PCIe cards are installed in DL380 Gen11, Primary Cable Kit P56073-B21 must be ordered to activate Slot 1 on Primary Riser P48803-B21.",
       "rawMessage": "[CLIC RULE 81016755] Slot 1 of Primary Riser requires P56073-B21 Primary Cable Kit.",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "sourceAgent": "LIVE_PORTAL_VERIFIED",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN",
+      "solutionType": "DL380_Gen11 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11",
+      "timestamp": "2026-08-28T10:04:08.703Z",
+      "chassis": "DL380_Gen11",
+      "errorType": "REGULATORY_COMPLIANCE_ATTACH",
+      "ruleType": "REGULATORY_ENABLEMENT",
+      "affectedSku": "P38997-B21",
+      "requiredDependencySku": "P35876-B21",
+      "ruleUpdate": "When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21).",
+      "reasoning": "EU Ecodesign Regulation 2019/424 (ErP Lot 9): High-draw dual-socket servers default to 96% Titanium PSUs. To deploy with Platinum PSUs (P38997-B21) outside the EU, P35876-B21 (CE Mark Removal FIO Enablement Kit) must be selected in Factory Configuration Settings.",
+      "rawMessage": "[CLIC LOT 9 RULE] This system does not meet EU Lot9 energy efficiency requirements. 96% efficient Titanium PSUs mandated, or select P35876-B21 CE Mark Removal Kit.",
       "scopeTaxonomy": "FAMILY_GEN",
       "sourceAgent": "LIVE_PORTAL_VERIFIED",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG",

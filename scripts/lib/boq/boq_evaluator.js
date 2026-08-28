@@ -436,6 +436,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     warnings.push(reason);
   }
 
+  // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
+  if (power.needsCeRemovalKit) {
+    const reason = `EU Lot 9 Compliance Advisory: High-draw configuration with Platinum PSUs requires 96% Titanium PSUs (P44712-B21) or CE Mark Removal FIO Enablement Kit (P35876-B21) for non-EU deployment.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'CE_MARK_REMOVAL_KIT',
+      rule: 'EU Lot 9 / CE Mark Regulatory Enablement Rule',
+      sku: 'P35876-B21',
+      description: 'HPE CE Mark Removal FIO Enablement Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
   // Rule 5: Memory Channel Balance & CTO FIO Memory requirement
   if (memory.hasBtoMemoryInCto) {
     memory.btoMemoryViolations.forEach(v => {

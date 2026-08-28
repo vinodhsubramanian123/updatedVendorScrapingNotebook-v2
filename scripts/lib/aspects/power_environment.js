@@ -9,6 +9,9 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   let hasDcPowerSupply = false;
   let hasDcLugKit = false;
+  let hasPlatinumPsu = false;
+  let hasTitaniumPsu = false;
+  let hasCeRemovalKit = false;
   let psuCount = 0;
   let maxPsuWattage = 800;
   let estimatedCpuWatts = 0;
@@ -58,9 +61,18 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
         hasDcPowerSupply = true;
       }
+      if (desc.includes('platinum') || sku === 'P38997-B21') {
+        hasPlatinumPsu = true;
+      }
+      if (desc.includes('titanium') || sku === 'P44712-B21' || sku === 'P03178-B21') {
+        hasTitaniumPsu = true;
+      }
     }
     if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {
       hasDcLugKit = true;
+    }
+    if (sku === 'P35876-B21' || desc.includes('ce mark removal') || desc.includes('ce mark')) {
+      hasCeRemovalKit = true;
     }
   }
 
@@ -70,9 +82,17 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   // If estimated draw exceeds 800W, 200V-240V utility circuits are strongly advised.
   const needsHighLine220v = estimatedNodeWattage > 800 && maxPsuWattage >= 1600;
 
+  // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
+  // High-draw dual-socket configurations with Platinum PSUs require Titanium PSUs (96% efficiency) or P35876-B21 CE Mark Removal Kit for non-EU deployment.
+  const needsCeRemovalKit = hasPlatinumPsu && !hasTitaniumPsu && estimatedNodeWattage >= 500 && !hasCeRemovalKit;
+
   return {
     hasDcPowerSupply,
     hasDcLugKit,
+    hasPlatinumPsu,
+    hasTitaniumPsu,
+    hasCeRemovalKit,
+    needsCeRemovalKit,
     psuCount,
     maxPsuWattage,
     estimatedNodeWattage,

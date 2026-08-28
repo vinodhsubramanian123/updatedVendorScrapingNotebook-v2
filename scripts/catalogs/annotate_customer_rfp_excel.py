@@ -370,6 +370,21 @@ rows_data = [
         "Mandatory Process Addition (Rule 81322276)",
         STYLE_ADDED
     ),
+    # Row 14: CE Mark Removal Kit for EU Lot 9
+    (
+        "[Add 4]",
+        "Factory Regulatory Settings",
+        "[FACTORY SETTING] HPE CE Mark Removal FIO Enablement Kit (P35876-B21)",
+        "0 (Omitted in RFP)",
+        "P35876-B21 (Qty: 40 Kits)\n• Cluster A: 0 kits\n• Cluster B: 1 kit/node × 40 nodes = 40 kits",
+        1.00,
+        40.00,
+        "EU LOT 9 REGULATORY CLEARANCE FOR PLATINUM PSUS:\n"
+        "To fulfill the customer's exact 1600W Platinum PSUs (P38997-B21) on Cluster B without altering PSU hardware, "
+        "P35876-B21 is selected in Factory Settings to clear the EU Ecodesign Lot 9 restriction for global/non-EU deployment ($1 list / $0 net).",
+        "Factory Regulatory Setting (EU Lot 9)",
+        STYLE_ADDED
+    ),
     # Row 14: Storage Cache Hybrid Capacitor (Explicit Confirmation)
     (
         "[Ref 1]",
