@@ -99,6 +99,9 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     // Learning loop sync status for this run
     syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
+    clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
+    totalNodesEvaluated: evalResults.clusterSizing?.totalNodes || evalResults.multiplier || 1,
+    gplFallbackCount: evalResults.gplFallbackCount || 0,
     memoryUsage: {
       rssMb: process.memoryUsage ? Math.round(process.memoryUsage().rss / (1024 * 1024)) : 0,
       heapUsedMb: process.memoryUsage ? Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) : 0,
