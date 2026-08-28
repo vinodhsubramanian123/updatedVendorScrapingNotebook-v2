@@ -41,6 +41,18 @@ test('▶ [DRIFT-TEST 1]: 3-Tier Taxonomy Scoping & Isolation', () => {
   };
   const chassisScope = classifyKnowledgeScope(chassisRule);
   assert.equal(chassisScope, 'CHASSIS_SPECIFIC', 'Chassis specific bracket rule must have CHASSIS_SPECIFIC scope');
+
+  // Test edge case: empty object or missing fields
+  const emptyScope = classifyKnowledgeScope({});
+  assert.equal(emptyScope, 'CHASSIS_SPECIFIC', 'Empty object should default to CHASSIS_SPECIFIC scope');
+
+  // Test edge case: string input routing to UNIVERSAL_VENDOR
+  const stringUniversalScope = classifyKnowledgeScope('Requires DC lug for telco setup');
+  assert.equal(stringUniversalScope, 'UNIVERSAL_VENDOR', 'String containing "dc lug" should map to UNIVERSAL_VENDOR');
+
+  // Test edge case: ruleType mapping to FAMILY_GEN
+  const optionSubScope = classifyKnowledgeScope({ ruleType: 'OPTION_TYPE_SUBSTITUTION' });
+  assert.equal(optionSubScope, 'FAMILY_GEN', 'ruleType OPTION_TYPE_SUBSTITUTION should map to FAMILY_GEN');
 });
 
 test('▶ [DRIFT-TEST 2]: Master Knowledge Registry Schema Contracts (INV-4)', () => {
