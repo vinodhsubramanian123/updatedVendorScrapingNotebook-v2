@@ -9,9 +9,9 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
     const rawItems = [];
     const result = analyzeAndPartitionClusters(rawItems);
     assert.strictEqual(result.isMultiCluster, false);
-    assert.strictEqual(result.totalChassis, 60); // Default fallback when no chassis is found
+    assert.strictEqual(result.totalChassis, 1); // Default fallback when no chassis is found
     assert.strictEqual(result.clusters.length, 1);
-    assert.strictEqual(result.clusters[0].multiplier, 60);
+    assert.strictEqual(result.clusters[0].multiplier, 1);
   });
 
   await t.test('handles single item input', () => {
@@ -91,8 +91,8 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
       
       const cluster1 = result.clusters.find(c => c.multiplier === 20);
       const cluster2 = result.clusters.find(c => c.multiplier === 40);
-      assert.strictEqual(cluster1.cpuTdp, 350); // Default fallback for first cluster
-      assert.strictEqual(cluster2.cpuTdp, 270); // Default fallback for second cluster
+      assert.strictEqual(cluster1.cpuTdp, 205); // Neutral fallback when TDP not in description
+      assert.strictEqual(cluster2.cpuTdp, 205); // Neutral fallback when TDP not in description
   });
 
   await t.test('distributes memory proportionally when mismatched', () => {

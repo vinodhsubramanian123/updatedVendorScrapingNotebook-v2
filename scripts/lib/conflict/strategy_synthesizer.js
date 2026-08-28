@@ -108,6 +108,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const baseParts = items.map(it => {
     const role = classifyComponentRole(it.category || '', it.description || '');
     const price = getPrice(it.sku, role, it.unitPriceUsd || 500);
+    const isZeroCost = price === 0 || price === 1;
     return {
       sku: cleanBaseSKU(it.sku),
       description: it.description || `HPE Hardware Option (${cleanBaseSKU(it.sku)})`,
@@ -115,6 +116,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       unitPriceUsd: price,
       extendedPriceUsd: price * (it.quantity || 1),
       isFixInjected: false,
+      isZeroCost: isZeroCost,
+      costTier: price === 0 ? 'Zero-Cost ($0.00 Included)' : (price === 1 ? 'Nominal Factory Enablement ($1.00)' : 'Standard Option'),
       category: role !== 'Option Component' ? role : (it.category || 'Base Hardware')
     };
   });
@@ -123,6 +126,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const fixParts = fixes.map(f => {
     const role = classifyComponentRole(f.category || '', f.description || '');
     const price = getPrice(f.sku, role, f.unitPriceUsd || 350);
+    const isZeroCost = price === 0 || price === 1;
     return {
       sku: cleanBaseSKU(f.sku),
       description: f.description || `Injected Aspect Rule Fix (${cleanBaseSKU(f.sku)})`,
@@ -130,6 +134,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       unitPriceUsd: price,
       extendedPriceUsd: price * (f.quantity || 1),
       isFixInjected: true,
+      isZeroCost: isZeroCost,
+      costTier: price === 0 ? 'Zero-Cost ($0.00 Included)' : (price === 1 ? 'Nominal Factory Enablement ($1.00)' : 'Aspect Rule Fix'),
       category: role !== 'Option Component' ? role : 'Aspect Rule Fix'
     };
   });
@@ -172,8 +178,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // so Ranks 2–4 are always meaningfully differentiated.
   const buildDnaFallbackRank2 = () => {
     return [
-      { sku: 'HPE-CABLE-MGMT-DNA', description: 'HPE Standard Factory Cable Management Arm Kit (DNA: Baseline Default)', quantity: 1, unitPriceUsd: 120, category: 'Factory Baseline Accessory' },
-      { sku: 'HPE-RAIL-KIT-DNA', description: 'HPE Standard Easy Install Rail Kit (DNA: Baseline Default)', quantity: 1, unitPriceUsd: 180, category: 'Factory Baseline Accessory' }
+      { sku: 'P36852-B21', description: 'HPE ProLiant DL380 Gen11 Cable Management Arm Kit', quantity: 1, unitPriceUsd: 120, category: 'Factory Baseline Accessory' },
+      { sku: 'P52341-B21', description: 'HPE ProLiant DL380 Gen11 Easy Install Rail Kit', quantity: 1, unitPriceUsd: 180, category: 'Factory Baseline Accessory' }
     ];
   };
 
@@ -186,14 +192,14 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     const hasStorageBattery = items.some(i => /p01366/i.test(i.sku || ''));
 
     if (isStorageIntensive && !hasStorageBattery) {
-      addons.push({ sku: 'HPE-CACHE-BATTERY-DNA', description: 'HPE Smart Storage Capacitor Battery (DNA: High-IOPS Workload)', quantity: 1, unitPriceUsd: 350, category: 'Storage Performance' });
+      addons.push({ sku: 'P01366-B21', description: 'HPE 96W Smart Storage Battery (up to 20 Devices)', quantity: 1, unitPriceUsd: 350, category: 'Storage Performance' });
     }
     // If GPU or AI workload detected, add PCIe riser
     const isAiGpu = (dna.workloadDescription || '').toLowerCase().match(/gpu|ai|ml|inferenc|vdi/);
     if (isAiGpu) {
-      addons.push({ sku: 'HPE-PCIE-RISER-DNA', description: 'HPE Full PCIe x16 Riser Kit (DNA: GPU/AI Workload)', quantity: 1, unitPriceUsd: 900, category: 'Performance Acceleration' });
+      addons.push({ sku: 'P51083-B21', description: 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit', quantity: 1, unitPriceUsd: 900, category: 'Performance Acceleration' });
     }
-    return addons.length > 0 ? addons : [{ sku: 'HPE-CACHE-BATTERY-DNA', description: 'HPE Standard Smart Storage Capacitor Battery (DNA: General Workload Baseline)', quantity: 1, unitPriceUsd: 350, category: 'Storage Performance' }];
+    return addons.length > 0 ? addons : [{ sku: 'P01366-B21', description: 'HPE 96W Smart Storage Battery (General Workload Baseline)', quantity: 1, unitPriceUsd: 350, category: 'Storage Performance' }];
   };
 
   const buildDnaFallbackRank4 = () => {
@@ -202,9 +208,9 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     const hasDualSocket = cpuCount >= 2;
 
     if (hasDualSocket) {
-      addons.push({ sku: 'HPE-PCIE-SEC-RISER-DNA', description: 'HPE Secondary PCIe Full Riser Expansion Kit (DNA: Dual-Socket Detected)', quantity: 1, unitPriceUsd: 1200, category: 'Scalability Expansion' });
+      addons.push({ sku: 'P51083-B21', description: 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit (Dual-Socket Expansion)', quantity: 1, unitPriceUsd: 1200, category: 'Scalability Expansion' });
     }
-    addons.push({ sku: 'HPE-HIGH-PERF-FAN-DNA', description: 'HPE High Performance Fan Kit (DNA: Future Scalability)', quantity: 1, unitPriceUsd: 650, category: 'Scalability Expansion' });
+    addons.push({ sku: 'P48820-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Fan Kit (Future Scalability)', quantity: 1, unitPriceUsd: 650, category: 'Scalability Expansion' });
     return addons;
   };
 
@@ -521,13 +527,46 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Sort by dynamic score descending
   rawCandidates.sort((a, b) => b.dynamicScore - a.dynamicScore);
 
-  // Normalize ranks 1 through 5 and return all 5 strategy tiers
+  const baselineCost = rawCandidates[0]?.estimatedCostUsd || rank1Cost;
+
+  // Normalize ranks 1 through 5 and attach proximity and decision metrics
   return rawCandidates.map((cand, idx) => {
     cand.rank = idx + 1;
-    // Update name to reflect dynamic rank
     if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
       cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);
     }
+
+    // Compute SKU difference relative to customer requested items
+    const candSkuSet = new Set(cand.skuPartsList.map(p => cleanBaseSKU(p.sku)).filter(Boolean));
+    const addedSkus = Array.from(candSkuSet).filter(s => !requestedSkuSet.has(s));
+    const omittedSkus = Array.from(requestedSkuSet).filter(s => !candSkuSet.has(s));
+    const costDeltaFromRank1 = cand.estimatedCostUsd - baselineCost;
+    const costDeltaPct = baselineCost > 0 ? parseFloat(((costDeltaFromRank1 / baselineCost) * 100).toFixed(2)) : 0;
+
+    cand.proximityMetrics = {
+      costDeltaFromRank1Usd: costDeltaFromRank1,
+      costDeltaPct: costDeltaPct,
+      addedSkuCount: addedSkus.length,
+      omittedSkuCount: omittedSkus.length,
+      addedSkus: addedSkus.slice(0, 5),
+      omittedSkus: omittedSkus.slice(0, 5),
+      isClosestRoute: idx <= 2,
+      closenessRating: idx === 0 ? 'Optimal Baseline' : (Math.abs(costDeltaPct) < 8 ? 'Very Close Alternative (<8% cost variance)' : 'Differentiated Architecture (>8% cost variance)')
+    };
+
+    // Decision guide for choosing between close routes
+    if (cand.name.toLowerCase().includes('intent preserved')) {
+      cand.decisionGuide = 'Choose this when maximum fidelity to the customer RFP is mandated and minimum SKU deviations are required.';
+    } else if (cand.name.toLowerCase().includes('high-iops') || cand.name.toLowerCase().includes('contested form-factor')) {
+      cand.decisionGuide = 'Choose this when write-cache performance (8GB PCIe) and retaining customer OCP NIC part numbers outweigh standard CapEx constraints.';
+    } else if (cand.name.toLowerCase().includes('budget') || cand.name.toLowerCase().includes('capex')) {
+      cand.decisionGuide = 'Choose this when lowest possible purchase price is required without violating HPE factory buildability.';
+    } else if (cand.name.toLowerCase().includes('standardized')) {
+      cand.decisionGuide = 'Choose this when factory standard cable management and tool-less rail kits are required for turnkey rack deployment.';
+    } else {
+      cand.decisionGuide = 'Choose this for maximum multi-GPU, multi-riser scalability and headroom expansion.';
+    }
+
     return cand;
   });
 }

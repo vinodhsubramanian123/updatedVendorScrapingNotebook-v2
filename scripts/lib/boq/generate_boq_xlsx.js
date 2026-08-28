@@ -67,25 +67,32 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
 
   // --- Helper to build item sheets ---
   function createSkusSheet(skus, sheetName, emptyMessage) {
-    const data = [['SKU', 'Quantity', 'Description', 'Category', 'Unit Price (USD)', 'Extended Price (USD)']];
+    const data = [['SKU', 'Quantity', 'Description', 'Category', 'Unit Price (USD)', 'Extended Price (USD)', 'Pricing Impact & Role']];
     let rowNum = 2;
     skus.forEach(s => {
+      const uPrice = s.unitPriceUsd || 0;
+      let pricingRole = 'Standard Option';
+      if (uPrice === 0) pricingRole = '✅ Zero-Cost / Included ($0.00)';
+      else if (uPrice <= 1) pricingRole = 'ℹ️ Nominal Factory Enablement ($1.00)';
+      else if (s.isFixInjected) pricingRole = '⚡ Mandatory Rule Fix';
+      
       data.push([
         s.sku,
         s.quantity,
         s.description || '',
         s.category || 'Standard',
-        s.unitPriceUsd || 0,
-        { t: 'n', f: `B${rowNum}*E${rowNum}` } // Formula for extended price
+        uPrice,
+        { t: 'n', f: `B${rowNum}*E${rowNum}` }, // Formula for extended price
+        pricingRole
       ]);
       rowNum++;
     });
     
     if (skus.length === 0) {
-      data.push([emptyMessage, '', '', '', '', '']);
+      data.push([emptyMessage, '', '', '', '', '', '']);
     } else {
       // Add Total row
-      data.push(['TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }]);
+      data.push(['TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
     }
 
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -96,10 +103,11 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
       { wch: 20 }, // Cat
       { wch: 15 }, // Unit
       { wch: 20 }, // Ext
+      { wch: 32 }, // Pricing Impact
     ];
 
     // Style Headers
-    for (let c = 0; c < 6; c++) {
+    for (let c = 0; c < 7; c++) {
       const cellRef = XLSX.utils.encode_cell({ r: 0, c });
       if (ws[cellRef]) ws[cellRef].s = headerStyle;
     }

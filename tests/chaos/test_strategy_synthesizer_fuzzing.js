@@ -114,7 +114,7 @@ test('Chaos & Adversarial Fuzzing: Strategy Synthesizer & Workload DNA', async (
     assert.strictEqual(res.length, 5, 'Should synthesize 5 ranks even with corrupted addons file');
     
     let rank3Addons = res[2].skuPartsList.filter(p => p.isStrategyAddon);
-    assert.ok(rank3Addons.some(a => a.sku.includes('HPE-PCIE-RISER-DNA')), 'Should have PCIe riser DNA fallback for GPU workload');
+    assert.ok(rank3Addons.some(a => a.sku.includes('P51083')), 'Should have PCIe riser fallback for GPU workload');
     
     let rankIds = new Set(res.map(r => r.rank));
     assert.strictEqual(rankIds.size, 5);
@@ -122,7 +122,7 @@ test('Chaos & Adversarial Fuzzing: Strategy Synthesizer & Workload DNA', async (
     // Workload: High-IOPS
     res = synthesize5TierRankedSolutions([{ sku: 'SSD1', description: 'Mixed Use NVMe SSD', quantity: 10 }], {}, {}, { model: 'Fake' });
     rank3Addons = res[2].skuPartsList.filter(p => p.isStrategyAddon);
-    assert.ok(rank3Addons.some(a => a.sku.includes('HPE-CACHE-BATTERY-DNA')), 'Should have cache battery DNA fallback for Storage workload');
+    assert.ok(rank3Addons.some(a => a.sku.includes('P01366')), 'Should have cache battery fallback for Storage workload');
     rankIds = new Set(res.map(r => r.rank));
     assert.strictEqual(rankIds.size, 5);
 
@@ -132,8 +132,8 @@ test('Chaos & Adversarial Fuzzing: Strategy Synthesizer & Workload DNA', async (
       { sku: 'CPU2', description: 'Xeon 16-core', quantity: 1 }
     ], {}, {}, { model: 'Fake' });
     let rank4Addons = res[3].skuPartsList.filter(p => p.isStrategyAddon);
-    assert.ok(rank4Addons.some(a => a.sku.includes('HPE-PCIE-SEC-RISER-DNA')), 'Should have sec riser DNA fallback for dual socket');
-    assert.ok(rank4Addons.some(a => a.sku.includes('HPE-HIGH-PERF-FAN-DNA')), 'Should have fan DNA fallback');
+    assert.ok(rank4Addons.some(a => a.sku.includes('P51083')), 'Should have sec riser fallback for dual socket');
+    assert.ok(rank4Addons.some(a => a.sku.includes('P48820')), 'Should have fan kit fallback');
     
     rankIds = new Set(res.map(r => r.rank));
     assert.strictEqual(rankIds.size, 5);

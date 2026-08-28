@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-08-28T09:47:57.945Z  
+**Sync Timestamp**: 2026-08-28T11:11:58.773Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `22`  
+**Total Synced KnowledgeDeltas**: `26`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -38,8 +38,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 5. **[DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11**: If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mandatory. *(Affected SKU: P02377-B21)*
 6. **[DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11**: P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21. *(Affected SKU: P51911-B21)*
 7. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1. *(Affected SKU: P48803-B21)*
-8. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-9. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+8. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21). *(Affected SKU: P38997-B21)*
+9. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380 Gen11**: undefined *(Affected SKU: P02377-B21)*
+10. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+11. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
 

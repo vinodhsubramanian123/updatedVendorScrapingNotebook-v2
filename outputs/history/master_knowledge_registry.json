@@ -1,17 +1,17 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-28T10:04:09.191Z",
-  "lastUpdated": "2026-08-28T10:04:09.191Z",
-  "totalLearnedRules": 23,
+  "generatedAt": "2026-08-28T11:11:58.755Z",
+  "lastUpdated": "2026-08-28T11:11:58.755Z",
+  "totalLearnedRules": 26,
   "productFamiliesSynced": [
     "DL380",
     "DL380 Gen11"
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 10,
-    "chassisSpecific": 12
+    "familyGen": 11,
+    "chassisSpecific": 14
   },
   "universalRules": [
     {
@@ -174,8 +174,22 @@
       "solutionType": "DL380_Gen11 CTO Server"
     },
     {
+      "deltaId": "DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880",
+      "chassis": "DL380 Gen11",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P02377-B21",
+      "requiredDependencySku": "P48918-B21",
+      "reasoning": "Grounding Verification: Selecting P02377-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-28T10:35:02.880Z",
+      "solutionType": "DL380 Gen11 CTO Server"
+    },
+    {
       "deltaId": "DELTA-1787561844831",
-      "timestamp": "2026-08-28T08:55:21.380Z",
+      "timestamp": "2026-08-28T11:11:41.014Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -221,6 +235,34 @@
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "source": "NOTEBOOKLM_GROUNDING",
       "timestamp": "2026-08-27T18:43:00.158Z",
+      "solutionType": "DL380 Gen11 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019",
+      "chassis": "DL380 Gen11",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P58335-B21",
+      "requiredDependencySku": "P48918-B21",
+      "reasoning": "Grounding Verification: Selecting P58335-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-28T10:40:32.019Z",
+      "solutionType": "DL380 Gen11 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069",
+      "chassis": "DL380 Gen11",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "write-cach",
+      "requiredDependencySku": "P48918-B21",
+      "reasoning": "Grounding Verification: Selecting write-cach requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-28T11:08:01.070Z",
       "solutionType": "DL380 Gen11 CTO Server"
     },
     {
@@ -323,7 +365,7 @@
     },
     {
       "deltaId": "DELTA-1786706928358",
-      "timestamp": "2026-08-28T08:54:41.631Z",
+      "timestamp": "2026-08-28T11:10:59.274Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",

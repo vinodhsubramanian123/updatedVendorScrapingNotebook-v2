@@ -324,8 +324,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     missingDependencies.push({
       key: 'POWER_SUPPLY_REDUNDANCY',
       rule: 'Power Supply N+1 Redundancy Rule',
-      sku: 'P48818-B21',
-      description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply',
+      sku: 'P38997-B21',
+      description: 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply',
       quantity: serverCount,
       reasoning: reason
     });

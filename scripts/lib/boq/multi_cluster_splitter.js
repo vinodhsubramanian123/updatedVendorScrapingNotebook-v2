@@ -23,6 +23,7 @@ try {
 }
 
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
+const { detectChassisVariant, getChassisMap } = require('../catalog/catalog_discovery.js');
 
 /**
  * Robustly find a valid HPE SKU within text with multiple tokens.
@@ -60,14 +61,19 @@ function extractRawItemsFromWorkbook(filePath) {
     if (!row || row.length === 0) continue;
 
     // Detect header row
-    const firstCell = String(row[0] || '').toLowerCase();
-    if (firstCell === 'no.' || firstCell === 'item' || firstCell === 'no') {
+    const firstCell = String(row[0] || '').toLowerCase().trim();
+    if (firstCell === 'no.' || firstCell === 'item' || firstCell === 'no' || firstCell === 'pos') {
       row.forEach((col, cIdx) => {
-        const c = String(col || '').toLowerCase();
-        if (c.includes('desc')) headerMap.desc = cIdx;
-        if (c.includes('qty') || c.includes('quantity')) headerMap.qty = cIdx;
+        const c = String(col || '').toLowerCase().trim();
+        if (c.includes('desc') && !c.includes('remark') && !c.includes('rationale')) headerMap.desc = cIdx;
+        // Prioritize true quantity columns over split/reconciliation descriptions
+        if ((c === 'qty' || c === 'quantity' || c === 'count' || c === 'units' || c.includes('rfp qty') || c.includes('customer qty') || c.includes('order qty')) && !c.includes('split') && !c.includes('sku &')) {
+          headerMap.qty = cIdx;
+        } else if (c.includes('qty') && !c.includes('split') && !c.includes('sku &') && headerMap.qty === 3) {
+          headerMap.qty = cIdx;
+        }
         if (c.includes('category')) headerMap.cat = cIdx;
-        if (c.includes('unit price')) headerMap.unitPrice = cIdx;
+        if (c.includes('unit price') || c === 'price') headerMap.unitPrice = cIdx;
         if (c.includes('total price')) headerMap.totalPrice = cIdx;
       });
       continue;
@@ -80,8 +86,16 @@ function extractRawItemsFromWorkbook(filePath) {
     }
 
     const descCell = String(row[headerMap.desc] || '').trim();
-    const qtyVal = parseInt(String(row[headerMap.qty] || '').replace(/[^\d]/g, ''), 10);
-    const lineQty = !isNaN(qtyVal) && qtyVal > 0 ? qtyVal : null;
+    const rawQtyCell = String(row[headerMap.qty] || '').trim();
+    let lineQty = null;
+    if (/^\d+$/.test(rawQtyCell)) {
+      lineQty = parseInt(rawQtyCell, 10);
+    } else {
+      const m = rawQtyCell.match(/\b(?:qty|quantity|count)[:=\s]*(\d+)\b/i) || rawQtyCell.match(/^(\d+)\b/);
+      if (m) {
+        lineQty = parseInt(m[1], 10);
+      }
+    }
 
     if (!descCell) continue;
 
@@ -100,8 +114,9 @@ function extractRawItemsFromWorkbook(filePath) {
             rawLine: l
           });
         } else if (l.toLowerCase().includes('server') || l.toLowerCase().includes('chassis') || l.toLowerCase().includes('configure-to-order')) {
+          // GAP-1 FIX: Mark as Base Chassis with placeholder SKU; resolved dynamically in analyzeAndPartitionClusters()
           rawItems.push({
-            sku: 'P52534-B21',
+            sku: 'CHASSIS_PLACEHOLDER',
             description: l,
             quantity: lineQty || 1,
             category: 'Base Chassis',
@@ -132,9 +147,24 @@ function extractRawItemsFromWorkbook(filePath) {
  * @returns {object} { isMultiCluster, totalChassis, clusters: [] }
  */
 function analyzeAndPartitionClusters(rawItems) {
-  // Find total chassis count
-  const chassisItem = rawItems.find(i => i.category === 'Base Chassis' || i.sku === 'P52534-B21' || i.sku === 'DL380_Gen11_8SFF_NC_CTO');
-  const totalChassis = chassisItem ? chassisItem.quantity : 60;
+  // GAP-1 FIX: Dynamically detect chassis from BOQ items instead of hardcoding P52534-B21
+  const chassisMap = getChassisMap();
+  const allBaseSkus = new Set(Object.values(chassisMap).map(c => c.baseSku).filter(Boolean));
+  const chassisItem = rawItems.find(i =>
+    i.category === 'Base Chassis' ||
+    i.sku === 'CHASSIS_PLACEHOLDER' ||
+    allBaseSkus.has(cleanBaseSKU(i.sku))
+  );
+
+  // Resolve the actual chassis identity from items
+  const detectedChassis = detectChassisVariant(rawItems);
+  const resolvedBaseSku = detectedChassis.baseSku || 'P52534-B21';
+  const resolvedChassisDesc = detectedChassis.model
+    ? `HPE ${detectedChassis.model} Configure-to-order Server`
+    : 'HPE ProLiant Configure-to-order Server';
+
+  // GAP-2 FIX: Default to 1 server (not 60) when no chassis item found
+  const totalChassis = chassisItem ? (chassisItem.quantity || 1) : 1;
 
   // Identify CPU items
   const cpuItems = rawItems.filter(i => {
@@ -201,6 +231,7 @@ function analyzeAndPartitionClusters(rawItems) {
     return {
       isMultiCluster: false,
       totalChassis,
+      detectedChassis,
       clusters: [{ name: 'Default_Cluster', multiplier: totalChassis, items: rawItems, clusterSizing: getClusterSizing(totalChassis, rawItems) }]
     };
   }
@@ -209,11 +240,14 @@ function analyzeAndPartitionClusters(rawItems) {
   const clusters = [];
   const cpusPerServer = 2;
 
+  // GAP-6 FIX: Dynamic alphabetical cluster labels for N clusters
+  const CLUSTER_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   cpuItems.forEach((cpu, idx) => {
     const clusterMultiplier = Math.round(cpu.quantity / cpusPerServer);
-    const clusterLabel = idx === 0 ? 'Cluster_A_Platinum' : 'Cluster_B_Gold';
+    const letter = CLUSTER_LETTERS[idx] || String(idx + 1);
+    const clusterLabel = `Cluster_${letter}`;
     const cpuTdpMatch = cpu.description.match(/(\d+)W/i);
-    const tdp = cpuTdpMatch ? parseInt(cpuTdpMatch[1], 10) : (idx === 0 ? 350 : 270);
+    const tdp = cpuTdpMatch ? parseInt(cpuTdpMatch[1], 10) : 205;
 
     clusters.push({
       clusterId: idx + 1,
@@ -240,10 +274,10 @@ function analyzeAndPartitionClusters(rawItems) {
   clusters.forEach((cluster) => {
     const mult = cluster.multiplier;
 
-    // 1. Add Base Chassis (P52534-B21)
+    // 1. Add Base Chassis (GAP-1 FIX: dynamically resolved)
     cluster.items.push({
-      sku: 'P52534-B21',
-      description: 'HPE ProLiant DL380 Gen11 8SFF NC Configure-to-order Server',
+      sku: resolvedBaseSku,
+      description: resolvedChassisDesc,
       quantity: 1, // Per-server quantity
       totalQuantity: mult,
       category: 'Base Chassis'
@@ -278,17 +312,24 @@ function analyzeAndPartitionClusters(rawItems) {
     // 4. Distribute Common Infrastructure Options
     rawItems.forEach(item => {
       const clean = cleanBaseSKU(item.sku);
-      if (clean === cluster.cpuSku || psuItems.some(p => cleanBaseSKU(p.sku) === clean) || item.category === 'Base Chassis' || clean === 'P52534-B21' || clean === 'DL380_GEN11_8SFF_NC_CTO') {
+      if (clean === cluster.cpuSku || psuItems.some(p => cleanBaseSKU(p.sku) === clean) || item.category === 'Base Chassis' || clean === resolvedBaseSku || item.sku === 'CHASSIS_PLACEHOLDER' || allBaseSkus.has(clean)) {
         return; // Handled separately
       }
 
-      // Memory (480 total DIMMs across 60 servers = 8 DIMMs per server)
-      // Must be Factory Integrated Option (0D1) in CTO chassis to avoid CLIC 81354490 & 91001655
+      // Memory: Proportionally distributed per server
+      // GAP-5 FIX: Preserve the original memory SKU and convert to FIO via -F21 suffix for CTO compliance (CLIC 81354490 & 91001655)
       if (item.description.toLowerCase().includes('dimm') || item.description.toLowerCase().includes('memory') || item.category.toLowerCase().includes('memory')) {
-        const perServerDimms = Math.round(item.quantity / totalChassis);
+        const perServerDimms = Math.round(item.quantity / totalChassis) || 8;
+        // Convert BTO SKU to FIO: replace -B21 with -F21, or append #0D1
+        let fioSku = cleanBaseSKU(item.sku);
+        if (fioSku.endsWith('-B21')) {
+          fioSku = fioSku.replace(/-B21$/, '-F21');
+        } else if (!fioSku.includes('-F21') && !fioSku.includes('#0D1')) {
+          fioSku = fioSku + '#0D1';
+        }
         cluster.items.push({
-          sku: 'P64707-B21 0D1',
-          description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit',
+          sku: fioSku,
+          description: item.description.replace(/\bBTO\b/gi, 'FIO') + (item.description.toLowerCase().includes('fio') ? '' : ' (FIO)'),
           quantity: perServerDimms,
           totalQuantity: mult * perServerDimms,
           category: 'Memory'
@@ -314,36 +355,36 @@ function analyzeAndPartitionClusters(rawItems) {
           category: 'Compute & Thermal'
         });
       }
-      // FC HBAs (120 across 60 servers = 2 per server)
+      // FC HBAs: Proportionally distributed per server
       else if (item.description.toLowerCase().includes('fiber channel') || clean === 'R2E09A') {
+        const perServerHbas = Math.round(item.quantity / totalChassis) || 2;
         cluster.items.push({
           sku: item.sku,
           description: item.description,
-          quantity: 2,
-          totalQuantity: mult * 2,
+          quantity: perServerHbas,
+          totalQuantity: mult * perServerHbas,
           category: 'PCI-Express Slot'
         });
       }
-      // 10/25Gb PCIe Adapters (160 total: Cluster A gets 2, Cluster B gets 3)
-      else if (item.description.toLowerCase().includes('adapter') && clean === 'P26262-B21') {
-        const nicQty = cluster.multiplier === 20 ? 2 : 3;
+      // GAP-3 FIX: PCIe Network Adapters — proportionally derive per-server count from total BOQ qty
+      else if (item.description.toLowerCase().includes('adapter') && (item.description.toLowerCase().includes('ethernet') || item.description.toLowerCase().includes('10/25gb') || item.description.toLowerCase().includes('25gb') || item.description.toLowerCase().includes('100gb') || /P26262|P42045|P10115/i.test(clean))) {
+        const perServerNics = Math.max(1, Math.round(item.quantity / totalChassis));
         cluster.items.push({
           sku: item.sku,
           description: item.description,
-          quantity: nicQty,
-          totalQuantity: mult * nicQty,
+          quantity: perServerNics,
+          totalQuantity: mult * perServerNics,
           category: 'Network Controller'
         });
       }
-      // SFP28 Transceivers (1 per port: Cluster A has 6 ports, Cluster B has 8 ports)
-      else if (clean === '845398-B21') {
-        const nicQty = cluster.multiplier === 20 ? 2 : 3;
-        const portsPerServer = (nicQty * 2) + 2; // (PCIe NICs * 2) + OCP 2p = 6 or 8
+      // SFP28/SFP56 Transceivers: Proportionally derive ports per server
+      else if (item.description.toLowerCase().includes('transceiver') || item.description.toLowerCase().includes('sfp') || clean === '845398-B21') {
+        const perServerTransceivers = Math.max(1, Math.round(item.quantity / totalChassis));
         cluster.items.push({
           sku: item.sku,
           description: item.description,
-          quantity: portsPerServer,
-          totalQuantity: mult * portsPerServer,
+          quantity: perServerTransceivers,
+          totalQuantity: mult * perServerTransceivers,
           category: 'Network Controller'
         });
       }
@@ -355,8 +396,8 @@ function analyzeAndPartitionClusters(rawItems) {
       else if (clean === 'P48832-B21') {
         return; // Exclude incompatible Y-Cable
       }
-      // Standard 1-per-server infrastructure (Risers, Boot devices, Cables, Controllers, Racking)
-      else if (item.quantity === totalChassis || item.quantity === 60) {
+      // GAP-4 FIX: Standard 1-per-server infrastructure — only check totalChassis, no hardcoded literal
+      else if (item.quantity === totalChassis) {
         cluster.items.push({
           sku: item.sku,
           description: item.description,
@@ -365,26 +406,55 @@ function analyzeAndPartitionClusters(rawItems) {
           category: item.category
         });
       }
+      // Catch remaining items with proportional distribution
+      else if (item.quantity > 1) {
+        const perServer = Math.max(1, Math.round(item.quantity / totalChassis));
+        cluster.items.push({
+          sku: item.sku,
+          description: item.description,
+          quantity: perServer,
+          totalQuantity: mult * perServer,
+          category: item.category
+        });
+      }
     });
 
-    // 5. Add Required Riser Cable Enablement Kits (CLIC Rules 81016755, 81354683, 81170920, 81356091)
-    // Primary 3x16 Cable Kit enables Slot 1
-    cluster.items.push({
-      sku: 'P56073-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
-      quantity: 1,
-      totalQuantity: mult,
-      category: 'PCI-Express Slot'
-    });
+    // GAP-6 FIX: Inject riser cable kits based on actual PCIe card count math, not cluster name
+    // Count physical PCIe cards in this cluster (HBAs, NICs, controllers, GPUs — excluding OCP)
+    const pcieCardCount = cluster.items.reduce((count, ci) => {
+      const d = (ci.description || '').toLowerCase();
+      const isPcieCard = (d.includes('fiber channel') || d.includes('hba') ||
+        (d.includes('adapter') && !d.includes('ocp')) ||
+        d.includes('gpu') || d.includes('accelerator') ||
+        (d.includes('controller') && d.includes('-p')));
+      return isPcieCard ? count + (ci.quantity || 1) : count;
+    }, 0);
 
-    // Secondary 3x16 Cable Kit enables Slot 4
-    cluster.items.push({
-      sku: 'P56074-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
-      quantity: 1,
-      totalQuantity: mult,
-      category: 'PCI-Express Slot'
-    });
+    // CLIC Rules 81016755 & 81354683: >=5 PCIe cards requires Primary Riser Cable Kit for Slot 1 enablement
+    if (pcieCardCount >= 5) {
+      cluster.items.push({
+        sku: 'P56073-B21',
+        description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit (Slot 1 Enablement)',
+        quantity: 1,
+        totalQuantity: mult,
+        category: 'PCI-Express Slot'
+      });
+    }
+
+    // EU Lot 9 CE Mark Removal: Inject if cluster uses Platinum PSUs (not Titanium)
+    const hasPlatinumPsu = cluster.items.some(ci =>
+      (ci.description || '').toLowerCase().includes('platinum') ||
+      (ci.description || '').toLowerCase().includes('1600w')
+    );
+    if (hasPlatinumPsu) {
+      cluster.items.push({
+        sku: 'P35876-B21',
+        description: 'HPE CE Mark Removal FIO Enablement Kit (EU Lot 9 Regulatory Setting)',
+        quantity: 1,
+        totalQuantity: mult,
+        category: 'Factory Configuration Setting'
+      });
+    }
 
     // 6. Add Mandatory Management SaaS License (CLIC Rule 81322276)
     cluster.items.push({
@@ -401,6 +471,7 @@ function analyzeAndPartitionClusters(rawItems) {
   return {
     isMultiCluster: true,
     totalChassis,
+    detectedChassis,
     clusters
   };
 }
@@ -418,6 +489,7 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
 
   const rawItems = extractRawItemsFromWorkbook(inputFilePath);
   const partitionResult = analyzeAndPartitionClusters(rawItems);
+  const detectedChassis = partitionResult.detectedChassis || detectChassisVariant(rawItems);
 
   const generatedWorkbooks = [];
 
@@ -440,7 +512,8 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
     const ws = XLSX.utils.aoa_to_sheet(sheetData);
     XLSX.utils.book_append_sheet(wb, ws, 'Server Config');
 
-    const fileName = `${cluster.name}_${cluster.multiplier}x_DL380_Gen11.xlsx`;
+    const modelName = (detectedChassis.model || 'Server').replace(/\s+/g, '_');
+    const fileName = `${cluster.name}_${cluster.multiplier}x_${modelName}.xlsx`;
     const outPath = path.join(outputDirectory, fileName);
     XLSX.writeFile(wb, outPath);
 

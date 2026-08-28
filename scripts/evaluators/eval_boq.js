@@ -52,6 +52,7 @@ async function main() {
   const startTime = Date.now();
   const args = process.argv.slice(2);
   const JSON_MODE = args.includes('--json');
+  const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
 
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`
@@ -263,6 +264,7 @@ Examples:
       skus: items.map(i => i.sku).filter(Boolean),
       items: items
     },
+    offlineMode: OFFLINE_MODE,
     timeout: 120000
   });
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);

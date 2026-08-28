@@ -143,7 +143,7 @@ When exporting finalized multi-cluster configurations for loading into the vendo
 
 ---
 
-## 5. Enterprise CLIC Validation Invariants (`INV-25` through `INV-29`)
+## 5. Enterprise CLIC Validation Invariants (`INV-25` through `INV-31`)
 
 When evaluating or auto-remediating BOQs across any product family:
 1. **CTO Container Option Tagging (`INV-25`)**: Internal components (memory, CPUs, controllers) within CTO base servers MUST carry the `#0D1` (FIO) option tag (e.g. `P64707-B21 0D1` / `P64707-F21`). Standalone `-B21` memory without `#0D1` fails CLIC Rules 81354490 & 91001655.
@@ -153,3 +153,5 @@ When evaluating or auto-remediating BOQs across any product family:
 3. **GPU Accelerator Auxiliary Power (`INV-27`)**: PCIe GPUs (NVIDIA L40S/A100/H100) require GPU Aux Power Cable Kit (`P48816-B21` / `P76450-B21`), High-Perf Fan Kits (`P48820-B21`), and >=1600W PSUs.
 4. **OS Core Licensing Multipliers (`INV-28`)**: Microsoft Windows Server requires 16 physical cores minimum per server; additional cores require 2-core / 4-core / 16-core add-on packs.
 5. **Cluster Infrastructure Sizing Matrix (`INV-29`)**: Emits total Rack Units, standard 42U rack counts, peak facility power (kW), and rail kit coverage (`P52341-B21` 1 per node) in `evalSummary.clusterSizing`.
+6. **EU Ecodesign Lot 9 & Regulatory Platinum PSU Enablement (`INV-30`)**: Dual-socket servers with high-draw TDP configurations default to ErP Lot 9 in HPE OCA, requiring 96% Titanium PSUs. When ordering 94% Platinum PSUs (`P38997-B21`), `P35876-B21` (CE Mark Removal FIO Enablement Kit, $1 list) is injected to satisfy regulatory prompts without altering requested hardware.
+7. **PCIe Riser 5th Slot Power Delivery Cable Protocol (`INV-31`)**: When 5 or more physical PCIe expansion cards are populated across risers (e.g. 2x FC HBAs + 3x PCIe NICs), physical Slot 1 on Primary Riser `P48803-B21` requires the dedicated Primary Cable Kit `P56073-B21` to supply power and PCIe lanes (Rules 81016755 & 81354683).

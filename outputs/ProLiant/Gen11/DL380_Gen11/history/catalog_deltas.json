@@ -163,5 +163,44 @@
     "sourceAgent": "LIVE_PORTAL_VERIFIED",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG",
     "scope": "FAMILY_GEN"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P02377-B21",
+    "requiredDependencySku": "P48918-B21",
+    "reasoning": "Grounding Verification: Selecting P02377-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-08-28T10:35:02.880Z"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P58335-B21",
+    "requiredDependencySku": "P48918-B21",
+    "reasoning": "Grounding Verification: Selecting P58335-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-08-28T10:40:32.019Z"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "write-cach",
+    "requiredDependencySku": "P48918-B21",
+    "reasoning": "Grounding Verification: Selecting write-cach requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-08-28T11:08:01.070Z"
   }
 ]
