@@ -1,8 +1,8 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-28T17:02:13.495Z",
-  "lastUpdated": "2026-08-28T17:02:13.495Z",
+  "generatedAt": "2026-08-28T17:11:11.881Z",
+  "lastUpdated": "2026-08-28T17:11:11.881Z",
   "totalLearnedRules": 26,
   "productFamiliesSynced": [
     "DL380",
@@ -10,8 +10,8 @@
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 11,
-    "chassisSpecific": 14
+    "familyGen": 12,
+    "chassisSpecific": 13
   },
   "universalRules": [
     {
@@ -188,8 +188,8 @@
       "solutionType": "DL380 Gen11 CTO Server"
     },
     {
-      "deltaId": "DELTA-1787561844831",
-      "timestamp": "2026-08-28T16:54:16.044Z",
+      "deltaId": "DELTA-1787937059156",
+      "timestamp": "2026-08-28T17:10:59.155Z",
       "chassis": "DL380_Gen12_SFF",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -202,7 +202,26 @@
       "preConfidenceScore": null,
       "scopeTaxonomy": "FAMILY_GEN",
       "solutionType": "General Server",
-      "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA-1787937021063",
+      "timestamp": "2026-08-28T17:10:21.063Z",
+      "chassis": "DL380_Gen12_SFF",
+      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P76449-B21",
+      "requiredDependencySku": "P76450-B21",
+      "ruleUpdate": "Portal validation flagged restriction on P76450-B21.",
+      "humanReasoning": null,
+      "sourceAgent": "HUMAN_HITL",
+      "guardrailTurn": null,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
     },
     {
       "deltaId": "DELTA-1787315096377",
@@ -358,20 +377,6 @@
       "affectedSku": "P03178-B21",
       "requiredDependencySku": "P03178-B21",
       "ruleUpdate": "If P03178-B21 is present, P03178-B21 is mandatory.",
-      "humanReasoning": null,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "APPLIED_TO_PRECHECKS_AND_RAG"
-    },
-    {
-      "deltaId": "DELTA-1786706928358",
-      "timestamp": "2026-08-28T16:53:36.070Z",
-      "chassis": "DL380_Gen12_SFF",
-      "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "P76449-B21",
-      "requiredDependencySku": "P76450-B21",
-      "ruleUpdate": "Portal validation flagged restriction on P76450-B21.",
       "humanReasoning": null,
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "solutionType": "General Server",

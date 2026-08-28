@@ -13,15 +13,15 @@ const { execSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
-const CHASSIS = 'DL380_Gen12_SFF';
+const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+const CHASSIS = 'DL380_Gen12';
 const MIN_SKU_COUNT = 200;
 
 const REQUIRED_FILES = [
-  'DL380_Gen12_SFF_Catalog.json',
-  'DL380_Gen12_SFF_Catalog_Rules.json',
-  'DL380_Gen12_SFF_Services.json',
-  'DL380_Gen12_SFF_OCA_Catalog.xlsx',
+  'DL380_Gen12_Catalog.json',
+  'DL380_Gen12_Catalog_Rules.json',
+  'DL380_Gen12_Services.json',
+  'DL380_Gen12_OCA_Catalog.xlsx',
   'CERTIFIED.json',
 ];
 

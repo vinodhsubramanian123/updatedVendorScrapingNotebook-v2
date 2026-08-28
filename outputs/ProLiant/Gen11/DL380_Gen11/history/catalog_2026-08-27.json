@@ -16,7 +16,7 @@
       "attributeChanged": 3,
       "priceAndAttributeChanged": 1,
       "unchanged": 0,
-      "reinstated": 4,
+      "reinstated": 0,
       "discontinuedTotal": 0
     },
     "historySnapshot": "catalog_2026-08-27.json",
@@ -38,48 +38,48 @@
           "avgPrice": 1950
         },
         "Cooling / Thermal": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 5,
+          "totalPrice": 3056,
+          "minPrice": 1,
+          "maxPrice": 1588,
           "subcategories": {
             "Heatsink Kit": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 4,
+              "totalPrice": 2084,
+              "avgPrice": 521
             },
             "Power Cooling Options": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 972,
+              "avgPrice": 972
             }
           },
-          "avgPrice": 0
+          "avgPrice": 611.2
         },
         "Processor": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 2,
+          "totalPrice": 28810,
+          "minPrice": 4933,
+          "maxPrice": 23877,
           "subcategories": {
             "Processors": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 28810,
+              "avgPrice": 14405
             }
           },
-          "avgPrice": 0
+          "avgPrice": 14405
         },
         "Memory": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 28532,
+          "minPrice": 28532,
+          "maxPrice": 28532,
           "subcategories": {
             "Memory": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 28532,
+              "avgPrice": 28532
             },
             "Memory Setting": {
               "totalSKUs": 0,
@@ -87,13 +87,13 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 28532
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 4,
-          "totalPrice": 1076,
-          "minPrice": 44,
-          "maxPrice": 816,
+          "totalSKUs": 12,
+          "totalPrice": 9843,
+          "minPrice": 1,
+          "maxPrice": 7799,
           "subcategories": {
             "Trusted Supply Chain": {
               "totalSKUs": 0,
@@ -101,9 +101,9 @@
               "avgPrice": 0
             },
             "Factory Configuration Settings": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             },
             "Logical Size Settings": {
               "totalSKUs": 0,
@@ -121,9 +121,9 @@
               "avgPrice": 0
             },
             "Smart Storage Battery": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 435,
+              "avgPrice": 217.5
             },
             "RAID Settings": {
               "totalSKUs": 0,
@@ -161,14 +161,14 @@
               "avgPrice": 269
             },
             "OCP Upgrades": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 115,
+              "avgPrice": 115
             },
             "OS Boot Device": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 7963,
+              "avgPrice": 3981.5
             },
             "Management Hardware": {
               "totalSKUs": 0,
@@ -181,18 +181,18 @@
               "avgPrice": 0
             },
             "Rack Options": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 253,
+              "avgPrice": 126.5
             }
           },
-          "avgPrice": 269
+          "avgPrice": 820.25
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 416,
+          "minPrice": 416,
+          "maxPrice": 416,
           "subcategories": {
             "NVMe Enablement Setting": {
               "totalSKUs": 0,
@@ -200,9 +200,9 @@
               "avgPrice": 0
             },
             "Drive Cage": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 416,
+              "avgPrice": 416
             },
             "NVMe - SSD and AIC - Read Intensive": {
               "totalSKUs": 0,
@@ -215,7 +215,7 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 416
         },
         "Software & Licenses": {
           "totalSKUs": 0,
@@ -252,29 +252,29 @@
           "avgPrice": 0
         },
         "Storage Controllers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 2,
+          "totalPrice": 6729,
+          "minPrice": 730,
+          "maxPrice": 5999,
           "subcategories": {
             "SAS Controller": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 5999,
+              "avgPrice": 5999
             },
             "Storage Controller Cables": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 730,
+              "avgPrice": 730
             }
           },
-          "avgPrice": 0
+          "avgPrice": 3364.5
         },
         "Networking": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 3,
+          "totalPrice": 3826,
+          "minPrice": 485,
+          "maxPrice": 2110,
           "subcategories": {
             "InfiniBand PCIe": {
               "totalSKUs": 0,
@@ -282,14 +282,14 @@
               "avgPrice": 0
             },
             "OCP Ethernet": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 1716,
+              "avgPrice": 858
             },
             "Transceivers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 2110,
+              "avgPrice": 2110
             },
             "Fibre Channel Cables and SFP": {
               "totalSKUs": 0,
@@ -297,26 +297,26 @@
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 1275.3333333333333
         },
         "PCIe Risers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 2,
+          "totalPrice": 752,
+          "minPrice": 343,
+          "maxPrice": 409,
           "subcategories": {
             "Riser Cards": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 343,
+              "avgPrice": 343
             },
             "Riser Cards Accessories": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 409,
+              "avgPrice": 409
             }
           },
-          "avgPrice": 0
+          "avgPrice": 376
         },
         "Graphics & GPU": {
           "totalSKUs": 10,
@@ -338,18 +338,18 @@
           "avgPrice": 350.3
         },
         "Power Supplies": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 890,
+          "minPrice": 890,
+          "maxPrice": 890,
           "subcategories": {
             "Power Supplies": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 890,
+              "avgPrice": 890
             }
           },
-          "avgPrice": 0
+          "avgPrice": 890
         }
       }
     },

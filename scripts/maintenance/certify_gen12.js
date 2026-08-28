@@ -12,9 +12,9 @@ const { execSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
-const CHASSIS = 'DL380_Gen12_SFF';
-const XLSX_PATH = path.join(GEN12_DIR, 'DL380_Gen12_SFF_OCA_Catalog.xlsx');
+const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+const CHASSIS = 'DL380_Gen12';
+const XLSX_PATH = path.join(GEN12_DIR, 'DL380_Gen12_OCA_Catalog.xlsx');
 
 const CERT_STEPS = [
   { id: 'bootstrap', label: 'Bootstrap artifact check', cmd: 'node scripts/maintenance/bootstrap_gen12.js', skipInReport: true },

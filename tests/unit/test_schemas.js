@@ -18,7 +18,7 @@ const {
 console.log('🧪 Starting Zod Runtime Schema Validation Tests...\n');
 
 // Test 1: Real Catalog Schema Validation
-const catalogPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json');
+const catalogPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json');
 if (fs.existsSync(catalogPath)) {
   const rawCatalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
   const parsed = safeParseCatalog(rawCatalog);

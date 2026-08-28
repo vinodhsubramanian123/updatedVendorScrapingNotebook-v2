@@ -21,8 +21,8 @@ const { evaluateWholeSolutionGraph } = require('../../scripts/lib/conflict/confl
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
-const DL380_DIR = path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
-const MASTER_EXCEL = path.join(DL380_DIR, 'DL380_Gen12_SFF_OCA_Catalog.xlsx');
+const DL380_DIR = path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12');
+const MASTER_EXCEL = path.join(DL380_DIR, 'DL380_Gen12_OCA_Catalog.xlsx');
 
 const C = {
   reset: '\x1b[0m',
@@ -111,7 +111,7 @@ async function testNotebookLmSyncPayload() {
   console.log(`\n${C.bold}${C.blue}▶ [TEST 3] Auditing Gemini NotebookLM Markdown Sync Payload & Rules Charter${C.reset}`);
 
   buildMasterKnowledgeRegistry();
-  const syncResult = generateNotebookSyncPayload('DL380_Gen12_SFF');
+  const syncResult = generateNotebookSyncPayload('DL380_Gen12');
   const payloadPath = syncResult.payloadPath || syncResult;
 
   assertTest('NotebookLM Sync Payload file generated', fs.existsSync(payloadPath), payloadPath);
@@ -155,7 +155,7 @@ async function testHttpEndpoints() {
   console.log(`\n${C.bold}${C.blue}▶ [TEST 4] Auditing Local Express Server HTTP Excel Download Endpoints${C.reset}`);
 
   try {
-    const excelUrl = 'http://127.0.0.1:3000/artifacts/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_OCA_Catalog.xlsx';
+    const excelUrl = 'http://127.0.0.1:3000/artifacts/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_OCA_Catalog.xlsx';
     const resExcel = await fetchHttp(excelUrl, 'GET');
     assertTest('HTTP GET master catalog Excel returns 200 OK', resExcel.statusCode === 200, `Status: ${resExcel.statusCode}`);
     assertTest('HTTP GET master catalog Excel sets attachment disposition', String(resExcel.headers['content-disposition'] || '').includes('attachment'));
@@ -165,7 +165,7 @@ async function testHttpEndpoints() {
 
     const postPayload = JSON.stringify({
       evalResults,
-      chassisId: 'DL380_Gen12_SFF',
+      chassisId: 'DL380_Gen12',
       rankTier: 1
     });
 

@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "chassis": "DL380 Gen12 SFF",
-    "model": "DL380_Gen12_SFF",
+    "chassis": "DL380 Gen12",
+    "model": "DL380_Gen12",
     "family": "ProLiant",
     "generation": "Gen12",
     "scrapeDate": "2026-08-24",

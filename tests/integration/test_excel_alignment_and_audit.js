@@ -15,10 +15,10 @@ console.log('================================================================');
 console.log('🧪 VERIFYING 15 BUGS: JSON -> EXCEL ALIGNMENT AUDIT SUITE');
 console.log('================================================================\n');
 
-const xlsxPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_OCA_Catalog.xlsx');
-const catalogJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json');
-const rulesJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog_Rules.json');
-const servicesJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Services.json');
+const xlsxPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_OCA_Catalog.xlsx');
+const catalogJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json');
+const rulesJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog_Rules.json');
+const servicesJsonPath = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Services.json');
 
 assert(fs.existsSync(xlsxPath), `Excel workbook not found at ${xlsxPath}`);
 assert(fs.existsSync(catalogJsonPath), `Catalog JSON not found at ${catalogJsonPath}`);

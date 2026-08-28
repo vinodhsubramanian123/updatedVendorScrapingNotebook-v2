@@ -14,7 +14,7 @@ const { checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+const GEN12_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
 const SYNC_ONLY = process.argv.includes('--sync-only');
 
 function runStep(label, cmd) {
