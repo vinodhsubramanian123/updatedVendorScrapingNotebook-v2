@@ -24,17 +24,17 @@
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 2,
-          "totalPrice": 32500,
-          "minPrice": 14500,
-          "maxPrice": 18000,
+          "totalPrice": 37500,
+          "minPrice": 18000,
+          "maxPrice": 19500,
           "subcategories": {
             "Variants": {
               "totalSKUs": 2,
-              "totalPrice": 32500,
-              "avgPrice": 16250
+              "totalPrice": 37500,
+              "avgPrice": 18750
             }
           },
-          "avgPrice": 16250
+          "avgPrice": 18750
         }
       }
     }

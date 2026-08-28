@@ -10,19 +10,33 @@
     "totalUniqueSKUs": 478,
     "totalTables": 76,
     "diffSummary": {
-      "added": 472,
-      "removed": 4,
+      "added": 474,
+      "removed": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
-      "priceAndAttributeChanged": 0,
+      "attributeChanged": 3,
+      "priceAndAttributeChanged": 1,
       "unchanged": 0,
-      "reinstated": 0,
-      "discontinuedTotal": 4
+      "reinstated": 4,
+      "discontinuedTotal": 0
     },
     "historySnapshot": "catalog_2026-08-27.json",
     "priceAnalytics": {
       "scrapeDate": "2026-08-27",
       "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 11700,
+          "minPrice": 1650,
+          "maxPrice": 2250,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 11700,
+              "avgPrice": 1950
+            }
+          },
+          "avgPrice": 1950
+        },
         "Cooling / Thermal": {
           "totalSKUs": 0,
           "totalPrice": 0,
@@ -336,20 +350,6 @@
             }
           },
           "avgPrice": 0
-        },
-        "Chassis": {
-          "totalSKUs": 4,
-          "totalPrice": 7850,
-          "minPrice": 1650,
-          "maxPrice": 2250,
-          "subcategories": {
-            "Variants": {
-              "totalSKUs": 4,
-              "totalPrice": 7850,
-              "avgPrice": 1962.5
-            }
-          },
-          "avgPrice": 1962.5
         }
       }
     },
@@ -952,7 +952,7 @@
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-08-10: $1650.00 → 2026-08-27: $1650.00 (✕ REMOVED)"
+          "Price History Trail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED)"
         },
         {
           "Product #": "P52535-B21",
@@ -1169,14 +1169,14 @@
           "lifecycleBadge": "",
           "Start Date": "12/14/2023",
           "Discontinued Date": "07/31/2027",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "4933",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$4933.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $4933.00",
           "description": "Intel Xeon-Gold 6530 2.1GHz 32-core 270W Processor for HPE"
         },
         {
@@ -1763,14 +1763,14 @@
           "lifecycleBadge": "",
           "Start Date": "12/14/2023",
           "Discontinued Date": "07/31/2027",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "23877",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$23877.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $23877.00",
           "description": "Intel Xeon-Platinum 8580 2.0GHz 60-core 350W Processor for HPE"
         },
         {
@@ -2917,14 +2917,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "233",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$233.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $233.00",
           "description": "HPE ProLiant DL380/DL560 Gen11 High Performance 2U Heat Sink Kit"
         }
       ]
@@ -3352,14 +3352,14 @@
           "lifecycleBadge": "",
           "Start Date": "04/06/2026",
           "Discontinued Date": "06/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "28532",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$28532.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $28532.00",
           "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit"
         },
         {
@@ -4159,14 +4159,14 @@
           "lifecycleBadge": "",
           "Start Date": "10/05/2020",
           "Discontinued Date": "07/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "1",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$1.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $1.00",
           "description": "HPE CE Mark Removal FIO Enablement Kit"
         }
       ]
@@ -4764,14 +4764,14 @@
           "lifecycleBadge": "",
           "Start Date": "11/10/2022",
           "Discontinued Date": "04/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "5999",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$5999.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $5999.00",
           "description": "HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller"
         },
         {
@@ -5093,14 +5093,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "06/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "38",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$38.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $38.00",
           "description": "HPE ProLiant Storage Controller Enablement Cable Kit"
         }
       ]
@@ -5142,14 +5142,14 @@
           "lifecycleBadge": "",
           "Start Date": "04/02/2019",
           "Discontinued Date": "11/30/2026",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "397",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$397.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $397.00",
           "description": "HPE Smart Storage Hybrid Capacitor with 145mm Cable Kit"
         },
         {
@@ -5295,14 +5295,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "730",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$730.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $730.00",
           "description": "HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit"
         },
         {
@@ -5744,14 +5744,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "416",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$416.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $416.00",
           "description": "HPE ProLiant DL380 Gen11 8SFF U.3 Premium Drive Cage Kit"
         },
         {
@@ -10145,14 +10145,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "06/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "343",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$343.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $343.00",
           "description": "HPE ProLiant DL380 2U x16/x16/x16 Secondary Riser Kit"
         }
       ]
@@ -10192,14 +10192,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "06/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "262",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$262.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $262.00",
           "description": "HPE ProLiant DL380 2U x16/x16/x16 Primary Riser Kit"
         },
         {
@@ -10318,14 +10318,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "409",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$409.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $409.00",
           "description": "HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit"
         }
       ]
@@ -10764,14 +10764,14 @@
           "lifecycleBadge": "",
           "Start Date": "11/02/2020",
           "Discontinued Date": "12/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "1231",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$1231.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $1231.00",
           "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE"
         },
         {
@@ -10790,14 +10790,14 @@
           "lifecycleBadge": "",
           "Start Date": "06/06/2022",
           "Discontinued Date": "12/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "485",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$485.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $485.00",
           "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE"
         }
       ]
@@ -11405,14 +11405,14 @@
           "lifecycleBadge": "",
           "Start Date": "06/06/2016",
           "Discontinued Date": "06/30/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "2110",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$2110.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $2110.00",
           "description": "HPE 25Gb SFP28 SR 100m Transceiver"
         }
       ]
@@ -11812,14 +11812,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "115",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$115.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $115.00",
           "description": "HPE ProLiant DL3XX Gen11 CPU2 to OCP2 x8 Enablement Kit"
         },
         {
@@ -12008,14 +12008,14 @@
           "lifecycleBadge": "",
           "Start Date": "11/07/2022",
           "Discontinued Date": "06/30/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "7799",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$7799.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $7799.00",
           "description": "HPE NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device"
         },
         {
@@ -12034,14 +12034,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "164",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$164.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $164.00",
           "description": "HPE ProLiant DL380 Gen11 NS204i-u Internal Cable Kit"
         },
         {
@@ -12135,14 +12135,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "1",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$1.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $1.00",
           "description": "HPE ProLiant DL380 Gen11 NS204i-u FIO Bundle Kit"
         }
       ]
@@ -12927,14 +12927,14 @@
           "lifecycleBadge": "",
           "Start Date": "01/10/2023",
           "Discontinued Date": "06/30/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "972",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$972.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $972.00",
           "description": "HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit"
         },
         {
@@ -13051,14 +13051,14 @@
           "lifecycleBadge": "",
           "Start Date": "02/01/2021",
           "Discontinued Date": "06/30/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "890",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$890.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $890.00",
           "description": "HPE 1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit"
         }
       ]
@@ -13152,14 +13152,14 @@
           "lifecycleBadge": "",
           "Start Date": "03/06/2023",
           "Discontinued Date": "11/30/2030",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "1588",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$1588.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $1588.00",
           "description": "HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit"
         },
         {
@@ -13447,14 +13447,14 @@
           "lifecycleBadge": "",
           "Start Date": "12/23/2019",
           "Discontinued Date": "05/31/2028",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "89",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$89.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $89.00",
           "description": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit"
         },
         {
@@ -13499,14 +13499,14 @@
           "lifecycleBadge": "",
           "Start Date": "11/10/2022",
           "Discontinued Date": "05/31/2029",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "164",
           "listPrice": 0,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
+          "Price Change (USD)": "+$164.00",
+          "Price Change (%)": "+100.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-08-27: (no price)",
+          "Price History Trail": "2026-08-27: $164.00",
           "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
         }
       ]
