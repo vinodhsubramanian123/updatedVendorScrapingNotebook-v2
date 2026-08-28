@@ -1,8 +1,8 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-28T18:40:50.608Z",
-  "lastUpdated": "2026-08-28T18:40:50.608Z",
+  "generatedAt": "2026-08-28T18:43:11.919Z",
+  "lastUpdated": "2026-08-28T18:43:11.919Z",
   "totalLearnedRules": 28,
   "productFamiliesSynced": [
     "DL380",
@@ -223,7 +223,7 @@
     },
     {
       "deltaId": "DELTA-1787939245188",
-      "timestamp": "2026-08-28T18:39:59.211Z",
+      "timestamp": "2026-08-28T18:42:21.213Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -241,7 +241,7 @@
     },
     {
       "deltaId": "DELTA-1787939298644",
-      "timestamp": "2026-08-28T18:40:36.388Z",
+      "timestamp": "2026-08-28T18:42:58.076Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
