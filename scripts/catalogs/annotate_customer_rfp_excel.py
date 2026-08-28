@@ -217,13 +217,15 @@ rows_data = [
         "Storage Drive Cage",
         "ProLiant DL380 Gen11 2U 8SFF x1 Tri-Mode U.3 Drive Cage Kit (P48813-B21)",
         60,
-        "P48813-B21 (Qty: 60)\n• Cluster A: 1 cage/node × 20 nodes = 20\n• Cluster B: 1 cage/node × 40 nodes = 40",
-        629.00,
-        37740.00,
-        "100% DIRECT MATCH:\n"
-        "Exactly 60 front 8SFF Tri-Mode U.3 drive cages allocated (1 cage per server across all 60 nodes).",
-        "100% Exact Match",
-        STYLE_EXACT
+        "P48814-B21 (Qty: 60)\n• Cluster A: 1 cage/node × 20 nodes = 20\n• Cluster B: 1 cage/node × 40 nodes = 40",
+        780.00,
+        46800.00,
+        "PREMIUM DRIVE CAGE UPGRADE (CLIC RULE 81354632):\n"
+        "Customer specified P48813-B21 (x1 basic cage) with P48832-B21 (Tri-Mode Y-Cable). "
+        "HPE CLIC Rule 81354632 mandates: 'When ordering with P48832-B21 Tri-Mode Y-Cable Kit, then P48814-B21 8SFF U.3 Premium Kit must be selected.' "
+        "We have upgraded to the Premium U.3 Drive Cage (P48814-B21), providing full x4 Tri-Mode NVMe/SAS4 bandwidth to all 8 front drives and resolving the unbuildable error.",
+        "Premium Cage Upgrade (Rule 81354632)",
+        STYLE_PIVOT
     ),
     # Row 10: Storage Cabling
     (
