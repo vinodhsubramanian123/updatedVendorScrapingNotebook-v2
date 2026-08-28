@@ -92,10 +92,61 @@ graph TD
 
 ### Phase 5 & 6: Dual Outputs, Telemetry & Closed-Loop Feedback Learning
 - **Output 1 (Dashboard API & Telemetry)**: Submissions sent via `/api/eval-boq` display in React frontend and automatically log execution metrics to `pipeline_telemetry.json` via [`scripts/lib/system/telemetry.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/system/telemetry.js).
-- **Output 2 (Corrected BOQ Excel)**: Generates a multi-sheet **Corrected BOQ Excel** output (`/api/export-boq`) containing NotebookLM Rationale Summary and finalized BOM.
+- **Output 2 (Corrected BOQ Excel & Partner Portal Upload BOM)**:
+  - Generates multi-sheet **Corrected BOQ Excel** output (`/api/export-boq`) containing NotebookLM Rationale Summary and finalized BOM.
+  - Generates flat **Partner Portal Upload BOM** workbook strictly adhering to `INV-37` (7-column schema, per-cluster subtotal rows, and 2-line separator gaps).
 - **Feedback Module**: [`scripts/lib/feedback/feedback_loop.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/feedback/feedback_loop.js)
 - **Command**: `npm run eval:boq <boq_file> --simulate-portal-error "<error_text>"` or Dashboard modal.
 - Logs permanent `KnowledgeDeltas` in `outputs/history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
+
+---
+
+## 3. Anti-Hallucination Guardrails & Double Safety Net Protocol
+
+To guarantee 100% precision and zero ungrounded drift, the evaluation pipeline enforces strict anti-hallucination guardrails:
+
+1. **Zero-Hallucination SKU Validation (`isValidHpeSKU`)**:
+   - Every SKU emitted in solutions must exist in certified `catalog.json` or `price_history.json`.
+   - Never invent, guess, or hallucinate part numbers.
+2. **Double Safety Net (Deterministic Math + Grounded RAG + Local Fallback)**:
+   - **Tier 1**: Deterministic Rule Engine evaluates physical aspect math at $O(1)$ speed.
+   - **Tier 2**: Agentic Guardrail queries Cloud NotebookLM RAG grounded exclusively in official QuickSpecs PDFs and 22-sheet master catalogs.
+   - **Tier 3**: Local RAG Dual-Layer Search (`local_rag_search.js`) acts as an instant fallback if cloud APIs hit timeouts or rate limits.
+3. **Decisive Human Escalation on Unresolvable Ambiguities**:
+   - If a customer requirement is ambiguous or fundamentally contradictory (e.g. asking for 128 cores on a 32-core maximum socket platform without budget for 4-socket), the engine surfaces the conflict clearly with explicit trade-off options rather than making silent assumptions.
+
+---
+
+## 4. Minimum Edit Distance & Form-Factor Bus Pivoting (Path B Principle)
+
+When a customer's requested parts cannot be directly built as drafted, the engine computes alternative substitutions with **Minimum Disruption**:
+
+1. **Form-Factor Bus Pivoting**:
+   - Rather than dropping customer options, the engine pivots conflicting components to equivalent form-factors (e.g. moving an OCP controller `MR408i-o` to PCIe standup `MR416i-p` `P47777-B21` to preserve 100% of customer requested OCP networking adapters).
+2. **5-Tier Strategy Ranking by Exact Intent SKU Overlap**:
+   - Solutions are ranked dynamically by **Exact Intent Overlap** ($100 \times \frac{\text{matching customer SKUs}}{\text{total customer SKUs}}$).
+   - **Rank 1** is strictly guaranteed to be the build closest to the customer's drafted part numbers with zero unsolicited services or software licenses (`INV-32`).
+
+---
+
+## 5. Enterprise Invariants & Physical Rules Reference (`INV-24` through `INV-38`)
+
+* **`INV-24`**: Ground-truth isolation — customer BOQs are never uploaded to NotebookLM knowledge sources.
+* **`INV-25`**: Container tree option placement — internal CTO components must carry `#0D1` / `-F21` Smart FIO tagging.
+* **`INV-26`**: Storage expander math — SAS expander `P48835-B21` is mandatory for $>8$ drives on a single 8-port controller.
+* **`INV-27`**: GPU auxiliary power cabling — high-draw GPUs mandate `P48816-B21` / `P76450-B21` and high-perf fan kits.
+* **`INV-28`**: OS physical core multiplier licensing — 16 cores per server/socket minimum base + add-on packs.
+* **`INV-29`**: Multi-node infrastructure matrix — total RU, 42U rack counts, peak kW, rail kit coverage, and 220V utility derating advisories.
+* **`INV-30`**: EU Ecodesign Lot 9 Platinum PSU enablement — auto-injects CE Mark Removal Kit `P35876-B21` ($1 list) for non-EU deployments.
+* **`INV-31`**: PCIe Riser Slot 1 power delivery — mandates Primary Cable Kit `P56073-B21` when $\ge 5$ physical PCIe cards are populated.
+* **`INV-32`**: Zero unsolicited services/SaaS in Rank 1 BOMs; standardized 7-column reconciliation schema.
+* **`INV-33`**: Single source of pricing truth via `getHistoricalSkuPrice` without hardcoded standalone arrays.
+* **`INV-34`**: Dynamic GPL price baseline preservation across unbundled configurator views.
+* **`INV-35`**: Obsolete vendor description badge and error prefix regex sanitization.
+* **`INV-36`**: Strict 3-tier product generation hierarchy `{Family}/{Gen}/{Model}/` without form-factor fragmentation.
+* **`INV-37`**: Automated multi-cluster tender subtotal rows (`CONFIG #N SUBTOTAL:`) and 2-line separator gaps.
+* **`INV-38`**: Dynamic chassis directory path resolution in sku versioning across the 3-tier hierarchy.
+
 
 ---
 
