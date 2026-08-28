@@ -201,5 +201,20 @@ To maximize velocity and offload heavy validation without human friction:
 | **`INV-22`**| Category Cardinality Assertion | Minimum cardinality thresholds for flagship servers (e.g. >=30 CPUs) before promotion. |
 | **`INV-23`**| Catastrophic Drop Guardrail | Pre-promotion check halts Step 8 if SKU count drops >30% below previous baseline. |
 | **`INV-24`**| Customer BOQ Knowledge Isolation| Customer BOQs/BOMs MUST NEVER be added to NotebookLM sources; RAG is grounded on ground truth only. |
+| **`INV-25`**| Container Tree Option Placement | Internal CTO components carry `#0D1` / `-F21` Smart FIO tags; unparented BTO memory fails CLIC validation. |
+| **`INV-26`**| Tri-Mode Storage Expander Math  | Injects SAS Expander `P48835-B21` for $>8$ drives on a single controller; routes OCP vs PCIe cables. |
+| **`INV-27`**| GPU Auxiliary Power Cabling     | Injects GPU power cables `P48816-B21` / `P76450-B21` and high-perf fan kits for PCIe GPUs. |
+| **`INV-28`**| OS Core Multiplier Licensing    | Enforces 16-core base server minimum + 2/4/16 core add-on packs matching total physical CPU cores. |
+| **`INV-29`**| Multi-Node Cluster Matrix       | Sizing matrix computes total RU, 42U racks, peak kW draw, rail kits, and 220V utility derating advisories. |
+| **`INV-30`**| EU Ecodesign Lot 9 Platinum PSU | Injects CE Mark Removal Kit `P35876-B21` ($1 list) for Platinum PSUs on high-TDP configurations. |
+| **`INV-31`**| PCIe 5th Slot Power Delivery    | Injects Primary Cable Kit `P56073-B21` for physical Slot 1 when $\ge 5$ PCIe expansion cards are populated. |
+| **`INV-32`**| Zero Unsolicited Software/SaaS  | Decouples base hardware from unsolicited services/SaaS; enforces standardized 7-column upload schema. |
+| **`INV-33`**| Single Source of Pricing Truth  | Resolves SKU pricing dynamically via `getHistoricalSkuPrice` without hardcoded price arrays. |
+| **`INV-34`**| Dynamic GPL Price Preservation  | Preserves historical Global List Prices across unbundled OCA views rendering temporary $0.00 prices. |
+| **`INV-35`**| Obsolete Vendor Badge Cleaning  | Strips vendor error strings and lifecycle badges (`OB`, `DS`, `90`, `EOL`) via clean regex filters. |
+| **`INV-36`**| Product Generation Hierarchy    | Enforces strict 3-tier taxonomy `{Family}/{Gen}/{Model}/` without form-factor directory fragmentation. |
+| **`INV-37`**| Automated Multi-Cluster Subtotal| Emits `CONFIG #N SUBTOTAL:` rows in Set column and 2-line separator gaps in partner portal workbooks. |
+| **`INV-38`**| Dynamic Chassis Path Resolution | `sku_versioning.js` dynamically resolves bare model strings to canonical directories under `outputs/`. |
+
 
 
