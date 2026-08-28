@@ -387,6 +387,21 @@ rows_data = [
         "Dedicated rear hot-plug hardware RAID1 OS boot solution fully provided with internal cabling and factory integration brackets across all 60 nodes.",
         "100% Exact Match",
         STYLE_EXACT
+    ),
+    # Row 21: Storage Enablement Cable for Capacitor
+    (
+        21,
+        "Storage Cache Enablement Cable",
+        "[MANDATORY FACTORY INJECTION] HPE ProLiant Storage Controller Enablement Cable Kit (P48918-B21)",
+        "0 (Omitted in RFP)",
+        "P48918-B21 (Qty: 60)\n• Cluster A: 1 cable/node × 20 nodes = 20\n• Cluster B: 1 cable/node × 40 nodes = 40",
+        164.00,
+        9840.00,
+        "MANDATORY CAPACITOR POWER CABLE (CLIC RULE 81354652):\n"
+        "HPE CLIC Rule 81354652 mandates: 'When ordering P02377-B21 Smart Storage Hybrid Capacitor, P48918-B21 Storage Controller Enablement Cable Kit must be ordered.' "
+        "This cable provides the dedicated power delivery link between the hybrid capacitor and the MR416i-p storage controller.",
+        "Mandatory Factory Addition (Rule 81354652)",
+        STYLE_ADDED
     )
 ]
 
