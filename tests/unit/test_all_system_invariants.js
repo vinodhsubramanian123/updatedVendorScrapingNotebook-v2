@@ -141,4 +141,31 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     assert.strictEqual(fs.existsSync(staleGen12Sff), false, 'Fragmented form-factor directory DL380_Gen12_SFF must not exist');
   });
 
+  await t.test('INV-37: Automated Multi-Cluster Tender Subtotal & 2-Line Gap Formatting Protocol', () => {
+    const { generatePartnerPortalUploadBOM } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
+    const sampleClusters = [{
+      name: 'Cluster 1',
+      multiplier: 10,
+      items: [{ sku: 'P52534-B21', quantity: 1, totalQuantity: 10, description: 'DL380 Gen11 CTO', unitPrice: 5070 }]
+    }];
+    const tempFile = path.join(process.cwd(), 'outputs', 'temp', 'inv37_test.xlsx');
+    fs.mkdirSync(path.dirname(tempFile), { recursive: true });
+    generatePartnerPortalUploadBOM(sampleClusters, tempFile);
+    
+    const XLSX = require('xlsx-js-style');
+    const wb = XLSX.readFile(tempFile);
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+    assert.deepEqual(rows[0], ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+    const subtotal = rows.find(r => r[2] && String(r[2]).includes('SUBTOTAL:'));
+    assert.ok(subtotal, 'Must contain subtotal row in Set column');
+    fs.unlinkSync(tempFile);
+  });
+
+  await t.test('INV-38: Dynamic Chassis Directory Path Resolution in Sku Versioning', () => {
+    const { getHistoricalSkuPrice } = require('../../scripts/lib/catalog/sku_versioning.js');
+    const res = getHistoricalSkuPrice('P67088-B21', 'DL380_Gen11');
+    assert.strictEqual(res.priceUsd, 23877, 'Must dynamically resolve bare model DL380_Gen11 to outputs directory');
+  });
+
 });
+

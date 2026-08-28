@@ -280,6 +280,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Product lines must not be fragmented into ad-hoc form-factor subdirectories.
 - **Rule**: The repository enforces a strict 3-tier taxonomy: `{Family}/{Gen}/{Model}/`. All chassis form-factor variants (8SFF, 24SFF, 8LFF, 12LFF, EDSFF, etc.) MUST be contained within the single product generation directory (e.g. `outputs/ProLiant/Gen12/DL380_Gen12/` and `outputs/ProLiant/Gen11/DL380_Gen11/`). No duplicate or fragmented form-factor directories.
 
+### INV-37: Automated Multi-Cluster Tender Subtotal & 2-Line Gap Formatting Protocol
+- **Pattern**: Partner Portal upload workbooks require strict 7-column schema and per-cluster subtotal rows with 2-line gaps.
+- **Rule**: All generated Partner Portal Upload workbooks and tender reconciliation sheets maintain the exact 7-column schema required by vendor portals: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`, with per-cluster subtotal rows (`CONFIG #N SUBTOTAL:` in Column index 2) and 2-line separator gaps.
+
+### INV-38: Dynamic Chassis Directory Path Resolution in Sku Versioning
+- **Pattern**: Sku versioning and historical price lookup engines must resolve bare model strings without failing or defaulting to the project root.
+- **Rule**: `sku_versioning.js` (`getSkuAuditHistory`, `getHistoricalSkuPrice`) implements `resolveChassisDirectory(dir)` to dynamically locate product generation folders under `outputs/{Family}/{Gen}/{Model}/` when called with bare model identifiers (e.g. `DL380_Gen11`, `DL380_Gen12`, `GX5000_General_RACK`).
+
 ---
 
 ## History Directory Hygiene Rules

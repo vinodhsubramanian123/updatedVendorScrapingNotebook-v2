@@ -382,4 +382,27 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Single Generation Namespace**: Products are strictly organized at the Product Generation level: `outputs/{Family}/{Gen}/{Model}/` (e.g. `outputs/ProLiant/Gen12/DL380_Gen12/` and `outputs/ProLiant/Gen11/DL380_Gen11/`).
 - **Form-Factor Variant Ingestion**: All chassis form-factor variants (8SFF, 24SFF, 8LFF, 12LFF, EDSFF, High Power) are tracked internally within the product generation catalog and companion workbooks with zero fragmentation or duplicate directories.
 
+---
+
+## 37. Automated Multi-Cluster Tender Subtotal & 2-Line Gap Formatting Protocol (`INV-37`)
+- **Strict 7-Column Reconciliation Contract**: All generated Partner Portal Upload workbooks and tender reconciliation sheets maintain the exact 7-column schema required by vendor portals: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`.
+- **Per-Cluster Subtotal Rows & Gap Separators**: Each server cluster partition is demarcated by a subtotal row (`CONFIG #N SUBTOTAL:`) in Column index 2 (`Set`) and followed by exactly 2 blank separator lines to ensure seamless, error-free ingestion into automated vendor configuration pipelines.
+
+---
+
+## 38. Dynamic Chassis Directory Path Resolution in Sku Versioning (`INV-38`)
+- **Recursive Directory Resolution**: `sku_versioning.js` (`getSkuAuditHistory`, `getHistoricalSkuPrice`) implements `resolveChassisDirectory(dir)` to dynamically locate product generation folders under `outputs/{Family}/{Gen}/{Model}/` when called with bare model identifiers (e.g. `DL380_Gen11`, `DL380_Gen12`, `GX5000_General_RACK`).
+- **Zero Project Root Pollution**: Eliminates stale or broken lookups against `./DL380_Gen11` at the repository root and preserves clean atomic file read operations across all multi-product test tiers.
+
+---
+
+## 39. Executive Client Proposal Presentation Styling & Visual Compliance Badges
+- **Executive Typography & Palette**: Client proposals (`GID-RFQS-HPE-2026-006.xlsx`) use Dark Slate `#0F172A` header styling, alternating `#F8FAFC` zebra row shading, right-aligned `$#,##0.00` currency formatting, and explicit row height padding.
+- **Color-Coded Compliance Badging**: Status columns feature clear pill badges:
+  - 🟢 **Green** (`#DCFCE7` / `#166534`): Direct 100% exact matches and full component fulfillment.
+  - 🔵 **Blue** (`#E0F2FE` / `#0369A1`): Architectural cluster partitioning, quantity right-sizing, and FIO standardization.
+  - 🟠 **Amber** (`#FEF3C7` / `#92400E`): Mandatory factory injections (primary riser cables, storage enablement cables, EU Lot 9 CE Mark kits).
+- **Unsolicited Service Isolation**: Clearly decouples pure hardware baseline list price (`$18,616,660.00`) from optional SaaS licenses (`$27,000.00`), ensuring 100% price transparency and zero surprise add-ons for the client.
+
+
 
