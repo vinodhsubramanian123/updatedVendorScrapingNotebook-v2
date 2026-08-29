@@ -28,10 +28,12 @@ async function listSessions() {
   const sessions = await client.sessions().all();
   return sessions.map(s => {
     const rawId = s.id || (s.name ? s.name.replace(/^sessions\//, '') : 'unknown');
+    const resolvedState = (s.outcome?.state === 'completed' || s.state === 'completed') ? 'completed' : (s.state || s.status || 'unknown');
     return {
       id: rawId,
       title: s.title || s.outcome?.title || (s.prompt ? s.prompt.substring(0, 55).replace(/\n/g, ' ') + '...' : 'Untitled Session'),
-      state: s.state || s.status || 'unknown',
+      state: resolvedState,
+      outcome: s.outcome || null,
       createdAt: s.createTime || s.createdAt || '',
       updatedAt: s.updateTime || s.updatedAt || '',
       branch: s.source?.branch || s.sourceContext?.githubRepoContext?.startingBranch || s.branch || 'main',

@@ -58,16 +58,19 @@ Task Boundaries:
 Whenever an Antigravity AI Agent delegates work to Jules or has active sessions in flight:
 - **Never go idle or wait for human prompts**: The agent MUST schedule proactive background timers using the `schedule` tool (`DurationSeconds=120-180`, `TimerCondition="never"`) or recurring cron jobs.
 - **Heartbeat Action**: On each wakeup, scan active sessions via `node scripts/services/jules_task_manager.js list` and audit activity logs.
+- **Continuous Oversight**: If sessions are in `inProgress`, re-schedule a timer. If sessions are in `awaitingUserFeedback`, unblock immediately. If completed, audit, certify, merge, prune, and archive.
 
 ---
 
 ## 5. Stage 3: Two-Way Autonomous Dialogue & Unblocking Protocol
 When a Jules session enters `state: awaitingUserFeedback` or emits `agentMessaged`:
 1. **Inspect Reasoning**: Read `activities.list()` via `scripts/services/jules_task_manager.js` to inspect Jules's exact question, findings, or proposals.
-2. **Decisive Guidance**: Send a clear, actionable instruction back to the session:
+2. **Decisive Guidance**: Send a clear, actionable instruction back to the session without asking the human user:
    ```bash
    node scripts/services/jules_task_manager.js send <sessionId> "<Clear Decision & Instruction>"
    ```
+3. **No Human Relaying**: Make architectural decisions autonomously based on repo guidelines, data dictionary schemas, and system invariants.
+4. **Immediate Verification**: Once guidance is sent, confirm the session resumes `inProgress` status and track its delivery.
 3. **No Human Relaying**: Make architectural decisions autonomously based on repo guidelines, data dictionary schemas, and system invariants.
 
 ---

@@ -49,8 +49,9 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
     ];
     const result = analyzeAndPartitionClusters(rawItems);
     assert.strictEqual(result.isMultiCluster, true);
-    assert.strictEqual(result.clusters[0].multiplier, 21); // Math.round(41/2) = 21
-    assert.strictEqual(result.clusters[1].multiplier, 40); // Math.round(79/2) = 40
+    assert.strictEqual(result.clusters[0].multiplier + result.clusters[1].multiplier, 60); // Diophantine constraint (20 + 40 = 60)
+    assert.strictEqual(result.clusters[0].multiplier, 20);
+    assert.strictEqual(result.clusters[1].multiplier, 40);
   });
 
   await t.test('stress tests with thousands of items', () => {

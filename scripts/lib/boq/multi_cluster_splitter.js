@@ -251,18 +251,22 @@ function analyzeAndPartitionClusters(rawItems) {
   // GAP-6 FIX: Dynamic alphabetical cluster labels for N clusters
   const CLUSTER_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  // Largest Remainder Method to satisfy Diophantine constraint (sum of multipliers = totalChassis)
-  let allocatedChassis = 0;
+  // Mathematically rigorous Hamilton-Hare Largest Remainder Method to satisfy Diophantine constraint
+  const rawQuotas = cpuItems.map(c => (c.quantity || 1) / cpusPerServer);
+  const totalRawQuota = rawQuotas.reduce((sum, q) => sum + q, 0) || 1;
+
   const tempClusters = cpuItems.map((cpu, idx) => {
-    const rawQty = cpu.quantity / cpusPerServer;
-    const baseMult = Math.floor(rawQty);
-    const remainder = rawQty - baseMult;
-    allocatedChassis += baseMult;
-    return { idx, cpu, baseMult, remainder };
+    const raw = rawQuotas[idx];
+    const exactShare = totalChassis * (raw / totalRawQuota);
+    const baseMult = Math.floor(exactShare);
+    const remainder = exactShare - baseMult;
+    return { idx, cpu, raw, exactShare, baseMult, remainder };
   });
 
+  let allocatedChassis = tempClusters.reduce((sum, c) => sum + c.baseMult, 0);
   const deficit = totalChassis - allocatedChassis;
-  tempClusters.sort((a, b) => b.remainder - a.remainder || b.cpu.quantity - a.cpu.quantity);
+
+  tempClusters.sort((a, b) => b.remainder - a.remainder || b.raw - a.raw);
 
   for (let i = 0; i < deficit; i++) {
     if (i < tempClusters.length) {
