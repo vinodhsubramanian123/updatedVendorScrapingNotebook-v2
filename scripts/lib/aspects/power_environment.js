@@ -14,6 +14,11 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   let hasCeRemovalKit = false;
   let psuCount = 0;
   let maxPsuWattage = 800;
+
+  // Synergy Frame Power
+  let isSynergy12000Frame = false;
+  let synergyTitanium2650wCount = 0;
+  let hasSynergyRedundantPowerError = false;
   let estimatedCpuWatts = 0;
   let estimatedGpuWatts = 0;
   let estimatedMemoryWatts = 0;
@@ -51,6 +56,10 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       }
     }
 
+    if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
+      isSynergy12000Frame = true;
+    }
+
     if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
       psuCount += (it.quantity || 1);
       const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
@@ -66,6 +75,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       }
       if (desc.includes('titanium') || sku === 'P44712-B21' || sku === 'P03178-B21') {
         hasTitaniumPsu = true;
+      }
+      if (desc.includes('2650w') && desc.includes('titanium')) {
+        synergyTitanium2650wCount += (it.quantity || 1);
       }
     }
     if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {
@@ -86,6 +98,13 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   // High-draw dual-socket configurations with Platinum PSUs require Titanium PSUs (96% efficiency) or P35876-B21 CE Mark Removal Kit for non-EU deployment.
   const needsCeRemovalKit = hasPlatinumPsu && !hasTitaniumPsu && estimatedNodeWattage >= 500 && !hasCeRemovalKit;
 
+  // Synergy Frame Redundant Power Supply Rule
+  if (isSynergy12000Frame) {
+    if (synergyTitanium2650wCount !== 6) {
+      hasSynergyRedundantPowerError = true;
+    }
+  }
+
   return {
     hasDcPowerSupply,
     hasDcLugKit,
@@ -96,7 +115,10 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     psuCount,
     maxPsuWattage,
     estimatedNodeWattage,
-    needsHighLine220v
+    needsHighLine220v,
+    isSynergy12000Frame,
+    synergyTitanium2650wCount,
+    hasSynergyRedundantPowerError
   };
 }
 
