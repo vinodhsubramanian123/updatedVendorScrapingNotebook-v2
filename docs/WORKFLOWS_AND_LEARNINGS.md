@@ -440,8 +440,37 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 
 ---
 
-## 44. Google Jules Autonomous Multi-Agent Protocol & API State Semantics (`INV-10..19`)
+## 44. Google Jules Autonomous Multi-Agent Protocol & API State Semantics (`INV-10..19, INV-43`)
 - **Prompt-Free Multi-Agent Governance**: Antigravity autonomously dispatches, unblocks, audits, certifies, merges, and archives Jules sessions without human relaying.
-- **API State Semantics**: Completed sessions in `@google/jules-sdk` often exhibit `state: "paused"` with `outcome.state: "completed"`. `jules_task_manager.js` resolves this state mapping, approves paused plans (`s.approve()`), and archives completed sessions cleanly into `outputs/history/jules_archived_sessions.json`.
-- **Proactive Heartbeat Monitoring (`schedule`)**: Active tasks maintain proactive cron/timer wakeups (`DurationSeconds=120`, `TimerCondition="never"`) to monitor progress continuously until all tasks are complete.
+- **60-Second Pre-Scheduled Heartbeat Protocol (F9 Fix)**: Heartbeat intervals are tuned to **60 seconds** (reduced from 120s) with the **Step 0 Pre-Schedule** pattern where the next timer is scheduled *first thing* upon wakeup before any inspection or merge work begins. This eliminates all blind spots when merge conflict resolutions or test runs take multiple minutes.
+- **Session State Persistence (F10 Fix)**: Session states and timestamps are continuously persisted to `task.md` on every cycle, ensuring zero amnesia across conversation context truncations.
+- **API State Semantics & In-Progress Archival Guard**: In `@google/jules-sdk`, newly initialized sessions contain `outcome: { state: "completed" }` template records while `state: "inProgress"`. `archiveCompletedSessions` enforces `!s.archived && s.state !== 'inProgress' && (s.state === 'completed' || s.state === 'failed' || s.state === 'paused')` to prevent premature archival of active sessions.
+- **Cross-Platform GitHub REST Client (INV-18)**: Native Node.js `fetch` endpoints handle listing, pruning, and closing PRs without shell-dependent CLI binaries like `gh`.
+
+---
+
+## 45. Universal MCP Pre-Authorization & Zero-Waiting Auto-Approval Directive
+- **100% Pre-Approval Across ALL Tools**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY tool call across ALL configured MCP servers (`jules`, `gemini-notebook-mcp`, `notebooks`, `data-agent-kit`, `visualization`, `graphify`, CDP browser navigation, knowledge extractor, and file operations).
+- **Zero Waiting Mandate**: AI agents MUST NEVER pause, prompt, ask for human confirmation, or wait for human approvals to execute ANY MCP tool call, plan approval, code review, test run, message dispatch, source addition, or session management action. Execute all operations autonomously and immediately in the background.
+
+---
+
+## 46. Dynamic Semantic Graph (`graphify`) Query & Blast Radius Engineering
+- **Interactive Query Engine**: Beyond static graph generation, agents use graphify's interactive query tools for token-efficient architecture discovery:
+  - **`graphify query "<question>" --budget <N>`**: Natural language BFS semantic search providing 95% token savings over full-file reads.
+  - **`graphify path "<src>" "<dst>" --undirected`**: Traces the shortest dependency or call flow path between any two modules.
+  - **`graphify explain "<symbol>"`**: Dissects functions and classes, listing all incoming callers, outgoing dependencies, and community clusters for instant blast-radius impact analysis before refactoring.
+  - **`graphify god-nodes`**: Identifies core architectural hubs (`cleanBaseSKU`, `safeWriteJsonAtomic`, `evaluatePhysicalMath`, `processPortalFeedback`, `isValidHpeSKU`) requiring strict regression test coverage.
+  - **`graphify extract . --code-only` & `graphify tree`**: Generates interactive D3 network and collapsible tree visualizations (`graphify-out/GRAPH_TREE.html`) across all 441 code modules.
+
+---
+
+## 47. Grounding Provenance Badges & Zero-Hallucination Verification Protocol
+- **Explicit Grounding Provenance Badges**: Every single aspect check, dependency recommendation, and strategy tier displays an auditable provenance badge:
+  - `[CLOUD_NLM_VERIFIED]`: Direct verification from Google NotebookLM with QuickSpecs PDF source citations and quote snippets.
+  - `[LOCAL_GROUND_TRUTH]`: Matched against live scraped 22-sheet Excel catalog companion with exact sheet and row coordinates.
+  - `[KNOWLEDGE_DELTA_RULE]`: Scoped rule from `catalog_deltas.json` or `master_knowledge_registry.json` created from prior certified closed-loop feedback.
+- **Customer BOQ Isolation (`INV-24`)**: Customer BOQ, quote, or tender files MUST NEVER be added or synced to NotebookLM knowledge sources directly. Customer inputs inherently contain human errors, invalid component quantities, deprecated part numbers, or missing enablement kits. Cloud NotebookLM sources are strictly reserved for official QuickSpecs PDFs, live scraped master catalogs, and certified `KnowledgeDelta` records.
+- **NLP Knowledge Extractor Sanitization**: All RAG answers pass through `knowledge_extractor.js` and `data_validator.js` with `isValidHpeSKU()` regular expression filtering and catalog verification before entering the persistent knowledge base.
+
 
