@@ -14,6 +14,7 @@ function evalPcieRiserSlots(items, catalogData = null) {
   let tertiaryRiserCount = 0;
   let hasPrimaryCableKit = false;
   let hasSecondaryCableKit = false;
+  let gpuPowerCableKitCount = 0;
   let hasGpuPowerCableKit = false;
 
   for (const it of items) {
@@ -36,6 +37,7 @@ function evalPcieRiserSlots(items, catalogData = null) {
     }
     if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || sku === 'P48816-B21' || sku === 'P76450-B21') {
       hasGpuPowerCableKit = true;
+      gpuPowerCableKitCount += (it.quantity || 1);
     }
 
     if (role === 'GPU / Accelerator' || desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || desc.includes('h100') || desc.includes('l4') || desc.includes('a16') || desc.includes('a30') || desc.includes('a40') || desc.includes('gpu accelerator')) {
@@ -74,7 +76,7 @@ function evalPcieRiserSlots(items, catalogData = null) {
   const needsPrimaryCableKit = primaryRiserCount > 0 && !hasPrimaryCableKit && (requiredPcieCards > (2 + activeSecondarySlots + activeTertiarySlots));
   const needsSecondaryCableKit = secondaryRiserCount > 0 && !hasSecondaryCableKit && (requiredPcieCards > (activePrimarySlots + 2 + activeTertiarySlots) || requiredPcieCards > 4);
   const needsSecondaryRiser = requiredPcieCards > (3 + (primaryRiserCount * 3)) && secondaryRiserCount === 0;
-  const needsGpuPowerCableKit = gpuCount > 0 && !hasGpuPowerCableKit;
+  const needsGpuPowerCableKit = gpuCount > gpuPowerCableKitCount;
 
   return {
     requiredPcieCards,
@@ -86,6 +88,7 @@ function evalPcieRiserSlots(items, catalogData = null) {
     activeSlotsAvailable,
     hasPrimaryCableKit,
     hasSecondaryCableKit,
+    gpuPowerCableKitCount,
     hasGpuPowerCableKit,
     needsGpuPowerCableKit,
     needsPrimaryCableKit,

@@ -93,7 +93,7 @@ async function run() {
     // Positive case: GPU power cable kit added
     const itemsPositive = [
       ...itemsNegative,
-      { sku: 'P48816-B21', description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit', quantity: 1 }
+      { sku: 'P48816-B21', description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit', quantity: 2 }
     ];
     const resPositive = evaluatePhysicalMath(itemsPositive);
     assert('Adding P48816-B21 resolves needsGpuPowerCableKit to false', resPositive.evalSummary?.pcie?.needsGpuPowerCableKit === false);

@@ -312,8 +312,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   }
 
   // Rule 1: High TDP thermal requirement
-  if (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans) {
-    const reason = `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
+  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) {
+    const reason = pcie.gpuCount > 0 ? `High TDP Thermal Math Failed: GPU Accelerator detected. Requires High-Performance Fan Kit.` : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
     errors.push(reason);
     mathDeductions.push(reason);
     missingDependencies.push({
@@ -465,14 +465,14 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
 
   // Advanced Enterprise Rule: GPU Accelerator Auxiliary Power Cable Kit
   if (pcie.needsGpuPowerCableKit) {
-    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires GPU Auxiliary Power Cable Kit (P48816-B21 / P76450-B21) to connect to power distribution board.`;
+    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'GPU_AUX_POWER_CABLE_KIT',
       rule: 'GPU Accelerator Auxiliary Power Rule',
       sku: 'P48816-B21',
       description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
-      quantity: serverCount,
+      quantity: (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
       reasoning: reason
     });
   }
@@ -487,6 +487,30 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   if (power.needsHighLine220v) {
     const reason = `Power Derating Advisory: Estimated node power draw (${power.estimatedNodeWattage}W) requires 200V-240V high-line utility circuits to prevent single-PSU derating on ${power.maxPsuWattage}W power supplies.`;
     warnings.push(reason);
+  }
+
+  // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
+
+  // Check for H100
+  let h100Count = 0;
+  for (const it of items) {
+    if (it.description && (it.description.toLowerCase().includes('h100') || it.sku === 'S0E21A')) {
+      h100Count += (it.quantity || 1);
+    }
+  }
+
+  if ((pcie.gpuCount >= 4 || h100Count >= 2) && !power.hasTitaniumPsu) {
+
+    const reason = `INV-27: Multi-GPU Thermal Envelope: 4x+ GPUs or dual high-end GPUs mandate dual 1800W/2200W Titanium PSUs (P44712-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'TITANIUM_PSU_MULTI_GPU',
+      rule: 'Multi-GPU Titanium PSU Mandate (INV-27)',
+      sku: 'P44712-B21',
+      description: '1800W-2200W Titanium Power Supply Kit',
+      quantity: 2 * serverCount,
+      reasoning: reason
+    });
   }
 
   // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
@@ -532,10 +556,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       name: 'Thermal & Compute Math',
       iconType: 'Cpu',
       defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
-      status: (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
       detail: compute.fanKitExceedsMax
         ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
-        : (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS && !compute.hasHighPerfFans)
+        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans)
         ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
         : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with valid fan kit count.`
     },
