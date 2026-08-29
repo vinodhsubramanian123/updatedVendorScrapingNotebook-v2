@@ -85,6 +85,14 @@ async function testCandidateBoqExcelExport() {
   const sampleCsv = path.join(PROJECT_ROOT, 'outputs', 'test_boqs', 'combo_2_thermal_missing_fan.csv');
   const evalResults = evaluateBOQMultiAspect(sampleCsv);
 
+  // The signature is: validateConflictGraph(boqItems, missingDependencies, targetDir, chassisVariantOverride)
+  const graph = require('../../scripts/lib/conflict/conflict_graph.js').evaluateWholeSolutionGraph(
+    evalResults.items,
+    evalResults.missingDependencies || evalResults.errors || [],
+    evalResults.chassisInfo
+  );
+  evalResults.conflictGraph = graph;
+
   const exportPath = path.join(PROJECT_ROOT, 'outputs', 'test_boqs', 'test_corrected_boq_rank1.xlsx');
   generateProfessionalBOQ(evalResults, exportPath, 'DL380_Gen12_SFF', 1);
 

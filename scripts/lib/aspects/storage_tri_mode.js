@@ -19,6 +19,14 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   let hasOcpCable = false;
   let hasSasExpander = false;
   let hasTriModeSwitch = false;
+  let isAlletraArray = false;
+  let controllerNodeCount = 0;
+  let hbaCount = 0;
+  let expansionShelfCount = 0;
+  let sasDaisyChainCableCount = 0;
+  let ssdCount = 0;
+  let hasRaid6 = false;
+  let hasRaid10 = false;
   const conflictingCableItems = [];
 
   const batterySku = cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY?.sku || 'P01366-B21');
@@ -81,7 +89,37 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     if (sku === noDriveSku || desc.includes('no drive')) {
       hasNoDriveKit = true;
     }
+    if (desc.includes('alletra')) {
+      isAlletraArray = true;
+    }
+    if (desc.includes('controller node') || desc.includes('node controller')) {
+      controllerNodeCount += (it.quantity || 1);
+    }
+    if (desc.includes('host bus adapter') || desc.includes('hba') || desc.includes('pcie fc') || desc.includes('iscsi adapter')) {
+      hbaCount += (it.quantity || 1);
+    }
+    if (desc.includes('expansion shelf') || desc.includes('j2000') || desc.includes('d3940')) {
+      expansionShelfCount += (it.quantity || 1);
+    }
+    if (sku === 'P40243-B21' || desc.includes('sas mini-hd to mini-hd')) {
+      sasDaisyChainCableCount += (it.quantity || 1);
+    }
+    if (desc.includes('ssd')) {
+      ssdCount += (it.quantity || 1);
+    }
+    if (desc.includes('raid 6') || desc.includes('raid-6')) {
+      hasRaid6 = true;
+    }
+    if (desc.includes('raid 10') || desc.includes('raid-10')) {
+      hasRaid10 = true;
+    }
   }
+
+  const hasMissingControllerNode = isAlletraArray && controllerNodeCount !== 2;
+  const hasAsymmetricHbas = isAlletraArray && hbaCount > 0 && hbaCount % 2 !== 0;
+  const missingDaisyChainCables = isAlletraArray && expansionShelfCount > 0 && sasDaisyChainCableCount < (expansionShelfCount * 2);
+  const insufficientRaid6Drives = isAlletraArray && hasRaid6 && ssdCount < 6;
+  const insufficientRaid10Drives = isAlletraArray && hasRaid10 && ssdCount < 4;
 
   // Storage Expander Math: An 8-port controller directly connects up to 8 drives.
   // 16 or 24 drives on a single controller requires a SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).
@@ -111,7 +149,20 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     needsSasExpander,
     needsCapacitorCable,
     controllerDirectCapacity,
-    conflictingCableItems
+    conflictingCableItems,
+    isAlletraArray,
+    controllerNodeCount,
+    hbaCount,
+    expansionShelfCount,
+    sasDaisyChainCableCount,
+    ssdCount,
+    hasRaid6,
+    hasRaid10,
+    hasMissingControllerNode,
+    hasAsymmetricHbas,
+    missingDaisyChainCables,
+    insufficientRaid6Drives,
+    insufficientRaid10Drives
   };
 }
 
