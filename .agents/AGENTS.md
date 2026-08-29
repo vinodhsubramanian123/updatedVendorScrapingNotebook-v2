@@ -300,6 +300,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Complex multi-part RAG queries require ample latency headroom to avoid premature timeouts, while disk cache must not serve stale responses indefinitely.
 - **Rule**: Default RAG timeout is set to 120s, and Agentic Guardrail overall timeout is set to 180s (3 minutes) with a 3-query budget cap. Disk cache in `notebook_query_utils.js` enforces a 24-hour TTL with automatic startup and lookup eviction. The UI explicitly surfaces dual-brain grounding status (`NOTEBOOK_LM_CLOUD` vs `LOCAL_VERIFIED_FALLBACK`).
 
+### INV-42: Mathematically Rigorous Hamilton–Hare Diophantine Multiplier Allocation Protocol
+- **Pattern**: Customer multi-server tenders with non-trivial processor distributions (e.g. fractional ratios or remainders) require exact integer chassis partitioning.
+- **Rule**: `multi_cluster_splitter.js` implements the exact Hamilton–Hare Largest Remainder Method. Each cluster calculates an exact proportional target share $E_i = N_{\text{total}} \times \frac{Q_i}{\sum Q}$, an integer base multiplier $\lfloor E_i \rfloor$, and a fractional remainder $E_i - \lfloor E_i \rfloor$. Deficit chassis are allocated $+1$ each to highest remainder clusters, mathematically guaranteeing $\sum N_{\text{cluster}} = N_{\text{total}}$ with zero lost or surplus nodes across all permutations.
+
 ---
 
 ## History Directory Hygiene Rules

@@ -177,3 +177,9 @@ The system leverages Google Jules for background code review, test generation, a
     - Deep multi-part RAG queries against NotebookLM require sufficient execution headroom: default RAG timeout is set to 120s, and Agentic Guardrail overall timeout is set to 180s (3 minutes) with a 3-query budget cap to prevent rate limits.
     - Disk cache entries in `notebook_query_utils.js` enforce a strict 24-hour TTL with automatic timestamp eviction on startup and lookups.
     - The UI (`BoqUploader.jsx`) explicitly renders high-contrast status banners distinguishing between Cloud Grounded (`NOTEBOOK_LM_CLOUD`) and Local Verified Fallback (`LOCAL_VERIFIED_FALLBACK`).
+
+33. **Mathematically Rigorous Hamilton–Hare Diophantine Multiplier Allocation Protocol (`INV-42`)**:
+    - Multi-server tender partitioning (`multi_cluster_splitter.js`) implements the exact Hamilton–Hare Largest Remainder Method to allocate integer server quantities across clusters.
+    - Each cluster calculates an exact proportional target share $E_i = N_{\text{total}} \times \frac{Q_i}{\sum Q}$, an integer base multiplier $\lfloor E_i \rfloor$, and a fractional remainder $E_i - \lfloor E_i \rfloor$.
+    - The deficit $D = N_{\text{total}} - \sum \lfloor E_i \rfloor$ is distributed $+1$ each to the top $D$ clusters sorted by remainder descending, mathematically guaranteeing $\sum N_{\text{cluster}} = N_{\text{total}}$ across all permutations without fractional losses or surplus chassis.
+

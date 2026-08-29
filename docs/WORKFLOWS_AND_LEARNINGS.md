@@ -430,3 +430,18 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Ample Execution Headroom**: Extended default RAG query timeout to **120s** and Agentic Guardrail overall timeout to **180s (3 minutes)** with a per-session budget cap of 3 queries to prevent API quota exhaustion.
 - **24-Hour Disk Cache Invalidation**: `notebook_query_utils.js` enforces `{ value, cachedAt }` timestamped records, automatically evicting stale cache files on startup and during lookups.
 - **UI Dual-Brain Observability**: `BoqUploader.jsx` renders high-contrast status banners distinguishing between 🟢 **Cloud Grounded via NotebookLM** and 🟡 **Local Verified Fallback Active**.
+
+---
+
+## 43. Mathematically Rigorous Hamilton–Hare Diophantine Multiplier Allocation (`INV-42`)
+- **Exact Proportional Integer Allocation**: Replaced naive integer rounding (`Math.round`) with the **Largest Remainder Method** (Hamilton–Hare method) in `scripts/lib/boq/multi_cluster_splitter.js`.
+- **Mathematical Invariant**: Guarantees that $\sum N_{\text{cluster}} = N_{\text{Total Chassis}}$ exactly, with zero fractional losses or surplus chassis across arbitrary processor permutations and total chassis counts.
+- **Chaos Stress Certification**: Validated across **10,000 randomized iterations** in `tests/chaos/test_diophantine_multi_cluster_fuzz.js` in under 2 seconds.
+
+---
+
+## 44. Google Jules Autonomous Multi-Agent Protocol & API State Semantics (`INV-10..19`)
+- **Prompt-Free Multi-Agent Governance**: Antigravity autonomously dispatches, unblocks, audits, certifies, merges, and archives Jules sessions without human relaying.
+- **API State Semantics**: Completed sessions in `@google/jules-sdk` often exhibit `state: "paused"` with `outcome.state: "completed"`. `jules_task_manager.js` resolves this state mapping, approves paused plans (`s.approve()`), and archives completed sessions cleanly into `outputs/history/jules_archived_sessions.json`.
+- **Proactive Heartbeat Monitoring (`schedule`)**: Active tasks maintain proactive cron/timer wakeups (`DurationSeconds=120`, `TimerCondition="never"`) to monitor progress continuously until all tasks are complete.
+
