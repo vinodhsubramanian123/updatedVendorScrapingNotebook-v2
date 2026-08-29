@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
-**Target Product**: `DL380_Gen12_SFF`  
-**Sync Timestamp**: 2026-08-29T19:28:49.636Z  
+**Target Product**: `oca-feedback-test-x2KOik`  
+**Sync Timestamp**: 2026-08-29T19:29:55.699Z  
 **Total Verified SKUs**: `0` (`0` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `28`  
 
@@ -45,58 +45,13 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
 13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen12_SFF)
+## 🎯 3. Chassis & Solution-Type Gotchas (oca-feedback-test-x2KOik)
 
-1. **[DELTA-1786705957681] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P73282-B21 is present, P73282-B21 is mandatory.
-   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P73282-B21` 
-
-2. **[DELTA-1786705957757] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P74573-B21 is present, P74573-B21 is mandatory.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74573-B21` 
-
-3. **[DELTA-1786705957802] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P48820-B21 is present, P48820-B21 is mandatory.
-   - **Affected SKU**: `P48820-B21` | **Required Dependency**: `P48820-B21` 
-
-4. **[DELTA-1786705957846] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P69728-B21 is present, P69728-B21 is mandatory.
-   - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-B21` 
-
-5. **[DELTA-1786705957894] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P47777-B21 is present, P47777-B21 is mandatory.
-   - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P47777-B21` 
-
-6. **[DELTA-1786705957933] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P01366-B21 is present, P01366-B21 is mandatory.
-   - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P01366-B21` 
-
-7. **[DELTA-1786705957977] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If P03178-B21 is present, P03178-B21 is mandatory.
-   - **Affected SKU**: `P03178-B21` | **Required Dependency**: `P03178-B21` 
-
-8. **[DELTA-1786706928358] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: Portal validation flagged restriction on P76450-B21.
-   - **Affected SKU**: `P76449-B21` | **Required Dependency**: `P76450-B21` 
-
-9. **[PREPROC-DELTA-1786781599909] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12_SFF CTO Server`):
-   - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
-   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
-
-10. **[DELTA-1786880389958] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21` 
-   - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
-
-11. **[DELTA-1786880394092] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21` 
-   - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
-
+*No specific gotchas logged for oca-feedback-test-x2KOik. Baseline chassis layout rules active.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for DL380_Gen12_SFF. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for oca-feedback-test-x2KOik. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

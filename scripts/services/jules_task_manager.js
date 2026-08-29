@@ -329,10 +329,9 @@ async function archiveSession(sessionId) {
 async function archiveCompletedSessions() {
   const sessions = await listSessions();
   const completed = sessions.filter(s => 
-    s.state === 'completed' || 
-    s.outcome?.state === 'completed' || 
-    s.state === 'failed' ||
-    (s.state === 'awaitingUserFeedback' && (s.outcome?.state === 'completed' || !s.outcome?.pullRequest))
+    !s.archived &&
+    s.state !== 'inProgress' && 
+    (s.state === 'completed' || s.state === 'failed' || s.state === 'paused')
   );
   console.log(`Found ${completed.length} completed/inactive session(s) to inspect and archive.`);
 
