@@ -56,7 +56,7 @@ function main() {
     process.exit(1);
   }
 
-  const catalogPath = path.join(GEN12_DIR, 'DL380_Gen12_SFF_Catalog.json');
+  const catalogPath = path.join(GEN12_DIR, 'DL380_Gen12_Catalog.json');
   const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
   const skuCount = catalog.metadata?.totalUniqueSKUs || 0;
 
@@ -66,8 +66,9 @@ function main() {
   }
   console.log(`\n  📊 Catalog: ${skuCount} unique SKUs`);
 
-  const xlsxPath = path.join(GEN12_DIR, 'DL380_Gen12_SFF_OCA_Catalog.xlsx');
+  const xlsxPath = path.join(GEN12_DIR, 'DL380_Gen12_OCA_Catalog.xlsx');
   runStep('Excel Tally Audit', `node tests/integration/verify_excel_tally.js "${xlsxPath}"`);
+
   runStep('Aspect Math Suite (34 assertions)', 'node tests/integration/test_all_aspects.js');
   runStep('BOQ Evaluation Benchmarks (5 scenarios)', 'node tests/integration/test_boq_eval_benchmarks.js');
 
