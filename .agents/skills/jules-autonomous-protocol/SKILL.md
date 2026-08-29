@@ -27,6 +27,8 @@ Each failure mode has a mandatory automated fix baked into the lifecycle stages 
 | F6 | No new tasks created when work remains | Agent doesn't scan for gaps after completing cycle | Stage 8: MANDATORY gap scan and new session dispatch |
 | F7 | Agent goes idle between heartbeats | Agent stops calling tools without scheduling next wakeup | Stage 2: Timer at END of every heartbeat action, NEVER rely on human |
 | F8 | MCP tools not used (CLI fallback loses data) | Agent uses `node jules_task_manager.js` instead of MCP | ALL stages: Use MCP tools as PRIMARY, CLI as fallback only |
+| F9 | 11+ minute blind spots between question and reply | One-shot 120s timer + heavyweight merge work blocks detection | Stage 2: Use 60s timer, pre-schedule BEFORE work, re-inspect ALL sessions after merge |
+| F10 | Session state lost on context truncation | Agent relies on in-memory knowledge of session status | Stage 2: Persist session state summary to `task.md` after every heartbeat cycle |
 
 ---
 
@@ -91,11 +93,12 @@ call_mcp_tool(jules, create_session, {
 
 ### MANDATORY: Schedule heartbeat cron IMMEDIATELY after dispatch:
 ```
-schedule(DurationSeconds=120, TimerCondition="never",
+schedule(DurationSeconds=60, TimerCondition="never",
   Prompt="Jules Heartbeat: Check session <id> status, unblock if paused, review code if stable, merge PRs if completed.")
 ```
 
 **NEVER dispatch without scheduling the heartbeat. This is the #1 failure mode.**
+**USE 60-SECOND intervals (not 120) during active sessions to minimize question-detection latency (F9).**
 
 ---
 
@@ -103,28 +106,40 @@ schedule(DurationSeconds=120, TimerCondition="never",
 
 This is the **continuous monitoring engine**. On EVERY heartbeat wakeup, execute this exact checklist:
 
+### ⚠️ CRITICAL: Pre-Schedule Pattern (Fixes F9 Blind Spots)
+
+**STEP 0 (BEFORE ANY WORK):** The FIRST action on every heartbeat wakeup is to immediately
+schedule the NEXT heartbeat timer. This ensures continuous coverage even if the current
+cycle's work takes 5+ minutes (merge conflicts, test runs, etc.).
+
+```
+// FIRST THING on heartbeat fire — before any session inspection:
+schedule(DurationSeconds=60, TimerCondition="never",
+  Prompt="Jules Heartbeat: ...")
+```
+
 ### Heartbeat Checklist (execute in order):
 
 ```
+STEP 0: IMMEDIATELY schedule next 60s heartbeat (before any work)
+
 FOR EACH active_session:
   1. call_mcp_tool(jules, get_session_state, {sessionId})
      → Read: status, pendingPlan, lastAgentMessage
 
   2. IF status === "busy":
-     → Session is working. Log and re-schedule timer.
+     → Session is working. Log and continue to next session.
 
   3. IF status === "stable" AND pendingPlan EXISTS:
      → Jules generated a plan and is waiting for approval.
      → Review the plan steps.
      → call_mcp_tool(jules, send_reply_to_session, {sessionId, action: "approve"})
-     → Re-schedule timer to check again after execution.
 
   4. IF status === "stable" AND lastAgentMessage EXISTS:
      → Jules asked a question or reported findings.
      → Read the message content.
      → Send a decisive, actionable reply:
        call_mcp_tool(jules, send_reply_to_session, {sessionId, action: "send", message: "<guidance>"})
-     → Re-schedule timer.
 
   5. IF status === "stable" AND NO pendingPlan AND NO lastAgentMessage:
      → Jules finished work silently. Proceed to Stage 4 (Code Review).
@@ -133,13 +148,22 @@ FOR EACH active_session:
      → Session is unrecoverable. Log the failure. Proceed to Stage 7 (Archive).
      → If the task is still needed, create a new session (Stage 8).
 
+AFTER HEAVYWEIGHT OPERATIONS (merge, commit, push, test:all):
+  → IMMEDIATELY re-inspect ALL remaining active sessions (don't wait for next heartbeat)
+  → This eliminates the 4+ minute blind spot during merge conflict resolution (F9)
+
 AFTER processing all sessions:
-  → Re-schedule heartbeat timer (DurationSeconds=120, TimerCondition="never")
-  → UNLESS all sessions are completed/archived AND no new tasks to dispatch.
+  → Write session state summary to task.md artifact (Fixes F10 context truncation):
+    Session X: status=busy, lastChecked=<timestamp>
+    Session Y: status=stable, PR=#58, needsMerge=true
+  → The pre-scheduled timer from STEP 0 is already running. No need to reschedule
+     UNLESS all sessions are completed/archived AND no new tasks to dispatch
+     (in which case, cancel the pre-scheduled timer).
 ```
 
-**CRITICAL: The timer MUST be re-scheduled at the END of every heartbeat action.
-The agent MUST NOT go idle and wait for the human to prompt it.**
+**CRITICAL: The 60s timer MUST be pre-scheduled at the START of every heartbeat cycle.
+The agent MUST NOT go idle and wait for the human to prompt it.
+After any heavyweight operation (merge/test:all), IMMEDIATELY re-inspect all other sessions.**
 
 ---
 
