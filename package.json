@@ -48,7 +48,7 @@
     "test:invariants": "node --test tests/unit/test_all_system_invariants.js",
     "test:history": "node tests/integration/test_historical_pricing_timeline.js",
     "test:audit": "node tests/integration/test_excel_alignment_and_audit.js",
-    "jules:status": "node scripts/services/jules_task_manager.js list",
+    "jules:status": "node scripts/services/jules_task_manager.js status active",
     "eval:multi": "node scripts/evaluators/eval_multi_boq.js",
     "probe:cdp": "node scripts/maintenance/cli_tools.js probe:cdp",
     "scrape:auto": "node scripts/maintenance/cli_tools.js scrape:auto",
@@ -62,7 +62,6 @@
     "maintain:portfolio": "node scripts/maintenance/maintain_portfolio.js",
     "status:sync": "node scripts/maintenance/generate_portfolio_status.js",
     "jules:watch": "node scripts/services/jules_daemon.js",
-    "jules:status": "node scripts/services/jules_task_manager.js status active",
     "test:aspect_units": "node tests/unit/test_aspect_compute_thermal.js && node tests/unit/test_aspect_memory_channel.js && node tests/unit/test_aspect_networking_ocp.js && node tests/unit/test_aspect_pcie_riser.js && node tests/unit/test_aspect_power_environment.js && node tests/unit/test_aspect_storage_tri_mode.js && node tests/unit/test_aspect_support_manufacturing.js",
     "test:preprocessor": "node tests/unit/test_boq_preprocessor.js && node tests/unit/test_cto_normalizer.js && node tests/unit/test_variation_clusterer.js && node tests/unit/test_cto_normalizer_boundaries.js",
     "test:resilience": "node tests/chaos/test_cdp_dom_extract_resilience.js && node tests/unit/test_cdp_navigator_resilience.js && node tests/chaos/test_ocr_service_resilience.js",
@@ -125,7 +124,11 @@
   "dependencies": {
     "@google/genai": "^2.16.0",
     "@modelcontextprotocol/sdk": "^1.30.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.3.0",
+    "vite": "^8.2.2",
     "ws": "^8.18.0",
     "xlsx-js-style": "^1.2.0",
     "zod": "^3.24.2"
