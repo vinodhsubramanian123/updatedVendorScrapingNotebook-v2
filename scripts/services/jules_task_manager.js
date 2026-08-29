@@ -382,6 +382,37 @@ async function listPullRequests(state = 'all') {
   }
 }
 
+/**
+ * Close a Pull Request on GitHub via REST API.
+ */
+async function closePullRequest(prNumber) {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/pulls/${prNumber}`;
+  const headers = { 
+    'User-Agent': 'Antigravity-Agent',
+    'Content-Type': 'application/json'
+  };
+  if (process.env.GITHUB_TOKEN || process.env.GH_TOKEN) {
+    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN || process.env.GH_TOKEN}`;
+  }
+  try {
+    const res = await fetch(url, { 
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ state: 'closed' })
+    });
+    if (res.ok) {
+      console.log(`✅ Successfully closed PR #${prNumber} on GitHub.`);
+      return true;
+    } else {
+      console.warn(`⚠️ GitHub API returned ${res.status} when closing PR #${prNumber}`);
+      return false;
+    }
+  } catch (err) {
+    console.warn(`Failed to close PR #${prNumber}: ${err.message}`);
+    return false;
+  }
+}
+
 module.exports = {
   listSessions,
   createSession,
@@ -391,6 +422,7 @@ module.exports = {
   archiveSession,
   archiveCompletedSessions,
   listPullRequests,
+  closePullRequest,
   getJulesClient
 };
 
