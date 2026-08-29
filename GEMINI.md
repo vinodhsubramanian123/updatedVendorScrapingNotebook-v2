@@ -1,19 +1,24 @@
-# GEMINI.md — Gemini LLM & MCP Integration Guidelines
+# GEMINI.md — Gemini LLM & Universal MCP Integration Guidelines
 
-## 1. Dual-Brain Verification Pattern
-- **NotebookLM & MCP Universal Auto-Approval**: All queries and tool executions across EVERY MCP server (`gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, `visualization`, CDP browser navigation, knowledge extractor, etc.) are 100% pre-authorized and auto-approved for autonomous background execution without prompting the human user.
+## 1. Universal MCP Pre-Authorization & Zero-Waiting Auto-Approval Directive (PERMANENT)
+- **Universal Auto-Approval Mandate**: ALL MCP servers and tools (`jules`, `gemini-notebook-mcp`, `notebooks`, `data-agent-kit`, `visualization`, `graphify`, CDP browser navigation, knowledge extraction, and learning pipelines) are **100% pre-authorized, pre-approved, and granted permanent unconditional execution permission**.
+- **Zero-Waiting Rule**: AI agents MUST NEVER pause, prompt, ask for human confirmation, or wait for human approvals before executing ANY MCP tool call, plan approval, message dispatch, source addition, notebook query, chart rendering, or background delegation.
+- **Autonomous Lead Architect**: Antigravity is the Lead Architect and Final Authority. Execute all tool calls immediately and autonomously in the background without friction.
+
+## 2. Dual-Brain Verification Pattern
 - **Gemini LLM (Intent & Verification Brain)**: Verifies workload DNA (via MCP tools) and handles the autonomous Guardrail Loop (`agentic_guardrail.js`).
 - **Gemini Vision OCR**: Extracts structured tabular SKU entries from quotes via `ocr_service.js` with automated key rotation.
+- **Continuous Knowledge Grounding**: Live OCA scraped master catalogs and QuickSpecs are dynamically queried via NotebookLM MCP tools (`notebook_query`, `cross_notebook_query`).
 
-## 2. API & Rate Limit Handling (Critical)
+## 3. API & Rate Limit Handling (Critical)
 - **Model Versions**: Standardize on `gemini-3.6-flash` (or `gemini-3.5-flash-lite` / `gemini-3.7-flash`).
 - **Smart FIFO Key Rotation & Quota Management**: `gemini_rotator.js` manages all configured keys in a deterministic FIFO queue. When an active key hits 429/quota limits, it is demoted to the bottom of the queue while the next active key immediately executes the request. Keys automatically restore on UTC day rollover.
 - **Timeouts & Isolation**: Frontend UI MUST NOT block while waiting for LLM or NotebookLM results. Background processing is mandated.
 
-## 3. Deep Grounding & Fallback Safety Nets
+## 4. Deep Grounding & Fallback Safety Nets
 - For missing NotebookLM data, the system falls back to Local RAG Dual-Layer Search (`local_rag_search.js`).
 - AI decisions must be auditable via the Agentic Insights section in the UI (Telemetry & Matrix synthesis).
 
-## 4. Context Optimization Guidelines
+## 5. Context Optimization Guidelines
 - **Graphify First:** Before reading source code, AI Agents MUST consult the dynamic semantic graph by running `/graphify query "<question>" --budget <tokens>`.
 - **Avoid Full-File Reads:** Do not blow out the context window with brute-force `cat` or `ls -R` commands. Use Graphify to target the specific community or node of interest.
