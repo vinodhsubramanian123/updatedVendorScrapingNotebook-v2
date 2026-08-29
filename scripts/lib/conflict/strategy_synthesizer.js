@@ -15,6 +15,7 @@ const path = require('path');
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna } = require('./workload_dna.js');
+const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
 
 let _strategyAddonsCache = null;
 
@@ -38,6 +39,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Try loading price history and catalog data
   let priceMap = {};
   const categoryPrices = new Map();
+  let loadedCatalog = null;
 
   if (targetDir && fs.existsSync(targetDir)) {
     try {
@@ -50,6 +52,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       const catFile = files.find(f => f.endsWith('_Catalog.json') && !f.endsWith('_Rules.json'));
       if (catFile) {
         const catalogObj = JSON.parse(fs.readFileSync(path.join(targetDir, catFile), 'utf8'));
+        loadedCatalog = catalogObj;
         if (catalogObj && Array.isArray(catalogObj.entries)) {
           catalogObj.entries.forEach(entry => {
             const cat = (entry.parentCategory || entry.subCategory || 'General').toLowerCase();
@@ -163,20 +166,30 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
   const modelKey = (chassisInfo.model || '').toLowerCase();
   const familyKey = (chassisInfo.family || '').toLowerCase();
+  const genKey = (chassisInfo.gen || '').toLowerCase();
 
   let key = 'default';
-  if (modelKey.includes('dl380')) key = 'dl380';
-  else if (familyKey.includes('alletra')) key = 'alletra';
+  if (modelKey.includes('dl380')) {
+    if (genKey.includes('12') || modelKey.includes('gen12')) key = 'dl380_gen12';
+    else if (genKey.includes('11') || modelKey.includes('gen11')) key = 'dl380_gen11';
+    else key = 'dl380';
+  } else if (familyKey.includes('alletra')) key = 'alletra';
   else if (familyKey.includes('synergy')) key = 'synergy';
   else if (familyKey.includes('cray')) key = 'cray';
   else if (familyKey.includes('storeever')) key = 'storeever';
 
   const tierConfig = strategyConfig[key] || strategyConfig.default;
+  const isGen12 = genKey.includes('12') || modelKey.includes('gen12');
 
   // DNA-Driven Rank 2, 3 & 4 Addon Fallback Generator
   // When strategy_addons.json tierConfig is empty, generate addons from Workload DNA
   // so Ranks 2–4 are always meaningfully differentiated.
   const buildDnaFallbackRank2 = () => {
+    if (isGen12) {
+      return [
+        { sku: 'P76471-B21', description: 'HPE DL380 Gen12 Standard Factory Cable/Rail Kit', quantity: 1, unitPriceUsd: 250, category: 'Factory Baseline Accessory' }
+      ];
+    }
     return [
       { sku: 'P36852-B21', description: 'HPE ProLiant DL380 Gen11 Cable Management Arm Kit', quantity: 1, unitPriceUsd: 120, category: 'Factory Baseline Accessory' },
       { sku: 'P52341-B21', description: 'HPE ProLiant DL380 Gen11 Easy Install Rail Kit', quantity: 1, unitPriceUsd: 180, category: 'Factory Baseline Accessory' }
@@ -197,7 +210,9 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     // If GPU or AI workload detected, add PCIe riser
     const isAiGpu = (dna.workloadDescription || '').toLowerCase().match(/gpu|ai|ml|inferenc|vdi/);
     if (isAiGpu) {
-      addons.push({ sku: 'P51083-B21', description: 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit', quantity: 1, unitPriceUsd: 900, category: 'Performance Acceleration' });
+      const riserSku = isGen12 ? 'P76453-B21' : 'P51083-B21';
+      const riserDesc = isGen12 ? 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Kit' : 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit';
+      addons.push({ sku: riserSku, description: riserDesc, quantity: 1, unitPriceUsd: 900, category: 'Performance Acceleration' });
     }
     return addons.length > 0 ? addons : [{ sku: 'P01366-B21', description: 'HPE 96W Smart Storage Battery (General Workload Baseline)', quantity: 1, unitPriceUsd: 350, category: 'Storage Performance' }];
   };
@@ -208,16 +223,24 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     const hasDualSocket = cpuCount >= 2;
 
     if (hasDualSocket) {
-      addons.push({ sku: 'P51083-B21', description: 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit (Dual-Socket Expansion)', quantity: 1, unitPriceUsd: 1200, category: 'Scalability Expansion' });
+      const riserSku = isGen12 ? 'P76453-B21' : 'P51083-B21';
+      const riserDesc = isGen12 ? 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Kit' : 'HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit (Dual-Socket Expansion)';
+      addons.push({ sku: riserSku, description: riserDesc, quantity: 1, unitPriceUsd: 1200, category: 'Scalability Expansion' });
     }
-    addons.push({ sku: 'P48820-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Fan Kit (Future Scalability)', quantity: 1, unitPriceUsd: 650, category: 'Scalability Expansion' });
+    const fanSku = isGen12 ? 'P40502-B21' : 'P48820-B21';
+    const fanDesc = isGen12 ? 'HPE DL380 Gen12 High Performance Fan Kit (6 Fans)' : 'HPE ProLiant DL380 Gen11 High Performance Fan Kit (Future Scalability)';
+    addons.push({ sku: fanSku, description: fanDesc, quantity: 1, unitPriceUsd: 650, category: 'Scalability Expansion' });
     return addons;
   };
 
+  const dynamicDiscoveredAddons = discoverDynamicStrategyAddons(loadedCatalog, chassisInfo, dna);
+
   // Rank 2: Standard Baseline + Default Factory Accessories
-  // Falls back to DNA-driven baseline accessories if tierConfig.rank2 is missing/empty
+  // Falls back to dynamic catalog discovery and DNA-driven baseline accessories if tierConfig.rank2 is missing/empty
   const rank2ConfigAddons = tierConfig.rank2 || [];
-  const rank2RawList = rank2ConfigAddons.length > 0 ? rank2ConfigAddons : buildDnaFallbackRank2();
+  const rank2RawList = rank2ConfigAddons.length > 0
+    ? rank2ConfigAddons
+    : (dynamicDiscoveredAddons.rank2Addons.length > 0 ? dynamicDiscoveredAddons.rank2Addons : buildDnaFallbackRank2());
   const rank2Addons = rank2RawList.map(a => {
     const price = getPrice(a.sku, 'Standard Accessory', a.unitPriceUsd || a.defaultPrice || 120);
     return {
@@ -248,6 +271,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   let rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized';
   let rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.';
   let rank3IntentAlignment = `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`;
+  let rank3CascadingImpact = null;
 
   if (pcieStorageBranch) {
     rank3Name = 'Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)';
@@ -256,6 +280,19 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
     const pcieCtrl = pcieStorageBranch.storageController;
     const cableKit = pcieStorageBranch.cableKit;
+
+    rank3CascadingImpact = analyzeCascadingImpact(
+      {
+        action: 'SWAP',
+        originalSku: pcieStorageBranch.substitutions?.[0]?.originalSku || 'P58335-B21',
+        newSku: pcieCtrl.sku,
+        originalDesc: pcieStorageBranch.substitutions?.[0]?.originalDesc || 'MR408i-o',
+        newDesc: pcieCtrl.desc
+      },
+      items,
+      loadedCatalog,
+      chassisInfo
+    );
 
     rank3Parts = baseParts.map(p => {
       if (/mr408i-o|sr416i-o|\b-o\b/i.test(p.description) && /controller|raid|storage/i.test(p.description)) {
@@ -307,11 +344,29 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       rank3Parts.push(f);
     });
 
+    // Cascading Dependency Verification: Ensure Smart Storage Battery protects newly pivoted PCIe write-back cache
+    const hasBattery = rank3Parts.some(p => /p01366|p02377|smart.*battery|hybrid.*capacitor/i.test(p.sku + (p.description || '')));
+    if (!hasBattery) {
+      const batteryPrice = getPrice('P01366-B21', 'Storage Battery', 350);
+      rank3Parts.push({
+        sku: 'P01366-B21',
+        description: 'HPE 96W Smart Storage Battery (up to 20 Devices)',
+        quantity: 1,
+        unitPriceUsd: batteryPrice,
+        extendedPriceUsd: batteryPrice,
+        isFixInjected: true,
+        isStrategyAddon: true,
+        category: 'Storage Performance'
+      });
+    }
+
     rank3Cost = rank3Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
     rank3AddonCost = Math.max(0, rank3Cost - rank1Cost);
   } else {
     const rank3ConfigAddons = tierConfig.rank3 || [];
-    const rank3RawList = rank3ConfigAddons.length > 0 ? rank3ConfigAddons : buildDnaFallbackRank3();
+    const rank3RawList = rank3ConfigAddons.length > 0
+      ? rank3ConfigAddons
+      : (dynamicDiscoveredAddons.rank3Addons.length > 0 ? dynamicDiscoveredAddons.rank3Addons : buildDnaFallbackRank3());
     rank3Addons = rank3RawList.map(a => {
       const price = getPrice(a.sku, 'Performance Upgrade', a.unitPriceUsd || a.defaultPrice || 450);
       return {
@@ -331,9 +386,11 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   }
 
   // Rank 4: Maximum Density & Future Scalability
-  // Falls back to DNA-driven addons if tierConfig.rank4 is missing/empty
+  // Falls back to dynamic catalog discovery and DNA-driven addons if tierConfig.rank4 is missing/empty
   const rank4ConfigAddons = tierConfig.rank4 || [];
-  const rank4RawList = rank4ConfigAddons.length > 0 ? rank4ConfigAddons : buildDnaFallbackRank4();
+  const rank4RawList = rank4ConfigAddons.length > 0
+    ? rank4ConfigAddons
+    : (dynamicDiscoveredAddons.rank4Addons.length > 0 ? dynamicDiscoveredAddons.rank4Addons : buildDnaFallbackRank4());
   const rank4Addons = rank4RawList.map(a => {
     const price = getPrice(a.sku, 'Expansion Riser', a.unitPriceUsd || a.defaultPrice || 850);
     return {
@@ -444,6 +501,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       workloadDnaMatch: pcieStorageBranch ? 'High-IOPS (PCIe x16 Controller, 8GB Cache & Dual OCP Retained)' : `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
       changesCount: fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length),
       skuPartsList: rank3Parts,
+      cascadingImpact: rank3CascadingImpact,
       tradeoffMetrics: {
         intentAlignment: rank3IntentAlignment,
         skuModifications: `${fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length)} modifications`,
@@ -543,6 +601,28 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     const costDeltaFromRank1 = cand.estimatedCostUsd - baselineCost;
     const costDeltaPct = baselineCost > 0 ? parseFloat(((costDeltaFromRank1 / baselineCost) * 100).toFixed(2)) : 0;
 
+    // Calculate Weighted Disruption & Minimum Edit Distance:
+    // Core hardware swap (controller, CPU, RAM): weight 1.0
+    // Omitted customer requested SKU: weight 0.8
+    // Injected enablement cable / riser cable / bracket: weight 0.2
+    // Added factory baseline accessory / rail / CMA: weight 0.1
+    let weightedEditDistance = 0;
+    addedSkus.forEach(s => {
+      const part = cand.skuPartsList.find(p => cleanBaseSKU(p.sku) === s);
+      const cat = (part?.category || '').toLowerCase();
+      if (cat.includes('controller') || cat.includes('processor') || cat.includes('memory') || cat.includes('power supply')) {
+        weightedEditDistance += 1.0;
+      } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('fix')) {
+        weightedEditDistance += 0.2;
+      } else {
+        weightedEditDistance += 0.1;
+      }
+    });
+    omittedSkus.forEach(() => {
+      weightedEditDistance += 0.8;
+    });
+    weightedEditDistance = parseFloat(weightedEditDistance.toFixed(2));
+
     cand.proximityMetrics = {
       costDeltaFromRank1Usd: costDeltaFromRank1,
       costDeltaPct: costDeltaPct,
@@ -550,6 +630,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       omittedSkuCount: omittedSkus.length,
       addedSkus: addedSkus.slice(0, 5),
       omittedSkus: omittedSkus.slice(0, 5),
+      weightedEditDistance,
+      disruptionScore: Math.min(100, Math.round(weightedEditDistance * 20)),
       isClosestRoute: idx <= 2,
       closenessRating: idx === 0 ? 'Optimal Baseline' : (Math.abs(costDeltaPct) < 8 ? 'Very Close Alternative (<8% cost variance)' : 'Differentiated Architecture (>8% cost variance)')
     };

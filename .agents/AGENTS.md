@@ -288,6 +288,18 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Sku versioning and historical price lookup engines must resolve bare model strings without failing or defaulting to the project root.
 - **Rule**: `sku_versioning.js` (`getSkuAuditHistory`, `getHistoricalSkuPrice`) implements `resolveChassisDirectory(dir)` to dynamically locate product generation folders under `outputs/{Family}/{Gen}/{Model}/` when called with bare model identifiers (e.g. `DL380_Gen11`, `DL380_Gen12`, `GX5000_General_RACK`).
 
+### INV-39: Multi-Cluster Architectural Partitioning & Form-Factor Pivot Protocol
+- **Pattern**: Complex multi-server tenders (e.g. 60-node RFQs with mixed Platinum 8580 and Gold 6530 processors) require dynamic decomposition into homogeneous, 100% buildable clusters.
+- **Rule**: `multi_cluster_splitter.js` and `boq_evaluator.js` MUST: (1) Partition mixed CPU tenders into homogeneous cluster tiers (e.g. 20-node Platinum 8580 + 40-node Gold 6530), (2) Match power and thermal envelopes (1800W Titanium PSUs for 350W TDP vs 1600W Platinum PSUs for 270W TDP), and (3) Execute Form-Factor Pivots (e.g. OCP controller `MR408i-o` to PCIe standup `MR416i-p`) whenever physical OCP slots are oversubscribed.
+
+### INV-40: Continuous Knowledge Auto-Sync & Milestone Drift Immunity Protocol
+- **Pattern**: Deterministic rule engine learnings and Gemini NotebookLM RAG knowledge sources must remain synchronized across all lifecycle events without manual human prompting.
+- **Rule**: `post_flow_sync.js` (`triggerPostFlowSync`) is automatically executed on four canonical milestones: (1) Live scrape completion and staging promotion (Step 9/10), (2) BOQ evaluation completion, (3) Partner quote reconciliation (`/api/verify-vendor-bom`), and (4) HITL feedback submission (`/api/feedback-submit`).
+
+### INV-41: Dual-Brain RAG Headroom & 24-Hour TTL Cache Invalidation Protocol
+- **Pattern**: Complex multi-part RAG queries require ample latency headroom to avoid premature timeouts, while disk cache must not serve stale responses indefinitely.
+- **Rule**: Default RAG timeout is set to 120s, and Agentic Guardrail overall timeout is set to 180s (3 minutes) with a 3-query budget cap. Disk cache in `notebook_query_utils.js` enforces a 24-hour TTL with automatic startup and lookup eviction. The UI explicitly surfaces dual-brain grounding status (`NOTEBOOK_LM_CLOUD` vs `LOCAL_VERIFIED_FALLBACK`).
+
 ---
 
 ## History Directory Hygiene Rules

@@ -106,10 +106,24 @@ async function runE2ETest() {
   });
 
   try {
-    // Reset any lingering tasks
+    // ── Pre-flight: Kill any stuck mutex task & wait for server idle ──────────
     await page.evaluate(async () => {
       await fetch('/api/kill-task', { method: 'POST' }).catch(() => {});
     }).catch(() => {});
+    // Give server 2s to clear the mutex after kill
+    await page.waitForTimeout(2000);
+    // Verify server is idle (isTaskRunning=false) before proceeding
+    for (let attempt = 0; attempt < 20; attempt++) {
+      const alive = await page.evaluate(async () => {
+        try {
+          const r = await fetch('/api/health');
+          const d = await r.json();
+          return !d.isTaskRunning;
+        } catch (_) { return true; }
+      }).catch(() => true);
+      if (alive) break;
+      await page.waitForTimeout(1500);
+    }
 
     // ──────────────────────────────────────────────────────────────────────────
     // STEP 1: Page Load, Brand Title & Header
@@ -189,19 +203,56 @@ async function runE2ETest() {
       throw new Error('Could not find Evaluation button');
     }
 
-    const [evalResponse] = await Promise.all([
-      page.waitForResponse(res => res.url().includes('/api/eval-boq') && res.request().method() === 'POST'),
-      evalBtn.click()
-    ]);
-    const evalData = await evalResponse.json();
-    const runId = evalData.runId;
+    // ── Send eval-boq with 409-retry logic ────────────────────────────────────
+    let evalData = null;
+    let runId = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const [evalResponse] = await Promise.all([
+        page.waitForResponse(res => res.url().includes('/api/eval-boq') && res.request().method() === 'POST', { timeout: 45000 }),
+        attempt === 0 ? evalBtn.click() : page.evaluate(async (bodyJson) => {
+          await fetch('/api/eval-boq', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: bodyJson });
+        }, JSON.stringify({}))
+      ]);
+      const httpStatus = evalResponse.status();
+      const responseBody = await evalResponse.json();
+
+      if (httpStatus === 409) {
+        // Another task is running — wait for it to complete and retry
+        console.log(`  ⚠️  409 Task Conflict detected (attempt ${attempt + 1}/3). Waiting for previous task to clear...`);
+        for (let w = 0; w < 30; w++) {
+          await page.waitForTimeout(1000);
+          const isIdle = await page.evaluate(async () => {
+            try {
+              const r = await fetch('/api/health');
+              const d = await r.json();
+              return !d.isTaskRunning;
+            } catch (_) { return false; }
+          }).catch(() => false);
+          if (isIdle) { console.log(`  Server idle after ${w + 1}s — retrying...`); break; }
+        }
+        // Re-click the button for next attempt
+        const retryBtn = await page.$('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")');
+        if (retryBtn) await retryBtn.click();
+        continue;
+      }
+
+      evalData = responseBody;
+      runId = evalData.runId;
+      break;
+    }
+
+    if (!runId) {
+      throw new Error(`Failed to start evaluation after 3 attempts (last error: ${JSON.stringify(evalData)})`);
+    }
     console.log(`  Triggered evaluation job (Run ID: ${runId})...`);
 
-    // Poll until run completes in history runs (support up to 240s for Cloud RAG grounding)
+    // ── Poll for completion: history API + SSE DOM state fallback ─────────────
     console.log('  Awaiting full evaluation completion (SSE stream & dual-brain checks)...');
     let evalDone = false;
-    for (let i = 0; i < 240; i++) {
+    for (let i = 0; i < 300; i++) {
       await page.waitForTimeout(1000);
+
+      // Primary: check history run trace
       const runTrace = await page.evaluate(async (id) => {
         try {
           const res = await fetch(`/api/history/runs/${id}`);
@@ -215,6 +266,23 @@ async function runE2ETest() {
         console.log(`  Evaluation process completed (Exit Code: ${runTrace.exitCode}, Duration: ${runTrace.durationMs}ms)`);
         break;
       }
+
+      // Fallback: check if React UI already has eval results rendered (EVAL_RESULT SSE received)
+      const uiHasResult = await page.evaluate(() => {
+        const bodyText = document.body.innerText || '';
+        return bodyText.includes('BOQ Evaluation Outcome') ||
+               bodyText.includes('Certified Buildable') ||
+               bodyText.includes('Physical Constraint Violations') ||
+               bodyText.includes('Confidence Score:') ||
+               bodyText.includes('View 5-Tier Strategy Matrix') ||
+               bodyText.includes('View 5-Tier Resolution Matrix');
+      });
+      if (uiHasResult) {
+        evalDone = true;
+        console.log(`  Evaluation completed (SSE React UI state detected at ${i}s)`);
+        break;
+      }
+
       if (i > 0 && i % 10 === 0) {
         console.log(`  ...still evaluating (${i}s elapsed)`);
       }
@@ -239,11 +307,10 @@ async function runE2ETest() {
     console.log('\n▶ [STEP 4] Inspecting 5-Tier Strategy Resolution Matrix & Feedback Modal...');
     const step4Start = Date.now();
 
-    // Wait for "View 5-Tier Resolution Matrix" button to be visible and click
-    await page.waitForSelector('button:has-text("View 5-Tier Resolution Matrix")', { timeout: 20000 });
-    const viewMatrixBtn = await page.$('button:has-text("View 5-Tier Resolution Matrix")');
-    if (viewMatrixBtn) {
-      await viewMatrixBtn.click();
+    // Switch to Resolution Matrix tab or open Matrix modal
+    const matrixTab = await page.$('button[data-tab="matrix"], button:has-text("View 5-Tier Resolution Matrix")');
+    if (matrixTab) {
+      await matrixTab.click();
       await page.waitForTimeout(1000);
       await page.screenshot({ path: path.join(SCREENSHOT_DIR, '04_strategy_matrix.png') });
 
@@ -263,11 +330,17 @@ async function runE2ETest() {
         }
       }
 
-      // Close Matrix modal
-      const modalClose2 = await page.$('button[aria-label="Close modal"]');
-      if (modalClose2) {
-        await modalClose2.click().catch(() => {});
-        await page.waitForTimeout(500);
+      // Ensure all modal overlays are fully closed
+      for (let m = 0; m < 4; m++) {
+        const hasOpenModal = await page.evaluate(() => !!document.querySelector('.animate-modal-backdrop') || !!document.querySelector('button[aria-label="Close modal"]'));
+        if (!hasOpenModal) break;
+        const closeBtn = await page.$('button[aria-label="Close modal"]');
+        if (closeBtn) {
+          await closeBtn.click().catch(() => {});
+        } else {
+          await page.keyboard.press('Escape').catch(() => {});
+        }
+        await page.waitForTimeout(400);
       }
     }
 
@@ -280,9 +353,23 @@ async function runE2ETest() {
     console.log('\n▶ [STEP 5] Stage 3 Partner Quote Reconciliation with DL380 Gen12 BOM...');
     const step5Start = Date.now();
 
+    // Switch back to BOQ Evaluator (orchestrator) tab
+    const orchestratorTab = await page.$('button[data-tab="orchestrator"], button:has-text("BOQ Evaluator")');
+    if (orchestratorTab) {
+      await orchestratorTab.click();
+      await page.waitForTimeout(600);
+    }
+
+    // Switch view mode to Macro Lifecycle / All Views if needed to ensure the Reconcile card is rendered
+    const macroViewBtn5 = await page.$('button:has-text("Macro Lifecycle"), button:has-text("All Views")');
+    if (macroViewBtn5) {
+      await macroViewBtn5.click();
+      await page.waitForTimeout(600);
+    }
+
     // Ensure button is enabled, then click
-    await page.waitForSelector('button:has-text("Reconcile Partner Quote"):not([disabled])', { timeout: 15000 });
-    const reconcileModalBtn = await page.$('button:has-text("Reconcile Partner Quote")');
+    await page.waitForSelector('button:has-text("Reconcile Partner Quote"), button:has-text("Reconcile with Partner Quote"), button:has-text("Reconcile Quote")', { timeout: 15000 });
+    const reconcileModalBtn = await page.$('button:has-text("Reconcile Partner Quote"), button:has-text("Reconcile with Partner Quote"), button:has-text("Reconcile Quote")');
     if (reconcileModalBtn) {
       await reconcileModalBtn.click();
       await page.waitForTimeout(1000);

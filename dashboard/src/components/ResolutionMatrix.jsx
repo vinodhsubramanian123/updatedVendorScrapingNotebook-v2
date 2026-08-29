@@ -95,7 +95,8 @@ export default function ResolutionMatrix({
           ragSecondOpinion: sol.rank === 1 && evalResults?.ragAnswer ? evalResults.ragAnswer : sol.ragSecondOpinion,
           isOptimal: sol.rank === 1,
           swaps: detailedSwaps,
-          skuPartsList: sol.skuPartsList || []
+          skuPartsList: sol.skuPartsList || [],
+          cascadingImpact: sol.cascadingImpact || null
         };
       })
     : [
@@ -110,7 +111,8 @@ export default function ResolutionMatrix({
           rationale: 'Prioritizes original quote intent by keeping requested CPU/RAM footprint and injecting only mandatory physical thermal/power items.',
           isOptimal: true,
           swaps: ['Injected P48820-B21 High Performance Fan Kit', 'Paired P01366-B21 Smart Storage Battery with MR416i'],
-          skuPartsList: []
+          skuPartsList: [],
+          cascadingImpact: null
         },
         {
           rank: 2,
@@ -123,7 +125,8 @@ export default function ResolutionMatrix({
           rationale: 'Standardizes baseline options with factory default cable and rail accessories for maximum assembly stability.',
           isOptimal: false,
           swaps: ['Standardized factory default accessories', 'Standardized thermal paste and rail kit'],
-          skuPartsList: []
+          skuPartsList: [],
+          cascadingImpact: null
         },
         {
           rank: 3,
@@ -136,35 +139,42 @@ export default function ResolutionMatrix({
           rationale: 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.',
           isOptimal: false,
           swaps: ['Upgraded to 4GB Flash-Backed Write Cache', 'Added redundant battery module'],
-          skuPartsList: []
+          skuPartsList: [],
+          cascadingImpact: null
         },
         {
           rank: 4,
           title: 'Rank 4: Maximum Density & Future Scalability Expansion',
-          subtitle: 'Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU expansion.',
-          score: 0.79,
-          intentMatch: '82% (Scalability Focused)',
-          capex: '$16,100',
+          subtitle: 'Expands chassis with secondary PCIe riser cages and redundant power infrastructure for future multi-GPU/NVMe expansion.',
+          score: 0.80,
+          intentMatch: '82% (High-Capacity)',
+          capex: '$16,400',
           badgeClass: 'badge-amber',
-          rationale: 'Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU accelerator and 2nd CPU socket expansions.',
+          rationale: 'Expands chassis with secondary PCIe riser cages and redundant power infrastructure.',
           isOptimal: false,
-          swaps: ['Populated Secondary PCIe Riser', 'Added 2x High-Performance Fan Kits'],
-          skuPartsList: []
+          swaps: ['Added Secondary 2U Riser Cage', 'Upgraded to Dual 1600W Titanium PSUs'],
+          skuPartsList: [],
+          cascadingImpact: null
         },
         {
           rank: 5,
-          title: 'Rank 5: Budget & CapEx Minimized Buildable Baseline',
-          subtitle: 'Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure.',
-          score: 0.75,
-          intentMatch: '78% (Minimal Baseline)',
-          capex: '$14,250',
+          title: 'Rank 5: Budget Minimized (Zero Over-Provisioning)',
+          subtitle: 'Strips non-essential accessories to provide the most cost-effective valid buildable configuration.',
+          score: 0.72,
+          intentMatch: '75% (CapEx Focused)',
+          capex: '$13,600',
           badgeClass: 'badge-amber',
-          rationale: 'Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable.',
+          rationale: 'Strips optional secondary accessories, cable management arms, and discretionary brackets while retaining 100% physical validity.',
           isOptimal: false,
-          swaps: ['Eliminated all non-mandatory optional accessories', 'Retained only required thermal and power fixes'],
-          skuPartsList: []
+          swaps: ['Removed Optional Cable Management Arm', 'Selected Standard Tool-less Rails'],
+          skuPartsList: [],
+          cascadingImpact: null
         }
       ];
+
+  const cluster = evalResults?.clusterSizing;
+  const redundantDefaults = evalResults?.redundantDefaults || [];
+  const discrepancies = evalResults?.opinionDiscrepancies || [];
 
   const handleExportXlsx = async (tier) => {
     setExportingRank(tier.rank);
@@ -248,6 +258,53 @@ export default function ResolutionMatrix({
         exportError={exportError}
         onOpenTopology={onOpenTopology}
       />
+
+      {/* Cluster Infrastructure Sizing Matrix Banner (INV-29) */}
+      {cluster && cluster.totalServers > 1 && (
+        <div className="p-4 rounded-xl border border-indigo-200 bg-indigo-50/70 text-indigo-950 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 font-bold text-sm">
+              <span className="px-2 py-0.5 rounded text-xs bg-indigo-600 text-white font-mono">Cluster Infrastructure</span>
+              <span>Multi-Node Tender Synthesis ({cluster.totalServers}x Nodes)</span>
+            </div>
+            <p className="text-xs text-indigo-800">
+              Total Rack Footprint: <strong>{cluster.totalRackUnits} RU</strong> ({cluster.recommended42uRacks} standard 42U racks) | Facility Peak Power: <strong>{cluster.peakFacilityPowerKw} kW</strong>
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-xs shrink-0">
+            <span className={`px-2 py-1 rounded border font-medium ${cluster.deratingRequired ? 'bg-amber-100 border-amber-300 text-amber-900' : 'bg-emerald-100 border-emerald-300 text-emerald-900'}`}>
+              {cluster.deratingRequired ? '⚡ High-Line 200-240V Mandated' : '⚡ Standard Utility Power'}
+            </span>
+            <span className="px-2 py-1 rounded border bg-white/80 border-indigo-200 font-medium">
+              Rail Kits: {cluster.railKitCoverage?.status === 'PASS' ? '✅ 100% Covered' : '⚠️ Missing Rail Kits'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Chassis Default Included Components Advisory (GAP 2) */}
+      {redundantDefaults.length > 0 && (
+        <div className="p-3 rounded-xl border border-amber-200 bg-amber-50/80 text-amber-950 text-xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[10px] bg-amber-500 text-white font-bold uppercase">Presales Advisory</span>
+            <span>
+              Chassis standard components detected in BOQ ({redundantDefaults.map(d => d.sku).join(', ')}). These are pre-included with base chassis and do not require re-ordering unless requested as maintenance spares.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Presales Discrepancy & Human Review Alert */}
+      {discrepancies.length > 0 && (
+        <div className="p-3.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-950 text-xs flex items-center justify-between gap-3 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[10px] bg-rose-600 text-white font-bold uppercase">Discrepancy Alert</span>
+            <span>
+              Grounding identified divergent constraints on {discrepancies.length} SKU(s). Presales engineering sign-off recommended before generating customer tender BOM.
+            </span>
+          </div>
+        </div>
+      )}
 
       {matrixViewMode === 'vertical-matrix' ? (
         <MatrixComparisonTable

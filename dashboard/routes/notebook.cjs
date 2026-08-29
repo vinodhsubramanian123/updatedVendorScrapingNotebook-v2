@@ -228,6 +228,22 @@ router.post('/verify-vendor-bom', (req, res) => {
   try {
     const auditReport = verifyVendorBOM(vendorItems, proposedRankSolution, safeChassisDir);
     broadcastSSE({ type: 'LOG', text: auditReport.requiresFreshScrape ? '⚠️ [VENDOR_BOM_AUDIT] Uncataloged SKUs found. Fresh targeted CDP scrape recommended.' : `✅ [VENDOR_BOM_AUDIT] Vendor BOM cross-verified (${auditReport.is100PercentMatch ? '100% Match' : 'Deltas Learned'}).`, stream: auditReport.requiresFreshScrape ? 'stderr' : 'stdout' });
+
+    // AUTO-SYNC: After reconciliation, trigger knowledge sync so learned deltas 
+    // from CLIC/portal differences are immediately persisted to NotebookLM
+    if (auditReport.learnedDeltaCount > 0 || auditReport.autoInsertedSkus?.length > 0 || !auditReport.is100PercentMatch) {
+      setImmediate(() => {
+        try {
+          const { triggerPostFlowSync } = require('../../scripts/lib/sync/post_flow_sync.js');
+          const chassisName = path.basename(safeChassisDir);
+          const syncResult = triggerPostFlowSync(chassisName, 'RECONCILIATION');
+          broadcastSSE({ type: 'LOG', text: `🔄 [AUTO_SYNC] Post-reconciliation knowledge sync: ${syncResult.success ? 'SUCCESS' : 'FAILED'} (${syncResult.masterRegistryRulesCount || 0} rules, ${syncResult.unSyncedDeltasCount || 0} unsynced)`, stream: syncResult.success ? 'stdout' : 'stderr' });
+        } catch (syncErr) {
+          broadcastSSE({ type: 'LOG', text: `⚠️ [AUTO_SYNC] Post-reconciliation sync failed: ${syncErr.message}`, stream: 'stderr' });
+        }
+      });
+    }
+
     res.json(auditReport);
   } catch (err) { sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' }); }
 });
@@ -273,6 +289,17 @@ router.post('/feedback-submit', (req, res) => {
   const { text, category, context } = req.body;
   if (!text) return sendErrorResponse(res, 400, 'Feedback text is required', { source: 'NOTEBOOK_ROUTER' });
   const entry = feedbackQueue.appendFeedback(text, category, context);
+
+  // AUTO-SYNC: After feedback submission, trigger lightweight async knowledge sync
+  // so new learnings from HITL review are persisted to NotebookLM automatically
+  setImmediate(() => {
+    try {
+      const { triggerPostFlowSync } = require('../../scripts/lib/sync/post_flow_sync.js');
+      const chassis = (context && context.chassis) || 'DL380_Gen12_SFF';
+      triggerPostFlowSync(chassis, 'HITL_FEEDBACK');
+    } catch (_) { /* non-blocking advisory sync */ }
+  });
+
   res.json({ entry, agentPrompt: feedbackQueue.formatAgentTaskPrompt(entry) });
 });
 

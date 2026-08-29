@@ -19,6 +19,7 @@ const { loadCatalogRules, getMandatorySkusForChassis } = require('../catalog/cat
 const { extractWorkloadDna } = require('./workload_dna.js');
 const { arbitrateContestedResources } = require('./resource_arbitrator.js');
 const { synthesize5TierRankedSolutions } = require('./strategy_synthesizer.js');
+const { introspectSku } = require('./cascading_impact_analyzer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
 
@@ -284,6 +285,9 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     targetDir
   );
 
+  // Generic Dynamic SKU Introspection across full BOM
+  const introspectedComponents = fullBomList.map(it => introspectSku(it, catalogData, chassisInfo));
+
   return {
     chassisInfo,
     workloadDna,
@@ -294,6 +298,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     unresolvedConflicts,
     arbitrationResults,
     rankedSolutions,
+    introspectedComponents,
     auditLog,
     rulesSource: catalogData.sourceFile,
     isFallbackSource: catalogData.isFallback
@@ -306,6 +311,7 @@ module.exports = {
   arbitrateContestedResources,
   synthesize5TierRankedSolutions,
   validateConflictGraph,
+  introspectSku,
   invalidateChassisMapCache,
   evaluateWholeSolutionGraph: validateConflictGraph,
   getChassisMap

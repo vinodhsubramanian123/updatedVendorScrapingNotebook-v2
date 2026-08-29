@@ -106,8 +106,26 @@ Output of `eval_boq.js` / `/api/eval-boq` consumed by `App.jsx`, `ResolutionMatr
     "racksRequired42U": 3,
     "peakPowerKw": 108.0,
     "railKitCoverage": 60,
-    "cmaCoverage": 60
+    "cmaCoverage": 60,
+    "deratingRequired": true
   },
+  "notebookLmStatus": {
+    "isFallback": false,
+    "isCloudGrounded": true,
+    "citationsCount": 4,
+    "mode": "NOTEBOOK_LM_CLOUD",
+    "fallbackReason": null
+  },
+  "postFlowSync": {
+    "driftStatus": "IN_SYNC",
+    "unSyncedDeltasCount": 0,
+    "syncedAt": "2026-08-29T22:20:00Z"
+  },
+  "chassisDefaults": [
+    { "sku": "P48820-B21", "name": "Standard Cooling Fans", "defaultQty": 6 }
+  ],
+  "redundantDefaults": [],
+  "opinionDiscrepancies": [],
   "workloadDna": {
     "primaryWorkload": "High-Throughput Virtualization / Database",
     "computeTier": "High Density Multi-Core",
@@ -130,28 +148,38 @@ Output of `eval_boq.js` / `/api/eval-boq` consumed by `App.jsx`, `ResolutionMatr
     ],
     "rankedSolutions": [
       {
-        "rank": 1,
-        "name": "Rank 1: Customer Workload Intent Preserved (Optimal Match)",
-        "score": 0.98,
-        "estimatedCostUsd": 24500,
+        "rank": 3,
+        "name": "Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)",
+        "score": 0.88,
+        "estimatedCostUsd": 28450,
         "budgetBreakdown": {
           "baseBomCost": 24150,
           "fixCost": 350,
-          "strategyAddonCost": 0,
-          "totalBudgetUsd": 24500
+          "strategyAddonCost": 3950,
+          "totalBudgetUsd": 28450
+        },
+        "cascadingImpact": {
+          "affectedCount": 4,
+          "summary": "Pivoting storage controller to PCIe standup (MR416i-p 8GB cache) frees OCP Slot 1 for customer's OCP3 networking card.",
+          "companionHardware": ["P48832-B21 Storage Splitter Cable", "P01366-B21 Smart Storage Battery"],
+          "freedSlots": ["OCP Slot 1"],
+          "retainedComponents": ["P10115-B21 10/25Gb OCP3 Adapter"],
+          "humanRationale": "Resolves OCP slot contention without dropping the customer's high-speed network adapter."
         },
         "skuPartsList": [
           { "sku": "P73282-B21", "quantity": 1, "category": "Chassis Base", "unitPriceUsd": 5584 },
-          { "sku": "P74573-B21", "quantity": 2, "category": "Compute Processors", "unitPriceUsd": 2700 },
-          { "sku": "P48820-B21", "quantity": 1, "category": "Thermal Fans", "unitPriceUsd": 350, "isFixInjected": true }
+          { "sku": "P47777-B21", "quantity": 1, "category": "Storage Performance", "unitPriceUsd": 4599 },
+          { "sku": "P10115-B21", "quantity": 1, "category": "Network Adapter (OCP3)", "unitPriceUsd": 750 },
+          { "sku": "P48832-B21", "quantity": 1, "category": "Storage Controller Cable", "unitPriceUsd": 730, "isFixInjected": true },
+          { "sku": "P01366-B21", "quantity": 1, "category": "Storage Performance", "unitPriceUsd": 350, "isFixInjected": true }
         ],
         "tradeoffMetrics": {
-          "intentAlignment": "97% (1 Mandatory Fix)",
-          "costDeltaUsd": "+$350 (Mandatory Buildability)",
-          "capacityExpansion": "Optimal (Zero over/under-provisioning)"
+          "intentAlignment": "100% Exact Part Number Match (Fulfills P10115-B21 & P48832-B21)",
+          "costDeltaUsd": "+$4,300",
+          "capacityExpansion": "2x Write Cache (8GB) + OCP Retention"
         },
-        "ragSecondOpinion": "✅ Verified by QuickSpecs Grounding",
-        "reasoning": "Preserves core compute & memory intent while injecting mandatory thermal cooling."
+        "ragSecondOpinion": "✅ Verified by QuickSpecs Grounding: MR416i-p utilizes PCIe x16 bus freeing OCP Slot 1.",
+        "reasoning": "Pivoted storage controller to PCIe (MR416i-p 8GB Cache) to free OCP Slot 1 for customer's P10115-B21 adapter."
       }
     ]
   }

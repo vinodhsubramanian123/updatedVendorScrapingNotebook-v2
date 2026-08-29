@@ -140,11 +140,11 @@ export default function BoqUploader({
   };
 
   const handleDirectEvaluate = async () => {
-    if (!file && !rawText.trim()) return;
+    if (!file && !rawText.trim() && !preflightData?.filepath) return;
     setIsSubmitting(true);
     setEvalError(null);
     try {
-      await onEvaluateBoq(file, rawText);
+      await onEvaluateBoq(file || { filepath: preflightData?.filepath }, rawText);
     } catch (err) {
       setEvalError(err.message || 'Evaluation failed');
       setIsSubmitting(false);
@@ -268,6 +268,24 @@ export default function BoqUploader({
             </div>
           </div>
 
+          {/* NotebookLM Grounding & Dual-Brain Status Banner */}
+          {evalResults.notebookLmStatus?.isFallback && (
+            <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
+              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold">Local Verified Fallback Active:</span> NotebookLM Cloud was not consulted ({evalResults.notebookLmStatus.fallbackReason || 'Timeout or Local Mode'}). Rules and physical constraints evaluated via deterministic rule engine.
+              </div>
+            </div>
+          )}
+          {evalResults.notebookLmStatus?.isCloudGrounded && (
+            <div className="p-3 bg-emerald-50/80 border border-emerald-200 rounded-lg text-xs text-emerald-900 flex items-start gap-2.5">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold">Cloud Grounded via NotebookLM:</span> Live QuickSpecs notebook verified ({evalResults.notebookLmStatus.citationsCount || 0} citations).
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 flex-wrap">
             {onOpenTopology && (
               <button
@@ -294,7 +312,7 @@ export default function BoqUploader({
                 onClick={onOpenMatrix}
                 className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
               >
-                View 5-Tier Strategy Matrix
+                View 5-Tier Resolution Matrix
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}

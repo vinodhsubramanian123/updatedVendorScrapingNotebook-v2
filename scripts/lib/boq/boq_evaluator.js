@@ -82,7 +82,18 @@ function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
 
   if (targetPath && (targetPath.endsWith('.xlsx') || targetPath.endsWith('.xls'))) {
     const workbook = xlsx.readFile(targetPath);
-    const sheetNames = targetSheet ? (workbook.SheetNames.includes(targetSheet) ? [targetSheet] : workbook.SheetNames) : workbook.SheetNames;
+    let sheetNames = [];
+    if (targetSheet && workbook.SheetNames.includes(targetSheet)) {
+      sheetNames = [targetSheet];
+    } else {
+      // Default to primary BOM sheet (Sheet 1) and skip non-BOM documentation sheets (Audit, Architecture, Compliance)
+      const nonBomKeywords = ['audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix'];
+      const candidateSheets = workbook.SheetNames.filter(name => {
+        const lower = name.toLowerCase();
+        return !nonBomKeywords.some(kw => lower.includes(kw));
+      });
+      sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
+    }
     sheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];
       const csvText = xlsx.utils.sheet_to_csv(sheet);
@@ -181,6 +192,48 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const warnings = [];
   const missingDependencies = [];
   const mathDeductions = [];
+  const redundantDefaults = [];
+  let chassisDefaults = [];
+
+  // Chassis Included Components & Default Hardware Analysis (GAP 2)
+  try {
+    const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
+    if (fs.existsSync(mapPath)) {
+      const fullMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+      const incMap = fullMap.chassis_included_components || {};
+      const baseKey = chassisInfo.baseSku || Object.keys(incMap).find(k => k === chassisInfo.sku || incMap[k].model === chassisInfo.model);
+      chassisDefaults = (baseKey && incMap[baseKey]?.includedComponents) || [];
+
+      if (chassisDefaults.length > 0) {
+        items.forEach(it => {
+          const desc = (it.description || '').toLowerCase();
+          const clean = cleanBaseSKU(it.sku);
+          // Flag redundant standard fans or heatsinks when not requiring high-TDP kits
+          const isStdFan = (desc.includes('standard fan') || (desc.includes('fan kit') && !desc.includes('high perf') && !desc.includes('performance') && !desc.includes('p48820') && !desc.includes('p40502')));
+          const isStdHeatsink = (desc.includes('standard heatsink') || (desc.includes('heat sink') && !desc.includes('performance') && !desc.includes('high perf') && !desc.includes('p48818') && !desc.includes('p74792')));
+          const isLomNic = desc.includes('1gb 4-port') && desc.includes('bcm5719') && !desc.includes('pcie');
+
+          if (isStdFan || isStdHeatsink || isLomNic) {
+            const matchDefault = chassisDefaults.find(d => 
+              (isStdFan && d.category === 'Cooling / Thermal' && d.description.includes('Fan')) ||
+              (isStdHeatsink && d.category === 'Cooling / Thermal' && d.description.includes('Heatsink')) ||
+              (isLomNic && d.category === 'Network Adapter')
+            );
+            if (matchDefault) {
+              const adv = `Chassis Default Advisory: SKU ${clean} (${it.description}) is already factory-included with base chassis ${baseKey} (${matchDefault.description}). Redundant line item not required unless explicitly ordered as a spare.`;
+              warnings.push(adv);
+              redundantDefaults.push({
+                sku: clean,
+                description: it.description,
+                includedDefault: matchDefault.description,
+                advisory: adv
+              });
+            }
+          }
+        });
+      }
+    }
+  } catch (_) {}
 
   if (lifecycle.hasObsoleteRisk) {
     warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');
@@ -612,6 +665,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     warnings,
     mathDeductions,
     missingDependencies,
+    chassisDefaults,
+    redundantDefaults,
     aspectChecks
   };
 
@@ -701,7 +756,7 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
 }
 
 function evaluateBOQMultiAspect(filePathOrText, options = {}) {
-  const items = parseAndConsolidateBOQ(filePathOrText, options.filePath || '');
+  const items = parseAndConsolidateBOQ(filePathOrText, options.filePath || '', options.targetSheet || null);
   const result = evaluatePhysicalMath(items, options.catalogData, options.targetDir || '');
   return { ...result, items };
 }

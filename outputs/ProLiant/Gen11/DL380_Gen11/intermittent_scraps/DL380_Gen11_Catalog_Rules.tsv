@@ -1,4 +1,34 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Chassis	Variants	max 1	Quantity Constraint	Quantity: max 1
+Accessories & Infrastructure	Energy Star Configuration Presets	Optional	Quantity Constraint	Quantity: Optional
+Processor	Intel Xeon 6th Gen Scalable Processors	max 2	Quantity Constraint	Quantity: max 2
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Quantity Constraint	Quantity: max 6
+Memory	DDR5 Registered Smart Memory	max 32	Quantity Constraint	Quantity: max 32
+Accessories & Infrastructure	System Options	Optional	Quantity Constraint	Quantity: Optional
+Memory	DDR4 Registered Smart Memory	max 32	Quantity Constraint	Quantity: max 32
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Quantity Constraint	Quantity: max 24
+Software & Licenses	Server Management & Operating System Licenses	Unlimited	Quantity Constraint	Quantity: Unlimited
+Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	Quantity Constraint	Quantity: max 24
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Quantity Constraint	Quantity: max 4
+Storage Controllers	Tri-Mode SmartRAID Storage Controllers	max 4	Quantity Constraint	Quantity: max 4
+Accessories & Infrastructure	Smart Storage Batteries	Optional	Quantity Constraint	Quantity: Optional
+Storage Controllers	Storage Controller Cable Kits	max 4	Quantity Constraint	Quantity: max 4
+PCIe Risers	Secondary PCIe Risers	max 3	Quantity Constraint	Quantity: max 3
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Quantity Constraint	Quantity: max 24
+PCIe Risers	Primary PCIe Risers	max 3	Quantity Constraint	Quantity: max 3
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Quantity Constraint	Quantity: max 24
+PCIe Risers	Tertiary PCIe Risers	max 3	Quantity Constraint	Quantity: max 3
+Networking	PCIe Networking Adapters	max 8	Quantity Constraint	Quantity: max 8
+Networking	OCP3 Networking Adapters	max 8	Quantity Constraint	Quantity: max 8
+Cooling / Thermal	High Performance & Standard Fan Kits	max 6	Quantity Constraint	Quantity: max 6
+Power Supplies	Flex Slot Power Supplies	max 2	Quantity Constraint	Quantity: max 2
+Processor	Intel Xeon Scalable Processors	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 2	Quantity Constraint	Quantity: max 2
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 32	Quantity Constraint	Quantity: max 32
+Graphics & GPU	NVIDIA GPU SW	max 32	Quantity Constraint	Quantity: max 32
+Accessories & Infrastructure	HPE Virtualization	max 32	Quantity Constraint	Quantity: max 32
+Accessories & Infrastructure	Rack Options	max 32	Quantity Constraint	Quantity: max 32
+Chassis	Variants	Chassis Standard (Max 1)	Configuration Rule	Mandatory base chassis selection required for solution build
 Accessories & Infrastructure	Energy Star Configuration Presets	optional	Configuration Rule	Selection constraint for Energy Star Configuration Presets: optional
 Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
 Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
@@ -50,19 +80,6 @@ Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selectio
 Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Mixing of different Power supply SKU is not allowed.
 Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).
 Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
-Chassis	Variants	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
 Graphics & GPU	NVIDIA GPU SW	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
 Accessories & Infrastructure	HPE Virtualization	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: min 1, max 2
-Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Not Supported ProStack Server Software
-Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon Scalable Processors: min 1, max 2
-Accessories & Infrastructure	Reseller Option Kit	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	SUSE Add-ons	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	SUSE containers	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Cooling / Thermal	Heatsink Kit	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	Integrated Lights Out Software	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Learned Feedback Rules	PORTAL	learned	Learned Feedback Rule	If PORTAL is present, P52534-B21 is mandatory.
-Learned Feedback Rules	PORTAL	learned	Learned Feedback Rule	If PORTAL is present, P64707-B21 is mandatory.
-Learned Feedback Rules	PORTAL	learned	Learned Feedback Rule	Portal validation flagged restriction on PORTAL.
-Learned Feedback Rules	PORTAL	learned	Learned Feedback Rule	If PORTAL is present, P58335-B21 is mandatory.
+Accessories & Infrastructure	Rack Options	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog

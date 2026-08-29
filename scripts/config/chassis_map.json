@@ -440,5 +440,193 @@
       "listPrice": 19500,
       "optionType": "CTO"
     }
+  },
+
+  "controller_cache_map": {
+    "Gen11": {
+      "MR408i-o": {
+        "sku": "P58335-B21",
+        "formFactor": "OCP",
+        "availableCacheSizes": ["4GB"],
+        "defaultCacheGb": 4,
+        "busWidth": "x8",
+        "notes": "OCP form factor, 4GB flash-backed cache only"
+      },
+      "MR416i-p": {
+        "sku": "P47777-B21",
+        "formFactor": "PCIe",
+        "availableCacheSizes": ["8GB"],
+        "defaultCacheGb": 8,
+        "busWidth": "x16",
+        "notes": "PCIe standup, minimum 8GB cache. No 4GB variant available for -p series on Gen11."
+      },
+      "MR216i-p": {
+        "sku": "P26325-B21",
+        "formFactor": "PCIe",
+        "availableCacheSizes": ["4GB"],
+        "defaultCacheGb": 4,
+        "busWidth": "x8",
+        "notes": "PCIe standup, 4GB cache, 2 internal ports"
+      },
+      "SR932i-p": {
+        "sku": "P44217-B21",
+        "formFactor": "PCIe",
+        "availableCacheSizes": ["8GB"],
+        "defaultCacheGb": 8,
+        "busWidth": "x16",
+        "notes": "SmartRAID PCIe standup, 8GB cache"
+      }
+    },
+    "Gen12": {
+      "MR408i-o": {
+        "sku": "P75749-B21",
+        "formFactor": "OCP",
+        "availableCacheSizes": ["4GB"],
+        "defaultCacheGb": 4,
+        "busWidth": "x8",
+        "notes": "OCP form factor Gen12, 4GB flash-backed cache only"
+      },
+      "MR416i-p": {
+        "sku": "P75750-B21",
+        "formFactor": "PCIe",
+        "availableCacheSizes": ["8GB"],
+        "defaultCacheGb": 8,
+        "busWidth": "x16",
+        "notes": "PCIe standup Gen12, minimum 8GB cache. No 4GB variant available for -p series on Gen12."
+      },
+      "MR416i-o": {
+        "sku": "P75751-B21",
+        "formFactor": "OCP",
+        "availableCacheSizes": ["8GB"],
+        "defaultCacheGb": 8,
+        "busWidth": "x16",
+        "notes": "OCP Gen12 variant with 8GB cache"
+      },
+      "SR932i-p": {
+        "sku": "P75752-B21",
+        "formFactor": "PCIe",
+        "availableCacheSizes": ["8GB"],
+        "defaultCacheGb": 8,
+        "busWidth": "x16",
+        "notes": "SmartRAID PCIe standup Gen12, 8GB cache"
+      }
+    }
+  },
+
+  "chassis_included_components": {
+    "P73282-B21": {
+      "model": "DL380 Gen12 8SFF",
+      "gen": "Gen12",
+      "includedComponents": [
+        { "category": "Cooling / Thermal", "description": "Standard Fan Module (6x Fans)", "qty": 6, "isUpgradeable": true, "upgradeNote": "Replace with P40502-B21 High Performance Fan Kit for TDP >= 240W" },
+        { "category": "Cooling / Thermal", "description": "Standard Heatsink Kit (per socket)", "qty": 2, "isUpgradeable": true, "upgradeNote": "Replace with P74792-B21 Performance Heatsink for TDP >= 240W" },
+        { "category": "Network Adapter", "description": "HPE 1Gb 4-port BaseT BCM5719 iLO Embedded NIC", "qty": 1, "isUpgradeable": false, "upgradeNote": "Factory embedded, cannot be removed. Occupies iLO Dedicated NIC port." },
+        { "category": "PCIe Riser", "description": "Primary Riser Cage (mechanical, no cable)", "qty": 1, "isUpgradeable": true, "upgradeNote": "Add P56073-B21 Primary Cable Kit to electrically enable Slot 1" },
+        { "category": "Chassis Infrastructure", "description": "HPE Insight Online Direct Connect Display", "qty": 1, "isUpgradeable": false }
+      ]
+    },
+    "P73283-B21": {
+      "model": "DL380 Gen12 24SFF",
+      "gen": "Gen12",
+      "includedComponents": [
+        { "category": "Cooling / Thermal", "description": "Standard Fan Module (6x Fans)", "qty": 6, "isUpgradeable": true },
+        { "category": "Cooling / Thermal", "description": "Standard Heatsink Kit (per socket)", "qty": 2, "isUpgradeable": true },
+        { "category": "Network Adapter", "description": "HPE 1Gb 4-port BaseT BCM5719 iLO Embedded NIC", "qty": 1, "isUpgradeable": false },
+        { "category": "Drive Cage / Drive", "description": "24SFF Front Drive Cage (factory included)", "qty": 1, "isUpgradeable": false }
+      ]
+    },
+    "P52534-B21": {
+      "model": "DL380 Gen11 8SFF",
+      "gen": "Gen11",
+      "includedComponents": [
+        { "category": "Cooling / Thermal", "description": "Standard Fan Module (6x Fans)", "qty": 6, "isUpgradeable": true, "upgradeNote": "Replace with P48820-B21 High Performance Fan Kit for TDP >= 240W" },
+        { "category": "Cooling / Thermal", "description": "Standard Heatsink Kit (per socket)", "qty": 2, "isUpgradeable": true, "upgradeNote": "Replace with P48818-B21 Performance Heatsink for TDP >= 240W" },
+        { "category": "Network Adapter", "description": "HPE 1Gb 4-port BaseT BCM5719 iLO Embedded NIC", "qty": 1, "isUpgradeable": false },
+        { "category": "PCIe Riser", "description": "Primary Riser Cage (mechanical, no cable)", "qty": 1, "isUpgradeable": true }
+      ]
+    },
+    "P52535-B21": {
+      "model": "DL380 Gen11 24SFF",
+      "gen": "Gen11",
+      "includedComponents": [
+        { "category": "Cooling / Thermal", "description": "Standard Fan Module (6x Fans)", "qty": 6, "isUpgradeable": true },
+        { "category": "Cooling / Thermal", "description": "Standard Heatsink Kit (per socket)", "qty": 2, "isUpgradeable": true },
+        { "category": "Network Adapter", "description": "HPE 1Gb 4-port BaseT BCM5719 iLO Embedded NIC", "qty": 1, "isUpgradeable": false },
+        { "category": "Drive Cage / Drive", "description": "24SFF Front Drive Cage (factory included)", "qty": 1, "isUpgradeable": false }
+      ]
+    }
+  },
+
+  "form_factor_duals": {
+    "Gen11": {
+      "storage_controller": {
+        "ocp": {
+          "sku": "P58335-B21",
+          "model": "MR408i-o",
+          "description": "HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller",
+          "cacheGb": 4,
+          "busWidth": "x8",
+          "cableSku": "P48918-B21",
+          "cableDescription": "HPE ProLiant Storage Controller Enablement Cable Kit"
+        },
+        "pcie": {
+          "sku": "P47777-B21",
+          "model": "MR416i-p",
+          "description": "HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller",
+          "cacheGb": 8,
+          "busWidth": "x16",
+          "cableSku": "P48832-B21",
+          "cableDescription": "HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit"
+        },
+        "cacheSwapReasoning": "MR416i-p (-p series) on Gen11 is only available with 8GB flash-backed cache. The 4GB cache variant does not exist for PCIe standup controllers in the MR4x family on Gen11. If the customer requested 4GB cache with an OCP controller, pivoting to PCIe inherently upgrades to 8GB at no additional cache cost — this is a hardware platform constraint, not a discretionary upsell."
+      },
+      "boot_device": {
+        "bay": {
+          "sku": "P48183-B21",
+          "model": "NS204i-u",
+          "description": "HPE NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device"
+        },
+        "pcie": {
+          "sku": "P12965-B21",
+          "model": "NS204i-p",
+          "description": "HPE NS204i-p Gen10 Plus NVMe PCIe3 x8 OS Boot Device"
+        }
+      }
+    },
+    "Gen12": {
+      "storage_controller": {
+        "ocp": {
+          "sku": "P75749-B21",
+          "model": "MR408i-o",
+          "description": "HPE MR408i-o Gen12 x8 Lanes 4GB Cache OCP SPDM Storage Controller",
+          "cacheGb": 4,
+          "busWidth": "x8",
+          "cableSku": "P48918-B21",
+          "cableDescription": "HPE ProLiant Storage Controller Enablement Cable Kit"
+        },
+        "pcie": {
+          "sku": "P75750-B21",
+          "model": "MR416i-p",
+          "description": "HPE MR416i-p Gen12 x16 Lanes 8GB Cache PCI SPDM Storage Controller",
+          "cacheGb": 8,
+          "busWidth": "x16",
+          "cableSku": "P76453-B21",
+          "cableDescription": "HPE ProLiant DL380 Gen12 UMB PCIe Box 1/2 Cable Kit"
+        },
+        "cacheSwapReasoning": "MR416i-p (-p series) on Gen12 is only available with 8GB flash-backed cache. No 4GB variant exists for PCIe standup controllers in the MR4x family on Gen12."
+      },
+      "boot_device": {
+        "bay": {
+          "sku": "P48183-B21",
+          "model": "NS204i-u",
+          "description": "HPE NS204i-u Gen12 NVMe Hot Plug Boot Optimized Storage Device"
+        },
+        "pcie": {
+          "sku": "P12965-B21",
+          "model": "NS204i-p",
+          "description": "HPE NS204i-p NVMe PCIe3 x8 OS Boot Device"
+        }
+      }
+    }
   }
 }

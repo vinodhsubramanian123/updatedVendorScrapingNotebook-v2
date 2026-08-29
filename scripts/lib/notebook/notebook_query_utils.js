@@ -35,15 +35,33 @@ const {
 } = require('./job_manager.js');
 
 // Fast in-memory & disk cache for repeated RAG queries within and across workflow steps
+// Cache entries: { value: <result>, cachedAt: <ISO timestamp> }
 const queryCache = new Map();
 const RAG_CACHE_FILE = path.join(__dirname, '..', '..', 'outputs', 'history', 'rag_cache.json');
+const RAG_CACHE_TTL_MS = parseInt(process.env.RAG_CACHE_TTL_MS || String(24 * 60 * 60 * 1000), 10); // 24h default
+
+function isCacheEntryFresh(entry) {
+  if (!entry || !entry.cachedAt) return false;
+  return (Date.now() - new Date(entry.cachedAt).getTime()) < RAG_CACHE_TTL_MS;
+}
 
 try {
   if (fs.existsSync(RAG_CACHE_FILE)) {
     const rawDisk = JSON.parse(fs.readFileSync(RAG_CACHE_FILE, 'utf-8'));
     if (typeof rawDisk === 'object' && rawDisk !== null) {
+      let loadedCount = 0, evictedCount = 0;
       for (const [k, v] of Object.entries(rawDisk)) {
-        queryCache.set(k, v);
+        // Support both old format (plain object) and new format ({value, cachedAt})
+        const entry = (v && typeof v === 'object' && v.cachedAt) ? v : { value: v, cachedAt: new Date(0).toISOString() };
+        if (isCacheEntryFresh(entry)) {
+          queryCache.set(k, entry);
+          loadedCount++;
+        } else {
+          evictedCount++;
+        }
+      }
+      if (evictedCount > 0) {
+        require('../system/pipeline_logger.js').info('RAG_CACHE', `Evicted ${evictedCount} stale cache entries (TTL: ${RAG_CACHE_TTL_MS / 3600000}h). Loaded ${loadedCount} fresh entries.`);
       }
     }
   }
@@ -54,10 +72,32 @@ function persistRagCache() {
     const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
     const obj = {};
     for (const [k, v] of queryCache.entries()) {
-      obj[k] = v;
+      obj[k] = v; // Already in { value, cachedAt } format
     }
     safeWriteJsonAtomic(RAG_CACHE_FILE, obj);
   } catch (_) {}
+}
+
+/**
+ * Get a cached RAG result for a given cache key, respecting TTL.
+ * Returns null if the entry is absent or stale.
+ */
+function getCachedRagResult(cacheKey) {
+  const entry = queryCache.get(cacheKey);
+  if (!entry) return null;
+  if (!isCacheEntryFresh(entry)) {
+    queryCache.delete(cacheKey); // Evict stale entry
+    return null;
+  }
+  return entry.value;
+}
+
+/**
+ * Store a RAG result in the cache with the current timestamp.
+ */
+function setCachedRagResult(cacheKey, result) {
+  queryCache.set(cacheKey, { value: result, cachedAt: new Date().toISOString() });
+  persistRagCache();
 }
 
 /**
@@ -73,15 +113,15 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
     const logger = require('../system/pipeline_logger.js');
     const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-    const timeoutMs = options.timeout || 120000;
+    const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
 
     const cacheKey = `${notebookId || 'default'}:${sanitizedQuery.trim()}`;
-    if (!options.bypassCache && queryCache.has(cacheKey)) {
-      logger.info('NOTEBOOK_QUERY', `RAG query cache hit for key [${cacheKey.slice(0, 40)}...]`);
-      return resolve({
-        ...queryCache.get(cacheKey),
-        cached: true
-      });
+    if (!options.bypassCache) {
+      const cached = getCachedRagResult(cacheKey);
+      if (cached) {
+        logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
+        return resolve({ ...cached, cached: true });
+      }
     }
 
     if (process.env.USE_LOCAL_RAG_ONLY === '1' || process.env.LOCAL_EVAL_ONLY === '1') {
@@ -165,8 +205,7 @@ function executeNotebookQuery(notebookId, rawQuery, options = {}) {
         } catch (e) {}
       }
       if (processed && processed.answer) {
-        queryCache.set(cacheKey, processed);
-        persistRagCache();
+        setCachedRagResult(cacheKey, processed);
       }
       resolve(processed);
     });

@@ -101,8 +101,17 @@ export function normalizeEvalResult(payload) {
     conflictGraph: data.conflictGraph ?? inner.conflictGraph ?? {},
     rankedSolutions: data.conflictGraph?.rankedSolutions ?? inner.conflictGraph?.rankedSolutions ?? data.rankedSolutions ?? [],
     workloadDna: data.conflictGraph?.workloadDna ?? data.workloadDna,
+    arbitrationResults: data.conflictGraph?.arbitrationResults ?? inner.arbitrationResults ?? data.arbitrationResults ?? null,
+    clusterSizing: data.clusterSizing ?? inner.clusterSizing ?? null,
+    chassisDefaults: data.chassisDefaults ?? inner.chassisDefaults ?? [],
+    redundantDefaults: data.redundantDefaults ?? inner.redundantDefaults ?? [],
+    opinionDiscrepancies: data.opinionDiscrepancies ?? inner.opinionDiscrepancies ?? [],
+    introspectedComponents: data.conflictGraph?.introspectedComponents ?? inner.introspectedComponents ?? [],
     // Aspect checks: use server-provided array or compute from inner fields
     aspectChecks: inner.aspectChecks ?? buildAspectChecksFromEval(inner),
+    // NotebookLM grounding status — surfaces whether cloud brain was consulted
+    notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
+    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null,
     // RAG fields — populated later by the poller
     ragAnswer: null,
     ragData: null

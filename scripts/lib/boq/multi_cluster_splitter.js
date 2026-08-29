@@ -496,16 +496,18 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
   partitionResult.clusters.forEach(cluster => {
     const wb = XLSX.utils.book_new();
     const sheetData = [
-      ['No.', 'Category', 'Description', 'Per-Server Qty', 'Total Cluster Qty', 'Multiplier: ' + cluster.multiplier]
+      ['Part No', 'Qty', 'Description', 'Category', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
     ];
 
-    cluster.items.forEach((item, idx) => {
+    cluster.items.forEach(item => {
       sheetData.push([
-        idx + 1,
-        item.category,
-        item.description.includes(item.sku) ? item.description : `${item.description} (${item.sku})`,
+        item.sku,
         item.quantity,
-        item.totalQuantity
+        item.description,
+        item.category,
+        item.unitPriceUsd || 0,
+        (item.unitPriceUsd || 0) * (item.quantity || 1),
+        'ACTIVE_IN_OCA'
       ]);
     });
 

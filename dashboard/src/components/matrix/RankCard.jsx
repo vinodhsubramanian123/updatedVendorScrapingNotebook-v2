@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle } from 'lucide-react';
+import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap } from 'lucide-react';
 import { getCategoryStyle } from '../../utils/categoryStyles';
 
 export default function RankCard({
@@ -148,6 +148,28 @@ export default function RankCard({
             {tier.rationale}
           </p>
         </div>
+
+        {tier.cascadingImpact && (
+          <div className="mt-3 p-3 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-indigo-950 flex items-center gap-1">
+                <Zap className="w-3.5 h-3.5 text-indigo-600" />
+                Cascading Ripple Analysis:
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 font-semibold">
+                {tier.cascadingImpact.affectedCount || 0} Affected SKU(s)
+              </span>
+            </div>
+            <p className="text-indigo-900 text-[11px] leading-relaxed mb-2">
+              {tier.cascadingImpact.summary}
+            </p>
+            {tier.cascadingImpact.humanRationale && (
+              <div className="text-[10px] text-indigo-800 bg-white/70 p-1.5 rounded border border-indigo-100 leading-snug">
+                <strong>Presales Guidance:</strong> {tier.cascadingImpact.humanRationale}
+              </div>
+            )}
+          </div>
+        )}
 
         {tier.ragSecondOpinion && (
           <div className="mt-3 p-3 bg-amber-50/60 rounded-xl border border-amber-200 text-xs">

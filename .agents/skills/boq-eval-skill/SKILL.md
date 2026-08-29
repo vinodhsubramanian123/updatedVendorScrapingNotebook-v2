@@ -67,7 +67,19 @@ graph TD
 
 ### Phase 2.5: 5-Level Dependency Conflict Graph & Closed-Loop Delta Auto-Injection
 - **Module**: [`scripts/lib/conflict/conflict_graph.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/conflict_graph.js) & [`scripts/lib/catalog/catalog_rules.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/catalog/catalog_rules.js)
-- **Functions**: `validateConflictGraph()`, `loadLearnedKnowledgeDeltas()`, `extractWorkloadDna()`, `synthesize5TierRankedSolutions()`
+- **Functions**: `validateConflictGraph()`, `loadLearnedKnowledgeDeltas()`, `extractWorkloadDna()`, `synthesize5TierRankedSolutions()`, `analyzeCascadingImpact()`, `introspectSku()`
+- **Dynamic SKU Capability Introspection**: Introspects component capabilities across cores, GHz, TDP wattage, storage controller cache sizes, power supply capacity, and networking throughput directly from catalog descriptions without hardcoded strings.
+- **4-Degree Cascading Ripple Analysis (`analyzeCascadingImpact`)**:
+  - *Degree 1 (Immediate Companions)*: Auto-detects required controller cables (`P48832-B21`), flash-backed write cache batteries (`P01366-B21`), and heatsinks when swapping controllers or CPUs.
+  - *Degree 2 (Contested Form-Factor Slot Unlocking)*: Calculates slot freeing (e.g. pivoting storage to PCIe standup frees OCP Slot 1 for customer's OCP3 networking card).
+  - *Degree 3 (Thermal & Power Envelope Recalculation)*: Recalculates total TDP and system draw, adjusting fan kits (`P48820-B21`) and redundant PSU sizing.
+  - *Degree 4 (Licensing Multipliers)*: Recalculates core-based hypervisor/OS licenses (Windows Server / VMware) matching total physical cores.
+- **Multi-Node Cluster Infrastructure Sizing Matrix (`clusterSizing`)**:
+  - Computes Total Rack Units (`totalNodes * RU`), Standard 42U Rack Count (`ceil(RU / 42)`), Peak Facility Power draw in kW, Rail Kit coverage (`P52341-B21`), and High-line 220V utility power derating advisories when node wattage exceeds 800W.
+- **Chassis Default & Redundant Accessory Intelligence (`chassisDefaults` & `redundantDefaults`)**:
+  - Automatically identifies pre-included chassis parts (e.g. 6 standard fans, internal cables) and flags redundant standalone accessory lines in customer tenders to eliminate duplicate spend.
+- **Presales Divergent Opinion Discrepancy Protocol (`opinionDiscrepancies`)**:
+  - When NotebookLM RAG advice diverges from deterministic rule engine logic, flags an `OPINION_DISCREPANCY_FLAG` for presales engineer review rather than silently dropping constraints.
 - **Closed-Loop Delta Auto-Injection**: `loadLearnedKnowledgeDeltas()` scans `master_knowledge_registry.json` and `catalog_deltas.json` during evaluation, automatically merging learned portal rejection rules into pre-checks.
 - **Dual Safety Net**: Loads `<prefix>_Catalog_Rules.json` (with `chassisVariantMatrix`) first, falls back to `<prefix>_Catalog.json`.
 - **5 Rule Levels**: `VENDOR`, `CHASSIS`, `CATEGORY`, `SUBCATEGORY`, `SKU` + `LEARNED_DELTA`.
@@ -75,7 +87,7 @@ graph TD
 - **Top 5 Resolution Matrix**:
   - **Rank 1**: Customer Workload Intent Preserved (Optimal Match, 0 unnecessary alterations)
   - **Rank 2**: Standardized CTO Baseline & Factory Default Accessories
-  - **Rank 3**: High-IOPS & Storage Performance Optimized
+  - **Rank 3**: High-IOPS & Storage Performance Optimized (PCIe Storage + OCP Slot Retention)
   - **Rank 4**: Maximum Density & Future Scalability Expansion
   - **Rank 5**: Budget & CapEx Minimized Buildable Baseline
 
@@ -213,3 +225,11 @@ When evaluating or auto-remediating BOQs across any product family:
 9. **Single Source of Pricing Truth & Zero Standalone Price Hardcoding (`INV-33`)**:
    - All SKU prices must resolve dynamically via `getHistoricalSkuPrice()` reading from `catalog.json` and `price_history.json`.
    - Never use static mock prices or standalone price dictionaries in generator scripts.
+10. **Multi-Cluster Architectural Partitioning & Form-Factor Pivot (`INV-39`)**:
+    - `multi_cluster_splitter.js` partitions mixed CPU tenders into homogeneous 100% buildable clusters (e.g. 20-node Platinum 8580 + 40-node Gold 6530).
+    - When raw customer RFPs bundle an OCP storage controller with dual OCP NICs, the engine pivots the controller to PCIe standup (`MR416i-p`, `P47777-B21`), freeing OCP Slot 1 so both OCP NICs (`P10115-B21` in Slot 1 and `P51181-B21` in Slot 2) remain 100% functional.
+11. **Continuous Knowledge Auto-Sync (`INV-40`)**:
+    - Automatically triggers background knowledge synchronization on live scrape completion, BOQ evaluation, vendor quote reconciliation, and HITL feedback submissions.
+12. **Dual-Brain RAG Headroom & 24-Hour TTL Cache Invalidation (`INV-41`)**:
+    - Default RAG query timeout is set to 120s, Guardrail timeout is set to 180s (3 minutes) with a 3-query budget cap, and disk cache enforces a 24-hour TTL with automatic startup and lookup eviction.
+

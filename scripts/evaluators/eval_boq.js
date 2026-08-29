@@ -265,7 +265,7 @@ Examples:
       items: items
     },
     offlineMode: OFFLINE_MODE,
-    timeout: 120000
+    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10)
   });
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
 
@@ -273,8 +273,18 @@ Examples:
     source: ragResult.source,
     sourcesUsed: ragResult.sourcesUsed || [],
     citationsCount: (ragResult.citations || []).length,
-    fallbackReason: ragResult.fallbackReason || null
+    fallbackReason: ragResult.fallbackReason || null,
+    isFallback: (ragResult.source || '').includes('FALLBACK') || (ragResult.source || '').includes('LOCAL'),
+    isCloudGrounded: ragResult.source === 'NOTEBOOK_LM_CLOUD' || ragResult.source === 'NOTEBOOK_LM',
+    cached: ragResult.cached || false
   };
+
+  // Surface NLM fallback prominently — operator must know when cloud brain wasn't consulted
+  if (evalResults.notebookLmStatus.isFallback && !evalResults.notebookLmStatus.cached) {
+    const fallbackWarning = `⚠️ NotebookLM Cloud was NOT consulted — used local RAG fallback (Reason: ${ragResult.fallbackReason || 'NLM CLI timeout or unavailable'}). Verify critical dependencies manually or re-run with longer RAG_TIMEOUT_MS.`;
+    evalResults.warnings.push(fallbackWarning);
+    if (!JSON_MODE) console.log(`\n${fallbackWarning}`);
+  }
   evalResults.ragResult = ragResult;
   
   // -------------------------------------------------------------
@@ -462,7 +472,17 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION');
     // Attach to evalResults so telemetry.recordEvaluationTelemetry() can capture syncStatus
     evalResults.postFlowSync = syncResult;
-  } catch (_) {}
+    if (!syncResult.success) {
+      const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
+      evalResults.warnings.push(syncWarning);
+      if (!JSON_MODE) console.log(`\n${syncWarning}`);
+    }
+  } catch (syncErr) {
+    const _syncLogger = require('../lib/system/pipeline_logger.js');
+    _syncLogger.error('EVAL_BOQ', `Post-flow sync failed hard: ${syncErr.message}`);
+    evalResults.postFlowSync = { success: false, error: syncErr.message };
+    evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
+  }
 
   // Attach high-resolution stage breakdown to evalResults
   evalResults.stageBreakdown = {
@@ -603,8 +623,16 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
           warnings: evalResults.warnings,
           missingDependencies: evalResults.missingDependencies,
           confidence: evalResults.confidence,
-          agenticExplanation: evalResults.agenticExplanation
+          agenticExplanation: evalResults.agenticExplanation,
+          clusterSizing: evalResults.clusterSizing || null,
+          chassisDefaults: evalResults.chassisDefaults || [],
+          redundantDefaults: evalResults.redundantDefaults || [],
+          opinionDiscrepancies: evalResults.opinionDiscrepancies || []
         },
+        clusterSizing: evalResults.clusterSizing || null,
+        chassisDefaults: evalResults.chassisDefaults || [],
+        redundantDefaults: evalResults.redundantDefaults || [],
+        opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
         conflictGraph: {
           chassisInfo: graph.chassisInfo,
           workloadDna: graph.workloadDna,

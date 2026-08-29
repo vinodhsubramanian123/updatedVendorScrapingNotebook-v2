@@ -89,6 +89,18 @@ app.use('/api', tasksRouter);
 app.use('/api', evaluationRouter);
 app.use('/api', notebookRouter);
 
+
+// ── Health Check Endpoint ─────────────────────────────────────────────────────
+app.get('/api/health', (req, res) => {
+  const activeTask = getActiveTask();
+  res.json({
+    status: 'OK',
+    isTaskRunning: !!activeTask,
+    activeTask: activeTask ? { type: activeTask.type, runId: activeTask.runId } : null,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // ── Centralized JSON Error Handler (SMELL-S3) ─────────────────────────────────
 const { sendErrorResponse } = require('./services/errorHandler.cjs');
 app.use('/api', (err, req, res, next) => {

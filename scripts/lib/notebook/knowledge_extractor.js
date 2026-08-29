@@ -15,10 +15,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
 const logger = require('../system/pipeline_logger.js');
+
+const SKU_PATTERN = '([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11})';
 
 /**
  * Extract structured knowledge deltas from a natural language RAG answer.
@@ -46,12 +48,12 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
 
   // 1. Extract BTO -> FIO Option Type Substitutions
   // Matches e.g. "P69728-B21 ... not allowed in CTO ... use FIO SKU P69728-F21"
-  const btoFioRegex = /([A-Z0-9]{5,8}-[A-Z0-9]{3,4}).{0,150}?(?:BTO|retail).{0,100}?(?:not allowed|cannot be added|blocked|error|prohibited).{0,120}?(?:CTO|factory).{0,100}?(?:FIO|equivalent|substitute|use).{0,50}?([A-Z0-9]{5,8}-[A-Z0-9]{3,4})/gi;
+  const btoFioRegex = new RegExp(`${SKU_PATTERN}.{0,150}?(?:BTO|retail).{0,100}?(?:not allowed|cannot be added|blocked|error|prohibited).{0,120}?(?:CTO|factory).{0,100}?(?:FIO|equivalent|substitute|use).{0,50}?${SKU_PATTERN}`, 'gi');
   let match;
   while ((match = btoFioRegex.exec(text)) !== null) {
     const btoSku = cleanBaseSKU(match[1]);
     const fioSku = cleanBaseSKU(match[2]);
-    if (btoSku && fioSku && btoSku !== fioSku) {
+    if (btoSku && fioSku && btoSku !== fioSku && isValidHpeSKU(btoSku) && isValidHpeSKU(fioSku)) {
       addDelta({
         deltaId: `DELTA_RAG_FIO_${btoSku}_${fioSku}_${Date.now()}`,
         chassis: chassisName,
@@ -70,18 +72,18 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
 
   // 2. Extract Cross-Generation / Carry-Over Validations
   // Matches e.g. "P48918-B21 ... fully supported and validated ... inside DL380 Gen12"
-  const carryOverRegex = /([A-Z0-9]{5,8}-[A-Z0-9]{3,4}).{0,120}?(?:fully supported|officially validated|listed under.*QuickSpecs|formally listed|carry[- ]?over).{0,150}?([A-Z0-9]{5,8}-[A-Z0-9]{3,4})?/gi;
+  const carryOverRegex = new RegExp(`${SKU_PATTERN}.{0,120}?(?:fully supported|officially validated|listed under.*QuickSpecs|formally listed|carry[- ]?over).{0,150}?(${SKU_PATTERN})?`, 'gi');
   while ((match = carryOverRegex.exec(text)) !== null) {
     const primarySku = cleanBaseSKU(match[1]);
     const pairedSku = match[2] ? cleanBaseSKU(match[2]) : null;
-    if (primarySku) {
+    if (primarySku && isValidHpeSKU(primarySku)) {
       addDelta({
         deltaId: `DELTA_RAG_CARRYOVER_${primarySku}_${Date.now()}`,
         chassis: chassisName,
         errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
         ruleType: 'CARRY_OVER_VALIDATED',
         affectedSku: primarySku,
-        requiredDependencySku: pairedSku,
+        requiredDependencySku: pairedSku && isValidHpeSKU(pairedSku) ? pairedSku : null,
         reasoning: `Grounding Verification: Part ${primarySku} is officially validated as a supported carry-over component in ${chassisName} QuickSpecs.`,
         rawMessage: match[0].slice(0, 300),
         scopeTaxonomy: 'CHASSIS_SPECIFIC',
@@ -93,11 +95,11 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
 
   // 3. Extract Hardware Dependency Chains (Cables, Triggers, Accessories)
   // Matches e.g. "P47777-B21 ... requires P76453-B21" or "P48803-B21 ... requires P76471-B21"
-  const depRegex = /([A-Z0-9]{5,8}-[A-Z0-9]{3,4}).{0,80}?(?:requires|mandates|strictly requires|must configure|needs|must be selected).{0,80}?([A-Z0-9]{5,8}-[A-Z0-9]{3,4})/gi;
+  const depRegex = new RegExp(`${SKU_PATTERN}.{0,80}?(?:requires|mandates|strictly requires|must configure|needs|must be selected).{0,80}?${SKU_PATTERN}`, 'gi');
   while ((match = depRegex.exec(text)) !== null) {
     const parentSku = cleanBaseSKU(match[1]);
     const childSku = cleanBaseSKU(match[2]);
-    if (parentSku && childSku && parentSku !== childSku) {
+    if (parentSku && childSku && parentSku !== childSku && isValidHpeSKU(parentSku) && isValidHpeSKU(childSku)) {
       addDelta({
         deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
         chassis: chassisName,
@@ -108,6 +110,28 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
         reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
         rawMessage: match[0].slice(0, 300),
         scopeTaxonomy: classifyKnowledgeScope(match[0]),
+        source: 'NOTEBOOKLM_GROUNDING',
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  // 4. Extract Discrepancy & Differing Opinion Flags (Presales Human Review Trigger)
+  // Matches explicit flags where Local Rule Engine and NotebookLM find divergent constraints
+  const discrepancyRegex = new RegExp(`(?:discrepancy|contradiction|conflict|unverified|differs from|human review).{0,100}?${SKU_PATTERN}`, 'gi');
+  while ((match = discrepancyRegex.exec(text)) !== null) {
+    const flaggedSku = cleanBaseSKU(match[1]);
+    if (flaggedSku && isValidHpeSKU(flaggedSku)) {
+      addDelta({
+        deltaId: `DELTA_RAG_DISCREPANCY_${flaggedSku}_${Date.now()}`,
+        chassis: chassisName,
+        errorType: 'OPINION_DISCREPANCY_FLAG',
+        ruleType: 'HUMAN_REVIEW_REQUIRED',
+        affectedSku: flaggedSku,
+        requiredDependencySku: null,
+        reasoning: `Presales Discrepancy Alert: Grounding identified a potential divergence or unverified constraint regarding SKU ${flaggedSku}. Human presales review recommended.`,
+        rawMessage: match[0].slice(0, 300),
+        scopeTaxonomy: 'CHASSIS_SPECIFIC',
         source: 'NOTEBOOKLM_GROUNDING',
         timestamp: new Date().toISOString()
       });

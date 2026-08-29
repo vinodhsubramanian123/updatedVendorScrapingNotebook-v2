@@ -24,7 +24,7 @@ const logger = require('../system/pipeline_logger.js');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
-const GUARDRAIL_OVERALL_TIMEOUT_MS = 90000; // 90 seconds max
+const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(process.env.GUARDRAIL_TIMEOUT_MS || '180000', 10); // 180s (3m) max for multi-turn RAG
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -90,6 +90,18 @@ function buildToolRegistry(ctx) {
           }
         },
         execute: async (args) => {
+          const maxNlmCalls = parseInt(process.env.GUARDRAIL_NLM_MAX_CALLS || '3', 10);
+          ctx.nlmCallCount = (ctx.nlmCallCount || 0) + 1;
+          if (ctx.nlmCallCount > maxNlmCalls) {
+            logger.warn('AGENTIC_GUARDRAIL', `NLM query budget exceeded (${ctx.nlmCallCount}/${maxNlmCalls}). Using local RAG fallback.`);
+            const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
+            return {
+              ...queryLocalKnowledgeBase(args.query, args.chassis_id),
+              source: 'LOCAL_RAG_BUDGET_CAP',
+              note: `NLM query budget cap reached (max ${maxNlmCalls} calls per session). Used local RAG fallback.`
+            };
+          }
+          logger.info('AGENTIC_GUARDRAIL', `NLM query #${ctx.nlmCallCount}/${maxNlmCalls}: ${args.query.slice(0, 60)}...`);
           const cfg = loadNotebookConfig();
           const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
           return executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
@@ -247,6 +259,7 @@ async function runAgenticGuardrail(items, chassisDir) {
     preConfidence,
     isOptimalResolved: false,
     turns: 0,
+    nlmCallCount: 0,    // Budget cap: max GUARDRAIL_NLM_MAX_CALLS (default 3) NLM queries per session
     pendingDeltas: []  // GAP-A4: deltas queued here, committed after loop
   };
 

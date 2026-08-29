@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-08-28T18:43:11.940Z  
+**Sync Timestamp**: 2026-08-29T16:32:36.326Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `28`  
+**Total Synced KnowledgeDeltas**: `30`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -89,4 +89,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P06584-B21** | Synergy | General | Interconnect Module | `P06584-B21` |
 | **P57100-B21** | Cray | General | Rack | `P57100-B21` |
 | **P57101-B21** | Cray | General | Blade | `P57101-B21` |
+| **controller_cache_map** | ProLiant | Gen12 | SFF | `controller_cache_map` |
+| **chassis_included_components** | ProLiant | Gen12 | SFF | `chassis_included_components` |
+| **form_factor_duals** | ProLiant | Gen12 | SFF | `form_factor_duals` |
 

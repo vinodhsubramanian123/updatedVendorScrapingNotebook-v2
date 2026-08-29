@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-08-28T18:43:06.768Z  
-**Total Verified SKUs**: `1526` (`489` Hardware + `1037` Services)  
-**Total Synced KnowledgeDeltas**: `28`  
+**Sync Timestamp**: 2026-08-29T16:32:31.659Z  
+**Total Verified SKUs**: `1541` (`504` Hardware + `1037` Services)  
+**Total Synced KnowledgeDeltas**: `30`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 489 | 31 | 0 | 0 | 2 | **CERTIFIED** |
+| **Hardware Components** | 504 | 31 | 0 | 22 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 1037 | 26 | 3 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1526** | **57** | **3** | **0** | **2** | **ACTIVE** |
+| **Total Portfolio** | **1541** | **57** | **3** | **22** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -53,28 +53,28 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | SKU | Description | Status | Discontinued Date | Last Known Price |
 |-----|-------------|--------|-------------------|------------------|
-| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $1650.00 |
-| `P52535-B21` | HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $2100.00 |
-| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $2250.00 |
-| `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $2050.00 |
-| `P52532-B21` | HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $1750.00 |
-| `P52533-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $1900.00 |
+| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **REINSTATED** | 2026-08-28 | $1650.00 |
+| `P52535-B21` | HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server | **REINSTATED** | 2026-08-28 | $2100.00 |
+| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **REINSTATED** | 2026-08-28 | $2250.00 |
+| `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **REINSTATED** | 2026-08-28 | $2050.00 |
+| `P52532-B21` | HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server | **REINSTATED** | 2026-08-28 | $1750.00 |
+| `P52533-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **REINSTATED** | 2026-08-28 | $1900.00 |
 | `P22020-B21` | HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-28 | $89.00 |
 | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-28 | $164.00 |
-| `AC120A` | HPE Pallet Size Customization Service | **DISCONTINUED** | 2026-08-28 | $7.00 |
-| `AC121A` | Non Working Day Delivery SVC | **DISCONTINUED** | 2026-08-28 | $104.00 |
-| `AC129A` | HPE Consolidation Logistic Service | **DISCONTINUED** | 2026-08-28 | $26.00 |
-| `P1F69A` | HPE Delivery Site Above Ground Floor Service | **DISCONTINUED** | 2026-08-28 | $289.00 |
-| `P1F70A` | HPE Forklift at Delivery Service | **DISCONTINUED** | 2026-08-28 | $1399.00 |
-| `P1F71A` | HPE Special Delivery Truck Size Service | **DISCONTINUED** | 2026-08-28 | $292.00 |
-| `P1F72A` | HPE Two People at Delivery SVC | **DISCONTINUED** | 2026-08-28 | $466.00 |
-| `P1F73A` | HPE Campus Delivery Service | **DISCONTINUED** | 2026-08-28 | $104.00 |
-| `P1F74A` | HPE Unloading Logistic Service | **DISCONTINUED** | 2026-08-28 | $350.00 |
-| `P1F75A` | HPE Fixed Delivery Appointment Service | **DISCONTINUED** | 2026-08-28 | $466.00 |
-| `AC123A` | HPE Special Request/ Equipment Logistic Service | **DISCONTINUED** | 2026-08-28 | $816.00 |
-| `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-08-28 | $44.00 |
-| `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-08-28 | $100.00 |
-| `P1F77A` | HPE Post-Delivery Waste Removal SVC | **DISCONTINUED** | 2026-08-28 | $116.00 |
+| `AC120A` | HPE Pallet Size Customization Service | **REINSTATED** | 2026-08-28 | $7.00 |
+| `AC121A` | Non Working Day Delivery SVC | **REINSTATED** | 2026-08-28 | $104.00 |
+| `AC129A` | HPE Consolidation Logistic Service | **REINSTATED** | 2026-08-28 | $26.00 |
+| `P1F69A` | HPE Delivery Site Above Ground Floor Service | **REINSTATED** | 2026-08-28 | $289.00 |
+| `P1F70A` | HPE Forklift at Delivery Service | **REINSTATED** | 2026-08-28 | $1399.00 |
+| `P1F71A` | HPE Special Delivery Truck Size Service | **REINSTATED** | 2026-08-28 | $292.00 |
+| `P1F72A` | HPE Two People at Delivery SVC | **REINSTATED** | 2026-08-28 | $466.00 |
+| `P1F73A` | HPE Campus Delivery Service | **REINSTATED** | 2026-08-28 | $104.00 |
+| `P1F74A` | HPE Unloading Logistic Service | **REINSTATED** | 2026-08-28 | $350.00 |
+| `P1F75A` | HPE Fixed Delivery Appointment Service | **REINSTATED** | 2026-08-28 | $466.00 |
+| `AC123A` | HPE Special Request/ Equipment Logistic Service | **REINSTATED** | 2026-08-28 | $816.00 |
+| `BQ335A` | HPE Expedite Shipment Small Logistic Service | **REINSTATED** | 2026-08-28 | $44.00 |
+| `BQ337A` | HPE Expedite Shipment Large Logistic Service | **REINSTATED** | 2026-08-28 | $100.00 |
+| `P1F77A` | HPE Post-Delivery Waste Removal SVC | **REINSTATED** | 2026-08-28 | $116.00 |
 | `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF NC Configure-to-order Server | **DISCONTINUED** | 2026-08-28 | $1.00 |
 | `HU4B2A3` | HPE 3Y Tech Care Basic Service | **DISCONTINUED** | 2026-08-28 | $1.00 |
 | `HU4B2A300DK` | HPE DL380 Gen11 Support | **DISCONTINUED** | 2026-08-28 | $1.00 |
@@ -162,21 +162,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-28 | `BQ335A` | Start Date |  | **2026-08-27** |
-| 2026-08-28 | `BQ337A` | Description | HPE Expedite Shipment Large Logistic Service | **[REMOVED SKU] HPE Expedite Shipment Large Logistic Service** |
-| 2026-08-28 | `BQ337A` | Constraint |  | **Discontinued** |
-| 2026-08-28 | `BQ337A` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-28 | `BQ337A` | Max Qty |  | **0** |
-| 2026-08-28 | `BQ337A` | Component Role |  | **Discontinued Hardware** |
-| 2026-08-28 | `BQ337A` | HPE Recommended |  | **No** |
-| 2026-08-28 | `BQ337A` | Start Date |  | **2026-08-27** |
-| 2026-08-28 | `P1F77A` | Description | HPE Post-Delivery Waste Removal SVC | **[REMOVED SKU] HPE Post-Delivery Waste Removal SVC** |
-| 2026-08-28 | `P1F77A` | Constraint |  | **Discontinued** |
-| 2026-08-28 | `P1F77A` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-28 | `P1F77A` | Max Qty |  | **0** |
 | 2026-08-28 | `P1F77A` | Component Role |  | **Discontinued Hardware** |
 | 2026-08-28 | `P1F77A` | HPE Recommended |  | **No** |
 | 2026-08-28 | `P1F77A` | Start Date |  | **2026-08-27** |
+| 2026-08-28 | `P22020-B21` | Description | HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit** |
+| 2026-08-28 | `P22020-B21` | Constraint |  | **Discontinued** |
+| 2026-08-28 | `P22020-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
+| 2026-08-28 | `P22020-B21` | Max Qty |  | **0** |
+| 2026-08-28 | `P22020-B21` | Component Role |  | **Discontinued Hardware** |
+| 2026-08-28 | `P22020-B21` | HPE Recommended |  | **No** |
+| 2026-08-28 | `P52341-B21` | Description | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit** |
+| 2026-08-28 | `P52341-B21` | Constraint |  | **Discontinued** |
+| 2026-08-28 | `P52341-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
+| 2026-08-28 | `P52341-B21` | Max Qty |  | **0** |
+| 2026-08-28 | `P52341-B21` | Component Role |  | **Discontinued Hardware** |
+| 2026-08-28 | `P52341-B21` | HPE Recommended |  | **No** |
 
 ## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
 
@@ -210,4 +210,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **P06584-B21** | Synergy | General | Interconnect Module | `P06584-B21` |
 | **P57100-B21** | Cray | General | Rack | `P57100-B21` |
 | **P57101-B21** | Cray | General | Blade | `P57101-B21` |
+| **controller_cache_map** | ProLiant | Gen12 | SFF | `controller_cache_map` |
+| **chassis_included_components** | ProLiant | Gen12 | SFF | `chassis_included_components` |
+| **form_factor_duals** | ProLiant | Gen12 | SFF | `form_factor_duals` |
 

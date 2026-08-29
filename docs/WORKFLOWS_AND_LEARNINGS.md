@@ -404,5 +404,29 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - 🟠 **Amber** (`#FEF3C7` / `#92400E`): Mandatory factory injections (primary riser cables, storage enablement cables, EU Lot 9 CE Mark kits).
 - **Unsolicited Service Isolation**: Clearly decouples pure hardware baseline list price (`$18,616,660.00`) from optional SaaS licenses (`$27,000.00`), ensuring 100% price transparency and zero surprise add-ons for the client.
 
+---
 
+## 40. Multi-Cluster Architectural Partitioning & Power/Thermal Envelope Sizing (`INV-39`)
+- **Dynamic Multi-Cluster Intake**: Large tender RFQs (e.g. 60-node customer requests) often specify mixed CPU families that cannot coexist in the same dual-socket chassis (e.g. 40x Platinum 8580 350W CPUs + 80x Gold 6530 270W CPUs).
+- **Automated Decomposition**: `multi_cluster_splitter.js` dynamically groups line items by processor socket affinity into homogeneous, buildable clusters:
+  - **Cluster A (20 Nodes)**: 40x Platinum 8580 CPUs (120 physical cores/node), dual 1800W Titanium PSUs (`P44712-B21`), High-Performance Heatsinks (`P48818-B21`).
+  - **Cluster B (40 Nodes)**: 80x Gold 6530 CPUs (64 physical cores/node), dual 1600W Platinum PSUs (`P38997-B21`), High-Performance Heatsinks (`P48818-B21`).
+- **Form-Factor OCP Pivot**: When customer RFPs bundle an OCP storage controller with dual OCP NICs, the engine pivots the controller to PCIe standup (`MR416i-p`, `P47777-B21`), unblocking OCP Slot 1 so both OCP NICs (`P10115-B21` in Slot 1 and `P51181-B21` in Slot 2) remain 100% functional.
+- **Data Center Infrastructure Sizing (`INV-29`)**: Emits complete facility sizing (120 RU, 3 standard 42U racks, 60x `P52341-B21` rail kits, and high-line 200V-240V utility derating protection).
 
+---
+
+## 41. Continuous Knowledge Auto-Sync & Milestone Drift Immunity Protocol (`INV-40`)
+- **Automated Milestone Triggering**: Eliminates reliance on manual human intervention to synchronize verified learnings between the deterministic rule engine and Gemini NotebookLM.
+- **Four Canonical Triggers**:
+  1. **Scraping Promotion (Step 9/10)**: Syncs newly scraped product catalogs to NotebookLM sources upon staging verification.
+  2. **BOQ Evaluation Completion**: Emits structured `KnowledgeDelta` records into `catalog_deltas.json` and updates the master knowledge registry.
+  3. **Partner Quote Reconciliation (`/api/verify-vendor-bom`)**: Auto-syncs newly discovered vendor quote discrepancies and CLIC rules.
+  4. **HITL Feedback Submission (`/api/feedback-submit`)**: Re-synchronizes verified engineer approvals to cloud sources.
+
+---
+
+## 42. Dual-Brain RAG Headroom & 24-Hour TTL Cache Invalidation Protocol (`INV-41`)
+- **Ample Execution Headroom**: Extended default RAG query timeout to **120s** and Agentic Guardrail overall timeout to **180s (3 minutes)** with a per-session budget cap of 3 queries to prevent API quota exhaustion.
+- **24-Hour Disk Cache Invalidation**: `notebook_query_utils.js` enforces `{ value, cachedAt }` timestamped records, automatically evicting stale cache files on startup and during lookups.
+- **UI Dual-Brain Observability**: `BoqUploader.jsx` renders high-contrast status banners distinguishing between 🟢 **Cloud Grounded via NotebookLM** and 🟡 **Local Verified Fallback Active**.

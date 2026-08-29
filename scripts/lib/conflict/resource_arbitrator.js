@@ -10,13 +10,27 @@
  * 5. Power Envelope & Utility Derating: Titanium vs. Platinum PSU efficiency pivots
  */
 
+const fs = require('fs');
+const path = require('path');
 const { cleanBaseSKU } = require('../catalog/sku.js');
+
+let _chassisMapRaw = null;
+function getChassisMapRaw() {
+  if (_chassisMapRaw) return _chassisMapRaw;
+  try {
+    const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
+    if (fs.existsSync(mapPath)) {
+      _chassisMapRaw = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+    }
+  } catch (_) {}
+  return _chassisMapRaw || {};
+}
 
 /**
  * Standard Form-Factor Dual Taxonomy & Conversion Rules
- * Derived dynamically from component descriptions and category metadata.
+ * Derived dynamically from component descriptions, category metadata and chassis_map.json.
  */
-const FORM_FACTOR_DUALS = [
+const DEFAULT_FORM_FACTOR_DUALS = [
   {
     role: 'Storage Controller',
     ocpRegex: /\b(mr|sr)\d{3}i-o\b/i,
@@ -26,12 +40,16 @@ const FORM_FACTOR_DUALS = [
     defaultPcieDual: {
       sku: 'P47777-B21',
       description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller',
+      cacheGb: 8,
+      busWidth: 'x16',
       cableSku: 'P48832-B21',
       cableDescription: 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit'
     },
     defaultOcpDual: {
       sku: 'P58335-B21',
       description: 'HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller',
+      cacheGb: 4,
+      busWidth: 'x8',
       cableSku: 'P48918-B21',
       cableDescription: 'HPE ProLiant Storage Controller Enablement Cable Kit'
     }
@@ -55,6 +73,63 @@ const FORM_FACTOR_DUALS = [
     pcieRegex: /\b(standup|adapter|pcie)\b/i
   }
 ];
+
+function resolveFormFactorDuals(genKey = 'Gen11') {
+  const map = getChassisMapRaw();
+  const dualsMap = map.form_factor_duals || {};
+  const normalizedGen = (genKey || '').includes('12') ? 'Gen12' : 'Gen11';
+  const genConfig = dualsMap[normalizedGen] || dualsMap['Gen11'];
+
+  if (!genConfig) return DEFAULT_FORM_FACTOR_DUALS;
+
+  const storageConfig = genConfig.storage_controller || {};
+  const bootConfig = genConfig.boot_device || {};
+
+  return [
+    {
+      role: 'Storage Controller',
+      ocpRegex: /\b(mr|sr)\d{3}i-o\b/i,
+      pcieRegex: /\b(mr|sr)\d{3}i-p\b/i,
+      ocpCableRegex: /\b(storage controller enablement|controller enablement|cpu\d to ocp|direct attach)\b/i,
+      pcieCableRegex: /\b(tri-mode splitter|pcie box|riser to drive cage|splitter cable)\b/i,
+      cacheSwapReasoning: storageConfig.cacheSwapReasoning || '',
+      defaultPcieDual: {
+        sku: storageConfig.pcie?.sku || 'P47777-B21',
+        description: storageConfig.pcie?.description || 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller',
+        cacheGb: storageConfig.pcie?.cacheGb || 8,
+        busWidth: storageConfig.pcie?.busWidth || 'x16',
+        cableSku: storageConfig.pcie?.cableSku || 'P48832-B21',
+        cableDescription: storageConfig.pcie?.cableDescription || 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit'
+      },
+      defaultOcpDual: {
+        sku: storageConfig.ocp?.sku || 'P58335-B21',
+        description: storageConfig.ocp?.description || 'HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller',
+        cacheGb: storageConfig.ocp?.cacheGb || 4,
+        busWidth: storageConfig.ocp?.busWidth || 'x8',
+        cableSku: storageConfig.ocp?.cableSku || 'P48918-B21',
+        cableDescription: storageConfig.ocp?.cableDescription || 'HPE ProLiant Storage Controller Enablement Cable Kit'
+      }
+    },
+    {
+      role: 'Boot Storage',
+      bayRegex: /\bns204i-u\b/i,
+      pcieRegex: /\bns204i-p\b/i,
+      defaultPcieDual: {
+        sku: bootConfig.pcie?.sku || 'P12965-B21',
+        description: bootConfig.pcie?.description || 'HPE NS204i-p NVMe PCIe3 x8 OS Boot Device'
+      },
+      defaultBayDual: {
+        sku: bootConfig.bay?.sku || 'P48183-B21',
+        description: bootConfig.bay?.description || 'HPE NS204i-u NVMe Hot Plug Boot Optimized Storage Device'
+      }
+    },
+    {
+      role: 'Network Adapter',
+      ocpRegex: /\bocp3?\b/i,
+      pcieRegex: /\b(standup|adapter|pcie)\b/i
+    }
+  ];
+}
 
 /**
  * Arbitrate contested shared physical resources between conflicting subsystems.
@@ -111,6 +186,8 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
   const totalOcpNicCount = ocpNics.reduce((acc, it) => acc + (it.quantity || 1), 0);
   const totalOcpDemands = totalOcpStorageCount + totalOcpNicCount;
   const maxOcpSlots = ocpAspect.maxOcpSlots || 2;
+
+  const duals = resolveFormFactorDuals(chassisInfo?.gen || 'Gen11');
 
   // Detect Contention: OCP Slots over-subscribed
   if (totalOcpDemands > maxOcpSlots && totalOcpStorageCount > 0 && totalOcpNicCount >= 1) {
@@ -182,9 +259,10 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
     // -------------------------------------------------------------
     // Branch B: Form-Factor Pivot to PCIe Storage + OCP NIC Retention (Rank 3 / High-IOPS)
     // -------------------------------------------------------------
-    const pcieDualController = FORM_FACTOR_DUALS[0].defaultPcieDual;
-    const pcieDualCable = FORM_FACTOR_DUALS[0].defaultPcieDual.cableSku;
-    const pcieDualCableDesc = FORM_FACTOR_DUALS[0].defaultPcieDual.cableDescription;
+    const pcieDualController = duals[0].defaultPcieDual;
+    const pcieDualCable = duals[0].defaultPcieDual.cableSku;
+    const pcieDualCableDesc = duals[0].defaultPcieDual.cableDescription;
+    const cacheSwapReasoning = duals[0].cacheSwapReasoning || `MR416i-p comes standard with 8GB cache on ${chassisInfo?.gen || 'Gen11'} (no 4GB variant exists for -p series), providing 2x write-cache headroom.`;
 
     const branchB_substitutions = [
       {
@@ -193,7 +271,7 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
         injectedSku: pcieDualController.sku,
         injectedDesc: pcieDualController.description,
         quantity: primaryOcpCtrl.quantity || 1,
-        reasoning: `Pivoted storage controller from -o to -p (${pcieDualController.sku}) to free OCP Slot 1 for customer's requested ${cleanBaseSKU(fastOcpNic.sku)} adapter.`
+        reasoning: `Pivoted storage controller from -o to -p (${pcieDualController.sku}) to free OCP Slot 1 for customer's requested ${cleanBaseSKU(fastOcpNic.sku)} adapter. ${cacheSwapReasoning}`
       },
       {
         action: 'RETAIN_OCP_NIC_IN_FREED_SLOT',
@@ -221,7 +299,8 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
         formFactor: 'PCIE_STANDUP',
         sku: pcieDualController.sku,
         desc: pcieDualController.description,
-        cacheSize: '8GB Flash-backed (2x Cache, x16 Bandwidth)',
+        cacheSize: `${pcieDualController.cacheGb || 8}GB Flash-backed (2x Cache, ${pcieDualController.busWidth || 'x16'} Bandwidth)`,
+        cacheSwapReasoning,
         slotOccupied: 'PCIe Riser Slot 3'
       },
       networkingDistribution: {
@@ -238,7 +317,7 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
       advantages: [
         'Fulfills 100% of customer requested part numbers including P10115-B21 OCP NIC',
         'Validates customer\'s original P48832-B21 Tri-Mode Splitter cable choice',
-        'Doubles hardware write-back cache from 4GB to 8GB (x16 PCIe bus)'
+        `Doubles hardware write-back cache from 4GB to ${pcieDualController.cacheGb || 8}GB (${pcieDualController.busWidth || 'x16'} PCIe bus)`
       ]
     });
   }
@@ -255,7 +334,7 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
       tradeoffSummary: 'Rear chassis bay is contested between NS204i-u Boot Device and 2SFF Rear Drive Cage.'
     });
 
-    const bootDual = FORM_FACTOR_DUALS[1].defaultPcieDual;
+    const bootDual = duals[1].defaultPcieDual;
     branches.push({
       branchId: 'branch_pcie_boot_device',
       title: 'Branch C: Standup PCIe OS Boot Device (Rear Drive Capacity Expansion)',
@@ -279,11 +358,12 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
     contentions,
     branchesCount: branches.length,
     branches,
-    formFactorDualsEvaluated: FORM_FACTOR_DUALS.length
+    formFactorDualsEvaluated: duals.length
   };
 }
 
 module.exports = {
   arbitrateContestedResources,
-  FORM_FACTOR_DUALS
+  resolveFormFactorDuals,
+  FORM_FACTOR_DUALS: DEFAULT_FORM_FACTOR_DUALS
 };

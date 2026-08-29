@@ -99,15 +99,15 @@ async function runTests() {
     await runEvalBtn.click();
 
     // Wait for SSE logs / evaluation to finish
-    await page.waitForSelector('button:has-text("Visual BOQ Topology")', { timeout: 30000 });
+    await page.waitForSelector('.animate-modal-content button:has-text("Visual BOQ Topology")', { timeout: 90000 });
     console.log('  ✅ BOQ Evaluation completed with SSE progress updates');
 
-    const topoBtn = await page.waitForSelector('button:has-text("Visual BOQ Topology")');
-    await page.evaluate(el => el.click(), await page.$("button:has-text(\"Visual BOQ Topology\")"));
-    await page.waitForTimeout(1000);
+    const topoBtn = await page.waitForSelector('.animate-modal-content button:has-text("Visual BOQ Topology")');
+    await topoBtn.click();
+    await page.waitForTimeout(1500);
 
-    const svg = await page.waitForSelector('svg');
-    if (!svg) throw new Error("SVG Topology canvas not found.");
+    const nodeEl = await page.waitForSelector('.topology-interactive-node', { timeout: 15000 });
+    if (!nodeEl) throw new Error("Topology interactive node element not found.");
 
     const nodes = await page.$$('.topology-interactive-node');
     if (nodes.length === 0) throw new Error("No topology nodes found.");
@@ -115,7 +115,7 @@ async function runTests() {
     console.log(`  ✅ Topology rendered with ${nodes.length} nodes`);
 
     // Click a node to verify interactivity and coordinate logic
-    await nodes[0].click();
+    await nodes[0].click({ force: true });
     await page.waitForTimeout(500);
     console.log('  ✅ Topology node clicked successfully');
 

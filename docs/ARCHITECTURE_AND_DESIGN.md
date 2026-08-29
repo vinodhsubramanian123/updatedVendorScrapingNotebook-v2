@@ -149,7 +149,41 @@ sequenceDiagram
     else Audit Fails
         Audit->>Staging: Preserve Staging for Diagnostics (Live Catalog 100% Untouched)
     end
+
+## 1.5 Dynamic SKU Capability Introspection & 4-Degree Cascading Ripple Engine
+When candidate fixes or alternative form factors are evaluated (e.g. pivoting from an OCP storage controller to a PCIe standup controller `MR416i-p` with 8GB cache), the engine executes a multi-degree cascading ripple analysis:
+
+```mermaid
+graph TD
+    A["Contested Component Pivot (e.g. OCP to PCIe Controller MR416i-p 8GB)"] --> B["Degree 1: Immediate Companion Hardware"]
+    A --> C["Degree 2: Form-Factor Slot Unlocking"]
+    A --> D["Degree 3: Thermal & Power Recalculation"]
+    A --> E["Degree 4: Core & Socket Licensing Multipliers"]
+
+    B --> B1["Auto-inject Controller Cable P48832-B21 & Smart Battery P01366-B21"]
+    C --> C1["Frees OCP Slot 1 -> Retains Customer's High-Speed OCP3 NIC P10115-B21"]
+    D --> D1["Recalculates System TDP & Enforces High-Perf Fans P48820-B21"]
+    E --> E1["Calculates Physical Cores -> Validates Base OS + Core Add-on Packs"]
+
+    B1 --> F["5-Tier Strategy Matrix Rank 3: Storage Performance + OCP Retention"]
+    C1 --> F
+    D1 --> F
+    E1 --> F
 ```
+
+## 1.6 Multi-Node Cluster Infrastructure Sizing Matrix (INV-29)
+For large multi-node tenders (e.g. 22x or 60x server nodes), the engine synthesizes data center facility requirements:
+- **Total Rack Units**: `totalNodes * RU` (e.g. $60 \times 2\text{U} = 120\text{ RU}$).
+- **Standard 42U Rack Count**: $\lceil 120 / 42 \rceil = 3$ Enterprise 42U Cabinets.
+- **Peak Facility Power Envelope**: $\frac{60 \times 1800\text{W}}{1000} = 108.0\text{ kW}$.
+- **Utility Power Derating**: Automatic 200V-240V high-line power derating advisories when per-node estimated draw exceeds 800W.
+- **Rail Kit & Cable Management Coverage**: 1:1 validation of Easy Install Rail Kits (`P52341-B21`) and CMA arms.
+
+## 1.7 Dual-Brain Grounding & Presales Discrepancy Arbitration
+To eliminate silent hallucination or unverified knowledge drift:
+- **Deterministic Rule Engine (Ground Truth)**: Enforces physical bus limits, chassis bounds, memory symmetry, and electrical TDP.
+- **Gemini NotebookLM RAG (Intent Brain)**: Validates workload feasibility against QuickSpecs documentation.
+- **Divergent Opinion Detection (`OPINION_DISCREPANCY_FLAG`)**: When NotebookLM advice diverges from local physical rules, the system flags the discrepancy directly to the presales solution architect in the UI banner rather than silently suppressing constraints.
 
 ## 2. Core Architectural Decisions
 - **Deterministic Rule Engine Primacy**: The local engine (e.g., `boq_evaluator.js`) executes fast, hardcoded physical hardware math without relying on external LLMs. This ensures a 100% functional fallback if APIs go offline.
@@ -246,4 +280,35 @@ flowchart TD
    - In the **Ambiguity Inbox**, the user is shown the exact contradiction or anomaly and can assign the category, affected SKU, and companion dependency.
    - Upon submission, the engine writes an atomic **`KnowledgeDelta`** to `master_knowledge_registry.json`, permanently teaching the local rule engine so it never needs to ask again.
 
+---
 
+## 8. Multi-Cluster Decomposition & Data Center Sizing Matrix (`INV-39` & `INV-29`)
+
+Large enterprise tenders (e.g. 60-node RFQs) often combine distinct processor tiers and contradictory form-factor choices into a single aggregated line item. The **Multi-Cluster Splitter Engine** (`scripts/lib/boq/multi_cluster_splitter.js`) resolves these via:
+
+```mermaid
+flowchart TD
+    Tender["60-Node Aggregated Tender BOQ<br/>(Mixed Platinum & Gold CPUs, OCP Controller + Dual OCP NICs)"] --> Splitter["multi_cluster_splitter.js<br/>(Diophantine CPU Allocation)"]
+    
+    Splitter --> ClusterA["Cluster A: 20x Nodes (Compute Tier)<br/>• 2x Intel Xeon Platinum 8580 (60C / 350W TDP)<br/>• Dual 1800W Titanium PSUs (P44712-B21)<br/>• High-Perf Heatsinks (P48818-B21)"]
+    
+    Splitter --> ClusterB["Cluster B: 40x Nodes (Workload Tier)<br/>• 2x Intel Xeon Gold 6530 (32C / 270W TDP)<br/>• Dual 1600W Platinum PSUs (P38997-B21)<br/>• High-Perf Heatsinks (P48818-B21)"]
+    
+    ClusterA --> Pivot["Form-Factor Storage Pivot (MR416i-p PCIe)<br/>• Frees OCP Slot 1<br/>• Enables 10/25Gb OCP3 (P10115) + 1Gb OCP3 (P51181)"]
+    ClusterB --> Pivot
+    
+    Pivot --> Sizing["Data Center Infrastructure Sizing Matrix<br/>• 120 Total Rack Units (3x 42U Standard Racks)<br/>• 60x Easy Install Rail Kits (P52341-B21)<br/>• 200V-240V High-Line Utility Power Derating Protection"]
+```
+
+---
+
+## 9. Continuous Milestone Auto-Sync & Dual-Brain Lifecycle (`INV-40` & `INV-41`)
+
+The dual-brain architecture maintains real-time synchronization between the local deterministic rule engine and cloud Gemini NotebookLM through automated lifecycle hooks:
+
+| Milestone Event | Trigger Handler | Synchronized State |
+|---|---|---|
+| **Scrape Completion (Step 9/10)** | `promoteStagingDirectory()` | Uploads newly scraped master catalog markdown payload to cloud NotebookLM. |
+| **BOQ Evaluation** | `eval_boq.js` | Emits `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. |
+| **Partner Quote Reconciliation** | `POST /api/verify-vendor-bom` | Auto-syncs discovered vendor quote discrepancies and CLIC rule updates. |
+| **HITL Feedback Submission** | `POST /api/feedback-submit` | Re-synchronizes verified engineer approvals to cloud sources. |

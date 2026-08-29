@@ -164,5 +164,16 @@ The system leverages Google Jules for background code review, test generation, a
     - `sku_versioning.js` (`getSkuAuditHistory`, `getHistoricalSkuPrice`) implements `resolveChassisDirectory(dir)` to dynamically locate product generation folders under `outputs/{Family}/{Gen}/{Model}/` when called with bare model identifiers (e.g. `DL380_Gen11`, `DL380_Gen12`, `GX5000_General_RACK`).
     - Eliminates stale or broken lookups against `./DL380_Gen11` at the repository root and preserves clean atomic file read operations across all multi-product test tiers.
 
+30. **Multi-Cluster Architectural Partitioning & Form-Factor Pivot Protocol (`INV-39`)**:
+    - Complex multi-server tenders (e.g. 60-node RFQs with mixed Platinum 8580 and Gold 6530 processors) MUST be dynamically partitioned into homogeneous workload clusters (e.g. Cluster A: 20x Platinum nodes, Cluster B: 40x Gold nodes).
+    - Thermal and PSU wattage matching is strictly enforced per cluster (350W TDP requires 1800W Titanium PSUs; 270W TDP pairs with 1600W Platinum PSUs).
+    - When raw customer RFPs combine an OCP storage controller (MR408i-o) with dual OCP NICs exceeding the 2 physical OCP slots, the engine executes a Form-Factor Pivot to a PCIe controller (MR416i-p), freeing OCP Slot 1 and achieving 100% buildable compliance.
 
+31. **Continuous Knowledge Auto-Sync & Milestone Drift Immunity Protocol (`INV-40`)**:
+    - The engine MUST NOT rely on manual human prompts to synchronize verified learnings between the deterministic rule engine and Gemini NotebookLM.
+    - Automatic background knowledge synchronization (`triggerPostFlowSync`) is triggered on key workflow milestones: (1) Live scrape promotion (Step 9/10), (2) BOQ evaluation completion, (3) Partner quote reconciliation (`/api/verify-vendor-bom`), and (4) HITL feedback submission (`/api/feedback-submit`).
 
+32. **Dual-Brain RAG Headroom & 24-Hour TTL Cache Invalidation Protocol (`INV-41`)**:
+    - Deep multi-part RAG queries against NotebookLM require sufficient execution headroom: default RAG timeout is set to 120s, and Agentic Guardrail overall timeout is set to 180s (3 minutes) with a 3-query budget cap to prevent rate limits.
+    - Disk cache entries in `notebook_query_utils.js` enforce a strict 24-hour TTL with automatic timestamp eviction on startup and lookups.
+    - The UI (`BoqUploader.jsx`) explicitly renders high-contrast status banners distinguishing between Cloud Grounded (`NOTEBOOK_LM_CLOUD`) and Local Verified Fallback (`LOCAL_VERIFIED_FALLBACK`).

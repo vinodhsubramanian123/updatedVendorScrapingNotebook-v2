@@ -17,8 +17,9 @@
     "daysActive": 18,
     "lastKnownPrice": "1650.00",
     "fullPriceTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52535-B21": {
     "productNumber": "P52535-B21",
@@ -30,8 +31,9 @@
     "daysActive": 18,
     "lastKnownPrice": "2100.00",
     "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52536-B21": {
     "productNumber": "P52536-B21",
@@ -43,8 +45,9 @@
     "daysActive": 18,
     "lastKnownPrice": "2250.00",
     "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52537-B21": {
     "productNumber": "P52537-B21",
@@ -56,8 +59,9 @@
     "daysActive": 18,
     "lastKnownPrice": "2050.00",
     "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52532-B21": {
     "productNumber": "P52532-B21",
@@ -69,8 +73,9 @@
     "daysActive": 1,
     "lastKnownPrice": "1750.00",
     "fullPriceTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P52533-B21": {
     "productNumber": "P52533-B21",
@@ -82,8 +87,9 @@
     "daysActive": 1,
     "lastKnownPrice": "1900.00",
     "fullPriceTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -3779,8 +3785,9 @@
     "daysActive": 1,
     "lastKnownPrice": "7.00",
     "fullPriceTrail": "2026-08-27: $7.00 → 2026-08-28: $7.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC121A": {
     "productNumber": "AC121A",
@@ -3792,8 +3799,9 @@
     "daysActive": 1,
     "lastKnownPrice": "104.00",
     "fullPriceTrail": "2026-08-27: $104.00 → 2026-08-28: $104.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC129A": {
     "productNumber": "AC129A",
@@ -3805,8 +3813,9 @@
     "daysActive": 1,
     "lastKnownPrice": "26.00",
     "fullPriceTrail": "2026-08-27: $26.00 → 2026-08-28: $26.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F69A": {
     "productNumber": "P1F69A",
@@ -3818,8 +3827,9 @@
     "daysActive": 1,
     "lastKnownPrice": "289.00",
     "fullPriceTrail": "2026-08-27: $289.00 → 2026-08-28: $289.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F70A": {
     "productNumber": "P1F70A",
@@ -3831,8 +3841,9 @@
     "daysActive": 1,
     "lastKnownPrice": "1399.00",
     "fullPriceTrail": "2026-08-27: $1399.00 → 2026-08-28: $1399.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F71A": {
     "productNumber": "P1F71A",
@@ -3844,8 +3855,9 @@
     "daysActive": 1,
     "lastKnownPrice": "292.00",
     "fullPriceTrail": "2026-08-27: $292.00 → 2026-08-28: $292.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F72A": {
     "productNumber": "P1F72A",
@@ -3857,8 +3869,9 @@
     "daysActive": 1,
     "lastKnownPrice": "466.00",
     "fullPriceTrail": "2026-08-27: $466.00 → 2026-08-28: $466.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F73A": {
     "productNumber": "P1F73A",
@@ -3870,8 +3883,9 @@
     "daysActive": 1,
     "lastKnownPrice": "104.00",
     "fullPriceTrail": "2026-08-27: $104.00 → 2026-08-28: $104.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F74A": {
     "productNumber": "P1F74A",
@@ -3883,8 +3897,9 @@
     "daysActive": 1,
     "lastKnownPrice": "350.00",
     "fullPriceTrail": "2026-08-27: $350.00 → 2026-08-28: $350.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F75A": {
     "productNumber": "P1F75A",
@@ -3896,8 +3911,9 @@
     "daysActive": 1,
     "lastKnownPrice": "466.00",
     "fullPriceTrail": "2026-08-27: $466.00 → 2026-08-28: $466.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "AC123A": {
     "productNumber": "AC123A",
@@ -3909,8 +3925,9 @@
     "daysActive": 1,
     "lastKnownPrice": "816.00",
     "fullPriceTrail": "2026-08-27: $816.00 → 2026-08-28: $816.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "BQ335A": {
     "productNumber": "BQ335A",
@@ -3922,8 +3939,9 @@
     "daysActive": 1,
     "lastKnownPrice": "44.00",
     "fullPriceTrail": "2026-08-27: $44.00 → 2026-08-28: $44.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "BQ337A": {
     "productNumber": "BQ337A",
@@ -3935,8 +3953,9 @@
     "daysActive": 1,
     "lastKnownPrice": "100.00",
     "fullPriceTrail": "2026-08-27: $100.00 → 2026-08-28: $100.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P1F77A": {
     "productNumber": "P1F77A",
@@ -3948,8 +3967,9 @@
     "daysActive": 1,
     "lastKnownPrice": "116.00",
     "fullPriceTrail": "2026-08-27: $116.00 → 2026-08-28: $116.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "reason": "Removed from active HPE OCA portal catalog"
+    "status": "REINSTATED",
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-08-28"
   },
   "P74214-B21": {
     "productNumber": "P74214-B21",

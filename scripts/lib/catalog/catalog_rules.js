@@ -212,9 +212,10 @@ function loadCatalogRules(targetDir) {
   }
 
   // Dual-Safety Net extension: Extract individual SKU quantity constraints as SKU-level rules
+  let companionCatalog = null;
   if (fs.existsSync(catalogJsonPath)) {
     try {
-      const companionCatalog = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
+      companionCatalog = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
       if (companionCatalog && Array.isArray(companionCatalog.entries)) {
         companionCatalog.entries.forEach(e => {
           (e.skus || []).forEach(sku => {
@@ -245,10 +246,13 @@ function loadCatalogRules(targetDir) {
     level: 'SUBCATEGORY'
   }));
 
+  const entries = Array.isArray(rawData.entries) ? rawData.entries : (companionCatalog && Array.isArray(companionCatalog.entries) ? companionCatalog.entries : []);
+
   return {
-    metadata: rawData.metadata || {},
+    metadata: rawData.metadata || (companionCatalog ? companionCatalog.metadata : {}),
     parsedRules,
     subcategoryConstraints,
+    entries,
     sourceFile,
     isFallback
   };

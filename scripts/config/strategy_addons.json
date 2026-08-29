@@ -1,5 +1,48 @@
 {
-  "dl380": {
+  "dl380_gen11": {
+    "rank2": [
+      {
+        "sku": "P52341-B21",
+        "description": "HPE ProLiant DL380 Gen11 Easy Install Rail Kit",
+        "quantity": 1,
+        "unitPriceUsd": 180,
+        "category": "Factory CTO Standard"
+      },
+      {
+        "sku": "P36852-B21",
+        "description": "HPE ProLiant DL380 Gen11 Cable Management Arm Kit",
+        "quantity": 1,
+        "unitPriceUsd": 120,
+        "category": "Factory CTO Standard"
+      }
+    ],
+    "rank3": [
+      {
+        "sku": "P01366-B21",
+        "description": "HPE 96W Smart Storage Battery (up to 20 Devices)",
+        "quantity": 1,
+        "unitPriceUsd": 350,
+        "category": "Storage Performance"
+      }
+    ],
+    "rank4": [
+      {
+        "sku": "P51083-B21",
+        "description": "HPE ProLiant DL380 Gen11 Secondary 3-Slot x16 PCIe Riser Kit",
+        "quantity": 1,
+        "unitPriceUsd": 900,
+        "category": "Scalability Expansion"
+      },
+      {
+        "sku": "P48820-B21",
+        "description": "HPE ProLiant DL380 Gen11 High Performance Fan Kit",
+        "quantity": 1,
+        "unitPriceUsd": 650,
+        "category": "Scalability Expansion"
+      }
+    ]
+  },
+  "dl380_gen12": {
     "rank2": [
       {
         "sku": "P76471-B21",
@@ -36,6 +79,35 @@
       {
         "sku": "P40502-B21",
         "description": "HPE High Performance Fan Kit (6 Fans)",
+        "quantity": 1,
+        "unitPriceUsd": 650,
+        "category": "Scalability Expansion"
+      }
+    ]
+  },
+  "dl380": {
+    "rank2": [
+      {
+        "sku": "P52341-B21",
+        "description": "HPE ProLiant DL380 Easy Install Rail Kit",
+        "quantity": 1,
+        "unitPriceUsd": 180,
+        "category": "Factory CTO Standard"
+      }
+    ],
+    "rank3": [
+      {
+        "sku": "P01366-B21",
+        "description": "HPE Smart Storage Battery",
+        "quantity": 1,
+        "unitPriceUsd": 350,
+        "category": "Storage Performance"
+      }
+    ],
+    "rank4": [
+      {
+        "sku": "P48820-B21",
+        "description": "HPE High Performance Fan Kit",
         "quantity": 1,
         "unitPriceUsd": 650,
         "category": "Scalability Expansion"

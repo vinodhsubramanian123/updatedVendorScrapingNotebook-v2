@@ -13,7 +13,9 @@ const http = require('http');
 
 const PORT = process.env.PORT || 3000;
 const SERVER_URL = process.env.SERVER_URL || `http://127.0.0.1:${PORT}`;
-const CUSTOMER_BOQ_PATH = '/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx';
+const CUSTOMER_BOQ_PATH = fs.existsSync('/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx')
+  ? '/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx'
+  : path.join(__dirname, '..', 'fixtures', 'samples', 'HP Opportunity- DL380_5 Servers.xlsx');
 
 function isServerRunning(url) {
   return new Promise(resolve => {

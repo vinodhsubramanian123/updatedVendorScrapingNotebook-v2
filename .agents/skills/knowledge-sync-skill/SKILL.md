@@ -106,3 +106,15 @@ Before certifying any product line, agents MUST verify that the local master 22-
    - Run `nlm notebook query <notebookId> "<test query>" --json` to verify that answers cite the QuickSpecs PDF and classified OCA markdown/CSV payloads with zero hallucinated part numbers.
 3. **Obsolete SKU Tracking**:
    - Ensure legacy QuickSpecs SKUs flagged as `OB` (Obsolete) or `90` (90-Day Warning) are preserved in `discontinued_skus.json` and the 22-sheet workbook's *Discontinued SKUs* tab.
+
+---
+
+## 8. Continuous Lifecycle Milestone Auto-Sync (`INV-40`)
+
+The sync engine (`scripts/lib/sync/post_flow_sync.js`) automatically synchronizes verified learnings between the local rule engine and Gemini NotebookLM without requiring human intervention:
+
+1. **Scraping Promotion (Step 9/10)**: Automatically uploads the newly scraped master catalog markdown payload upon successful staging verification.
+2. **BOQ Evaluation Completion**: Emits structured `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`.
+3. **Partner Quote Reconciliation (`/api/verify-vendor-bom`)**: Automatically triggers `triggerPostFlowSync` when vendor BOM differences or new CLIC rules are discovered.
+4. **HITL Feedback Submission (`/api/feedback-submit`)**: Re-synchronizes verified engineer approvals to cloud sources.
+
