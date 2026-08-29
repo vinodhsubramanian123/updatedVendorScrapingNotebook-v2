@@ -45,7 +45,17 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   let hasWindowsServer = false;
   let windowsBaseLicenses = 0;
   let windowsAddonCores = 0;
+
+  let hasVmware = false;
+  let vmwareLicensedCores = 0;
+
+  let hasLinux = false;
+  let linuxSubscriptions = 0;
+
   let detectedCpuCores = totalSocketCores;
+  let detectedCpuSockets = 0;
+  let targetVmwareCores = 0;
+
   const unsolicitedOptionalItems = [];
 
   for (const it of items) {
@@ -66,13 +76,16 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    // Extract CPU core count if not passed
+    // Extract CPU core count and sockets if not passed
     if (role === 'Processor' || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
+      let coresPerCpu = 16; // default 16
       const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
       if (coreMatch) {
-        const coresPerCpu = parseInt(coreMatch[1], 10) || 16;
-        detectedCpuCores += (coresPerCpu * (it.quantity || 1));
+        coresPerCpu = parseInt(coreMatch[1], 10) || 16;
       }
+      detectedCpuCores += (coresPerCpu * (it.quantity || 1));
+      detectedCpuSockets += (it.quantity || 1);
+      targetVmwareCores += (Math.max(16, coresPerCpu) * (it.quantity || 1));
     }
 
     if (role === 'Service & Support' || desc.includes('tech care') || desc.includes('support') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(sku)) {
@@ -95,6 +108,23 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
         windowsAddonCores += (coresInPack * (it.quantity || 1));
       }
     }
+
+    // VMware Core Licensing
+    if (desc.includes('vmware')) {
+      hasVmware = true;
+      const vmwareCoreMatch = desc.match(/(\d+)\s*-?\s*core/i);
+      if (vmwareCoreMatch) {
+        vmwareLicensedCores += (parseInt(vmwareCoreMatch[1], 10) * (it.quantity || 1));
+      } else if (desc.includes('core')) {
+        vmwareLicensedCores += (it.quantity || 1);
+      }
+    }
+
+    // Linux (RHEL / SLES) Licensing
+    if (desc.includes('rhel') || desc.includes('red hat') || desc.includes('sles') || desc.includes('suse')) {
+      hasLinux = true;
+      linuxSubscriptions += (it.quantity || 1);
+    }
   }
 
   // Windows Server Core Licensing Math:
@@ -104,6 +134,20 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   const needsAdditionalWindowsCores = hasWindowsServer && totalWindowsLicensedCores < targetCores;
   const missingCoreLicenses = needsAdditionalWindowsCores ? (targetCores - totalWindowsLicensedCores) : 0;
 
+  // VMware vSphere/Cloud Foundation Math:
+  // Requires minimum 16 cores per socket across single and dual socket.
+  if (targetVmwareCores === 0) {
+    targetVmwareCores = Math.max(16, totalSocketCores || 16); // Fallback if no CPUs explicitly listed
+  }
+  const needsAdditionalVmwareCores = hasVmware && (vmwareLicensedCores < targetVmwareCores);
+  const missingVmwareCores = needsAdditionalVmwareCores ? (targetVmwareCores - vmwareLicensedCores) : 0;
+
+  // Linux Math: 1-2 sockets per subscription
+  const targetCpuSockets = Math.max(1, detectedCpuSockets);
+  const targetLinuxSubscriptions = Math.ceil(targetCpuSockets / 2);
+  const needsAdditionalLinuxSubscriptions = hasLinux && (linuxSubscriptions < targetLinuxSubscriptions);
+  const missingLinuxSubscriptions = needsAdditionalLinuxSubscriptions ? (targetLinuxSubscriptions - linuxSubscriptions) : 0;
+
   return {
     hasSupportService,
     hasManagementLicense,
@@ -112,6 +156,21 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     totalWindowsLicensedCores,
     needsAdditionalWindowsCores,
     missingCoreLicenses,
+
+    detectedCpuSockets: targetCpuSockets,
+
+    hasVmware,
+    vmwareLicensedCores,
+    targetVmwareCores,
+    needsAdditionalVmwareCores,
+    missingVmwareCores,
+
+    hasLinux,
+    linuxSubscriptions,
+    targetLinuxSubscriptions,
+    needsAdditionalLinuxSubscriptions,
+    missingLinuxSubscriptions,
+
     unsolicitedOptionalItems,
     defaultSupportSku: 'HU4B2A3',
     defaultManagementSku: 'R7A11AAE'
