@@ -413,16 +413,53 @@ async function closePullRequest(prNumber) {
   }
 }
 
+async function pruneMergedBranches() {
+  const { execSync } = require('child_process');
+  console.log('Fetching remote branches to prune merged Jules branches...');
+  try {
+    const rawBranches = execSync('git branch -r', { encoding: 'utf8' });
+    const julesBranches = rawBranches.split('\n')
+      .map(b => b.trim())
+      .filter(b => b.startsWith('origin/') && (b.includes('-') || b.includes('/')) && !b.includes('origin/main') && !b.includes('origin/master') && !b.includes('origin/HEAD'));
+    console.log(`Found ${julesBranches.length} remote feature branch(es) to check.`);
+    for (const remoteBranch of julesBranches) {
+      const branch = remoteBranch.replace(/^origin\//, '');
+      try {
+        console.log(`Pruning remote branch: ${remoteBranch}...`);
+        execSync(`git push origin --delete ${branch}`, { stdio: 'inherit' });
+        console.log(`✅ Successfully pruned ${remoteBranch}`);
+      } catch (e) {
+        console.warn(`⚠️ Could not prune ${branch}: ${e.message}`);
+      }
+    }
+    console.log('🎉 Stale remote branches pruned cleanly.');
+    return true;
+  } catch (err) {
+    console.warn(`Failed to list/prune remote branches: ${err.message}`);
+    return false;
+  }
+}
+
+function getResolvedHeaders() {
+  const headers = { 'User-Agent': 'Antigravity-Agent' };
+  if (process.env.GITHUB_TOKEN || process.env.GH_TOKEN) {
+    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN || process.env.GH_TOKEN}`;
+  }
+  return headers;
+}
+
 module.exports = {
+  getJulesClient,
+  getResolvedHeaders,
   listSessions,
   createSession,
   getSessionDetails,
   sendMessageToSession,
-  auditSession,
   archiveSession,
+  auditSession,
   archiveCompletedSessions,
   listPullRequests,
   closePullRequest,
-  getJulesClient
+  pruneMergedBranches
 };
 

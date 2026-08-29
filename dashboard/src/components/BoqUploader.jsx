@@ -144,12 +144,14 @@ export default function BoqUploader({
     setIsSubmitting(true);
     setEvalError(null);
     try {
-      await onEvaluateBoq(file || { filepath: preflightData?.filepath }, rawText);
+      const filePayload = file || (preflightData?.filepath ? { filepath: preflightData.filepath } : null);
+      await onEvaluateBoq(filePayload, rawText);
     } catch (err) {
       setEvalError(err.message || 'Evaluation failed');
       setIsSubmitting(false);
     }
   };
+
 
   const handleEvaluateVariation = (variation) => {
     setIsSplitModalOpen(false);

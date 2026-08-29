@@ -8,6 +8,7 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalPcieRiserSlots(items, catalogData = null) {
   let requiredPcieCards = 0;
+  let x16RequiredCount = 0;
   let gpuCount = 0;
   let primaryRiserCount = 0;
   let secondaryRiserCount = 0;
@@ -16,6 +17,7 @@ function evalPcieRiserSlots(items, catalogData = null) {
   let hasSecondaryCableKit = false;
   let gpuPowerCableKitCount = 0;
   let hasGpuPowerCableKit = false;
+
 
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
@@ -49,6 +51,9 @@ function evalPcieRiserSlots(items, catalogData = null) {
     if (role === 'GPU / Accelerator' || role === 'Network Adapter' || role === 'Storage Controller' || role === 'Fibre Channel HBA' || desc.includes('adapter') || desc.includes('controller') || desc.includes('hba') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu')) {
       if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('lom') && !desc.includes('cable') && !desc.includes('cage') && !desc.includes('battery')) {
         requiredPcieCards += (it.quantity || 1);
+        if (role === 'GPU / Accelerator' || desc.includes('gpu') || desc.includes('200gb') || desc.includes('400gb') || desc.includes('infiniband') || desc.includes('mellanox') || desc.includes('nvidia')) {
+          x16RequiredCount += (it.quantity || 1);
+        }
       }
     }
 
@@ -61,38 +66,54 @@ function evalPcieRiserSlots(items, catalogData = null) {
     }
   }
 
-  // Active slots calculation based on HPE ProLiant Gen11/Gen12 physical riser rules:
-  // Primary Riser P48803-B21 provides 3 physical slots (Slots 1, 2, 3).
+  // Base motherboard provides 3 default physical slots (Slots 1, 2, 3).
+  // Primary Riser P48803-B21 adds/enhances 3 physical slots (Slots 1, 2, 3).
   // Without Primary Cable Kit P56073-B21, Slot 1 does not receive power/lanes from motherboard (only Slots 2 & 3 are active).
   // With Primary Cable Kit, all 3 slots are active.
-  const activePrimarySlots = primaryRiserCount > 0 ? (hasPrimaryCableKit ? 3 : 2) : 0;
+  const activePrimarySlots = primaryRiserCount > 0 ? (hasPrimaryCableKit ? 3 : 2) : (hasPrimaryCableKit ? 3 : 2);
   
-  // Secondary Riser P48803-B21 provides 3 physical slots (Slots 4, 5, 6).
-  // Without Secondary Cable Kit P48824-B21, only 2 slots are active.
+  // Secondary Riser P51083-B21 / P48802-B21 provides 3 physical slots (Slots 4, 5, 6).
+  // Without Secondary Cable Kit P56074-B21, only 2 slots are active.
   // With Secondary Cable Kit, all 3 slots are active.
   const activeSecondarySlots = secondaryRiserCount > 0 ? (hasSecondaryCableKit ? 3 : 2) : 0;
 
   // Tertiary Riser provides 2 physical slots (Slots 7, 8).
   const activeTertiarySlots = tertiaryRiserCount > 0 ? 2 : 0;
 
-  const totalPhysicalSlots = (primaryRiserCount * 3) + (secondaryRiserCount * 3) + (tertiaryRiserCount * 2);
-  const activeSlotsAvailable = activePrimarySlots + activeSecondarySlots + activeTertiarySlots;
+  const totalPhysicalSlots = (primaryRiserCount > 0 ? 3 + (primaryRiserCount * 3) : 3) + (secondaryRiserCount * 3) + (tertiaryRiserCount * 2);
+  const activeSlotsAvailable = (primaryRiserCount > 0 && secondaryRiserCount > 0)
+    ? (activePrimarySlots + activeSecondarySlots + activeTertiarySlots)
+    : (activePrimarySlots + activeSecondarySlots + activeTertiarySlots);
 
   const isExceedingTotalSlots = requiredPcieCards > totalPhysicalSlots && totalPhysicalSlots > 0;
-  const isExceedingActiveSlots = requiredPcieCards > activeSlotsAvailable && activeSlotsAvailable > 0;
+  const isExceedingActiveSlots = (primaryRiserCount > 0 && secondaryRiserCount > 0)
+    ? (requiredPcieCards > (activePrimarySlots + activeSecondarySlots))
+    : (requiredPcieCards > activeSlotsAvailable && activeSlotsAvailable > 0);
 
-  const needsPrimaryCableKit = primaryRiserCount > 0 && !hasPrimaryCableKit && (requiredPcieCards > (2 + activeSecondarySlots + activeTertiarySlots));
-  const needsSecondaryCableKit = secondaryRiserCount > 0 && !hasSecondaryCableKit && (requiredPcieCards > (activePrimarySlots + 2 + activeTertiarySlots) || requiredPcieCards > 4);
+  // INV-31: populating 5 or more physical PCIe cards across risers mandates Primary Cable Kit P56073-B21 for Slot 1 power delivery (Rules 81016755 & 81354683)
+  const needsPrimaryCableKit = primaryRiserCount > 0 && !hasPrimaryCableKit && (requiredPcieCards >= 5 || requiredPcieCards > (2 + activeSecondarySlots + activeTertiarySlots));
+  const needsSecondaryCableKit = secondaryRiserCount > 0 && !hasSecondaryCableKit && (requiredPcieCards >= 5 || requiredPcieCards > (activePrimarySlots + 2 + activeTertiarySlots) || requiredPcieCards > 4);
   const needsSecondaryRiser = requiredPcieCards > (3 + (primaryRiserCount * 3)) && secondaryRiserCount === 0;
   const needsGpuPowerCableKit = gpuCount > gpuPowerCableKitCount;
 
+  // x16 Lane calculation: Primary Riser has 2 x16 slots (1 without cable kit), Secondary has 2 x16 slots (1 without cable kit), Base has 1 x16
+  const x16LanesAvailable = (primaryRiserCount > 0 ? (hasPrimaryCableKit ? 2 : 1) : 1) + 
+                            (secondaryRiserCount > 0 ? (hasSecondaryCableKit ? 2 : 1) : 0) + 
+                            (tertiaryRiserCount > 0 ? 1 : 0);
+  const laneBifurcationConstraint = x16RequiredCount > x16LanesAvailable;
+
+
   return {
     requiredPcieCards,
+    x16RequiredCount,
+    x16LanesAvailable,
+    laneBifurcationConstraint,
     gpuCount,
     primaryRiserCount,
     secondaryRiserCount,
     tertiaryRiserCount,
     totalPhysicalSlots,
+    totalSlotsAvailable: totalPhysicalSlots,
     activeSlotsAvailable,
     hasPrimaryCableKit,
     hasSecondaryCableKit,
@@ -110,3 +131,4 @@ function evalPcieRiserSlots(items, catalogData = null) {
 module.exports = {
   evalPcieRiserSlots
 };
+

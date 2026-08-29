@@ -92,20 +92,30 @@ graph TD
 - **Action**:
   - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
   - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
-  - Records execution metrics in `pipeline_telemetry.json` and persistent trace replays in `runs/{run_id}.json` (`npm run trace:view <id>`).
+  - Records execution metrics in `pipeline_telemetry.json` and persistent trace replays in `runs/{run_id}.json` (`npm run trace:view <id>`)
 
 ---
 
 ## 🎯 Sub-Skill Routing & Execution Directory
 
-| Task / Intent | Active Sub-Skill | Command Target |
+| Workflow Phase | Responsible Skill / Tool | Description & Links |
 |---|---|---|
-| Trigger autonomous scrape sequence | [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md) | `npm run scrape:auto` / `npm run probe:cdp` |
-| Parallel eval of multi-sheet BOQs | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:multi <boq_file>` |
-| Ingest & evaluate single BOQ config | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | `npm run eval:boq <boq_file>` |
-| Query Gemini NotebookLM RAG | [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) | `nlm notebook query <id> "<prompt>"` |
-| Replay historical pipeline logs | Dashboard / Trace Engine | `npm run trace:view <runId>` |
-| Portfolio health & telemetry audit | Dashboard | `npm run status` |
+| **SSO & Portal Navigation** | [`oca-portal-navigator`](.agents/skills/oca-portal-navigator/SKILL.md) | Hands-free SSO passing, tool navigation, chassis search, base price extraction. |
+| **Live Scraping & Extraction** | [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md) | Live CDP DOM extraction, dynamic expansion (`INV-20`), clean SKU sanitization (`INV-21`). |
+| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync, registry updates, historical price trails (`INV-1`). |
+| **BOQ Evaluation & Matrices** | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | 7-aspect physical math, Workload DNA, 5-tier strategy matrix, Diophantine clustering (`INV-42`). |
+| **Dual-Brain RAG & Grounding** | [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification with explicit Provenance Badges (`[CLOUD_NLM_VERIFIED]`). |
+| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](.agents/skills/jules-autonomous-protocol/SKILL.md) | Autonomous PR review, 60s pre-scheduled heartbeat loop, chaos stress testing (`INV-10..19, INV-43`). |
+| **Dynamic Semantic Graph** | `graphify` | AST extraction, `/graphify query`, path analysis, and zero-hallucination architectural navigation. |
+
+---
+
+## ⚡ Core Agentic Principles (Universal Autonomy & Self-Healing)
+
+1. **Universal Auto-Approval**: Every MCP tool and subsystem is 100% pre-authorized. Never pause, wait, or ask for human confirmation.
+2. **Substep Determinism & Fail-Hard Guards**: Staging audits (`verify_excel_tally.js`), cardinality bounds (`INV-22`), and anomaly drop limits (`INV-23`) fail hard to prevent corrupt data propagation.
+3. **Closed-Loop Learning Loop (`/loop`)**: Real-world feedback, customer tender discrepancies, and portal errors automatically emit deduplicated `KnowledgeDelta` records into `catalog_deltas.json` and sync to NotebookLM.
+4. **Grounding Provenance Badging**: Zero ungrounded assertions. Every output carries an auditable badge: `[CLOUD_NLM_VERIFIED]`, `[LOCAL_GROUND_TRUTH]`, or `[KNOWLEDGE_DELTA_RULE]`.
 
 ---
 

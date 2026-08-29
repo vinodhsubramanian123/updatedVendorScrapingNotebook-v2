@@ -52,11 +52,16 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   let hasLinux = false;
   let linuxSubscriptions = 0;
   
+  let dataCartridgeCount = 0;
+  let cleaningCartridgeCount = 0;
+  let barcodeLabelCount = 0;
+
   let detectedCpuCores = totalSocketCores;
   let detectedCpuSockets = 0;
   let targetVmwareCores = 0;
   
   const unsolicitedOptionalItems = [];
+
 
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
@@ -125,51 +130,91 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
       hasLinux = true;
       linuxSubscriptions += (it.quantity || 1);
     }
+
+    // StoreEver Tape Media & Accessories
+    if ((desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data') || desc.includes('rw custom') || desc.includes('non custom'))) {
+      dataCartridgeCount += (it.quantity || 1);
+    }
+    if (sku === 'C7978A' || desc.includes('universal cleaning') || desc.includes('cleaning cartridge')) {
+      cleaningCartridgeCount += (it.quantity || 1);
+    }
+    if (desc.includes('bar code label') || desc.includes('barcode label') || desc.includes('label pack') || sku === 'Q2014A') {
+      barcodeLabelCount += (it.quantity || 1);
+    }
   }
 
   // Windows Server Core Licensing Math:
-  // Requires minimum 16 cores per physical server. If CPU cores > 16, additional core packs are mandatory.
-  const totalWindowsLicensedCores = (windowsBaseLicenses * 16) + windowsAddonCores;
-  const targetCores = Math.max(16, detectedCpuCores || 16);
-  const needsAdditionalWindowsCores = hasWindowsServer && totalWindowsLicensedCores < targetCores;
-  const missingCoreLicenses = needsAdditionalWindowsCores ? (targetCores - totalWindowsLicensedCores) : 0;
+  const requiredWindowsCores = Math.max(16, detectedCpuCores || 16);
+  const targetCores = requiredWindowsCores;
+  const totalCoveredWindowsCores = (windowsBaseLicenses * 16) + windowsAddonCores;
+  const isWindowsLicenseUnderprovisioned = hasWindowsServer && (windowsBaseLicenses < 1 || totalCoveredWindowsCores < requiredWindowsCores);
+  const needsAdditionalWindowsCores = isWindowsLicenseUnderprovisioned;
+  const missingCoreLicenses = needsAdditionalWindowsCores ? Math.max(0, requiredWindowsCores - totalCoveredWindowsCores) : 0;
 
-  // VMware vSphere/Cloud Foundation Math:
-  // Requires minimum 16 cores per socket across single and dual socket.
-  if (targetVmwareCores === 0) {
-    targetVmwareCores = Math.max(16, totalSocketCores || 16); // Fallback if no CPUs explicitly listed
-  }
-  const needsAdditionalVmwareCores = hasVmware && (vmwareLicensedCores < targetVmwareCores);
-  const missingVmwareCores = needsAdditionalVmwareCores ? (targetVmwareCores - vmwareLicensedCores) : 0;
+  // VMware Core Licensing Math:
+  const requiredVmwareCores = targetVmwareCores || Math.max(16, (detectedCpuSockets || 1) * 16);
+  const isVmwareLicenseUnderprovisioned = hasVmware && (vmwareLicensedCores < requiredVmwareCores);
+  const needsAdditionalVmwareCores = isVmwareLicenseUnderprovisioned;
+  const missingVmwareCores = needsAdditionalVmwareCores ? Math.max(0, requiredVmwareCores - vmwareLicensedCores) : 0;
 
-  // Linux Math: 1-2 sockets per subscription
-  const targetCpuSockets = Math.max(1, detectedCpuSockets);
-  const targetLinuxSubscriptions = Math.ceil(targetCpuSockets / 2);
-  const needsAdditionalLinuxSubscriptions = hasLinux && (linuxSubscriptions < targetLinuxSubscriptions);
-  const missingLinuxSubscriptions = needsAdditionalLinuxSubscriptions ? (targetLinuxSubscriptions - linuxSubscriptions) : 0;
+  // Linux (RHEL / SLES) 1-2 Socket Boundary:
+  const requiredLinuxSubscriptions = Math.ceil((detectedCpuSockets || 1) / 2);
+  const isLinuxSubscriptionUnderprovisioned = hasLinux && (linuxSubscriptions < requiredLinuxSubscriptions);
+  const needsAdditionalLinuxSubscriptions = isLinuxSubscriptionUnderprovisioned;
+  const missingLinuxSubscriptions = needsAdditionalLinuxSubscriptions ? Math.max(0, requiredLinuxSubscriptions - linuxSubscriptions) : 0;
+
+  // StoreEver Tape Automation Math:
+  const expectedCleaningCartridges = dataCartridgeCount > 0 ? Math.ceil(dataCartridgeCount / 20) : 0;
+  const needsMoreCleaningCartridges = cleaningCartridgeCount < expectedCleaningCartridges;
+  const missingCleaningCartridges = Math.max(0, expectedCleaningCartridges - cleaningCartridgeCount);
+
+  const expectedBarcodeLabels = dataCartridgeCount > 0 ? Math.ceil(dataCartridgeCount / 100) : 0;
+  const needsMoreBarcodeLabels = barcodeLabelCount < expectedBarcodeLabels;
+  const missingBarcodeLabels = Math.max(0, expectedBarcodeLabels - barcodeLabelCount);
 
   return {
     hasSupportService,
     hasManagementLicense,
     hasWindowsServer,
-    detectedCpuCores: targetCores,
-    totalWindowsLicensedCores,
+    windowsBaseLicenses,
+    windowsAddonCores,
+    totalCoveredWindowsCores,
+    totalWindowsLicensedCores: totalCoveredWindowsCores,
+    requiredWindowsCores,
+    isWindowsLicenseUnderprovisioned,
     needsAdditionalWindowsCores,
     missingCoreLicenses,
     
-    detectedCpuSockets: targetCpuSockets,
+    detectedCpuCores: targetCores,
+    targetCores,
+    detectedCpuSockets: Math.max(1, detectedCpuSockets),
+    targetCpuSockets: Math.max(1, detectedCpuSockets),
     
     hasVmware,
     vmwareLicensedCores,
-    targetVmwareCores,
+    requiredVmwareCores,
+    targetVmwareCores: requiredVmwareCores,
+    isVmwareLicenseUnderprovisioned,
     needsAdditionalVmwareCores,
     missingVmwareCores,
     
     hasLinux,
     linuxSubscriptions,
-    targetLinuxSubscriptions,
+    requiredLinuxSubscriptions,
+    targetLinuxSubscriptions: requiredLinuxSubscriptions,
+    isLinuxSubscriptionUnderprovisioned,
     needsAdditionalLinuxSubscriptions,
     missingLinuxSubscriptions,
+    
+    dataCartridgeCount,
+    cleaningCartridgeCount,
+    expectedCleaningCartridges,
+    needsMoreCleaningCartridges,
+    missingCleaningCartridges,
+    barcodeLabelCount,
+    expectedBarcodeLabels,
+    needsMoreBarcodeLabels,
+    missingBarcodeLabels,
     
     unsolicitedOptionalItems,
     defaultSupportSku: 'HU4B2A3',
@@ -183,3 +228,4 @@ module.exports = {
   VALID_MANAGEMENT_SKUS,
   UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };
+
