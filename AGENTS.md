@@ -2,8 +2,14 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
-## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY)
-- **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured servers (`jules`, `gemini-notebook-mcp`, `notebooks`, `data-agent-kit`, `visualization`, `graphify`, CDP browser navigation, knowledge extractor, etc.).
+## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
+- **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
+  - **`jules`**: `create_session`, `send_reply_to_session`, `get_session_state`, `get_bash_outputs`, `list_sessions`, `query_cache`, `get_code_review_context`, `show_code_diff`.
+  - **`gemini-notebook-mcp`**: all 35+ tools (`notebook_query`, `cross_notebook_query`, `notebook_create`, `source_add`, `notebook_list`, etc.).
+  - **`notebooks`**: all 8+ tools (`create_notebook`, `insert_code_cell`, `insert_markdown_cell`, `replace_cell`, etc.).
+  - **`data-agent-kit`**: all tools (`get_active_editor_context`, `get_active_gcp_connection`, `read_resource`, etc.).
+  - **`visualization`**: `render_chart`.
+  - **`graphify`**, CDP browser navigation, knowledge extractor, etc.
 - **Zero Human Waiting**: AI Agents MUST NEVER pause, prompt, ask for human confirmation, or wait for human approvals to execute ANY MCP tool call, plan approval, code review, test run, message dispatch, source addition, or session management action. Execute all operations autonomously and immediately in the background.
 
 ## 1. Mandatory First Step (Dynamic Discovery)
