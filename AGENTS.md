@@ -198,4 +198,17 @@ The system leverages Google Jules for background code review, test generation, a
     - The agent MUST strictly execute the 8-stage lifecycle in exact chronological sequence: (1) Laser-focused dispatch, (2) Mandatory heartbeat cron (`schedule DurationSeconds=120`), (3) Two-way plan auto-approval and unblocking, (4) Structured code review and diff inspection before archiving, (5) PR verification and merge to `main` with 100% test pass, (6) Remote branch pruning ONLY AFTER merge to `main`, (7) Audit-before-archive session retirement, and (8) Proactive gap scan for new task dispatch.
     - Zero human relaying: Antigravity autonomously answers clarifications, approves plans, verifies test suites, and keeps the heartbeat cron active until all tasks are certified.
 
+35. **Google Jules SDK Client Method Contract & State Machine Lifecycle (`INV-44`)**:
+    - `@google/jules-sdk` client methods: `client.sessions` is a callable factory function (`client.sessions()`), and the collection listing method is `.all()` (e.g. `await client.sessions().all()`). Calling `client.sessions.list()` is an anti-pattern and throws `TypeError`.
+    - `session.activities.history()` is an async generator for streaming complete historical activities (`for await (const act of s.activities.history())`).
+    - When a session enters `awaitingUserFeedback`, the agent MUST immediately unblock it using `session.approve()` or `session.send(message)`. The session will transition from `awaitingUserFeedback` to `progressUpdated` as it commits and pushes PR branches.
+
+36. **Enterprise Workflow Atomic Decomposition & Continuous Grounding Contract (`INV-45`)**:
+    - Heavy workflows MUST be decomposed into fine-grained atomic stages with SSE telemetry:
+      - **10-Stage Scraping**: (1) SSO & Portal Navigation $\rightarrow$ (2) Chassis Discovery & Base Price $\rightarrow$ (3) OCA Menu Entry $\rightarrow$ (4) Dynamic DOM Expansion (`INV-20`) $\rightarrow$ (5) Raw Table Ingestion $\rightarrow$ (6) Lifecycle Badge Separation (`INV-21`) $\rightarrow$ (7) 22-Sheet Category Mapping $\rightarrow$ (8) Staging Excel Generation $\rightarrow$ (9) 15/15 Staging Audit (`verify_excel_tally.js`) $\rightarrow$ (10) Master Promotion & Registry Sync (`INV-2`, `INV-5`).
+      - **7-Substep Evaluation**: (1a) Tabular OCR Ingestion $\rightarrow$ (1b) Multi-Unit CTO Normalization $\rightarrow$ (1c) Diophantine Multi-Cluster Partitioning (`INV-42`) $\rightarrow$ (1d) 7-Aspect Physical Math Validation $\rightarrow$ (1e) 5-Level Conflict Graph DAG $\rightarrow$ (1f) 5-Tier Strategy Matrix Ranking $\rightarrow$ (1g) Grounding Badge Inscription & Trace Logging.
+    - NotebookLM is leveraged across 4 distinct verification stages: Pre-Flight DNA validation, In-Flight conflict RAG, Post-Flight solution grounding, and Closed-Loop Delta sync.
+    - Universal Master Knowledge Registry (`master_knowledge_registry.json`) is maintained for cross-chassis rules while product-specific partitions (`outputs/{Family}/{Gen}/{Model}/`) isolate per-product catalogs with zero cross-chassis contamination (`INV-24`).
+
+
 

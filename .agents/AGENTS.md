@@ -309,10 +309,22 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Background task delegation to Google Jules requires MCP-first tool invocations to capture rich structured properties (`pendingPlan`, `lastAgentMessage`, `status: busy|stable|failed`) and eliminate manual human relay.
 - **Rule**: AI agents MUST strictly execute the 8-stage lifecycle: (1) Laser-focused atomic dispatch, (2) Mandatory proactive heartbeat cron (`schedule DurationSeconds=120`, `TimerCondition="never"`), (3) Two-way plan auto-approval and unblocking, (4) Structured code review and diff inspection BEFORE archiving, (5) PR verification and merge to `main` with 100% test pass, (6) Remote branch pruning ONLY AFTER merge to `main`, (7) Audit-before-archive session retirement, and (8) Proactive gap scan for new task dispatch.
 
+### INV-44: Google Jules SDK Client Method Contract & State Machine Lifecycle
+- **Pattern**: Calling `.list()` on `client.sessions` in `@google/jules-sdk` throws `TypeError: client.sessions.list is not a function`.
+- **Rule**: In `@google/jules-sdk`, `client.sessions` is a callable factory function `client.sessions()`, and the collection listing method is `.all()` (e.g. `await client.sessions().all()`). `s.activities.history()` is an async generator for streaming complete historical activities. When a session enters `awaitingUserFeedback`, the agent MUST immediately unblock it using `session.approve()` or `session.send(message)`.
+
+### INV-45: Enterprise Workflow Atomic Decomposition & Continuous Grounding Contract
+- **Pattern**: Heavy monolithic stages obscure failure points and prevent fine-grained progress observability.
+- **Rule**: Heavy workflows MUST be decomposed into fine-grained atomic stages with SSE telemetry:
+  - **10-Stage Scraping**: (1) SSO & Portal Navigation $\rightarrow$ (2) Chassis Discovery & Base Price $\rightarrow$ (3) OCA Menu Entry $\rightarrow$ (4) Dynamic DOM Expansion (`INV-20`) $\rightarrow$ (5) Raw Table Ingestion $\rightarrow$ (6) Lifecycle Badge Separation (`INV-21`) $\rightarrow$ (7) 22-Sheet Category Mapping $\rightarrow$ (8) Staging Excel Generation $\rightarrow$ (9) 15/15 Staging Audit (`verify_excel_tally.js`) $\rightarrow$ (10) Master Promotion & Registry Sync (`INV-2`, `INV-5`).
+  - **7-Substep Evaluation**: (1a) Tabular OCR Ingestion $\rightarrow$ (1b) Multi-Unit CTO Normalization $\rightarrow$ (1c) Diophantine Multi-Cluster Partitioning (`INV-42`) $\rightarrow$ (1d) 7-Aspect Physical Math Validation $\rightarrow$ (1e) 5-Level Conflict Graph DAG $\rightarrow$ (1f) 5-Tier Strategy Matrix Ranking $\rightarrow$ (1g) Grounding Badge Inscription & Trace Logging.
+  - **4-Stage Continuous NLM Verification**: Pre-Flight DNA validation, In-Flight conflict RAG, Post-Flight solution grounding, and Closed-Loop Delta sync.
+  - **Knowledge Isolation**: Universal Master Knowledge Registry (`master_knowledge_registry.json`) for cross-chassis rules vs Product-Specific Partitioned Catalogs (`outputs/{Family}/{Gen}/{Model}/`) with zero cross-chassis contamination (`INV-24`).
 
 ---
 
 ## History Directory Hygiene Rules
+
 
 The `outputs/{Family}/{Gen}/{Model}/history/` directory stores canonical diff artifacts. These files must remain clean:
 
