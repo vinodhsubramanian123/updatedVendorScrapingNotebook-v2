@@ -1,0 +1,18 @@
+{
+  "test_rag_cache_key_synthetic_123": {
+    "value": {
+      "isCompatible": true,
+      "suggestedFixes": [
+        "P48820-B21"
+      ],
+      "citationsCount": 2
+    },
+    "cachedAt": "2026-08-29T17:13:45.475Z"
+  },
+  "test_fresh_entry": {
+    "value": {
+      "status": "FRESH"
+    },
+    "cachedAt": "2026-08-29T17:13:44.486Z"
+  }
+}

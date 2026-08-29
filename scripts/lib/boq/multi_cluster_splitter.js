@@ -228,11 +228,19 @@ function analyzeAndPartitionClusters(rawItems) {
   }
 
   if (cpuItems.length <= 1) {
+    const singleCpu = cpuItems[0];
     return {
       isMultiCluster: false,
       totalChassis,
       detectedChassis,
-      clusters: [{ name: 'Default_Cluster', multiplier: totalChassis, items: rawItems, clusterSizing: getClusterSizing(totalChassis, rawItems) }]
+      clusters: [{
+        name: 'Default_Cluster',
+        multiplier: totalChassis,
+        cpuSku: singleCpu?.sku || null,
+        cpuDesc: singleCpu?.description || null,
+        items: rawItems,
+        clusterSizing: getClusterSizing(totalChassis, rawItems)
+      }]
     };
   }
 
@@ -242,8 +250,29 @@ function analyzeAndPartitionClusters(rawItems) {
 
   // GAP-6 FIX: Dynamic alphabetical cluster labels for N clusters
   const CLUSTER_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  cpuItems.forEach((cpu, idx) => {
-    const clusterMultiplier = Math.round(cpu.quantity / cpusPerServer);
+
+  // Largest Remainder Method to satisfy Diophantine constraint (sum of multipliers = totalChassis)
+  let allocatedChassis = 0;
+  const tempClusters = cpuItems.map((cpu, idx) => {
+    const rawQty = cpu.quantity / cpusPerServer;
+    const baseMult = Math.floor(rawQty);
+    const remainder = rawQty - baseMult;
+    allocatedChassis += baseMult;
+    return { idx, cpu, baseMult, remainder };
+  });
+
+  const deficit = totalChassis - allocatedChassis;
+  tempClusters.sort((a, b) => b.remainder - a.remainder || b.cpu.quantity - a.cpu.quantity);
+
+  for (let i = 0; i < deficit; i++) {
+    if (i < tempClusters.length) {
+      tempClusters[i].baseMult += 1;
+    }
+  }
+
+  tempClusters.sort((a, b) => a.idx - b.idx);
+
+  tempClusters.forEach(({ cpu, baseMult, idx }) => {
     const letter = CLUSTER_LETTERS[idx] || String(idx + 1);
     const clusterLabel = `Cluster_${letter}`;
     const cpuTdpMatch = cpu.description.match(/(\d+)W/i);
@@ -252,7 +281,7 @@ function analyzeAndPartitionClusters(rawItems) {
     clusters.push({
       clusterId: idx + 1,
       name: clusterLabel,
-      multiplier: clusterMultiplier,
+      multiplier: baseMult,
       cpuSku: cpu.sku,
       cpuDesc: cpu.description,
       cpuTdp: tdp,

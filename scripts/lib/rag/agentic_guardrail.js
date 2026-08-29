@@ -25,6 +25,7 @@ require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(process.env.GUARDRAIL_TIMEOUT_MS || '180000', 10); // 180s (3m) max for multi-turn RAG
+const GUARDRAIL_NLM_MAX_CALLS = 3; // Maximum queries per agentic guardrail session
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -422,4 +423,8 @@ async function runAgenticGuardrail(items, chassisDir) {
   return guardrailSummary;
 }
 
-module.exports = { runAgenticGuardrail };
+module.exports = {
+  runAgenticGuardrail,
+  GUARDRAIL_OVERALL_TIMEOUT_MS,
+  GUARDRAIL_NLM_MAX_CALLS
+};

@@ -221,6 +221,20 @@ const {
   extractAndPersistLearnedDeltas
 } = require('./knowledge_extractor.js');
 
+function purgeExpiredRagCache() {
+  let evicted = 0;
+  for (const [k, entry] of queryCache.entries()) {
+    if (!isCacheEntryFresh(entry)) {
+      queryCache.delete(k);
+      evicted++;
+    }
+  }
+  if (evicted > 0) persistRagCache();
+  return evicted;
+}
+
+const RAG_TIMEOUT_MS = 120000;
+
 module.exports = {
   SCRIPTING_PATTERNS,
   sanitizeNotebookQuery,
@@ -234,5 +248,11 @@ module.exports = {
   diagnoseNotebookFailure,
   activeQueryJobs,
   extractKnowledgeFromRagAnswer,
-  extractAndPersistLearnedDeltas
+  extractAndPersistLearnedDeltas,
+  getCachedRagResult,
+  setCachedRagResult,
+  purgeExpiredRagCache,
+  queryCache,
+  RAG_CACHE_TTL_MS,
+  RAG_TIMEOUT_MS
 };
