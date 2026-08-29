@@ -21,6 +21,13 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   let hasTriModeSwitch = false;
   const conflictingCableItems = [];
 
+  // Synergy Composable Storage
+  let hasD3940 = false;
+  let hasSynergyCompute = false;
+  let hasSasMezzanine = false;
+  let hasSasConnectionModule = false;
+  let hasD3940ConnectivityError = false;
+
   const batterySku = cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY?.sku || 'P01366-B21');
   const noDriveSku = cleanBaseSKU(mandatorySkus.NO_DRIVE_FIO_KIT?.sku || '873763-B21');
 
@@ -81,6 +88,27 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     if (sku === noDriveSku || desc.includes('no drive')) {
       hasNoDriveKit = true;
     }
+
+    // Detect Synergy Components
+    if (desc.includes('d3940')) {
+      hasD3940 = true;
+    }
+    if (desc.includes('sy480') || desc.includes('sy660') || (desc.includes('synergy') && desc.includes('compute module'))) {
+      hasSynergyCompute = true;
+    }
+    if (desc.includes('synergy') && desc.includes('sas') && desc.includes('mezzanine')) {
+      hasSasMezzanine = true;
+    }
+    if (desc.includes('synergy') && desc.includes('sas') && desc.includes('connection module')) {
+      hasSasConnectionModule = true;
+    }
+  }
+
+  // Synergy Composable Storage Validation
+  if (hasD3940 && hasSynergyCompute) {
+    if (!hasSasMezzanine || !hasSasConnectionModule) {
+      hasD3940ConnectivityError = true;
+    }
   }
 
   // Storage Expander Math: An 8-port controller directly connects up to 8 drives.
@@ -111,7 +139,8 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     needsSasExpander,
     needsCapacitorCable,
     controllerDirectCapacity,
-    conflictingCableItems
+    conflictingCableItems,
+    hasD3940ConnectivityError
   };
 }
 
