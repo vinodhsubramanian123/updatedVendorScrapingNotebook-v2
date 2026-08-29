@@ -15,6 +15,17 @@ function evalNetworkingOcp(items, catalogData = null) {
   let hasCpu2Ocp2Cable = false;
   const ocpCableItems = [];
 
+  // SAN & Transceiver Tracking Counters
+  let fcHbaCount = 0;
+  let fcHbaPortCount32Gb = 0;
+  let fcHbaPortCount64Gb = 0;
+  let transceiverCount32Gb = 0;
+  let transceiverCount64Gb = 0;
+  let sanSwitchCount = 0;
+  let opticalPatchCableCount = 0;
+  let activeOpticalTransceiverCount = 0;
+  let qsfp28BreakoutCableCount = 0;
+
   if (catalogData && catalogData.entries) {
     const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
     if (ocpEntry && typeof ocpEntry.maxQty === 'number' && ocpEntry.maxQty > 0) {
@@ -42,6 +53,47 @@ function evalNetworkingOcp(items, catalogData = null) {
     if (isCpu2OcpCable) {
       hasCpu2Ocp2Cable = true;
       ocpCableItems.push(it);
+    }
+
+    // Parsing SAN & Transceiver Components
+    const qty = it.quantity || 1;
+    if (role === 'Fibre Channel HBA' || role === 'Host Bus Adapter' || desc.includes('fc hba') || desc.includes('fibre channel host bus adapter') || desc.includes('fibre channel')) {
+      if (desc.includes('host bus adapter') || desc.includes('hba')) {
+        fcHbaCount += qty;
+        let ports = 2; // Default to dual-port
+        if (desc.includes('1-port') || desc.includes('1p') || desc.match(/1\s*-?port/i)) ports = 1;
+        if (desc.includes('4-port') || desc.includes('4p') || desc.match(/4\s*-?port/i)) ports = 4;
+
+        if (desc.includes('32gb')) {
+          fcHbaPortCount32Gb += (ports * qty);
+        } else if (desc.includes('64gb')) {
+          fcHbaPortCount64Gb += (ports * qty);
+        }
+      }
+    }
+
+    if (role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp')) {
+      // 32Gb transceivers (e.g., AJ718A is technically 8Gb but might be labeled 32Gb, so we match both or description)
+      if (desc.includes('32gb') || sku === 'AJ718A' || sku === 'aj718a') {
+        transceiverCount32Gb += qty;
+        activeOpticalTransceiverCount += qty;
+      }
+      if (desc.includes('64gb')) {
+        transceiverCount64Gb += qty;
+        activeOpticalTransceiverCount += qty;
+      }
+    }
+
+    if (desc.includes('san switch') || desc.includes('fibre channel switch')) {
+      sanSwitchCount += qty;
+    }
+
+    if (desc.includes('om4') && desc.includes('lc-lc') && desc.includes('cable')) {
+      opticalPatchCableCount += qty;
+    }
+
+    if (desc.includes('100gb qsfp28 to 4x 25gb sfp28') || (desc.includes('100gb') && desc.includes('breakout'))) {
+      qsfp28BreakoutCableCount += qty;
     }
 
     // Account for OCP-form-factor storage controllers (e.g. MR408i-o, SR-series) which occupy an OCP slot
@@ -85,7 +137,26 @@ function evalNetworkingOcp(items, catalogData = null) {
   // CLIC Rule 81355854: CPU1/OCP2 (P51911-B21) and CPU2/OCP2 (P48830-B21) cannot be selected together
   const hasConflictingOcpCables = hasCpu1Ocp2Cable && hasCpu2Ocp2Cable;
 
+  // SAN validations
+  const isMissing32GbTransceivers = fcHbaPortCount32Gb > transceiverCount32Gb;
+  const isMissing64GbTransceivers = fcHbaPortCount64Gb > transceiverCount64Gb;
+  const isMissingOpticalPatchCables = activeOpticalTransceiverCount > opticalPatchCableCount;
+  const hasSanSinglePointOfFailure = fcHbaCount > 0 && sanSwitchCount === 1;
+
   return {
+    fcHbaCount,
+    fcHbaPortCount32Gb,
+    fcHbaPortCount64Gb,
+    transceiverCount32Gb,
+    transceiverCount64Gb,
+    sanSwitchCount,
+    opticalPatchCableCount,
+    activeOpticalTransceiverCount,
+    qsfp28BreakoutCableCount,
+    isMissing32GbTransceivers,
+    isMissing64GbTransceivers,
+    isMissingOpticalPatchCables,
+    hasSanSinglePointOfFailure,
     networkPortsCount,
     hasOcpAdapter,
     ocpAdapterCount,

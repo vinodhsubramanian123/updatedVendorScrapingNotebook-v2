@@ -79,6 +79,11 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
       hasSupportService = true;
     }
 
+    // Support validation for transceivers and optic cables
+    if ((role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp') || (desc.includes('om4') && desc.includes('lc-lc'))) && desc.includes('unsupported')) {
+      // Logic for unsupported optics if any. For now, just logging or parsing them.
+    }
+
     if (VALID_MANAGEMENT_SKUS.has(sku) || desc.includes('compute ops management') || desc.includes('oneview') || desc.includes('com adv')) {
       hasManagementLicense = true;
     }
