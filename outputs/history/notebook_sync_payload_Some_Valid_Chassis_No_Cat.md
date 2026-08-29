@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
-**Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-29T17:18:05.381Z  
-**Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `30`  
+**Target Product**: `Some_Valid_Chassis_No_Cat`  
+**Sync Timestamp**: 2026-08-29T18:05:20.845Z  
+**Total Verified SKUs**: `0` (`0` Hardware + `0` Services)  
+**Total Synced KnowledgeDeltas**: `0`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 3 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **3** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **0** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -27,31 +27,19 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (Applies Across All HPE Product Lines)
 
-1. **[DELTA-1787856163549]**: If PORTAL is present, P64707-B21 is mandatory. *(Type: TEMPORARY_SUPPLY_CONSTRAINT)*
+*No universal vendor restrictions logged yet. Baseline CTO/BTO mode rules active.*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)
 
-1. **[DELTA-1787856163365] DL380_Gen11**: If PORTAL is present, P52534-B21 is mandatory. *(Affected SKU: PORTAL)*
-2. **[DELTA-1787856163672] DL380_Gen11**: Portal validation flagged restriction on PORTAL. *(Affected SKU: PORTAL)*
-3. **[DELTA-1787856163759] DL380_Gen11**: If PORTAL is present, P58335-B21 is mandatory. *(Affected SKU: PORTAL)*
-4. **[DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11**: If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory. *(Affected SKU: P48832-B21)*
-5. **[DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11**: If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mandatory. *(Affected SKU: P02377-B21)*
-6. **[DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11**: P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21. *(Affected SKU: P51911-B21)*
-7. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1. *(Affected SKU: P48803-B21)*
-8. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21). *(Affected SKU: P38997-B21)*
-9. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380 Gen11**: undefined *(Affected SKU: P02377-B21)*
-10. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-11. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
-12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
-13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+*No family/generation-level rules logged yet. Symmetric memory & power supply mixing rules active.*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (Alletra_Storage_System)
+## 🎯 3. Chassis & Solution-Type Gotchas (Some_Valid_Chassis_No_Cat)
 
-*No specific gotchas logged for Alletra_Storage_System. Baseline chassis layout rules active.*
+*No specific gotchas logged for Some_Valid_Chassis_No_Cat. Baseline chassis layout rules active.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for Alletra_Storage_System. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for Some_Valid_Chassis_No_Cat. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

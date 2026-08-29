@@ -1,18 +1,17 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-29T17:13:50.615Z",
-  "lastUpdated": "2026-08-29T17:13:50.615Z",
-  "totalLearnedRules": 30,
+  "generatedAt": "2026-08-29T18:05:31.422Z",
+  "lastUpdated": "2026-08-29T18:05:31.422Z",
+  "totalLearnedRules": 28,
   "productFamiliesSynced": [
     "DL380",
-    "DL380 Gen11",
-    "DL380 Gen12"
+    "DL380 Gen11"
   ],
   "counts": {
     "universal": 1,
     "familyGen": 13,
-    "chassisSpecific": 16
+    "chassisSpecific": 14
   },
   "universalRules": [
     {
@@ -224,7 +223,7 @@
     },
     {
       "deltaId": "DELTA-1787939245188",
-      "timestamp": "2026-08-28T18:42:21.213Z",
+      "timestamp": "2026-08-29T18:03:09.991Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -242,7 +241,7 @@
     },
     {
       "deltaId": "DELTA-1787939298644",
-      "timestamp": "2026-08-29T17:13:49.820Z",
+      "timestamp": "2026-08-29T18:05:27.215Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -451,34 +450,6 @@
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "solutionType": "General Server",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG"
-    },
-    {
-      "deltaId": "DELTA_RAG_DEP_P74573-B21_P76471-B21_1788019839174",
-      "chassis": "DL380 Gen12",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "ruleType": "DEPENDENCY_CHAIN",
-      "affectedSku": "P74573-B21",
-      "requiredDependencySku": "P76471-B21",
-      "reasoning": "Grounding Verification: Selecting P74573-B21 requires auxiliary component P76471-B21 to satisfy physical/telemetry routing.",
-      "rawMessage": "P74573-B21`), this riser is physically unpowered and blocked [8]. Slot 4 requires Qty-2 `P76471-B21",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "source": "NOTEBOOKLM_GROUNDING",
-      "timestamp": "2026-08-29T16:10:39.174Z",
-      "solutionType": "DL380 Gen12 CTO Server"
-    },
-    {
-      "deltaId": "DELTA_RAG_DEP_P51083-B21_P76471-B21_1788019839176",
-      "chassis": "DL380 Gen12",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "ruleType": "DEPENDENCY_CHAIN",
-      "affectedSku": "P51083-B21",
-      "requiredDependencySku": "P76471-B21",
-      "reasoning": "Grounding Verification: Selecting P51083-B21 requires auxiliary component P76471-B21 to satisfy physical/telemetry routing.",
-      "rawMessage": "P51083-B21` is valid and provides Slots 4, 5, and 6 connected to CPU 2 [28]. *(Slot 4 requires Qty-2 `P76471-B21",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "source": "NOTEBOOKLM_GROUNDING",
-      "timestamp": "2026-08-29T16:10:39.176Z",
-      "solutionType": "DL380 Gen12 CTO Server"
     }
   ]
 }

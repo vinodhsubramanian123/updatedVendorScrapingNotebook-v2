@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen12`  
-**Sync Timestamp**: 2026-08-29T17:13:49.912Z  
+**Sync Timestamp**: 2026-08-29T18:05:27.300Z  
 **Total Verified SKUs**: `945` (`302` Hardware + `643` Services)  
-**Total Synced KnowledgeDeltas**: `30`  
+**Total Synced KnowledgeDeltas**: `28`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 

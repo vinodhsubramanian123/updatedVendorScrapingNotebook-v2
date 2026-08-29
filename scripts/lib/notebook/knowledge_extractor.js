@@ -46,95 +46,104 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     }
   }
 
-  // 1. Extract BTO -> FIO Option Type Substitutions
-  // Matches e.g. "P69728-B21 ... not allowed in CTO ... use FIO SKU P69728-F21"
-  const btoFioRegex = new RegExp(`${SKU_PATTERN}.{0,150}?(?:BTO|retail).{0,100}?(?:not allowed|cannot be added|blocked|error|prohibited).{0,120}?(?:CTO|factory).{0,100}?(?:FIO|equivalent|substitute|use).{0,50}?${SKU_PATTERN}`, 'gi');
-  let match;
-  while ((match = btoFioRegex.exec(text)) !== null) {
-    const btoSku = cleanBaseSKU(match[1]);
-    const fioSku = cleanBaseSKU(match[2]);
-    if (btoSku && fioSku && btoSku !== fioSku && isValidHpeSKU(btoSku) && isValidHpeSKU(fioSku)) {
-      addDelta({
-        deltaId: `DELTA_RAG_FIO_${btoSku}_${fioSku}_${Date.now()}`,
-        chassis: chassisName,
-        errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-        ruleType: 'OPTION_TYPE_SUBSTITUTION',
-        affectedSku: btoSku,
-        requiredDependencySku: fioSku,
-        reasoning: `Grounding Verification: Standalone BTO option ${btoSku} is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is ${fioSku}.`,
-        rawMessage: match[0].slice(0, 300),
-        scopeTaxonomy: 'FAMILY_GEN',
-        source: 'NOTEBOOKLM_GROUNDING',
-        timestamp: new Date().toISOString()
-      });
-    }
-  }
+  // Split response into discrete semantic units (paragraphs, list items, or lines)
+  const units = text.split(/(?:\r?\n){2,}|\r?\n(?=(?:[0-9]+\.|\*|-|###)\s+)|\r?\n/).map(u => u.trim()).filter(u => u.length > 5);
 
-  // 2. Extract Cross-Generation / Carry-Over Validations
-  // Matches e.g. "P48918-B21 ... fully supported and validated ... inside DL380 Gen12"
-  const carryOverRegex = new RegExp(`${SKU_PATTERN}.{0,120}?(?:fully supported|officially validated|listed under.*QuickSpecs|formally listed|carry[- ]?over).{0,150}?(${SKU_PATTERN})?`, 'gi');
-  while ((match = carryOverRegex.exec(text)) !== null) {
-    const primarySku = cleanBaseSKU(match[1]);
-    const pairedSku = match[2] ? cleanBaseSKU(match[2]) : null;
-    if (primarySku && isValidHpeSKU(primarySku)) {
-      addDelta({
-        deltaId: `DELTA_RAG_CARRYOVER_${primarySku}_${Date.now()}`,
-        chassis: chassisName,
-        errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-        ruleType: 'CARRY_OVER_VALIDATED',
-        affectedSku: primarySku,
-        requiredDependencySku: pairedSku && isValidHpeSKU(pairedSku) ? pairedSku : null,
-        reasoning: `Grounding Verification: Part ${primarySku} is officially validated as a supported carry-over component in ${chassisName} QuickSpecs.`,
-        rawMessage: match[0].slice(0, 300),
-        scopeTaxonomy: 'CHASSIS_SPECIFIC',
-        source: 'NOTEBOOKLM_GROUNDING',
-        timestamp: new Date().toISOString()
-      });
-    }
-  }
+  for (const unit of units) {
+    const rawTokens = unit.match(/[A-Z0-9]{2,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11}/gi) || [];
+    const validSkus = [...new Set(rawTokens.map(cleanBaseSKU).filter(s => isValidHpeSKU(s)))];
+    const pLower = unit.toLowerCase();
 
-  // 3. Extract Hardware Dependency Chains (Cables, Triggers, Accessories)
-  // Matches e.g. "P47777-B21 ... requires P76453-B21" or "P48803-B21 ... requires P76471-B21"
-  const depRegex = new RegExp(`${SKU_PATTERN}.{0,80}?(?:requires|mandates|strictly requires|must configure|needs|must be selected).{0,80}?${SKU_PATTERN}`, 'gi');
-  while ((match = depRegex.exec(text)) !== null) {
-    const parentSku = cleanBaseSKU(match[1]);
-    const childSku = cleanBaseSKU(match[2]);
-    if (parentSku && childSku && parentSku !== childSku && isValidHpeSKU(parentSku) && isValidHpeSKU(childSku)) {
-      addDelta({
-        deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
-        chassis: chassisName,
-        errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-        ruleType: 'DEPENDENCY_CHAIN',
-        affectedSku: parentSku,
-        requiredDependencySku: childSku,
-        reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
-        rawMessage: match[0].slice(0, 300),
-        scopeTaxonomy: classifyKnowledgeScope(match[0]),
-        source: 'NOTEBOOKLM_GROUNDING',
-        timestamp: new Date().toISOString()
-      });
-    }
-  }
+    // 1. Extract BTO -> FIO Option Type Substitutions
+    const hasBtoContext = pLower.includes('bto') || pLower.includes('retail') || pLower.includes('not allowed') || pLower.includes('blocked') || pLower.includes('prohibited');
+    const hasFioContext = pLower.includes('fio') || pLower.includes('cto') || pLower.includes('factory') || pLower.includes('equivalent');
 
-  // 4. Extract Discrepancy & Differing Opinion Flags (Presales Human Review Trigger)
-  // Matches explicit flags where Local Rule Engine and NotebookLM find divergent constraints
-  const discrepancyRegex = new RegExp(`(?:discrepancy|contradiction|conflict|unverified|differs from|human review).{0,100}?${SKU_PATTERN}`, 'gi');
-  while ((match = discrepancyRegex.exec(text)) !== null) {
-    const flaggedSku = cleanBaseSKU(match[1]);
-    if (flaggedSku && isValidHpeSKU(flaggedSku)) {
-      addDelta({
-        deltaId: `DELTA_RAG_DISCREPANCY_${flaggedSku}_${Date.now()}`,
-        chassis: chassisName,
-        errorType: 'OPINION_DISCREPANCY_FLAG',
-        ruleType: 'HUMAN_REVIEW_REQUIRED',
-        affectedSku: flaggedSku,
-        requiredDependencySku: null,
-        reasoning: `Presales Discrepancy Alert: Grounding identified a potential divergence or unverified constraint regarding SKU ${flaggedSku}. Human presales review recommended.`,
-        rawMessage: match[0].slice(0, 300),
-        scopeTaxonomy: 'CHASSIS_SPECIFIC',
-        source: 'NOTEBOOKLM_GROUNDING',
-        timestamp: new Date().toISOString()
-      });
+    if (hasBtoContext && hasFioContext && validSkus.length >= 2) {
+      const btoSku = validSkus.find(s => s.endsWith('-B21'));
+      if (btoSku) {
+        const fioSku = validSkus.find(s => s !== btoSku && (s.endsWith('-F21') || s.endsWith('-0D1') || s.startsWith(btoSku.slice(0, 6))));
+        if (fioSku) {
+          addDelta({
+            deltaId: `DELTA_RAG_FIO_${btoSku}_${fioSku}_${Date.now()}`,
+            chassis: chassisName,
+            errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+            ruleType: 'OPTION_TYPE_SUBSTITUTION',
+            affectedSku: btoSku,
+            requiredDependencySku: fioSku,
+            reasoning: `Grounding Verification: Standalone BTO option ${btoSku} is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is ${fioSku}.`,
+            rawMessage: unit.slice(0, 300).trim(),
+            scopeTaxonomy: 'FAMILY_GEN',
+            source: 'NOTEBOOKLM_GROUNDING',
+            timestamp: new Date().toISOString()
+          });
+          continue;
+        }
+      }
+    }
+
+    // 2. Extract Cross-Generation / Carry-Over Validations
+    if (pLower.includes('officially validated') || pLower.includes('fully supported') || pLower.includes('listed under') || pLower.includes('carry-over') || pLower.includes('carry over') || (pLower.includes('supported') && pLower.includes('validated'))) {
+      if (validSkus.length >= 1) {
+        const primarySku = validSkus[0];
+        addDelta({
+          deltaId: `DELTA_RAG_CARRYOVER_${primarySku}_${Date.now()}`,
+          chassis: chassisName,
+          errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+          ruleType: 'CARRY_OVER_VALIDATED',
+          affectedSku: primarySku,
+          requiredDependencySku: null,
+          reasoning: `Grounding Verification: Part ${primarySku} is officially validated as a supported carry-over component in ${chassisName} QuickSpecs.`,
+          rawMessage: unit.slice(0, 300).trim(),
+          scopeTaxonomy: 'CHASSIS_SPECIFIC',
+          source: 'NOTEBOOKLM_GROUNDING',
+          timestamp: new Date().toISOString()
+        });
+        continue;
+      }
+    }
+
+    // 3. Hardware Dependency Chains (Cables, Triggers, Accessories)
+    if (pLower.includes('require') || pLower.includes('mandate') || pLower.includes('need') || pLower.includes('must configure') || pLower.includes('must be selected')) {
+      if (validSkus.length >= 2) {
+        const parentSku = validSkus[0];
+        const childSku = validSkus[1];
+        if (parentSku !== childSku) {
+          addDelta({
+            deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
+            chassis: chassisName,
+            errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+            ruleType: 'DEPENDENCY_CHAIN',
+            affectedSku: parentSku,
+            requiredDependencySku: childSku,
+            reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
+            rawMessage: unit.slice(0, 300).trim(),
+            scopeTaxonomy: classifyKnowledgeScope(unit),
+            source: 'NOTEBOOKLM_GROUNDING',
+            timestamp: new Date().toISOString()
+          });
+          continue;
+        }
+      }
+    }
+
+    // 4. Extract Discrepancy & Differing Opinion Flags (Presales Human Review Trigger)
+    if (pLower.includes('discrepancy') || pLower.includes('contradiction') || pLower.includes('conflict') || pLower.includes('unverified') || pLower.includes('differs from') || pLower.includes('human review')) {
+      if (validSkus.length >= 1) {
+        const flaggedSku = validSkus[0];
+        addDelta({
+          deltaId: `DELTA_RAG_DISCREPANCY_${flaggedSku}_${Date.now()}`,
+          chassis: chassisName,
+          errorType: 'OPINION_DISCREPANCY_FLAG',
+          ruleType: 'HUMAN_REVIEW_REQUIRED',
+          affectedSku: flaggedSku,
+          requiredDependencySku: null,
+          reasoning: `Presales Discrepancy Alert: Grounding identified a potential divergence or unverified constraint regarding SKU ${flaggedSku}. Human presales review recommended.`,
+          rawMessage: unit.slice(0, 300).trim(),
+          scopeTaxonomy: 'CHASSIS_SPECIFIC',
+          source: 'NOTEBOOKLM_GROUNDING',
+          timestamp: new Date().toISOString()
+        });
+      }
     }
   }
 

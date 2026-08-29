@@ -27,9 +27,10 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
  * @returns {object} Full introspected component profile
  */
 function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
-  const rawSku = typeof itemOrSku === 'string' ? itemOrSku : (itemOrSku.sku || itemOrSku['Product #'] || '');
+  const safeItem = (itemOrSku && typeof itemOrSku === 'object') ? itemOrSku : {};
+  const rawSku = typeof itemOrSku === 'string' ? itemOrSku : (safeItem.sku || safeItem['Product #'] || '');
   const sku = cleanBaseSKU(rawSku);
-  const desc = typeof itemOrSku === 'object' ? (itemOrSku.description || itemOrSku.Description || '') : '';
+  const desc = typeof itemOrSku === 'string' ? '' : (safeItem.description || safeItem.Description || '');
   const descLower = desc.toLowerCase();
 
   let matchedEntry = null;
@@ -48,14 +49,14 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
     }
   }
 
-  const parentCategory = matchedEntry?.parentCategory || (typeof itemOrSku === 'object' ? itemOrSku.category : '') || 'Option Component';
+  const parentCategory = matchedEntry?.parentCategory || safeItem.category || 'Option Component';
   const subCategory = matchedEntry?.subCategory || 'General';
   const hierarchyPath = matchedSkuObj?.['Hierarchy Path'] || `${parentCategory} > ${subCategory} > ${sku}`;
   const effectiveDescription = matchedSkuObj?.Description || matchedSkuObj?.description || desc || `HPE Hardware Option (${sku})`;
   const constraintText = matchedSkuObj?.['Constraint Text'] || matchedSkuObj?.constraint || '';
-  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || (typeof itemOrSku === 'object' ? itemOrSku.unitPriceUsd : null);
+  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || safeItem.unitPriceUsd;
   const priceUsd = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice || '0').replace(/[\$,]/g, '')) || 0;
-  const lifecycleStatus = matchedSkuObj?.['Lifecycle Status'] || (typeof itemOrSku === 'object' ? itemOrSku.lifecycleStatus : 'ACTIVE') || 'ACTIVE';
+  const lifecycleStatus = matchedSkuObj?.['Lifecycle Status'] || safeItem.lifecycleStatus || 'ACTIVE';
 
   const role = classifyComponentRole(parentCategory, effectiveDescription);
 
@@ -158,12 +159,13 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
  * @returns {object} Structured multi-degree cascading impact report
  */
 function analyzeCascadingImpact(changeProposal = {}, currentBom = [], catalogData = null, chassisInfo = {}) {
-  const action = changeProposal.action || 'SWAP';
-  const origSku = cleanBaseSKU(changeProposal.originalSku || '');
-  const newSku = cleanBaseSKU(changeProposal.newSku || '');
+  const proposal = changeProposal || {};
+  const action = proposal.action || 'SWAP';
+  const origSku = cleanBaseSKU(proposal.originalSku || '');
+  const newSku = cleanBaseSKU(proposal.newSku || '');
 
-  const origProfile = origSku ? introspectSku({ sku: origSku, description: changeProposal.originalDesc || '' }, catalogData, chassisInfo) : null;
-  const newProfile = newSku ? introspectSku({ sku: newSku, description: changeProposal.newDesc || '' }, catalogData, chassisInfo) : null;
+  const origProfile = origSku ? introspectSku({ sku: origSku, description: proposal.originalDesc || '' }, catalogData, chassisInfo) : null;
+  const newProfile = newSku ? introspectSku({ sku: newSku, description: proposal.newDesc || '' }, catalogData, chassisInfo) : null;
 
   const cascadingSteps = [];
   let affectedSkusCount = 0;

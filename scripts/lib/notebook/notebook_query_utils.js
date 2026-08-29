@@ -37,7 +37,7 @@ const {
 // Fast in-memory & disk cache for repeated RAG queries within and across workflow steps
 // Cache entries: { value: <result>, cachedAt: <ISO timestamp> }
 const queryCache = new Map();
-const RAG_CACHE_FILE = path.join(__dirname, '..', '..', 'outputs', 'history', 'rag_cache.json');
+const RAG_CACHE_FILE = path.join(__dirname, '..', '..', '..', 'outputs', 'history', 'rag_cache.json');
 const RAG_CACHE_TTL_MS = parseInt(process.env.RAG_CACHE_TTL_MS || String(24 * 60 * 60 * 1000), 10); // 24h default
 
 function isCacheEntryFresh(entry) {

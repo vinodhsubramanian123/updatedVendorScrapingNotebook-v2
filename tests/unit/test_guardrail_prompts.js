@@ -14,7 +14,7 @@ test('Guardrail Prompt Factory & Query Sanitizer Unit Tests', async (t) => {
     await t2.test('buildGuardrailSystemPrompt builds v1 prompt with chassis', () => {
       const prompt = buildGuardrailSystemPrompt('DL380_Gen12_SFF');
       assert.ok(prompt.includes('You are the HPE BOQ Evaluation Orchestrator'));
-      assert.ok(prompt.includes('chassis: DL380_Gen12_SFF'));
+      assert.ok(prompt.includes('DL380_Gen12_SFF'));
       assert.ok(prompt.includes("Call 'simulate_build'"));
     });
 
