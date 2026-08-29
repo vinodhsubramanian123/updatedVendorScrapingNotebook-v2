@@ -232,26 +232,9 @@ if (require.main === module) {
         }
         console.log(`===============================================================\n`);
       } else if (command === 'prune') {
-        const { execSync } = require('child_process');
         console.log('Fetching remote branches to prune merged Jules branches...');
-        const rawBranches = execSync('git branch -r', { encoding: 'utf-8' });
-        const branches = rawBranches
-          .split('\n')
-          .map(b => b.trim())
-          .filter(b => b.startsWith('origin/') && !b.includes('HEAD') && !b.endsWith('/main') && !b.endsWith('/master'))
-          .map(b => b.replace('origin/', ''));
+        await pruneMergedBranches();
 
-        console.log(`Found ${branches.length} remote feature branch(es) to check.`);
-        for (const branch of branches) {
-          try {
-            console.log(`Pruning remote branch: origin/${branch}...`);
-            execSync(`git push origin --delete ${branch}`, { stdio: 'inherit' });
-            console.log(`✅ Successfully pruned origin/${branch}`);
-          } catch (e) {
-            console.warn(`⚠️ Could not prune ${branch}: ${e.message}`);
-          }
-        }
-        console.log('🎉 Stale remote branches pruned cleanly.');
       } else if (command === 'prs' || command === 'pr:list') {
         const state = args[1] || 'all';
         console.log(`Fetching pull requests from GitHub (State: ${state})...`);
@@ -331,8 +314,9 @@ async function archiveCompletedSessions() {
   const completed = sessions.filter(s => 
     !s.archived &&
     s.state !== 'inProgress' && 
-    (s.state === 'completed' || s.state === 'failed' || s.state === 'paused')
+    (s.state === 'completed' || s.state === 'failed' || s.state === 'paused' || s.state === 'awaitingUserFeedback' || s.outcome?.state === 'completed')
   );
+
   console.log(`Found ${completed.length} completed/inactive session(s) to inspect and archive.`);
 
   const archived = [];

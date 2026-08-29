@@ -19,6 +19,9 @@ const {
   archiveSession,
   archiveCompletedSessions,
   listPullRequests,
+  closePullRequest,
+  pruneMergedBranches,
+  getResolvedHeaders,
   getJulesClient
 } = require('../../scripts/services/jules_task_manager.js');
 
@@ -31,7 +34,16 @@ test('jules_task_manager exports required task orchestrator functions', () => {
   assert.strictEqual(typeof archiveSession, 'function');
   assert.strictEqual(typeof archiveCompletedSessions, 'function');
   assert.strictEqual(typeof listPullRequests, 'function');
+  assert.strictEqual(typeof closePullRequest, 'function');
+  assert.strictEqual(typeof pruneMergedBranches, 'function');
+  assert.strictEqual(typeof getResolvedHeaders, 'function');
   assert.strictEqual(typeof getJulesClient, 'function');
+});
+
+test('getResolvedHeaders returns compliant headers object with User-Agent', () => {
+  const headers = getResolvedHeaders();
+  assert.ok(headers && typeof headers === 'object');
+  assert.strictEqual(headers['User-Agent'], 'Antigravity-Agent');
 });
 
 test('listPullRequests fetches normalized PR array safely without throwing', async () => {
@@ -45,3 +57,4 @@ test('listPullRequests fetches normalized PR array safely without throwing', asy
     assert.ok('branch' in first);
   }
 });
+
