@@ -11,9 +11,8 @@ const geminiRotator = require('../../scripts/lib/system/gemini_rotator.js');
 test('GeminiKeyRotator Chaos Resilience & Dual-Brain Engine Fallback', async (t) => {
     
     await t.test('1. Simulate rapid concurrent burst requests with rate limit 429 and RESOURCE_EXHAUSTED errors', async () => {
-       const rotator = new GeminiKeyRotator();
-       rotator.rawKeysString = 'key1,key2,key3';
-       rotator.state = rotator._loadState();
+       const tmpState = path.join(require('os').tmpdir(), `rotator_test_1_${Date.now()}.json`);
+       const rotator = new GeminiKeyRotator({ rawKeysString: 'key1,key2,key3', stateFile: tmpState });
        
        let callCount = 0;
        
@@ -34,12 +33,12 @@ test('GeminiKeyRotator Chaos Resilience & Dual-Brain Engine Fallback', async (t)
        const status = rotator.getPoolStatus();
        assert.strictEqual(status.activeKeys, 0, 'All keys should be exhausted');
        assert.strictEqual(status.exhaustedKeys, 3, 'All 3 keys should be exhausted');
+       if (require('fs').existsSync(tmpState)) require('fs').unlinkSync(tmpState);
     });
 
     await t.test('2. Verify deterministic FIFO demotion of exhausted keys and lockouts until UTC midnight rollover.', async () => {
-       const rotator = new GeminiKeyRotator();
-       rotator.rawKeysString = 'key1,key2';
-       rotator.state = rotator._loadState();
+       const tmpState = path.join(require('os').tmpdir(), `rotator_test_2_${Date.now()}.json`);
+       const rotator = new GeminiKeyRotator({ rawKeysString: 'key1,key2', stateFile: tmpState });
 
        const err = new Error('Quota exceeded');
        err.status = 429;

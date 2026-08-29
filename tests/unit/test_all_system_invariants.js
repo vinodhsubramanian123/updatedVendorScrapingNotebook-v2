@@ -167,5 +167,30 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     assert.strictEqual(res.priceUsd, 23877, 'Must dynamically resolve bare model DL380_Gen11 to outputs directory');
   });
 
+  await t.test('INV-42: Mathematically Rigorous Hamilton–Hare Diophantine Multiplier Allocation', () => {
+    const { analyzeAndPartitionClusters } = require('../../scripts/lib/boq/multi_cluster_splitter.js');
+    const items = [
+      { sku: 'P67088-B21', description: 'Intel Xeon Platinum 8580 Processor', quantity: 40, category: 'Processor' },
+      { sku: 'P67095-B21', description: 'Intel Xeon Gold 6530 Processor', quantity: 80, category: 'Processor' },
+      { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF Server', quantity: 60, category: 'Base Chassis' }
+    ];
+    const partition = analyzeAndPartitionClusters(items, { targetTotalChassis: 60 });
+    assert.strictEqual(partition.isMultiCluster, true);
+    assert.strictEqual(partition.clusters.length, 2);
+    const sumMultipliers = partition.clusters.reduce((sum, c) => sum + c.multiplier, 0);
+    assert.strictEqual(sumMultipliers, 60, 'Sum of cluster multipliers must exactly equal target 60 chassis');
+  });
+
+  await t.test('INV-43: MCP-First Jules Autonomous Lifecycle Skill Contract', () => {
+    const skillPath = path.join(process.cwd(), '.agents', 'skills', 'jules-autonomous-protocol', 'SKILL.md');
+    assert.ok(fs.existsSync(skillPath), 'SKILL.md must exist');
+    const skillContent = fs.readFileSync(skillPath, 'utf-8');
+    assert.ok(skillContent.includes('MCP-First, CLI-Fallback'), 'Skill must define MCP-first priority');
+    assert.ok(skillContent.includes('Stage 2: Proactive Heartbeat Cron Loop'), 'Skill must mandate proactive heartbeat loop');
+    assert.ok(skillContent.includes('Stage 4: Code Review & Diff Extraction'), 'Skill must mandate code review before archive');
+    assert.ok(skillContent.includes('Stage 8: Gap Scan & New Task Dispatch'), 'Skill must mandate gap scan');
+  });
+
 });
+
 

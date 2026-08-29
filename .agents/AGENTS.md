@@ -304,6 +304,11 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Customer multi-server tenders with non-trivial processor distributions (e.g. fractional ratios or remainders) require exact integer chassis partitioning.
 - **Rule**: `multi_cluster_splitter.js` implements the exact Hamilton–Hare Largest Remainder Method. Each cluster calculates an exact proportional target share $E_i = N_{\text{total}} \times \frac{Q_i}{\sum Q}$, an integer base multiplier $\lfloor E_i \rfloor$, and a fractional remainder $E_i - \lfloor E_i \rfloor$. Deficit chassis are allocated $+1$ each to highest remainder clusters, mathematically guaranteeing $\sum N_{\text{cluster}} = N_{\text{total}}$ with zero lost or surplus nodes across all permutations.
 
+### INV-43: MCP-First Jules Lifecycle Order & Zero-Human Relay Invariant
+- **Pattern**: Background task delegation to Google Jules requires MCP-first tool invocations to capture rich structured properties (`pendingPlan`, `lastAgentMessage`, `status: busy|stable|failed`) and eliminate manual human relay.
+- **Rule**: AI agents MUST strictly execute the 8-stage lifecycle: (1) Laser-focused atomic dispatch, (2) Mandatory proactive heartbeat cron (`schedule DurationSeconds=120`, `TimerCondition="never"`), (3) Two-way plan auto-approval and unblocking, (4) Structured code review and diff inspection BEFORE archiving, (5) PR verification and merge to `main` with 100% test pass, (6) Remote branch pruning ONLY AFTER merge to `main`, (7) Audit-before-archive session retirement, and (8) Proactive gap scan for new task dispatch.
+
+
 ---
 
 ## History Directory Hygiene Rules

@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
-**Target Product**: `Alletra_Storage_System`  
-**Sync Timestamp**: 2026-08-29T18:44:21.665Z  
-**Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
+**Target Product**: `oca-feedback-test-yFJO92`  
+**Sync Timestamp**: 2026-08-29T18:41:39.654Z  
+**Total Verified SKUs**: `0` (`0` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `28`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 3 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **3** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **0** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -45,13 +45,13 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
 13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (Alletra_Storage_System)
+## 🎯 3. Chassis & Solution-Type Gotchas (oca-feedback-test-yFJO92)
 
-*No specific gotchas logged for Alletra_Storage_System. Baseline chassis layout rules active.*
+*No specific gotchas logged for oca-feedback-test-yFJO92. Baseline chassis layout rules active.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for Alletra_Storage_System. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for oca-feedback-test-yFJO92. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

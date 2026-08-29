@@ -1,7 +1,7 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `GX5000_General_RACK`  
-**Sync Timestamp**: 2026-08-29T18:25:41.494Z  
+**Sync Timestamp**: 2026-08-29T18:44:22.488Z  
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `28`  
 

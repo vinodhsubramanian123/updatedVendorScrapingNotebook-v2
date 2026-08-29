@@ -183,3 +183,9 @@ The system leverages Google Jules for background code review, test generation, a
     - Each cluster calculates an exact proportional target share $E_i = N_{\text{total}} \times \frac{Q_i}{\sum Q}$, an integer base multiplier $\lfloor E_i \rfloor$, and a fractional remainder $E_i - \lfloor E_i \rfloor$.
     - The deficit $D = N_{\text{total}} - \sum \lfloor E_i \rfloor$ is distributed $+1$ each to the top $D$ clusters sorted by remainder descending, mathematically guaranteeing $\sum N_{\text{cluster}} = N_{\text{total}}$ across all permutations without fractional losses or surplus chassis.
 
+34. **MCP-First Jules Lifecycle Order & Zero-Human Relay Invariant (`INV-43`)**:
+    - AI agents MUST prioritize MCP tools (`jules/list_sessions`, `jules/get_session_state`, `jules/send_reply_to_session`, `jules/get_code_review_context`, `jules/show_code_diff`, `jules/create_session`) over CLI commands to inspect `pendingPlan`, `lastAgentMessage`, and structured status flags (`busy`, `stable`, `failed`).
+    - The agent MUST strictly execute the 8-stage lifecycle in exact chronological sequence: (1) Laser-focused dispatch, (2) Mandatory heartbeat cron (`schedule DurationSeconds=120`), (3) Two-way plan auto-approval and unblocking, (4) Structured code review and diff inspection before archiving, (5) PR verification and merge to `main` with 100% test pass, (6) Remote branch pruning ONLY AFTER merge to `main`, (7) Audit-before-archive session retirement, and (8) Proactive gap scan for new task dispatch.
+    - Zero human relaying: Antigravity autonomously answers clarifications, approves plans, verifies test suites, and keeps the heartbeat cron active until all tasks are certified.
+
+
