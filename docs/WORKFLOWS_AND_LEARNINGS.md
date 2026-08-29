@@ -473,4 +473,25 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Customer BOQ Isolation (`INV-24`)**: Customer BOQ, quote, or tender files MUST NEVER be added or synced to NotebookLM knowledge sources directly. Customer inputs inherently contain human errors, invalid component quantities, deprecated part numbers, or missing enablement kits. Cloud NotebookLM sources are strictly reserved for official QuickSpecs PDFs, live scraped master catalogs, and certified `KnowledgeDelta` records.
 - **NLP Knowledge Extractor Sanitization**: All RAG answers pass through `knowledge_extractor.js` and `data_validator.js` with `isValidHpeSKU()` regular expression filtering and catalog verification before entering the persistent knowledge base.
 
+---
+
+## 48. Enterprise Workflow Atomic Decomposition & Continuous Grounding Architecture
+- **Atomic Workflow Substep Decomposition (Dimension A)**:
+  - **10-Stage Scraping**: (1) SSO & Portal Navigation $\rightarrow$ (2) Chassis Discovery & Base Price $\rightarrow$ (3) OCA Menu Entry $\rightarrow$ (4) Dynamic DOM Expansion (`INV-20`) $\rightarrow$ (5) Raw Table Ingestion $\rightarrow$ (6) Lifecycle Badge Separation (`INV-21`) $\rightarrow$ (7) 22-Sheet Category Mapping $\rightarrow$ (8) Staging Excel Generation $\rightarrow$ (9) 15/15 Staging Audit (`verify_excel_tally.js`) $\rightarrow$ (10) Master Promotion & Registry Sync (`INV-2`, `INV-5`).
+  - **7-Substep Evaluation**: (1a) Tabular OCR Ingestion $\rightarrow$ (1b) Multi-Unit CTO Normalization $\rightarrow$ (1c) Diophantine Multi-Cluster Partitioning (`INV-42`) $\rightarrow$ (1d) 7-Aspect Physical Math Validation $\rightarrow$ (1e) 5-Level Conflict Graph DAG $\rightarrow$ (1f) 5-Tier Strategy Matrix Ranking $\rightarrow$ (1g) Grounding Badge Inscription & Trace Logging.
+- **Comprehensive Agentic Principles Across Substeps (Dimension B)**: Universal Pre-Authorization, Dual-Brain Verification (Physics + LLM), Grounding Badges, Deterministic Key Health (`gemini_rotator.js`), and Atomic Idempotency (`safeWriteJsonAtomic`).
+- **Multi-Stage NotebookLM MCP Verification (Dimension C)**:
+  - **Stage 1 (Pre-Flight)**: Workload DNA Verification against QuickSpecs PDFs via `notebook_query`.
+  - **Stage 2 (In-Flight)**: Conflict Resolution for complex multi-option constraints.
+  - **Stage 3 (Post-Flight)**: Solution Grounding before customer presentation.
+  - **Stage 4 (Closed-Loop)**: Delta Syncing from verified BOM reconciliations into product notebooks.
+- **Continuous Telemetry & Drift Observability (Dimension D)**:
+  - Complete per-run replay ledgers in `outputs/history/runs/{run_id}.json`.
+  - Aggregated metrics in `outputs/history/pipeline_telemetry.json`.
+  - Dynamic drift inspection (`drift_inspector.js`) alerting on customer BOM variations.
+- **Knowledge Scoping & Isolation (Dimension E)**: Universal Master Knowledge Registry (`master_knowledge_registry.json`) for cross-chassis rules vs Product-Specific Partitioned Catalogs (`outputs/{Family}/{Gen}/{Model}/`) and dedicated NotebookLM notebooks. Zero cross-chassis contamination (`INV-24`).
+- **Master Excel Pre-Sync Validation & Pruning (Dimension F)**: 15/15 Staging Guardrail checks before promotion (`INV-22`), Anomaly Drop Protection (`INV-23`), and automatic stale test payload pruning (`cleanTestPayloads`).
+- **Re-scraping Diffs & Fail-Hard Integrity (Dimension G)**: Priority-based price trail deduplication (`INV-1`), GPL baseline preservation across $0 unbundled views (`INV-34`), obsolete badge sanitization (`INV-35`), and fail-hard execution on Steps 8-10 (`INV-5`).
+
+
 
