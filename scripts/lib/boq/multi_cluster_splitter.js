@@ -242,8 +242,42 @@ function analyzeAndPartitionClusters(rawItems) {
 
   // GAP-6 FIX: Dynamic alphabetical cluster labels for N clusters
   const CLUSTER_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  cpuItems.forEach((cpu, idx) => {
-    const clusterMultiplier = Math.round(cpu.quantity / cpusPerServer);
+
+  // Largest Remainder Method to satisfy Diophantine constraint (sum of multipliers = totalChassis)
+  let allocatedChassis = 0;
+  const tempClusters = cpuItems.map((cpu, idx) => {
+    const rawQty = cpu.quantity / cpusPerServer;
+    const baseMult = Math.floor(rawQty);
+    const remainder = rawQty - baseMult;
+
+    allocatedChassis += baseMult;
+
+    return {
+      idx,
+      cpu,
+      baseMult,
+      remainder
+    };
+  });
+
+  const deficit = totalChassis - allocatedChassis;
+
+  // Sort by remainder descending, then by total CPU quantity descending to break ties
+  tempClusters.sort((a, b) => b.remainder - a.remainder || b.cpu.quantity - a.cpu.quantity);
+
+  // Distribute the deficit to those with highest remainders
+  for (let i = 0; i < deficit; i++) {
+    // Only add if there are remaining clusters, theoretically deficit shouldn't exceed cpuItems.length if rounding properly,
+    // but cap it just in case.
+    if (i < tempClusters.length) {
+      tempClusters[i].baseMult += 1;
+    }
+  }
+
+  // Restore original order
+  tempClusters.sort((a, b) => a.idx - b.idx);
+
+  tempClusters.forEach(({ cpu, baseMult, idx }) => {
     const letter = CLUSTER_LETTERS[idx] || String(idx + 1);
     const clusterLabel = `Cluster_${letter}`;
     const cpuTdpMatch = cpu.description.match(/(\d+)W/i);
@@ -252,7 +286,7 @@ function analyzeAndPartitionClusters(rawItems) {
     clusters.push({
       clusterId: idx + 1,
       name: clusterLabel,
-      multiplier: clusterMultiplier,
+      multiplier: baseMult,
       cpuSku: cpu.sku,
       cpuDesc: cpu.description,
       cpuTdp: tdp,

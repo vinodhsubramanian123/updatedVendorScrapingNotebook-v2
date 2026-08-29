@@ -49,8 +49,16 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
     ];
     const result = analyzeAndPartitionClusters(rawItems);
     assert.strictEqual(result.isMultiCluster, true);
-    assert.strictEqual(result.clusters[0].multiplier, 21); // Math.round(41/2) = 21
-    assert.strictEqual(result.clusters[1].multiplier, 40); // Math.round(79/2) = 40
+    // Largest Remainder Method:
+    // P67088-B21 base: floor(41/2) = 20, remainder: 0.5
+    // P67095-B21 base: floor(79/2) = 39, remainder: 0.5
+    // Deficit: 60 - (20 + 39) = 1
+    // Tie-breaker: 79 > 41, so P67095 gets the deficit.
+    // Result: 20 and 40.
+    const platCluster = result.clusters.find(c => c.cpuSku === 'P67088-B21');
+    const goldCluster = result.clusters.find(c => c.cpuSku === 'P67095-B21');
+    assert.strictEqual(platCluster.multiplier, 20);
+    assert.strictEqual(goldCluster.multiplier, 40);
   });
 
   await t.test('stress tests with thousands of items', () => {
@@ -126,5 +134,42 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
     const result = analyzeAndPartitionClusters(rawItems);
     assert.strictEqual(result.isMultiCluster, true);
     assert.strictEqual(result.clusters.length, 2);
+  });
+
+  await t.test('fuzz tests exact chassis distribution over 10,000 iterations (Diophantine)', () => {
+    for (let i = 0; i < 10000; i++) {
+      const totalChassis = Math.floor(Math.random() * 491) + 10;
+      const numCpuTypes = Math.floor(Math.random() * 4) + 2;
+
+      let totalCpus = 2 * totalChassis;
+      const rawItems = [
+        { sku: 'DL380_Gen11_8SFF_NC_CTO', description: 'Base Chassis', quantity: totalChassis, category: 'Base Chassis' }
+      ];
+
+      let remainingCpus = totalCpus;
+      for (let c = 0; c < numCpuTypes; c++) {
+        let noise = Math.floor(Math.random() * 5) - 2;
+        let qty = Math.floor(totalCpus / numCpuTypes) + noise;
+        if (c === numCpuTypes - 1) {
+          qty = Math.max(1, remainingCpus);
+        }
+        remainingCpus -= qty;
+
+        rawItems.push({
+          sku: `CPU-${c}`,
+          description: `Processor ${c} 270W`,
+          quantity: qty,
+          category: 'Processor'
+        });
+      }
+
+      const result = analyzeAndPartitionClusters(rawItems);
+      const sumMultipliers = result.clusters.reduce((sum, cluster) => sum + cluster.multiplier, 0);
+
+      if (sumMultipliers !== totalChassis) {
+         throw new Error(`Failed! totalChassis: ${totalChassis}, sum: ${sumMultipliers}, cpus: ${JSON.stringify(rawItems.filter(i => i.category === 'Processor').map(i => i.quantity))}`);
+      }
+      assert.strictEqual(sumMultipliers, totalChassis);
+    }
   });
 });
