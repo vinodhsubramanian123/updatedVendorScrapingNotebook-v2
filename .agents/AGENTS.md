@@ -349,6 +349,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Typos in customer part numbers or description-only rows can lead to discarded items or downgraded substitutions.
 - **Rule**: `boq_parser.js` and `strategy_synthesizer.js` MUST map ambiguous inputs to their target component category/subcategory, prioritizing exact match first, nearest upward/equivalent attribute match second (never downward), and synthesizing 5-tier ranked alternatives with 100% buildable mandatory physical fixes.
 
+### INV-53: Autonomous Jules Session Resumption, Auto-Unblocking & Final Authority Quality Review Protocol
+- **Pattern**: Jules background sessions frequently pause awaiting plan approvals (`awaitingPlanApproval`) or user feedback (`awaitingUserFeedback`), which causes automation stalls if waiting for human intervention.
+- **Rule**: AI agents MUST execute `node scripts/services/jules_task_manager.js unblock` (or `npm run jules:unblock` / `approveSession`) to auto-approve proposed plans and dispatch unblocking directives without human waiting. Antigravity maintains 100% Lead Architect authority, auditing all authored test suites, verifying isolated test passes (`npm run test:isolated`), inspecting git diffs for artifact hygiene (`INV-7`), and certifying 100% quality before integration. Jules tasks MUST follow the Atomic Contract pattern (1 module + 1 test file per session, pure cross-platform JS, zero shell commands).
+
 ---
 
 ## History Directory Hygiene Rules

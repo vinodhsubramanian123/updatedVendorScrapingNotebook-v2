@@ -252,6 +252,20 @@ The system leverages Google Jules for background code review, test generation, a
          - **3rd Priority**: Propose 5-tier ranked alternative routes (Rank 1: Intent Preserved buildable, Rank 2: Performance Boost, Rank 3: Balanced, Rank 4: Scalability Expansion, Rank 5: Minimal CapEx).
       3. **100% Buildable Solution Contract**: In all proposed ranked tiers, all mandatory cables, risers, fan kits, and regulatory enablement options are automatically injected to eliminate unbuildable errors.
 
+44. **Autonomous Jules Session Resumption, Auto-Unblocking & Final Authority Quality Review Protocol (`INV-53`)**:
+    - **Zero Human Waiting & Auto-Unblock Loop**:
+      - Jules sessions pause when plan approval is required (`awaitingPlanApproval`), user feedback is requested (`awaitingUserFeedback`), or interactive input is needed (`paused`).
+      - AI agents MUST NOT require human intervention to unblock Jules.
+      - Agents MUST execute `node scripts/services/jules_task_manager.js unblock` (or `npm run jules:unblock` / `approveSession`) which autonomously detects paused sessions, approves pending plans via `session.approve()`, and sends the full auto-approval directive via `session.send(...)` to resume execution immediately.
+    - **Antigravity Lead Architect & Final Authority Governance**:
+      - Antigravity takes 100% full ownership of reviewing, validating, and certifying all code and test suites authored by Jules before merging.
+      - Never blind-merge Jules PRs or patches. Always run the complete isolated test matrix (`npm run test:isolated -- <testFile>` or `npm run test:all`), check circular dependencies (`npm run test:circular`), verify complexity bounds (`npm run test:complexity`), and audit portfolio certification (`npm test`).
+    - **Jules Task Specialization & Token Optimization**:
+      - **Where Jules Excels (Strengths)**: Atomic boundary/unit test authoring (`tests/unit/`, `node:test`), mathematical fuzzing (e.g. `budget_optimizer.js`, `query_sanitizer.js`), algorithm edge-case discovery, and component-level regression suites.
+      - **Where Jules is Weak (Avoid Delegating)**: Large cross-directory architectural refactorings, multi-process orchestration, live browser scraping requiring authenticated CDP sessions, and domain ground-truth rule synthesis.
+      - **Atomic Prompt Contract**: Keep Jules tasks single-responsibility (1 module + 1 test file), specify the exact file paths, mandate pure cross-platform JavaScript (no shell commands), provide the exact verification CLI command (`npm run test:isolated -- <testFile>`), and explicitly prohibit pausing for human confirmation.
+
+
 
 
 

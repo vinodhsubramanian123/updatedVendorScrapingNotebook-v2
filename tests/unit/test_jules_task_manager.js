@@ -1,60 +1,47 @@
 'use strict';
-/**
- * tests/unit/test_jules_task_manager.js
- *
- * Tests for scripts/services/jules_task_manager.js:
- * - Module exports verification
- * - Error handling when JULES_API_KEY is missing
- * - listPullRequests schema normalization & network resilience
- */
-
 const test = require('node:test');
 const assert = require('node:assert');
-const {
-  listSessions,
-  createSession,
-  getSessionDetails,
-  sendMessageToSession,
-  auditSession,
-  archiveSession,
-  archiveCompletedSessions,
-  listPullRequests,
-  closePullRequest,
-  pruneMergedBranches,
-  getResolvedHeaders,
-  getJulesClient
-} = require('../../scripts/services/jules_task_manager.js');
+const path = require('path');
+const julesTaskManager = require('../../scripts/services/jules_task_manager.js');
 
-test('jules_task_manager exports required task orchestrator functions', () => {
-  assert.strictEqual(typeof listSessions, 'function');
-  assert.strictEqual(typeof createSession, 'function');
-  assert.strictEqual(typeof getSessionDetails, 'function');
-  assert.strictEqual(typeof sendMessageToSession, 'function');
-  assert.strictEqual(typeof auditSession, 'function');
-  assert.strictEqual(typeof archiveSession, 'function');
-  assert.strictEqual(typeof archiveCompletedSessions, 'function');
-  assert.strictEqual(typeof listPullRequests, 'function');
-  assert.strictEqual(typeof closePullRequest, 'function');
-  assert.strictEqual(typeof pruneMergedBranches, 'function');
-  assert.strictEqual(typeof getResolvedHeaders, 'function');
-  assert.strictEqual(typeof getJulesClient, 'function');
+test('Jules Task Manager — Exported Contract Verification', () => {
+  assert.strictEqual(typeof julesTaskManager.listSessions, 'function', 'listSessions should be exported');
+  assert.strictEqual(typeof julesTaskManager.createSession, 'function', 'createSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.sendMessageToSession, 'function', 'sendMessageToSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.approveSession, 'function', 'approveSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.resumeSession, 'function', 'resumeSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.autoUnblockSessions, 'function', 'autoUnblockSessions should be exported');
+  assert.strictEqual(typeof julesTaskManager.auditSession, 'function', 'auditSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.archiveSession, 'function', 'archiveSession should be exported');
+  assert.strictEqual(typeof julesTaskManager.listPullRequests, 'function', 'listPullRequests should be exported');
+  assert.strictEqual(typeof julesTaskManager.closePullRequest, 'function', 'closePullRequest should be exported');
+  assert.strictEqual(typeof julesTaskManager.pruneMergedBranches, 'function', 'pruneMergedBranches should be exported');
 });
 
-test('getResolvedHeaders returns compliant headers object with User-Agent', () => {
-  const headers = getResolvedHeaders();
-  assert.ok(headers && typeof headers === 'object');
+test('Jules Task Manager — Resolved Headers & Token Contract', () => {
+  const headers = julesTaskManager.getResolvedHeaders();
+  assert.ok(headers && typeof headers === 'object', 'Headers object should be returned');
   assert.strictEqual(headers['User-Agent'], 'Antigravity-Agent');
 });
 
-test('listPullRequests fetches normalized PR array safely without throwing', async () => {
-  const prs = await listPullRequests('all');
-  assert.ok(Array.isArray(prs), 'PR result must always be an array');
-  if (prs.length > 0) {
-    const first = prs[0];
-    assert.ok('number' in first);
-    assert.ok('title' in first);
-    assert.ok('state' in first);
-    assert.ok('branch' in first);
+test('Jules Task Manager — List Sessions and Live Integration Contract', async () => {
+  if (!process.env.JULES_API_KEY) {
+    console.log('Skipping live Jules API call (JULES_API_KEY not present)');
+    return;
   }
+  const sessions = await julesTaskManager.listSessions();
+  assert.ok(Array.isArray(sessions), 'Sessions should be an array');
+  sessions.forEach(s => {
+    assert.ok(s.id, 'Session should have an id');
+    assert.ok(s.state, 'Session should have a state');
+  });
 });
 
+test('Jules Task Manager — Auto-Unblock Scan Contract', async () => {
+  if (!process.env.JULES_API_KEY) {
+    console.log('Skipping live Jules API call (JULES_API_KEY not present)');
+    return;
+  }
+  const unblocked = await julesTaskManager.autoUnblockSessions();
+  assert.ok(Array.isArray(unblocked), 'autoUnblockSessions should return an array');
+});

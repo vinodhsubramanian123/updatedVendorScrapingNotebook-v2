@@ -567,6 +567,37 @@ When a BOQ evaluation results in low confidence or physical constraint violation
     2. **Exact $\ge$ Upward Matching**: Resolves exact part numbers first, or closest upward/equivalent specification (e.g. core counts or memory speed), strictly avoiding downgrades.
     3. **5-Tier Strategy Synthesis**: Proposes Ranked Routes (Rank 1: Intent Preserved, Rank 2: Performance Boost, Rank 3: Balanced, Rank 4: Scalability Expansion, Rank 5: Minimal CapEx), all 100% buildable with mandatory physical fixes.
 
+---
+
+## 57. Autonomous Jules Session Resumption, Auto-Unblocking & Quality Governance Protocol (`INV-53`)
+- **Autonomous Session Unblocking & Plan Auto-Approval**:
+  - Google Jules sessions enter `paused`, `awaitingPlanApproval`, or `awaitingUserFeedback` states when planning steps require confirmation or when an execution turn completes.
+  - To prevent automation stalls without requiring human user prompts:
+    1. `scripts/services/jules_task_manager.js` implements `autoUnblockSessions()`, `approveSession(id)`, and `resumeSession(id)` (exposed via `npm run jules:unblock` and `npm run jules:resume`).
+    2. The unblock loop inspects paused sessions, auto-approves proposed plans via `session.approve()`, and sends the full auto-approval directive via `session.send(...)` to resume execution headlessly.
+- **Antigravity Lead Architect Quality & Verification Governance**:
+  - Antigravity takes 100% ownership of verifying all work produced by Jules before merging into `main`.
+  - Every Jules PR/patch is audited against:
+    - **Artifact Hygiene (`INV-7`)**: Zero temp outputs or history dumps committed.
+    - **Cross-Platform Compatibility (`INV-16`)**: Pure cross-platform JavaScript (no shell commands like `rm -rf` or `grep`).
+    - **Test Matrix Certification (`INV-47`)**: Isolated test matrix pass (`npm run test:isolated -- <testFile>` or `npm run test:all`).
+    - **Structural Architecture Gates**: Clean DAG circular dependency check (`npm run test:circular`), cyclomatic complexity check (`npm run test:complexity`), and 6/6 product portfolio audit (`npm test`).
+- **Jules Task Specialization & Token Optimization Strategy**:
+  - **Optimal Work for Jules (High Efficiency / Big Token Savings)**:
+    - Dedicated, isolated unit test creation (`tests/unit/`, `node:test`, `node:assert`).
+    - Mathematical boundary fuzzing (e.g. `budget_optimizer.js`, `query_sanitizer.js`).
+    - Pure functional algorithm edge-case discovery (off-by-one, boundary values, null handling).
+    - Component-level regression suites and mock data synthesis.
+    - Single-file SonarQube complexity audits or ARIA accessibility tags.
+  - **Work to Avoid Delegating to Jules (High Failure Rate / High Token Waste)**:
+    - Multi-stage scraping pipelines requiring active CDP browser sessions or OAuth tokens.
+    - Large, cross-cutting architectural refactorings spanning 10+ directories simultaneously.
+    - Domain ground-truth rule synthesis requiring complex 22-sheet Excel catalog interpretation.
+  - **Atomic Prompt Contract Standard**:
+    - 1 Session = 1 Module + 1 Test File.
+    - Explicit target paths, invariants to obey, exact CLI verification command (`npm run test:isolated -- ...`), and strict "Use pure cross-platform JavaScript without shell commands" constraints.
+
+
 
 
 

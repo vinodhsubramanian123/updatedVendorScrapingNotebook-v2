@@ -95,9 +95,93 @@ async function getSessionDetails(sessionId) {
  */
 async function sendMessageToSession(sessionId, message) {
   const client = await getJulesClient();
-  const session = await client.session(sessionId);
+  const rawId = String(sessionId).replace(/^sessions\//, '');
+  const session = await client.session(rawId);
   await session.send(message);
   return session;
+}
+
+/**
+ * Auto-approve a proposed plan in a Jules session.
+ * @param {string} sessionId
+ */
+async function approveSession(sessionId) {
+  const client = await getJulesClient();
+  const rawId = String(sessionId).replace(/^sessions\//, '');
+  const session = await client.session(rawId);
+  if (typeof session.approve === 'function') {
+    try {
+      await session.approve();
+      return { success: true, action: 'approved', sessionId: rawId };
+    } catch (e) {
+      await session.send('Plan approved. Please proceed with execution and emit the PR.');
+      return { success: true, action: 'approved_via_send', sessionId: rawId, message: e.message };
+    }
+  }
+  await session.send('Plan approved. Please proceed with execution and emit the PR.');
+  return { success: true, action: 'approved_via_send', sessionId: rawId };
+}
+
+/**
+ * Resume a paused or waiting Jules session.
+ * @param {string} sessionId
+ * @param {string} [message]
+ */
+async function resumeSession(sessionId, message = 'Please resume and complete this task.') {
+  const client = await getJulesClient();
+  const rawId = String(sessionId).replace(/^sessions\//, '');
+  const session = await client.session(rawId);
+  try {
+    if (typeof session.approve === 'function') {
+      await session.approve();
+    }
+  } catch (_) {}
+  await session.send(message);
+  return { success: true, action: 'resumed', sessionId: rawId };
+}
+
+/**
+ * Scan all sessions and automatically unblock any paused/waiting sessions.
+ * Implements the Zero-Waiting auto-approval protocol (INV-0, INV-15).
+ */
+async function autoUnblockSessions() {
+  const client = await getJulesClient();
+  const sessions = await client.sessions().all();
+  const unblocked = [];
+  for (const s of sessions) {
+    const rawId = s.id || (s.name ? s.name.replace(/^sessions\//, '') : '');
+    const state = s.state || s.status || '';
+    const isPausedOrWaiting = (
+      state === 'paused' ||
+      state === 'awaitingPlanApproval' ||
+      state === 'awaitingUserFeedback' ||
+      state === 'awaitingInput' ||
+      state === 'requiresApproval'
+    );
+    if (isPausedOrWaiting && !s.archived) {
+      console.log(`[Auto-Unblock] Found paused/waiting session: ${rawId} (State: ${state}, Title: ${s.title || ''})`);
+      try {
+        const session = await client.session(rawId);
+        let approved = false;
+        if (typeof session.approve === 'function') {
+          try {
+            await session.approve();
+            approved = true;
+            console.log(`  ✅ Successfully approved plan for session ${rawId}`);
+          } catch (appErr) {
+            // Plan might not require approval or already approved
+          }
+        }
+        const unblockPrompt = 'Auto-Approval Directive: Full authorization granted for all plan items, tool executions, and file edits. Please execute the plan, certify all unit tests with `npm run test:isolated`, and finalize the changes.';
+        await session.send(unblockPrompt);
+        console.log(`  ✅ Dispatched auto-approval instruction to session ${rawId}`);
+        unblocked.push({ sessionId: rawId, title: s.title, state, approved });
+      } catch (err) {
+        console.warn(`  ⚠️ Could not unblock session ${rawId}: ${err.message}`);
+      }
+    }
+  }
+  return unblocked;
 }
 
 /**
@@ -255,8 +339,31 @@ if (require.main === module) {
           const results = await archiveCompletedSessions();
           console.log(`\n🎉 Successfully audited and archived ${results.length} completed session(s).`);
         }
+      } else if (command === 'resume') {
+        let id = args[1] || 'active';
+        const msg = args[2] || 'Please resume and complete this task.';
+        if (id === 'active' || id === 'current' || id === 'test-session') {
+          const list = await listSessions();
+          if (list.length > 0) id = list[0].id;
+        }
+        console.log(`Resuming session: ${id}...`);
+        await resumeSession(id, msg);
+        console.log(`✅ Session ${id} resumed.`);
+      } else if (command === 'approve') {
+        let id = args[1] || 'active';
+        if (id === 'active' || id === 'current' || id === 'test-session') {
+          const list = await listSessions();
+          if (list.length > 0) id = list[0].id;
+        }
+        console.log(`Auto-approving plan for session: ${id}...`);
+        await approveSession(id);
+        console.log(`✅ Plan auto-approved for session ${id}.`);
+      } else if (command === 'unblock' || command === 'auto-unblock') {
+        console.log('🔍 Scanning and auto-unblocking all paused / waiting Jules sessions...');
+        const unblocked = await autoUnblockSessions();
+        console.log(`\n🎉 Processed ${unblocked.length} paused/waiting session(s).`);
       } else {
-        console.log('Unknown command. Available commands: list, create, send, status, audit, prune, prs, archive, archive-completed');
+        console.log('Unknown command. Available commands: list, create, send, resume, approve, unblock, status, audit, prune, prs, archive, archive-completed');
       }
     } catch (err) {
       console.error('❌ Error in Jules Task Manager:', err.message);
@@ -439,6 +546,9 @@ module.exports = {
   createSession,
   getSessionDetails,
   sendMessageToSession,
+  approveSession,
+  resumeSession,
+  autoUnblockSessions,
   archiveSession,
   auditSession,
   archiveCompletedSessions,
