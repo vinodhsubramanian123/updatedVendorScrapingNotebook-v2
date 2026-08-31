@@ -35,6 +35,8 @@ function isValidHpeSKU(skuStr) {
 
   // MANDATORY: Valid HPE SKUs MUST contain at least one digit (eliminates plain English words)
   if (!/\d/.test(clean)) return false;
+  // MANDATORY: Valid HPE SKUs MUST NOT be pure digits (eliminates integers like 12345, quantities, or line numbers)
+  if (/^\d+$/.test(clean)) return false;
 
   // Filter out internal DOM pattern IDs, core count labels, and common words
   if (/pat0|00300|core|recovery|simplified|rowcount|context/i.test(clean)) return false;
@@ -90,8 +92,8 @@ function cleanBaseSKU(skuStr) {
   if (/^[tT][PQR0-9][A-Z0-9]{4,6}(-[A-Z0-9]+)?$/i.test(str)) {
     str = str.substring(1);
   }
-  // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21")
-  str = str.replace(/\s+(?:0D1|OD1|B19|B21|#0D1|#B19|#B21)\b/i, '').trim();
+  // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21", "P73831-B21#0D1" -> "P73831-B21")
+  str = str.replace(/(?:\s+|#)(?:0D1|OD1|B19|B21|#0D1|#B19|#B21)\b/i, '').trim();
   str = str.replace(/(CTO|BTO|FIO)$/i, '');
   // Strip leading option badges/prefixes and punctuation (e.g. "[P73282-B21]", "P49147-B21.")
   return str.replace(/^[\[\(\{"'`<]+|[\]\)\}"'`,;.:!?\/>]+$/g, '').trim();
