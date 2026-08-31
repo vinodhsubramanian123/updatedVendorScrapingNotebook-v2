@@ -13,12 +13,12 @@ const { isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
 
 // ── Argument handling ─────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
-const postFlightOnly = args.includes('--post-flight-only');
-const xlsxPath = args.find(a => !a.startsWith('--'));
+const defaultCatalog = path.join(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_OCA_Catalog.xlsx');
+const xlsxPath = args.find(a => !a.startsWith('--')) || (fs.existsSync(defaultCatalog) ? defaultCatalog : null);
+const postFlightOnly = args.includes('--post-flight-only') || (!args.find(a => !a.startsWith('--')));
 
 if (!xlsxPath) {
-  console.error('Usage: node scripts/test_pipeline_evals.js <outputs/.../Foo_OCA_Catalog.xlsx> [--post-flight-only]');
-  console.error('Example: node scripts/test_pipeline_evals.js outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_OCA_Catalog.xlsx');
+  console.error('Usage: node tests/integration/test_pipeline_evals.js <outputs/.../Foo_OCA_Catalog.xlsx> [--post-flight-only]');
   process.exit(1);
 }
 

@@ -19,10 +19,10 @@ const chassisMap = require('../../scripts/config/chassis_map.json');
 describe('DL380 Gen11 Isolation & Anti-Pollution Certification', () => {
   it('certifies distinct NotebookLM notebook IDs between Gen11 and Gen12', () => {
     const gen11Entry = notebooksCfg.notebooks['DL380_Gen11'];
-    const gen12Entry = notebooksCfg.notebooks['DL380_Gen12_SFF'];
+    const gen12Entry = notebooksCfg.notebooks['DL380_Gen12'] || notebooksCfg.notebooks['DL380_Gen12_SFF'];
 
     assert.ok(gen11Entry, 'DL380_Gen11 entry must exist in notebooks.json');
-    assert.ok(gen12Entry, 'DL380_Gen12_SFF entry must exist in notebooks.json');
+    assert.ok(gen12Entry, 'DL380_Gen12 entry must exist in notebooks.json');
 
     const gen11Id = typeof gen11Entry === 'object' ? gen11Entry.notebookId : gen11Entry;
     const gen12Id = typeof gen12Entry === 'object' ? gen12Entry.notebookId : gen12Entry;

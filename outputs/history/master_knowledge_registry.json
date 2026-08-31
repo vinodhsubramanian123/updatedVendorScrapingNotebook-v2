@@ -1,17 +1,18 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-31T03:01:36.032Z",
-  "lastUpdated": "2026-08-31T03:01:36.032Z",
-  "totalLearnedRules": 28,
+  "generatedAt": "2026-08-31T03:18:21.638Z",
+  "lastUpdated": "2026-08-31T03:18:21.638Z",
+  "totalLearnedRules": 35,
   "productFamiliesSynced": [
     "DL380",
-    "DL380 Gen11"
+    "DL380 Gen11",
+    "DL380 Gen12"
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 13,
-    "chassisSpecific": 14
+    "familyGen": 18,
+    "chassisSpecific": 16
   },
   "universalRules": [
     {
@@ -223,7 +224,7 @@
     },
     {
       "deltaId": "DELTA-1787939245188",
-      "timestamp": "2026-08-30T18:02:15.940Z",
+      "timestamp": "2026-08-31T03:07:18.747Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -241,7 +242,7 @@
     },
     {
       "deltaId": "DELTA-1787939298644",
-      "timestamp": "2026-08-30T18:03:18.511Z",
+      "timestamp": "2026-08-31T03:07:01.891Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -256,6 +257,76 @@
       "solutionType": "General Server",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG",
       "scope": "FAMILY_GEN"
+    },
+    {
+      "deltaId": "DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "OPTION_TYPE_SUBSTITUTION",
+      "affectedSku": "P69728-B21",
+      "requiredDependencySku": "P69728-F21",
+      "reasoning": "Grounding Verification: Standalone BTO option P69728-B21 is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is P69728-F21.",
+      "rawMessage": "| **`P69728-B21`** | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit | Memory / RDIMM (BTO) | **❌ BLOCKED in CTO (CLIC Suffix Violation)** | Standalone retail Build-to-Order (BTO) SKU [9, 15, 16]. Factory Configure-to-Order sessions enforce the rule: *\"BTO products are not allowed in CTO B",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.089Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P75740-B21",
+      "requiredDependencySku": "873763-B21",
+      "reasoning": "Grounding Verification: Selecting P75740-B21 requires auxiliary component 873763-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "| **`P75740-B21`** | HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit | Smart Chassis / Drive Cage | **✅ Valid Front Cage** | Installs an 8-bay SFF x1 U.3 Tri-Mode backplane into Box 1, 2, or 3 [19-23]. Installing this cage **clears the factory unbuildable drive-less chassis block** (which otherw",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.089Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P47777-B21",
+      "requiredDependencySku": "P01366-B21",
+      "reasoning": "Grounding Verification: Selecting P47777-B21 requires auxiliary component P01366-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "| **`P47777-B21`** | HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller | Storage Controller / Tri-Mode | **⚠️ Conditional Pass (Requires 3 Co-Dependencies)** | Stand-up PCIe card (-p) installed into a PCIe riser slot [30, 36, 39-41]. Requires **`P01366-B21`** (battery), **`P48918-B2",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.091Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P28586-B21",
+      "requiredDependencySku": "P40430-B21",
+      "reasoning": "Grounding Verification: Selecting P28586-B21 requires auxiliary component P40430-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "Connecting SAS hard drives (`P28586-B21` and `P40430-B21`) in the 8SFF drive cage (`P75740-B21`) to the MR416i-p storage controller (`P47777-B21`) requires the following physical and logical connections [60–65, 97–102, 129–134]:",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.092Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": "P75740-B21",
+      "reasoning": "Grounding Verification: Selecting P76453-B21 requires auxiliary component P75740-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes of the `P75740-B21` drive cage to the stand-up MR416i-p requires the **HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit (`P76453-B21`)** [76, 80–85, 113, 117–122, 145,",
+      "scopeTaxonomy": "FAMILY_GEN",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.092Z",
+      "solutionType": "DL380 Gen12 CTO Server"
     }
   ],
   "chassisSpecificRules": [
@@ -450,6 +521,34 @@
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "solutionType": "General Server",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P28586-B21",
+      "requiredDependencySku": "P75740-B21",
+      "reasoning": "Grounding Verification: Selecting P28586-B21 requires auxiliary component P75740-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "| **`P28586-B21`** | HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD | Storage / SFF SAS HDD | **✅ Valid SAS HDD** | 12G SAS 10K RPM Basic Carrier (BC) drive [21, 28]. Supported inside the `P75740-B21` drive cage [21, 22]. Requires a dedicated hardware storage controller (`P47777-B21`) as the system board",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.089Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P51083-B21",
+      "requiredDependencySku": "P74573-B21",
+      "reasoning": "Grounding Verification: Selecting P51083-B21 requires auxiliary component P74573-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "| **`P51083-B21`** | HPE ProLiant DL380 Gen11 2U x16/x16/x16 Secondary Riser Kit | PCIe Expansion / Secondary Riser | **⚠️ BLOCKED if Single CPU (CPU 2 Dependency)** | Adds Slots 4, 5, and 6 (PCIe Gen5 x16) [35-37]. **QuickSpecs Mandate:** *\"If Secondary OR Tertiary Riser is selected, then Second Pr",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-08-31T03:06:58.091Z",
+      "solutionType": "DL380 Gen12 CTO Server"
     }
   ]
 }

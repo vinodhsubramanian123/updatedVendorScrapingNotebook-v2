@@ -35598,5 +35598,905 @@
     "field": "Description",
     "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
     "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P73287-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-22",
+    "newValue": "2026-08-24"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-24",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "(Sub-table)",
+    "field": "Description",
+    "oldValue": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
+    "newValue": "[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit"
   }
 ]

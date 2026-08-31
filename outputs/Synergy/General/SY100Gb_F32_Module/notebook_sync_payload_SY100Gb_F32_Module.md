@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-08-31T03:01:36.052Z  
+**Sync Timestamp**: 2026-08-31T03:18:21.655Z  
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `28`  
+**Total Synced KnowledgeDeltas**: `35`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -44,6 +44,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 11. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
 12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
 13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+14. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P69728-B21)*
+15. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
+16. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380 Gen12**: undefined *(Affected SKU: P47777-B21)*
+17. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P28586-B21)*
+18. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P76453-B21)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
 

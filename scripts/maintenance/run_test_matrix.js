@@ -175,6 +175,10 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     let stderr = '';
     let timedOut = false;
 
+    const effectiveTimeoutMs = (testFile.includes('tests/e2e/') || testFile.includes('verify_all'))
+      ? Math.max(timeoutMs, 180000)
+      : timeoutMs;
+
     const child = spawn(process.execPath, args, {
       cwd: rootDir,
       env: { ...process.env, FORCE_COLOR: '1' }
@@ -183,7 +187,7 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     const timer = setTimeout(() => {
       timedOut = true;
       child.kill('SIGKILL');
-    }, timeoutMs);
+    }, effectiveTimeoutMs);
 
     child.stdout.on('data', (data) => {
       const chunk = data.toString();

@@ -54,7 +54,8 @@ console.log('    ✅ PASS: Empty target returns safe empty rule structure withou
 // 5. Per-chassis Notebook ID resolution
 const notebooksCfg = JSON.parse(fs.readFileSync(path.join(__dirname, '../../scripts/config/notebooks.json'), 'utf-8'));
 assert.strictEqual(notebooksCfg.notebooks['DL380_Gen11'].notebookId, 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6', 'Gen11 notebook ID must match');
-assert.strictEqual(notebooksCfg.notebooks['DL380_Gen12_SFF'].notebookId, '1d190853-4e9c-48df-aa70-eae66c6f2c1f', 'Gen12 notebook ID must match');
+const gen12Entry = notebooksCfg.notebooks['DL380_Gen12'] || notebooksCfg.notebooks['DL380_Gen12_SFF'];
+assert.strictEqual(gen12Entry.notebookId, '1d190853-4e9c-48df-aa70-eae66c6f2c1f', 'Gen12 notebook ID must match');
 assert.strictEqual(notebooksCfg.notebooks['Alletra_Storage_System'].notebookId, 'a67629ba-3434-42ab-b465-bd6d71852198', 'Alletra notebook ID must match');
 console.log('\n[5] ✅ PASS: Per-chassis notebook IDs verified in config/notebooks.json.');
 

@@ -67,7 +67,7 @@ async function runE2ETest() {
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
     serverProc = spawn('node', [serverScript], {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT) }
+      env: { ...process.env, PORT: String(PORT), LOCAL_EVAL_ONLY: '1' }
     });
 
     for (let i = 0; i < 30; i++) {
@@ -107,22 +107,19 @@ async function runE2ETest() {
 
   try {
     // ── Pre-flight: Kill any stuck mutex task & wait for server idle ──────────
-    await page.evaluate(async () => {
-      await fetch('/api/kill-task', { method: 'POST' }).catch(() => {});
-    }).catch(() => {});
-    // Give server 2s to clear the mutex after kill
-    await page.waitForTimeout(2000);
+    try {
+      await fetch(`${SERVER_URL}/api/kill-task`, { method: 'POST' });
+    } catch (_) {}
+    // Give server 1s to clear the mutex after kill
+    await new Promise(r => setTimeout(r, 1000));
     // Verify server is idle (isTaskRunning=false) before proceeding
-    for (let attempt = 0; attempt < 20; attempt++) {
-      const alive = await page.evaluate(async () => {
-        try {
-          const r = await fetch('/api/health');
-          const d = await r.json();
-          return !d.isTaskRunning;
-        } catch (_) { return true; }
-      }).catch(() => true);
-      if (alive) break;
-      await page.waitForTimeout(1500);
+    for (let attempt = 0; attempt < 10; attempt++) {
+      try {
+        const r = await fetch(`${SERVER_URL}/api/health`);
+        const d = await r.json();
+        if (!d.isTaskRunning) break;
+      } catch (_) { break; }
+      await new Promise(r => setTimeout(r, 1000));
     }
 
     // ──────────────────────────────────────────────────────────────────────────
