@@ -49,7 +49,7 @@ npm run dev
 | `npm run dashboard` | Start Express backend, Vite frontend dev server, and feedback listener concurrently |
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
-| `npm test` | Run portfolio verification audit (`verify_all.js`) across 7 products |
+| `npm test` | Run portfolio verification audit (`verify_all.js`) across 6 products |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |
 | `npm run status:sync` | Re-sync live portfolio state and generate `.agents/PORTFOLIO_STATUS.md` |
 | `npm run test:all` | Run complete regression matrix across 50+ test suites (100% PASS) |
@@ -68,6 +68,11 @@ npm run dev
 | `npm run test:query_sanitizer` | Run NLP query sanitizer and prompt injection guard tests |
 | `npm run test:eval_multi` | Run multi-configuration batch evaluator tests |
 | `npm run test:jules_task_manager` | Run Jules task manager and GitHub REST client tests |
+| `npm run test:circular` | Verify 0 circular dependencies across all 350+ repository modules |
+| `npm run test:complexity` | Verify McCabe cyclomatic complexity bounds across core domain files |
+| `npm run test:runner` | Run unit tests for the isolated test runner and failure ledger |
+| `npm run test:isolated -- <file>` | Run a single test file in isolation with full verbosity and diagnostics |
+| `npm run test:failed` | Re-test ONLY previously failing tests recorded in failure ledger |
 | `npm run eval:boq -- <file>` | Run CLI BOQ evaluator against a quote file |
 | `npm run scrape` | Execute live OCA portal scrape via CDP |
 | `npm run rebuild` | Rebuild all catalogs from raw_data |
@@ -115,7 +120,7 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 |---|---|---|---|
 | Aspect Math | `npm run test:aspect_units` | 34 | 7 physical hardware math checkers (compute, memory, storage, pcie, power, chassis, support) |
 | BOQ Benchmarks | `npm run test:benchmarks` | 5 scenarios | End-to-end BOQ evaluation with 100% recall/precision metrics |
-| Portfolio Audit | `npm test` | 7 product lines | Validates all catalog outputs on disk against 7 guardrails |
+| Portfolio Audit | `npm test` | 6 product lines | Validates all catalog outputs on disk against 7 guardrails |
 | E2E Scenarios | `node tests/integration/test_end_to_end_scenarios.js` | Multi-scenario | Cross-product evaluation scenarios |
 | Conflict Graph | `node tests/integration/test_conflict_graph.js` | Per-rule DAG | Conflict graph DAG and resolution matrix validation |
 | Offline Mode | `node tests/chaos/test_offline_pipeline.js` | Full fallback | Verifies graceful degradation without external APIs |
@@ -144,7 +149,7 @@ The following are the 7 invariants most likely to be accidentally broken by futu
 ### DX-1: Verify Price Trail Has No Same-Day Duplicates
 ```bash
 node -e "
-const h = require('./outputs/ProLiant/Gen12/DL380_Gen12_SFF/history/price_history.json');
+const h = require('./outputs/ProLiant/Gen12/DL380_Gen12/history/price_history.json');
 let bad = 0;
 for (const [k, trail] of Object.entries(h)) {
   const seen = {};
@@ -160,10 +165,10 @@ console.log(bad === 0 ? '✅ No same-day duplicates' : '❌ ' + bad + ' SKUs hav
 ```bash
 node -e "
 const fs = require('fs');
-const cat = JSON.parse(fs.readFileSync('./outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json'));
+const cat = JSON.parse(fs.readFileSync('./outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json'));
 console.log('catalog.json totalUniqueSKUs:', cat.metadata.totalUniqueSKUs);
 const md = fs.readFileSync('./outputs/SCRAPED_CATALOGS.md', 'utf-8');
-const match = md.match(/DL380_Gen12_SFF.*?\|(\d+)/);
+const match = md.match(/DL380_Gen12.*?\|(\d+)/);
 console.log('SCRAPED_CATALOGS.md SKU count:', match ? match[1] : 'Not found');
 console.log(parseInt(match?.[1]) > 200 ? '✅ Count looks real' : '❌ Count looks like DOM table count (~124)');
 "
@@ -199,11 +204,11 @@ grep -n "throw new Error" scripts/scrapers/scrape_oca_solution.js | grep -i "syn
 ```bash
 node -e "
 const fs = require('fs');
-const cat = JSON.parse(fs.readFileSync('./outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json'));
+const cat = JSON.parse(fs.readFileSync('./outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json'));
 const d = cat.metadata.scrapeDate;
 console.log('scrapeDate:', d);
 console.log(/^\d{4}-\d{2}-\d{2}$/.test(d) ? '✅ YYYY-MM-DD format' : '❌ Not YYYY-MM-DD — INV-6 regression');
-const h = require('fs').readdirSync('./outputs/ProLiant/Gen12/DL380_Gen12_SFF/history');
+const h = require('fs').readdirSync('./outputs/ProLiant/Gen12/DL380_Gen12/history');
 const bad = h.filter(f => /^catalog_\d{4}-\d{2}-\d{2}T/.test(f));
 console.log(bad.length === 0 ? '✅ No ISO-timestamp snapshots' : '❌ ' + bad.length + ' ISO-timestamp snapshots found (INV-6 regression)');
 "

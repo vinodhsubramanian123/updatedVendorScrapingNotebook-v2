@@ -520,7 +520,7 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
     fs.mkdirSync(outputDirectory, { recursive: true });
   }
 
-  const rawItems = extractRawItemsFromWorkbook(inputFilePath);
+  const rawItems = Array.isArray(inputFilePath) ? inputFilePath : extractRawItemsFromWorkbook(inputFilePath);
   const partitionResult = analyzeAndPartitionClusters(rawItems);
   const detectedChassis = partitionResult.detectedChassis || detectChassisVariant(rawItems);
 

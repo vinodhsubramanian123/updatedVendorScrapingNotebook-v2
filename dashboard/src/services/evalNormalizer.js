@@ -112,6 +112,13 @@ export function normalizeEvalResult(payload) {
     // NotebookLM grounding status — surfaces whether cloud brain was consulted
     notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
     postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null,
+    // End-to-End Provenance Trace & Action Checklist
+    provenanceTrace: data.provenanceTrace ?? inner.provenanceTrace ?? null,
+    traceId: data.traceId ?? inner.provenanceTrace?.traceId ?? null,
+    needsActions: inner.needsActions ?? data.needsActions ?? [],
+    unsolicitedOptionalItems: inner.unsolicitedOptionalItems ?? data.unsolicitedOptionalItems ?? [],
+    totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
+    stageBreakdown: inner.stageBreakdown ?? data.stageBreakdown ?? {},
     // RAG fields — populated later by the poller
     ragAnswer: null,
     ragData: null

@@ -10,7 +10,9 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const SERVER_URL = 'http://127.0.0.1:3000';
 
 async function runBrowserEvalSuite() {
@@ -343,9 +345,9 @@ async function runBrowserEvalSuite() {
 
 if (require.main === module) {
   runBrowserEvalSuite().then(res => {
-    fs.writeFileSync(
-      path.join(__dirname, '..', 'outputs', 'history', 'browser_eval_audit.json'),
-      JSON.stringify({ timestamp: new Date().toISOString(), ...res }, null, 2)
+    safeWriteJsonAtomic(
+      path.join(PROJECT_ROOT, 'outputs', 'history', 'browser_eval_audit.json'),
+      { timestamp: new Date().toISOString(), ...res }
     );
   }).catch(err => {
     console.error('Fatal audit suite error:', err);

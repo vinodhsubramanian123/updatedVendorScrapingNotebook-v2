@@ -12,9 +12,10 @@ const { spawn } = require('child_process');
 const http = require('http');
 
 const PORT = 3000;
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const SERVER_URL = `http://127.0.0.1:${PORT}`;
-const BOQ_FILE = path.join(__dirname, '..', 'HP Opportunity- DL380_5 Servers.xlsx');
-const OUTPUT_IMG = path.join(__dirname, '..', 'outputs', 'history', 'visual_boq_topology_screenshot.png');
+const BOQ_FILE = path.join(PROJECT_ROOT, 'HP Opportunity- DL380_5 Servers.xlsx');
+const OUTPUT_IMG = path.join(PROJECT_ROOT, 'outputs', 'history', 'visual_boq_topology_screenshot.png');
 const ARTIFACTS_DIR = '/home/vinodh/.gemini/antigravity-ide/brain/8064941a-87d2-4f88-9126-5f0e45bda912';
 
 function isServerRunning(url) {
@@ -31,9 +32,9 @@ async function capture() {
 
   if (!running) {
     console.log('Starting dashboard server...');
-    const serverScript = path.join(__dirname, '..', 'dashboard', 'server.cjs');
+    const serverScript = path.join(PROJECT_ROOT, 'dashboard', 'server.cjs');
     serverProc = spawn('node', [serverScript], {
-      cwd: path.join(__dirname, '..'),
+      cwd: PROJECT_ROOT,
       env: { ...process.env, PORT: String(PORT) }
     });
 

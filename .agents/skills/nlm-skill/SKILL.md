@@ -794,7 +794,15 @@ The MCP server runs as a long-lived process. For 24/7 deployments (e.g. an alway
 
 The in-process conversation history cache used to grow without bound, eventually OOM'ing the host on always-on servers. Three env-var knobs cap memory. Set any to `0` to disable that specific cap and restore the old unbounded behavior:
 
+| Setting | Default | Description |
+|---|---|---|
 | `NOTEBOOKLM_CONVERSATION_MAX_CONVS` | `500` | Max distinct conversations cached. On overflow, the least-recently-used conversation is evicted. Reads and writes both promote to MRU. |
+| `NOTEBOOKLM_CONVERSATION_MAX_TURNS` | `50` | Max turns cached per conversation. |
+| `NOTEBOOKLM_CONVERSATION_MAX_CHARS_PER_TURN` | `100000` | Per-turn answer char cap. Safety net against pathological payloads. Queries are user input and not truncated. |
+
+With all defaults: 500 convs × 50 turns × up to 100k chars = hard upper bound around ~2.5 GB of answer text. In practice answers are 1–10 KB, so the typical ceiling is ~25 MB.
+
+Negative values are clamped to `0` (unlimited) with a warning. Invalid values fall back to the default with a warning.
 
 ### 17. Antigravity IDE Integration & Dashboard Observability
 
@@ -807,11 +815,6 @@ For solutions running the Antigravity React Dashboard (`http://localhost:5173`),
 
 **Agent Instruction for CLI vs MCP Fallback**:
 If `knowledge_sync.js` fails to execute `nlm source add` via CLI (e.g. CLI missing from `PATH` inside an agent container), it returns a JSON payload suggesting MCP fallback (`mcpToolName: 'source_add'`). If you encounter this, immediately fallback to calling `call_mcp_tool` for `gemini-notebook-mcp` to complete the synchronization process without stalling the dashboard.
-| `NOTEBOOKLM_CONVERSATION_MAX_CHARS_PER_TURN` | `100000` | Per-turn answer char cap. Safety net against pathological payloads. Queries are user input and not truncated. |
-
-With all defaults: 500 convs × 50 turns × up to 100k chars = hard upper bound around ~2.5 GB of answer text. In practice answers are 1–10 KB, so the typical ceiling is ~25 MB.
-
-Negative values are clamped to `0` (unlimited) with a warning. Invalid values fall back to the default with a warning.
 
 #### Cache stats (added in 0.6.14)
 

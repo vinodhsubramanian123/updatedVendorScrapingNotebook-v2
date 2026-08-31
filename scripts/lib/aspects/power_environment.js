@@ -6,6 +6,37 @@
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
+// GPU TDP lookup by description keyword (watts). Ordered by most-specific first.
+// Source: NVIDIA product spec sheets (TDP at max boost).
+const GPU_TDP_TABLE = [
+  { keywords: ['h200'],  tdpW: 700 },
+  { keywords: ['h100'],  tdpW: 700 },
+  { keywords: ['a100'],  tdpW: 400 },
+  { keywords: ['a800'],  tdpW: 400 },
+  { keywords: ['l40s'],  tdpW: 350 },
+  { keywords: ['a40'],   tdpW: 300 },
+  { keywords: ['a30'],   tdpW: 165 },
+  { keywords: ['l40 '],  tdpW: 300 }, // L40 (not L40S)
+  { keywords: ['l4'],    tdpW: 72  },
+  { keywords: ['a16'],   tdpW: 250 },
+  { keywords: ['a2'],    tdpW: 60  },
+  { keywords: ['rtx 6000'], tdpW: 300 },
+  { keywords: ['rtx 4500'], tdpW: 210 },
+];
+
+/**
+ * Estimate GPU TDP based on description keywords.
+ * Returns watts; defaults to 300W if model not recognized.
+ * @param {string} desc - Lowercase item description
+ * @returns {number}
+ */
+function _estimateGpuTdpW(desc) {
+  for (const entry of GPU_TDP_TABLE) {
+    if (entry.keywords.some(kw => desc.includes(kw))) return entry.tdpW;
+  }
+  return 300; // Conservative default for unknown GPU models
+}
+
 function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   let hasDcPowerSupply = false;
   let hasDcLugKit = false;
@@ -43,7 +74,8 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     }
 
     if (role === 'GPU / Accelerator' || desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || desc.includes('h100') || desc.includes('gpu')) {
-      estimatedGpuWatts += (300 * (it.quantity || 1));
+      const gpuTdp = _estimateGpuTdpW(desc);
+      estimatedGpuWatts += (gpuTdp * (it.quantity || 1));
     }
 
     if (role === 'Memory' || desc.includes('rdimm') || desc.includes('ddr5')) {

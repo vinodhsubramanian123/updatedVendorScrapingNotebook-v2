@@ -100,116 +100,233 @@ function setCachedRagResult(cacheKey, result) {
   persistRagCache();
 }
 
+const KNOWN_NOTEBOOK_MAP = {
+  'dl380_gen12': '1d190853-4e9c-48df-aa70-eae66c6f2c1f',
+  'dl380_gen11': 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6',
+  'alletra': 'a67629ba-3434-42ab-b465-bd6d71852198',
+  'synergy': '49a3c69e-115f-4332-9454-c5d4f2941327'
+};
+
+// In-memory cache for live notebook catalog from nlm CLI (10 min TTL)
+let _cachedNotebookList = null;
+let _cachedNotebookListTime = 0;
+const NOTEBOOK_LIST_CACHE_TTL_MS = 10 * 60 * 1000;
+
 /**
- * Safely execute Gemini Notebook query via nlm CLI using child_process.execFile.
- * Pre-processes the prompt and post-processes the result.
+ * Fetch and memoize live notebook catalog from Google NotebookLM via nlm CLI.
+ */
+function fetchLiveNotebookCatalog(nlmExecutable, extendedPath) {
+  const now = Date.now();
+  if (_cachedNotebookList && (now - _cachedNotebookListTime) < NOTEBOOK_LIST_CACHE_TTL_MS) {
+    return Promise.resolve(_cachedNotebookList);
+  }
+  return new Promise((resolve) => {
+    execFile(nlmExecutable, ['notebook', 'list', '--json'], {
+      timeout: 15000,
+      env: { ...process.env, PATH: extendedPath },
+      maxBuffer: 5 * 1024 * 1024
+    }, (err, stdout) => {
+      if (err || !stdout) {
+        return resolve(_cachedNotebookList || []);
+      }
+      try {
+        const clean = stripAnsi(stdout).trim();
+        const parsed = JSON.parse(clean);
+        if (Array.isArray(parsed)) {
+          _cachedNotebookList = parsed;
+          _cachedNotebookListTime = now;
+        }
+      } catch (_) {}
+      resolve(_cachedNotebookList || []);
+    });
+  });
+}
+
+/**
+ * Dynamically resolve target Notebook UUID:
+ * 1. Explicit UUID if provided
+ * 2. Static fast-path map (DL380 Gen12, Gen11, Alletra, Synergy)
+ * 3. Live fuzzy-match against Google NotebookLM notebook catalog
+ * 4. Safe flagship DL380 Gen12 fallback
+ */
+async function resolveNotebookIdAsync(requestedId, context = {}, nlmExecutable, extendedPath) {
+  if (requestedId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestedId.trim())) {
+    return requestedId.trim();
+  }
+  const chassis = String(context?.chassis || context?.model || '').toLowerCase();
+  if (chassis.includes('gen12') || chassis.includes('dl380 gen12')) return KNOWN_NOTEBOOK_MAP.dl380_gen12;
+  if (chassis.includes('gen11') || chassis.includes('dl380 gen11')) return KNOWN_NOTEBOOK_MAP.dl380_gen11;
+  if (chassis.includes('alletra')) return KNOWN_NOTEBOOK_MAP.alletra;
+  if (chassis.includes('synergy')) return KNOWN_NOTEBOOK_MAP.synergy;
+
+  // Live dynamic catalog fuzzy matching
+  try {
+    const list = await fetchLiveNotebookCatalog(nlmExecutable, extendedPath);
+    if (Array.isArray(list) && list.length > 0 && chassis) {
+      const match = list.find(nb => {
+        const title = (nb.title || '').toLowerCase();
+        return title.includes(chassis) || (chassis.includes('380') && title.includes('380'));
+      });
+      if (match && match.id) return match.id;
+    }
+  } catch (_) {}
+
+  return KNOWN_NOTEBOOK_MAP.dl380_gen12; // Default to flagship Gen12 notebook
+}
+
+/**
+ * Execute Cloud Query with Autonomous Exponential Backoff Retries.
+ */
+function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, maxAttempts = 3) {
+  const logger = require('../system/pipeline_logger.js');
+
+  return new Promise((resolve, reject) => {
+    let attempt = 0;
+
+    function runAttempt() {
+      attempt++;
+      const startTime = Date.now();
+      const currentTimeout = timeoutMs + (attempt > 1 ? 30000 : 0); // Add 30s buffer on retry
+
+      execFile(nlmExecutable, ['notebook', 'query', targetNotebookId, sanitizedQuery, '--json'], {
+        timeout: currentTimeout,
+        env: { ...process.env, PATH: extendedPath },
+        maxBuffer: 10 * 1024 * 1024
+      }, (err, stdout, stderr) => {
+        const latencyMs = Date.now() - startTime;
+
+        if (err) {
+          const isRetryable = attempt < maxAttempts && (
+            err.killed || 
+            err.code === 'ETIMEDOUT' || 
+            (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket') || err.message.includes('timeout')))
+          );
+
+          if (isRetryable) {
+            const backoffMs = Math.min(10000, 1500 * Math.pow(2, attempt - 1));
+            logger.warn('NOTEBOOK_QUERY', `Cloud query attempt ${attempt}/${maxAttempts} failed (${err.message || 'Transient error'}). Retrying in ${backoffMs}ms...`);
+            return setTimeout(runAttempt, backoffMs);
+          }
+
+          return reject({ err, stderr, latencyMs, attempts: attempt });
+        }
+
+        let processed = postProcessNotebookResult(stdout, sanitizedQuery);
+        if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
+          if (attempt < maxAttempts) {
+            const backoffMs = 2000;
+            logger.warn('NOTEBOOK_QUERY', `Empty response on attempt ${attempt}/${maxAttempts}. Retrying in ${backoffMs}ms...`);
+            return setTimeout(runAttempt, backoffMs);
+          }
+        }
+
+        processed.latencyMs = latencyMs;
+        processed.attempts = attempt;
+        processed.targetNotebookId = targetNotebookId;
+        resolve(processed);
+      });
+    }
+
+    runAttempt();
+  });
+}
+
+/**
+ * Safely execute Gemini Notebook query via nlm CLI with full guardrails:
+ * - Dynamic live notebook resolution
+ * - Autonomous exponential backoff retries (3 attempts)
+ * - Strict Cloud Mode vs Verified Safety Net Dual-Brain Fallback
+ * - Rich diagnostic provenance tracking
+ *
  * @param {string} notebookId 
  * @param {string} rawQuery 
  * @param {object} [options] 
- * @returns {Promise<object>} Normalized result { query, answer, citations, source }
+ * @returns {Promise<object>} Normalized result { query, answer, citations, source, isCloudGrounded }
  */
-function executeNotebookQuery(notebookId, rawQuery, options = {}) {
-  return new Promise((resolve) => {
-    const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
-    const logger = require('../system/pipeline_logger.js');
-    const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-    const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
+async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
+  const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
+  const logger = require('../system/pipeline_logger.js');
 
-    const cacheKey = `${notebookId || 'default'}:${sanitizedQuery.trim()}`;
-    if (!options.bypassCache) {
-      const cached = getCachedRagResult(cacheKey);
-      if (cached) {
-        logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
-        return resolve({ ...cached, cached: true });
-      }
+  const envPath = process.env.PATH || '';
+  const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
+  const nvmBin = path.join(process.env.HOME || '', '.nvm', 'versions', 'node', 'v22.12.0', 'bin');
+  const extendedPath = `${nvmBin}:${homeBin}:${envPath}`;
+
+  const nlmUserPath = path.join(homeBin, 'nlm');
+  const hasNlm = fs.existsSync(nlmUserPath) || fs.existsSync(path.join(homeBin, 'nlm.cmd'));
+  const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : 'nlm';
+
+  const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
+  const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
+  const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
+  const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
+
+  const cacheKey = `${targetNotebookId}:${sanitizedQuery.trim()}`;
+  if (!options.bypassCache) {
+    const cached = getCachedRagResult(cacheKey);
+    if (cached) {
+      logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
+      return { ...cached, cached: true };
+    }
+  }
+
+  if (process.env.USE_LOCAL_RAG_ONLY === '1' || process.env.LOCAL_EVAL_ONLY === '1' || options.offlineMode === true || options.useLocalRagOnly === true) {
+    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+    return {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      fallbackReason: options.offlineMode ? 'Offline evaluation mode requested in options' : 'Local evaluation mode explicitly configured (USE_LOCAL_RAG_ONLY/LOCAL_EVAL_ONLY)'
+    };
+  }
+
+  if (!hasNlm) {
+    logger.warn('NOTEBOOK_QUERY', 'nlm CLI executable not found in PATH (~/.local/bin/nlm). Falling back to Local RAG.');
+    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+    return {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      fallbackReason: 'NLM CLI executable not installed in environment'
+    };
+  }
+
+  try {
+    const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options.maxRetries || 3);
+    cloudResult.isCloudGrounded = true;
+    cloudResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
+
+    if (cloudResult.answer && !cloudResult.answer.includes('No response returned')) {
+      setCachedRagResult(cacheKey, cloudResult);
+    }
+    return cloudResult;
+  } catch (failure) {
+    const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err);
+    logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
+
+    if (isStrictCloud) {
+      return {
+        query: sanitizedQuery,
+        answer: `STRICT_CLOUD_ERROR: Live NotebookLM Cloud query failed (${diagnostic.rootCause}). Remediation: ${diagnostic.remediationAction}`,
+        citations: [],
+        source: 'NOTEBOOK_LM_FAILED',
+        isCloudGrounded: false,
+        diagnostic,
+        error: failure?.err?.message || 'Strict Cloud Query Failure'
+      };
     }
 
-    if (process.env.USE_LOCAL_RAG_ONLY === '1' || process.env.LOCAL_EVAL_ONLY === '1') {
-      const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-      return resolve({
-        ...localRes,
-        source: 'LOCAL_RAG_FALLBACK',
-        fallbackReason: 'Local evaluation mode explicitly configured (USE_LOCAL_RAG_ONLY/LOCAL_EVAL_ONLY)'
-      });
-    }
-
-    const envPath = process.env.PATH || '';
-    const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-    const nvmBin = path.join(process.env.HOME || '', '.nvm', 'versions', 'node', 'v22.12.0', 'bin');
-    const extendedPath = `${nvmBin}:${homeBin}:${envPath}`;
-
-    // Resolve nlm binary path
-    const nlmUserPath = path.join(homeBin, 'nlm');
-    let hasNlm = fs.existsSync(nlmUserPath);
-
-    if (!hasNlm) {
-      const isWin = process.platform === 'win32';
-      const binaryName = isWin ? 'nlm.cmd' : 'nlm';
-      const searchDirs = extendedPath.split(path.delimiter).filter(Boolean);
-      hasNlm = searchDirs.some(dir => {
-        try {
-          return fs.existsSync(path.join(dir, binaryName));
-        } catch (_) {
-          return false;
-        }
-      });
-    }
-
-    if (!hasNlm) {
-      logger.warn('NOTEBOOK_QUERY', 'nlm CLI executable not found in PATH (~/.local/bin/nlm). Falling back to Local RAG.');
-      const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-      return resolve({
-        ...localRes,
-        source: 'LOCAL_RAG_FALLBACK',
-        fallbackReason: 'NLM CLI executable not installed in environment'
-      });
-    }
-
-    const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : 'nlm';
-
-    execFile(nlmExecutable, ['notebook', 'query', notebookId, sanitizedQuery, '--json'], {
-      timeout: timeoutMs,
-      env: { ...process.env, PATH: extendedPath },
-      maxBuffer: 10 * 1024 * 1024
-    }, (err, stdout, stderr) => {
-      if (err) {
-        logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed (${err.message || 'Execution error'}). Falling back to Local RAG.`, { stderr });
-        try {
-          const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-          return resolve({
-            ...localRes,
-            source: 'LOCAL_RAG_FALLBACK',
-            fallbackReason: `Live Cloud Query Error: ${err.message || 'Execution error'}`
-          });
-        } catch (localErr) {
-          return resolve({
-            query: sanitizedQuery,
-            answer: `NotebookLM RAG Query Error: ${err.message || 'Execution error'}`,
-            citations: [],
-            source: 'FALLBACK_ERROR',
-            error: err.message
-          });
-        }
-      }
-
-      let processed = postProcessNotebookResult(stdout, sanitizedQuery);
-      if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
-        try {
-          const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
-          const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-          processed = {
-            ...localRes,
-            source: 'LOCAL_RAG_FALLBACK',
-            fallbackReason: 'Empty response from NotebookLM'
-          };
-        } catch (e) {}
-      }
-      if (processed && processed.answer) {
-        setCachedRagResult(cacheKey, processed);
-      }
-      resolve(processed);
-    });
-  });
+    // Safety net fallback to Local Rule RAG with rich diagnostics
+    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+    return {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      groundingTier: 'TIER_2_VERIFIED_LOCAL_SAFETY_NET',
+      diagnostic,
+      fallbackReason: `Live Cloud Query Error: ${diagnostic.rootCause} (Attempts: ${failure?.attempts || 1})`
+    };
+  }
 }
 
 function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}) {

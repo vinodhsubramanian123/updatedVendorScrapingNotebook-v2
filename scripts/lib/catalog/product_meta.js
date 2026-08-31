@@ -6,6 +6,27 @@
  * across ProLiant, Synergy, Alletra, Nimble, StoreOnce, MSA, StoreEver, Cray, etc.
  */
 
+const FAMILY_PATTERNS = [
+  { family: 'Synergy', pattern: /synergy/i },
+  { family: 'Alletra', pattern: /alletra/i },
+  { family: 'Nimble', pattern: /nimble/i },
+  { family: 'StoreOnce', pattern: /storeonce/i },
+  { family: 'MSA', pattern: /msa/i },
+  { family: 'StoreEver', pattern: /msl|storeever|tape/i },
+  { family: 'Cray', pattern: /cray|gx\d/i },
+  { family: 'Superdome', pattern: /superdome/i },
+  { family: 'Edgeline', pattern: /edgeline/i },
+  { family: 'SimpliVity', pattern: /simplivity/i },
+  { family: 'Aruba', pattern: /aruba/i }
+];
+
+function detectProductFamily(fullText) {
+  for (const { family, pattern } of FAMILY_PATTERNS) {
+    if (pattern.test(fullText)) return family;
+  }
+  return 'ProLiant';
+}
+
 function parseProductMeta(rawText, pageTitle = '') {
   const fullText = `${rawText || ''} ${pageTitle || ''}`;
 
@@ -16,22 +37,10 @@ function parseProductMeta(rawText, pageTitle = '') {
   if (gen === 'General' && /alletra|nimble|storeonce|msa|simplivity/i.test(fullText)) gen = 'Storage';
 
   // 2. Family Detection
-  let family = 'ProLiant';
-  if (/synergy/i.test(fullText))                 family = 'Synergy';
-  else if (/alletra/i.test(fullText))            family = 'Alletra';
-  else if (/nimble/i.test(fullText))             family = 'Nimble';
-  else if (/storeonce/i.test(fullText))          family = 'StoreOnce';
-  else if (/msa/i.test(fullText))                family = 'MSA';
-  else if (/msl|storeever|tape/i.test(fullText)) family = 'StoreEver';
-  else if (/cray|gx\d/i.test(fullText))          family = 'Cray';
-  else if (/superdome/i.test(fullText))          family = 'Superdome';
-  else if (/edgeline/i.test(fullText))           family = 'Edgeline';
-  else if (/simplivity/i.test(fullText))         family = 'SimpliVity';
-  else if (/aruba/i.test(fullText))              family = 'Aruba';
+  const family = detectProductFamily(fullText);
 
   // 3. Model & Form Factor Detection
   const modelMatch = fullText.match(/\b(DL\d{3}|ML\d{3}|RL\d{3}|SY\d{3}|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
-  // Prioritize primary physical form factors (SFF, LFF, EDSFF, NHP) over generic brand descriptors (Compute, Storage)
   const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
   const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
   const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
@@ -83,6 +92,23 @@ const DEFAULT_ROLE_MAPPINGS = [
   { role: 'Chassis Infrastructure', keywords: ['infrastructure', 'bezel', 'rail', 'management arm', 'cma', 'insight display', 'blank kit', 'localization', 'ambient temperature', 'tracking', 'supply chain', 'ce mark', 'energy star', 'fio trigger', 'security kit', 'tpm'] }
 ];
 
+const INFRASTRUCTURE_KEYWORDS = ['rail', 'cable management', 'cma', 'insight display', 'bezel kit', 'blank kit'];
+const INFRASTRUCTURE_EXCLUSION_KEYWORDS = ['processor', 'memory', 'power', 'controller', 'adapter'];
+const BASE_CHASSIS_KEYWORDS = ['cto server', 'base chassis', 'configure-to-order', 'compute module', 'cto rack'];
+
+function isChassisInfrastructure(desc) {
+  if (INFRASTRUCTURE_KEYWORDS.some(k => desc.includes(k))) return true;
+  if (desc.includes('infrastructure') && !INFRASTRUCTURE_EXCLUSION_KEYWORDS.some(k => desc.includes(k))) return true;
+  return false;
+}
+
+function isBaseChassis(desc) {
+  if (BASE_CHASSIS_KEYWORDS.some(k => desc.includes(k))) return true;
+  if (desc.includes('base') && desc.includes('chassis')) return true;
+  if (desc.includes('server') && desc.includes('cto')) return true;
+  return false;
+}
+
 /**
  * Dynamically classify component role from category name and item description.
  * Utilizes configuration profile for overrides, falls back to default logic.
@@ -95,13 +121,13 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
 
-  // Explicit guard: Infrastructure accessories (rails, CMAs, bezels, insight displays) are NEVER Base Chassis
-  if (desc.includes('rail') || desc.includes('cable management') || desc.includes('cma') || desc.includes('insight display') || desc.includes('bezel kit') || desc.includes('blank kit') || (desc.includes('infrastructure') && !desc.includes('processor') && !desc.includes('memory') && !desc.includes('power') && !desc.includes('controller') && !desc.includes('adapter'))) {
+  // Explicit guard: Infrastructure accessories
+  if (isChassisInfrastructure(desc)) {
     return 'Chassis Infrastructure';
   }
 
   // Explicit guard: CTO Base Chassis
-  if (desc.includes('cto server') || desc.includes('base chassis') || desc.includes('configure-to-order') || desc.includes('compute module') || desc.includes('cto rack') || (desc.includes('base') && desc.includes('chassis')) || (desc.includes('server') && desc.includes('cto'))) {
+  if (isBaseChassis(desc)) {
     return 'Base Chassis';
   }
 
@@ -124,6 +150,63 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   return 'Option Component';
 }
 
+// Declarative Subcategory Synthesis Rules (SonarQube CC-reduction)
+const SUBCATEGORY_SYNTHESIS_RULES = [
+  // 1. Processors
+  { name: 'Energy Star Configuration Presets', match: t => t.includes('energy star') },
+  { name: 'Intel Xeon 6th Gen Scalable Processors', match: t => t.includes('xeon 6') || t.includes('6710e') || t.includes('6730p') || t.includes('6780e') || t.includes('6700') || t.includes('processor for hpe') },
+  { name: 'Intel Xeon Scalable Processors', match: t => t.includes('xeon') || t.includes('platinum') || t.includes('gold') || t.includes('silver') || t.includes('bronze') },
+  { name: 'AMD EPYC Scalable Processors', match: t => t.includes('epyc') || t.includes('9004') || t.includes('9005') || t.includes('9754') },
+
+  // 2. Thermal & Cooling
+  { name: 'Standard & Performance Heat Sinks', match: t => t.includes('heat sink') || t.includes('heatsink') },
+  { name: 'High Performance & Standard Fan Kits', match: t => t.includes('fan kit') || t.includes('fan') },
+
+  // 3. Memory
+  { name: 'DDR5 Registered Smart Memory', match: t => t.includes('ddr5') || t.includes('smart memory') || t.includes('rdimm') || t.includes('cas-52') },
+  { name: 'DDR4 Registered Smart Memory', match: t => t.includes('ddr4') },
+  { name: 'Memory Blank Kits', match: t => t.includes('dimm blank') || t.includes('memory blank') },
+
+  // 4. Storage Controllers & Batteries
+  { name: 'Tri-Mode MegaRAID Storage Controllers', match: t => t.includes('mr416') || t.includes('mr216') || t.includes('mr408') || t.includes('megaraid') },
+  { name: 'Tri-Mode SmartRAID Storage Controllers', match: t => t.includes('sr932') || t.includes('sr416') || t.includes('smartraid') },
+  { name: 'Smart Array SAS Controllers', match: t => t.includes('smart array') || t.includes('e208') || t.includes('p408') || t.includes('p816') },
+  { name: 'Intel VROC RAID Enablement', match: t => t.includes('vroc') },
+  { name: 'Smart Storage Batteries', match: t => t.includes('smart storage battery') || t.includes('battery') },
+
+  // 5. PCIe Risers & Retimers
+  { name: 'Primary PCIe Risers', match: t => t.includes('primary riser') || t.includes('pri riser') },
+  { name: 'Secondary PCIe Risers', match: t => t.includes('secondary riser') || t.includes('sec riser') },
+  { name: 'Tertiary PCIe Risers', match: t => t.includes('tertiary riser') || t.includes('tertiary') || t.includes('tert riser') },
+  { name: 'PCIe Riser Kits', match: t => t.includes('riser') },
+
+  // 6. Cables & Enablement
+  { name: 'Storage Controller Cable Kits', match: t => t.includes('box 1/2') || t.includes('box 1') || t.includes('box 2') || t.includes('cage cable') || t.includes('controller cable') },
+  { name: 'Drive Blank & FIO Enablement Kits', match: t => t.includes('no drive') || t.includes('drive blank') },
+
+  // 7. Drive Enclosures & Storage Media
+  { name: 'SFF Drive Cages & Enablement', match: t => t.includes('sff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
+  { name: 'LFF Drive Cages & Enablement', match: t => t.includes('lff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
+  { name: 'EDSFF Drive Cages & Enablement', match: t => t.includes('edsff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
+  { name: 'Solid State Drives (NVMe/SAS/SATA)', match: t => t.includes('ssd') || t.includes('nvme') || t.includes('read intensive') || t.includes('mixed use') || t.includes('write intensive') },
+  { name: 'Hard Disk Drives (SAS/SATA)', match: t => t.includes('hdd') || t.includes('hard drive') || t.includes('10k') || t.includes('7.2k') || t.includes('15k') },
+
+  // 8. Networking & Fabrics
+  { name: 'OCP3 Networking Adapters', match: t => t.includes('ocp3') || t.includes('ocp') },
+  { name: 'PCIe Networking Adapters', match: t => t.includes('adapter') || t.includes('bcm57') || t.includes('intel e810') || t.includes('mellanox') || t.includes('broadcom') || t.includes('base-t') || t.includes('ethernet') },
+  { name: 'Optical Transceivers & DAC Cables', match: t => t.includes('transceiver') || t.includes('sfp28') || t.includes('qsfp28') || t.includes('sfp56') || t.includes('dac') },
+  { name: 'Fibre Channel Host Bus Adapters', match: t => t.includes('fibre channel') || t.includes('hba') || t.includes('qlogic') || t.includes('emulex') },
+
+  // 9. Power & Infrastructure
+  { name: '-48VDC Power Supplies & Cable Kits', match: t => t.includes('-48vdc') || t.includes('dc power') || t.includes('lug kit') },
+  { name: 'Flex Slot Power Supplies', match: t => t.includes('titanium') || t.includes('platinum') || t.includes('flex slot') || t.includes('power supply') || t.includes('ps kit') },
+  { name: 'Power Cords & Jumper Cables', match: t => t.includes('power cord') || t.includes('jumper cord') || t.includes('iec') },
+  { name: 'Chassis Infrastructure & Rail Kits', match: t => t.includes('bezel') || t.includes('rail') || t.includes('cma') || t.includes('cable management') },
+
+  // 10. Software & Licenses
+  { name: 'Server Management & Operating System Licenses', match: t => t.includes('ilo') || t.includes('oneview') || t.includes('ops management') || t.includes('e-ltu') || t.includes('license') || t.includes('windows server') || t.includes('red hat') || t.includes('suse') }
+];
+
 /**
  * Synthesize a clean, descriptive subcategory name from category name, table descriptions, and rules.
  * Used when portal scraping yields unclassified (Sub-table) or generic fallback names.
@@ -137,59 +220,11 @@ function synthesizeSubcategoryName(parentCategory = '', itemDescriptions = [], t
   const rulesText = Array.isArray(tableRules) ? tableRules.join(' ') : String(tableRules || '');
   const text = `${descsText} ${rulesText}`.toLowerCase();
 
-  // 1. Processors
-  if (text.includes('energy star')) return 'Energy Star Configuration Presets';
-  if (text.includes('xeon 6') || text.includes('6710e') || text.includes('6730p') || text.includes('6780e') || text.includes('6700') || text.includes('processor for hpe')) return 'Intel Xeon 6th Gen Scalable Processors';
-  if (text.includes('xeon') || text.includes('platinum') || text.includes('gold') || text.includes('silver') || text.includes('bronze')) return 'Intel Xeon Scalable Processors';
-  if (text.includes('epyc') || text.includes('9004') || text.includes('9005') || text.includes('9754')) return 'AMD EPYC Scalable Processors';
-
-  // 2. Thermal & Cooling
-  if (text.includes('heat sink') || text.includes('heatsink')) return 'Standard & Performance Heat Sinks';
-  if (text.includes('fan kit') || text.includes('fan')) return 'High Performance & Standard Fan Kits';
-
-  // 3. Memory
-  if (text.includes('ddr5') || text.includes('smart memory') || text.includes('rdimm') || text.includes('cas-52')) return 'DDR5 Registered Smart Memory';
-  if (text.includes('ddr4')) return 'DDR4 Registered Smart Memory';
-  if (text.includes('dimm blank') || text.includes('memory blank')) return 'Memory Blank Kits';
-
-  // 4. Storage Controllers & Batteries
-  if (text.includes('mr416') || text.includes('mr216') || text.includes('mr408') || text.includes('megaraid')) return 'Tri-Mode MegaRAID Storage Controllers';
-  if (text.includes('sr932') || text.includes('sr416') || text.includes('smartraid')) return 'Tri-Mode SmartRAID Storage Controllers';
-  if (text.includes('smart array') || text.includes('e208') || text.includes('p408') || text.includes('p816')) return 'Smart Array SAS Controllers';
-  if (text.includes('vroc')) return 'Intel VROC RAID Enablement';
-  if (text.includes('smart storage battery') || text.includes('battery')) return 'Smart Storage Batteries';
-
-  // 5. PCIe Risers & Retimers
-  if (text.includes('primary riser') || text.includes('pri riser')) return 'Primary PCIe Risers';
-  if (text.includes('secondary riser') || text.includes('sec riser')) return 'Secondary PCIe Risers';
-  if (text.includes('tertiary riser') || text.includes('tertiary') || text.includes('tert riser')) return 'Tertiary PCIe Risers';
-  if (text.includes('riser')) return 'PCIe Riser Kits';
-
-  // 6. Cables & Enablement
-  if (text.includes('box 1/2') || text.includes('box 1') || text.includes('box 2') || text.includes('cage cable') || text.includes('controller cable')) return 'Storage Controller Cable Kits';
-  if (text.includes('no drive') || text.includes('drive blank')) return 'Drive Blank & FIO Enablement Kits';
-
-  // 7. Drive Enclosures & Storage Media
-  if (text.includes('sff') && (text.includes('cage') || text.includes('bay') || text.includes('enclosure') || text.includes('drive'))) return 'SFF Drive Cages & Enablement';
-  if (text.includes('lff') && (text.includes('cage') || text.includes('bay') || text.includes('enclosure') || text.includes('drive'))) return 'LFF Drive Cages & Enablement';
-  if (text.includes('edsff') && (text.includes('cage') || text.includes('bay') || text.includes('enclosure') || text.includes('drive'))) return 'EDSFF Drive Cages & Enablement';
-  if (text.includes('ssd') || text.includes('nvme') || text.includes('read intensive') || text.includes('mixed use') || text.includes('write intensive')) return 'Solid State Drives (NVMe/SAS/SATA)';
-  if (text.includes('hdd') || text.includes('hard drive') || text.includes('10k') || text.includes('7.2k') || text.includes('15k')) return 'Hard Disk Drives (SAS/SATA)';
-
-  // 8. Networking & Fabrics
-  if (text.includes('ocp3') || text.includes('ocp')) return 'OCP3 Networking Adapters';
-  if (text.includes('adapter') || text.includes('bcm57') || text.includes('intel e810') || text.includes('mellanox') || text.includes('broadcom') || text.includes('base-t') || text.includes('ethernet')) return 'PCIe Networking Adapters';
-  if (text.includes('transceiver') || text.includes('sfp28') || text.includes('qsfp28') || text.includes('sfp56') || text.includes('dac')) return 'Optical Transceivers & DAC Cables';
-  if (text.includes('fibre channel') || text.includes('hba') || text.includes('qlogic') || text.includes('emulex')) return 'Fibre Channel Host Bus Adapters';
-
-  // 9. Power & Infrastructure
-  if (text.includes('-48vdc') || text.includes('dc power') || text.includes('lug kit')) return '-48VDC Power Supplies & Cable Kits';
-  if (text.includes('titanium') || text.includes('platinum') || text.includes('flex slot') || text.includes('power supply') || text.includes('ps kit')) return 'Flex Slot Power Supplies';
-  if (text.includes('power cord') || text.includes('jumper cord') || text.includes('iec')) return 'Power Cords & Jumper Cables';
-  if (text.includes('bezel') || text.includes('rail') || text.includes('cma') || text.includes('cable management')) return 'Chassis Infrastructure & Rail Kits';
-
-  // 10. Software & Licenses
-  if (text.includes('ilo') || text.includes('oneview') || text.includes('ops management') || text.includes('e-ltu') || text.includes('license') || text.includes('windows server') || text.includes('red hat') || text.includes('suse')) return 'Server Management & Operating System Licenses';
+  for (const rule of SUBCATEGORY_SYNTHESIS_RULES) {
+    if (rule.match(text)) {
+      return rule.name;
+    }
+  }
 
   const cat = String(parentCategory || '').trim();
   return cat && cat !== 'Unknown' ? `${cat} Options` : 'System Options';
@@ -198,5 +233,7 @@ function synthesizeSubcategoryName(parentCategory = '', itemDescriptions = [], t
 module.exports = {
   parseProductMeta,
   classifyComponentRole,
-  synthesizeSubcategoryName
+  synthesizeSubcategoryName,
+  DEFAULT_ROLE_MAPPINGS,
+  SUBCATEGORY_SYNTHESIS_RULES
 };

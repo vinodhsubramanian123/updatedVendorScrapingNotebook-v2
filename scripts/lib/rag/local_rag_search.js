@@ -59,7 +59,26 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
     try {
       const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
       const rules = registry.chassisSpecificRules || [];
+      const normChassisTarget = (chassisName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
       for (const rule of rules) {
+        // INV-48: Strict Generation & Chassis Firewall
+        if (normChassisTarget) {
+          const ruleChassisNorm = (rule.chassis || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+          const isUniversal = rule.scope === 'UNIVERSAL_VENDOR';
+          const isChassisMatch = ruleChassisNorm && (normChassisTarget.includes(ruleChassisNorm) || ruleChassisNorm.includes(normChassisTarget));
+          const hasGen12Target = normChassisTarget.includes('gen12') || normChassisTarget.includes('g12');
+          const hasGen11Target = normChassisTarget.includes('gen11') || normChassisTarget.includes('g11');
+          const hasGen12Rule = ruleChassisNorm.includes('gen12') || ruleChassisNorm.includes('g12');
+          const hasGen11Rule = ruleChassisNorm.includes('gen11') || ruleChassisNorm.includes('g11');
+
+          if (!isUniversal) {
+            if (hasGen12Target && hasGen11Rule) continue;
+            if (hasGen11Target && hasGen12Rule) continue;
+            if (!isChassisMatch) continue;
+          }
+        }
+
         const raw = (rule.rawMessage || '' ).toLowerCase();
         const update = (rule.ruleUpdate || '').toLowerCase();
         const affected = (rule.affectedSku || '').toLowerCase();
@@ -95,15 +114,22 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   let filteredCatalogPaths = catalogPaths;
   if (chassisName) {
     const normChassis = chassisName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const hasGen12Target = normChassis.includes('gen12') || normChassis.includes('g12');
+    const hasGen11Target = normChassis.includes('gen11') || normChassis.includes('g11');
+
     filteredCatalogPaths = catalogPaths.filter(cDir => {
       const folderName = path.basename(cDir);
       const normFolder = folderName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const hasGen12Folder = normFolder.includes('gen12') || normFolder.includes('g12');
+      const hasGen11Folder = normFolder.includes('gen11') || normFolder.includes('g11');
+
+      // INV-48: Never match across generations
+      if (hasGen12Target && !hasGen12Folder) return false;
+      if (hasGen11Target && !hasGen11Folder) return false;
+
       return normChassis.includes(normFolder) || normFolder.includes(normChassis) || normChassis.includes(normFolder.replace('sff', ''));
     });
-    // Fallback if no match found (e.g. name mismatch)
-    if (filteredCatalogPaths.length === 0) {
-      filteredCatalogPaths = catalogPaths;
-    }
+    // INV-48: Strict isolation — zero cross-catalog fallback when a specific chassis is requested
   }
 
   for (const cDir of filteredCatalogPaths) {

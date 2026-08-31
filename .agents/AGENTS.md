@@ -321,6 +321,30 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   - **4-Stage Continuous NLM Verification**: Pre-Flight DNA validation, In-Flight conflict RAG, Post-Flight solution grounding, and Closed-Loop Delta sync.
   - **Knowledge Isolation**: Universal Master Knowledge Registry (`master_knowledge_registry.json`) for cross-chassis rules vs Product-Specific Partitioned Catalogs (`outputs/{Family}/{Gen}/{Model}/`) with zero cross-chassis contamination (`INV-24`).
 
+### INV-46: Static Circular Dependency DAG & SonarQube Cyclomatic Complexity Guardrail
+- **Pattern**: Complex, tightly-coupled functions create fragility, maintenance friction, and potential infinite recursion bugs.
+- **Rule**: The repository dependency graph is strictly enforced as a Directed Acyclic Graph (DAG) with **0 circular dependency cycles** across all 350+ modules. McCabe Cyclomatic Complexity (CC) is strictly governed: high-level evaluators (`evalSupportManufacturing`, `evalPcieRiserSlots`, `evalNetworkingOcp`, `evalStorageTriMode`) MUST NOT exceed **CC $\le 20$**, and category/subcategory synthesis engines MUST NOT exceed **CC $\le 15$** (utilizing declarative matcher arrays like `SUBCATEGORY_SYNTHESIS_RULES`). Validated continuously via `npm run test:circular` and `npm run test:complexity`.
+
+### INV-47: Isolated Test Matrix, Failure Ledger & Subprocess Telemetry Harness
+- **Pattern**: Monolithic chained test runs (`&&`) abort abruptly on failure, masking subsequent suite outcomes and forcing expensive full-matrix re-executions that waste time and tokens.
+- **Rule**: Test suites MUST execute via `scripts/maintenance/run_test_matrix.js` (`npm run test:all`), running each test file in an isolated Node.js process with a 60s timeout guard. Any failure is isolated immediately, recorded into `outputs/history/test_failure_ledger.json` with exact assertion traces, and re-tested iteratively using `npm run test:failed` or `npm run test:isolated -- <file>` until 100% green before running the full matrix.
+
+### INV-48: Strict Generation & Product Family RAG Firewall
+- **Pattern**: Unconstrained catalog and delta searches bleed across product generations (e.g. suggesting Gen11 DDR4/DDR5-4800 memory or processors for a Gen12 server).
+- **Rule**: `local_rag_search.js` and `notebook_query_utils.js` MUST enforce strict generation/family filtering when `chassisName` is targeted. A Gen12 query MUST search exclusively within `outputs/ProLiant/Gen12/DL380_Gen12/` and Gen12 cloud notebooks, with ZERO fallback to scanning all other catalogs. Cross-compatible SKUs require explicit QuickSpecs / NLM certification.
+
+### INV-49: Autonomous Multi-Solution Cluster Partitioning Protocol
+- **Pattern**: Mixed-infrastructure customer tenders (combining Compute Servers, External Storage Arrays, Tape Automation, and Networking) will fail physical checks if evaluated against a single server container.
+- **Rule**: `boq_preprocessor.js` and `multi_cluster_splitter.js` MUST automatically dissect mixed quotes into dedicated Solution Clusters (e.g. Cluster A: DL380 Compute, Cluster B: Alletra Storage MP, Cluster C: MSL Tape, Cluster D: Aruba Fabric), evaluating each against its own ground-truth catalog without cross-solution option spilling.
+
+### INV-50: Ambiguity Inbox Escalation & Human Sign-off Protocol
+- **Pattern**: Auto-healing unverified or obsolete customer SKUs with ungrounded guesses risks proposing invalid or obsolete parts.
+- **Rule**: Unmatched, ambiguous, or legacy SKUs not verified in QuickSpecs or live catalogs MUST NOT be substituted automatically. They must be flagged as `NEEDS_HUMAN_CLARIFICATION`, highlighted with Amber visual badges in the Topology Canvas, and routed to the Ambiguity Inbox for human engineer confirmation. Human sign-offs persist as `KnowledgeDelta` records in `master_knowledge_registry.json`.
+
+### INV-51: 4-Tier Vendor-Agnostic Taxonomy Protocol
+- **Pattern**: Expanding beyond HPE into Dell PowerEdge, Cisco UCS, and Lenovo ThinkSystem requires strict architectural namespaces to prevent vendor cross-pollution.
+- **Rule**: All catalogs, rules, and RAG payloads MUST adhere to the canonical 4-tier hierarchy: `{Vendor}/{Family}/{Gen}/{Model}/` (e.g. `outputs/HPE/ProLiant/Gen12/DL380_Gen12/`, `outputs/Dell/PowerEdge/16G/R760/`, `outputs/Cisco/UCS/M7/C240_M7/`), ensuring 100% isolated knowledge domains.
+
 ---
 
 ## History Directory Hygiene Rules

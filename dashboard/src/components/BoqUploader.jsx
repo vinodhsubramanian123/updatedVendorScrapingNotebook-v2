@@ -223,6 +223,26 @@ export default function BoqUploader({
         </div>
       )}
 
+      {isPreprocessing && (
+        <div className="glass-card p-6 border border-slate-200 shadow-sm rounded-xl space-y-3 animate-pulse">
+          <div className="flex items-center justify-between">
+            <div className="h-4 w-44 bg-slate-200 rounded"></div>
+            <div className="h-6 w-28 bg-slate-200 rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="p-3 bg-slate-100/70 rounded-xl space-y-2">
+                <div className="h-2.5 w-16 bg-slate-200 rounded"></div>
+                <div className="h-5 w-20 bg-slate-300 rounded"></div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center text-xs text-slate-500 font-medium pt-1">
+            Parsing BOQ structure, SKU hierarchies, and configuration clusters...
+          </div>
+        </div>
+      )}
+
       <PreflightPipelineAudit
         preflightData={preflightData}
         onProceedToEvaluate={handleDirectEvaluate}

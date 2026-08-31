@@ -502,7 +502,17 @@ async function main() {
       `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
-    console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
+
+    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
+    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+    if (!stagingCatalogContent.metadata || stagingCatalogContent.metadata.totalUniqueSKUs <= 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${stagingCatalogContent.metadata?.totalUniqueSKUs || 0} (must be > 0).`);
+    }
+    if (!Array.isArray(stagingCatalogContent.entries) || stagingCatalogContent.entries.length === 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
+    }
+
+    console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
   } catch (e) {
     const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
     console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
@@ -526,7 +536,6 @@ async function main() {
   }
 
   // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
-  // STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding
   console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
   emitProgress(9, 10, 'Live Workspace Promotion & NotebookLM Grounding', 'in_progress', 'Syncing knowledge payload to NotebookLM', {
     stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName

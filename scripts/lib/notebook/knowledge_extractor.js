@@ -103,7 +103,8 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     }
 
     // 3. Hardware Dependency Chains (Cables, Triggers, Accessories)
-    if (pLower.includes('require') || pLower.includes('mandate') || pLower.includes('need') || pLower.includes('must configure') || pLower.includes('must be selected')) {
+    const isNegativeOrAdvisory = pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
+    if (!isNegativeOrAdvisory && (pLower.includes('require') || pLower.includes('mandate') || pLower.includes('must configure') || pLower.includes('must be selected'))) {
       if (validSkus.length >= 2) {
         const parentSku = validSkus[0];
         const childSku = validSkus[1];

@@ -72,6 +72,8 @@ async function performGeminiOcr(filePath, options = {}) {
       text: `[OCR_NOTICE] Image file '${path.basename(resolvedPath)}' uploaded. Gemini API Key is required for image OCR parsing. Please configure GEMINI_API_KEY or paste BOM text directly.`,
       lineCount: 1,
       detectedSkus: [],
+      ocrStatus: 'KEY_REQUIRED',
+      remediationAction: 'Configure GEMINI_API_KEY or upload CSV/XLSX text BOM.',
       isOcrProcessed: false,
       logs
     };
@@ -134,16 +136,20 @@ CRITICAL EXTRACTION RULES:
       lineCount: lines.length,
       detectedSkus,
       modelUsed,
+      ocrStatus: 'SUCCESS',
       isOcrProcessed: true,
       logs
     };
 
   } catch (err) {
-    log(`❌ Gemini OCR failed: ${err.message}. Falling back to text notification.`);
+    log(`❌ Gemini OCR failed: ${err.message}. Falling back to structured error notification.`);
     return {
       text: `[OCR_ERROR] Failed to extract text from image ${path.basename(filePath)}: ${err.message}`,
       lineCount: 0,
       detectedSkus: [],
+      ocrStatus: 'FAILED',
+      rawError: err.message,
+      remediationAction: 'Check Gemini API Key quota or upload high-resolution image / CSV BOM.',
       isOcrProcessed: false,
       logs
     };

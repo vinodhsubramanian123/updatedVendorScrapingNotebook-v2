@@ -25,6 +25,17 @@ module.exports = {
     dataValidator: require('./system/data_validator.js')
   },
 
+  // Physical Aspect Checkers Subsystem
+  aspects: {
+    computeThermal: require('./aspects/compute_thermal.js'),
+    memoryChannel: require('./aspects/memory_channel.js'),
+    storageTriMode: require('./aspects/storage_tri_mode.js'),
+    networkingOcp: require('./aspects/networking_ocp.js'),
+    pcieRiser: require('./aspects/pcie_riser.js'),
+    powerEnvironment: require('./aspects/power_environment.js'),
+    supportManufacturing: require('./aspects/support_manufacturing.js')
+  },
+
   // BOQ Processing & Evaluation Subsystem
   boq: {
     evaluator: require('./boq/boq_evaluator.js'),
@@ -34,6 +45,7 @@ module.exports = {
     workloadDna: require('./conflict/workload_dna.js'),
     resourceArbitrator: require('./conflict/resource_arbitrator.js'),
     strategySynthesizer: require('./conflict/strategy_synthesizer.js'),
+    multiClusterSplitter: require('./boq/multi_cluster_splitter.js'),
     budgetOptimizer: require('./boq/budget_optimizer.js'),
     vendorBomVerifier: require('./boq/vendor_bom_verifier.js'),
     xlsxExporter: require('./boq/generate_boq_xlsx.js')

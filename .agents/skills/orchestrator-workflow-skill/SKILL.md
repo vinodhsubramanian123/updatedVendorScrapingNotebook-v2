@@ -70,7 +70,7 @@ graph TD
   - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
   - Ingests customer BOQs, multi-sheet proposals, or obfuscated SKU text.
   - Extracts **Workload DNA Profile** (CPU core/freq density, RAM per core ratio, GPU VDI class, NVMe RI vs MU vs WI SSDs).
-  - Evaluates deterministic 6-aspect physical math assertions (Compute, Memory, Storage, Networking, Power, Support).
+  - Evaluates deterministic 7-aspect physical math assertions (Compute & Thermal, Memory Channel, Storage & Tri-Mode, Networking & OCP, PCIe Riser, Power & Environmental, Support & Manufacturing).
   - Validates full BOM + fixes across 5 rule hierarchy levels (`VENDOR`, `CHASSIS`, `CATEGORY`, `SUBCATEGORY`, `SKU`) using `conflict_graph.js`.
   - Outputs a **5-Tier Strategic Resolution Matrix** where **Rank 1 strictly matches customer workload intent** (neither over- nor under-provisioned).
   - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
@@ -184,7 +184,7 @@ To maximize velocity and offload heavy validation without human friction:
 
 ---
 
-## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-24`)
+## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-46`)
 
 | Invariant ID | Title | Summary & Guardrail Contract |
 | :--- | :--- | :--- |
@@ -225,6 +225,21 @@ To maximize velocity and offload heavy validation without human friction:
 | **`INV-36`**| Product Generation Hierarchy    | Enforces strict 3-tier taxonomy `{Family}/{Gen}/{Model}/` without form-factor directory fragmentation. |
 | **`INV-37`**| Automated Multi-Cluster Subtotal| Emits `CONFIG #N SUBTOTAL:` rows in Set column and 2-line separator gaps in partner portal workbooks. |
 | **`INV-38`**| Dynamic Chassis Path Resolution | `sku_versioning.js` dynamically resolves bare model strings to canonical directories under `outputs/`. |
+| **`INV-39`**| Multi-Cluster Architectural Partitioning | Partitions mixed CPU tenders into homogeneous 100% buildable clusters with form-factor bus pivoting. |
+| **`INV-40`**| Continuous Milestone Knowledge Sync | Automatically synchronizes verified learnings between local rule engine and Gemini NotebookLM without waiting for humans. |
+| **`INV-41`**| Dual-Brain RAG Headroom & 24h TTL | Enforces 120s RAG timeout, 180s Guardrail timeout, 3-query budget cap, and 24-hour cache TTL eviction. |
+| **`INV-42`**| Diophantine Multiplier Allocation | Allocates multi-server tender quantities across clusters using mathematically rigorous Hamilton–Hare method. |
+| **`INV-43`**| MCP-First Jules Lifecycle Order | Prioritizes MCP tools over CLI and enforces strict 8-stage lifecycle sequence with zero human relaying. |
+| **`INV-44`**| Jules SDK State Machine Contract | Leverages callable client methods (`client.sessions().all()`, `session.approve()`, `session.send()`) matching SDK v2 contracts. |
+| **`INV-45`**| Atomic Workflow Decomposition   | Decomposes scraping into 10 stages and BOQ evaluation into 7 substeps with SSE telemetry and 4-tier RAG grounding. |
+| **`INV-46`**| Static Circular Dependency DAG & CC Bounds | Enforces 0 circular dependencies across module graph and keeps McCabe cyclomatic complexity within strict quality budgets. |
+| **`INV-47`**| Isolated Test Matrix & Failure Ledger | Executes suites in isolated subprocesses, logs failures to `test_failure_ledger.json`, and enables fast-path `--failed-only` reruns. |
+| **`INV-48`**| Strict Generation & Family Firewall | Enforces strict generation/family scoping in RAG lookups with zero cross-generation catalog fallback. |
+| **`INV-49`**| Multi-Solution Autonomous Partitioning | Dissects mixed proposals into isolated Solution Clusters evaluated against their respective ground truth. |
+| **`INV-50`**| Ambiguity Inbox Escalation & Sign-off | Flags unverified/obsolete SKUs as `NEEDS_HUMAN_CLARIFICATION` for human sales engineer sign-off in the UI. |
+| **`INV-51`**| 4-Tier Vendor-Agnostic Taxonomy | Standardizes all catalogs and RAG sources under `{Vendor}/{Family}/{Gen}/{Model}/` for 100% clean vendor isolation. |
+
+
 
 
 

@@ -96,12 +96,15 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     notebookLmSourcesUsed: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.sourcesUsed) || [],
     notebookLmCitationsCount: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.citationsCount) || 0,
     cloudGroundingConfirmed: evalResults.notebookLmStatus ? evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' : !evalResults.ragFallbackUsed,
+    groundingIntegrity: evalResults.notebookLmStatus?.isCloudGrounded ? '100%_CLOUD_GROUNDED' : (evalResults.ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES'),
+    silentFallbackDetected: Boolean(evalResults.ragFallbackUsed && !evalResults.notebookLmStatus?.diagnostic),
     // Learning loop sync status for this run
     syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
     clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
     totalNodesEvaluated: evalResults.clusterSizing?.totalNodes || evalResults.multiplier || 1,
-    gplFallbackCount: evalResults.gplFallbackCount || 0,
+    traceId: evalResults.provenanceTrace?.traceId || `EVAL-${Date.now()}`,
+    provenanceTrace: evalResults.provenanceTrace || null,
     memoryUsage: {
       rssMb: process.memoryUsage ? Math.round(process.memoryUsage().rss / (1024 * 1024)) : 0,
       heapUsedMb: process.memoryUsage ? Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) : 0,

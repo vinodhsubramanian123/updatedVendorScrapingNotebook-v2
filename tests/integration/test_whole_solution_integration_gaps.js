@@ -117,6 +117,7 @@ P43322-B21, 4, "HPE 16GB 1Rx8 PC5-4800B-R Smart Kit"
     
     const fallbackRes = await executeNotebookQuery('missing-creds-notebook', 'Validate memory limits for DL380 Gen12', {
       context: { chassis: 'HPE ProLiant DL380 Gen12' },
+      offlineMode: true,
       bypassCache: true
     });
     

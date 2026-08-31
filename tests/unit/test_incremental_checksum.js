@@ -61,7 +61,7 @@ assert(diffResult.stats.estimatedTokensSaved > 0, 'Should estimate token savings
 console.log(`✅ PASS: Incremental Hash Diff (Saved ~${diffResult.stats.estimatedTokensSaved} tokens)`);
 
 // 3. Test SKU Version Audit Query on actual chassis directory
-const dl380Dir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+const dl380Dir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
 if (fs.existsSync(dl380Dir)) {
   const audit = getSkuAuditHistory('P73282-B21', dl380Dir);
   assert.strictEqual(audit.sku, 'P73282-B21');

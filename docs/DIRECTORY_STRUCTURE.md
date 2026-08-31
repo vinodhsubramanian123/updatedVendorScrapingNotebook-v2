@@ -12,6 +12,7 @@ vendorNotebookSolution/
 │       ├── boq-eval-skill/                ← BOQ validation & pre-flight skill
 │       ├── design-taste-frontend/         ← Anti-slop UI design system
 │       ├── frontend-design/               ← Frontend motion & interactive standards
+│       ├── jules-autonomous-protocol/     ← Google Jules multi-agent protocol & task manager
 │       ├── knowledge-sync-skill/          ← Bi-directional RAG knowledge sync skill
 │       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration
 │       ├── oca-catalog-scraper/           ← CDP remote scraping skill

@@ -115,6 +115,19 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     (d.rawMessage === delta.rawMessage || d.ruleUpdate === delta.ruleUpdate)
   );
 
+  // Negative delta reconciliation: if recording an exclusion/restriction, remove obsolete conflicting positive dependency
+  const isExclusion = (delta.rawMessage && (delta.rawMessage.toLowerCase().includes('not compatible') || delta.rawMessage.toLowerCase().includes('do not inject') || delta.rawMessage.toLowerCase().includes('restrict'))) ||
+                      delta.errorType === 'MUTUAL_EXCLUSION';
+
+  if (isExclusion && delta.affectedSku && delta.requiredDependencySku) {
+    deltas = deltas.filter(d => !(
+      d.chassis === delta.chassis &&
+      d.affectedSku === delta.affectedSku &&
+      d.requiredDependencySku === delta.requiredDependencySku &&
+      d.errorType === 'PERMANENT_PHYSICAL_DEPENDENCY'
+    ));
+  }
+
   if (existingIdx >= 0) {
     deltas[existingIdx] = {
       ...deltas[existingIdx],

@@ -208,8 +208,8 @@ router.post('/eval-boq', (req, res) => {
     try {
       const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
       safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs });
-    } catch (_) {
-      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs }, null, 2));
+    } catch (e) {
+      console.error(`[evaluation.cjs] Failed to persist trace ${runId}:`, e.message);
     }
 
     // Extract and broadcast EVAL_RESULT from stdout

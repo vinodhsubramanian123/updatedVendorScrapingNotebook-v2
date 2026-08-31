@@ -210,5 +210,38 @@ The system leverages Google Jules for background code review, test generation, a
     - NotebookLM is leveraged across 4 distinct verification stages: Pre-Flight DNA validation, In-Flight conflict RAG, Post-Flight solution grounding, and Closed-Loop Delta sync.
     - Universal Master Knowledge Registry (`master_knowledge_registry.json`) is maintained for cross-chassis rules while product-specific partitions (`outputs/{Family}/{Gen}/{Model}/`) isolate per-product catalogs with zero cross-chassis contamination (`INV-24`).
 
+37. **Static Circular Dependency DAG & SonarQube Cyclomatic Complexity Guardrail (`INV-46`)**:
+    - The repository dependency graph is strictly enforced as a Directed Acyclic Graph (DAG) with **0 circular dependency cycles** across all 350+ JavaScript, JSX, and CJS modules.
+    - McCabe Cyclomatic Complexity (CC) is strictly governed across all physical aspect checkers and catalog synthesis engines:
+      - High-level domain evaluators (`evalSupportManufacturing`, `evalPcieRiserSlots`, `evalNetworkingOcp`, `evalStorageTriMode`) MUST NOT exceed **CC $\le 20$** (refactored via modular tally and math decomposition).
+      - Category & subcategory synthesis engines MUST NOT exceed **CC $\le 15$** (refactored via declarative pattern match tables `SUBCATEGORY_SYNTHESIS_RULES`).
+    - Validated continuously via `node --test tests/unit/test_circular_and_complexity.js`, `npm run test:circular` (`scripts/maintenance/analyze_circular_deps.js`), and `npm run test:complexity` (`scripts/maintenance/analyze_complexity.js`).
+
+38. **Isolated Test Matrix, Failure Ledger & Subprocess Telemetry Harness (`INV-47`)**:
+    - All test execution (`npm run test:all`) MUST run through the isolated test matrix runner (`scripts/maintenance/run_test_matrix.js`), spawning each test file in its own isolated Node.js process with explicit timeout guards (default 60s).
+    - Eliminates monolithic shell chains (`&&`) where a single failure aborts execution and masks subsequent test outcomes.
+    - **Automated Failure Isolation**: When any test fails, the runner isolates the failure, logs a rich diagnostic trace (exact assertion mismatches, duration, exit code), and writes the failure atomically to `outputs/history/test_failure_ledger.json`.
+    - **Iterative Fast-Path Recovery**: Developers and AI agents MUST re-test only the failed suite using `npm run test:failed` (or `npm run test:isolated -- <file>`) until it passes 100%, avoiding wasteful full-suite reruns and saving massive context tokens.
+    - Once the isolated test passes, the runner clears the failure record from `test_failure_ledger.json` and updates `pipeline_telemetry.json`.
+
+39. **Strict Generation & Product Family RAG Firewall (`INV-48`)**:
+    - Dual-Brain RAG searches and local catalog lookups (`local_rag_search.js`, `notebook_query_utils.js`) MUST enforce strict Generation and Family Firewalls.
+    - When a specific chassis or generation is targeted (e.g. `DL380_Gen12`), search MUST strictly query that generation's catalog (`outputs/ProLiant/Gen12/DL380_Gen12/`) and target cloud notebook.
+    - Zero cross-generation bleeding: Gen12 queries must never return Gen11 components or fall back to scanning all catalogs in `outputs/`. Any cross-compatible part suggestion must be explicitly certified by official QuickSpecs / NotebookLM before inclusion.
+
+40. **Autonomous Multi-Solution Cluster Partitioning Protocol (`INV-49`)**:
+    - Complex multi-solution customer proposals (combining Compute Servers, External Storage Arrays, Tape Libraries, and Top-of-Rack Networking) MUST be automatically dissected by `boq_preprocessor.js` and `multi_cluster_splitter.js` into isolated Solution Clusters.
+    - Each cluster is independently evaluated against its own dedicated product catalog and QuickSpecs RAG source, preventing storage drives or tape cartridges from being erroneously validated against server PCIe or DIMM slots.
+
+41. **Ambiguity Inbox Escalation & Human Sign-off Protocol (`INV-50`)**:
+    - When an unknown, legacy, or ambiguous SKU is encountered that cannot be conclusively verified against official QuickSpecs or the live catalog:
+    - The engine MUST NOT hallucinate an ungrounded substitution or make blind cross-generation guesses.
+    - The item MUST be assigned the `NEEDS_HUMAN_CLARIFICATION` status, rendered with an Amber visual badge in the Topology Mindmap, and surfaced in the Dashboard **Ambiguity Inbox** for human sales engineer review and classification.
+    - Human submissions persist as persistent `KnowledgeDelta` records in `master_knowledge_registry.json`.
+
+42. **4-Tier Vendor-Agnostic Taxonomy (`INV-51`)**:
+    - Standardizes all catalogs, rule files, and RAG knowledge payloads into a canonical 4-tier directory hierarchy: `{Vendor}/{Family}/{Gen}/{Model}/` (e.g. `outputs/HPE/ProLiant/Gen12/DL380_Gen12/`, `outputs/Dell/PowerEdge/16G/R760/`, `outputs/Cisco/UCS/M7/C240_M7/`).
+    - Eliminates cross-vendor and cross-generation data pollution while allowing universal 7-aspect validation across multi-vendor quotes.
+
 
 

@@ -312,3 +312,37 @@ The dual-brain architecture maintains real-time synchronization between the loca
 | **BOQ Evaluation** | `eval_boq.js` | Emits `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. |
 | **Partner Quote Reconciliation** | `POST /api/verify-vendor-bom` | Auto-syncs discovered vendor quote discrepancies and CLIC rule updates. |
 | **HITL Feedback Submission** | `POST /api/feedback-submit` | Re-synchronizes verified engineer approvals to cloud sources. |
+
+---
+
+## 10. Static Circular Dependency DAG & Complexity Governance (`INV-46`)
+
+The software architecture maintains modularity, testability, and zero cognitive bloat through static DAG validation and McCabe cyclomatic complexity governance:
+
+```mermaid
+graph TD
+    subgraph "Pure Directed Acyclic Graph (DAG) — 0 Cycles"
+        A[index.js Barrel] --> B[scripts/lib/aspects/*]
+        A --> C[scripts/lib/boq/*]
+        A --> D[scripts/lib/catalog/*]
+        A --> E[scripts/lib/conflict/*]
+        A --> F[scripts/lib/system/*]
+        B --> F
+        C --> B
+        C --> D
+        C --> E
+        D --> F
+        E --> D
+        E --> F
+    end
+
+    subgraph "Modular Decomposition Pattern (CC <= 20)"
+        G[Incoming Raw Component List] --> H[tallyXItems / buildSkuMap (O(N) Amortized Pass)]
+        H --> I[calculateX / validateX (Isolated Aspect Math & Rules)]
+        I --> J[Clean Physical Aspect Assessment Result]
+    end
+```
+
+- **0-Cycle DAG Guarantee**: Verified via `npm run test:circular` across all 350+ project files.
+- **Complexity Caps**: CC $\le 20$ for high-level evaluators (`evalSupportManufacturing`, `evalPcieRiserSlots`, `evalStorageTriMode`, `evalNetworkingOcp`) and $\le 15$ for helper methods, with declarative lookup arrays replacing monolithic nested branches.
+

@@ -1,6 +1,6 @@
 ---
 name: boq-eval-skill
-description: Use this skill for validating customer BOQs, hardware lists, Excel quotes, or proposals against vendor-agnostic product specs (HPE, Cisco, Dell, Alletra, etc.) and running 6-aspect physical pre-checks.
+description: Use this skill for validating customer BOQs, hardware lists, Excel quotes, or proposals against vendor-agnostic product specs (HPE, Cisco, Dell, Alletra, etc.) and running 7-aspect physical pre-checks.
 ---
 
 # Pre-Flight BOQ Evaluation & Closed-Loop Feedback Skill (`boq-eval-skill`)
@@ -9,7 +9,7 @@ description: Use this skill for validating customer BOQs, hardware lists, Excel 
 
 ## 1. Overview & Workflow Lifecycle (Workflow 2)
 
-This skill provides an automated, agentic workflow representing **Workflow 2 (Pre-Flight Evaluation)** of the dual-workflow paradigm. It ingests raw customer BOQs, pre-cleans input data, runs deterministic 6-aspect physical math assertions, executes 5-level dependency conflict graph validation, profiles Workload DNA, dynamically routes to Gemini Notebook RAG via `notebooks.json`, and outputs the results to the dashboard and a dynamically generated **Corrected BOQ Excel workbook**.
+This skill provides an automated, agentic workflow representing **Workflow 2 (Pre-Flight Evaluation)** of the dual-workflow paradigm. It ingests raw customer BOQs, pre-cleans input data, runs deterministic 7-aspect physical math assertions, executes 5-level dependency conflict graph validation, profiles Workload DNA, dynamically routes to Gemini Notebook RAG via `notebooks.json`, and outputs the results to the dashboard and a dynamically generated **Corrected BOQ Excel workbook**.
 
 ```mermaid
 graph TD

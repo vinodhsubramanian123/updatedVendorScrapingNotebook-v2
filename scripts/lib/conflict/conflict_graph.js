@@ -127,16 +127,29 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   }
 
   const learnedDeltas = loadLearnedKnowledgeDeltas();
+  const dependencyEdges = new Set(); // Stores "affectedSku->requiredSku"
+
   learnedDeltas.forEach(delta => {
-    const affectedSku = delta.affectedSku || delta.sku || '';
-    const requiredSku = delta.requiredDependencySku || delta.requiredSku || '';
+    const affectedSku = cleanBaseSKU(delta.affectedSku || delta.sku || '');
+    const requiredSku = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
     const msg = delta.rawMessage || delta.errorMessage || delta.ruleUpdate || '';
 
     if (affectedSku && affectedSku !== 'UNKNOWN_SKU') {
-      const hasAffected = fullBomList.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(affectedSku) || (it.description || '').includes(affectedSku));
+      const hasAffected = fullBomList.some(it => cleanBaseSKU(it.sku) === affectedSku || (it.description || '').includes(affectedSku));
       if (hasAffected) {
         if (requiredSku) {
-          const hasReq = fullBomList.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(requiredSku) || (it.description || '').includes(requiredSku));
+          // Cycle detection guardrail: Check if reverse edge already exists
+          const edgeKey = `${affectedSku}->${requiredSku}`;
+          const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
+
+          if (dependencyEdges.has(reverseEdgeKey)) {
+            const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
+            recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
+            return;
+          }
+          dependencyEdges.add(edgeKey);
+
+          const hasReq = fullBomList.some(it => cleanBaseSKU(it.sku) === requiredSku || (it.description || '').includes(requiredSku));
           if (!hasReq) {
             const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
             conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });

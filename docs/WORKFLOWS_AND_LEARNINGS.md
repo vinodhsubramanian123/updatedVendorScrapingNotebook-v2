@@ -56,13 +56,13 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - **Integration Tier**: Vendor BOM verifiers, end-to-end multi-product scenarios, conflict graph DAG validation, historical pricing timelines, Excel alignment audits, DL380 Gen12 combinations, whole solution integration gaps, and automated BOQ evaluation benchmarks.
   - **E2E Tier**: Customer BOQ flows, live CLIC portal validation, and Playwright headless browser dashboard tests.
 - **100% Pass Benchmark**: Every commit and pull request must achieve a 100% pass rate across all suites.
-- **7/7 Product Lines Certified**: Verified across `DL380 Gen12 SFF`, `DL380 Gen12`, `DL380 Gen11`, `MSL3040 Tape`, `GX5000 Rack`, `SY100Gb F32 Module`, and `Alletra Storage System`.
+- **6 Canonical Product Generations Certified**: Verified across `DL380 Gen12`, `DL380 Gen11`, `MSL3040 Tape`, `GX5000 Rack`, `SY100Gb F32 Module`, and `Alletra Storage System`.
 
 ---
 
 ## 5. DL380 Gen12 E2E Perfection & Fail-Safe Pipeline Learnings
 - **Staging Isolation & Master Excel Integrity**: Live scrapes triggered from the Express dashboard execute inside isolated staging paths (`outputs/temp/staging_{chassis}_{ts}`). Promotion to live workspace (`{chassis}_OCA_Catalog.xlsx`, `{chassis}_Catalog.json`) occurs ONLY after `verify_excel_tally.js` certifies 100% row and SKU count accuracy. If any failure occurs, the live catalog remains 100% untouched while failed staging is preserved for diagnosis.
-- **NotebookLM RAG Auto-Sync**: Post-flow sync (`scripts/lib/sync/post_flow_sync.js`) automatically refreshes the Markdown RAG payload (`notebook_sync_payload_DL380_Gen12_SFF.md`) and updates `notebooks.json` sync status (`lastSyncedAt`, `lastSyncDeltaCount`), maintaining real-time alignment between the Dual-Brain RAG and live catalog data.
+- **NotebookLM RAG Auto-Sync**: Post-flow sync (`scripts/lib/sync/post_flow_sync.js`) automatically refreshes the Markdown RAG payload (`notebook_sync_payload_DL380_Gen12.md`) and updates `notebooks.json` sync status (`lastSyncedAt`, `lastSyncDeltaCount`), maintaining real-time alignment between the Dual-Brain RAG and live catalog data.
 - **Closed-Loop Telemetry & HITL Action Ledger**: Every evaluation run logs execution duration, confidence score, and domain violation counts into `pipeline_telemetry.json`. Human-in-the-loop actions (such as split confirmation or feedback drawer submissions) feed directly into `scripts/lib/feedback/feedback_loop.js`, continuously improving evaluation precision over subsequent quote runs.
 - **100% Headless UI Perfection**: Utilizing Playwright (`tests/e2e/e2e_headless_ui_test.js`), we achieved a flawless 7/7 (100%) test pass rate on the dashboard UI, confirming zero console or page errors across complex NotebookLM RAG payloads, interactive strategy matrices, and seamless local Node.js API endpoint connectivity.
 
@@ -492,6 +492,65 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Knowledge Scoping & Isolation (Dimension E)**: Universal Master Knowledge Registry (`master_knowledge_registry.json`) for cross-chassis rules vs Product-Specific Partitioned Catalogs (`outputs/{Family}/{Gen}/{Model}/`) and dedicated NotebookLM notebooks. Zero cross-chassis contamination (`INV-24`).
 - **Master Excel Pre-Sync Validation & Pruning (Dimension F)**: 15/15 Staging Guardrail checks before promotion (`INV-22`), Anomaly Drop Protection (`INV-23`), and automatic stale test payload pruning (`cleanTestPayloads`).
 - **Re-scraping Diffs & Fail-Hard Integrity (Dimension G)**: Priority-based price trail deduplication (`INV-1`), GPL baseline preservation across $0 unbundled views (`INV-34`), obsolete badge sanitization (`INV-35`), and fail-hard execution on Steps 8-10 (`INV-5`).
+
+---
+
+## 49. Static Circular Dependency DAG & SonarQube Cyclomatic Complexity Guardrail (`INV-46`)
+- **Zero Circular Dependencies DAG Enforcement**:
+  - The repository's 350+ JavaScript, JSX, and CommonJS modules are statically validated to form a strict Directed Acyclic Graph (DAG) with **0 circular dependency cycles**.
+  - Verified automatically in CI and pre-flight tests via `tests/unit/test_circular_and_complexity.js` and `npm run test:circular` (`scripts/maintenance/analyze_circular_deps.js`).
+- **SonarQube-Style Cyclomatic Complexity (CC) Reduction**:
+  - Monolithic aspect checker God-functions with CC $>100$ were systematically refactored into clean, single-responsibility pipelines:
+    - **`product_meta.js`**: `synthesizeSubcategoryName` CC dropped from **130** to **10**, `classifyComponentRole` dropped from **30** to **11**, and `parseProductMeta` dropped from **36** to **15** using declarative `SUBCATEGORY_SYNTHESIS_RULES` matcher arrays.
+    - **`support_manufacturing.js`**: `evalSupportManufacturing` CC dropped from **88** to **4** by extracting modular helpers (`tallySupportItems`, `computeWindowsLicensing`, `computeVmwareLicensing`, `computeLinuxLicensing`, `computeTapeAutomationMath`).
+    - **`pcie_riser.js`**: `evalPcieRiserSlots` CC dropped from **104** to **1** by decomposing into `tallyPcieItems` and `calculatePcieSlots`.
+    - **`storage_tri_mode.js`**: `evalStorageTriMode` CC dropped from **172** to **14** by extracting `buildSkuCategoryMap`, `isDriveComponent`, `tallyStorageItems`, `validateAlletraStorage`, and `validateStoreEverStorage`.
+    - **`networking_ocp.js`**: `evalNetworkingOcp` CC dropped from **143** to **10** by extracting `buildSkuCategoryMap`, `parseAdapterPortCount`, `parseSynergyMezzanine`, `tallyNetworkingItems`, `validateSanTransceivers`, and `validateSynergyFabrics`.
+  - Enforced continuously via `npm run test:complexity` with hard CC bounds ($\le 20$ for evaluators, $\le 15$ for sub-functions).
+
+---
+
+## 50. Isolated Test Execution, Failure Ledger & Diagnostic Telemetry (`INV-47`)
+- **Process Isolation & Subprocess Architecture**:
+  - Replaced brittle monolithic bash command chains (`node t1 && node t2 && ...`) with `scripts/maintenance/run_test_matrix.js`.
+  - Every test file is spawned in an isolated Node.js child process with individual timeouts (60s default) and captured stdout/stderr streams.
+- **Automated Failure Isolation & Ledgering**:
+  - When any test fails, execution details (exact assertion mismatches, duration, exit code, line numbers) are captured into a highlighted diagnostic trace and persisted to `outputs/history/test_failure_ledger.json` using `safeWriteJsonAtomic`.
+- **Targeted Fast-Path Reruns & Token Conservation**:
+  - `npm run test:failed`: Re-runs ONLY the failing tests recorded in the failure ledger, clearing them once they pass.
+  - `npm run test:isolated -- <file>`: Runs a single test in isolation with full verbosity and debug output.
+  - `npm run test:all`: Executes the entire discovered test matrix across unit, chaos, integration, and e2e tiers, displaying duration metrics and summary tables.
+
+---
+
+## 51. Strict Generation & Product Family RAG Firewall (`INV-48`)
+- **Zero Cross-Generation Bleeding**:
+  - `local_rag_search.js` strictly isolates RAG lookups by targeted chassis/generation. When evaluating a Gen12 server, the engine is firewalled to `outputs/ProLiant/Gen12/DL380_Gen12/` and the Gen12 NotebookLM ID.
+  - Eliminated dangerous blind fallbacks: if an SKU or query has no match in the target generation, it returns an empty result instead of leaking Gen11 components or cross-family storage options.
+
+---
+
+## 52. Autonomous Multi-Solution Cluster Partitioning (`INV-49`)
+- **Mixed Proposal Dissection**:
+  - Customer tenders frequently aggregate disparate hardware categories (e.g. 20x DL380 Compute nodes, 2x Alletra MP Storage arrays, 1x StoreEver MSL Tape Library, 4x Aruba switches) into a single spreadsheet.
+  - `boq_preprocessor.js` and `multi_cluster_splitter.js` dissect these into distinct Solution Clusters, evaluating each against its own domain catalog without invalidly checking tape drives against server drive cages.
+
+---
+
+## 53. Ambiguity Inbox Escalation & Human Sign-off Protocol (`INV-50`)
+- **No Ungrounded Auto-Healing**:
+  - When encountering unknown, obsolete, or ambiguously phrased part numbers not certified by QuickSpecs or live catalogs, the engine halts auto-substitution.
+  - The item is marked as `NEEDS_HUMAN_CLARIFICATION`, rendered with an Amber visual badge in the Topology Canvas, and surfaced in the Ambiguity Inbox for human engineer confirmation. Engineer decisions write persistent `KnowledgeDelta` records to `master_knowledge_registry.json`.
+
+---
+
+## 54. 4-Tier Vendor-Agnostic Taxonomy Protocol (`INV-51`)
+- **Isolated Vendor Namespaces**:
+  - To support multi-vendor portfolios (HPE, Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem), the directory and RAG knowledge structure is standardized under `{Vendor}/{Family}/{Gen}/{Model}/`.
+  - Guarantees zero cross-vendor data contamination while sharing the core 7-aspect physical math verification kernel.
+
+
+
 
 
 

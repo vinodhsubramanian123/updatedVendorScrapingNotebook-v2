@@ -136,15 +136,8 @@ function startTask(type, proc, res, outputsDir) {
         exitCode: code,
         logs
       });
-    } catch (_) {
-      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({
-        runId,
-        taskType: type,
-        startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
-        durationMs,
-        exitCode: code,
-        logs
-      }, null, 2));
+    } catch (e) {
+      console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
     }
   });
 

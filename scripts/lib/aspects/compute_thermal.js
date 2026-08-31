@@ -48,7 +48,8 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   const hasHeatsinks = highPerfHeatsinkSku ? items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfHeatsinkSku)) : true;
 
   // CLIC Rule 81354654: Fan kit contains all 6 fans; maximum 1 fan kit allowed per base chassis
-  const fanKitsPerServer = serverCount > 0 ? (fanKitCount / serverCount) : fanKitCount;
+  // Use Math.floor to avoid fractional ratios (e.g. 3 kits for 2 servers = 1.5) giving a false pass
+  const fanKitsPerServer = serverCount > 0 ? Math.floor(fanKitCount / serverCount) : fanKitCount;
   const fanKitExceedsMax = fanKitsPerServer > 1;
 
   return {

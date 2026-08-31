@@ -73,7 +73,9 @@ function isMetadataOrDisclaimerLine(lowerLine) {
     lowerLine.startsWith('terms and conditions') ||
     lowerLine.startsWith('subtotal') ||
     lowerLine.startsWith('grand total') ||
-    lowerLine.startsWith('total estimate')
+    lowerLine.startsWith('total estimate') ||
+    /^config(?:\s*#\d+|\s+subtotal|\s*subtotal)/i.test(lowerLine) ||
+    /subtotal\s*:\s*\$?\d+/i.test(lowerLine)
   );
 }
 
@@ -256,10 +258,42 @@ function parseSkuLines(lines) {
   const itemMap = new Map();
   let currentMultiplier = 1;
   let activeColumnMap = null;
+  let ocrError = null;
+  let ocrNotice = null;
+  const clusters = [];
+  let currentCluster = null;
 
   for (const rawLine of lines) {
     const line = String(rawLine || '').trim();
-    if (!line || isMetadataOrDisclaimerLine(line.toLowerCase())) continue;
+    if (!line) continue;
+
+    // Check for OCR Error / Notice banners
+    if (line.startsWith('[OCR_ERROR]')) {
+      ocrError = line.replace('[OCR_ERROR]', '').trim();
+      continue;
+    }
+    if (line.startsWith('[OCR_NOTICE]')) {
+      ocrNotice = line.replace('[OCR_NOTICE]', '').trim();
+      continue;
+    }
+
+    if (isMetadataOrDisclaimerLine(line.toLowerCase())) continue;
+
+    // Detect cluster demarcation: CONFIGURATION #N: 20x Cluster_A
+    const clusterMatch = line.match(/^CONFIGURATION\s*#?(\d+):\s*(\d+)\s*x\s*(.+)$/i);
+    if (clusterMatch) {
+      if (currentCluster && currentCluster.items.length > 0) {
+        clusters.push(currentCluster);
+      }
+      currentMultiplier = parseInt(clusterMatch[2], 10) || 1;
+      currentCluster = {
+        configIndex: parseInt(clusterMatch[1], 10),
+        multiplier: currentMultiplier,
+        name: clusterMatch[3].trim(),
+        items: []
+      };
+      continue;
+    }
 
     const delimiter = line.includes('\t') ? '\t' : (line.includes(',') ? ',' : (line.includes('|') ? '|' : (line.includes(';') ? ';' : null)));
     
@@ -277,6 +311,7 @@ function parseSkuLines(lines) {
     const lineSku = (line.match(HPE_SKU_EXTRACT_REGEX) || [])[1];
     if (multMatch && (!lineSku || !isValidHpeSKU(lineSku))) {
       currentMultiplier = parseInt(multMatch[1], 10) || 1;
+      if (currentCluster) currentCluster.multiplier = currentMultiplier;
       continue;
     }
 
@@ -300,6 +335,9 @@ function parseSkuLines(lines) {
     // Accumulate items into itemMap
     for (const item of extractedRows) {
       const totalQty = item.quantity * currentMultiplier;
+      if (currentCluster) {
+        currentCluster.items.push({ ...item });
+      }
       if (itemMap.has(item.sku)) {
         const existing = itemMap.get(item.sku);
         if (item.isFactoryIntegrated) {
@@ -324,9 +362,16 @@ function parseSkuLines(lines) {
     }
   }
 
+  if (currentCluster && currentCluster.items.length > 0) {
+    clusters.push(currentCluster);
+  }
+
   return {
     items: Array.from(itemMap.values()),
-    multiplier: currentMultiplier
+    multiplier: currentMultiplier,
+    clusters,
+    ocrError,
+    ocrNotice
   };
 }
 

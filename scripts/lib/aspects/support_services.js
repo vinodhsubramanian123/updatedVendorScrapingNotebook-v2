@@ -8,9 +8,12 @@ const { cleanBaseSKU } = require('../catalog/sku.js');
 function evalSupportServices(items, catalogData = null) {
   let hasObsoleteRisk = false;
   let hasEolWarning = false;
+  const obsoleteSkus = [];
+  const eolSkus = [];
 
   for (const it of items) {
     const rawSku = String(it.sku || '').trim().toUpperCase();
+    const cleanSku = cleanBaseSKU(it.sku);
     const rawDesc = String(it.description || '').trim().toUpperCase();
     const rawLifecycle = String(it.lifecycleStatus || '').trim().toUpperCase();
 
@@ -27,22 +30,36 @@ function evalSupportServices(items, catalogData = null) {
     // Check matched catalog entries
     let catalogStatus = '';
     if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
+      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanSku));
       if (match && match.skus) {
-        const skuEntry = match.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku));
+        const skuEntry = match.skus.find(s => cleanBaseSKU(s['Product #']) === cleanSku);
         catalogStatus = String(skuEntry['Lifecycle Status'] || '').toUpperCase();
       }
     }
 
     if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
       hasObsoleteRisk = true;
+      obsoleteSkus.push({
+        sku: it.sku,
+        cleanSku,
+        description: it.description || '',
+        status: 'OBSOLETE',
+        quantity: it.quantity || 1
+      });
     }
     if (isEolWarning || catalogStatus.includes('90') || catalogStatus.includes('EOL')) {
       hasEolWarning = true;
+      eolSkus.push({
+        sku: it.sku,
+        cleanSku,
+        description: it.description || '',
+        status: '90-DAY EOL',
+        quantity: it.quantity || 1
+      });
     }
   }
 
-  return { hasObsoleteRisk, hasEolWarning };
+  return { hasObsoleteRisk, hasEolWarning, obsoleteSkus, eolSkus };
 }
 
 module.exports = {

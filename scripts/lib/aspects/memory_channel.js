@@ -6,7 +6,8 @@
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
-function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false) {
+function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
+  const chWidth = Math.max(1, parseInt(channelWidth, 10) || 8);
   let memoryCount = 0;
   let totalMemoryGb = 0;
   let cpuCount = passedCpuCount;
@@ -58,10 +59,11 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
 
   if (cpuCount === 0) cpuCount = 2;
 
-  const isBalancedChannel = memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % 8 === 0);
+  const isBalancedChannel = memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
   return {
     memoryCount,
     totalMemoryGb,
+    channelsPerCpu: chWidth,
     isBalancedChannel,
     btoMemoryViolations,
     hasBtoMemoryInCto: btoMemoryViolations.length > 0,

@@ -11,6 +11,7 @@ const {
   evalNetworkingOcp,
   evalPcieRiserSlots,
   evalPowerEnvironment,
+  evalSupportManufacturing,
   parseAndConsolidateBOQ,
   evaluateBOQMultiAspect
 } = require('../lib/boq/boq_evaluator.js');
@@ -107,6 +108,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
+        name: "evaluate_aspect_support",
+        description: "Evaluates support services, management licenses, OS core licensing math, and manufacturing dependencies.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            items_json: { type: "string", description: "JSON stringified array of BOQ items." },
+            total_socket_cores: { type: "number", description: "Total physical cores across sockets (optional)." },
+            server_count: { type: "number", description: "Number of server chassis nodes (default 1)." }
+          },
+          required: ["items_json"]
+        }
+      },
+      {
         name: "query_notebooklm",
         description: "Queries the NotebookLM RAG engine for QuickSpecs grounding.",
         inputSchema: {
@@ -193,6 +207,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const result = evalPowerEnvironment(items);
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
+      case "evaluate_aspect_support": {
+        const result = evalSupportManufacturing(items, null, args.total_socket_cores || 0, args.server_count || 1);
+        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      }
       case "query_notebooklm": {
         const cfg = loadNotebookConfig();
         const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
@@ -211,7 +229,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
         let outputDir = cat ? cat.catalogDir : null;
         if (!outputDir) {
-          outputDir = path.join(__dirname, '..', 'outputs', args.chassis_id);
+          outputDir = path.resolve(__dirname, '..', '..', 'outputs', args.chassis_id);
         }
         if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
         const result = processPortalFeedback("MCP tool rule update", outputDir, {

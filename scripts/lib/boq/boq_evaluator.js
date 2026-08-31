@@ -184,7 +184,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
 
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
-  const support = evalSupportManufacturing(items, catalogData);
+  const support = evalSupportManufacturing(items, catalogData, 0, serverCount);
   const lifecycle = evalSupportServices(items, catalogData);
   const lifecycleRecommendations = generateLifecycleRecommendations(items, catalogData);
 
@@ -262,6 +262,46 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (P51911-B21) and CPU2/OCP2 Enablement Kit (P48830-B21) cannot be selected together. Unselect P51911-B21 on dual-CPU DL380 servers.`;
     errors.push(reason);
     mathDeductions.push(reason);
+  }
+
+  // SAN & Fibre Channel Transceiver Math (Gap 2.4)
+  if (network.isMissing32GbTransceivers) {
+    const reason = `SAN Networking Math: 32Gb Fibre Channel HBAs (${network.fcHbaPortCount32Gb} ports) require 32Gb SFP28/SFP+ optical transceivers. Found ${network.transceiverCount32Gb}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_32GB_TRANSCEIVER',
+      rule: 'Fibre Channel Optical Transceiver Requirement',
+      sku: 'AJ718A',
+      description: 'HPE 32Gb Short Wave B-Series SFP+ Transceiver',
+      quantity: Math.max(0, network.fcHbaPortCount32Gb - network.transceiverCount32Gb),
+      reasoning: reason
+    });
+  }
+  if (network.isMissing64GbTransceivers) {
+    const reason = `SAN Networking Math: 64Gb Fibre Channel HBAs (${network.fcHbaPortCount64Gb} ports) require 64Gb optical transceivers. Found ${network.transceiverCount64Gb}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_64GB_TRANSCEIVER',
+      rule: '64Gb Fibre Channel Optical Transceiver Requirement',
+      sku: 'R7W32A',
+      description: 'HPE 64Gb Short Wave SFP56 Transceiver',
+      quantity: Math.max(0, network.fcHbaPortCount64Gb - network.transceiverCount64Gb),
+      reasoning: reason
+    });
+  }
+  if (network.isMissingOpticalPatchCables) {
+    const reason = `SAN Cabling Advisory: Active optical transceivers (${network.activeOpticalTransceiverCount}) require corresponding OM4 LC-LC fiber optic patch cables. Found ${network.opticalPatchCableCount}.`;
+    warnings.push(reason);
+  }
+  if (network.hasSanSinglePointOfFailure) {
+    const reason = `SAN High-Availability Advisory: Single SAN switch configured with Fibre Channel HBAs. Dual redundant SAN fabrics recommended to eliminate Single Point of Failure (SPOF).`;
+    warnings.push(reason);
+  }
+  if (network.hasSynergyFabricMismatch) {
+    network.synergyFabricErrors.forEach(err => {
+      errors.push(err);
+      mathDeductions.push(err);
+    });
   }
 
   // Rule: PCIe Slot Capacity vs Active Riser Math (CLIC Rules 81016755 & 81354683)
@@ -501,9 +541,122 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     });
   }
 
-  // Advanced Enterprise Rule: Windows Server Core Licensing Multiplier
+  // Advanced Enterprise Rule: Windows Server Core Licensing Multiplier (INV-28)
   if (support.needsAdditionalWindowsCores) {
-    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
+    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
+    warnings.push(reason);
+  }
+
+  // VMware Core Licensing Multiplier (Gap 1.1)
+  if (support.needsAdditionalVmwareCores) {
+    const reason = `VMware Licensing Math: Configuration requires ${support.requiredVmwareCores} licensed cores (16 cores/socket minimum) but only ${support.vmwareLicensedCores} cores are licensed. Requires ${support.missingVmwareCores} additional VMware core licenses.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'VMWARE_CORE_LICENSES',
+      rule: 'VMware Core Licensing Minimums & Per-Core Multipliers',
+      sku: 'VMW-VCF-CORE',
+      description: 'VMware Cloud Foundation / vSphere Per-Core Subscription License',
+      quantity: support.missingVmwareCores,
+      reasoning: reason
+    });
+  }
+
+  // Linux (RHEL / SLES) Subscription Sizing (Gap 1.2)
+  if (support.needsAdditionalLinuxSubscriptions) {
+    const reason = `Linux OS Licensing Math: Server has ${support.detectedCpuSockets} socket(s) requiring ${support.requiredLinuxSubscriptions} 1-2 socket subscription(s). Found ${support.linuxSubscriptions}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'LINUX_OS_SUBSCRIPTIONS',
+      rule: 'Red Hat Enterprise Linux / SLES 1-2 Socket Subscription Sizing',
+      sku: 'RHEL-2S-SUB',
+      description: 'Red Hat Enterprise Linux Server 1-2 Socket Standard Subscription',
+      quantity: support.missingLinuxSubscriptions,
+      reasoning: reason
+    });
+  }
+
+  // INV-32: Unsolicited Software / Startup Services Advisory (Gap 1.3)
+  if (support.unsolicitedOptionalItems && support.unsolicitedOptionalItems.length > 0) {
+    support.unsolicitedOptionalItems.forEach(item => {
+      const adv = `Unsolicited Optional Service / Software (INV-32): SKU ${item.sku} (${item.description}) detected ($${item.extendedPriceUsd || 0}). Optional startup service or add-on software was not explicitly requested by customer.`;
+      warnings.push(adv);
+    });
+  }
+
+  // Synergy Frame Redundant Power Error (Gap 1.4)
+  if (power.hasSynergyRedundantPowerError) {
+    const reason = `Synergy 12000 Frame Power Error: Synergy frame requires exactly 6x 2650W Titanium Power Supplies for redundant power envelope. Found ${power.synergyTitanium2650wCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  // Synergy D3940 Composable Storage Connectivity (Gap 1.5)
+  if (storage.hasD3940ConnectivityError) {
+    const reason = `Synergy D3940 Composable Storage Error: D3940 drive module paired with Synergy compute requires HPE Synergy SAS Mezzanine Card and SAS Connection Module.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  // Alletra Storage System Architecture Validation (Gap 1.6)
+  if (storage.hasMissingControllerNode) {
+    const reason = `Alletra Architecture Error: Alletra storage array requires dual (2x) controller nodes for active-active high-availability. Found ${storage.controllerNodeCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (storage.hasAsymmetricHbas) {
+    const reason = `Alletra HBA Symmetry Warning: Host Bus Adapters must be symmetrically configured across dual controller nodes (${storage.hbaCount} HBAs found, even count required).`;
+    warnings.push(reason);
+  }
+  if (storage.missingDaisyChainCables > 0) {
+    const reason = `Alletra Cabling Requirement: Expansion shelves require 2x SAS daisy-chain cables per shelf (${storage.expansionShelfCount * 2} cables needed, found ${storage.sasDaisyChainCableCount}).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SAS_DAISY_CHAIN_CABLE',
+      rule: 'Alletra Expansion Shelf Daisy-Chain Cabling',
+      sku: 'P40243-B21',
+      description: 'HPE SAS Mini-HD to Mini-HD Cable',
+      quantity: storage.missingDaisyChainCables,
+      reasoning: reason
+    });
+  }
+  if (storage.insufficientRaid6Drives) {
+    const reason = `Alletra RAID 6 Constraint: RAID 6 disk groups require a minimum of 6 SSDs. Found ${storage.ssdCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (storage.insufficientRaid10Drives) {
+    const reason = `Alletra RAID 10 Constraint: RAID 10 disk groups require a minimum of 4 SSDs. Found ${storage.ssdCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  // StoreEver Tape Automation Cabling & Capacity (Gap 1.7)
+  if (storage.needsMiniSasHdCable) {
+    const reason = `StoreEver SAS Cabling Math: ${storage.ltoSasDriveCount} SAS LTO tape drive(s) require external Mini-SAS HD cables.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'MINI_SAS_HD_CABLE',
+      rule: 'StoreEver LTO SAS Drive Host Cabling',
+      sku: '716189-B21',
+      description: 'HPE 2.0m External Mini-SAS High Density to Mini-SAS HD Cable',
+      quantity: storage.ltoSasDriveCount,
+      reasoning: reason
+    });
+  }
+  if (storage.needsFcTransceiver) {
+    const reason = `StoreEver FC Transceiver Math: ${storage.ltoFcDriveCount} Fibre Channel LTO tape drive(s) require 8Gb/16Gb optical transceivers.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_OPTICAL_TRANSCEIVER_TAPE',
+      rule: 'StoreEver LTO FC Drive Optical Transceiver',
+      sku: 'AJ716B',
+      description: 'HPE 8Gb Short Wave B-Series Fibre Channel 1 Pack SFP+ Transceiver',
+      quantity: storage.ltoFcDriveCount,
+      reasoning: reason
+    });
+  }
+  if (storage.exceedsSlotCapacity) {
+    const reason = `StoreEver Capacity Advisory: ${storage.dataCartridgeCount} data cartridges exceeds total library capacity (${storage.totalMsl3040Slots} slots).`;
     warnings.push(reason);
   }
 
@@ -627,12 +780,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
       id: 7,
       name: 'Vendor Support Taxonomy & Licensing',
       iconType: 'Award',
-      defaultRule: 'Hardware SKU validation against mandatory support SLA tiers & COM licensing (CLIC Rule 81322276)',
-      status: support.hasSupportService && support.hasManagementLicense ? 'PASS' : 'WARN',
-      detail: !support.hasManagementLicense
+      defaultRule: 'Hardware SKU validation against mandatory support SLA tiers, COM licensing & OS core multipliers (CLIC Rule 81322276, INV-28)',
+      status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
+        ? 'WARN'
+        : (!support.hasManagementLicense || !support.hasSupportService ? 'WARN' : 'PASS'),
+      detail: support.needsAdditionalWindowsCores
+        ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
+        : support.needsAdditionalVmwareCores
+        ? `VMware Licensing Deficit: Requires ${support.missingVmwareCores} additional VMware core licenses (${support.vmwareLicensedCores}/${support.requiredVmwareCores} cores covered).`
+        : support.needsAdditionalLinuxSubscriptions
+        ? `Linux OS Licensing Deficit: Requires ${support.missingLinuxSubscriptions} additional 1-2 socket subscription(s).`
+        : !support.hasManagementLicense
         ? 'Management License Advisory (CLIC Rule 81322276): CTO models require at least 1 COM or OneView license (R7A11AAE / E5Y43A).'
         : support.hasSupportService
-        ? 'Verified mandatory support services and management licensing included.'
+        ? 'Verified mandatory support services, management licensing, and OS core allocations included.'
         : 'Support Taxonomy Advisory: Missing Pointnext / Tech Care service line.'
     }
   ];
@@ -669,6 +830,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     pcie,
     power,
     support,
+    // Flat action checklist for fast UI and API consumption (QW-1)
+    needsActions: missingDependencies.map(d => d.key || d.sku),
     // Cluster Infrastructure Sizing Matrix
     clusterSizing: {
       serverCount,

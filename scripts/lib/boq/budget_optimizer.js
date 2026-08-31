@@ -17,7 +17,7 @@ const { cleanBaseSKU } = require('../catalog/sku.js');
  * @param {object} catalogData 
  * @returns {number} Price in USD
  */
-function getSkuListPrice(skuStr, catalogData = null) {
+function getSkuListPrice(skuStr, catalogData = null, chassisDir = null) {
   const clean = cleanBaseSKU(skuStr);
   if (catalogData && Array.isArray(catalogData.entries)) {
     for (const sub of catalogData.entries) {
@@ -27,12 +27,22 @@ function getSkuListPrice(skuStr, catalogData = null) {
           const rawPrice = match['Unit Price (USD)'] || match['Price (USD)'] || match['Price'];
           if (rawPrice) {
             const parsed = parseFloat(String(rawPrice).replace(/[^0-9.]/g, ''));
-            if (!isNaN(parsed)) return parsed;
+            if (!isNaN(parsed) && parsed > 0) return parsed;
           }
         }
       }
     }
   }
+
+  // Dynamic fallback to historical price layer if catalog price is zero or missing (INV-33 & INV-34)
+  if (chassisDir) {
+    try {
+      const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
+      const histPrice = getHistoricalSkuPrice(clean, chassisDir, catalogData);
+      if (typeof histPrice === 'number' && histPrice > 0) return histPrice;
+    } catch (_) {}
+  }
+
   return 0.00; // Zero Hardcoding Rule: Return 0 if not found
 }
 

@@ -41,11 +41,25 @@ function isValidHpeSKU(skuStr) {
   if (COMMON_WORDS_FILTER.test(clean)) return false;
   if (!HPE_SKU_REGEX.test(clean)) return false;
 
-  // Filter out spec strings (DDR5-6400, DDR4-3200, CAS-52, SFP-10G)
+  // Filter out spec strings (DDR5-6400, DDR4-3200, CAS-52, SFP-10G) and non-HPE vendor prefixes
   if (/^(DDR[345]|CAS|CAT|SFP|QSFP|RJ45|PCIE|USB)-/i.test(clean)) return false;
+  if (/^(N9K|C9[0-9]{3}|WS-C|AFF|FAS|CAB|EX[0-9]{4}|MX[0-9]{3}|POWEREDGE)-/i.test(clean)) return false;
+  if (/^X[0-9]{5}[A-Z]-[A-Z0-9]+$/i.test(clean)) return false;
+  if (/^(N9K|AFF|FAS|CAB-C)/i.test(clean)) return false;
 
   // Filter out memory/speed dimension strings (e.g. 1x64GB, 2x32GB)
   if (/^\d+x\d+/i.test(clean)) return false;
+
+  // For hyphenated hardware SKUs, enforce HPE prefix (5-7 chars) and standard suffix (e.g. B21, F21, 001, AA1)
+  if (clean.includes('-')) {
+    const parts = clean.split('-');
+    if (parts.length !== 2) return false;
+    const [pfx, sfx] = parts;
+    // Reject foreign switch models like 93180YC or C93180
+    if (/^[0-9]+[A-Z]{2,}$/i.test(pfx)) return false;
+    // Standard HPE hyphenated hardware suffixes: -B21, -F21, -K21, -H21, -B22, -B23, -B19, -0D1, -001, -AA1, -AB1, -291, -371, -D63, -KD3, -B##, -###, -[A-Z]##
+    if (!/^(B2[1-9]|F2[1-9]|K2[1-9]|H2[1-9]|B19|0D1|001|AA1|AB1|291|371|D63|KD3|B[0-9]{2}|[0-9]{3}|[A-Z][0-9]{2})$/i.test(sfx)) return false;
+  }
 
   // For bare 6-character matches (no hyphen), enforce standard HPE 6-char hardware SKU structure or Service SKU
   if (!clean.includes('-') && clean.length === 6) {
@@ -78,7 +92,9 @@ function cleanBaseSKU(skuStr) {
   }
   // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21")
   str = str.replace(/\s+(?:0D1|OD1|B19|B21|#0D1|#B19|#B21)\b/i, '').trim();
-  return str.replace(/(CTO|BTO|FIO)$/i, '');
+  str = str.replace(/(CTO|BTO|FIO)$/i, '');
+  // Strip leading option badges/prefixes and punctuation (e.g. "[P73282-B21]", "P49147-B21.")
+  return str.replace(/^[\[\(\{"'`<]+|[\]\)\}"'`,;.:!?\/>]+$/g, '').trim();
 }
 
 /**
