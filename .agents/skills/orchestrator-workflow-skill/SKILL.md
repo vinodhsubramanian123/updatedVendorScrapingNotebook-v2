@@ -238,6 +238,8 @@ To maximize velocity and offload heavy validation without human friction:
 | **`INV-49`**| Multi-Solution Autonomous Partitioning | Dissects mixed proposals into isolated Solution Clusters evaluated against their respective ground truth. |
 | **`INV-50`**| Ambiguity Inbox Escalation & Sign-off | Flags unverified/obsolete SKUs as `NEEDS_HUMAN_CLARIFICATION` for human sales engineer sign-off in the UI. |
 | **`INV-51`**| 4-Tier Vendor-Agnostic Taxonomy | Standardizes all catalogs and RAG sources under `{Vendor}/{Family}/{Gen}/{Model}/` for 100% clean vendor isolation. |
+| **`INV-52`**| Fuzzy Category & Upward Alignment | Aligns typos and description rows to target categories, matching exact or upward (never downward) with 100% buildable fixes. |
+
 
 
 

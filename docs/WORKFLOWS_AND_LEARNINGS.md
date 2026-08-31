@@ -558,6 +558,16 @@ When a BOQ evaluation results in low confidence or physical constraint violation
     1. The core orchestrator uses direct native Node.js SDK bindings (`scripts/services/jules_task_manager.js`, `scripts/lib/rag/local_rag_search.js`, native GitHub REST API fetchers) that execute without IDE prompt interruptions.
     2. All MCP tools remain pre-authorized and auto-approved across all agent directives (`AGENTS.md` Rule 0 & `GEMINI.md` Rule 1).
 
+---
+
+## 56. Smart Fuzzy Category Alignment & Upward Attribute Matching Protocol (`INV-52`)
+- **Intent-Preserving Resolution Hierarchy**:
+  - When customer BOQs have part number typos, omitted option codes, or free-text description-only rows:
+    1. **Category Placement**: The engine parses the line to place it within the server component hierarchy (CPU, RAM, Drive Cage, Controller, NIC, Power).
+    2. **Exact $\ge$ Upward Matching**: Resolves exact part numbers first, or closest upward/equivalent specification (e.g. core counts or memory speed), strictly avoiding downgrades.
+    3. **5-Tier Strategy Synthesis**: Proposes Ranked Routes (Rank 1: Intent Preserved, Rank 2: Performance Boost, Rank 3: Balanced, Rank 4: Scalability Expansion, Rank 5: Minimal CapEx), all 100% buildable with mandatory physical fixes.
+
+
 
 
 

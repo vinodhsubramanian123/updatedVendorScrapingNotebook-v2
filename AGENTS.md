@@ -243,5 +243,15 @@ The system leverages Google Jules for background code review, test generation, a
     - Standardizes all catalogs, rule files, and RAG knowledge payloads into a canonical 4-tier directory hierarchy: `{Vendor}/{Family}/{Gen}/{Model}/` (e.g. `outputs/HPE/ProLiant/Gen12/DL380_Gen12/`, `outputs/Dell/PowerEdge/16G/R760/`, `outputs/Cisco/UCS/M7/C240_M7/`).
     - Eliminates cross-vendor and cross-generation data pollution while allowing universal 7-aspect validation across multi-vendor quotes.
 
+43. **Smart Fuzzy Category Alignment & Upward Attribute Matching Protocol (`INV-52`)**:
+    - When parsing customer BOQs with part typos, missing option codes, or description-only rows:
+      1. **Category/Subcategory Scheme Placement**: The engine identifies the missing or requested component class (Processor, Memory, Storage Cage, RAID Controller, OCP NIC, Power Supply).
+      2. **Upward / Closest Attribute Matching (Exact $\ge$ Upward, Never Downward)**:
+         - **1st Priority**: Exact SKU / attribute match.
+         - **2nd Priority**: Closest upward / equivalent match in the same category (e.g. 48-core $\rightarrow$ 48-core or 52-core, NEVER downgrade to 32-core).
+         - **3rd Priority**: Propose 5-tier ranked alternative routes (Rank 1: Intent Preserved buildable, Rank 2: Performance Boost, Rank 3: Balanced, Rank 4: Scalability Expansion, Rank 5: Minimal CapEx).
+      3. **100% Buildable Solution Contract**: In all proposed ranked tiers, all mandatory cables, risers, fan kits, and regulatory enablement options are automatically injected to eliminate unbuildable errors.
+
+
 
 

@@ -345,6 +345,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Expanding beyond HPE into Dell PowerEdge, Cisco UCS, and Lenovo ThinkSystem requires strict architectural namespaces to prevent vendor cross-pollution.
 - **Rule**: All catalogs, rules, and RAG payloads MUST adhere to the canonical 4-tier hierarchy: `{Vendor}/{Family}/{Gen}/{Model}/` (e.g. `outputs/HPE/ProLiant/Gen12/DL380_Gen12/`, `outputs/Dell/PowerEdge/16G/R760/`, `outputs/Cisco/UCS/M7/C240_M7/`), ensuring 100% isolated knowledge domains.
 
+### INV-52: Smart Fuzzy Category Alignment & Upward Attribute Matching Protocol
+- **Pattern**: Typos in customer part numbers or description-only rows can lead to discarded items or downgraded substitutions.
+- **Rule**: `boq_parser.js` and `strategy_synthesizer.js` MUST map ambiguous inputs to their target component category/subcategory, prioritizing exact match first, nearest upward/equivalent attribute match second (never downward), and synthesizing 5-tier ranked alternatives with 100% buildable mandatory physical fixes.
+
 ---
 
 ## History Directory Hygiene Rules
