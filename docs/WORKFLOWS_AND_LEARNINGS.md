@@ -549,6 +549,16 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - To support multi-vendor portfolios (HPE, Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem), the directory and RAG knowledge structure is standardized under `{Vendor}/{Family}/{Gen}/{Model}/`.
   - Guarantees zero cross-vendor data contamination while sharing the core 7-aspect physical math verification kernel.
 
+---
+
+## 55. Zero-Prompt Autonomous MCP & Native Service Dual-Path Protocol
+- **IDE Security Boundary vs. Pure Native SDKs**:
+  - In agentic IDE environments, certain interactive MCP tool definitions (e.g. diff visualizers or shell evaluators) may trigger client-level prompt dialogs in the IDE frontend unless explicitly bypassed.
+  - To guarantee 100% uninterrupted headless automation and zero human waiting:
+    1. The core orchestrator uses direct native Node.js SDK bindings (`scripts/services/jules_task_manager.js`, `scripts/lib/rag/local_rag_search.js`, native GitHub REST API fetchers) that execute without IDE prompt interruptions.
+    2. All MCP tools remain pre-authorized and auto-approved across all agent directives (`AGENTS.md` Rule 0 & `GEMINI.md` Rule 1).
+
+
 
 
 
