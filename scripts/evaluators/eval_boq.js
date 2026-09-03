@@ -13,21 +13,18 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
-const { execSync } = require('child_process');
 const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
-const { calculateConfidenceScore, processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
+const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { autoDetectChassisDetailed } = require('../lib/catalog/catalog_discovery.js');
 const { emitProgress } = require('../lib/system/progress.js');
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
-
 const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
+const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
+const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
+const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
+const { recordEvaluationTelemetry } = require('../lib/system/telemetry.js');
 
-
-/**
- * Load notebook ID from config file or use hardcoded fallback.
- */
 /**
  * Load notebook ID from config file for a specific chassis or use default.
  * @param {string} [chassisName]
@@ -43,14 +40,18 @@ function getDefaultNotebookId(chassisName = '') {
         if (id && String(id).trim()) return String(id).trim();
       }
       return cfg.defaultNotebookId || cfg.default || '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
-    } catch (e) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('ERROR', 'eval_boq.js', e); }
+    } catch (e) {
+      const _logger = require('../lib/system/pipeline_logger.js');
+      _logger.warn('ERROR', 'eval_boq.js', e);
+    }
   }
   return '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
 }
 
-async function main() {
-  const startTime = Date.now();
-  const args = process.argv.slice(2);
+// ============================================================
+// Stage 1: CLI Argument Parsing & Option Validation
+// ============================================================
+function parseEvaluationArguments(args = process.argv.slice(2)) {
   const JSON_MODE = args.includes('--json');
   const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
 
@@ -84,32 +85,63 @@ Examples:
   const nbIdx = args.indexOf('--notebook-id');
   const explicitNotebookId = (nbIdx !== -1 && args[nbIdx + 1]) ? args[nbIdx + 1] : null;
 
-  const inputBase = path.basename(inputFile, path.extname(inputFile));
-
-  // G25/G32: Dynamic chassis directory — explicit flag, auto-detect from BOQ, or fallback
   let chassisDir = '';
   const chIdx = args.indexOf('--chassis');
   if (chIdx !== -1 && args[chIdx + 1]) {
     chassisDir = args[chIdx + 1];
   }
-  // Auto-detection happens after BOQ parsing (below) if chassisDir is still empty
 
-  // Parse BOQ first so we can use items for auto-detection
-  const tStart = Date.now();
   const shIdx = args.indexOf('--sheet');
   const targetSheetName = (shIdx !== -1 && args[shIdx + 1]) ? args[shIdx + 1] : null;
+
+  const outIdx = args.indexOf('--output');
+  const explicitOutputPath = (outIdx !== -1 && args[outIdx + 1]) ? args[outIdx + 1] : null;
+
+  const errIdx = args.indexOf('--simulate-portal-error');
+  const simulatePortalError = (errIdx !== -1 && args[errIdx + 1]) ? args[errIdx + 1] : null;
+
+  const odIdx = args.indexOf('--output-dir');
+  const explicitOutputDir = (odIdx !== -1 && args[odIdx + 1]) ? args[odIdx + 1] : null;
+
+  let targetBudgetUsd = 0;
+  const bIdx = args.indexOf('--budget');
+  if (bIdx !== -1 && args[bIdx + 1]) {
+    targetBudgetUsd = parseFloat(args[bIdx + 1]) || 0;
+  }
+
+  return {
+    inputFile,
+    JSON_MODE,
+    OFFLINE_MODE,
+    explicitNotebookId,
+    chassisDir,
+    targetSheetName,
+    explicitOutputPath,
+    simulatePortalError,
+    explicitOutputDir,
+    targetBudgetUsd,
+    args
+  };
+}
+
+// ============================================================
+// Stage 2: BOQ Parsing & Chassis Ingestion
+// ============================================================
+function ingestAndConsolidateBoq(options) {
+  const { inputFile, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
+  let chassisDir = options.chassisDir;
+
+  const tStart = Date.now();
+  const inputBase = path.basename(inputFile, path.extname(inputFile));
   const isExcel = inputFile.endsWith('.xlsx') || inputFile.endsWith('.xls');
   const rawContent = isExcel ? '' : fs.readFileSync(inputFile, 'utf-8');
   const items = parseAndConsolidateBOQ(rawContent, inputFile, targetSheetName);
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
-  // Auto-detect chassis from BOQ items if --chassis not provided
   let chassisDetection = null;
-  
   if (!chassisDir) {
     chassisDetection = autoDetectChassisDetailed(items);
     if (chassisDetection.confidenceScore < 0.75) {
-      // G4: Strict Failure Mode if we cannot confidently map the chassis
       chassisDetection.requiresUserConfirmation = true;
     } else {
       chassisDir = chassisDetection.chassisDir;
@@ -123,22 +155,20 @@ Examples:
     };
   }
 
-  // Instead of an ultimate fallback, if we still don't have a chassis directory, we MUST throw.
   if (!chassisDir && (chassisDetection.unknown || chassisDetection.requiresUserConfirmation)) {
     console.error('❌ ERROR: [ERR_UNKNOWN_CHASSIS] Could not auto-detect chassis variant from BOQ items, and no --chassis flag was provided.');
     console.error('💡 Please select the correct catalog in the UI dropdown or use the --chassis <dir> flag.');
-    
+
     const errPayload = {
       status: 'ERROR',
       chassisDetection,
       error: 'ERR_UNKNOWN_CHASSIS',
       message: 'Could not auto-detect chassis. Please confirm the chassis variant.'
     };
-    
+
     if (process.env.STRUCTURED_PROGRESS) {
       process.stdout.write('\n\n' + JSON.stringify(errPayload) + '\n');
     }
-    
     process.exit(1);
   }
 
@@ -150,21 +180,12 @@ Examples:
     fs.mkdirSync(defaultReportsDir, { recursive: true });
   }
 
-  let outputPath = path.join(defaultReportsDir, `BOQ_Evaluation_${inputBase}.md`);
-  const outIdx = args.indexOf('--output');
-  if (outIdx !== -1 && args[outIdx + 1]) {
-    outputPath = args[outIdx + 1];
-  }
+  let outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${inputBase}.md`);
 
-  // Handle portal error simulation if requested
-  const errIdx = args.indexOf('--simulate-portal-error');
-  if (errIdx !== -1 && args[errIdx + 1]) {
-    const simError = args[errIdx + 1];
-    // G33: Derive output dir from --output-dir arg or use resolved chassisDir (no longer hardcoded)
-    const odIdx = args.indexOf('--output-dir');
-    const feedbackDir = (odIdx !== -1 && args[odIdx + 1]) ? args[odIdx + 1] : chassisDir;
+  if (simulatePortalError) {
+    const feedbackDir = explicitOutputDir || chassisDir;
     if (!JSON_MODE) console.log(`\n🔄 Processing simulated partner portal error feedback...`);
-    const delta = processPortalFeedback(simError, feedbackDir);
+    const delta = processPortalFeedback(simulatePortalError, feedbackDir);
     if (!JSON_MODE) console.log(`✅ KnowledgeDelta logged: ${delta.deltaId} (${delta.ruleUpdate})`);
   }
 
@@ -176,14 +197,9 @@ Examples:
     console.log(`  📚 Notebook ID    : ${notebookId}`);
     console.log(`  📝 Output Report  : ${outputPath}`);
     console.log(`  🔧 Chassis Dir    : ${chassisDir}`);
+    console.log(`\n🔍 Phase 1: Consolidated ${items.length} unique hardware SKUs from BOQ.`);
   }
 
-  // Step 1 already done above (BOQ parsed before chassis auto-detect)
-  if (!JSON_MODE) console.log(`\n🔍 Phase 1: Consolidated ${items.length} unique hardware SKUs from BOQ.`);
-
-  // Step 2: Modular 6-Aspect Solution Pre-Check Engine
-  // G25: Derive catalog filename dynamically from chassis directory basename
-  const tAspectStart = Date.now();
   const chassisPrefix = path.basename(chassisDir);
   const catalogPath = path.join(chassisDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = null;
@@ -199,7 +215,24 @@ Examples:
     }
   }
 
-  // G26: Pass chassisDir through to evaluatePhysicalMath → validateConflictGraph
+  return {
+    items,
+    chassisDir,
+    chassisPrefix,
+    chassisDetection,
+    detectedChassisName,
+    notebookId,
+    outputPath,
+    catalogData,
+    stage1ParsingMs
+  };
+}
+
+// ============================================================
+// Stage 3: Modular Physical Pre-Checks & Conflict Graph
+// ============================================================
+function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE) {
+  const tAspectStart = Date.now();
   const evalResults = evaluatePhysicalMath(items, catalogData, chassisDir);
   const graph = evalResults.conflictGraph || {};
   const stage2AspectMathMs = Math.max(Date.now() - tAspectStart, 1);
@@ -219,9 +252,7 @@ Examples:
       console.log(`  6. Power & Ambient   : -48VDC PSU: ${evalResults.hasDcPowerSupply ? 'YES' : 'NO'} | Lug Kit: ${evalResults.hasDcLugKit ? '✅' : '❌'}`);
       console.log(`  7. Support Services  : Tech Care Support Present: ${evalResults.hasSupportService ? '✅' : '❌'}`);
     }
-  };
 
-  if (!JSON_MODE) {
     console.log(`\n🕸️ Phase 2.5: 5-Level Dependency Conflict Graph Validation:`);
     console.log(`  Chassis Variant    : ${graph.chassisInfo ? graph.chassisInfo.model : 'Unknown'}`);
     console.log(`  Rules Evaluated    : ${graph.totalRulesEvaluated || 0} across VENDOR, CHASSIS, CATEGORY, SUBCATEGORY, SKU levels`);
@@ -233,21 +264,15 @@ Examples:
     }
   }
 
-  // Step 3: Decoupled RAG - Formatting payload for UI async dispatch
   const queryPayload = formatNotebookQueryPayload(items, evalResults);
+  evalResults.notebookPayload = queryPayload;
 
   if (!JSON_MODE) {
     if (graph.resolvedFixes && graph.resolvedFixes.length > 0) {
       console.log(`  Cascading Fixes    : ${graph.resolvedFixes.length} fix(es) validated without downstream conflicts.`);
     }
-
     console.log(`\n  📊 Quantitative Confidence Score: ${evalResults.confidence.score} / 1.00`);
-    
-    // Send the generated payload so UI can trigger async notebook query
-    evalResults.notebookPayload = queryPayload;
-    
     console.log(JSON.stringify(evalResults, null, 2));
-
     console.log(`  ${evalResults.confidence.summary}`);
 
     if (evalResults.errors.length > 0) {
@@ -260,9 +285,18 @@ Examples:
     }
   }
 
+  return { evalResults, graph, queryPayload, stage2AspectMathMs };
+}
+
+// ============================================================
+// Stage 4: Grounded Gemini Notebook Validation & Agentic Loop
+// ============================================================
+async function executeGroundedRagValidation(ctx) {
+  const { items, evalResults, notebookId, catalogData, chassisDetection, detectedChassisName, chassisDir, OFFLINE_MODE, JSON_MODE } = ctx;
+
   const tRagStart = Date.now();
   emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
-  
+
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
   const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
     context: {
@@ -285,19 +319,14 @@ Examples:
     cached: ragResult.cached || false
   };
 
-  // Surface NLM fallback prominently — operator must know when cloud brain wasn't consulted
   if (evalResults.notebookLmStatus.isFallback && !evalResults.notebookLmStatus.cached) {
     const fallbackWarning = `⚠️ NotebookLM Cloud was NOT consulted — used local RAG fallback (Reason: ${ragResult.fallbackReason || 'NLM CLI timeout or unavailable'}). Verify critical dependencies manually or re-run with longer RAG_TIMEOUT_MS.`;
     evalResults.warnings.push(fallbackWarning);
     if (!JSON_MODE) console.log(`\n${fallbackWarning}`);
   }
   evalResults.ragResult = ragResult;
-  
-  // -------------------------------------------------------------
-  // AUTONOMOUS LEARNING LOOP: Extract & Persist Verified Grounding Rules
-  // -------------------------------------------------------------
+
   try {
-    const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
     const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
       chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir)
     });
@@ -322,43 +351,28 @@ ${ragResult.answer}
 ${evalResults.errors.length === 0 ? '- ✅ No critical physical violations detected in input BOQ.' : evalResults.errors.map(e => `- ❌ Violation: ${e}`).join('\n')}
 ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠️ Advisory: ${w}`).join('\n')}`;
 
-
-  // -------------------------------------------------------------
-  // NEW: Agentic AI Cross-Verification (Guardrail Loop)
-  // -------------------------------------------------------------
   let stage4GuardrailMs = 0;
   if (evalResults.confidence && evalResults.confidence.isHitlTriggered && !OFFLINE_MODE) {
     const tGuardrailStart = Date.now();
     if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
-    
-    // We await the guardrail to complete
+
     const guardrailResult = await runAgenticGuardrail(items, chassisDir);
     if (!JSON_MODE) {
-       console.log('✅ Agentic Output:');
-       console.log(guardrailResult.text || guardrailResult.error);
+      console.log('✅ Agentic Output:');
+      console.log(guardrailResult.text || guardrailResult.error);
     }
-    
-    // Re-evaluate if we want, or just accept the LLM's explanation as part of the report
     evalResults.agenticExplanation = guardrailResult.text || null;
     stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
   }
 
-  // Step 4: Budget Optimization Analysis (Golden Rule Assurance)
-  const tMatrixStart = Date.now();
-  let targetBudgetUsd = 0;
-  const bIdx = args.indexOf('--budget');
-  if (bIdx !== -1 && args[bIdx + 1]) {
-    targetBudgetUsd = parseFloat(args[bIdx + 1]) || 0;
-  }
+  return { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs };
+}
 
-  const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
-  const budgetOpt = optimizeForBudget(items, evalResults, targetBudgetUsd, catalogData);
-
-  // Step 5: Synthesize Final Markdown Report
-  emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
-  const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
-  const reportDir = path.dirname(outputPath);
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+// ============================================================
+// Stage 5: Strategic Synthesis & Output Serialization
+// ============================================================
+function generateMarkdownReport(ctx) {
+  const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd, items, budgetOpt, graph, chassisDir, chassisDetection, ragAnswer } = ctx;
 
   let reportContent = `# HPE Pre-Flight BOQ Evaluation & Validation Report\n\n`;
   reportContent += `**Target BOQ File**: \`${inputFile}\`  \n`;
@@ -414,7 +428,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
   if (chassisDetection) {
     reportContent += `- **Chassis Auto-Detection**: Match Type \`${chassisDetection.matchType}\` (Confidence: ${Math.round(chassisDetection.confidenceScore * 100)}%)  \n`;
   }
-  
+
   const rulesSrcName = chassisDir ? `${chassisDir.split('/').pop()}_Catalog.json` : 'Unknown_Catalog.json';
   reportContent += `- **Rules Loaded Source**: \`${graph.rulesSource || rulesSrcName}\` ${graph.isFallbackSource ? '(Fallback Safety Net)' : '(Dual Safety Net)'}  \n\n`;
 
@@ -448,6 +462,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
   reportContent += `## 💰 3. Budget-Constrained Optimization & Golden Rule Assurance\n\n`;
   reportContent += `${budgetOpt.goldenRuleSummary}\n\n`;
   reportContent += `- **Mandatory Buildable Cost**: \`$${budgetOpt.mandatoryBomCostUsd.toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
+
   if (budgetOpt.isBudgetExceeded) {
     reportContent += `- **Minimum Budget Overrun Delta**: \`+$${budgetOpt.budgetOverrunUsd.toLocaleString()} USD\`\n`;
     reportContent += `> **Engineering Rationale**: The Golden Rule mandates that solution validation must eliminate 100% of unbuildable errors. Budget caps cannot override mandatory thermal cooling, power terminal safety, or write-cache lithium-ion battery requirements.\n\n`;
@@ -470,13 +485,25 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
   reportContent += `---\n\n`;
   reportContent += `*Report generated automatically by HPE BOQ Evaluation Engine.*  \n`;
 
+  return reportContent;
+}
+
+function serializeAndExportResults(ctx) {
+  const {
+    outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
+    graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
+    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir, chassisDetection,
+    budgetOpt, ragAnswer, queryPayload
+  } = ctx;
+
+  const reportDir = path.dirname(outputPath);
+  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+
+  const reportContent = generateMarkdownReport(ctx);
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
-  // Trigger post-flow knowledge sync FIRST so its result is captured in telemetry
   try {
-    const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
     const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION');
-    // Attach to evalResults so telemetry.recordEvaluationTelemetry() can capture syncStatus
     evalResults.postFlowSync = syncResult;
     if (!syncResult.success) {
       const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
@@ -490,7 +517,6 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
   }
 
-  // Attach high-resolution stage breakdown to evalResults
   evalResults.stageBreakdown = {
     stage1ParsingMs,
     stage2AspectMathMs,
@@ -499,12 +525,8 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     stage5ResolutionMatrixMs: stage5MatrixMs
   };
 
-  // Record Pipeline Telemetry for Observability Dashboard (after sync so syncStatus is present)
-  const { recordEvaluationTelemetry } = require('../lib/system/telemetry.js');
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
-
-  // Transparent workflow steps summary for UI Pipeline Stepper
   const workflowSteps = [
     {
       stepId: 1,
@@ -562,7 +584,6 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     }
   ];
 
-  // G27a: Structured JSON output mode for dashboard SSE consumption
   if (JSON_MODE) {
     const traceId = `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const provenanceTrace = {
@@ -698,12 +719,67 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
   }
 }
 
-main().catch(err => {
-  const JSON_MODE = process.argv.includes('--json');
-  if (JSON_MODE) {
-    process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({ status: 'ERROR', error: err.message }) + '__EVAL_RESULT_JSON__\n');
-  } else {
-    console.error('Fatal evaluation error:', err);
-  }
-  process.exit(1);
-});
+// ============================================================
+// Main Orchestrator
+// ============================================================
+async function main() {
+  const startTime = Date.now();
+  const options = parseEvaluationArguments(process.argv.slice(2));
+  if (!options) return;
+
+  const ingestCtx = ingestAndConsolidateBoq(options);
+
+  const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
+    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE
+  );
+
+  const { ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
+    ...ingestCtx,
+    evalResults,
+    OFFLINE_MODE: options.OFFLINE_MODE,
+    JSON_MODE: options.JSON_MODE
+  });
+
+  const tMatrixStart = Date.now();
+  emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
+  const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData);
+  const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
+
+  serializeAndExportResults({
+    ...options,
+    ...ingestCtx,
+    evalResults,
+    graph,
+    ragAnswer,
+    budgetOpt,
+    queryPayload,
+    startTime,
+    stage2AspectMathMs,
+    stage3RAGMs,
+    stage4GuardrailMs,
+    stage5MatrixMs
+  });
+}
+
+if (require.main === module) {
+  main().catch(err => {
+    const JSON_MODE = process.argv.includes('--json');
+    if (JSON_MODE) {
+      process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({ status: 'ERROR', error: err.message }) + '__EVAL_RESULT_JSON__\n');
+    } else {
+      console.error('Fatal evaluation error:', err);
+    }
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  main,
+  getDefaultNotebookId,
+  parseEvaluationArguments,
+  ingestAndConsolidateBoq,
+  executePhysicalPreChecks,
+  executeGroundedRagValidation,
+  generateMarkdownReport,
+  serializeAndExportResults
+};

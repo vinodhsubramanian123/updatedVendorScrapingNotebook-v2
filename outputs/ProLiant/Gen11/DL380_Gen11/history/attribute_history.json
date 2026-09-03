@@ -87308,5 +87308,4645 @@
     "field": "HPE Recommended",
     "oldValue": "",
     "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52532-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52533-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Pallet Size Customization Service",
+    "newValue": "[REMOVED SKU] HPE Pallet Size Customization Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "Non Working Day Delivery SVC",
+    "newValue": "[REMOVED SKU] Non Working Day Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Consolidation Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Consolidation Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Delivery Site Above Ground Floor Service",
+    "newValue": "[REMOVED SKU] HPE Delivery Site Above Ground Floor Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Forklift at Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Forklift at Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Special Delivery Truck Size Service",
+    "newValue": "[REMOVED SKU] HPE Special Delivery Truck Size Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Two People at Delivery SVC",
+    "newValue": "[REMOVED SKU] HPE Two People at Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Campus Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Campus Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Unloading Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Unloading Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Fixed Delivery Appointment Service",
+    "newValue": "[REMOVED SKU] HPE Fixed Delivery Appointment Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Special Request/ Equipment Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Special Request/ Equipment Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Small Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Small Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Large Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Large Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Post-Delivery Waste Removal SVC",
+    "newValue": "[REMOVED SKU] HPE Post-Delivery Waste Removal SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52532-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52533-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Pallet Size Customization Service",
+    "newValue": "[REMOVED SKU] HPE Pallet Size Customization Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "Non Working Day Delivery SVC",
+    "newValue": "[REMOVED SKU] Non Working Day Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Consolidation Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Consolidation Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Delivery Site Above Ground Floor Service",
+    "newValue": "[REMOVED SKU] HPE Delivery Site Above Ground Floor Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Forklift at Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Forklift at Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Special Delivery Truck Size Service",
+    "newValue": "[REMOVED SKU] HPE Special Delivery Truck Size Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Two People at Delivery SVC",
+    "newValue": "[REMOVED SKU] HPE Two People at Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Campus Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Campus Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Unloading Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Unloading Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Fixed Delivery Appointment Service",
+    "newValue": "[REMOVED SKU] HPE Fixed Delivery Appointment Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Special Request/ Equipment Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Special Request/ Equipment Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Small Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Small Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Large Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Large Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Post-Delivery Waste Removal SVC",
+    "newValue": "[REMOVED SKU] HPE Post-Delivery Waste Removal SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52532-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52533-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Pallet Size Customization Service",
+    "newValue": "[REMOVED SKU] HPE Pallet Size Customization Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "Non Working Day Delivery SVC",
+    "newValue": "[REMOVED SKU] Non Working Day Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Consolidation Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Consolidation Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Delivery Site Above Ground Floor Service",
+    "newValue": "[REMOVED SKU] HPE Delivery Site Above Ground Floor Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Forklift at Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Forklift at Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Special Delivery Truck Size Service",
+    "newValue": "[REMOVED SKU] HPE Special Delivery Truck Size Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Two People at Delivery SVC",
+    "newValue": "[REMOVED SKU] HPE Two People at Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Campus Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Campus Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Unloading Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Unloading Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Fixed Delivery Appointment Service",
+    "newValue": "[REMOVED SKU] HPE Fixed Delivery Appointment Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Special Request/ Equipment Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Special Request/ Equipment Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Small Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Small Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Large Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Large Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Post-Delivery Waste Removal SVC",
+    "newValue": "[REMOVED SKU] HPE Post-Delivery Waste Removal SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52532-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52533-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52534-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52535-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52536-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52537-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-08-27",
+    "newValue": "2026-08-28"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Pallet Size Customization Service",
+    "newValue": "[REMOVED SKU] HPE Pallet Size Customization Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC120A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "Non Working Day Delivery SVC",
+    "newValue": "[REMOVED SKU] Non Working Day Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC121A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Consolidation Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Consolidation Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC129A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Delivery Site Above Ground Floor Service",
+    "newValue": "[REMOVED SKU] HPE Delivery Site Above Ground Floor Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F69A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Forklift at Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Forklift at Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F70A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Special Delivery Truck Size Service",
+    "newValue": "[REMOVED SKU] HPE Special Delivery Truck Size Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Two People at Delivery SVC",
+    "newValue": "[REMOVED SKU] HPE Two People at Delivery SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F72A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Campus Delivery Service",
+    "newValue": "[REMOVED SKU] HPE Campus Delivery Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F73A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Unloading Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Unloading Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Description",
+    "oldValue": "HPE Fixed Delivery Appointment Service",
+    "newValue": "[REMOVED SKU] HPE Fixed Delivery Appointment Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F75A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Special Request/ Equipment Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Special Request/ Equipment Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Small Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Small Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Expedite Shipment Large Logistic Service",
+    "newValue": "[REMOVED SKU] HPE Expedite Shipment Large Logistic Service"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE Post-Delivery Waste Removal SVC",
+    "newValue": "[REMOVED SKU] HPE Post-Delivery Waste Removal SVC"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P1F77A",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "HPE Virtualization",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-08-27"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "newValue": "[REMOVED SKU] HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Description",
+    "oldValue": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+    "newValue": "[REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-08-28",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
   }
 ]

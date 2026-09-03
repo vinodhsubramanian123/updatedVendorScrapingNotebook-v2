@@ -45,6 +45,95 @@ function parseSynergyMezzanine(it, desc, sku) {
   return { it, desc, sku, mezzSlot, type };
 }
 
+const CPU1_OCP_CABLE_SKUS = new Set(['P51911-B21']);
+const CPU2_OCP_CABLE_SKUS = new Set(['P48830-B21']);
+const FC_TRANSCEIVER_32GB_SKUS = new Set(['AJ718A']);
+
+function tallyOcpAndCables(tally, it, desc, sku, qty, role) {
+  // CPU/OCP Enablement Cables
+  if (CPU1_OCP_CABLE_SKUS.has(sku) || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('pri') || desc.includes('primary') || desc.includes('cpu1')))) {
+    tally.hasCpu1Ocp2Cable = true;
+    tally.ocpCableItems.push(it);
+  }
+  if (CPU2_OCP_CABLE_SKUS.has(sku) || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('sec') || desc.includes('secondary') || desc.includes('cpu2')))) {
+    tally.hasCpu2Ocp2Cable = true;
+    tally.ocpCableItems.push(it);
+  }
+
+  // OCP Storage Controllers
+  const isOcpStorage = (role === 'Storage Controller' || desc.includes('controller') || desc.includes('raid')) && 
+                       (desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc) || desc.includes('-o'));
+  if (isOcpStorage) {
+    tally.ocpAdapterCount += qty;
+  }
+}
+
+function tallyFcHbas(tally, desc, qty, role) {
+  const isFcRole = role === 'Fibre Channel HBA' || role === 'Host Bus Adapter' || desc.includes('fc hba') || desc.includes('fibre channel host bus adapter') || desc.includes('fibre channel');
+  if (!isFcRole) return;
+
+  if (desc.includes('host bus adapter') || desc.includes('hba')) {
+    tally.fcHbaCount += qty;
+    let ports = 2;
+    if (desc.includes('1-port') || desc.includes('1p') || desc.match(/1\s*-?port/i)) ports = 1;
+    if (desc.includes('4-port') || desc.includes('4p') || desc.match(/4\s*-?port/i)) ports = 4;
+
+    if (desc.includes('32gb')) tally.fcHbaPortCount32Gb += (ports * qty);
+    else if (desc.includes('64gb')) tally.fcHbaPortCount64Gb += (ports * qty);
+  }
+}
+
+function tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role) {
+  const isTransceiverRole = role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp');
+  if (isTransceiverRole) {
+    if (desc.includes('32gb') || FC_TRANSCEIVER_32GB_SKUS.has(sku.toUpperCase())) {
+      tally.transceiverCount32Gb += qty;
+      tally.activeOpticalTransceiverCount += qty;
+    }
+    if (desc.includes('64gb')) {
+      tally.transceiverCount64Gb += qty;
+      tally.activeOpticalTransceiverCount += qty;
+    }
+  }
+  if (desc.includes('san switch') || desc.includes('fibre channel switch')) tally.sanSwitchCount += qty;
+  if (desc.includes('om4') && desc.includes('lc-lc') && desc.includes('cable')) tally.opticalPatchCableCount += qty;
+  if (desc.includes('100gb qsfp28 to 4x 25gb sfp28') || (desc.includes('100gb') && desc.includes('breakout'))) tally.qsfp28BreakoutCableCount += qty;
+}
+
+function tallyFcHbasAndSan(tally, desc, sku, qty, role) {
+  tallyFcHbas(tally, desc, qty, role);
+  tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role);
+}
+
+function tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role) {
+  // Synergy Interconnects
+  if (desc.includes('synergy') && (desc.includes('interconnect') || desc.includes('virtual connect') || desc.includes('switch module'))) {
+    tally.synergyInterconnects.push({ it, desc, sku });
+  }
+
+  if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || 
+      desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) {
+    return;
+  }
+
+  // Network Adapters
+  if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || 
+      desc.includes('nic') || desc.includes('sfp') || desc.includes('infiniband') || 
+      desc.includes('slingshot') || desc.includes('mezzanine')) {
+    if (desc.includes('synergy') && desc.includes('mezz')) {
+      tally.synergyMezzCards.push(parseSynergyMezzanine(it, desc, sku));
+    }
+
+    if (desc.includes('ocp') || desc.includes('flr') || desc.includes('flexlom') || desc.includes('ocp3')) {
+      tally.hasOcpAdapter = true;
+      tally.ocpAdapterCount += qty;
+    }
+
+    const portsPerCard = parseAdapterPortCount(desc);
+    tally.networkPortsCount += (portsPerCard * qty);
+  }
+}
+
 function tallyNetworkingItems(items, skuCategoryMap) {
   const tally = {
     networkPortsCount: 0,
@@ -73,77 +162,9 @@ function tallyNetworkingItems(items, skuCategoryMap) {
     const mappedCategory = skuCategoryMap.get(sku) || '';
     const role = classifyComponentRole(mappedCategory, desc);
 
-    // CPU/OCP Enablement Cables
-    if (sku === 'P51911-B21' || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('pri') || desc.includes('primary') || desc.includes('cpu1')))) {
-      tally.hasCpu1Ocp2Cable = true;
-      tally.ocpCableItems.push(it);
-    }
-    if (sku === 'P48830-B21' || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('sec') || desc.includes('secondary') || desc.includes('cpu2')))) {
-      tally.hasCpu2Ocp2Cable = true;
-      tally.ocpCableItems.push(it);
-    }
-
-    // Synergy Interconnects
-    if (desc.includes('synergy') && (desc.includes('interconnect') || desc.includes('virtual connect') || desc.includes('switch module'))) {
-      tally.synergyInterconnects.push({ it, desc, sku });
-    }
-
-    // Fibre Channel HBAs
-    if (role === 'Fibre Channel HBA' || role === 'Host Bus Adapter' || desc.includes('fc hba') || desc.includes('fibre channel host bus adapter') || desc.includes('fibre channel')) {
-      if (desc.includes('host bus adapter') || desc.includes('hba')) {
-        tally.fcHbaCount += qty;
-        let ports = 2;
-        if (desc.includes('1-port') || desc.includes('1p') || desc.match(/1\s*-?port/i)) ports = 1;
-        if (desc.includes('4-port') || desc.includes('4p') || desc.match(/4\s*-?port/i)) ports = 4;
-
-        if (desc.includes('32gb')) tally.fcHbaPortCount32Gb += (ports * qty);
-        else if (desc.includes('64gb')) tally.fcHbaPortCount64Gb += (ports * qty);
-      }
-    }
-
-    // Transceivers & SAN switches
-    if (role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp')) {
-      if (desc.includes('32gb') || sku === 'AJ718A' || sku === 'aj718a') {
-        tally.transceiverCount32Gb += qty;
-        tally.activeOpticalTransceiverCount += qty;
-      }
-      if (desc.includes('64gb')) {
-        tally.transceiverCount64Gb += qty;
-        tally.activeOpticalTransceiverCount += qty;
-      }
-    }
-    if (desc.includes('san switch') || desc.includes('fibre channel switch')) tally.sanSwitchCount += qty;
-    if (desc.includes('om4') && desc.includes('lc-lc') && desc.includes('cable')) tally.opticalPatchCableCount += qty;
-    if (desc.includes('100gb qsfp28 to 4x 25gb sfp28') || (desc.includes('100gb') && desc.includes('breakout'))) tally.qsfp28BreakoutCableCount += qty;
-
-    // OCP Storage Controllers
-    const isOcpStorage = (role === 'Storage Controller' || desc.includes('controller') || desc.includes('raid')) && 
-                         (desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc) || desc.includes('-o'));
-    if (isOcpStorage) {
-      tally.ocpAdapterCount += qty;
-    }
-
-    if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || 
-        desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) {
-      continue;
-    }
-
-    // Network Adapters
-    if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || 
-        desc.includes('nic') || desc.includes('sfp') || desc.includes('infiniband') || 
-        desc.includes('slingshot') || desc.includes('mezzanine')) {
-      if (desc.includes('synergy') && desc.includes('mezz')) {
-        tally.synergyMezzCards.push(parseSynergyMezzanine(it, desc, sku));
-      }
-
-      if (desc.includes('ocp') || desc.includes('flr') || desc.includes('flexlom') || desc.includes('ocp3')) {
-        tally.hasOcpAdapter = true;
-        tally.ocpAdapterCount += qty;
-      }
-
-      const portsPerCard = parseAdapterPortCount(desc);
-      tally.networkPortsCount += (portsPerCard * qty);
-    }
+    tallyOcpAndCables(tally, it, desc, sku, qty, role);
+    tallyFcHbasAndSan(tally, desc, sku, qty, role);
+    tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role);
   }
 
   return tally;

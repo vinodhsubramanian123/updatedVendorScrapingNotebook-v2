@@ -294,6 +294,14 @@ The system leverages Google Jules for background code review, test generation, a
     - **Tiered CLI Flags & Fast Default**: `scripts/maintenance/run_test_matrix.js` accepts `--tier` (`unit`, `chaos`, `integration`, `e2e`, `fast`). Standard `npm test` defaults to `--tier fast` (130 suites covering unit + chaos + integration), allowing instant iteration without blocking on multi-minute headless browser automation.
     - **Visual Tier Banners & Structured Telemetry**: The test runner prints visual tier transition banners and emits a structured per-tier breakdown table (suites, passed, failed, and duration per tier) with failure ledger tracking.
 
+49. **Monolithic CLI Pipeline Decomposition & RAG Hotspot Modularization Protocol (`INV-58`)**:
+    - **Single-Responsibility CLI Orchestration**: High-level CLI entry points and orchestration tools (`build_catalog.js`, `eval_boq.js`) MUST NOT interleave argument parsing, normalization, diff analysis, and export in monolithic `main()` functions. They must maintain a strict upper bound of $CC \le 10$ for entry `main()` functions by decomposing execution into discrete, independently testable lifecycle functions.
+    - **Stage Separation in Catalog Ingestion (`build_catalog.js`)**: Ingestion, section expansion, subcategory matching, taxonomy resolution, history price reconciliation, chassis variant injection, and export MUST be partitioned into dedicated stage modules (`initCatalogBuild`, `extractSubcategoriesAndParents`, `expandTableSections`, `parseSingleTableRow`, `matchSubcategoryForTable`, `resolveTableTaxonomyAndRole`, `synthesizeCatalogEntries`, `injectChassisVariantsFromHistory`, `buildCatalogObject`, `reconcilePriceAndLifecycleHistory`, `buildChassisVariantMatrix`, `exportCatalogArtifacts`).
+    - **Stage Separation in BOQ Evaluation (`eval_boq.js`)**: Argument normalization, BOQ ingestion, aspect pre-checks, RAG validation, markdown report synthesis, and structured `__EVAL_RESULT_JSON__` serialization MUST be cleanly isolated.
+    - **Local Catalog RAG Modularization (`local_rag_search.js`)**: Multi-purpose search routines MUST separate processor searches (`searchProcessorSkusInEntry`), category matching (`searchCategorySkusInEntry`), and chassis base variant matching (`searchChassisBaseVariants`), ensuring orchestrator complexity stays below $CC \le 15$.
+    - **Declarative SKU Encapsulation**: Domain aspect checkers MUST encapsulate vendor SKU strings into declarative lookup sets at the file header rather than scattering bare literals across nested conditionals.
+
+
 
 
 

@@ -67,10 +67,9 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     /^tmp[_-]test/i,
     /^test[_-]/i,
     /oca-feedback-test/i,
-    /^Some_Valid/i,
     /_test$/i
   ];
-  const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName)) || !catalogPath || process.env.NODE_ENV === 'test';
+  const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName));
 
   let targetDir = isTestChassis
     ? path.join(PROJECT_ROOT, 'outputs', 'temp', 'test_payloads')
@@ -86,6 +85,9 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
       logger.error('KNOWLEDGE_SYNC', `Failed to parse catalogData at ${catalogPath}`, e);
       throw new Error(`SyncPayloadBuilderError: Corrupt catalog JSON at ${catalogPath}: ${e.message}`);
     }
+  } else if (!isTestChassis) {
+    // No catalog found for a real chassis — fall back to outputs/history/
+    targetDir = path.join(OUTPUTS_ROOT, 'history');
   }
 
   // Ensure the target directory exists

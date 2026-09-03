@@ -26,10 +26,7 @@ const SYNONYM_MAP = {
   'disk': ['drive', 'hdd', 'ssd', 'storage']
 };
 
-function queryLocalKnowledgeBase(query, chassisName = '') {
-  const citations = [];
-  const rawMatches = [];
-
+function prepareSearchTerms(query) {
   const rawQueryStr = typeof query === 'string'
     ? query
     : (query?.query || query?.text || (typeof query === 'object' && query !== null ? JSON.stringify(query) : ''));
@@ -48,7 +45,6 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   const specificTerms = expandedSearchTerms.filter(w => !CHASSIS_NOISE_WORDS.has(w));
   const activeTerms = specificTerms.length > 0 ? specificTerms : expandedSearchTerms;
 
-  // Check if query is asking for cores threshold (e.g., "64 cores", "equal to or more than 64", ">= 64")
   let minCores = null;
   const coreMatch = cleanQuery.match(/(\d+)\s*(-|\s*)core/i) || cleanQuery.match(/(?:more than|equal to|at least|\>=)\s*(\d+)/i) || cleanQuery.match(/(\d+)\s*cores/i);
   if (coreMatch) {
@@ -57,272 +53,238 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
 
   const isProcessorQuery = cleanQuery.includes('processor') || cleanQuery.includes('cpu') || cleanQuery.includes('core') || minCores !== null;
 
-  // 1. Search Knowledge Deltas
-  if (fs.existsSync(KNOWLEDGE_FILE)) {
-    try {
-      const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
-      const rules = registry.chassisSpecificRules || [];
-      const normChassisTarget = (chassisName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery };
+}
 
-      for (const rule of rules) {
-        // INV-48: Strict Generation & Chassis Firewall
-        if (normChassisTarget) {
-          const ruleChassisNorm = (rule.chassis || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-          const isUniversal = rule.scope === 'UNIVERSAL_VENDOR';
-          const isChassisMatch = ruleChassisNorm && (normChassisTarget.includes(ruleChassisNorm) || ruleChassisNorm.includes(normChassisTarget));
-          const hasGen12Target = normChassisTarget.includes('gen12') || normChassisTarget.includes('g12');
-          const hasGen11Target = normChassisTarget.includes('gen11') || normChassisTarget.includes('g11');
-          const hasGen12Rule = ruleChassisNorm.includes('gen12') || ruleChassisNorm.includes('g12');
-          const hasGen11Rule = ruleChassisNorm.includes('gen11') || ruleChassisNorm.includes('g11');
+function searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches) {
+  if (!fs.existsSync(KNOWLEDGE_FILE)) return;
+  try {
+    const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
+    const rules = registry.chassisSpecificRules || [];
 
-          if (!isUniversal) {
-            if (hasGen12Target && hasGen11Rule) continue;
-            if (hasGen11Target && hasGen12Rule) continue;
-            if (!isChassisMatch) continue;
-          }
+    for (const rule of rules) {
+      if (normChassisTarget) {
+        const ruleChassisNorm = (rule.chassis || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR';
+        const isChassisMatch = ruleChassisNorm && (normChassisTarget.includes(ruleChassisNorm) || ruleChassisNorm.includes(normChassisTarget));
+        const hasGen12Target = normChassisTarget.includes('gen12') || normChassisTarget.includes('g12');
+        const hasGen11Target = normChassisTarget.includes('gen11') || normChassisTarget.includes('g11');
+        const hasGen12Rule = ruleChassisNorm.includes('gen12') || ruleChassisNorm.includes('g12');
+        const hasGen11Rule = ruleChassisNorm.includes('gen11') || ruleChassisNorm.includes('g11');
+
+        if (!isUniversal) {
+          if (hasGen12Target && hasGen11Rule) continue;
+          if (hasGen11Target && hasGen12Rule) continue;
+          if (!isChassisMatch) continue;
         }
+      }
 
-        const raw = (rule.rawMessage || '' ).toLowerCase();
-        const update = (rule.ruleUpdate || '').toLowerCase();
-        const affected = (rule.affectedSku || '').toLowerCase();
+      const raw = (rule.rawMessage || '').toLowerCase();
+      const update = (rule.ruleUpdate || '').toLowerCase();
+      const affected = (rule.affectedSku || '').toLowerCase();
 
-        let score = 0;
+      let score = 0;
+      if (activeTerms.length > 0) {
+        activeTerms.forEach(term => {
+          if (raw.includes(term) || update.includes(term) || affected.includes(term)) score += 1;
+        });
+      }
+
+      if (score > 0) {
+        rawMatches.push({
+          score,
+          text: `• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`,
+          citation: {
+            title: `Learned Rule for ${rule.chassis}`,
+            snippet: rule.rawMessage || rule.ruleUpdate,
+            url: `/artifacts/outputs/history/master_knowledge_registry.json`
+          }
+        });
+      }
+    }
+  } catch (e) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn('ERROR', 'local_rag_search.js parsing master_knowledge_registry.json', e);
+  }
+}
+
+function searchProcessorSkusInEntry(entry, folderName, catalogJson, minCores, searchTerms, matchedProcessorSkus) {
+  const parentCat = (entry.parentCategory || '').toLowerCase();
+  const subCat = (entry.subCategory || '').toLowerCase();
+  if (!(parentCat.includes('processor') || subCat.includes('processor') || subCat.includes('intel') || subCat.includes('amd'))) {
+    return;
+  }
+  const skus = entry.skus || [];
+  for (const s of skus) {
+    const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+    const desc = s.description || s['Description'] || '';
+    const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
+    const descLower = desc.toLowerCase();
+
+    const coresInSkuMatch = descLower.match(/(\d+)\s*-?\s*core/);
+    const coresInSku = coresInSkuMatch ? parseInt(coresInSkuMatch[1], 10) : null;
+    const isActualCpu = descLower.includes('processor') || descLower.includes('xeon') || descLower.includes('epyc') || coresInSku !== null;
+
+    if (isActualCpu) {
+      if (minCores !== null) {
+        if (coresInSku !== null && coresInSku >= minCores) {
+          matchedProcessorSkus.push({ chassis: folderName, sku: skuPn, description: desc, cores: coresInSku, price, catalogPath: catalogJson });
+        }
+      } else if (searchTerms.length === 0 || searchTerms.some(term => descLower.includes(term))) {
+        matchedProcessorSkus.push({ chassis: folderName, sku: skuPn, description: desc, cores: coresInSku, price, catalogPath: catalogJson });
+      }
+    }
+  }
+}
+
+function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, rawMatches) {
+  if (activeTerms.length === 0) return;
+  const parentCat = (entry.parentCategory || '').toLowerCase();
+  const subCat = (entry.subCategory || '').toLowerCase();
+  const catStr = `${parentCat} ${subCat}`;
+
+  const isCatMatch = activeTerms.some(term => catStr.includes(term));
+  const matchedSkusInCat = [];
+  for (const s of (entry.skus || [])) {
+    const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+    const desc = s.description || s['Description'] || '';
+    const sLower = skuPn.toLowerCase();
+    const descLower = desc.toLowerCase();
+    if (activeTerms.some(term => {
+      if (term.length <= 2) {
+        return new RegExp(`\\b${term}\\b`, 'i').test(descLower) || new RegExp(`\\b${term}\\b`, 'i').test(sLower);
+      }
+      return sLower.includes(term) || descLower.includes(term);
+    })) {
+      matchedSkusInCat.push(s);
+    }
+  }
+
+  let catScore = isCatMatch ? 1 : 0;
+  activeTerms.forEach(term => {
+    if (term.length <= 2) {
+      try {
+        const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        if (new RegExp(`\\b${escapedTerm}\\b`, 'i').test(catStr)) catScore += 2;
+      } catch (_) {
+        if (catStr.includes(term)) catScore += 1;
+      }
+    } else if (catStr.includes(term)) {
+      catScore += 2;
+    }
+  });
+
+  if (catScore > 0 || matchedSkusInCat.length > 0) {
+    const finalScore = catScore + (matchedSkusInCat.length * 3);
+    const skusToDisplay = matchedSkusInCat.length > 0 ? matchedSkusInCat : (entry.skus || []);
+    const skuList = skusToDisplay.slice(0, 4).map(s => {
+      const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+      const desc = s.description || s['Description'] || '';
+      const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
+      return `${skuPn} (${desc}) - ${price}`;
+    }).join('; ');
+    if (skuList) {
+      rawMatches.push({
+        score: finalScore,
+        text: `• [${folderName} Hardware SKUs] ${entry.parentCategory} > ${entry.subCategory}: ${skuList}`,
+        citation: {
+          title: `${folderName} ${entry.subCategory} SKUs`,
+          snippet: skuList,
+          url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+        }
+      });
+    }
+  }
+}
+
+function searchChassisBaseVariants(baseVariants, folderName, catalogJson, activeTerms, cleanQuery, rawMatches) {
+  const isChassisQuery = cleanQuery.includes('chassis') || cleanQuery.includes('variant') || cleanQuery.includes('base') || cleanQuery.includes('cto');
+
+  for (const variant of baseVariants) {
+    const skuLower = (variant.sku || variant['Product #'] || '').toLowerCase();
+    const descLower = (variant.description || variant['Description'] || variant.desc || '').toLowerCase();
+
+    let varScore = 0;
+    if (isChassisQuery) varScore += 1;
+    activeTerms.forEach(term => {
+      if (skuLower.includes(term) || descLower.includes(term)) varScore += 1;
+    });
+
+    if (varScore > 0) {
+      const skuPn = variant.sku || variant['Product #'] || '';
+      const desc = variant.description || variant['Description'] || variant.desc || '';
+      const priceStr = variant.listPriceFormatted || (variant['Unit Price (USD)'] ? `$${variant['Unit Price (USD)']}` : (variant.listPrice ? `$${variant.listPrice}` : '$0.00'));
+      rawMatches.push({
+        score: varScore,
+        text: `• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`,
+        citation: {
+          title: `${folderName} Base Chassis CTO (${skuPn})`,
+          snippet: `${skuPn}: ${desc} (${priceStr})`,
+          url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+        }
+      });
+    }
+  }
+}
+
+function searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches) {
+  const entries = catData.entries || [];
+  for (const entry of entries) {
+    if (isProcessorQuery) {
+      searchProcessorSkusInEntry(entry, folderName, catalogJson, minCores, searchTerms, matchedProcessorSkus);
+    } else {
+      searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, rawMatches);
+    }
+  }
+
+  const baseVariants = catData.chassisVariants || catData.chassisBaseVariants || catData.baseVariants || [];
+  searchChassisBaseVariants(baseVariants, folderName, catalogJson, activeTerms, cleanQuery, rawMatches);
+}
+
+function searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcessorQuery, rawMatches) {
+  if (isProcessorQuery) return;
+  const rulesJson = path.join(cDir, `${folderName}_Catalog_Rules.json`);
+  const rulesCsv = path.join(cDir, `${folderName}_Catalog_Rules.csv`);
+  const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
+
+  if (fs.existsSync(rulesJson)) {
+    try {
+      const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
+      const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
+
+      for (const rule of rulesArray) {
+        const mainCat = rule.category || rule.parentCategory || '';
+        const subCat = rule.subCategory || '';
+        const constraint = rule.constraint || rule.ruleType || '';
+        const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
+        const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
+
+        let ruleScore = 0;
         if (activeTerms.length > 0) {
           activeTerms.forEach(term => {
-             if (raw.includes(term) || update.includes(term) || affected.includes(term)) score += 1;
+            if (ruleStringLower.includes(term)) ruleScore += 2;
           });
         }
+        if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
 
-        if (score > 0) {
+        if (ruleScore > 0) {
           rawMatches.push({
-            score,
-            text: `• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`,
+            score: ruleScore,
+            text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
             citation: {
-              title: `Master Knowledge Registry (${rule.deltaId})`,
-              snippet: rule.rawMessage || rule.ruleUpdate,
-              url: `/artifacts/history/master_knowledge_registry.json`
+              title: `${folderName} Catalog Rules`,
+              snippet: `${mainCat} > ${subCat}: ${ruleText}`,
+              url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
             }
           });
         }
       }
-    } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
-  }
-
-  // 2. Search Catalogs dynamically across outputs directory
-  const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
-  const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
-
-  const matchedProcessorSkus = [];
-
-  let filteredCatalogPaths = catalogPaths;
-  if (chassisName) {
-    const normChassis = chassisName.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const hasGen12Target = normChassis.includes('gen12') || normChassis.includes('g12');
-    const hasGen11Target = normChassis.includes('gen11') || normChassis.includes('g11');
-
-    filteredCatalogPaths = catalogPaths.filter(cDir => {
-      const folderName = path.basename(cDir);
-      const normFolder = folderName.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const hasGen12Folder = normFolder.includes('gen12') || normFolder.includes('g12');
-      const hasGen11Folder = normFolder.includes('gen11') || normFolder.includes('g11');
-
-      // INV-48: Never match across generations
-      if (hasGen12Target && !hasGen12Folder) return false;
-      if (hasGen11Target && !hasGen11Folder) return false;
-
-      return normChassis.includes(normFolder) || normFolder.includes(normChassis) || normChassis.includes(normFolder.replace('sff', ''));
-    });
-    // INV-48: Strict isolation — zero cross-catalog fallback when a specific chassis is requested
-  }
-
-  for (const cDir of filteredCatalogPaths) {
-    if (!fs.existsSync(cDir)) continue;
-
-    const folderName = path.basename(cDir);
-    const rulesCsv = path.join(cDir, `${folderName}_Catalog_Rules.csv`);
-    const catalogJson = path.join(cDir, `${folderName}_Catalog.json`);
-
-    // Search Catalog JSON
-    if (fs.existsSync(catalogJson)) {
-      try {
-        const catData = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
-        const entries = catData.entries || [];
-
-        for (const entry of entries) {
-          const parentCat = (entry.parentCategory || '').toLowerCase();
-          const subCat = (entry.subCategory || '').toLowerCase();
-          const catStr = `${parentCat} ${subCat}`;
-
-          if (isProcessorQuery && (parentCat.includes('processor') || subCat.includes('processor') || subCat.includes('intel') || subCat.includes('amd'))) {
-            const skus = entry.skus || [];
-            for (const s of skus) {
-              const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
-              const desc = s.description || s['Description'] || '';
-              const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
-              const descLower = desc.toLowerCase();
-
-              const coresInSkuMatch = descLower.match(/(\d+)\s*-?\s*core/);
-              const coresInSku = coresInSkuMatch ? parseInt(coresInSkuMatch[1], 10) : null;
-              const isActualCpu = descLower.includes('processor') || descLower.includes('xeon') || descLower.includes('epyc') || coresInSku !== null;
-
-              if (isActualCpu) {
-                if (minCores !== null) {
-                  if (coresInSku !== null && coresInSku >= minCores) {
-                    matchedProcessorSkus.push({
-                      chassis: folderName,
-                      sku: skuPn,
-                      description: desc,
-                      cores: coresInSku,
-                      price,
-                      catalogPath: catalogJson
-                    });
-                  }
-                } else if (searchTerms.length === 0 || searchTerms.some(term => descLower.includes(term))) {
-                  matchedProcessorSkus.push({
-                    chassis: folderName,
-                    sku: skuPn,
-                    description: desc,
-                    cores: coresInSku,
-                    price,
-                    catalogPath: catalogJson
-                  });
-                }
-              }
-            }
-          } else if (!isProcessorQuery && activeTerms.length > 0) {
-            const isCatMatch = activeTerms.some(term => catStr.includes(term));
-            
-            // Search inside the SKUs as well
-            let matchedSkusInCat = [];
-            for (const s of (entry.skus || [])) {
-               const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
-               const desc = s.description || s['Description'] || '';
-               const sLower = skuPn.toLowerCase();
-               const descLower = desc.toLowerCase();
-               if (activeTerms.some(term => {
-                 if (term.length <= 2) {
-                   return new RegExp(`\\b${term}\\b`, 'i').test(descLower) || new RegExp(`\\b${term}\\b`, 'i').test(sLower);
-                 }
-                 return sLower.includes(term) || descLower.includes(term);
-               })) {
-                  matchedSkusInCat.push(s);
-               }
-            }
-
-            let catScore = isCatMatch ? 1 : 0;
-            if (activeTerms.length > 0) {
-               activeTerms.forEach(term => {
-                  if (term.length <= 2) {
-                    try {
-                      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                      if (new RegExp(`\\b${escapedTerm}\\b`, 'i').test(catStr)) catScore += 2;
-                    } catch (_) {
-                      if (catStr.includes(term)) catScore += 1;
-                    }
-                  } else if (catStr.includes(term)) {
-                    catScore += 2;
-                  }
-               });
-            }
-
-            if (catScore > 0 || matchedSkusInCat.length > 0) {
-              const finalScore = catScore + (matchedSkusInCat.length * 3);
-              const skusToDisplay = matchedSkusInCat.length > 0 ? matchedSkusInCat : (entry.skus || []);
-              const skuList = skusToDisplay.slice(0, 4).map(s => {
-                const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
-                const desc = s.description || s['Description'] || '';
-                const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
-                return `${skuPn} (${desc}) - ${price}`;
-              }).join('; ');
-              if (skuList) {
-                rawMatches.push({
-                  score: finalScore,
-                  text: `• [${folderName} Hardware SKUs] ${entry.parentCategory} > ${entry.subCategory}: ${skuList}`,
-                  citation: {
-                    title: `${folderName} ${entry.subCategory} SKUs`,
-                    snippet: skuList,
-                    url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
-                  }
-                });
-              }
-            }
-          }
-        }
-        
-        // Search base variants
-        const baseVariants = catData.chassisVariants || catData.chassisBaseVariants || catData.baseVariants || [];
-        const isChassisQuery = cleanQuery.includes('chassis') || cleanQuery.includes('variant') || cleanQuery.includes('base') || cleanQuery.includes('cto');
-        
-        for (const variant of baseVariants) {
-          const skuLower = (variant.sku || variant['Product #'] || '').toLowerCase();
-          const descLower = (variant.description || variant['Description'] || variant.desc || '').toLowerCase();
-
-          let varScore = 0;
-          if (isChassisQuery) varScore += 1;
-          activeTerms.forEach(term => {
-             if (skuLower.includes(term) || descLower.includes(term)) varScore += 1;
-          });
-
-          if (varScore > 0) {
-            const skuPn = variant.sku || variant['Product #'] || '';
-            const desc = variant.description || variant['Description'] || variant.desc || '';
-            const priceStr = variant.listPriceFormatted || (variant['Unit Price (USD)'] ? `$${variant['Unit Price (USD)']}` : (variant.listPrice ? `$${variant.listPrice}` : '$0.00'));
-            rawMatches.push({
-              score: varScore,
-              text: `• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`,
-              citation: {
-                title: `${folderName} Base Chassis CTO (${skuPn})`,
-                snippet: `${skuPn}: ${desc} (${priceStr})`,
-                url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
-              }
-            });
-          }
-        }
-      } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
+    } catch (e) {
+      const _logger = require('../system/pipeline_logger.js');
+      _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e);
     }
-
-    // Search Rules JSON/CSV
-    const rulesJson = path.join(cDir, `${folderName}_Catalog_Rules.json`);
-
-    if (fs.existsSync(rulesJson) && !isProcessorQuery) {
-      try {
-        const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
-        const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
-
-        for (const rule of rulesArray) {
-          const mainCat = rule.category || rule.parentCategory || '';
-          const subCat = rule.subCategory || '';
-          const constraint = rule.constraint || rule.ruleType || '';
-          const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
-
-          const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
-
-          let ruleScore = 0;
-          if (activeTerms.length > 0) {
-             activeTerms.forEach(term => {
-                if (ruleStringLower.includes(term)) ruleScore += 2;
-             });
-          }
-
-          const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
-          if (ruleScore > 0 && isRuleQuery) {
-            ruleScore += 10;
-          }
-
-          if (ruleScore > 0) {
-            rawMatches.push({
-              score: ruleScore,
-              text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
-              citation: {
-                title: `${folderName} Catalog Rules`,
-                snippet: `${mainCat} > ${subCat}: ${ruleText}`,
-                url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
-              }
-            });
-          }
-        }
-      } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e); }
-    } else if (fs.existsSync(rulesCsv) && !isProcessorQuery) {
+  } else if (fs.existsSync(rulesCsv)) {
+    try {
       const csvLines = fs.readFileSync(rulesCsv, 'utf-8').split(/\r?\n/);
       for (let i = 1; i < csvLines.length; i++) {
         const line = csvLines[i];
@@ -331,15 +293,11 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
 
         let ruleScore = 0;
         if (activeTerms.length > 0) {
-           activeTerms.forEach(term => {
-              if (lineLower.includes(term)) ruleScore += 2;
-           });
+          activeTerms.forEach(term => {
+            if (lineLower.includes(term)) ruleScore += 2;
+          });
         }
-
-        const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
-        if (ruleScore > 0 && isRuleQuery) {
-          ruleScore += 10;
-        }
+        if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
 
         if (ruleScore > 0) {
           const parts = line.split(',');
@@ -359,58 +317,73 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
           });
         }
       }
-    }
+    } catch (_) {}
   }
+}
 
-  if (matchedProcessorSkus.length > 0) {
-    matchedProcessorSkus.sort((a, b) => (b.cores || 0) - (a.cores || 0));
+function filterCatalogsByChassisFirewall(catalogPaths, chassisName) {
+  if (!chassisName) return catalogPaths;
+  const normChassis = chassisName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const hasGen12Target = normChassis.includes('gen12') || normChassis.includes('g12');
+  const hasGen11Target = normChassis.includes('gen11') || normChassis.includes('g11');
 
-    const procLines = matchedProcessorSkus.map(p =>
-      `• **${p.sku}** (${p.chassis}): ${p.description} — **${p.price}** [Cores: ${p.cores || 'N/A'}]`
-    );
+  return catalogPaths.filter(cDir => {
+    const folderName = path.basename(cDir);
+    const normFolder = folderName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const hasGen12Folder = normFolder.includes('gen12') || normFolder.includes('g12');
+    const hasGen11Folder = normFolder.includes('gen11') || normFolder.includes('g11');
 
-    const heading = minCores !== null
-      ? `### Processors with ${minCores}+ Cores (HPE QuickSpecs Catalog)\n\nFound **${matchedProcessorSkus.length}** processors meeting or exceeding **${minCores} cores**:`
-      : `### Matching Processor SKUs (HPE QuickSpecs Catalog)\n\nFound **${matchedProcessorSkus.length}** matching processors:`;
+    if (hasGen12Target && !hasGen12Folder) return false;
+    if (hasGen11Target && !hasGen11Folder) return false;
 
-    for (const p of matchedProcessorSkus.slice(0, 5)) {
-      citations.push({
-        title: `${p.chassis} Processor Catalog`,
-        snippet: `${p.sku}: ${p.description} (${p.price})`,
-        url: `/artifacts/${path.relative(OUTPUTS_DIR, p.catalogPath)}`
-      });
-    }
+    return normChassis.includes(normFolder) || normFolder.includes(normChassis) || normChassis.includes(normFolder.replace('sff', ''));
+  });
+}
 
-    rawMatches.push({
-      score: matchedProcessorSkus.length * 2,
-      text: `${heading}\n\n${procLines.join('\n')}`,
-      isProcMatch: true
+function formatProcessorMatches(matchedProcessorSkus, minCores, citations, rawMatches) {
+  if (matchedProcessorSkus.length === 0) return;
+  matchedProcessorSkus.sort((a, b) => (b.cores || 0) - (a.cores || 0));
+  const procLines = matchedProcessorSkus.map(p =>
+    `• **${p.sku}** (${p.chassis}): ${p.description} — **${p.price}** [Cores: ${p.cores || 'N/A'}]`
+  );
+  const heading = minCores !== null
+    ? `### Processors with ${minCores}+ Cores (HPE QuickSpecs Catalog)\n\nFound **${matchedProcessorSkus.length}** processors meeting or exceeding **${minCores} cores**:`
+    : `### Matching Processor SKUs (HPE QuickSpecs Catalog)\n\nFound **${matchedProcessorSkus.length}** matching processors:`;
+
+  for (const p of matchedProcessorSkus.slice(0, 5)) {
+    citations.push({
+      title: `${p.chassis} Processor Catalog`,
+      snippet: `${p.sku}: ${p.description} (${p.price})`,
+      url: `/artifacts/${path.relative(OUTPUTS_DIR, p.catalogPath)}`
     });
   }
 
-  // Rank matches by score (descending)
+  rawMatches.push({
+    score: matchedProcessorSkus.length * 2,
+    text: `${heading}\n\n${procLines.join('\n')}`,
+    isProcMatch: true
+  });
+}
+
+function synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName) {
   rawMatches.sort((a, b) => b.score - a.score);
-
-  // Take top 15 matches to avoid context overload
   const topKMatches = rawMatches.slice(0, 15);
-
   const matches = [];
   topKMatches.forEach(rm => {
-     matches.push(rm.text);
-     if (rm.citation) citations.push(rm.citation);
+    matches.push(rm.text);
+    if (rm.citation) citations.push(rm.citation);
   });
 
   let maxScore = topKMatches.length > 0 ? topKMatches[0].score : 0;
   let confidenceScore = maxScore > 0 ? Math.min(0.95, (maxScore / 10) + 0.5) : 0.0;
 
   if (topKMatches.some(m => m.isProcMatch)) {
-      // Put processor text at the top
-      const procMatchIndex = matches.findIndex(m => m.includes('Matching Processor SKUs') || m.includes('Processors with'));
-      if (procMatchIndex > 0) {
-         const pMatch = matches.splice(procMatchIndex, 1)[0];
-         matches.unshift(pMatch);
-      }
-      confidenceScore = 0.95;
+    const procMatchIndex = matches.findIndex(m => m.includes('Matching Processor SKUs') || m.includes('Processors with'));
+    if (procMatchIndex > 0) {
+      const pMatch = matches.splice(procMatchIndex, 1)[0];
+      matches.unshift(pMatch);
+    }
+    confidenceScore = 0.95;
   }
 
   const uniqueCitations = [];
@@ -422,12 +395,9 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
     }
   }
 
-  let formattedAnswer = '';
-  if (matches.length > 0) {
-    formattedAnswer = matches.join('\n\n');
-  } else {
-    formattedAnswer = `### Local RAG Engine Response\n\nNo specific catalog items or rules found matching query '${query}' for ${chassisName || 'the selected chassis'}.`;
-  }
+  const formattedAnswer = matches.length > 0
+    ? matches.join('\n\n')
+    : `### Local RAG Engine Response\n\nNo specific catalog items or rules found matching query '${query}' for ${chassisName || 'the selected chassis'}.`;
 
   return {
     query,
@@ -436,6 +406,42 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
     confidenceScore: confidenceScore,
     source: 'LOCAL_CATALOG_RAG'
   };
+}
+
+function queryLocalKnowledgeBase(query, chassisName = '') {
+  const citations = [];
+  const rawMatches = [];
+  const matchedProcessorSkus = [];
+
+  const { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery } = prepareSearchTerms(query);
+  const normChassisTarget = (chassisName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches);
+
+  const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
+  const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
+  const filteredCatalogPaths = filterCatalogsByChassisFirewall(catalogPaths, chassisName);
+
+  for (const cDir of filteredCatalogPaths) {
+    if (!fs.existsSync(cDir)) continue;
+    const folderName = path.basename(cDir);
+    const catalogJson = path.join(cDir, `${folderName}_Catalog.json`);
+
+    if (fs.existsSync(catalogJson)) {
+      try {
+        const catData = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+        searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches);
+      } catch (e) {
+        const _logger = require('../system/pipeline_logger.js');
+        _logger.warn('ERROR', 'local_rag_search.js', e);
+      }
+    }
+
+    searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcessorQuery, rawMatches);
+  }
+
+  formatProcessorMatches(matchedProcessorSkus, minCores, citations, rawMatches);
+  return synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName);
 }
 
 async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId = '') {

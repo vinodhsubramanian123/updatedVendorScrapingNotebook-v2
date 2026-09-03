@@ -57,6 +57,53 @@ export function buildAspectChecksFromEval(evalData) {
   ];
 }
 
+function extractHardwareMetrics(data, inner) {
+  return {
+    cpuCount: inner.cpuCount ?? data.cpuCount,
+    maxCpuTdpWatts: inner.maxCpuTdpWatts ?? data.maxCpuTdpWatts,
+    memoryCount: inner.memoryCount ?? data.memoryCount,
+    totalMemoryGb: inner.totalMemoryGb ?? data.totalMemoryGb,
+    driveCount: inner.driveCount ?? data.driveCount,
+    hasHighPerfFans: inner.hasHighPerfFans ?? data.hasHighPerfFans,
+    hasSmartBattery: inner.hasSmartBattery ?? data.hasSmartBattery,
+    hasDcPowerSupply: inner.hasDcPowerSupply ?? data.hasDcPowerSupply,
+    hasDcLugKit: inner.hasDcLugKit ?? data.hasDcLugKit,
+    hasOcpAdapter: inner.hasOcpAdapter ?? data.hasOcpAdapter,
+    hasSupportService: inner.hasSupportService ?? data.hasSupportService,
+    aspectChecks: inner.aspectChecks ?? buildAspectChecksFromEval(inner)
+  };
+}
+
+function extractConflictAndStrategy(data, inner) {
+  const conflictGraph = data.conflictGraph ?? inner.conflictGraph ?? {};
+  const rankedSolutions = conflictGraph.rankedSolutions ?? inner.conflictGraph?.rankedSolutions ?? data.rankedSolutions ?? [];
+  return {
+    conflictGraph,
+    rankedSolutions,
+    workloadDna: conflictGraph.workloadDna ?? data.workloadDna,
+    arbitrationResults: conflictGraph.arbitrationResults ?? inner.arbitrationResults ?? data.arbitrationResults ?? null,
+    clusterSizing: data.clusterSizing ?? inner.clusterSizing ?? null,
+    chassisDefaults: data.chassisDefaults ?? inner.chassisDefaults ?? [],
+    redundantDefaults: data.redundantDefaults ?? inner.redundantDefaults ?? [],
+    opinionDiscrepancies: data.opinionDiscrepancies ?? inner.opinionDiscrepancies ?? [],
+    introspectedComponents: conflictGraph.introspectedComponents ?? inner.introspectedComponents ?? []
+  };
+}
+
+function extractProvenanceAndTrace(data, inner) {
+  const provenanceTrace = data.provenanceTrace ?? inner.provenanceTrace ?? null;
+  return {
+    provenanceTrace,
+    traceId: data.traceId ?? provenanceTrace?.traceId ?? null,
+    needsActions: inner.needsActions ?? data.needsActions ?? [],
+    unsolicitedOptionalItems: inner.unsolicitedOptionalItems ?? data.unsolicitedOptionalItems ?? [],
+    totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
+    stageBreakdown: inner.stageBreakdown ?? data.stageBreakdown ?? {},
+    notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
+    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null
+  };
+}
+
 /**
  * Flatten a raw EVAL_RESULT SSE payload into the shape that all dashboard
  * components expect. This is the *single* data contract normalisation point —
@@ -86,39 +133,10 @@ export function normalizeEvalResult(payload) {
     warnings: inner.warnings ?? data.warnings ?? [],
     missingDependencies: inner.missingDependencies ?? data.missingDependencies ?? [],
     confidence: inner.confidence ?? data.confidence ?? { score: 0, summary: '' },
-    cpuCount: inner.cpuCount ?? data.cpuCount,
-    maxCpuTdpWatts: inner.maxCpuTdpWatts ?? data.maxCpuTdpWatts,
-    memoryCount: inner.memoryCount ?? data.memoryCount,
-    totalMemoryGb: inner.totalMemoryGb ?? data.totalMemoryGb,
-    driveCount: inner.driveCount ?? data.driveCount,
-    hasHighPerfFans: inner.hasHighPerfFans ?? data.hasHighPerfFans,
-    hasSmartBattery: inner.hasSmartBattery ?? data.hasSmartBattery,
-    hasDcPowerSupply: inner.hasDcPowerSupply ?? data.hasDcPowerSupply,
-    hasDcLugKit: inner.hasDcLugKit ?? data.hasDcLugKit,
-    hasOcpAdapter: inner.hasOcpAdapter ?? data.hasOcpAdapter,
-    hasSupportService: inner.hasSupportService ?? data.hasSupportService,
     agenticExplanation: inner.agenticExplanation ?? data.agenticExplanation,
-    conflictGraph: data.conflictGraph ?? inner.conflictGraph ?? {},
-    rankedSolutions: data.conflictGraph?.rankedSolutions ?? inner.conflictGraph?.rankedSolutions ?? data.rankedSolutions ?? [],
-    workloadDna: data.conflictGraph?.workloadDna ?? data.workloadDna,
-    arbitrationResults: data.conflictGraph?.arbitrationResults ?? inner.arbitrationResults ?? data.arbitrationResults ?? null,
-    clusterSizing: data.clusterSizing ?? inner.clusterSizing ?? null,
-    chassisDefaults: data.chassisDefaults ?? inner.chassisDefaults ?? [],
-    redundantDefaults: data.redundantDefaults ?? inner.redundantDefaults ?? [],
-    opinionDiscrepancies: data.opinionDiscrepancies ?? inner.opinionDiscrepancies ?? [],
-    introspectedComponents: data.conflictGraph?.introspectedComponents ?? inner.introspectedComponents ?? [],
-    // Aspect checks: use server-provided array or compute from inner fields
-    aspectChecks: inner.aspectChecks ?? buildAspectChecksFromEval(inner),
-    // NotebookLM grounding status — surfaces whether cloud brain was consulted
-    notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
-    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null,
-    // End-to-End Provenance Trace & Action Checklist
-    provenanceTrace: data.provenanceTrace ?? inner.provenanceTrace ?? null,
-    traceId: data.traceId ?? inner.provenanceTrace?.traceId ?? null,
-    needsActions: inner.needsActions ?? data.needsActions ?? [],
-    unsolicitedOptionalItems: inner.unsolicitedOptionalItems ?? data.unsolicitedOptionalItems ?? [],
-    totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
-    stageBreakdown: inner.stageBreakdown ?? data.stageBreakdown ?? {},
+    ...extractHardwareMetrics(data, inner),
+    ...extractConflictAndStrategy(data, inner),
+    ...extractProvenanceAndTrace(data, inner),
     // RAG fields — populated later by the poller
     ragAnswer: null,
     ragData: null

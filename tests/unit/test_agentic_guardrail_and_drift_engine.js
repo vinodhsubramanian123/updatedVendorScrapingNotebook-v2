@@ -59,6 +59,24 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
     const types = deltas.map(d => d.ruleType).sort();
     assert.deepStrictEqual(types, ['CARRY_OVER_VALIDATED', 'DEPENDENCY_CHAIN', 'OPTION_TYPE_SUBSTITUTION']);
   });
+
+  await t.test('Directional SKU substitution: X is replaced by Y', () => {
+    const markdown = "Component P12345-B21 is replaced by P67890-B21 in DL380 Gen12 configurations.";
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
+    assert.strictEqual(deltas.length, 1);
+    assert.strictEqual(deltas[0].affectedSku, 'P12345-B21', 'Obsolete SKU should be affectedSku');
+    assert.strictEqual(deltas[0].requiredDependencySku, 'P67890-B21', 'Replacement SKU should be requiredDependencySku');
+    assert.strictEqual(deltas[0].ruleType, 'SKU_SUBSTITUTION');
+  });
+
+  await t.test('Capability-aware dependency extraction', () => {
+    const markdown = "Selecting P55555-B21 mandates high performance fan kit P48820-B21 to ensure thermal cooling.";
+    const deltas = extractKnowledgeFromRagAnswer(markdown, 'outputs/ProLiant/Gen12/DL380_Gen12');
+    assert.strictEqual(deltas.length, 1);
+    assert.strictEqual(deltas[0].affectedSku, 'P55555-B21');
+    assert.strictEqual(deltas[0].requiredDependencySku, 'P48820-B21');
+    assert.strictEqual(deltas[0].requiredCapability, 'HIGH_PERFORMANCE_COOLING');
+  });
 });
 
 test('Test inspectKnowledgeDrift()', async (t) => {

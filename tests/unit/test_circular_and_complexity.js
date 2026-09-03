@@ -68,4 +68,44 @@ test('Circular Dependencies & Cyclomatic Complexity Guardrails', async (t) => {
     assert.ok(fn, 'Expected evalNetworkingOcp function to exist');
     assert.ok(fn.complexity <= 15, `Expected CC <= 15, got CC ${fn.complexity}`);
   });
+
+  await t.test('Complexity Audit: power_environment.js evalPowerEnvironment CC <= 20', () => {
+    const filePath = path.resolve(rootDir, 'scripts/lib/aspects/power_environment.js');
+    const result = analyzeFile(filePath);
+    assert.ok(result, 'Expected complexity result for power_environment.js');
+
+    const fn = result.functions.find(f => f.name === 'evalPowerEnvironment');
+    assert.ok(fn, 'Expected evalPowerEnvironment function to exist');
+    assert.ok(fn.complexity <= 20, `Expected CC <= 20, got CC ${fn.complexity}`);
+  });
+
+  await t.test('Complexity Audit: build_catalog.js main CC <= 10', () => {
+    const filePath = path.resolve(rootDir, 'scripts/catalogs/build_catalog.js');
+    const result = analyzeFile(filePath);
+    assert.ok(result, 'Expected complexity result for build_catalog.js');
+
+    const fn = result.functions.find(f => f.name === 'main');
+    assert.ok(fn, 'Expected main function to exist');
+    assert.ok(fn.complexity <= 10, `Expected CC <= 10, got CC ${fn.complexity}`);
+  });
+
+  await t.test('Complexity Audit: eval_boq.js main CC <= 10', () => {
+    const filePath = path.resolve(rootDir, 'scripts/evaluators/eval_boq.js');
+    const result = analyzeFile(filePath);
+    assert.ok(result, 'Expected complexity result for eval_boq.js');
+
+    const fn = result.functions.find(f => f.name === 'main');
+    assert.ok(fn, 'Expected main function to exist');
+    assert.ok(fn.complexity <= 10, `Expected CC <= 10, got CC ${fn.complexity}`);
+  });
+
+  await t.test('Complexity Audit: local_rag_search.js queryLocalKnowledgeBase CC <= 15', () => {
+    const filePath = path.resolve(rootDir, 'scripts/lib/rag/local_rag_search.js');
+    const result = analyzeFile(filePath);
+    assert.ok(result, 'Expected complexity result for local_rag_search.js');
+
+    const fn = result.functions.find(f => f.name === 'queryLocalKnowledgeBase');
+    assert.ok(fn, 'Expected queryLocalKnowledgeBase function to exist');
+    assert.ok(fn.complexity <= 15, `Expected CC <= 15, got CC ${fn.complexity}`);
+  });
 });

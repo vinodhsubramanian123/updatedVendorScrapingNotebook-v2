@@ -107,9 +107,19 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     const isNegativeOrAdvisory = isSubstitution || pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
     
     if (isSubstitution && validSkus.length >= 2) {
-      // Capture substitution knowledge without creating a mutual co-requisite lock
-      const targetSku = validSkus[0];
-      const obsoleteSku = validSkus[1];
+      // Capture substitution knowledge with accurate direction:
+      // "X replaced by Y" / "X superseded by Y" -> X is obsolete (affectedSku), Y is target (requiredDependencySku)
+      // "Use Y instead of X" -> Y is target replacement, X is obsolete
+      let targetSku;
+      let obsoleteSku;
+      if (pLower.includes('replaced by') || pLower.includes('superseded by')) {
+        obsoleteSku = validSkus[0];
+        targetSku = validSkus[1];
+      } else {
+        targetSku = validSkus[0];
+        obsoleteSku = validSkus[1];
+      }
+
       addDelta({
         deltaId: `DELTA_RAG_SUBST_${obsoleteSku}_${targetSku}_${Date.now()}`,
         chassis: chassisName,
@@ -131,6 +141,13 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
         const parentSku = validSkus[0];
         const childSku = validSkus[1];
         if (parentSku !== childSku) {
+          // Check for generic domain capability mention (INV-56)
+          let capabilityTag = null;
+          if (pLower.includes('fan') || pLower.includes('cooling')) capabilityTag = 'HIGH_PERFORMANCE_COOLING';
+          else if (pLower.includes('expander') || pLower.includes('switch')) capabilityTag = 'STORAGE_EXPANDER_OR_SWITCH';
+          else if (pLower.includes('auxiliary') || pLower.includes('gpu power')) capabilityTag = 'GPU_AUXILIARY_POWER_AND_TITANIUM_PSU';
+          else if (pLower.includes('drive blank') || pLower.includes('no drive')) capabilityTag = 'NO_DRIVE_BLANK_OR_FIO_BYPASS';
+
           addDelta({
             deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
             chassis: chassisName,
@@ -138,6 +155,7 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
             ruleType: 'DEPENDENCY_CHAIN',
             affectedSku: parentSku,
             requiredDependencySku: childSku,
+            requiredCapability: capabilityTag,
             reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
             rawMessage: unit.slice(0, 300).trim(),
             scopeTaxonomy: classifyKnowledgeScope(unit),

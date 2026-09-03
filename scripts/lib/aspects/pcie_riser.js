@@ -19,6 +19,69 @@ function isExcludedPcieRole(role) {
          role === 'Service & Support' || role === 'Operating System / License';
 }
 
+const PRIMARY_CABLE_KIT_SKUS = new Set(['P56073-B21']);
+const SECONDARY_CABLE_KIT_SKUS = new Set(['P56074-B21']);
+const GPU_POWER_CABLE_KIT_SKUS = new Set(['P48816-B21', 'P76450-B21']);
+const PRIMARY_RISER_SKUS = new Set(['P48803-B21']);
+const SECONDARY_RISER_SKUS = new Set(['P51083-B21', 'P48802-B21']);
+const TERTIARY_RISER_SKUS = new Set(['P48804-B21']);
+
+function tallyPcieCablesAndGpus(tally, desc, sku, qty, role) {
+  if ((desc.includes('primary') && (desc.includes('cable kit') || desc.includes('prim cbl') || desc.includes('riser cable'))) || PRIMARY_CABLE_KIT_SKUS.has(sku)) {
+    tally.hasPrimaryCableKit = true;
+  }
+  if ((desc.includes('secondary') && (desc.includes('cable kit') || desc.includes('sec cbl') || desc.includes('riser cable'))) || SECONDARY_CABLE_KIT_SKUS.has(sku)) {
+    tally.hasSecondaryCableKit = true;
+  }
+  if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || GPU_POWER_CABLE_KIT_SKUS.has(sku)) {
+    tally.hasGpuPowerCableKit = true;
+    tally.gpuPowerCableKitCount += qty;
+  }
+  if (isGpuComponent(role, desc)) {
+    tally.gpuCount += qty;
+  }
+}
+
+function tallyPcieCardDemand(tally, desc, qty, role) {
+  if (isExcludedPcieRole(role)) return;
+
+  const isPcieCandidate = role === 'GPU / Accelerator' || role === 'Network Adapter' || 
+                          role === 'Storage Controller' || role === 'Fibre Channel HBA' || 
+                          desc.includes('adapter') || desc.includes('controller') || 
+                          desc.includes('hba') || desc.includes('nvidia') || 
+                          desc.includes('pcie') || desc.includes('gpu');
+
+  if (isPcieCandidate) {
+    const isInternalOrOcp = desc.includes('ocp') || desc.includes('embedded') || 
+                            desc.includes('lom') || desc.includes('cable') || 
+                            desc.includes('cage') || desc.includes('battery');
+    if (!isInternalOrOcp) {
+      tally.requiredPcieCards += qty;
+      const isX16 = role === 'GPU / Accelerator' || desc.includes('gpu') || 
+                    desc.includes('200gb') || desc.includes('400gb') || 
+                    desc.includes('infiniband') || desc.includes('mellanox') || 
+                    desc.includes('nvidia');
+      if (isX16) {
+        tally.x16RequiredCount += qty;
+      }
+    }
+  }
+}
+
+function tallyRiserCards(tally, desc, sku, qty, role) {
+  if (role === 'PCIe Riser' || desc.includes('riser')) {
+    if (desc.includes('primary riser') || desc.includes('main riser') || desc.includes('primary x16') || PRIMARY_RISER_SKUS.has(sku)) {
+      tally.primaryRiserCount += qty;
+    }
+    if (desc.includes('secondary riser') || desc.includes('secondary x16') || SECONDARY_RISER_SKUS.has(sku)) {
+      tally.secondaryRiserCount += qty;
+    }
+    if (desc.includes('tertiary riser') || desc.includes('tertiary x16') || TERTIARY_RISER_SKUS.has(sku)) {
+      tally.tertiaryRiserCount += qty;
+    }
+  }
+}
+
 function tallyPcieItems(items, catalogData) {
   const tally = {
     requiredPcieCards: 0,
@@ -44,60 +107,9 @@ function tallyPcieItems(items, catalogData) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    // Cable Kits
-    if ((desc.includes('primary') && (desc.includes('cable kit') || desc.includes('prim cbl') || desc.includes('riser cable'))) || sku === 'P56073-B21') {
-      tally.hasPrimaryCableKit = true;
-    }
-    if ((desc.includes('secondary') && (desc.includes('cable kit') || desc.includes('sec cbl') || desc.includes('riser cable'))) || sku === 'P56074-B21') {
-      tally.hasSecondaryCableKit = true;
-    }
-    if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || sku === 'P48816-B21' || sku === 'P76450-B21') {
-      tally.hasGpuPowerCableKit = true;
-      tally.gpuPowerCableKitCount += qty;
-    }
-
-    // GPU Accelerator
-    if (isGpuComponent(role, desc)) {
-      tally.gpuCount += qty;
-    }
-
-    if (isExcludedPcieRole(role)) continue;
-
-    // Required PCIe Expansion Cards
-    const isPcieCandidate = role === 'GPU / Accelerator' || role === 'Network Adapter' || 
-                            role === 'Storage Controller' || role === 'Fibre Channel HBA' || 
-                            desc.includes('adapter') || desc.includes('controller') || 
-                            desc.includes('hba') || desc.includes('nvidia') || 
-                            desc.includes('pcie') || desc.includes('gpu');
-
-    if (isPcieCandidate) {
-      const isInternalOrOcp = desc.includes('ocp') || desc.includes('embedded') || 
-                              desc.includes('lom') || desc.includes('cable') || 
-                              desc.includes('cage') || desc.includes('battery');
-      if (!isInternalOrOcp) {
-        tally.requiredPcieCards += qty;
-        const isX16 = role === 'GPU / Accelerator' || desc.includes('gpu') || 
-                      desc.includes('200gb') || desc.includes('400gb') || 
-                      desc.includes('infiniband') || desc.includes('mellanox') || 
-                      desc.includes('nvidia');
-        if (isX16) {
-          tally.x16RequiredCount += qty;
-        }
-      }
-    }
-
-    // Risers
-    if (role === 'PCIe Riser' || desc.includes('riser')) {
-      if (desc.includes('primary riser') || desc.includes('main riser') || desc.includes('primary x16') || sku === 'P48803-B21') {
-        tally.primaryRiserCount += qty;
-      }
-      if (desc.includes('secondary riser') || desc.includes('secondary x16') || sku === 'P51083-B21' || sku === 'P48802-B21') {
-        tally.secondaryRiserCount += qty;
-      }
-      if (desc.includes('tertiary riser') || desc.includes('tertiary x16') || sku === 'P48804-B21') {
-        tally.tertiaryRiserCount += qty;
-      }
-    }
+    tallyPcieCablesAndGpus(tally, desc, sku, qty, role);
+    tallyPcieCardDemand(tally, desc, qty, role);
+    tallyRiserCards(tally, desc, sku, qty, role);
   }
 
   return tally;

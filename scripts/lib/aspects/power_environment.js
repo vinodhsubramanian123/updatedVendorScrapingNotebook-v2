@@ -37,27 +37,112 @@ function _estimateGpuTdpW(desc) {
   return 300; // Conservative default for unknown GPU models
 }
 
+function estimateSystemPowerWatts(it, desc, role) {
+  let cpuWatts = 0;
+  let gpuWatts = 0;
+  let memWatts = 0;
+  let storageWatts = 0;
+  const qty = it.quantity || 1;
+
+  if (role === 'Processor' || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
+    const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
+    cpuWatts = (tdpMatch ? parseInt(tdpMatch[1], 10) : 205) * qty;
+  }
+  if (role === 'GPU / Accelerator' || desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || desc.includes('h100') || desc.includes('gpu')) {
+    gpuWatts = _estimateGpuTdpW(desc) * qty;
+  }
+  if (role === 'Memory' || desc.includes('rdimm') || desc.includes('ddr5')) {
+    memWatts = 8 * qty;
+  }
+  if ((role === 'Drive Cage / Drive' || desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme')) &&
+      !desc.includes('cage') && !desc.includes('controller')) {
+    storageWatts = 15 * qty;
+  }
+  return cpuWatts + gpuWatts + memWatts + storageWatts;
+}
+
+const DL380A_CHASSIS_SKUS = new Set(['P76706-B21']);
+const DL380A_GPU_SKUS = new Set(['P75008-B21', 'P75002-B21']);
+const DL145_CHASSIS_SKUS = new Set(['P71964-B21']);
+const PLATINUM_PSU_SKUS = new Set(['P38997-B21']);
+const TITANIUM_PSU_SKUS = new Set(['P44712-B21', 'P03178-B21']);
+const CE_REMOVAL_SKUS = new Set(['P35876-B21']);
+
+function tallyChassisFormFactor(tally, desc, sku) {
+  if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
+    tally.isSynergy12000Frame = true;
+  }
+  if (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('dl380a')) {
+    tally.isDl380aGpuChassis = true;
+  }
+  if (DL380A_GPU_SKUS.has(sku) || (desc.includes('double-wide') && desc.includes('gpu'))) {
+    tally.hasDl380aDoubleWideGpu = true;
+  }
+  if (DL145_CHASSIS_SKUS.has(sku) || desc.includes('dl145')) {
+    tally.isDl145EdgeChassis = true;
+  }
+}
+
+function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
+  if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
+    tally.psuCount += (it.quantity || 1);
+    const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
+    if (psuWMatch) {
+      const w = parseInt(psuWMatch[1], 10);
+      if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
+    }
+    if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
+      tally.hasDcPowerSupply = true;
+    }
+    if (desc.includes('platinum') || PLATINUM_PSU_SKUS.has(sku)) {
+      tally.hasPlatinumPsu = true;
+    }
+    if (desc.includes('titanium') || TITANIUM_PSU_SKUS.has(sku)) {
+      tally.hasTitaniumPsu = true;
+    }
+    if (desc.includes('2650w') && desc.includes('titanium')) {
+      tally.synergyTitanium2650wCount += (it.quantity || 1);
+    }
+  }
+  if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {
+    tally.hasDcLugKit = true;
+  }
+  if (CE_REMOVAL_SKUS.has(sku) || desc.includes('ce mark removal') || desc.includes('ce mark')) {
+    tally.hasCeRemovalKit = true;
+  }
+}
+
+function tallyPowerHardware(tally, it, desc, sku, role, dcLugSku) {
+  tallyChassisFormFactor(tally, desc, sku);
+  tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku);
+}
+
+function checkDl380aPsuShortage(tally) {
+  if (!tally.isDl380aGpuChassis || !tally.hasDl380aDoubleWideGpu) return false;
+  return tally.psuCount < 5 || tally.maxPsuWattage < 2400 || !tally.hasTitaniumPsu;
+}
+
+function checkLot9CeRemovalNeeds(tally, estimatedNodeWattage) {
+  return tally.hasPlatinumPsu && !tally.hasTitaniumPsu && estimatedNodeWattage >= 500 && !tally.hasCeRemovalKit;
+}
+
 function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
-  let hasDcPowerSupply = false;
-  let hasDcLugKit = false;
-  let hasPlatinumPsu = false;
-  let hasTitaniumPsu = false;
-  let hasCeRemovalKit = false;
-  let psuCount = 0;
-  let maxPsuWattage = 800;
+  const tally = {
+    hasDcPowerSupply: false,
+    hasDcLugKit: false,
+    hasPlatinumPsu: false,
+    hasTitaniumPsu: false,
+    hasCeRemovalKit: false,
+    psuCount: 0,
+    maxPsuWattage: 800,
+    isSynergy12000Frame: false,
+    synergyTitanium2650wCount: 0,
+    isDl380aGpuChassis: false,
+    hasDl380aDoubleWideGpu: false,
+    isDl145EdgeChassis: false
+  };
 
-  // Synergy Frame Power
-  let isSynergy12000Frame = false;
-  let synergyTitanium2650wCount = 0;
-  let hasSynergyRedundantPowerError = false;
-  let estimatedCpuWatts = 0;
-  let estimatedGpuWatts = 0;
-  let estimatedMemoryWatts = 0;
-  let estimatedStorageWatts = 0;
-  let isDl380aGpuChassis = false;
-  let hasDl380aDoubleWideGpu = false;
-  let isDl145EdgeChassis = false;
-
+  let totalHardwareWatts = 0;
   const dcLugSku = cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21');
 
   for (const it of items) {
@@ -70,108 +155,33 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       if (match) role = classifyComponentRole(match.parentCategory, desc);
     }
 
-    if (role === 'Processor' || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
-      const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
-      const tdp = tdpMatch ? parseInt(tdpMatch[1], 10) : 205;
-      estimatedCpuWatts += (tdp * (it.quantity || 1));
-    }
-
-    if (role === 'GPU / Accelerator' || desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || desc.includes('h100') || desc.includes('gpu')) {
-      const gpuTdp = _estimateGpuTdpW(desc);
-      estimatedGpuWatts += (gpuTdp * (it.quantity || 1));
-    }
-
-    if (role === 'Memory' || desc.includes('rdimm') || desc.includes('ddr5')) {
-      estimatedMemoryWatts += (8 * (it.quantity || 1));
-    }
-
-    if (role === 'Drive Cage / Drive' || desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme')) {
-      if (!desc.includes('cage') && !desc.includes('controller')) {
-        estimatedStorageWatts += (15 * (it.quantity || 1));
-      }
-    }
-
-    if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
-      isSynergy12000Frame = true;
-    }
-
-    // DL380a GPU chassis detection
-    if (sku === 'P76706-B21' || desc.includes('dl380a')) {
-      isDl380aGpuChassis = true;
-    }
-    if (sku === 'P75008-B21' || sku === 'P75002-B21' || (desc.includes('double-wide') && desc.includes('gpu'))) {
-      hasDl380aDoubleWideGpu = true;
-    }
-    // DL145 edge chassis detection
-    if (sku === 'P71964-B21' || desc.includes('dl145')) {
-      isDl145EdgeChassis = true;
-    }
-
-    if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
-      psuCount += (it.quantity || 1);
-      const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
-      if (psuWMatch) {
-        const w = parseInt(psuWMatch[1], 10);
-        if (w > maxPsuWattage) maxPsuWattage = w;
-      }
-      if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
-        hasDcPowerSupply = true;
-      }
-      if (desc.includes('platinum') || sku === 'P38997-B21') {
-        hasPlatinumPsu = true;
-      }
-      if (desc.includes('titanium') || sku === 'P44712-B21' || sku === 'P03178-B21') {
-        hasTitaniumPsu = true;
-      }
-      if (desc.includes('2650w') && desc.includes('titanium')) {
-        synergyTitanium2650wCount += (it.quantity || 1);
-      }
-    }
-    if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {
-      hasDcLugKit = true;
-    }
-    if (sku === 'P35876-B21' || desc.includes('ce mark removal') || desc.includes('ce mark')) {
-      hasCeRemovalKit = true;
-    }
+    totalHardwareWatts += estimateSystemPowerWatts(it, desc, role);
+    tallyPowerHardware(tally, it, desc, sku, role, dcLugSku);
   }
 
-  // Estimated node power draw (including 150W baseboard + fans)
-  const estimatedNodeWattage = estimatedCpuWatts + estimatedGpuWatts + estimatedMemoryWatts + estimatedStorageWatts + 150;
-  // High-line 220V Advisory: High-capacity PSUs (>=1600W) derate to 800W on 110V low-line power.
-  // If estimated draw exceeds 800W, 200V-240V utility circuits are strongly advised.
-  const needsHighLine220v = estimatedNodeWattage > 800 && maxPsuWattage >= 1600;
-
-  // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
-  // High-draw dual-socket configurations with Platinum PSUs require Titanium PSUs (96% efficiency) or P35876-B21 CE Mark Removal Kit for non-EU deployment.
-  const needsCeRemovalKit = hasPlatinumPsu && !hasTitaniumPsu && estimatedNodeWattage >= 500 && !hasCeRemovalKit;
-
-  // Synergy Frame Redundant Power Supply Rule
-  if (isSynergy12000Frame) {
-    if (synergyTitanium2650wCount !== 6) {
-      hasSynergyRedundantPowerError = true;
-    }
-  }
+  const estimatedNodeWattage = totalHardwareWatts + 150;
+  const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
+  const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
+  const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
 
   return {
-    hasDcPowerSupply,
-    hasDcLugKit,
-    hasPlatinumPsu,
-    hasTitaniumPsu,
-    hasCeRemovalKit,
+    hasDcPowerSupply: tally.hasDcPowerSupply,
+    hasDcLugKit: tally.hasDcLugKit,
+    hasPlatinumPsu: tally.hasPlatinumPsu,
+    hasTitaniumPsu: tally.hasTitaniumPsu,
+    hasCeRemovalKit: tally.hasCeRemovalKit,
     needsCeRemovalKit,
-    psuCount,
-    maxPsuWattage,
+    psuCount: tally.psuCount,
+    maxPsuWattage: tally.maxPsuWattage,
     estimatedNodeWattage,
     needsHighLine220v,
-    isSynergy12000Frame,
-    synergyTitanium2650wCount,
+    isSynergy12000Frame: tally.isSynergy12000Frame,
+    synergyTitanium2650wCount: tally.synergyTitanium2650wCount,
     hasSynergyRedundantPowerError,
-    // DL380a GPU Power Mandate (Rule 81017083): Min 5x 2400W Titanium when double-wide GPUs present
-    isDl380aGpuChassis,
-    hasDl380aGpuPsuShortage: isDl380aGpuChassis && hasDl380aDoubleWideGpu && (psuCount < 5 || maxPsuWattage < 2400 || !hasTitaniumPsu),
-    // DL145 Edge PSU Profile: Max 1000W, 1600W+ PSUs are physically incompatible
-    isDl145EdgeChassis,
-    hasDl145PsuOversizing: isDl145EdgeChassis && maxPsuWattage > 1000
+    isDl380aGpuChassis: tally.isDl380aGpuChassis,
+    hasDl380aGpuPsuShortage: checkDl380aPsuShortage(tally),
+    isDl145EdgeChassis: tally.isDl145EdgeChassis,
+    hasDl145PsuOversizing: tally.isDl145EdgeChassis && tally.maxPsuWattage > 1000
   };
 }
 

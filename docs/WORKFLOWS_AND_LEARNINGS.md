@@ -605,3 +605,21 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Anti-Silent Failure Guardrails (Strict Throw Boundaries)**: We conducted a gap analysis and discovered multiple "silent failures" where file I/O operations (`fs.readFileSync`) for catalog JSONs would fail (e.g. disk corruption) but the `catch` blocks merely swallowed the error via `console.warn` and returned `null`.
   - **Consequence**: The pipeline secretly degraded to regex heuristic matching or generated corrupted Vendor BOM exports, falsely reporting 100% success on the dashboard.
   - **Remediation & New Invariant**: Catch blocks dealing with critical knowledge states (e.g. `eval_boq.js` loading catalogs, `sync_payload_builder.js` syncing to NotebookLM, `generate_xlsx.js` reading metadata) **MUST** fail hard. They must throw explicit typed errors (`EvaluationError`, `DataCorruptionError`, `SyncPayloadBuilderError`) to immediately halt execution and trigger telemetry alerts, preserving the "Fail-Safe & Dual-Brain" mandate and preventing knowledge drift.
+
+---
+
+## 58. Monolithic Pipeline Decomposition, Local RAG Optimization & Declarative Capability Architecture (`INV-58`)
+- **Monolithic CLI Entrypoint Decomposition**:
+  - `build_catalog.js` and `eval_boq.js` originally accumulated massive cyclomatic complexity (CC = 445 and 220 respectively) by interleaving CLI argument parsing, environment discovery, history differential analysis, aspect math execution, report formatting, and file exports inside giant single `main()` functions.
+  - **Single-Responsibility Stage Pipeline**: Decomposed both entry points into isolated, independently testable lifecycle functions:
+    - `build_catalog.js`: `initCatalogBuild`, `extractSubcategoriesAndParents`, `expandTableSections`, `parseSingleTableRow`, `matchSubcategoryForTable`, `resolveTableTaxonomyAndRole`, `synthesizeCatalogEntries`, `injectChassisVariantsFromHistory`, `buildCatalogObject`, `reconcilePriceAndLifecycleHistory`, `buildChassisVariantMatrix`, `exportCatalogArtifacts` (main CC: 445 &rarr; **1**).
+    - `eval_boq.js`: `parseEvaluationArguments`, `ingestAndConsolidateBoq`, `executePhysicalPreChecks`, `executeGroundedRagValidation`, `generateMarkdownReport`, `serializeAndExportResults` (main CC: 220 &rarr; **2**).
+- **Local Catalog RAG Hotspot Decomposition**:
+  - `local_rag_search.js` contained a 200+ line search function (`searchCatalogSkusAndVariants`, CC = 89) combining processor filtering, category matching, and chassis base variant detection.
+  - Decomposed into `searchProcessorSkusInEntry`, `searchCategorySkusInEntry`, and `searchChassisBaseVariants`, dropping orchestrator complexity to CC = **7**.
+  - `queryLocalKnowledgeBase` was similarly decomposed into `filterCatalogsByChassisFirewall`, `formatProcessorMatches`, and `synthesizeRankedRagAnswer`, reducing CC from 46 &rarr; **6**.
+- **Declarative SKU Encapsulation (INV-56 Compliance)**:
+  - While physical rules are defined generically in `generic_domain_templates.js`, domain aspect checkers (`power_environment.js`, `networking_ocp.js`, `pcie_riser.js`, `storage_tri_mode.js`) historically scattered literal SKU strings across multiple conditional branches.
+  - Encapsulating these into declarative `Set` lookup tables at the module header prevents magic string duplication, eliminates regex overhead, and ensures strict maintainability while keeping all primary evaluators below CC $\le 20$.
+- **Automated CI Complexity Guardrails**:
+  - Incorporated automated CC bounds into `tests/unit/test_circular_and_complexity.js` asserting that critical pipeline entrypoints (`build_catalog.js`, `eval_boq.js`) remain at CC $\le 10$, local RAG queries remain at CC $\le 15$, and aspect evaluators remain at CC $\le 20$.

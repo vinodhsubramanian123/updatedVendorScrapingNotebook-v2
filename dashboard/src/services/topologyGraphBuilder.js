@@ -50,6 +50,15 @@ export function detectProductFamily(evalResults, items = []) {
   return 'ProLiant';
 }
 
+const SUBSYSTEM_PATTERNS = [
+  { subsystem: 'COMPUTE', regex: /processor|cpu|xeon|epyc|heatsink|fan/i },
+  { subsystem: 'MEMORY', regex: /memory|dimm|ddr5|ddr4|smart memory/i },
+  { subsystem: 'STORAGE', regex: /storage|drive|controller|ssd|nvme|hdd|smart array|tri-mode|storage battery|cage|tape/i },
+  { subsystem: 'PCIE_NETWORK', regex: /network|pcie|adapter|riser|gpu|ocp|ethernet|fibre channel|accelerator|virtual connect|transceiver/i },
+  { subsystem: 'POWER_THERMAL', regex: /power|psu|thermal|power supply|lug kit|flex slot|cable|pdu|ambient|flm|power cord/i },
+  { subsystem: 'SERVICES', regex: /service|support|care|tech care|complete care|installation|proactive/i }
+];
+
 /**
  * Categorize a SKU item into one of the 6 canonical subsystem buckets.
  */
@@ -57,24 +66,12 @@ export function getSubsystemForSku(item) {
   const cat = (item.category || '').toLowerCase();
   const sub = (item.subCategory || '').toLowerCase();
   const desc = (item.description || '').toLowerCase();
+  const combined = `${cat} ${sub} ${desc}`;
 
-  if (cat.includes('processor') || cat.includes('cpu') || sub.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor') || desc.includes('heatsink') || desc.includes('fan')) {
-    return 'COMPUTE';
-  }
-  if (cat.includes('memory') || sub.includes('memory') || cat.includes('dimm') || desc.includes('dimm') || desc.includes('ddr5') || desc.includes('ddr4') || desc.includes('smart memory')) {
-    return 'MEMORY';
-  }
-  if (cat.includes('storage') || cat.includes('drive') || cat.includes('controller') || sub.includes('storage') || sub.includes('drive') || desc.includes('ssd') || desc.includes('nvme') || desc.includes('hdd') || desc.includes('smart array') || desc.includes('tri-mode') || desc.includes('storage battery') || desc.includes('cage') || desc.includes('tape')) {
-    return 'STORAGE';
-  }
-  if (cat.includes('network') || cat.includes('pcie') || cat.includes('adapter') || cat.includes('riser') || cat.includes('gpu') || sub.includes('riser') || sub.includes('network') || desc.includes('ocp') || desc.includes('ethernet') || desc.includes('fibre channel') || desc.includes('gpu') || desc.includes('accelerator') || desc.includes('riser') || desc.includes('virtual connect') || desc.includes('transceiver')) {
-    return 'PCIE_NETWORK';
-  }
-  if (cat.includes('power') || cat.includes('psu') || cat.includes('thermal') || sub.includes('power') || desc.includes('power supply') || desc.includes('lug kit') || desc.includes('flex slot') || desc.includes('cable') || desc.includes('pdu') || desc.includes('ambient') || desc.includes('flm') || desc.includes('power cord')) {
-    return 'POWER_THERMAL';
-  }
-  if (cat.includes('service') || cat.includes('support') || cat.includes('care') || sub.includes('service') || desc.includes('tech care') || desc.includes('complete care') || desc.includes('installation') || desc.includes('proactive')) {
-    return 'SERVICES';
+  for (const entry of SUBSYSTEM_PATTERNS) {
+    if (entry.regex.test(combined)) {
+      return entry.subsystem;
+    }
   }
   return 'STORAGE';
 }
@@ -122,50 +119,8 @@ export function identifySubProducts(items = [], productFamily = 'ProLiant') {
   return subProducts;
 }
 
-/**
- * Build the topology graph for a specific rank or baseline.
- *
- * @param {object} evalResults Normalized evalResults object
- * @param {string|number} selectedRank 'BASELINE' or 1, 2, 3, 4, 5
- * @returns {object} { rootNode, subProducts: [], nodes: [], edges: [], gaps: [], fixes: [], stats: {}, diagnostics: {} }
- */
-export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
-  const startTime = Date.now();
-
-  if (!evalResults) {
-    return {
-      rootNode: null,
-      subProducts: [],
-      nodes: [],
-      edges: [],
-      gaps: [],
-      fixes: [],
-      stats: { totalNodes: 0, validCount: 0, gapCount: 0, fixCount: 0, isBuildable: false },
-      diagnostics: { renderLatencyMs: 0, productFamily: 'ProLiant', subProductsCount: 0 }
-    };
-  }
-
-  const nodes = [];
-  const edges = [];
-  const gaps = [];
-  const fixes = [];
-  const ambiguities = [];
-  const rawItems = evalResults.items?.length
-    ? evalResults.items
-    : evalResults.bomItems?.length
-    ? evalResults.bomItems
-    : (evalResults.variations && Array.isArray(evalResults.variations))
-    ? evalResults.variations.flatMap(v => v.items || [])
-    : (evalResults.configVariations && Array.isArray(evalResults.configVariations))
-    ? evalResults.configVariations.flatMap(v => v.items || [])
-    : (evalResults.rawVariations && Array.isArray(evalResults.rawVariations))
-    ? evalResults.rawVariations.flatMap(v => v.items || [])
-    : [];
-
-  const productFamily = detectProductFamily(evalResults, rawItems);
+function resolveRootAndSubProducts(evalResults, rawItems, productFamily) {
   const subProducts = identifySubProducts(rawItems, productFamily);
-
-  // 1. Identify Solution / Chassis Root Node
   const chassisSku = evalResults.conflictGraph?.chassisInfo?.chassisSku ||
                      evalResults.workloadDna?.detectedChassis ||
                      evalResults.chassis ||
@@ -208,6 +163,270 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
       subProductsCount: subProducts.length
     }
   };
+
+  return { rootNode, subProducts };
+}
+
+function populateTopologySkuNodes(activeItems, evalResults, productFamily, nodes, edges, fixes, ambiguities) {
+  activeItems.forEach((item, idx) => {
+    const subsystem = getSubsystemForSku(item);
+    const isFixInjected = item.isFixInjected || item.isResolved || (item.rule && item.rule.includes('CLIC'));
+    const isAmbiguous = item.isAmbiguous ||
+                        item.needsHumanClarification ||
+                        item.category === 'Unknown' ||
+                        (evalResults.unclassifiedSkus && evalResults.unclassifiedSkus.includes(item.sku)) ||
+                        (evalResults.errors && evalResults.errors.some(e => typeof e === 'string' && e.includes(item.sku) && (e.includes('ambiguous') || e.includes('unknown'))));
+
+    let status = 'VALID';
+    if (isAmbiguous) {
+      status = 'NEEDS_HUMAN_CLARIFICATION';
+    } else if (isFixInjected) {
+      status = 'FIX_APPLIED';
+    }
+
+    const skuNode = {
+      id: `node-sku-${item.sku || idx}-${idx}`,
+      type: 'SKU_ITEM',
+      sku: item.sku || `ITEM-${idx + 1}`,
+      label: item.description || item.sku || 'Server Component',
+      category: item.category || 'Hardware',
+      subCategory: item.subCategory || '',
+      quantity: Number(item.quantity || item.qty || 1),
+      unitPriceUsd: Number(item.unitPriceUsd || item.price || 0),
+      extendedPriceUsd: Number(item.extendedPriceUsd || (item.quantity || 1) * (item.unitPriceUsd || 0)),
+      subsystem,
+      productFamily,
+      status,
+      optionType: item.optionType || 'CTO',
+      rationale: item.rationale || item.rule || (isAmbiguous ? 'Requires Human-in-the-Loop review & classification.' : null)
+    };
+
+    nodes.push(skuNode);
+
+    if (isFixInjected) fixes.push(skuNode);
+    if (isAmbiguous) ambiguities.push(skuNode);
+
+    edges.push({
+      id: `edge-${subsystem}-to-${skuNode.id}`,
+      source: `node-sub-${subsystem}`,
+      target: skuNode.id,
+      type: 'COMPONENT_LINK',
+      status
+    });
+  });
+}
+
+function detectTopologyBaselineGaps(evalResults, nodes, edges, gaps) {
+  const errors = evalResults.errors || [];
+  const missingDeps = evalResults.missingDependencies || [];
+
+  if (evalResults.hasHighPerfFans === false || errors.some(e => typeof e === 'string' && e.toLowerCase().includes('fan'))) {
+    const gapNode = {
+      id: 'gap-thermal-fans',
+      type: 'GAP_MISSING',
+      subsystem: 'COMPUTE',
+      sku: 'P69728-B21/P67000-B21',
+      label: 'Missing High-Performance Fan Kit',
+      reason: `Processors exceed 300W TDP (${evalResults.maxCpuTdpWatts || 350}W detected). Standard fans will cause thermal throttling.`,
+      severity: 'CRITICAL',
+      status: 'GAP_MISSING',
+      suggestedFix: 'HPE DL380 Gen12 High Performance Fan Kit',
+      category: 'Thermal Subsystem'
+    };
+    nodes.push(gapNode);
+    gaps.push(gapNode);
+    edges.push({
+      id: 'edge-gap-thermal-fans',
+      source: 'node-sub-COMPUTE',
+      target: gapNode.id,
+      type: 'DEPENDENCY_GAP',
+      status: 'GAP_MISSING'
+    });
+  }
+
+  if (evalResults.isBalancedChannel === false || errors.some(e => typeof e === 'string' && (e.toLowerCase().includes('memory') || e.toLowerCase().includes('dimm')))) {
+    const gapNode = {
+      id: 'gap-memory-balance',
+      type: 'GAP_MISSING',
+      subsystem: 'MEMORY',
+      sku: 'DIMM-SYMMETRY',
+      label: 'Unbalanced Memory Channel Population',
+      reason: `${evalResults.memoryCount || 0} DIMMs populated across sockets. Requires 8 or 16 DIMMs per CPU for 100% bus bandwidth.`,
+      severity: 'WARNING',
+      status: 'GAP_MISSING',
+      suggestedFix: 'Populate DIMMs in multiples of 8 per socket (1DPC)',
+      category: 'Memory Subsystem'
+    };
+    nodes.push(gapNode);
+    gaps.push(gapNode);
+    edges.push({
+      id: 'edge-gap-memory-balance',
+      source: 'node-sub-MEMORY',
+      target: gapNode.id,
+      type: 'DEPENDENCY_GAP',
+      status: 'GAP_MISSING'
+    });
+  }
+
+  if (evalResults.hasSmartBattery === false && evalResults.hasStorageController === true) {
+    const gapNode = {
+      id: 'gap-storage-battery',
+      type: 'GAP_MISSING',
+      subsystem: 'STORAGE',
+      sku: 'P01366-B21 / P02377-B21',
+      label: 'Missing Smart Storage Hybrid Battery / Capacitor',
+      reason: 'Tri-Mode / MR Storage Controller is selected with Write-Back Cache, but no battery backup capacitor is present in BOM.',
+      severity: 'CRITICAL',
+      status: 'GAP_MISSING',
+      suggestedFix: 'HPE 96W Smart Storage Battery (145mm Cable) Kit',
+      category: 'Storage Controllers'
+    };
+    nodes.push(gapNode);
+    gaps.push(gapNode);
+    edges.push({
+      id: 'edge-gap-storage-battery',
+      source: 'node-sub-STORAGE',
+      target: gapNode.id,
+      type: 'DEPENDENCY_GAP',
+      status: 'GAP_MISSING'
+    });
+  }
+
+  if (evalResults.hasDcPowerSupply === true && evalResults.hasDcLugKit === false) {
+    const gapNode = {
+      id: 'gap-power-dc-lug',
+      type: 'GAP_MISSING',
+      subsystem: 'POWER_THERMAL',
+      sku: '800W-DC-LUG-KIT',
+      label: 'Missing -48VDC Power Supply Cable Lug Kit',
+      reason: 'DC Flex Slot Power Supplies selected without mandatory terminal lug cable connection kit.',
+      severity: 'CRITICAL',
+      status: 'GAP_MISSING',
+      suggestedFix: 'HPE DC Power Cable Lug Kit',
+      category: 'Power Infrastructure'
+    };
+    nodes.push(gapNode);
+    gaps.push(gapNode);
+    edges.push({
+      id: 'edge-gap-power-dc-lug',
+      source: 'node-sub-POWER_THERMAL',
+      target: gapNode.id,
+      type: 'DEPENDENCY_GAP',
+      status: 'GAP_MISSING'
+    });
+  }
+
+  missingDeps.forEach((dep, idx) => {
+    const gapNode = {
+      id: `gap-eval-dep-${idx}`,
+      type: 'GAP_MISSING',
+      subsystem: getSubsystemForSku({ description: dep.name || dep.text || dep }),
+      sku: dep.sku || 'DEPENDENCY-GAP',
+      label: dep.name || dep.text || String(dep),
+      reason: dep.reason || 'Required companion SKU missing from customer quote.',
+      severity: 'CRITICAL',
+      status: 'GAP_MISSING',
+      suggestedFix: dep.suggestedSku || 'Auto-inject mandatory SKU',
+      category: 'Aspect Rule Check'
+    };
+    nodes.push(gapNode);
+    gaps.push(gapNode);
+    edges.push({
+      id: `edge-gap-dep-${idx}`,
+      source: `node-sub-${gapNode.subsystem}`,
+      target: gapNode.id,
+      type: 'DEPENDENCY_GAP',
+      status: 'GAP_MISSING'
+    });
+  });
+}
+
+function computeTopologyStatsAndDiagnostics(nodes, edges, gaps, fixes, ambiguities, rootNode, subProducts, productFamily, startTime) {
+  SUBSYSTEM_DEFS.forEach(sub => {
+    const hub = nodes.find(n => n.id === `node-sub-${sub.id}`);
+    if (hub) {
+      hub.itemCount = nodes.filter(n => n.subsystem === sub.id && n.type !== 'SUBSYSTEM_HUB').length;
+      hub.hasGaps = nodes.some(n => n.subsystem === sub.id && n.type === 'GAP_MISSING');
+    }
+  });
+
+  const validCount = nodes.filter(n => n.status === 'VALID' && n.type === 'SKU_ITEM').length;
+  const gapCount = gaps.length;
+  const fixCount = fixes.length;
+  const renderLatencyMs = Date.now() - startTime;
+
+  return {
+    rootNode,
+    subProducts,
+    nodes,
+    edges,
+    gaps,
+    fixes,
+    ambiguities,
+    stats: {
+      totalNodes: nodes.length,
+      validCount,
+      gapCount,
+      fixCount,
+      ambiguityCount: ambiguities.length,
+      isBuildable: gapCount === 0 && ambiguities.length === 0,
+      subsystemsCount: SUBSYSTEM_DEFS.length
+    },
+    diagnostics: {
+      renderLatencyMs,
+      productFamily,
+      subProductsCount: subProducts.length,
+      totalSkusMapped: validCount + fixCount,
+      completenessScore: gapCount === 0 ? 100 : Math.max(10, Math.round((validCount / (validCount + gapCount)) * 100)),
+      validationTimestamp: new Date().toISOString()
+    }
+  };
+}
+
+/**
+ * Build the topology graph for a specific rank or baseline.
+ *
+ * @param {object} evalResults Normalized evalResults object
+ * @param {string|number} selectedRank 'BASELINE' or 1, 2, 3, 4, 5
+ * @returns {object} { rootNode, subProducts: [], nodes: [], edges: [], gaps: [], fixes: [], stats: {}, diagnostics: {} }
+ */
+export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
+  const startTime = Date.now();
+
+  if (!evalResults) {
+    return {
+      rootNode: null,
+      subProducts: [],
+      nodes: [],
+      edges: [],
+      gaps: [],
+      fixes: [],
+      stats: { totalNodes: 0, validCount: 0, gapCount: 0, fixCount: 0, isBuildable: false },
+      diagnostics: { renderLatencyMs: 0, productFamily: 'ProLiant', subProductsCount: 0 }
+    };
+  }
+
+  const nodes = [];
+  const edges = [];
+  const gaps = [];
+  const fixes = [];
+  const ambiguities = [];
+  const rawItems = evalResults.items?.length
+    ? evalResults.items
+    : evalResults.bomItems?.length
+    ? evalResults.bomItems
+    : (evalResults.variations && Array.isArray(evalResults.variations))
+    ? evalResults.variations.flatMap(v => v.items || [])
+    : (evalResults.configVariations && Array.isArray(evalResults.configVariations))
+    ? evalResults.configVariations.flatMap(v => v.items || [])
+    : (evalResults.rawVariations && Array.isArray(evalResults.rawVariations))
+    ? evalResults.rawVariations.flatMap(v => v.items || [])
+    : [];
+
+  const productFamily = detectProductFamily(evalResults, rawItems);
+
+  // 1. Identify Solution / Chassis Root Node
+  const { rootNode, subProducts } = resolveRootAndSubProducts(evalResults, rawItems, productFamily);
   nodes.push(rootNode);
 
   // 2. Add Sub-Product Module Nodes if Composable / Multi-Node Solution
@@ -251,7 +470,6 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
     };
     nodes.push(subNode);
 
-    // Edge from Chassis Root to Subsystem Hub
     edges.push({
       id: `edge-root-to-${sub.id}`,
       source: rootNode.id,
@@ -267,235 +485,16 @@ export function buildTopologyGraph(evalResults, selectedRank = 'BASELINE') {
     activeItems = [...rawItems];
   } else {
     const tier = (evalResults.rankedSolutions || []).find(r => String(r.rank) === String(selectedRank));
-    if (tier && tier.items && tier.items.length > 0) {
-      activeItems = [...tier.items];
-    } else {
-      activeItems = [...rawItems];
-    }
+    activeItems = (tier && tier.items && tier.items.length > 0) ? [...tier.items] : [...rawItems];
   }
 
   // 5. Populate SKU Nodes
-  activeItems.forEach((item, idx) => {
-    const subsystem = getSubsystemForSku(item);
-    const isFixInjected = item.isFixInjected || item.isResolved || (item.rule && item.rule.includes('CLIC'));
-    const isAmbiguous = item.isAmbiguous ||
-                        item.needsHumanClarification ||
-                        item.category === 'Unknown' ||
-                        (evalResults.unclassifiedSkus && evalResults.unclassifiedSkus.includes(item.sku)) ||
-                        (evalResults.errors && evalResults.errors.some(e => typeof e === 'string' && e.includes(item.sku) && (e.includes('ambiguous') || e.includes('unknown'))));
-
-    let status = 'VALID';
-    if (isAmbiguous) {
-      status = 'NEEDS_HUMAN_CLARIFICATION';
-    } else if (isFixInjected) {
-      status = 'FIX_APPLIED';
-    }
-
-    const skuNode = {
-      id: `node-sku-${item.sku || idx}-${idx}`,
-      type: 'SKU_ITEM',
-      sku: item.sku || `ITEM-${idx + 1}`,
-      label: item.description || item.sku || 'Server Component',
-      category: item.category || 'Hardware',
-      subCategory: item.subCategory || '',
-      quantity: Number(item.quantity || item.qty || 1),
-      unitPriceUsd: Number(item.unitPriceUsd || item.price || 0),
-      extendedPriceUsd: Number(item.extendedPriceUsd || (item.quantity || 1) * (item.unitPriceUsd || 0)),
-      subsystem,
-      productFamily,
-      status,
-      optionType: item.optionType || 'CTO',
-      rationale: item.rationale || item.rule || (isAmbiguous ? 'Requires Human-in-the-Loop review & classification.' : null)
-    };
-
-    nodes.push(skuNode);
-
-    if (isFixInjected) {
-      fixes.push(skuNode);
-    }
-    if (isAmbiguous) {
-      ambiguities.push(skuNode);
-    }
-
-    // Edge from Subsystem Hub to SKU Node
-    edges.push({
-      id: `edge-${subsystem}-to-${skuNode.id}`,
-      source: `node-sub-${subsystem}`,
-      target: skuNode.id,
-      type: 'COMPONENT_LINK',
-      status
-    });
-  });
+  populateTopologySkuNodes(activeItems, evalResults, productFamily, nodes, edges, fixes, ambiguities);
 
   // 6. Detect Gaps / Missing Mandatory Hardware (when in BASELINE mode)
   if (selectedRank === 'BASELINE') {
-    const errors = evalResults.errors || [];
-    const missingDeps = evalResults.missingDependencies || [];
-
-    // Aspect 1: Thermal Fans Gap
-    if (evalResults.hasHighPerfFans === false || errors.some(e => typeof e === 'string' && e.toLowerCase().includes('fan'))) {
-      const gapNode = {
-        id: 'gap-thermal-fans',
-        type: 'GAP_MISSING',
-        subsystem: 'COMPUTE',
-        sku: 'P69728-B21/P67000-B21',
-        label: 'Missing High-Performance Fan Kit',
-        reason: `Processors exceed 300W TDP (${evalResults.maxCpuTdpWatts || 350}W detected). Standard fans will cause thermal throttling.`,
-        severity: 'CRITICAL',
-        status: 'GAP_MISSING',
-        suggestedFix: 'HPE DL380 Gen12 High Performance Fan Kit',
-        category: 'Thermal Subsystem'
-      };
-      nodes.push(gapNode);
-      gaps.push(gapNode);
-      edges.push({
-        id: 'edge-gap-thermal-fans',
-        source: 'node-sub-COMPUTE',
-        target: gapNode.id,
-        type: 'DEPENDENCY_GAP',
-        status: 'GAP_MISSING'
-      });
-    }
-
-    // Aspect 2: Memory Symmetry Gap
-    if (evalResults.isBalancedChannel === false || errors.some(e => typeof e === 'string' && (e.toLowerCase().includes('memory') || e.toLowerCase().includes('dimm')))) {
-      const gapNode = {
-        id: 'gap-memory-balance',
-        type: 'GAP_MISSING',
-        subsystem: 'MEMORY',
-        sku: 'DIMM-SYMMETRY',
-        label: 'Unbalanced Memory Channel Population',
-        reason: `${evalResults.memoryCount || 0} DIMMs populated across sockets. Requires 8 or 16 DIMMs per CPU for 100% bus bandwidth.`,
-        severity: 'WARNING',
-        status: 'GAP_MISSING',
-        suggestedFix: 'Populate DIMMs in multiples of 8 per socket (1DPC)',
-        category: 'Memory Subsystem'
-      };
-      nodes.push(gapNode);
-      gaps.push(gapNode);
-      edges.push({
-        id: 'edge-gap-memory-balance',
-        source: 'node-sub-MEMORY',
-        target: gapNode.id,
-        type: 'DEPENDENCY_GAP',
-        status: 'GAP_MISSING'
-      });
-    }
-
-    // Aspect 3: Smart Storage Battery Gap
-    if (evalResults.hasSmartBattery === false && evalResults.hasStorageController === true) {
-      const gapNode = {
-        id: 'gap-storage-battery',
-        type: 'GAP_MISSING',
-        subsystem: 'STORAGE',
-        sku: 'P01366-B21 / P02377-B21',
-        label: 'Missing Smart Storage Hybrid Battery / Capacitor',
-        reason: 'Tri-Mode / MR Storage Controller is selected with Write-Back Cache, but no battery backup capacitor is present in BOM.',
-        severity: 'CRITICAL',
-        status: 'GAP_MISSING',
-        suggestedFix: 'HPE 96W Smart Storage Battery (145mm Cable) Kit',
-        category: 'Storage Controllers'
-      };
-      nodes.push(gapNode);
-      gaps.push(gapNode);
-      edges.push({
-        id: 'edge-gap-storage-battery',
-        source: 'node-sub-STORAGE',
-        target: gapNode.id,
-        type: 'DEPENDENCY_GAP',
-        status: 'GAP_MISSING'
-      });
-    }
-
-    // Aspect 4: Power DC Lug Kit Gap
-    if (evalResults.hasDcPowerSupply === true && evalResults.hasDcLugKit === false) {
-      const gapNode = {
-        id: 'gap-power-dc-lug',
-        type: 'GAP_MISSING',
-        subsystem: 'POWER_THERMAL',
-        sku: '800W-DC-LUG-KIT',
-        label: 'Missing -48VDC Power Supply Cable Lug Kit',
-        reason: 'DC Flex Slot Power Supplies selected without mandatory terminal lug cable connection kit.',
-        severity: 'CRITICAL',
-        status: 'GAP_MISSING',
-        suggestedFix: 'HPE DC Power Cable Lug Kit',
-        category: 'Power Infrastructure'
-      };
-      nodes.push(gapNode);
-      gaps.push(gapNode);
-      edges.push({
-        id: 'edge-gap-power-dc-lug',
-        source: 'node-sub-POWER_THERMAL',
-        target: gapNode.id,
-        type: 'DEPENDENCY_GAP',
-        status: 'GAP_MISSING'
-      });
-    }
-
-    // Aspect 5: Missing Dependencies from Evaluator
-    missingDeps.forEach((dep, idx) => {
-      const gapNode = {
-        id: `gap-eval-dep-${idx}`,
-        type: 'GAP_MISSING',
-        subsystem: getSubsystemForSku({ description: dep.name || dep.text || dep }),
-        sku: dep.sku || 'DEPENDENCY-GAP',
-        label: dep.name || dep.text || String(dep),
-        reason: dep.reason || 'Required companion SKU missing from customer quote.',
-        severity: 'CRITICAL',
-        status: 'GAP_MISSING',
-        suggestedFix: dep.suggestedSku || 'Auto-inject mandatory SKU',
-        category: 'Aspect Rule Check'
-      };
-      nodes.push(gapNode);
-      gaps.push(gapNode);
-      edges.push({
-        id: `edge-gap-dep-${idx}`,
-        source: `node-sub-${gapNode.subsystem}`,
-        target: gapNode.id,
-        type: 'DEPENDENCY_GAP',
-        status: 'GAP_MISSING'
-      });
-    });
+    detectTopologyBaselineGaps(evalResults, nodes, edges, gaps);
   }
 
-  // Calculate Subsystem Item Counts
-  SUBSYSTEM_DEFS.forEach(sub => {
-    const hub = nodes.find(n => n.id === `node-sub-${sub.id}`);
-    if (hub) {
-      hub.itemCount = nodes.filter(n => n.subsystem === sub.id && n.type !== 'SUBSYSTEM_HUB').length;
-      hub.hasGaps = nodes.some(n => n.subsystem === sub.id && n.type === 'GAP_MISSING');
-    }
-  });
-
-  const validCount = nodes.filter(n => n.status === 'VALID' && n.type === 'SKU_ITEM').length;
-  const gapCount = gaps.length;
-  const fixCount = fixes.length;
-  const renderLatencyMs = Date.now() - startTime;
-
-  return {
-    rootNode,
-    subProducts,
-    nodes,
-    edges,
-    gaps,
-    fixes,
-    ambiguities,
-    stats: {
-      totalNodes: nodes.length,
-      validCount,
-      gapCount,
-      fixCount,
-      ambiguityCount: ambiguities.length,
-      isBuildable: gapCount === 0 && ambiguities.length === 0,
-      subsystemsCount: SUBSYSTEM_DEFS.length
-    },
-    diagnostics: {
-      renderLatencyMs,
-      productFamily,
-      subProductsCount: subProducts.length,
-      totalSkusMapped: validCount + fixCount,
-      completenessScore: gapCount === 0 ? 100 : Math.max(10, Math.round((validCount / (validCount + gapCount)) * 100)),
-      validationTimestamp: new Date().toISOString()
-    }
-  };
+  return computeTopologyStatsAndDiagnostics(nodes, edges, gaps, fixes, ambiguities, rootNode, subProducts, productFamily, startTime);
 }

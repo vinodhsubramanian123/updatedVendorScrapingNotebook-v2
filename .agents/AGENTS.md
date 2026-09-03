@@ -380,7 +380,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   3. `🔗 Integration & Portfolio Certification` (`tests/integration`, 23 suites): Full BOM verifications, conflict graphs, cross-gen diffs, Excel tallies, and portfolio audits.
   4. `🌐 End-to-End & Browser Workflows` (`tests/e2e`, 3 suites): Headless browser UI workflows, download validations, and live CLIC pipelines.
 - **Fast Default**: `npm test` defaults to `node scripts/maintenance/run_test_matrix.js --tier fast` (130 suites covering unit + chaos + integration), allowing instant iteration without blocking on multi-minute headless browser automation.
-- **Targeted Flags**: Developers and CI can target specific tiers with `npm run test:unit`, `npm run test:chaos`, `npm run test:integration`, `npm run test:e2e`, and `npm run test:portfolio`.
+### INV-58: Monolithic CLI Pipeline Decomposition & RAG Hotspot Modularization Protocol
+- **Pattern**: High-level CLI entry points (`build_catalog.js`, `eval_boq.js`) and catalog search engines (`local_rag_search.js`) tend to accumulate cyclomatic complexity ($CC > 200$), conflating argument parsing, normalization, diffing, RAG querying, and file serialization.
+- **Rule**: All CLI entry points and orchestration tools MUST adhere to single-responsibility stage decomposition with a strict upper bound of $CC \le 10$ for entry `main()` functions:
+  - `build_catalog.js` MUST isolate table expansion, subcategory matching, taxonomy resolution, history price reconciliation, chassis variant injection, and export into discrete lifecycle stages.
+  - `eval_boq.js` MUST isolate argument normalization, BOQ ingestion, aspect pre-checks, RAG validation, report generation, and structured `__EVAL_RESULT_JSON__` serialization into discrete pipeline stages.
+  - `local_rag_search.js` MUST partition multi-dimensional search routines into processor searches, category matching, and chassis variant matching, maintaining orchestrator complexity at $CC \le 15$.
+  - Domain aspect checkers MUST encapsulate literal part numbers into declarative lookup sets at the module header.
+- **Enforcement**: `tests/unit/test_circular_and_complexity.js` enforces automated complexity ceilings on these functions as an automated gate.
 
 ---
 
