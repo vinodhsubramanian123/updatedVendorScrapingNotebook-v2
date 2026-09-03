@@ -280,6 +280,12 @@ The system leverages Google Jules for background code review, test generation, a
     - `local_rag_search.js` and `notebook_query_utils.js` must safely normalize input query parameters to strings before invoking `.toLowerCase()`. Object query payloads (e.g. `{ query: "...", chassis: "..." }`) must be cleanly parsed (`query?.query || query?.text || JSON.stringify(query)`) to prevent `TypeError: (query || "").toLowerCase is not a function`.
     - In `local_rag_search.js`, all keyword term matching via `RegExp` must escape markdown asterisks `**` and special regex characters (`term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`) to prevent `SyntaxError: Invalid regular expression: /\b**\b/i: Nothing to repeat`.
 
+47. **Universal Zero-Hardcoding Generic Domain Template Rules & Capability Protocol (`INV-56`)**:
+    - **Zero Hardcoded SKUs**: Architectural physical rules and capability dependencies MUST NOT be hardcoded to fixed SKU strings. Instead, knowledge is represented generically across three domains: `SERVER`, `STORAGE`, and `NETWORKING` via `scripts/config/generic_domain_rules_matrix.json` and `scripts/lib/catalog/generic_domain_templates.js`.
+    - **Capability & Attribute-Driven Evaluation**: Rules evaluate component roles, attributes (TDP, wattages, core counts, direct drive counts, slot counts), and capability flags (`HIGH_PERFORMANCE_COOLING`, `STORAGE_EXPANDER_OR_SWITCH`, `GPU_AUXILIARY_POWER_AND_TITANIUM_PSU`, `STORAGE_DRIVE_BLANKS`, `MATCHED_FABRIC_TRANSCEIVERS_OR_DACS`, etc.).
+    - **Dynamic Native SKU Resolution**: The engine resolves abstract capabilities to concrete vendor/model SKUs dynamically by searching the active product catalog (`resolveCapabilityToSku(capability, catalog)`), allowing any product generation or vendor (HPE, Dell, Cisco, Lenovo) to automatically benefit from the unified knowledge brain without code modifications.
+
+
 
 
 

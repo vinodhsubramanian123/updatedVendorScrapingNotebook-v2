@@ -114,6 +114,7 @@
     "test:reconciliation_contract": "node tests/chaos/test_multi_cluster_tender_reconciliation_contract.js",
     "test:dual_brain_resilience": "node tests/chaos/test_dual_brain_cyclic_and_scoping_resilience.js",
     "test:strategy_soundness": "node tests/chaos/test_strategy_matrix_soundness_and_capex.js",
+    "test:generic_templates": "node --test tests/unit/test_generic_domain_templates.js",
     "test:circular": "node scripts/maintenance/analyze_circular_deps.js",
     "test:complexity": "node scripts/maintenance/analyze_complexity.js",
     "test:runner": "node --test tests/unit/test_isolated_runner_and_telemetry.js",

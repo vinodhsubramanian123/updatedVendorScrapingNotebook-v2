@@ -17,5 +17,7 @@ module.exports = {
   validator: require('../system/data_validator.js'),
   syncRegistry: require('./sync_registry.js'),
   registry: require('./registry.js'),
-  diagnostics: require('./classification_diagnostics.js')
+  diagnostics: require('./classification_diagnostics.js'),
+  genericTemplates: require('./generic_domain_templates.js')
 };
+

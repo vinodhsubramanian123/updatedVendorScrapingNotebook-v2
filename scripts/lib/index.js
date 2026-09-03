@@ -64,7 +64,8 @@ module.exports = {
     checksumDiff: require('./catalog/checksum_diff.js'),
     skuVersioning: require('./catalog/sku_versioning.js'),
     syncRegistry: require('./catalog/sync_registry.js'),
-    profileLoader: require('./system/profile_loader.js')
+    profileLoader: require('./system/profile_loader.js'),
+    genericTemplates: require('./catalog/generic_domain_templates.js')
   },
 
   // RAG & Multimodal AI Subsystem

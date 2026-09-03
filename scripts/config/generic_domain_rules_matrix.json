@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "description": "Zero-hardcoding generic domain architectural rules matrix across server, storage, and networking platforms",
+  "domains": ["SERVER", "STORAGE", "NETWORKING", "UNIVERSAL"],
+  "rules": [
+    {
+      "id": "GDR-SRV-001",
+      "domain": "SERVER",
+      "aspect": "Compute & Thermal",
+      "name": "High-TDP Processor & Accelerator Cooling Capability",
+      "description": "Processors exceeding standard TDP (>205W) or presence of dense GPU accelerators require high-performance heatsinks and high-performance cooling fans.",
+      "severity": "ERROR",
+      "condition": {
+        "or": [
+          { "field": "attributes.tdpWatts", "operator": ">", "value": 205 },
+          { "field": "capabilities.hasGpuAccelerator", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "HIGH_PERFORMANCE_COOLING",
+      "recommendation": "Inject High-Performance Fan Kit and Performance Heat Sink Kit into server bill of materials."
+    },
+    {
+      "id": "GDR-SRV-002",
+      "domain": "SERVER",
+      "aspect": "Power & Environment",
+      "name": "GPU Accelerator Auxiliary Power & High-Wattage PSU Mandate",
+      "description": "Double-wide or high-wattage PCIe GPU accelerators mandate internal GPU auxiliary power delivery cable kits and high-capacity redundant Titanium power supplies (>=2400W).",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.hasDoubleWideGpu",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "GPU_AUXILIARY_POWER_AND_TITANIUM_PSU",
+      "recommendation": "Include dedicated GPU Auxiliary Power Cable Kit and upgrade power supplies to minimum 5x 2400W Titanium PSUs."
+    },
+    {
+      "id": "GDR-SRV-003",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Storage Controller Port Limit & Expander Requirement",
+      "description": "Standard dedicated storage controllers address up to 8 direct-attach physical drives. Configurations exceeding 8 drives per controller require a SAS Expander or Tri-Mode Switch.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "metrics.drivesPerController",
+        "operator": ">",
+        "value": 8
+      },
+      "requiredCapability": "STORAGE_EXPANDER_OR_SWITCH",
+      "recommendation": "Add a SAS Expander Card or Tri-Mode Switch Card with required internal controller cables."
+    },
+    {
+      "id": "GDR-SRV-004",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Cacheless Storage Controller Parity RAID Write Risk",
+      "description": "Storage controllers lacking dedicated battery-backed write cache operating with parity RAID (RAID 5 or RAID 6) incur severe write latency penalties and potential data integrity risks.",
+      "severity": "WARNING",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasCachelessController", "operator": "==", "value": true },
+          { "field": "capabilities.usesParityRaid", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "STORAGE_CONTROLLER_WRITE_CACHE",
+      "recommendation": "Upgrade to an enterprise storage controller with >=4GB/8GB Flash-Backed Write Cache (FBWC) or deploy RAID 10."
+    },
+    {
+      "id": "GDR-SRV-005",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Disparate Drive Cage Form Factor Mutual Exclusivity",
+      "description": "Incompatible drive cage formats (such as 4SFF and 4EDSFF) cannot be mixed within the same contiguous drive bay zone without dedicated partitioned backplanes.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.hasDisparateCageMixing",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "HOMOGENEOUS_DRIVE_CAGE_SELECTION",
+      "recommendation": "Standardize all drive bays on either SFF or EDSFF form factors to prevent mechanical and signal interference."
+    },
+    {
+      "id": "GDR-SRV-006",
+      "domain": "SERVER",
+      "aspect": "Power & Environment",
+      "name": "Edge Server Compact Power Envelope Enforcement",
+      "description": "Compact edge chassis enforce physical depth and thermal power caps (<=1000W). Standard high-draw enterprise power supplies (>1000W) are physically incompatible.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "chassisProfile", "operator": "==", "value": "EDGE" },
+          { "field": "metrics.maxPsuWattage", "operator": ">", "value": 1000 }
+        ]
+      },
+      "requiredCapability": "COMPACT_EDGE_POWER_SUPPLY",
+      "recommendation": "Replace oversized enterprise power supplies with certified compact <=1000W edge server power supply units."
+    },
+    {
+      "id": "GDR-SRV-007",
+      "domain": "SERVER",
+      "aspect": "Memory & Architecture",
+      "name": "Memory Channel Balanced Population Architecture",
+      "description": "Modern multi-channel memory architectures (8, 12, or 16 channels per socket) require balanced DIMM counts across active channels for maximum memory throughput and lowest latency.",
+      "severity": "WARNING",
+      "condition": {
+        "field": "capabilities.hasUnbalancedMemoryChannels",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "BALANCED_CHANNEL_POPULATION",
+      "recommendation": "Populate DIMMs in multiples matching processor channel count (e.g. 8, 12, or 16 DIMMs per socket) for optimal 1DPC bandwidth."
+    },
+    {
+      "id": "GDR-SRV-008",
+      "domain": "SERVER",
+      "aspect": "PCIe & Expansion",
+      "name": "PCIe Card Population & Auxiliary Riser Power Delivery",
+      "description": "Populating 5 or more PCIe expansion cards across primary and secondary risers mandates dedicated riser power delivery cables to supply supplemental 12V rail power.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "metrics.totalPcieCards",
+        "operator": ">=",
+        "value": 5
+      },
+      "requiredCapability": "RISER_SUPPLEMENTAL_POWER_CABLE",
+      "recommendation": "Inject dedicated Primary/Secondary Riser Power Delivery Cable Kit to supply PCIe slot power."
+    },
+    {
+      "id": "GDR-SRV-009",
+      "domain": "SERVER",
+      "aspect": "Support & Manufacturing",
+      "name": "Physical Core Hypervisor & OS Licensing Multiplier",
+      "description": "Operating system and hypervisor platforms are licensed per physical CPU core. Total licensed cores must equal or exceed server physical core totals.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.hasInsufficientCoreLicenses",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "ADDITIONAL_CORE_LICENSE_PACKS",
+      "recommendation": "Calculate total server cores (cpuCount * coresPerCpu) and add requisite 2-core / 4-core / 16-core license add-on packs."
+    },
+    {
+      "id": "GDR-SRV-010",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Diskless Server Airflow Bypass FIO Kit",
+      "description": "Servers configured with 0 internal drives (boot from SAN or external fabrics) require a No-Drive FIO Enablement Kit to maintain chassis cooling airflow pressure.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "metrics.internalDriveCount", "operator": "==", "value": 0 },
+          { "field": "capabilities.hasInternalStorageController", "operator": "==", "value": false }
+        ]
+      },
+      "requiredCapability": "NO_DRIVE_BLANK_OR_FIO_BYPASS",
+      "recommendation": "Include Factory Integrated No Drive Configuration FIO Kit to pass factory configuration validation."
+    },
+    {
+      "id": "GDR-STG-001",
+      "domain": "STORAGE",
+      "aspect": "Storage Architecture",
+      "name": "Storage Enclosure Unpopulated Drive Bay Airflow Blanks",
+      "description": "Unpopulated storage drive slots require drive blanks to prevent internal air short-circuiting and maintain proper cooling over active drives and controller canisters.",
+      "severity": "WARNING",
+      "condition": {
+        "field": "metrics.unpopulatedBays",
+        "operator": ">",
+        "value": 0
+      },
+      "requiredCapability": "STORAGE_DRIVE_BLANKS",
+      "recommendation": "Order drive blank kits for all unpopulated drive slots in storage enclosures."
+    },
+    {
+      "id": "GDR-STG-002",
+      "domain": "STORAGE",
+      "aspect": "Storage Architecture",
+      "name": "Storage Enclosure Controller Redundancy",
+      "description": "Enterprise storage systems require dual active-active controller modules for high availability and failover.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "metrics.storageControllerCount",
+        "operator": "<",
+        "value": 2
+      },
+      "requiredCapability": "REDUNDANT_STORAGE_CONTROLLER_MODULE",
+      "recommendation": "Ensure dual storage controller nodes are provisioned for failover redundancy."
+    },
+    {
+      "id": "GDR-NET-001",
+      "domain": "NETWORKING",
+      "aspect": "Networking & Fabric",
+      "name": "Fabric Interconnect Uplink Transceiver Complement",
+      "description": "Interconnect modules or top-of-rack switches require matched optical transceivers or DAC cables for each active uplink port.",
+      "severity": "WARNING",
+      "condition": {
+        "field": "capabilities.hasMissingTransceivers",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "MATCHED_FABRIC_TRANSCEIVERS_OR_DACS",
+      "recommendation": "Verify all active optical uplink ports have matching SFP+/SFP28/QSFP28 transceivers or DAC cables."
+    },
+    {
+      "id": "GDR-UNI-001",
+      "domain": "UNIVERSAL",
+      "aspect": "Power & Regulatory",
+      "name": "EU Ecodesign Lot 9 Platinum PSU CE Mark Enablement",
+      "description": "Deploying 94% Platinum power supplies on enterprise dual-socket servers under EU Ecodesign Lot 9 requires a CE Mark Removal FIO Kit for non-EU destinations or an upgrade to 96% Titanium.",
+      "severity": "INFO",
+      "condition": {
+        "field": "capabilities.requiresLot9Enablement",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "REGULATORY_LOT9_CE_REMOVAL_OR_TITANIUM",
+      "recommendation": "Add HPE CE Mark Removal FIO Enablement Kit ($1 list) for global export or upgrade to Titanium PSUs."
+    }
+  ]
+}

@@ -366,7 +366,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Passing complex query objects (e.g. `{ query: "...", chassis: "..." }`) or markdown formatting (`**`) into RAG search causes runtime crashes (`TypeError: (query || "").toLowerCase is not a function`, `SyntaxError: Invalid regular expression: /\b**\b/i: Nothing to repeat`).
 - **Rule**: All knowledge search entry points (`local_rag_search.js`, `notebook_query_utils.js`) MUST safely coerce query inputs to strings (`query?.query || query?.text || JSON.stringify(query)`), and keyword RegExp constructors MUST escape special regex characters (`term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`).
 
+### INV-56: Universal Zero-Hardcoding Generic Domain Template Rules & Capability Protocol
+- **Pattern**: Hardcoding fixed SKU strings into physical aspect checkers and rules creates maintenance debt and fails when encountering new product generations, form factors, or multi-vendor quotes (Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem).
+- **Rule**: Architectural physical constraints, dependencies, and risk checks MUST be defined as zero-hardcoded generic domain templates (`scripts/config/generic_domain_rules_matrix.json`, `scripts/lib/catalog/generic_domain_templates.js`) covering `SERVER`, `STORAGE`, and `NETWORKING` domains.
+  - Evaluation operates strictly on parsed component roles, attributes (TDP, wattages, direct drive counts, slot counts, core counts), and capability tags (`HIGH_PERFORMANCE_COOLING`, `STORAGE_EXPANDER_OR_SWITCH`, `GPU_AUXILIARY_POWER_AND_TITANIUM_PSU`, `STORAGE_DRIVE_BLANKS`, `MATCHED_FABRIC_TRANSCEIVERS_OR_DACS`).
+  - Abstract capabilities resolve to concrete vendor/chassis part numbers dynamically via `resolveCapabilityToSku(capability, catalog)`, allowing cross-generation and cross-vendor catalogs to inherit universal intelligence automatically without code changes.
+
 ---
+
 
 ## History Directory Hygiene Rules
 
