@@ -644,6 +644,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   const lifecycle = evalSupportServices(items, catalogData);
   const lifecycleRecommendations = generateLifecycleRecommendations(items, catalogData);
 
+  // Universal Zero-Hardcoding Generic Domain Template Evaluation (INV-56)
+  let genericDomainAudit = null;
+  try {
+    const genericTemplates = require('../catalog/generic_domain_templates.js');
+    const detectedDomain = chassisInfo.family === 'Alletra' ? 'STORAGE' : (chassisInfo.family === 'Synergy' ? 'NETWORKING' : 'SERVER');
+    genericDomainAudit = genericTemplates.evaluateGenericDomainRules(items, {
+      domain: detectedDomain,
+      catalog: catalogData,
+      chassisProfile: (chassisInfo.model || '').toLowerCase().includes('dl145') ? 'EDGE' : 'ENTERPRISE'
+    });
+  } catch (genErr) {
+    console.warn('[BOQ_EVALUATOR] Generic domain rules evaluation advisory:', genErr.message);
+  }
+
   const errors = [];
   const warnings = [];
   const missingDependencies = [];
@@ -877,7 +891,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     missingDependencies,
     chassisDefaults,
     redundantDefaults,
-    aspectChecks
+    aspectChecks,
+    genericDomainAudit
   };
 
   emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
@@ -926,6 +941,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     evalSummary,
     clusterSizing: evalSummary.clusterSizing,
     aspectChecks,
+    genericDomainAudit,
     conflictGraph: conflictGraphResults
   };
 }

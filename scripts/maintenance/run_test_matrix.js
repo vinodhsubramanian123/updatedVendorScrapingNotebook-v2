@@ -30,8 +30,51 @@ const ROOT_DIR = path.resolve(__dirname, '../../');
 const OUTPUTS_DIR = path.join(ROOT_DIR, 'outputs/history');
 const FAILURE_LEDGER_PATH = path.join(OUTPUTS_DIR, 'test_failure_ledger.json');
 
-// Canonical ordered test suites for deterministic execution
-const ORDERED_TEST_DIRECTORIES = ['tests/unit', 'tests/chaos', 'tests/integration', 'tests/e2e'];
+// Canonical test tiers and their domain descriptions
+const TIER_METADATA = {
+  unit: {
+    id: 'unit',
+    name: 'Unit Tests',
+    dir: 'tests/unit',
+    icon: '📦',
+    description: 'Deterministic physical aspect checks, schemas, parsers, rotator, and preprocessors'
+  },
+  chaos: {
+    id: 'chaos',
+    name: 'Chaos & Fault Injection',
+    dir: 'tests/chaos',
+    icon: '⚡',
+    description: 'Adversarial fuzzing, race conditions, memory stress, mutexes, and crash recovery'
+  },
+  integration: {
+    id: 'integration',
+    name: 'Integration & Portfolio Certification',
+    dir: 'tests/integration',
+    icon: '🔗',
+    description: 'BOM verification, conflict graphs, cross-gen diffs, Excel tallies, and portfolio audits'
+  },
+  e2e: {
+    id: 'e2e',
+    name: 'End-to-End & Browser Workflows',
+    dir: 'tests/e2e',
+    icon: '🌐',
+    description: 'Headless browser UI workflows, download validations, and live CLIC pipelines'
+  }
+};
+
+const ORDERED_TIER_KEYS = ['unit', 'chaos', 'integration', 'e2e'];
+
+/**
+ * Maps a test file path to its canonical tier key.
+ */
+function getTestTier(testFile) {
+  const norm = testFile.replace(/\\/g, '/');
+  if (norm.startsWith('tests/unit/')) return 'unit';
+  if (norm.startsWith('tests/chaos/')) return 'chaos';
+  if (norm.startsWith('tests/integration/') || norm.includes('verify_all.js')) return 'integration';
+  if (norm.startsWith('tests/e2e/')) return 'e2e';
+  return 'other';
+}
 
 /**
  * Parses CLI arguments into structured configuration.
@@ -41,6 +84,7 @@ function parseArgs(args) {
     failedOnly: false,
     isolatedFile: null,
     pattern: null,
+    tier: null,
     bail: false,
     verbose: false,
     timeoutMs: 60000,
@@ -56,6 +100,8 @@ function parseArgs(args) {
       config.isolatedFile = args[++i];
     } else if (arg === '--pattern' || arg === '-p') {
       config.pattern = args[++i];
+    } else if (arg === '--tier' || arg === '-T') {
+      config.tier = (args[++i] || '').toLowerCase();
     } else if (arg === '--bail' || arg === '-b') {
       config.bail = true;
     } else if (arg === '--verbose' || arg === '-v') {
@@ -75,35 +121,62 @@ function parseArgs(args) {
 }
 
 /**
- * Discovers all test files across standard directories recursively.
+ * Discovers test files grouped deterministically by tier.
  */
-function discoverTests(rootDir) {
-  const testFiles = [];
+function discoverTests(rootDir, tierFilter = null) {
+  const tierMap = {
+    unit: [],
+    chaos: [],
+    integration: [],
+    e2e: []
+  };
 
-  function scanDir(dir) {
+  function scanDir(dir, tierKey) {
     if (!fs.existsSync(dir)) return;
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        scanDir(fullPath);
+        scanDir(fullPath, tierKey);
       } else if (entry.isFile() && (entry.name.startsWith('test_') || entry.name.endsWith('.test.js') || entry.name.endsWith('.spec.js')) && entry.name.endsWith('.js')) {
-        testFiles.push(path.relative(rootDir, fullPath));
+        tierMap[tierKey].push(path.relative(rootDir, fullPath).replace(/\\/g, '/'));
       }
     }
   }
 
-  for (const subDir of ORDERED_TEST_DIRECTORIES) {
-    scanDir(path.join(rootDir, subDir));
+  for (const key of ORDERED_TIER_KEYS) {
+    scanDir(path.join(rootDir, TIER_METADATA[key].dir), key);
   }
 
-  // Also include verify_all.js if exists
+  // Also include verify_all.js in integration tier if exists
   const verifyAllPath = 'tests/integration/verify_all.js';
-  if (fs.existsSync(path.join(rootDir, verifyAllPath)) && !testFiles.includes(verifyAllPath)) {
-    testFiles.push(verifyAllPath);
+  if (fs.existsSync(path.join(rootDir, verifyAllPath)) && !tierMap.integration.includes(verifyAllPath)) {
+    tierMap.integration.push(verifyAllPath);
   }
 
-  return testFiles.sort();
+  // Sort within each tier alphabetically for deterministic ordering
+  for (const key of ORDERED_TIER_KEYS) {
+    tierMap[key].sort();
+  }
+
+  // Resolve tier filtering
+  if (tierFilter) {
+    const f = tierFilter.toLowerCase();
+    if (f === 'fast' || f === 'quick') {
+      return [...tierMap.unit, ...tierMap.chaos, ...tierMap.integration];
+    }
+    if (f === 'unit' || f === 'u') return tierMap.unit;
+    if (f === 'chaos' || f === 'c') return tierMap.chaos;
+    if (f === 'integration' || f === 'i') return tierMap.integration;
+    if (f === 'e2e' || f === 'e') return tierMap.e2e;
+  }
+
+  return [
+    ...tierMap.unit,
+    ...tierMap.chaos,
+    ...tierMap.integration,
+    ...tierMap.e2e
+  ];
 }
 
 /**
@@ -272,6 +345,7 @@ Usage:
   node scripts/maintenance/run_test_matrix.js [options]
 
 Options:
+  --tier, -T <name>       Filter by tier: unit, chaos, integration, e2e, fast (or quick)
   --failed-only, -f       Run only test suites that failed in the previous run
   --isolated, -i <file>   Run a single test file in isolation with full verbosity
   --pattern, -p <regex>   Filter tests by regular expression match
@@ -282,7 +356,13 @@ Options:
   --help, -h              Show this help message
 
 NPM Script Equivalents:
-  npm run test:all        Run the entire verified test matrix
+  npm test                Run fast deterministic test tiers (unit + chaos + integration)
+  npm run test:fast       Run fast deterministic test tiers (unit + chaos + integration)
+  npm run test:unit       Run ONLY pure unit tests (aspect math, schemas, parser)
+  npm run test:chaos      Run ONLY chaos & fault injection tests
+  npm run test:integration Run ONLY integration & portfolio certification tests
+  npm run test:e2e        Run ONLY end-to-end browser & live CLIC tests
+  npm run test:all        Run the entire 4-tier verified test matrix
   npm run test:failed     Re-test ONLY previously failing tests
   npm run test:isolated -- tests/unit/test_example.js
 `);
@@ -290,7 +370,7 @@ NPM Script Equivalents:
   }
 
   console.log(`\n================================================================`);
-  console.log(`🧪 ISOLATED TEST MATRIX & FAILURE TELEMETRY HARNESS`);
+  console.log(`🧪 ISOLATED TEST MATRIX & TIERED TELEMETRY HARNESS`);
   console.log(`================================================================\n`);
 
   let targetTests = [];
@@ -316,11 +396,13 @@ NPM Script Equivalents:
     targetTests = failedFiles.filter(f => fs.existsSync(path.join(ROOT_DIR, f)));
     console.log(`🔄 Running in FAILED-ONLY ISOLATION MODE: ${targetTests.length} suite(s) to re-test\n`);
   } else {
-    targetTests = discoverTests(ROOT_DIR);
+    targetTests = discoverTests(ROOT_DIR, config.tier);
     if (config.pattern) {
       const reg = new RegExp(config.pattern, 'i');
       targetTests = targetTests.filter(t => reg.test(t));
       console.log(`🔍 Filtered by pattern "${config.pattern}": ${targetTests.length} suite(s) found\n`);
+    } else if (config.tier) {
+      console.log(`🎯 Filtered by tier "${config.tier.toUpperCase()}": ${targetTests.length} suite(s) found\n`);
     } else {
       console.log(`📁 Discovered ${targetTests.length} test suite(s) across unit, chaos, integration, and e2e tiers\n`);
     }
@@ -328,7 +410,7 @@ NPM Script Equivalents:
 
   if (config.listOnly) {
     console.log('📋 Discovered Test Suites:');
-    targetTests.forEach((t, i) => console.log(`  [${(i + 1).toString().padStart(2)}] ${t}`));
+    targetTests.forEach((t, i) => console.log(`  [${(i + 1).toString().padStart(2)}] [${getTestTier(t).toUpperCase()}] ${t}`));
     process.exit(0);
   }
 
@@ -341,24 +423,54 @@ NPM Script Equivalents:
   const failures = [];
   const overallStart = Date.now();
 
-  console.log(`----------------------------------------------------------------`);
-  console.log(`  #   STATUS   DURATION   TEST SUITE`);
-  console.log(`----------------------------------------------------------------`);
+  const tierStats = {
+    unit: { total: 0, passed: 0, failed: 0, durationMs: 0 },
+    chaos: { total: 0, passed: 0, failed: 0, durationMs: 0 },
+    integration: { total: 0, passed: 0, failed: 0, durationMs: 0 },
+    e2e: { total: 0, passed: 0, failed: 0, durationMs: 0 },
+    other: { total: 0, passed: 0, failed: 0, durationMs: 0 }
+  };
+
+  let currentTier = null;
 
   for (let i = 0; i < targetTests.length; i++) {
     const testFile = targetTests[i];
-    const indexStr = (i + 1).toString().padStart(3);
+    const tier = getTestTier(testFile);
+    const meta = TIER_METADATA[tier];
 
+    // Print tier divider banner when transitioning
+    if (tier !== currentTier && meta) {
+      currentTier = tier;
+      const countInTier = targetTests.filter(t => getTestTier(t) === tier).length;
+      console.log(`\n================================================================`);
+      console.log(`${meta.icon} TIER: ${meta.name.toUpperCase()} (${meta.dir}) — [${countInTier} Suites]`);
+      console.log(`   ${meta.description}`);
+      console.log(`----------------------------------------------------------------`);
+      console.log(`  #   STATUS   DURATION   TEST SUITE`);
+      console.log(`----------------------------------------------------------------`);
+    } else if (tier !== currentTier && !meta) {
+      currentTier = tier;
+      console.log(`\n----------------------------------------------------------------`);
+      console.log(`  #   STATUS   DURATION   TEST SUITE`);
+      console.log(`----------------------------------------------------------------`);
+    }
+
+    const indexStr = (i + 1).toString().padStart(3);
     process.stdout.write(`[${indexStr}]  RUNNING   ...        ${testFile}\r`);
 
     const result = await runSingleTest(testFile, ROOT_DIR, config.timeoutMs, config.verbose);
     results.push(result);
 
+    tierStats[tier].total++;
+    tierStats[tier].durationMs += result.durationMs;
+
     const durStr = `${(result.durationMs / 1000).toFixed(2)}s`.padStart(7);
 
     if (result.pass) {
+      tierStats[tier].passed++;
       console.log(`[${indexStr}]  ✅ PASS   ${durStr}   ${testFile}`);
     } else {
+      tierStats[tier].failed++;
       failures.push(result);
       console.log(`[${indexStr}]  ❌ FAIL   ${durStr}   ${testFile}`);
 
@@ -368,6 +480,7 @@ NPM Script Equivalents:
         console.log(`  │ ⚠️  FAILURE ISOLATION & DIAGNOSTIC TRACE                 │`);
         console.log(`  ├──────────────────────────────────────────────────────────┤`);
         console.log(`  │ Test File: ${testFile}`);
+        console.log(`  │ Tier:      ${tier.toUpperCase()}`);
         console.log(`  │ Exit Code: ${result.exitCode}`);
         console.log(`  │ Duration:  ${result.durationMs}ms`);
         console.log(`  │ Re-run:    node ${testFile}`);
@@ -393,8 +506,21 @@ NPM Script Equivalents:
   const failedCount = failures.length;
 
   console.log(`\n================================================================`);
-  console.log(`📊 TEST MATRIX EXECUTION SUMMARY`);
+  console.log(`📊 TEST MATRIX TIERED EXECUTION SUMMARY`);
   console.log(`================================================================`);
+
+  for (const key of ORDERED_TIER_KEYS) {
+    const st = tierStats[key];
+    if (st.total > 0) {
+      const meta = TIER_METADATA[key];
+      const rate = ((st.passed / st.total) * 100).toFixed(1);
+      const timeStr = `${(st.durationMs / 1000).toFixed(2)}s`.padStart(7);
+      const icon = st.failed === 0 ? '✅' : '❌';
+      console.log(`  ${meta.icon} ${meta.name.padEnd(38)}: ${st.passed}/${st.total} PASSED (${rate}%) ${icon}  ⏱️ ${timeStr}`);
+    }
+  }
+
+  console.log(`----------------------------------------------------------------`);
   console.log(`  Total Suites:   ${results.length}`);
   console.log(`  Passed:         ${passedCount} ✅`);
   console.log(`  Failed:         ${failedCount} ${failedCount > 0 ? '❌' : ''}`);
@@ -405,7 +531,7 @@ NPM Script Equivalents:
   const sortedByTime = [...results].sort((a, b) => b.durationMs - a.durationMs).slice(0, 5);
   console.log(`\n⏱️  Slowest Test Suites:`);
   sortedByTime.forEach(s => {
-    console.log(`  • ${(s.durationMs / 1000).toFixed(2)}s — ${s.testFile}`);
+    console.log(`  • ${(s.durationMs / 1000).toFixed(2)}s — [${getTestTier(s.testFile).toUpperCase()}] ${s.testFile}`);
   });
 
   // Update failure ledger

@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "chassis": "HPE ProLiant DL145 Gen11",
+    "family": "ProLiant",
+    "gen": "Gen11",
+    "scrapeDate": "—",
+    "totalSubcategories": 1,
+    "totalUniqueSKUs": 6,
+    "totalTables": 1,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 6,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "source": "OCA Portal Master Registry Sync",
+    "historySnapshot": "catalog_2026-09-03.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-09-03",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 11700,
+          "minPrice": 1650,
+          "maxPrice": 2250,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 11700,
+              "avgPrice": 1950
+            }
+          },
+          "avgPrice": 1950
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1,
+      "rules": [
+        "Mandatory base chassis selection required for solution build"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "rows": [
+        [
+          "P52532-B21",
+          "HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server",
+          "$1,750.00",
+          "1",
+          "—"
+        ],
+        [
+          "P52533-B21",
+          "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+          "$1,900.00",
+          "1",
+          "—"
+        ],
+        [
+          "P52534-B21",
+          "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
+          "$1,650.00",
+          "1",
+          "—"
+        ],
+        [
+          "P52535-B21",
+          "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
+          "$2,100.00",
+          "1",
+          "—"
+        ],
+        [
+          "P52536-B21",
+          "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
+          "$2,250.00",
+          "1",
+          "—"
+        ],
+        [
+          "P52537-B21",
+          "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
+          "$2,050.00",
+          "1",
+          "—"
+        ]
+      ],
+      "skus": [
+        {
+          "Product #": "P52532-B21",
+          "Description": "HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server",
+          "Unit Price (USD)": "1750.00",
+          "Price (USD)": "1750.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52532-B21",
+          "description": "HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server",
+          "listPrice": 1750,
+          "listPriceFormatted": "$1,750.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $1750.00"
+        },
+        {
+          "Product #": "P52533-B21",
+          "Description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+          "Unit Price (USD)": "1900.00",
+          "Price (USD)": "1900.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52533-B21",
+          "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
+          "listPrice": 1900,
+          "listPriceFormatted": "$1,900.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $1900.00"
+        },
+        {
+          "Product #": "P52534-B21",
+          "Description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
+          "Unit Price (USD)": "1650.00",
+          "Price (USD)": "1650.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52534-B21",
+          "description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
+          "listPrice": 1650,
+          "listPriceFormatted": "$1,650.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $1650.00"
+        },
+        {
+          "Product #": "P52535-B21",
+          "Description": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
+          "Unit Price (USD)": "2100.00",
+          "Price (USD)": "2100.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52535-B21",
+          "description": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
+          "listPrice": 2100,
+          "listPriceFormatted": "$2,100.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $2100.00"
+        },
+        {
+          "Product #": "P52536-B21",
+          "Description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
+          "Unit Price (USD)": "2250.00",
+          "Price (USD)": "2250.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52536-B21",
+          "description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
+          "listPrice": 2250,
+          "listPriceFormatted": "$2,250.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $2250.00"
+        },
+        {
+          "Product #": "P52537-B21",
+          "Description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
+          "Unit Price (USD)": "2050.00",
+          "Price (USD)": "2050.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P52537-B21",
+          "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
+          "listPrice": 2050,
+          "listPriceFormatted": "$2,050.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $2050.00"
+        }
+      ],
+      "skuCount": 6
+    }
+  ]
+}

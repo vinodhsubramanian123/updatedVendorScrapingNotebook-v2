@@ -327,7 +327,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
   // NEW: Agentic AI Cross-Verification (Guardrail Loop)
   // -------------------------------------------------------------
   let stage4GuardrailMs = 0;
-  if (evalResults.confidence && evalResults.confidence.isHitlTriggered) {
+  if (evalResults.confidence && evalResults.confidence.isHitlTriggered && !OFFLINE_MODE) {
     const tGuardrailStart = Date.now();
     if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
     

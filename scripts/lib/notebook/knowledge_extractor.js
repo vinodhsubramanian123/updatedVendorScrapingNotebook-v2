@@ -103,7 +103,29 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     }
 
     // 3. Hardware Dependency Chains (Cables, Triggers, Accessories)
-    const isNegativeOrAdvisory = pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
+    const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
+    const isNegativeOrAdvisory = isSubstitution || pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
+    
+    if (isSubstitution && validSkus.length >= 2) {
+      // Capture substitution knowledge without creating a mutual co-requisite lock
+      const targetSku = validSkus[0];
+      const obsoleteSku = validSkus[1];
+      addDelta({
+        deltaId: `DELTA_RAG_SUBST_${obsoleteSku}_${targetSku}_${Date.now()}`,
+        chassis: chassisName,
+        errorType: 'SKU_SUBSTITUTION',
+        ruleType: 'SKU_SUBSTITUTION',
+        affectedSku: obsoleteSku,
+        requiredDependencySku: targetSku,
+        reasoning: `Grounding Verification: Component ${obsoleteSku} is superseded by ${targetSku} in ${chassisName}.`,
+        rawMessage: unit.slice(0, 300).trim(),
+        scopeTaxonomy: classifyKnowledgeScope(unit),
+        source: 'NOTEBOOKLM_GROUNDING',
+        timestamp: new Date().toISOString()
+      });
+      continue;
+    }
+
     if (!isNegativeOrAdvisory && (pLower.includes('require') || pLower.includes('mandate') || pLower.includes('must configure') || pLower.includes('must be selected'))) {
       if (validSkus.length >= 2) {
         const parentSku = validSkus[0];

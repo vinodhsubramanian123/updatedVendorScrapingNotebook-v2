@@ -285,6 +285,16 @@ The system leverages Google Jules for background code review, test generation, a
     - **Capability & Attribute-Driven Evaluation**: Rules evaluate component roles, attributes (TDP, wattages, core counts, direct drive counts, slot counts), and capability flags (`HIGH_PERFORMANCE_COOLING`, `STORAGE_EXPANDER_OR_SWITCH`, `GPU_AUXILIARY_POWER_AND_TITANIUM_PSU`, `STORAGE_DRIVE_BLANKS`, `MATCHED_FABRIC_TRANSCEIVERS_OR_DACS`, etc.).
     - **Dynamic Native SKU Resolution**: The engine resolves abstract capabilities to concrete vendor/model SKUs dynamically by searching the active product catalog (`resolveCapabilityToSku(capability, catalog)`), allowing any product generation or vendor (HPE, Dell, Cisco, Lenovo) to automatically benefit from the unified knowledge brain without code modifications.
 
+48. **Tiered Test Matrix Architecture & Deterministic Domain Isolation Protocol (`INV-57`)**:
+    - **Tiered Test Organization**: The repository's 130+ test suites are strictly partitioned into 4 deterministic tiers:
+      1. `📦 Unit Tests` (`tests/unit`, 69 suites): Aspect math, memory/power calculations, schemas, parsers, and preprocessors. Fast, deterministic, zero-network.
+      2. `⚡ Chaos & Fault Injection` (`tests/chaos`, 38 suites): Adversarial fuzzing, race conditions, memory stress, mutex locks, and crash recovery.
+      3. `🔗 Integration & Portfolio Certification` (`tests/integration`, 23 suites): Full BOM verifications, conflict graphs, cross-gen diffs, Excel tallies, and portfolio audits.
+      4. `🌐 End-to-End & Browser Workflows` (`tests/e2e`, 3 suites): Headless browser UI workflows, download validations, and live CLIC pipelines.
+    - **Tiered CLI Flags & Fast Default**: `scripts/maintenance/run_test_matrix.js` accepts `--tier` (`unit`, `chaos`, `integration`, `e2e`, `fast`). Standard `npm test` defaults to `--tier fast` (130 suites covering unit + chaos + integration), allowing instant iteration without blocking on multi-minute headless browser automation.
+    - **Visual Tier Banners & Structured Telemetry**: The test runner prints visual tier transition banners and emits a structured per-tier breakdown table (suites, passed, failed, and duration per tier) with failure ledger tracking.
+
+
 
 
 

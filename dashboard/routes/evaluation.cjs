@@ -147,6 +147,7 @@ router.post('/eval-boq', (req, res) => {
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
   const args = [evalScript, targetPath, '--json'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
+  if (process.env.OFFLINE_MODE === '1' || process.env.NODE_ENV === 'test') args.push('--offline');
 
   const proc = spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   // Set activeTask directly via internal reference — taskManager owns the state

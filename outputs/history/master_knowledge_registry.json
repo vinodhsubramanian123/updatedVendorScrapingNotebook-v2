@@ -1,9 +1,9 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-03T19:04:35.354Z",
-  "lastUpdated": "2026-09-03T19:04:35.354Z",
-  "totalLearnedRules": 60,
+  "generatedAt": "2026-09-03T19:48:40.953Z",
+  "lastUpdated": "2026-09-03T19:48:40.953Z",
+  "totalLearnedRules": 61,
   "productFamiliesSynced": [
     "DL145",
     "DL380",
@@ -13,7 +13,7 @@
   ],
   "counts": {
     "universal": 1,
-    "familyGen": 28,
+    "familyGen": 29,
     "chassisSpecific": 31
   },
   "universalRules": [
@@ -296,7 +296,7 @@
     },
     {
       "deltaId": "DELTA-1787939245188",
-      "timestamp": "2026-09-03T18:33:48.108Z",
+      "timestamp": "2026-09-03T19:47:51.093Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -314,7 +314,7 @@
     },
     {
       "deltaId": "DELTA-1787939298644",
-      "timestamp": "2026-09-03T18:33:32.058Z",
+      "timestamp": "2026-09-03T19:47:33.785Z",
       "chassis": "DL380_Gen12",
       "rawMessage": "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -455,6 +455,25 @@
       "source": "NOTEBOOKLM_GROUNDING",
       "timestamp": "2026-09-03T18:45:36.463Z",
       "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA-1788462981839",
+      "traceId": null,
+      "timestamp": "2026-09-03T19:16:21.839Z",
+      "chassis": "DL380_Gen12",
+      "rawMessage": "Agentic rule update",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P10180-B21",
+      "requiredDependencySku": "P51181-B21",
+      "ruleUpdate": "P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21.",
+      "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+      "sourceAgent": "AGENTIC_GUARDRAIL",
+      "guardrailTurn": 9,
+      "preConfidenceScore": null,
+      "scopeTaxonomy": "FAMILY_GEN",
+      "solutionType": "General Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "scope": "FAMILY_GEN"
     },
     {
       "deltaId": "DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION",
@@ -805,20 +824,6 @@
       "solutionType": "DL380 Gen12 CTO Server"
     },
     {
-      "deltaId": "DELTA_RAG_DEP_P76453-B21_P48918-B21_1788459469426",
-      "chassis": "DL380 Gen12",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "ruleType": "DEPENDENCY_CHAIN",
-      "affectedSku": "P76453-B21",
-      "requiredDependencySku": "P48918-B21",
-      "reasoning": "Grounding Verification: Selecting P76453-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
-      "rawMessage": "3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "source": "NOTEBOOKLM_GROUNDING",
-      "timestamp": "2026-09-03T18:17:49.426Z",
-      "solutionType": "DL380 Gen12 CTO Server"
-    },
-    {
       "deltaId": "DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464",
       "chassis": "DL380 Gen12",
       "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -830,6 +835,20 @@
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "source": "NOTEBOOKLM_GROUNDING",
       "timestamp": "2026-09-03T18:45:36.464Z",
+      "solutionType": "DL380 Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182",
+      "chassis": "DL380 Gen12",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "ruleType": "DEPENDENCY_CHAIN",
+      "affectedSku": "P76453-B21",
+      "requiredDependencySku": "P48918-B21",
+      "reasoning": "Grounding Verification: Selecting P76453-B21 requires auxiliary component P48918-B21 to satisfy physical/telemetry routing.",
+      "rawMessage": "3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "source": "NOTEBOOKLM_GROUNDING",
+      "timestamp": "2026-09-03T19:27:45.182Z",
       "solutionType": "DL380 Gen12 CTO Server"
     },
     {

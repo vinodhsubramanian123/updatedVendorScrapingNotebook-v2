@@ -826,6 +826,20 @@
       "constraint": "learned",
       "maxQty": 1,
       "rule": "If P69728-F21 is present, DDR5-6400 is mandatory."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P48918-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "DL380 Gen12 chassis requires DL380 Gen12 Storage Controller Cable Kit (P76453-B21) instead of 1U Gen11 DL360 Storage Controller Enablement Cable Kit (P48918-B21)."
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P10180-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21."
     }
   ]
 }

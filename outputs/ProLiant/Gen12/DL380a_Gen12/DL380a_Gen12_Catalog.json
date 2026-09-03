@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "chassis": "HPE ProLiant DL380a Gen12",
+    "family": "ProLiant",
+    "gen": "Gen12",
+    "scrapeDate": "—",
+    "totalSubcategories": 1,
+    "totalUniqueSKUs": 6,
+    "totalTables": 1,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 6,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "source": "OCA Portal Master Registry Sync",
+    "historySnapshot": "catalog_2026-09-03.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-09-03",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 39374,
+          "minPrice": 5584,
+          "maxPrice": 7450,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 39374,
+              "avgPrice": 6562.333333333333
+            }
+          },
+          "avgPrice": 6562.333333333333
+        }
+      }
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Chassis",
+      "name": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1
+    }
+  ],
+  "entries": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Chassis Standard (Max 1)",
+      "maxQty": 1,
+      "rules": [
+        "Mandatory base chassis selection required for solution build"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "List Price",
+        "Qty",
+        "Start Date"
+      ],
+      "rows": [
+        [
+          "P73282-B21",
+          "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "$5,584.00",
+          "1",
+          "—"
+        ],
+        [
+          "P73283-B21",
+          "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "$5,980.00",
+          "1",
+          "—"
+        ],
+        [
+          "P73284-B21",
+          "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "$6,350.00",
+          "1",
+          "—"
+        ],
+        [
+          "P73285-B21",
+          "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "$6,890.00",
+          "1",
+          "—"
+        ],
+        [
+          "P73286-B21",
+          "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "$7,120.00",
+          "1",
+          "—"
+        ],
+        [
+          "P73287-B21",
+          "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "$7,450.00",
+          "1",
+          "—"
+        ]
+      ],
+      "skus": [
+        {
+          "Product #": "P73282-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "Unit Price (USD)": "5584.00",
+          "Price (USD)": "5584.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73282-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server",
+          "listPrice": 5584,
+          "listPriceFormatted": "$5,584.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $5584.00"
+        },
+        {
+          "Product #": "P73283-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "Unit Price (USD)": "5980.00",
+          "Price (USD)": "5980.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73283-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server",
+          "listPrice": 5980,
+          "listPriceFormatted": "$5,980.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $5980.00"
+        },
+        {
+          "Product #": "P73284-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "Unit Price (USD)": "6350.00",
+          "Price (USD)": "6350.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73284-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server",
+          "listPrice": 6350,
+          "listPriceFormatted": "$6,350.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $6350.00"
+        },
+        {
+          "Product #": "P73285-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "Unit Price (USD)": "6890.00",
+          "Price (USD)": "6890.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73285-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server",
+          "listPrice": 6890,
+          "listPriceFormatted": "$6,890.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $6890.00"
+        },
+        {
+          "Product #": "P73286-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "Unit Price (USD)": "7120.00",
+          "Price (USD)": "7120.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73286-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server",
+          "listPrice": 7120,
+          "listPriceFormatted": "$7,120.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $7120.00"
+        },
+        {
+          "Product #": "P73287-B21",
+          "Description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "Unit Price (USD)": "7450.00",
+          "Price (USD)": "7450.00",
+          "Current Qty": "1",
+          "Option Type": "CTO",
+          "Start Date": "—",
+          "Discontinued Date": "",
+          "Constraint Text": "System Standard (Max 1)",
+          "Subcategory Max Qty": "1",
+          "Component Role": "Base Chassis",
+          "sku": "P73287-B21",
+          "description": "HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
+          "listPrice": 7450,
+          "listPriceFormatted": "$7,450.00",
+          "qty": 1,
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-09-03: $7450.00"
+        }
+      ],
+      "skuCount": 6
+    }
+  ]
+}

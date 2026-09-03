@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
-**Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-09-03T19:48:40.969Z  
-**Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
+**Target Product**: `DL145_Gen11`  
+**Sync Timestamp**: 2026-09-03T19:48:29.566Z  
+**Total Verified SKUs**: `6` (`6` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `61`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 3 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 6 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **3** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **6** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -61,13 +61,28 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 28. **[DELTA-1788462981839] DL380_Gen12**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. *(Affected SKU: P10180-B21)*
 29. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
+## 🎯 3. Chassis & Solution-Type Gotchas (DL145_Gen11)
 
-*No specific gotchas logged for SY100Gb_F32_Module. Baseline chassis layout rules active.*
+1. **[DELTA_DL145_GEN11_AMD_EPYC_8004] DL145_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL145 Gen11 Edge Server`):
+   - **Rule**: DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported.
+   - **Affected SKU**: `P71964-B21` | **Required Dependency**: `N/A` 
+
+2. **[DELTA_DL145_GEN11_4EDSFF_CAGE] DL145_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL145 Gen11 Edge Server`):
+   - **Rule**: DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible.
+   - **Affected SKU**: `P71985-B21` | **Required Dependency**: `P77271-B21` 
+
+3. **[DELTA_DL145_GEN11_PSU_PROFILE] DL145_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL145 Gen11 Edge Server`):
+   - **Rule**: DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible.
+   - **Affected SKU**: `P71964-B21` | **Required Dependency**: `P54290-B21` 
+
+4. **[DELTA_DL145_GEN11_EXTENDED_TEMP] DL145_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL145 Gen11 Edge Server`):
+   - **Rule**: DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking.
+   - **Affected SKU**: `P71964-B21` | **Required Dependency**: `P73021-B21` 
+
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for SY100Gb_F32_Module. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for DL145_Gen11. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

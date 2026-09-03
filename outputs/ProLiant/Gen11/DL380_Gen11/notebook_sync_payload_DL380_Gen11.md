@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `DL380_Gen11`  
-**Sync Timestamp**: 2026-09-03T19:04:29.656Z  
+**Sync Timestamp**: 2026-09-03T19:48:33.687Z  
 **Total Verified SKUs**: `1541` (`504` Hardware + `1037` Services)  
-**Total Synced KnowledgeDeltas**: `60`  
+**Total Synced KnowledgeDeltas**: `61`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -58,7 +58,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 25. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
 26. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380 Gen12**: undefined *(Affected SKU: P01366-B21)*
 27. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380 Gen12**: undefined *(Affected SKU: P74573-B21)*
-28. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
+28. **[DELTA-1788462981839] DL380_Gen12**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. *(Affected SKU: P10180-B21)*
+29. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen11)
 

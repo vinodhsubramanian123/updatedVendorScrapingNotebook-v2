@@ -372,6 +372,16 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   - Evaluation operates strictly on parsed component roles, attributes (TDP, wattages, direct drive counts, slot counts, core counts), and capability tags (`HIGH_PERFORMANCE_COOLING`, `STORAGE_EXPANDER_OR_SWITCH`, `GPU_AUXILIARY_POWER_AND_TITANIUM_PSU`, `STORAGE_DRIVE_BLANKS`, `MATCHED_FABRIC_TRANSCEIVERS_OR_DACS`).
   - Abstract capabilities resolve to concrete vendor/chassis part numbers dynamically via `resolveCapabilityToSku(capability, catalog)`, allowing cross-generation and cross-vendor catalogs to inherit universal intelligence automatically without code changes.
 
+### INV-57: Tiered Test Matrix Architecture & Deterministic Domain Isolation Protocol
+- **Pattern**: Running 130+ test suites in an undifferentiated flat run causes developer friction and blocks quick feedback on unit/chaos suites.
+- **Rule**: Test suites are strictly partitioned into 4 deterministic tiers:
+  1. `📦 Unit Tests` (`tests/unit`, 69 suites): Aspect math, memory/power calculations, schemas, parsers, and preprocessors. Fast, deterministic, zero-network.
+  2. `⚡ Chaos & Fault Injection` (`tests/chaos`, 38 suites): Adversarial fuzzing, race conditions, memory stress, mutex locks, and crash recovery.
+  3. `🔗 Integration & Portfolio Certification` (`tests/integration`, 23 suites): Full BOM verifications, conflict graphs, cross-gen diffs, Excel tallies, and portfolio audits.
+  4. `🌐 End-to-End & Browser Workflows` (`tests/e2e`, 3 suites): Headless browser UI workflows, download validations, and live CLIC pipelines.
+- **Fast Default**: `npm test` defaults to `node scripts/maintenance/run_test_matrix.js --tier fast` (130 suites covering unit + chaos + integration), allowing instant iteration without blocking on multi-minute headless browser automation.
+- **Targeted Flags**: Developers and CI can target specific tiers with `npm run test:unit`, `npm run test:chaos`, `npm run test:integration`, `npm run test:e2e`, and `npm run test:portfolio`.
+
 ---
 
 

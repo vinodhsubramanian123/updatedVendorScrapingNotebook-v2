@@ -1,8 +1,8 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
-**Target Product**: `SY100Gb_F32_Module`  
-**Sync Timestamp**: 2026-09-03T19:48:40.969Z  
-**Total Verified SKUs**: `3` (`3` Hardware + `0` Services)  
+**Target Product**: `DL380a_Gen12`  
+**Sync Timestamp**: 2026-09-03T19:48:38.493Z  
+**Total Verified SKUs**: `6` (`6` Hardware + `0` Services)  
 **Total Synced KnowledgeDeltas**: `61`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -13,9 +13,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 3 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 6 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **3** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **6** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ### 🔍 Key Configuration & Physical Pre-Check Highlights:
 - **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
@@ -61,13 +61,32 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 28. **[DELTA-1788462981839] DL380_Gen12**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. *(Affected SKU: P10180-B21)*
 29. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
+## 🎯 3. Chassis & Solution-Type Gotchas (DL380a_Gen12)
 
-*No specific gotchas logged for SY100Gb_F32_Module. Baseline chassis layout rules active.*
+1. **[DELTA_DL380A_GEN12_CAPTIVE_RISER] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: On DL380a Gen12, replace standard risers P74571-B21/P74573-B21 with captive GPU riser P74685-B21.
+   - **Affected SKU**: `P74571-B21` | **Required Dependency**: `P74685-B21` 
+
+2. **[DELTA_DL380A_GEN12_GPU_KIT_MANDATE] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: Double-wide GPUs on DL380a mandate P75002-B21 (4DW) or P75008-B21 (8DW) GPU enablement kit.
+   - **Affected SKU**: `S0F96A` | **Required Dependency**: `P75008-B21` 
+
+3. **[DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.
+   - **Affected SKU**: `P74710-B21` | **Required Dependency**: `N/A` 
+
+4. **[DELTA_DL380A_GEN12_POWER_SUPPLY_THRESHOLD] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: DL380a Gen12 with double-wide GPUs mandates minimum 5x 2400W Titanium PSUs (P67252-B21).
+   - **Affected SKU**: `P76706-B21` | **Required Dependency**: `P67252-B21` 
+
+5. **[DELTA_DL380A_GEN12_GPU_POWER_CABLE] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: 8DW GPU kit requires dedicated 16-pin GPU auxiliary power cables P83526-B21.
+   - **Affected SKU**: `P75008-B21` | **Required Dependency**: `P83526-B21` 
+
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for SY100Gb_F32_Module. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for DL380a_Gen12. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

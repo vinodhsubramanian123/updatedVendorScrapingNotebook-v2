@@ -31,7 +31,7 @@ async function runTests() {
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
     serverProc = spawn('node', [serverScript], {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT), RAG_TIMEOUT_MS: '20000' }
+      env: { ...process.env, PORT: String(PORT), RAG_TIMEOUT_MS: '5000', OFFLINE_MODE: '1', NODE_ENV: 'test' }
     });
 
     for (let i = 0; i < 20; i++) {

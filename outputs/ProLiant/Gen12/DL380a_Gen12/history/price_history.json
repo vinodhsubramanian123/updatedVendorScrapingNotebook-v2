@@ -1,0 +1,44 @@
+{
+  "P73282-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 5584,
+      "status": "BASELINE"
+    }
+  ],
+  "P73283-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 5980,
+      "status": "BASELINE"
+    }
+  ],
+  "P73284-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 6350,
+      "status": "BASELINE"
+    }
+  ],
+  "P73285-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 6890,
+      "status": "BASELINE"
+    }
+  ],
+  "P73286-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 7120,
+      "status": "BASELINE"
+    }
+  ],
+  "P73287-B21": [
+    {
+      "date": "2026-09-03",
+      "price": 7450,
+      "status": "BASELINE"
+    }
+  ]
+}
