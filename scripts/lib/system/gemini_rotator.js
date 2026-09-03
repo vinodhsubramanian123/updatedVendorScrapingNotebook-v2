@@ -417,7 +417,7 @@ class GeminiKeyRotator {
       });
 
       try {
-        const result = await operationFn({
+        const opPromise = operationFn({
           ai: client,
           apiKey: active.apiKey,
           fingerprint: active.fingerprint,
@@ -425,6 +425,12 @@ class GeminiKeyRotator {
           Type,
           model: options.model || DEFAULT_MODEL
         });
+        const result = options.timeoutMs
+          ? await Promise.race([
+              opPromise,
+              new Promise((_, reject) => setTimeout(() => reject(new Error(`Operation timeout after ${options.timeoutMs}ms`)), options.timeoutMs))
+            ])
+          : await opPromise;
 
         this.markKeySuccess(active.apiKey);
         return result;
@@ -433,7 +439,7 @@ class GeminiKeyRotator {
         const errMessage = err?.message || String(err);
         const status = err?.status || (err?.response ? err.response.status : null);
         const isRotatableKeyError = status === 429 || status === 403 || status === 401 ||
-          /quota|resource_exhausted|rate limit|429|permission_denied|api_key_invalid|unauthenticated/i.test(errMessage);
+          /quota|resource_exhausted|rate limit|429|permission_denied|api_key_invalid|unauthenticated|timeout|timed out|etimedout|econnreset|fetch failed/i.test(errMessage);
 
         if (isRotatableKeyError) {
           logger.warn('GEMINI_ROTATOR', `Rate limit / key access error on key ${active.fingerprint} (status ${status || 'N/A'}): ${errMessage.slice(0, 120)}`);

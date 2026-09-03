@@ -61,6 +61,22 @@
         }
       }
     },
+    "ProLiant_DL380a_Gen12": {
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "modelFamily": "DL380a Gen12",
+      "skus": {
+        "P76706-B21": {
+          "model": "DL380a Gen12 8DW/16SW",
+          "formFactor": "8DW/16SW",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
+          "listPrice": 9850,
+          "optionType": "CTO"
+        }
+      }
+    },
     "ProLiant_Gen11": {
       "family": "ProLiant",
       "gen": "Gen11",
@@ -118,6 +134,22 @@
           "gen": "Gen11",
           "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
           "listPrice": 2050,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "ProLiant_DL145_Gen11": {
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "modelFamily": "DL145 Gen11",
+      "skus": {
+        "P71964-B21": {
+          "model": "DL145 Gen11",
+          "formFactor": "4EDSFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
+          "listPrice": 2375,
           "optionType": "CTO"
         }
       }
@@ -296,6 +328,15 @@
       "listPrice": 7450,
       "optionType": "CTO"
     },
+    "P76706-B21": {
+      "model": "DL380a Gen12 8DW/16SW",
+      "formFactor": "8DW/16SW",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
+      "listPrice": 9850,
+      "optionType": "CTO"
+    },
     "P52532-B21": {
       "model": "DL380 Gen11 8LFF",
       "formFactor": "8LFF",
@@ -348,6 +389,15 @@
       "gen": "Gen11",
       "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
       "listPrice": 2050,
+      "optionType": "CTO"
+    },
+    "P71964-B21": {
+      "model": "DL145 Gen11",
+      "formFactor": "4EDSFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
+      "listPrice": 2375,
       "optionType": "CTO"
     },
     "R0Q35A": {

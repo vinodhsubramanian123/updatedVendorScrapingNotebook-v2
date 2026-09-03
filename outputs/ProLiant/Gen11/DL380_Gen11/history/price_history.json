@@ -6037,5 +6037,12 @@
       "price": 0,
       "status": "ADDED"
     }
+  ],
+  "P71964-B21": [
+    {
+      "date": "2026-08-28",
+      "price": 2375,
+      "status": "ADDED"
+    }
   ]
 }

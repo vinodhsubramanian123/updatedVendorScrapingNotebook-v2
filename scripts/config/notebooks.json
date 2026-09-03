@@ -64,6 +64,26 @@
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-08-22",
       "lastSyncedSourceId": "099bd9d8-ca4c-44e7-bd9c-31090a4efa66"
+    },
+    "DL380a_Gen12": {
+      "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "lastSyncedAt": "2026-09-03T18:00:00.000Z",
+      "lastSyncDeltaCount": 15,
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "lastSyncedSourceName": "dl380a-gen12-configuration-architecture-guide.md",
+      "lastSyncedSourceId": "01ddb8ef-cbd2-41bf-80c1-bbd7373a8b9c"
+    },
+    "DL145_Gen11": {
+      "notebookId": "7a48061a-331a-429b-8477-7e0473491714",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "lastSyncedAt": "2026-09-03T18:00:00.000Z",
+      "lastSyncDeltaCount": 12,
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "lastSyncedSourceName": "PartnerPortal BOM",
+      "lastSyncedSourceId": "60403e5a-7cba-4307-8802-ce38007c3df5"
     }
   }
 }

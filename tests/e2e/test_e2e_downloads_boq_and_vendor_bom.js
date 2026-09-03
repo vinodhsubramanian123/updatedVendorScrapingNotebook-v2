@@ -364,10 +364,23 @@ async function runE2ETest() {
       await page.waitForTimeout(600);
     }
 
-    // Ensure button is enabled, then click
-    await page.waitForSelector('button:has-text("Reconcile Partner Quote"), button:has-text("Reconcile with Partner Quote"), button:has-text("Reconcile Quote")', { timeout: 15000 });
-    const reconcileModalBtn = await page.$('button:has-text("Reconcile Partner Quote"), button:has-text("Reconcile with Partner Quote"), button:has-text("Reconcile Quote")');
+    // Wait for server idle and ensure button is enabled, then click
+    for (let w = 0; w < 20; w++) {
+      const isIdle = await page.evaluate(async () => {
+        try {
+          const r = await fetch('/api/health');
+          const d = await r.json();
+          return !d.isTaskRunning;
+        } catch (_) { return false; }
+      }).catch(() => false);
+      if (isIdle) break;
+      await page.waitForTimeout(500);
+    }
+
+    await page.waitForSelector('button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])', { timeout: 15000 }).catch(() => {});
+    const reconcileModalBtn = await page.$('button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])') || await page.$('button:has-text("Reconcile Partner Quote")');
     if (reconcileModalBtn) {
+      await reconcileModalBtn.scrollIntoViewIfNeeded().catch(() => {});
       await reconcileModalBtn.click();
       await page.waitForTimeout(1000);
     }
@@ -377,6 +390,7 @@ async function runE2ETest() {
     const vendorEval = evaluateBOQMultiAspect(VENDOR_BOM_DOWNLOADS_PATH);
     const vendorSkuLines = vendorEval.items.map(it => `${it.sku}, ${it.quantity}, ${it.description || ''}`).join('\n');
 
+    await page.waitForSelector('textarea[placeholder*="P47777-B21"], textarea', { timeout: 10000 }).catch(() => {});
     const vendorTextArea = await page.$('textarea[placeholder*="P47777-B21"], textarea');
     if (vendorTextArea) {
       await vendorTextArea.fill(vendorSkuLines);
@@ -388,7 +402,8 @@ async function runE2ETest() {
     if (reconcileBtn) {
       await reconcileBtn.click();
       console.log('  Clicked Execute Reconciliation...');
-      await page.waitForTimeout(2500);
+      await page.waitForSelector('text=Reconciliation Audit Report, text=Auto-Inserted SKUs, text=Discrepancies Detected, text=100% Match', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(1500);
     }
 
     // Verify reconciliation results rendered

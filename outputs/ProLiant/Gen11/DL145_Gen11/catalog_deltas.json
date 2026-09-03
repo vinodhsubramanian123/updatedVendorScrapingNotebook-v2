@@ -1,0 +1,58 @@
+[
+  {
+    "deltaId": "DELTA_DL145_GEN11_AMD_EPYC_8004",
+    "timestamp": "2026-09-03T18:30:00.000Z",
+    "chassis": "DL145_Gen11",
+    "rawMessage": "DL145 Gen11 uses AMD EPYC 8004 series compact edge processors (single-socket only). Base chassis P71964-B21 supports 1P configurations with DDR5-4800 memory.",
+    "errorType": "ARCHITECTURE_BASELINE",
+    "ruleType": "PROCESSOR_FAMILY",
+    "affectedSku": "P71964-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL145 Gen11 Edge Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL145_GEN11_4EDSFF_CAGE",
+    "timestamp": "2026-09-03T18:30:00.000Z",
+    "chassis": "DL145_Gen11",
+    "rawMessage": "DL145 Gen11 uses P71985-B21 (4-bay EDSFF E3.S drive cage) as the primary storage carrier. Compatible with E3.S NVMe SSDs like P77271-B21.",
+    "errorType": "STORAGE_ARCHITECTURE",
+    "ruleType": "DRIVE_CAGE_FORMAT",
+    "affectedSku": "P71985-B21",
+    "requiredDependencySku": "P77271-B21",
+    "ruleUpdate": "DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL145 Gen11 Edge Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL145_GEN11_PSU_PROFILE",
+    "timestamp": "2026-09-03T18:30:00.000Z",
+    "chassis": "DL145_Gen11",
+    "rawMessage": "DL145 Gen11 compact 1U edge chassis supports 900W-1000W PSUs. P54290-B21 (HPE 1000W Flex Slot Titanium Hot Plug Power Supply) is the recommended PSU for edge deployments.",
+    "errorType": "POWER_PROFILE",
+    "ruleType": "PSU_WATTAGE_LIMIT",
+    "affectedSku": "P71964-B21",
+    "requiredDependencySku": "P54290-B21",
+    "ruleUpdate": "DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL145 Gen11 Edge Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL145_GEN11_EXTENDED_TEMP",
+    "timestamp": "2026-09-03T18:30:00.000Z",
+    "chassis": "DL145_Gen11",
+    "rawMessage": "DL145 Gen11 supports extended ambient temperature range of -5°C to 45°C for edge/harsh-environment deployments. P73021-B21 (Extended Ambient Temperature Configuration Tracking) tracks this capability.",
+    "errorType": "THERMAL_ENVELOPE",
+    "ruleType": "EXTENDED_AMBIENT_TRACKING",
+    "affectedSku": "P71964-B21",
+    "requiredDependencySku": "P73021-B21",
+    "ruleUpdate": "DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL145 Gen11 Edge Server",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  }
+]

@@ -488,7 +488,11 @@ if (discontinuedRows.length > 0) {
 const catalogJsonPath = path.join(targetDir, `${filePrefix}_Catalog.json`);
 let catalogMeta = {};
 if (fs.existsSync(catalogJsonPath)) {
-  try { catalogMeta = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8')).metadata || {}; } catch (e) { console.warn('Caught suppressed error in generate_xlsx.js:', e); }
+  try {
+    catalogMeta = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8')).metadata || {};
+  } catch (e) {
+    throw new Error(`DataCorruptionError: Failed to parse catalog metadata at ${catalogJsonPath}: ${e.message}`);
+  }
 }
 
 const diffCounts = {

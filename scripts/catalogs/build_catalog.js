@@ -19,6 +19,28 @@ const { validateCatalogData } = require('../lib/system/data_validator.js');
 const PipelineLogger = require('../lib/system/pipeline_logger.js');
 const { ClassificationDiagnostics } = require('../lib/catalog/classification_diagnostics.js');
 
+function getParentCategory(textIdx, mainCatPositions) {
+  let parent = 'Unknown';
+  for (const mc of mainCatPositions) {
+    if (mc.index < textIdx) parent = mc.name;
+    else break;
+  }
+  return parent;
+}
+
+function parseTSVRows(tsvPath) {
+  const fs = require('fs');
+  if (!fs.existsSync(tsvPath)) return [];
+  const lines = fs.readFileSync(tsvPath, 'utf-8').split('\n');
+  const headers = lines[0].split('\t');
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const cells = line.split('\t');
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = cells[i] || ''; });
+    return obj;
+  });
+}
+
 function createCatalogMetadata(family = 'ProLiant', gen = 'Gen12', model = 'DL380_Gen12_SFF') {
   return {
     chassis: model.replace(/_/g, ' '),
@@ -226,19 +248,12 @@ mainCatPositions.sort((a, b) => a.index - b.index);
 console.log(`Discovered ${mainCatPositions.length} active Main Category headers in content area:`);
 mainCatPositions.forEach(mc => console.log(`  • ${mc.name.padEnd(35)} (position ${mc.index})`));
 
-function getParentCategory(textIdx) {
-  let parent = 'Unknown';
-  for (const mc of mainCatPositions) {
-    if (mc.index < textIdx) parent = mc.name;
-    else break;
-  }
-  return parent;
-}
+
 
 // Assign parent categories to subcategories
 let unclassifiedSubcats = 0;
 for (const sc of subcatList) {
-  let parent = getParentCategory(sc.textIndex);
+  let parent = getParentCategory(sc.textIndex, mainCatPositions);
   if (parent === 'Unknown') {
     // Smart fallback: check if sc.name directly matches or contains a known main category
     const directMatch = mainCategories.find(mc =>
@@ -1037,17 +1052,7 @@ const CHASSIS_FF_MAP = {
   'Telco': 'High Power / Telco'
 };
 
-function parseTSVRows(tsvPath) {
-  if (!fs.existsSync(tsvPath)) return [];
-  const lines = fs.readFileSync(tsvPath, 'utf-8').split('\n');
-  const headers = lines[0].split('\t');
-  return lines.slice(1).filter(l => l.trim()).map(line => {
-    const cells = line.split('\t');
-    const obj = {};
-    headers.forEach((h, i) => { obj[h] = cells[i] || ''; });
-    return obj;
-  });
-}
+
 
 // Read from both SKUs TSV and Services TSV to find CTO Base Chassis rows
 const skuTSVRows = parseTSVRows(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`));

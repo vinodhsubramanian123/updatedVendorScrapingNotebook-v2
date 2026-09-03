@@ -6531,5 +6531,13 @@
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
     "status": "ACTIVE"
+  },
+  "P76706-B21": {
+    "productNumber": "P76706-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
   }
 }

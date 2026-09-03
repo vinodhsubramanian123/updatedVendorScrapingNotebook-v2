@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { getTraceId } = require('../system/trace_context.js');
 
 /**
  * Classify a portal error message into TEMPORARY_SUPPLY or PERMANENT_PHYSICAL_DEPENDENCY.
@@ -26,10 +27,38 @@ function classifyPortalError(errorMessage) {
     errorType = 'TEMPORARY_SUPPLY_CONSTRAINT';
   }
 
-  // Extract affected SKU and required SKU using regex
-  const skuMatches = msg.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
-  const affectedSku = skuMatches[0] || 'UNKNOWN_SKU';
-  const requiredSku = skuMatches[1] || null;
+  // Chain of Responsibility Extractors
+  const extractors = [
+    // 1. Strict Regex Extractor
+    (text) => {
+      const matches = text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+      return { affectedSku: matches[0] || null, requiredSku: matches[1] || null };
+    },
+    // 2. Semantic NLP Fallback (using Notebook Extractor logic for inline text)
+    (text) => {
+      let aff = null; let req = null;
+      if (text.toLowerCase().includes('requires') || text.toLowerCase().includes('mandatory')) {
+         const parts = text.split(/(?:requires|mandatory)/i);
+         const affMatch = parts[0].match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/);
+         const reqMatch = parts[1] ? parts[1].match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/) : null;
+         aff = affMatch ? affMatch[1] : null;
+         req = reqMatch ? reqMatch[1] : null;
+      }
+      return { affectedSku: aff, requiredSku: req };
+    }
+  ];
+
+  let affectedSku = 'UNKNOWN_SKU';
+  let requiredSku = null;
+
+  for (const ext of extractors) {
+    const res = ext(msg);
+    if (res.affectedSku && res.affectedSku !== 'UNKNOWN_SKU') {
+      affectedSku = res.affectedSku;
+      requiredSku = res.requiredSku || requiredSku;
+      break; // Match found, stop chain
+    }
+  }
 
   return {
     errorType,
@@ -79,6 +108,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
 
   const delta = {
     deltaId: `DELTA-${Date.now()}`,
+    traceId: getTraceId() !== 'NO_TRACE_CONTEXT' ? getTraceId() : null,
     timestamp: classification.timestamp,
     chassis: path.basename(outputDir),
     rawMessage: classification.rawMessage,

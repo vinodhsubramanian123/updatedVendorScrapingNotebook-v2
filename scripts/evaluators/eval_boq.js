@@ -190,7 +190,13 @@ Examples:
   if (fs.existsSync(catalogPath)) {
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-    } catch (err) { console.warn('Caught suppressed error in eval_boq.js:', err); }
+    } catch (err) {
+      throw new Error(JSON.stringify({
+        error: 'EvaluationError',
+        message: `Failed to parse catalog data at ${catalogPath}: ${err.message}`,
+        traceId: require('../lib/system/trace_context.js').getTraceId()
+      }));
+    }
   }
 
   // G26: Pass chassisDir through to evaluatePhysicalMath → validateConflictGraph

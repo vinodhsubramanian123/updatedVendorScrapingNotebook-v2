@@ -8,6 +8,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { getTraceId } = require('./trace_context.js');
 
 class PipelineLogger {
   /**
@@ -50,7 +51,9 @@ class PipelineLogger {
       details
     };
     this.steps.push(entry);
-    console.log(`[Pipeline ${status}] ${stepName}${details.message ? `: ${details.message}` : ''}`);
+    const trc = getTraceId();
+    const trcPrefix = trc !== 'NO_TRACE_CONTEXT' ? `[${trc}] ` : '';
+    console.log(`${trcPrefix}[Pipeline ${status}] ${stepName}${details.message ? `: ${details.message}` : ''}`);
   }
 
   /**
@@ -78,7 +81,9 @@ class PipelineLogger {
    */
   logWarning(msg) {
     this.warnings.push({ timestamp: new Date().toISOString(), message: msg });
-    console.warn(`[Pipeline WARNING] ${msg}`);
+    const trc = getTraceId();
+    const trcPrefix = trc !== 'NO_TRACE_CONTEXT' ? `[${trc}] ` : '';
+    console.warn(`${trcPrefix}[Pipeline WARNING] ${msg}`);
   }
 
   /**
@@ -87,7 +92,9 @@ class PipelineLogger {
    */
   logError(msg) {
     this.errors.push({ timestamp: new Date().toISOString(), message: msg });
-    console.error(`[Pipeline ERROR] ${msg}`);
+    const trc = getTraceId();
+    const trcPrefix = trc !== 'NO_TRACE_CONTEXT' ? `[${trc}] ` : '';
+    console.error(`${trcPrefix}[Pipeline ERROR] ${msg}`);
   }
 
   /**

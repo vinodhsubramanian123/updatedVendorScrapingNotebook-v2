@@ -214,12 +214,12 @@ The engine is structured into decoupled domain namespaces exported via [`scripts
 
 | Subsystem | Modules | Core Responsibilities |
 |---|---|---|
-| **`system`** | `telemetry`, `fsCompat`, `progress`, `logger`, `profileLoader`, `geminiRotator`, `dataValidator`, `errorEnvelope`, `zodSchemas` | Atomic I/O with rollback (`safeWriteJsonAtomic`), progress streaming, structured logging, profile loading, FIFO Gemini API key rotation & daily quota management, schema validation, standardized error envelopes |
+| **`system`** | `telemetry`, `fsCompat`, `progress`, `logger`, `traceContext`, `profileLoader`, `geminiRotator`, `dataValidator`, `errorEnvelope`, `zodSchemas` | Atomic I/O with rollback (`safeWriteJsonAtomic`), progress streaming, structured logging, `PipelineTraceContext` (AsyncLocalStorage), FIFO Gemini API key rotation, schema validation, standardized error envelopes |
 | **`boq`** | `evaluator`, `preprocessor`, `parser`, `conflictGraph`, `budgetOptimizer`, `vendorBomVerifier`, `xlsxExporter` | 7-aspect physical math, N-way configuration diffing, shared SKU line parsing (`boq_parser.js`), 5-tier strategy matrix |
 | **`catalog`** | `rules`, `discovery`, `formatter`, `diff`, `productMeta`, `sku`, `registry`, `validator`, `checksumDiff`, `skuVersioning`, `syncRegistry` | 5-level catalog rules, auto-chassis detection, schema validation (`data_validator.js`), SKU regex, price diff audit |
 | **`rag` & `notebook`** | `ocrService`, `knowledgeSync`, `notebookQuery`, `localSearch`, `postFlowSync`, `geminiRotator`, `querySanitizer`, `knowledgeExtractor`, `jobManager`, `queryDiagnostics` | Multimodal Gemini Vision OCR (with 25MB limits), bi-directional NotebookLM sync, dual-layer local fallback search, NLP query sanitization, closed-loop KnowledgeDelta extraction, async job management |
 | **`preprocessor`** | `boqPreprocessor`, `ctoNormalizer`, `variationClusterer`, `feedbackPersister` | Multi-unit CTO multiplier extraction, variation clustering, and atomic feedback persistence |
-| **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning & HITL queue |
+| **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning (via CoR Extractor) & HITL queue |
 
 ## 6. Visual BOQ Configuration Topology & Mindmap Engine
 The frontend incorporates a decoupled, high-density SVG visualizer located in [`dashboard/src/components/topology/`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/topology/) driven by the [`topologyGraphBuilder.js`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/services/topologyGraphBuilder.js) pure service.

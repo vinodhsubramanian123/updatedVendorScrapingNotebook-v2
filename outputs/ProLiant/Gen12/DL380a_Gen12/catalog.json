@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "productName": "HPE ProLiant Compute DL380a Gen12",
+    "modelIdentifier": "DL380a_Gen12",
+    "family": "ProLiant",
+    "gen": "Gen12",
+    "baseSku": "P76706-B21",
+    "baseDescription": "HPE ProLiant Compute DL380a Gen12 8DW/16SW NC CTO Server",
+    "formFactor": "2U Rack / GPU-Optimized",
+    "scrapeDate": "2026-09-03",
+    "scrapeTimestamp": "2026-09-03T18:30:00.000Z",
+    "source": "NotebookLM Learnings + PartnerPortal Architecture Guide",
+    "totalUniqueSKUs": 12,
+    "totalEntries": 6,
+    "catalogVersion": "1.0.0-learnings"
+  },
+  "categories": {
+    "Chassis": [
+      { "sku": "P76706-B21", "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW NC CTO Server", "listPrice": 9850, "category": "Chassis", "optionType": "CTO" }
+    ],
+    "GPU Enablement": [
+      { "sku": "P75002-B21", "description": "HPE DL380a Gen12 4 Double-Wide FIO GPU Kit", "listPrice": 0, "category": "GPU Enablement", "optionType": "FIO" },
+      { "sku": "P75008-B21", "description": "HPE DL380a Gen12 8 Double-Wide FIO GPU Kit", "listPrice": 0, "category": "GPU Enablement", "optionType": "FIO" }
+    ],
+    "PCIe Risers": [
+      { "sku": "P74685-B21", "description": "HPE DL380a Gen12 Captive GPU Riser Kit", "listPrice": 0, "category": "PCIe Risers", "optionType": "FIO" }
+    ],
+    "Storage": [
+      { "sku": "P74710-B21", "description": "HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit", "listPrice": 0, "category": "Storage", "optionType": "FIO" },
+      { "sku": "P74712-B21", "description": "HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit", "listPrice": 0, "category": "Storage", "optionType": "FIO" }
+    ],
+    "Power Supplies": [
+      { "sku": "P67252-B21", "description": "HPE 2400W Flex Slot Titanium Hot Plug Power Supply", "listPrice": 799, "category": "Power Supplies", "optionType": "FIO" }
+    ],
+    "GPU Power Cables": [
+      { "sku": "P83526-B21", "description": "HPE DL380a Gen12 GPU 16-Pin Auxiliary Power Cable Kit", "listPrice": 0, "category": "GPU Power Cables", "optionType": "FIO" }
+    ],
+    "Management Software": [
+      { "sku": "R7A11AAE", "description": "HPE Compute Ops Management Standard 3yr Upfront SaaS", "listPrice": 450, "category": "Management Software", "optionType": "SaaS" }
+    ]
+  }
+}

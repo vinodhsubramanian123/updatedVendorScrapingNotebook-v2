@@ -118,6 +118,462 @@ function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
  * @param {string} [targetDir=''] - Output folder for catalog rules
  * @returns {object} Evaluation results
  */
+
+function validateNetworkingRules(ctx) {
+  const { network, serverCount, errors, mathDeductions, warnings, missingDependencies } = ctx;
+  const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
+  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
+
+  if (isExceedingOcp) {
+    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} OCP slot(s) across ${serverCount} server(s).`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (network.hasConflictingOcpCables) {
+    const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (P51911-B21) and CPU2/OCP2 Enablement Kit (P48830-B21) cannot be selected together. Unselect P51911-B21 on dual-CPU DL380 servers.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (network.isMissing32GbTransceivers) {
+    const reason = `SAN Networking Math: 32Gb Fibre Channel HBAs (${network.fcHbaPortCount32Gb} ports) require 32Gb SFP28/SFP+ optical transceivers. Found ${network.transceiverCount32Gb}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_32GB_TRANSCEIVER',
+      rule: 'Fibre Channel Optical Transceiver Requirement',
+      sku: 'AJ718A',
+      description: 'HPE 32Gb Short Wave B-Series SFP+ Transceiver',
+      quantity: Math.max(0, network.fcHbaPortCount32Gb - network.transceiverCount32Gb),
+      reasoning: reason
+    });
+  }
+  if (network.isMissing64GbTransceivers) {
+    const reason = `SAN Networking Math: 64Gb Fibre Channel HBAs (${network.fcHbaPortCount64Gb} ports) require 64Gb optical transceivers. Found ${network.transceiverCount64Gb}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_64GB_TRANSCEIVER',
+      rule: '64Gb Fibre Channel Optical Transceiver Requirement',
+      sku: 'R7W32A',
+      description: 'HPE 64Gb Short Wave SFP56 Transceiver',
+      quantity: Math.max(0, network.fcHbaPortCount64Gb - network.transceiverCount64Gb),
+      reasoning: reason
+    });
+  }
+  if (network.isMissingOpticalPatchCables) {
+    const reason = `SAN Cabling Advisory: Active optical transceivers (${network.activeOpticalTransceiverCount}) require corresponding OM4 LC-LC fiber optic patch cables. Found ${network.opticalPatchCableCount}.`;
+    warnings.push(reason);
+  }
+  if (network.hasSanSinglePointOfFailure) {
+    const reason = `SAN High-Availability Advisory: Single SAN switch configured with Fibre Channel HBAs. Dual redundant SAN fabrics recommended to eliminate Single Point of Failure (SPOF).`;
+    warnings.push(reason);
+  }
+  if (network.hasSynergyFabricMismatch) {
+    network.synergyFabricErrors.forEach(err => {
+      errors.push(err);
+      mathDeductions.push(err);
+    });
+  }
+}
+
+function validatePCIeRules(ctx) {
+  const { pcie, serverCount, compute, errors, mathDeductions, warnings, missingDependencies } = ctx;
+  const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
+  const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
+  const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
+  const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
+
+  if (isExceedingActivePcie) {
+    const reason = `PCIe Active Slot Math Failed (CLIC Rule 81016755 / 81354683): ${pcie.requiredPcieCards} cards exceeds ${activePcieSlotsClusterMax} electrically active slots across ${serverCount} server(s). Slot 1 and/or Slot 4 require Riser Cable Kits to be enabled.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  } else if (isExceedingPcie) {
+    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} total mechanical slots across ${serverCount} server(s).`;
+    warnings.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (pcie.needsPrimaryCableKit) {
+    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (P56073-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'PRIMARY_RISER_CABLE_KIT',
+      rule: 'CLIC Rule 81356091: Primary 3x16 Riser Cable Enablement',
+      sku: 'P56073-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (pcie.needsSecondaryCableKit) {
+    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (P56074-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SECONDARY_RISER_CABLE_KIT',
+      rule: 'CLIC Rule 81170920: Secondary 3x16 Riser Cable Enablement',
+      sku: 'P56074-B21',
+      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  const cpusPerServer = compute.cpuCount / serverCount;
+  if ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) {
+    const reason = `Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket. Only ${cpusPerServer} CPU(s) per node found.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+}
+
+function validateThermalRules(ctx) {
+  const { compute, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
+  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) {
+    const reason = pcie.gpuCount > 0 
+      ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (P48820-B21) for adequate cooling envelope.`
+      : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
+    if (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS) errors.push(reason);
+    else warnings.push(reason);
+    mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'HIGH_PERF_FAN_KIT',
+      rule: 'High TDP Thermal Cooling Rule',
+      sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
+      description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (compute.fanKitExceedsMax) {
+    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+}
+
+function validateStorageRules(ctx) {
+  const { storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (storage.driveCount === 0 && !storage.hasNoDriveKit) {
+    const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
+    warnings.push(reason);
+    mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'NO_DRIVE_FIO_KIT',
+      rule: 'Drive-less Chassis Configuration Rule',
+      sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
+      description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (storage.hasIncompatibleYCable) {
+    const reason = `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) requires PCIe-type RAID controller (MR416i-p/SR932i-p) and Premium Cage (P48814-B21). Not compatible with OCP storage controllers or standard cages. Remove P48832-B21 and use P48918-B21.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (storage.hasStorageController && !storage.hasSmartBattery) {
+    const reason = `Storage Math Failed: Storage controller requires Smart Storage Battery to protect write cache.`;
+    warnings.push(reason);
+    mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'SMART_STORAGE_BATTERY',
+      rule: 'Controller Cache Protection Rule',
+      sku: mandatorySkus.SMART_STORAGE_BATTERY.sku,
+      description: mandatorySkus.SMART_STORAGE_BATTERY.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (storage.needsCapacitorCable) {
+    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery requires Storage Controller Enablement Cable Kit (P48918-B21) to connect power to the controller.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'STORAGE_CONTROLLER_ENABLEMENT_CABLE',
+      rule: 'CLIC Rule 81354652: Capacitor Power Link Requirement',
+      sku: 'P48918-B21',
+      description: 'HPE ProLiant Storage Controller Enablement Cable Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (storage.needsSasExpander) {
+    const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SAS_EXPANDER_CARD',
+      rule: 'Storage Expander & Multi-Drive Channel Rule',
+      sku: 'P48835-B21',
+      description: 'HPE ProLiant DL380 Gen11 24SFF SAS Expander Card Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+}
+
+function validatePowerRules(ctx) {
+  const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items } = ctx;
+  if (power.hasDcPowerSupply && !power.hasDcLugKit) {
+    const reason = `Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'DC_LUG_KIT',
+      rule: 'DC Power Supply Cable Rule',
+      sku: mandatorySkus.DC_LUG_KIT.sku,
+      description: mandatorySkus.DC_LUG_KIT.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  const psuPerServer = power.psuCount / serverCount;
+  if (psuPerServer === 1) {
+    const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'POWER_SUPPLY_REDUNDANCY',
+      rule: 'Power Supply N+1 Redundancy Rule',
+      sku: 'P38997-B21',
+      description: 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (pcie.needsGpuPowerCableKit) {
+    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'GPU_AUX_POWER_CABLE_KIT',
+      rule: 'GPU Accelerator Auxiliary Power Rule',
+      sku: 'P48816-B21',
+      description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
+      quantity: (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
+      reasoning: reason
+    });
+  }
+
+  let h100Count = 0;
+  for (const it of items) {
+    if (it.description && (it.description.toLowerCase().includes('h100') || it.sku === 'S0E21A')) {
+      h100Count += (it.quantity || 1);
+    }
+  }
+
+  if ((pcie.gpuCount >= 4 || h100Count >= 2) && !power.hasTitaniumPsu) {
+    const reason = `INV-27: Multi-GPU Thermal Envelope: 4x+ GPUs or dual high-end GPUs mandate dual 1800W/2200W Titanium PSUs (P44712-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'TITANIUM_PSU_MULTI_GPU',
+      rule: 'Multi-GPU Titanium PSU Mandate (INV-27)',
+      sku: 'P44712-B21',
+      description: '1800W-2200W Titanium Power Supply Kit',
+      quantity: 2 * serverCount,
+      reasoning: reason
+    });
+  }
+  
+  if (power.hasSynergyRedundantPowerError) {
+    const reason = `Synergy 12000 Frame Power Error: Synergy frame requires exactly 6x 2650W Titanium Power Supplies for redundant power envelope. Found ${power.synergyTitanium2650wCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (power.needsHighLine220v) {
+    const reason = `Power Derating Advisory: Estimated node power draw (${power.estimatedNodeWattage}W) requires 200V-240V high-line utility circuits to prevent single-PSU derating on ${power.maxPsuWattage}W power supplies.`;
+    warnings.push(reason);
+  }
+
+  if (power.needsCeRemovalKit) {
+    const reason = `EU Lot 9 Compliance Advisory: High-draw configuration with Platinum PSUs requires 96% Titanium PSUs (P44712-B21) or CE Mark Removal FIO Enablement Kit (P35876-B21) for non-EU deployment.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'CE_MARK_REMOVAL_KIT',
+      rule: 'EU Lot 9 / CE Mark Regulatory Enablement Rule',
+      sku: 'P35876-B21',
+      description: 'HPE CE Mark Removal FIO Enablement Kit',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+}
+
+function validateSupportRules(ctx) {
+  const { support, serverCount, warnings, missingDependencies } = ctx;
+  if (support.needsAdditionalWindowsCores) {
+    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
+    warnings.push(reason);
+  }
+
+  if (support.needsAdditionalVmwareCores) {
+    const reason = `VMware Licensing Math: Configuration requires ${support.requiredVmwareCores} licensed cores (16 cores/socket minimum) but only ${support.vmwareLicensedCores} cores are licensed. Requires ${support.missingVmwareCores} additional VMware core licenses.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'VMWARE_CORE_LICENSES',
+      rule: 'VMware Core Licensing Minimums & Per-Core Multipliers',
+      sku: 'VMW-VCF-CORE',
+      description: 'VMware Cloud Foundation / vSphere Per-Core Subscription License',
+      quantity: support.missingVmwareCores,
+      reasoning: reason
+    });
+  }
+
+  if (support.needsAdditionalLinuxSubscriptions) {
+    const reason = `Linux OS Licensing Math: Server has ${support.detectedCpuSockets} socket(s) requiring ${support.requiredLinuxSubscriptions} 1-2 socket subscription(s). Found ${support.linuxSubscriptions}.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'LINUX_OS_SUBSCRIPTIONS',
+      rule: 'Red Hat Enterprise Linux / SLES 1-2 Socket Subscription Sizing',
+      sku: 'RHEL-2S-SUB',
+      description: 'Red Hat Enterprise Linux Server 1-2 Socket Standard Subscription',
+      quantity: support.missingLinuxSubscriptions,
+      reasoning: reason
+    });
+  }
+
+  if (support.unsolicitedOptionalItems && support.unsolicitedOptionalItems.length > 0) {
+    support.unsolicitedOptionalItems.forEach(item => {
+      const adv = `Unsolicited Optional Service / Software (INV-32): SKU ${item.sku} (${item.description}) detected (${item.extendedPriceUsd || 0}). Optional startup service or add-on software was not explicitly requested by customer.`;
+      warnings.push(adv);
+    });
+  }
+}
+
+function validateBaseChassisRules(ctx) {
+  const { items, storage, support, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
+  const hasBaseChassis = items.some(it => {
+    const clean = cleanBaseSKU(it.sku);
+    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
+  });
+  const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
+  const hasDriveCageKit = storage.hasDriveCage || items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21' || cleanBaseSKU(it.sku) === 'P48813-B21');
+
+  if (hasBaseChassis && storage.driveCount === 0 && !hasNoDriveFioKit && !hasDriveCageKit) {
+    const reason = `CLIC Rule 81392308: Chassis ${chassisInfo.baseSku || 'CTO'} without drives requires ${mandatorySkus.NO_DRIVE_FIO_KIT.sku} FIO Kit.`;
+    mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'CLIC_NO_DRIVE_FIO',
+      rule: 'CLIC Rule 81392308: Front Cage / No Drive FIO Requirement',
+      sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
+      description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
+      quantity: serverCount,
+      reason: `UNBUILDABLE CONFIGURATION (Rule 81392308): Base chassis ordered without drives requires FIO Kit or an explicit Front Drive Cage Kit.`,
+      reasoning: reason
+    });
+  }
+
+  if (hasBaseChassis && !support.hasManagementLicense) {
+    const reason = `CLIC Rule 81322276: CTO Chassis (${chassisInfo.baseSku || 'CTO'}) requires at least 1 Cloud Ops Management (COM) or OneView license per server (Base: R7A11AAE / E5Y43A).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'MANAGEMENT_LICENSE_COM',
+      rule: 'CLIC Rule 81322276: Mandatory CTO Management License',
+      sku: 'R7A11AAE',
+      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+}
+
+function validateAlletraRules(ctx) {
+  const { storage, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (storage.hasMissingControllerNode) {
+    const reason = `Alletra Architecture Error: Alletra storage array requires dual (2x) controller nodes for active-active high-availability. Found ${storage.controllerNodeCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (storage.hasAsymmetricHbas) {
+    const reason = `Alletra HBA Symmetry Warning: Host Bus Adapters must be symmetrically configured across dual controller nodes (${storage.hbaCount} HBAs found, even count required).`;
+    warnings.push(reason);
+  }
+  if (storage.missingDaisyChainCables > 0) {
+    const reason = `Alletra Cabling Requirement: Expansion shelves require 2x SAS daisy-chain cables per shelf (${storage.expansionShelfCount * 2} cables needed, found ${storage.sasDaisyChainCableCount}).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'SAS_DAISY_CHAIN_CABLE',
+      rule: 'Alletra Expansion Shelf Daisy-Chain Cabling',
+      sku: 'P40243-B21',
+      description: 'HPE SAS Mini-HD to Mini-HD Cable',
+      quantity: storage.missingDaisyChainCables,
+      reasoning: reason
+    });
+  }
+  if (storage.insufficientRaid6Drives) {
+    const reason = `Alletra RAID 6 Constraint: RAID 6 disk groups require a minimum of 6 SSDs. Found ${storage.ssdCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (storage.insufficientRaid10Drives) {
+    const reason = `Alletra RAID 10 Constraint: RAID 10 disk groups require a minimum of 4 SSDs. Found ${storage.ssdCount}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+}
+
+function validateStoreEverRules(ctx) {
+  const { storage, warnings, missingDependencies } = ctx;
+  if (storage.needsMiniSasHdCable) {
+    const reason = `StoreEver SAS Cabling Math: ${storage.ltoSasDriveCount} SAS LTO tape drive(s) require external Mini-SAS HD cables.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'MINI_SAS_HD_CABLE',
+      rule: 'StoreEver LTO SAS Drive Host Cabling',
+      sku: '716189-B21',
+      description: 'HPE 2.0m External Mini-SAS High Density to Mini-SAS HD Cable',
+      quantity: storage.ltoSasDriveCount,
+      reasoning: reason
+    });
+  }
+  if (storage.needsFcTransceiver) {
+    const reason = `StoreEver FC Transceiver Math: ${storage.ltoFcDriveCount} Fibre Channel LTO tape drive(s) require 8Gb/16Gb optical transceivers.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'FC_OPTICAL_TRANSCEIVER_TAPE',
+      rule: 'StoreEver LTO FC Drive Optical Transceiver',
+      sku: 'AJ716B',
+      description: 'HPE 8Gb Short Wave B-Series Fibre Channel 1 Pack SFP+ Transceiver',
+      quantity: storage.ltoFcDriveCount,
+      reasoning: reason
+    });
+  }
+  if (storage.exceedsSlotCapacity) {
+    const reason = `StoreEver Capacity Advisory: ${storage.dataCartridgeCount} data cartridges exceeds total library capacity (${storage.totalMsl3040Slots} slots).`;
+    warnings.push(reason);
+  }
+}
+
+function validateMemoryRules(ctx) {
+  const { memory, compute, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (memory.hasBtoMemoryInCto) {
+    memory.btoMemoryViolations.forEach(v => {
+      errors.push(v.reason);
+      mathDeductions.push(v.reason);
+      missingDependencies.push({
+        key: `FIO_MEMORY_${v.fioSku}`,
+        rule: 'CLIC Option Type Constraint: FIO Memory Required in CTO Base Model',
+        sku: v.fioSku,
+        description: `HPE Factory Integrated Option (FIO) Replacement for ${v.btoSku}`,
+        quantity: v.quantity,
+        reason: v.reason,
+        reasoning: v.reason
+      });
+    });
+  }
+
+  if (memory.memoryCount > 0 && !memory.isBalancedChannel) {
+    const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`;
+    warnings.push(reason);
+    mathDeductions.push(reason);
+  }
+}
+
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   if (!items || !Array.isArray(items) || items.length === 0) {
     const reason = 'Empty BOQ: No SKUs or line items detected.';
@@ -243,465 +699,32 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   }
 
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
-  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
   const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
   const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
+  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
   const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
   const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
   const psuPerServer = power.psuCount / serverCount;
-
-  // Rule: OCP Slot Capacity Math
-  if (isExceedingOcp) {
-    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} OCP slot(s) across ${serverCount} server(s).`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // CLIC Rule 81355854: Mutual Exclusivity between CPU1 to OCP2 and CPU2 to OCP2 enablement cables
-  if (network.hasConflictingOcpCables) {
-    const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (P51911-B21) and CPU2/OCP2 Enablement Kit (P48830-B21) cannot be selected together. Unselect P51911-B21 on dual-CPU DL380 servers.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // SAN & Fibre Channel Transceiver Math (Gap 2.4)
-  if (network.isMissing32GbTransceivers) {
-    const reason = `SAN Networking Math: 32Gb Fibre Channel HBAs (${network.fcHbaPortCount32Gb} ports) require 32Gb SFP28/SFP+ optical transceivers. Found ${network.transceiverCount32Gb}.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'FC_32GB_TRANSCEIVER',
-      rule: 'Fibre Channel Optical Transceiver Requirement',
-      sku: 'AJ718A',
-      description: 'HPE 32Gb Short Wave B-Series SFP+ Transceiver',
-      quantity: Math.max(0, network.fcHbaPortCount32Gb - network.transceiverCount32Gb),
-      reasoning: reason
-    });
-  }
-  if (network.isMissing64GbTransceivers) {
-    const reason = `SAN Networking Math: 64Gb Fibre Channel HBAs (${network.fcHbaPortCount64Gb} ports) require 64Gb optical transceivers. Found ${network.transceiverCount64Gb}.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'FC_64GB_TRANSCEIVER',
-      rule: '64Gb Fibre Channel Optical Transceiver Requirement',
-      sku: 'R7W32A',
-      description: 'HPE 64Gb Short Wave SFP56 Transceiver',
-      quantity: Math.max(0, network.fcHbaPortCount64Gb - network.transceiverCount64Gb),
-      reasoning: reason
-    });
-  }
-  if (network.isMissingOpticalPatchCables) {
-    const reason = `SAN Cabling Advisory: Active optical transceivers (${network.activeOpticalTransceiverCount}) require corresponding OM4 LC-LC fiber optic patch cables. Found ${network.opticalPatchCableCount}.`;
-    warnings.push(reason);
-  }
-  if (network.hasSanSinglePointOfFailure) {
-    const reason = `SAN High-Availability Advisory: Single SAN switch configured with Fibre Channel HBAs. Dual redundant SAN fabrics recommended to eliminate Single Point of Failure (SPOF).`;
-    warnings.push(reason);
-  }
-  if (network.hasSynergyFabricMismatch) {
-    network.synergyFabricErrors.forEach(err => {
-      errors.push(err);
-      mathDeductions.push(err);
-    });
-  }
-
-  // Rule: PCIe Slot Capacity vs Active Riser Math (CLIC Rules 81016755 & 81354683)
-  if (isExceedingActivePcie) {
-    const reason = `PCIe Active Slot Math Failed (CLIC Rule 81016755 / 81354683): ${pcie.requiredPcieCards} cards exceeds ${activePcieSlotsClusterMax} electrically active slots across ${serverCount} server(s). Slot 1 and/or Slot 4 require Riser Cable Kits to be enabled.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  } else if (isExceedingPcie) {
-    const reason = `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} total mechanical slots across ${serverCount} server(s).`;
-    warnings.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Inject Primary Riser Cable Kit if needed
-  if (pcie.needsPrimaryCableKit) {
-    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (P56073-B21).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'PRIMARY_RISER_CABLE_KIT',
-      rule: 'CLIC Rule 81356091: Primary 3x16 Riser Cable Enablement',
-      sku: 'P56073-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Inject Secondary Riser Cable Kit if needed
-  if (pcie.needsSecondaryCableKit) {
-    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (P56074-B21).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'SECONDARY_RISER_CABLE_KIT',
-      rule: 'CLIC Rule 81170920: Secondary 3x16 Riser Cable Enablement',
-      sku: 'P56074-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Rule: CPU 2 PCIe Lane Allocation requirement for Secondary/Tertiary Risers
   const cpusPerServer = compute.cpuCount / serverCount;
-  if ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) {
-    const reason = `Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket. Only ${cpusPerServer} CPU(s) per node found.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Rule 1: High TDP thermal requirement or GPU Accelerator cooling
-  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) {
-    const reason = pcie.gpuCount > 0 
-      ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (P48820-B21) for adequate cooling envelope.`
-      : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
-    if (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS) errors.push(reason);
-    else warnings.push(reason);
-    mathDeductions.push(reason);
-    missingDependencies.push({
-      key: 'HIGH_PERF_FAN_KIT',
-      rule: 'High TDP Thermal Cooling Rule',
-      sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
-      description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // CLIC Rule 81354654: Fan kit contains all 6 fans; max 1 fan kit allowed per base chassis
-  if (compute.fanKitExceedsMax) {
-    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Rule 2: Drive-less server requirement
-  if (storage.driveCount === 0 && !storage.hasNoDriveKit) {
-    const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
-    warnings.push(reason);
-    mathDeductions.push(reason);
-    missingDependencies.push({
-      key: 'NO_DRIVE_FIO_KIT',
-      rule: 'Drive-less Chassis Configuration Rule',
-      sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
-      description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // CLIC Rules 81354627 & 81354632: Tri-Mode Y-Cable compatibility
-  if (storage.hasIncompatibleYCable) {
-    const reason = `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) requires PCIe-type RAID controller (MR416i-p/SR932i-p) and Premium Cage (P48814-B21). Not compatible with OCP storage controllers or standard cages. Remove P48832-B21 and use P48918-B21.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Rule 3: DC Power Supply Lug Kit requirement
-  if (power.hasDcPowerSupply && !power.hasDcLugKit) {
-    const reason = `Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-    missingDependencies.push({
-      key: 'DC_LUG_KIT',
-      rule: 'DC Power Supply Cable Rule',
-      sku: mandatorySkus.DC_LUG_KIT.sku,
-      description: mandatorySkus.DC_LUG_KIT.name,
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Rule 3b: Power Supply Redundancy Warning
-  if (psuPerServer === 1) {
-    const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'POWER_SUPPLY_REDUNDANCY',
-      rule: 'Power Supply N+1 Redundancy Rule',
-      sku: 'P38997-B21',
-      description: 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Rule 81392308: CLIC Unbuildable Error Check
-  const hasBaseChassis = items.some(it => {
-    const clean = cleanBaseSKU(it.sku);
-    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
-  });
-  const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
   const hasDriveCageKit = storage.hasDriveCage || items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21' || cleanBaseSKU(it.sku) === 'P48813-B21');
+  
+  const ctx = {
+    items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
+    chassisInfo, mandatorySkus, CTO_BASE_SKUS, HIGH_TDP_THRESHOLD_WATTS,
+    errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU
+  };
 
-  if (hasBaseChassis && storage.driveCount === 0 && !hasNoDriveFioKit && !hasDriveCageKit) {
-    const reason = `CLIC Rule 81392308: Chassis ${chassisInfo.baseSku || 'CTO'} without drives requires ${mandatorySkus.NO_DRIVE_FIO_KIT.sku} FIO Kit.`;
-    mathDeductions.push(reason);
-    missingDependencies.push({
-      key: 'CLIC_NO_DRIVE_FIO',
-      rule: 'CLIC Rule 81392308: Front Cage / No Drive FIO Requirement',
-      sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
-      description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
-      quantity: serverCount,
-      reason: `UNBUILDABLE CONFIGURATION (Rule 81392308): Base chassis ordered without drives requires FIO Kit or an explicit Front Drive Cage Kit.`,
-      reasoning: reason
-    });
-  }
+  validateNetworkingRules(ctx);
+  validatePCIeRules(ctx);
+  validateThermalRules(ctx);
+  validateStorageRules(ctx);
+  validatePowerRules(ctx);
+  validateSupportRules(ctx);
+  validateBaseChassisRules(ctx);
+  validateAlletraRules(ctx);
+  validateStoreEverRules(ctx);
+  validateMemoryRules(ctx);
 
-  // CLIC Rule 81322276: Mandatory Cloud Ops Management (COM) or OneView License on Gen11/Gen12 CTO models
-  if (hasBaseChassis && !support.hasManagementLicense) {
-    const reason = `CLIC Rule 81322276: CTO Chassis (${chassisInfo.baseSku || 'CTO'}) requires at least 1 Cloud Ops Management (COM) or OneView license per server (Base: R7A11AAE / E5Y43A).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'MANAGEMENT_LICENSE_COM',
-      rule: 'CLIC Rule 81322276: Mandatory CTO Management License',
-      sku: 'R7A11AAE',
-      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Rule 4: Controller Smart Storage Battery requirement
-  if (storage.hasStorageController && !storage.hasSmartBattery) {
-    const reason = `Storage Math Failed: Storage controller requires Smart Storage Battery to protect write cache.`;
-    warnings.push(reason);
-    mathDeductions.push(reason);
-    missingDependencies.push({
-      key: 'SMART_STORAGE_BATTERY',
-      rule: 'Controller Cache Protection Rule',
-      sku: mandatorySkus.SMART_STORAGE_BATTERY.sku,
-      description: mandatorySkus.SMART_STORAGE_BATTERY.name,
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // CLIC Rule 81354652: Storage Controller Enablement Cable Kit required for Hybrid Capacitor / Battery Backup
-  if (storage.needsCapacitorCable) {
-    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery requires Storage Controller Enablement Cable Kit (P48918-B21) to connect power to the controller.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'STORAGE_CONTROLLER_ENABLEMENT_CABLE',
-      rule: 'CLIC Rule 81354652: Capacitor Power Link Requirement',
-      sku: 'P48918-B21',
-      description: 'HPE ProLiant Storage Controller Enablement Cable Kit',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Advanced Enterprise Rule: Storage Expander & Port Channel Math
-  if (storage.needsSasExpander) {
-    const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'SAS_EXPANDER_CARD',
-      rule: 'Storage Expander & Multi-Drive Channel Rule',
-      sku: 'P48835-B21',
-      description: 'HPE ProLiant DL380 Gen11 24SFF SAS Expander Card Kit',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Advanced Enterprise Rule: GPU Accelerator Auxiliary Power Cable Kit
-  if (pcie.needsGpuPowerCableKit) {
-    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'GPU_AUX_POWER_CABLE_KIT',
-      rule: 'GPU Accelerator Auxiliary Power Rule',
-      sku: 'P48816-B21',
-      description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
-      quantity: (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Multi-GPU Thermal Envelope & Titanium PSU Rule (INV-27):
-  let h100Count = 0;
-  for (const it of items) {
-    if (it.description && (it.description.toLowerCase().includes('h100') || it.sku === 'S0E21A')) {
-      h100Count += (it.quantity || 1);
-    }
-  }
-
-  if ((pcie.gpuCount >= 4 || h100Count >= 2) && !power.hasTitaniumPsu) {
-    const reason = `INV-27: Multi-GPU Thermal Envelope: 4x+ GPUs or dual high-end GPUs mandate dual 1800W/2200W Titanium PSUs (P44712-B21).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'TITANIUM_PSU_MULTI_GPU',
-      rule: 'Multi-GPU Titanium PSU Mandate (INV-27)',
-      sku: 'P44712-B21',
-      description: '1800W-2200W Titanium Power Supply Kit',
-      quantity: 2 * serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Advanced Enterprise Rule: Windows Server Core Licensing Multiplier (INV-28)
-  if (support.needsAdditionalWindowsCores) {
-    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
-    warnings.push(reason);
-  }
-
-  // VMware Core Licensing Multiplier (Gap 1.1)
-  if (support.needsAdditionalVmwareCores) {
-    const reason = `VMware Licensing Math: Configuration requires ${support.requiredVmwareCores} licensed cores (16 cores/socket minimum) but only ${support.vmwareLicensedCores} cores are licensed. Requires ${support.missingVmwareCores} additional VMware core licenses.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'VMWARE_CORE_LICENSES',
-      rule: 'VMware Core Licensing Minimums & Per-Core Multipliers',
-      sku: 'VMW-VCF-CORE',
-      description: 'VMware Cloud Foundation / vSphere Per-Core Subscription License',
-      quantity: support.missingVmwareCores,
-      reasoning: reason
-    });
-  }
-
-  // Linux (RHEL / SLES) Subscription Sizing (Gap 1.2)
-  if (support.needsAdditionalLinuxSubscriptions) {
-    const reason = `Linux OS Licensing Math: Server has ${support.detectedCpuSockets} socket(s) requiring ${support.requiredLinuxSubscriptions} 1-2 socket subscription(s). Found ${support.linuxSubscriptions}.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'LINUX_OS_SUBSCRIPTIONS',
-      rule: 'Red Hat Enterprise Linux / SLES 1-2 Socket Subscription Sizing',
-      sku: 'RHEL-2S-SUB',
-      description: 'Red Hat Enterprise Linux Server 1-2 Socket Standard Subscription',
-      quantity: support.missingLinuxSubscriptions,
-      reasoning: reason
-    });
-  }
-
-  // INV-32: Unsolicited Software / Startup Services Advisory (Gap 1.3)
-  if (support.unsolicitedOptionalItems && support.unsolicitedOptionalItems.length > 0) {
-    support.unsolicitedOptionalItems.forEach(item => {
-      const adv = `Unsolicited Optional Service / Software (INV-32): SKU ${item.sku} (${item.description}) detected ($${item.extendedPriceUsd || 0}). Optional startup service or add-on software was not explicitly requested by customer.`;
-      warnings.push(adv);
-    });
-  }
-
-  // Synergy Frame Redundant Power Error (Gap 1.4)
-  if (power.hasSynergyRedundantPowerError) {
-    const reason = `Synergy 12000 Frame Power Error: Synergy frame requires exactly 6x 2650W Titanium Power Supplies for redundant power envelope. Found ${power.synergyTitanium2650wCount}.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Synergy D3940 Composable Storage Connectivity (Gap 1.5)
-  if (storage.hasD3940ConnectivityError) {
-    const reason = `Synergy D3940 Composable Storage Error: D3940 drive module paired with Synergy compute requires HPE Synergy SAS Mezzanine Card and SAS Connection Module.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // Alletra Storage System Architecture Validation (Gap 1.6)
-  if (storage.hasMissingControllerNode) {
-    const reason = `Alletra Architecture Error: Alletra storage array requires dual (2x) controller nodes for active-active high-availability. Found ${storage.controllerNodeCount}.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-  if (storage.hasAsymmetricHbas) {
-    const reason = `Alletra HBA Symmetry Warning: Host Bus Adapters must be symmetrically configured across dual controller nodes (${storage.hbaCount} HBAs found, even count required).`;
-    warnings.push(reason);
-  }
-  if (storage.missingDaisyChainCables > 0) {
-    const reason = `Alletra Cabling Requirement: Expansion shelves require 2x SAS daisy-chain cables per shelf (${storage.expansionShelfCount * 2} cables needed, found ${storage.sasDaisyChainCableCount}).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'SAS_DAISY_CHAIN_CABLE',
-      rule: 'Alletra Expansion Shelf Daisy-Chain Cabling',
-      sku: 'P40243-B21',
-      description: 'HPE SAS Mini-HD to Mini-HD Cable',
-      quantity: storage.missingDaisyChainCables,
-      reasoning: reason
-    });
-  }
-  if (storage.insufficientRaid6Drives) {
-    const reason = `Alletra RAID 6 Constraint: RAID 6 disk groups require a minimum of 6 SSDs. Found ${storage.ssdCount}.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-  if (storage.insufficientRaid10Drives) {
-    const reason = `Alletra RAID 10 Constraint: RAID 10 disk groups require a minimum of 4 SSDs. Found ${storage.ssdCount}.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  // StoreEver Tape Automation Cabling & Capacity (Gap 1.7)
-  if (storage.needsMiniSasHdCable) {
-    const reason = `StoreEver SAS Cabling Math: ${storage.ltoSasDriveCount} SAS LTO tape drive(s) require external Mini-SAS HD cables.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'MINI_SAS_HD_CABLE',
-      rule: 'StoreEver LTO SAS Drive Host Cabling',
-      sku: '716189-B21',
-      description: 'HPE 2.0m External Mini-SAS High Density to Mini-SAS HD Cable',
-      quantity: storage.ltoSasDriveCount,
-      reasoning: reason
-    });
-  }
-  if (storage.needsFcTransceiver) {
-    const reason = `StoreEver FC Transceiver Math: ${storage.ltoFcDriveCount} Fibre Channel LTO tape drive(s) require 8Gb/16Gb optical transceivers.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'FC_OPTICAL_TRANSCEIVER_TAPE',
-      rule: 'StoreEver LTO FC Drive Optical Transceiver',
-      sku: 'AJ716B',
-      description: 'HPE 8Gb Short Wave B-Series Fibre Channel 1 Pack SFP+ Transceiver',
-      quantity: storage.ltoFcDriveCount,
-      reasoning: reason
-    });
-  }
-  if (storage.exceedsSlotCapacity) {
-    const reason = `StoreEver Capacity Advisory: ${storage.dataCartridgeCount} data cartridges exceeds total library capacity (${storage.totalMsl3040Slots} slots).`;
-    warnings.push(reason);
-  }
-
-  // Advanced Enterprise Rule: High-Line 220V Utility Power Advisory
-  if (power.needsHighLine220v) {
-    const reason = `Power Derating Advisory: Estimated node power draw (${power.estimatedNodeWattage}W) requires 200V-240V high-line utility circuits to prevent single-PSU derating on ${power.maxPsuWattage}W power supplies.`;
-    warnings.push(reason);
-  }
-
-  // EU Ecodesign Regulation 2019/424 (ErP Lot 9) Rule:
-  if (power.needsCeRemovalKit) {
-    const reason = `EU Lot 9 Compliance Advisory: High-draw configuration with Platinum PSUs requires 96% Titanium PSUs (P44712-B21) or CE Mark Removal FIO Enablement Kit (P35876-B21) for non-EU deployment.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'CE_MARK_REMOVAL_KIT',
-      rule: 'EU Lot 9 / CE Mark Regulatory Enablement Rule',
-      sku: 'P35876-B21',
-      description: 'HPE CE Mark Removal FIO Enablement Kit',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
-
-  // Rule 5: Memory Channel Balance & CTO FIO Memory requirement
-  if (memory.hasBtoMemoryInCto) {
-    memory.btoMemoryViolations.forEach(v => {
-      errors.push(v.reason);
-      mathDeductions.push(v.reason);
-      missingDependencies.push({
-        key: `FIO_MEMORY_${v.fioSku}`,
-        rule: 'CLIC Option Type Constraint: FIO Memory Required in CTO Base Model',
-        sku: v.fioSku,
-        description: `HPE Factory Integrated Option (FIO) Replacement for ${v.btoSku}`,
-        quantity: v.quantity,
-        reason: v.reason,
-        reasoning: v.reason
-      });
-    });
-  }
-
-  if (memory.memoryCount > 0 && !memory.isBalancedChannel) {
-    const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`;
-    warnings.push(reason);
-    mathDeductions.push(reason);
-  }
 
   const aspectChecks = [
     {

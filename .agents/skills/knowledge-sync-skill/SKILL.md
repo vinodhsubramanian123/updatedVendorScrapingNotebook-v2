@@ -8,7 +8,9 @@ description: Bi-directional knowledge synchronization skill between Antigravity 
 ## 1. Overview
 This skill ensures that the **Antigravity AI local evaluation engines** and **Gemini NotebookLM RAG notebooks** maintain 100% synchronization regarding HPE server configuration rules, physical constraints, chassis variants, pricing, and vendor portal rejection feedback.
 
----
+> **New Architectural Mandates (Phase 3 & 4):**
+> - **Chain-of-Responsibility NLP Extractor:** The NLP Extraction pipeline now utilizes a Chain of Responsibility pattern (`RuleExtractor`, `HeuristicExtractor`, `AnomalyExtractor` inside `feedback_loop.js`). All new `KnowledgeDeltas` must pass through these explicit classifiers.
+> - **Strict Error Boundaries:** The sync payload builder MUST throw a `SyncPayloadBuilderError` if it fails to read `catalogData` instead of silently ignoring the issue and syncing an incomplete/hollow catalog to NotebookLM.
 
 ## 2. Multi-Environment Stability & Fallback Architecture
 

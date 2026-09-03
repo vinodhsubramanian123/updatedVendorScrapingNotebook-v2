@@ -296,7 +296,8 @@ Saved in `outputs/history/pipeline_telemetry.json` and updated after each evalua
   "evalAccuracyScore": 100.0,
   "history": [
     {
-      "id": "EVAL-1786800000000",
+      "id": "2d655f48-0382-44c1-ac83-1629739502b4",
+      "traceId": "EVAL-2026-08-29-1629739502b4",
       "timestamp": "2026-08-29T00:09:00.000Z",
       "boqFile": "DL380-Gen11-GID-RFQS.xlsx",
       "chassisModel": "DL380_Gen11",

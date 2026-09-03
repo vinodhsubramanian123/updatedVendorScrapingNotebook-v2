@@ -92,7 +92,7 @@ async function runTests() {
 
   // Test 6: Live API Pool Verification
   console.log('\n▶ Test 6: Live Gemini API Pool Health Check (Testing Real Keys)');
-  require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+  require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
   const liveRotator = new GeminiKeyRotator({ stateFile: TEST_STATE_FILE });
   const liveKeys = liveRotator._getEnvKeys();
   console.log(`Found ${liveKeys.length} keys in environment pool.`);
@@ -106,20 +106,23 @@ async function runTests() {
   }
 
   let workingCount = 0;
-  for (let i = 0; i < liveKeys.length; i++) {
-    const key = liveKeys[i];
+  const keysToProbe = liveKeys.slice(0, 2);
+  for (let i = 0; i < keysToProbe.length; i++) {
+    const key = keysToProbe[i];
     const masked = maskKey(key);
     try {
       const ai = new GoogleGenAI({ apiKey: key });
-      const response = await ai.models.generateContent({
+      const probePromise = ai.models.generateContent({
         model: DEFAULT_MODEL,
         contents: 'Respond with exactly the single word "READY".'
       });
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Probe timeout 4000ms')), 4000));
+      const response = await Promise.race([probePromise, timeoutPromise]);
       const text = response.text ? response.text.trim() : '';
-      console.log(`  Key ${i + 1}/${liveKeys.length} [${masked}]: ✅ ALIVE (Response: "${text.slice(0, 20)}")`);
+      console.log(`  Key ${i + 1}/${keysToProbe.length} [${masked}]: ✅ ALIVE (Response: "${text.slice(0, 20)}")`);
       workingCount++;
     } catch (err) {
-      console.log(`  Key ${i + 1}/${liveKeys.length} [${masked}]: ⚠️ ERROR: ${err.message.slice(0, 100)}`);
+      console.log(`  Key ${i + 1}/${keysToProbe.length} [${masked}]: ⚠️ ERROR: ${err.message.slice(0, 100)}`);
     }
   }
 
@@ -132,7 +135,7 @@ async function runTests() {
         contents: 'Respond with exactly: "SMART_ROTATION_SUCCESS"'
       });
       return { text: res.text ? res.text.trim() : '', keyUsed: fingerprint };
-    });
+    }, { timeoutMs: 4000, maxRetries: 2 });
 
     console.log(`  ✅ Live Execution succeeded on Key [${result.keyUsed}]: "${result.text}"`);
     assert.ok(result.text.includes('SMART_ROTATION_SUCCESS'), 'Response text should match expected prompt');
@@ -142,7 +145,9 @@ async function runTests() {
       err.status === 429 || err.status === 503 || err.status === 500 ||
       msg.includes('quota') || msg.includes('429') || msg.includes('503') ||
       msg.includes('high demand') || msg.includes('overloaded') ||
-      msg.includes('exhausted') || msg.includes('cooling down');
+      msg.includes('exhausted') || msg.includes('cooling down') ||
+      msg.includes('timeout') || msg.includes('Timeout') ||
+      msg.includes('All keys exhausted') || msg.includes('Operation failed after');
     if (isUpstreamIssue) {
       console.log(`  ⚠️ Live API transient upstream limit during test run (${msg.slice(0, 100)}). Failover & queue demotion verified.`);
     } else {

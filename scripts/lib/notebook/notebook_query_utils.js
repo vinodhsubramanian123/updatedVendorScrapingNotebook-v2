@@ -103,6 +103,8 @@ function setCachedRagResult(cacheKey, result) {
 const KNOWN_NOTEBOOK_MAP = {
   'dl380_gen12': '1d190853-4e9c-48df-aa70-eae66c6f2c1f',
   'dl380_gen11': 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6',
+  'dl380a_gen12': 'b233ec88-4682-4164-a801-3ee6ca649dc1',
+  'dl145_gen11': '7a48061a-331a-429b-8477-7e0473491714',
   'alletra': 'a67629ba-3434-42ab-b465-bd6d71852198',
   'synergy': '49a3c69e-115f-4332-9454-c5d4f2941327'
 };
@@ -154,6 +156,8 @@ async function resolveNotebookIdAsync(requestedId, context = {}, nlmExecutable, 
     return requestedId.trim();
   }
   const chassis = String(context?.chassis || context?.model || '').toLowerCase();
+  if (chassis.includes('dl380a')) return KNOWN_NOTEBOOK_MAP.dl380a_gen12;
+  if (chassis.includes('dl145')) return KNOWN_NOTEBOOK_MAP.dl145_gen11;
   if (chassis.includes('gen12') || chassis.includes('dl380 gen12')) return KNOWN_NOTEBOOK_MAP.dl380_gen12;
   if (chassis.includes('gen11') || chassis.includes('dl380 gen11')) return KNOWN_NOTEBOOK_MAP.dl380_gen11;
   if (chassis.includes('alletra')) return KNOWN_NOTEBOOK_MAP.alletra;
@@ -196,10 +200,9 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
         const latencyMs = Date.now() - startTime;
 
         if (err) {
-          const isRetryable = attempt < maxAttempts && (
-            err.killed || 
-            err.code === 'ETIMEDOUT' || 
-            (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket') || err.message.includes('timeout')))
+          const isTimeout = err.killed || err.code === 'ETIMEDOUT' || (err.message && err.message.includes('timeout'));
+          const isRetryable = !isTimeout && attempt < maxAttempts && (
+            (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket')))
           );
 
           if (isRetryable) {

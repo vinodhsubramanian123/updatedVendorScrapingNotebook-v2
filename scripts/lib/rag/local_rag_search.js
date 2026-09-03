@@ -30,7 +30,10 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   const citations = [];
   const rawMatches = [];
 
-  const cleanQuery = (query || '').toLowerCase();
+  const rawQueryStr = typeof query === 'string'
+    ? query
+    : (query?.query || query?.text || (typeof query === 'object' && query !== null ? JSON.stringify(query) : ''));
+  const cleanQuery = (rawQueryStr || '').toLowerCase();
   const rawWords = cleanQuery.split(/[\s,;.!?'"()[\]{}]+/).filter(w => w.length > 0);
   const searchTerms = rawWords.filter(w => !STOP_WORDS.has(w) && w.length >= 2);
 
@@ -210,7 +213,12 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
             if (activeTerms.length > 0) {
                activeTerms.forEach(term => {
                   if (term.length <= 2) {
-                    if (new RegExp(`\\b${term}\\b`, 'i').test(catStr)) catScore += 2;
+                    try {
+                      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                      if (new RegExp(`\\b${escapedTerm}\\b`, 'i').test(catStr)) catScore += 2;
+                    } catch (_) {
+                      if (catStr.includes(term)) catScore += 1;
+                    }
                   } else if (catStr.includes(term)) {
                     catScore += 2;
                   }

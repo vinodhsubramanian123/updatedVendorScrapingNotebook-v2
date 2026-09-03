@@ -64,7 +64,10 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku) {
     fcTransceiverCount: 0,
     msl3040BaseModuleCount: 0,
     msl3040ExpansionModuleCount: 0,
-    dataCartridgeCount: 0
+    dataCartridgeCount: 0,
+    has4SffCage: false,
+    has4EdsffCage: false,
+    hasMr216iO: false
   };
 
   for (const it of items) {
@@ -89,6 +92,13 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku) {
       tally.hasDriveCage = true;
       tally.hasPremiumCage = true;
     }
+    // DL380a drive cage tracking (Rule 81016788)
+    if (sku === 'P74710-B21' || (desc.includes('4sff') && desc.includes('dl380a'))) {
+      tally.has4SffCage = true;
+    }
+    if (sku === 'P74712-B21' || (desc.includes('4edsff') && desc.includes('dl380a'))) {
+      tally.has4EdsffCage = true;
+    }
 
     // RAID Controller
     if (desc.includes('controller') || desc.includes('mr416i') || desc.includes('sr932i') || 
@@ -103,6 +113,10 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku) {
       }
       if (desc.includes('-p') || /\b(mr|sr)\d{3}i-p\b/i.test(desc)) {
         tally.hasPcieController = true;
+      }
+      // Track MR216i-o specifically for RAID 5/6 no-cache trap
+      if (/\bmr216i-o\b/i.test(desc) || sku === 'P26279-B21') {
+        tally.hasMr216iO = true;
       }
     }
 
@@ -240,7 +254,11 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     needsFcTransceiver: storeEver.needsFcTransceiver,
     totalMsl3040Slots: storeEver.totalMsl3040Slots,
     exceedsMaxMsl3040Slots: storeEver.exceedsMaxMsl3040Slots,
-    exceedsSlotCapacity: storeEver.exceedsSlotCapacity
+    exceedsSlotCapacity: storeEver.exceedsSlotCapacity,
+    // DL380a drive cage mutual exclusion (Rule 81016788)
+    hasDriveCageMixingConflict: t.has4SffCage && t.has4EdsffCage,
+    // MR216i-o RAID 5/6 no-cache warning
+    hasMr216iORaid56Risk: t.hasMr216iO && (t.hasRaid6 || (t.driveCount > 2 && !t.hasSmartBattery))
   };
 }
 

@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteJsonAtomic } = require('./fs_compat.js');
+const { getTraceId } = require('./trace_context.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
@@ -77,8 +78,11 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     stage5ResolutionMatrixMs: Math.round(durationMs * 0.15)
   };
 
+  const activeTrace = getTraceId();
+  const entryId = activeTrace !== 'NO_TRACE_CONTEXT' ? activeTrace : `EVAL-${Date.now()}`;
+
   const entry = {
-    id: `EVAL-${Date.now()}`,
+    id: entryId,
     timestamp: new Date().toISOString(),
     boqFile: path.basename(boqFile),
     chassisModel: graph.chassisInfo ? graph.chassisInfo.model : 'DL380 Gen12 SFF',
@@ -103,7 +107,7 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
     clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
     totalNodesEvaluated: evalResults.clusterSizing?.totalNodes || evalResults.multiplier || 1,
-    traceId: evalResults.provenanceTrace?.traceId || `EVAL-${Date.now()}`,
+    traceId: evalResults.provenanceTrace?.traceId || entryId,
     provenanceTrace: evalResults.provenanceTrace || null,
     memoryUsage: {
       rssMb: process.memoryUsage ? Math.round(process.memoryUsage().rss / (1024 * 1024)) : 0,

@@ -76,7 +76,10 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
       targetDir = path.dirname(catalogPath);
-    } catch (e) { logger.warn('KNOWLEDGE_SYNC', 'Error reading catalogData', e); }
+    } catch (e) {
+      logger.error('KNOWLEDGE_SYNC', `Failed to parse catalogData at ${catalogPath}`, e);
+      throw new Error(`SyncPayloadBuilderError: Corrupt catalog JSON at ${catalogPath}: ${e.message}`);
+    }
   } else if (!isTestChassis) {
     // No catalog found for a real chassis — fall back to outputs/history/
     targetDir = path.join(OUTPUTS_ROOT, 'history');

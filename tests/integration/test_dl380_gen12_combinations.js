@@ -71,7 +71,7 @@ P73282-B21,HPE ProLiant DL380 Gen12 SFF CTO Server,1
 P73299-B21,Intel Xeon Gold 6548Y 2.8GHz 32-core 280W Processor for HPE,2
 P48820-B21,HPE ProLiant High Performance Fan Kit,1
 P73300-F21,HPE 32GB 2Rx8 DDR5-5600 Smart Memory FIO Kit,16
-P48818-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2
+P38995-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2
 P52019-B21,Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter,1
 P49048-B21,HPE 800GB SAS 12G Mixed Use SFF BC Multi Vendor SSD,2
 R7A11AAE,HPE Compute Ops Management Enhanced 3-year SaaS,1
@@ -105,7 +105,7 @@ H7J34A3,HPE 3Y Tech Care Essential Support Service,1`);
 P73282-B21,HPE ProLiant DL380 Gen12 SFF CTO Server,1
 P73299-B21,Intel Xeon Gold 6548Y 2.8GHz 32-core 280W Processor for HPE,2
 P73300-B21,HPE 32GB 2Rx8 DDR5-5600 Smart Memory,8
-P48818-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2`);
+P38995-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2`);
 
   const eval2 = evaluateBOQMultiAspect(csv2);
   const graph2 = evaluateWholeSolutionGraph(eval2.items, eval2.chassisInfo);
@@ -135,7 +135,7 @@ P48818-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2`);
 P73282-B21,HPE ProLiant DL380 Gen12 SFF CTO Server,1
 P55415-B21,HPE Broadcom MR416i-o Gen11 x16 Lanes 8GB Cache Tri-Mode Controller,1
 P73300-B21,HPE 32GB 2Rx8 DDR5-5600 Smart Memory,4
-P48818-B21,HPE 800W Flex Slot Platinum Power Supply,2`);
+P38995-B21,HPE 800W Flex Slot Platinum Power Supply,2`);
 
   const eval3 = evaluateBOQMultiAspect(csv3);
   const graph3 = evaluateWholeSolutionGraph(eval3.items, eval3.chassisInfo);
@@ -197,7 +197,7 @@ P73282-B21,HPE ProLiant DL380 Gen12 SFF CTO Server,1
 P73299-B21,Intel Xeon Gold 6548Y 2.8GHz 32-core 280W Processor for HPE,2
 P48820-B21,HPE ProLiant High Performance Fan Kit,2
 P73300-B21,HPE 32GB 2Rx8 DDR5-5600 Smart Memory,9
-P48818-B21,HPE 800W Flex Slot Platinum Power Supply,2`);
+P38995-B21,HPE 800W Flex Slot Platinum Power Supply,2`);
 
   const eval5 = evaluateBOQMultiAspect(csv5);
 
@@ -254,7 +254,7 @@ P03178-B21,HPE 1000W Flex Slot Titanium Power Supply,2`);
     ['P73282-B21', 'HPE ProLiant DL380 Gen12 8SFF CTO Server', 1, 3200, 'Base Chassis'],
     ['P73299-B21', 'Intel Xeon Gold 6548Y 2.8GHz 32-core 280W Processor', 2, 1950, 'Processors'],
     ['P73300-B21', 'HPE 32GB 1Rx4 DDR5-5600 Memory', 8, 340, 'Memory'],
-    ['P48818-B21', 'HPE 800W Flex Slot Platinum Power Supply', 2, 290, 'Power Supplies'],
+    ['P38995-B21', 'HPE 800W Flex Slot Platinum Power Supply', 2, 290, 'Power Supplies'],
     ['P52019-B21', 'Broadcom 1Gb 4-port BASE-T OCP3 Adapter', 1, 195, 'Networking']
   ];
   const ws2 = xlsx.utils.aoa_to_sheet(sheet2Data);

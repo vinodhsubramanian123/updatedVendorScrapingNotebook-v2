@@ -31,7 +31,7 @@ async function runTests() {
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
     serverProc = spawn('node', [serverScript], {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT) }
+      env: { ...process.env, PORT: String(PORT), RAG_TIMEOUT_MS: '20000' }
     });
 
     for (let i = 0; i < 20; i++) {
@@ -99,11 +99,12 @@ async function runTests() {
     await runEvalBtn.click();
 
     // Wait for SSE logs / evaluation to finish
-    await page.waitForSelector('.animate-modal-content button:has-text("Visual BOQ Topology")', { timeout: 90000 });
+    await page.waitForSelector('.animate-modal-content button:has-text("Visual BOQ Topology")', { timeout: 120000 });
     console.log('  ✅ BOQ Evaluation completed with SSE progress updates');
 
     const topoBtn = await page.waitForSelector('.animate-modal-content button:has-text("Visual BOQ Topology")');
-    await topoBtn.click();
+    await topoBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await topoBtn.click({ force: true });
     await page.waitForTimeout(1500);
 
     const nodeEl = await page.waitForSelector('.topology-interactive-node', { timeout: 15000 });

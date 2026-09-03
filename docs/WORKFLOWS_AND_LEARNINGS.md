@@ -597,11 +597,11 @@ When a BOQ evaluation results in low confidence or physical constraint violation
     - 1 Session = 1 Module + 1 Test File.
     - Explicit target paths, invariants to obey, exact CLI verification command (`npm run test:isolated -- ...`), and strict "Use pure cross-platform JavaScript without shell commands" constraints.
 
+---
 
-
-
-
-
-
-
-
+## 42. Unified Observability & Structural Resilience Learnings (Phase 3)
+- **Pipeline Trace Context (`AsyncLocalStorage`)**: We identified a critical gap where telemetry emitted deep inside evaluation pipelines (`eval_boq.js`, `local_rag_search.js`) lacked correlation IDs if the pipeline crashed before final log aggregation. We implemented `PipelineTraceContext` (using Node.js `AsyncLocalStorage`) to inject an immutable `TraceID` at the API/CLI boundary. This ID flows transparently through all async calls and is stamped onto every structured log emitted by `pipeline_logger.js`, ensuring 100% deterministic traceability for complex edge-cases.
+- **Chain of Responsibility for Feedback Extraction**: The `feedback_loop.js` grew cyclomatically complex when handling both heuristic fallback rules and strict RAG NLP extraction. By implementing a Chain of Responsibility (CoR) pattern, feedback processing is now decoupled into `RuleExtractor`, `HeuristicExtractor`, and `AnomalyExtractor` nodes. This permits flexible insertion of new classification algorithms without touching core evaluation logic, vastly reducing `isRuleUpdate` vs `isHeuristic` logic branching.
+- **Anti-Silent Failure Guardrails (Strict Throw Boundaries)**: We conducted a gap analysis and discovered multiple "silent failures" where file I/O operations (`fs.readFileSync`) for catalog JSONs would fail (e.g. disk corruption) but the `catch` blocks merely swallowed the error via `console.warn` and returned `null`.
+  - **Consequence**: The pipeline secretly degraded to regex heuristic matching or generated corrupted Vendor BOM exports, falsely reporting 100% success on the dashboard.
+  - **Remediation & New Invariant**: Catch blocks dealing with critical knowledge states (e.g. `eval_boq.js` loading catalogs, `sync_payload_builder.js` syncing to NotebookLM, `generate_xlsx.js` reading metadata) **MUST** fail hard. They must throw explicit typed errors (`EvaluationError`, `DataCorruptionError`, `SyncPayloadBuilderError`) to immediately halt execution and trigger telemetry alerts, preserving the "Fail-Safe & Dual-Brain" mandate and preventing knowledge drift.

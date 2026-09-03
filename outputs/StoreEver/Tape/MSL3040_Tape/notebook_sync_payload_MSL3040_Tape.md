@@ -1,9 +1,9 @@
 # HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
 
 **Target Product**: `MSL3040_Tape`  
-**Sync Timestamp**: 2026-08-31T03:22:55.040Z  
+**Sync Timestamp**: 2026-09-03T18:54:13.650Z  
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)  
-**Total Synced KnowledgeDeltas**: `35`  
+**Total Synced KnowledgeDeltas**: `60`  
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -40,15 +40,25 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 7. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1. *(Affected SKU: P48803-B21)*
 8. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21). *(Affected SKU: P38997-B21)*
 9. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380 Gen11**: undefined *(Affected SKU: P02377-B21)*
-10. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-11. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
-12. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
-13. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-14. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P69728-B21)*
-15. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
-16. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380 Gen12**: undefined *(Affected SKU: P47777-B21)*
-17. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P28586-B21)*
-18. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P76453-B21)*
+10. **[DELTA_DL380_GEN12_NO_DRIVE_BYPASS] DL380_Gen12**: When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. *(Affected SKU: 873763-B21)*
+11. **[DELTA_DL380_GEN12_LOCALIZATION_GATE] DL380_Gen12**: If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. *(Affected SKU: P73282-B21)*
+12. **[DELTA_DL380_GEN12_COM_SAAS_MANDATE] DL380_Gen12**: Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. *(Affected SKU: P73282-B21)*
+13. **[DELTA_DL380_GEN12_LOT9_CE_BYPASS] DL380_Gen12**: If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts. *(Affected SKU: P38995-B21)*
+14. **[DELTA_DL380_GEN12_HIGH_TDP_COOLING] DL380_Gen12**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. *(Affected SKU: P74507-B21)*
+15. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+16. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
+17. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
+18. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
+19. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P69728-B21)*
+20. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
+21. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380 Gen12**: undefined *(Affected SKU: P47777-B21)*
+22. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P28586-B21)*
+23. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P76453-B21)*
+24. **[DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380 Gen12**: undefined *(Affected SKU: P64707-B21)*
+25. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
+26. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380 Gen12**: undefined *(Affected SKU: P01366-B21)*
+27. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380 Gen12**: undefined *(Affected SKU: P74573-B21)*
+28. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (MSL3040_Tape)
 
@@ -72,18 +82,22 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **GX5000_General_RACK** | Cray | Gen1 | Rack | `P57100-B21` |
 | **SY100Gb_F32_Module** | Synergy | Gen1 | Blade | `864273-B21` |
 | **Alletra_Storage_System** | Alletra | Gen1 | Array | `R0Q21A` |
+| **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
+| **DL145_Gen11** | ProLiant | Gen11 | 4EDSFF | `P71964-B21` |
 | **P73282-B21** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
 | **P73283-B21** | ProLiant | Gen12 | 24SFF | `P73283-B21` |
 | **P73284-B21** | ProLiant | Gen12 | 12LFF | `P73284-B21` |
 | **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
 | **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
 | **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
+| **P76706-B21** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
 | **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
 | **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
 | **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
 | **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
 | **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
 | **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
+| **P71964-B21** | ProLiant | Gen11 | 4EDSFF | `P71964-B21` |
 | **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |
 | **R0Q36A** | Alletra | Storage | Storage Chassis | `R0Q36A` |
 | **R0Q37A** | Alletra | Storage | Storage Controller | `R0Q37A` |

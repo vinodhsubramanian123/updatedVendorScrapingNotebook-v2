@@ -252,7 +252,9 @@ async function runAgenticGuardrail(items, chassisDir) {
   try {
     const initialEval = evaluateBOQMultiAspect(items, { chassis: chassisId });
     preConfidence = initialEval?.confidence?.score ?? 0.5;
-  } catch (_) { /* ignore pre-eval failure */ }
+  } catch (err) {
+    logger.warn('AGENTIC_GUARDRAIL', `Pre-eval baseline failed for ${chassisId}, defaulting to 0.5.`, err);
+  }
 
   // ── Session context object shared across tool handlers (closure capture) ──
   const ctx = {

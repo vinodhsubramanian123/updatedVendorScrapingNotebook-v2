@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { executeNotebookQuery, sanitizeNotebookQuery } = require('../../scripts/lib/notebook/notebook_query_utils.js');
+const { executeNotebookQuery, sanitizeNotebookQuery, purgeExpiredRagCache, queryCache } = require('../../scripts/lib/notebook/notebook_query_utils.js');
 const { GeminiKeyRotator, ApiQuotaExhaustedError } = require('../../scripts/lib/system/gemini_rotator.js');
 const { parseAndConsolidateBOQ, evaluatePhysicalMath } = require('../../scripts/lib/boq/boq_evaluator.js');
 const { preprocessAndGroupBOQ } = require('../../scripts/lib/boq/boq_preprocessor.js');
@@ -56,9 +56,12 @@ async function runChaosSuite() {
     
     // Test 1.1: Invalid notebook ID execution
     const nonExistentNotebookId = '00000000-0000-0000-0000-000000000000';
+    await purgeExpiredRagCache();
+    queryCache.clear();
     const fallbackRes = await executeNotebookQuery(nonExistentNotebookId, 'What is the TDP limit for DL380 Gen12?', {
       context: { chassis: 'DL380_Gen12' },
-      timeout: 5000
+      timeout: 5000,
+      bypassCache: true
     });
 
     report('Fallback activates on cloud failure without crashing', fallbackRes !== null && typeof fallbackRes === 'object');

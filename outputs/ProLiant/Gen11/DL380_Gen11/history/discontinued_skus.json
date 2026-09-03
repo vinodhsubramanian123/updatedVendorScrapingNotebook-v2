@@ -4210,5 +4210,13 @@
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-28",
     "status": "ACTIVE"
+  },
+  "P71964-B21": {
+    "productNumber": "P71964-B21",
+    "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
   }
 }

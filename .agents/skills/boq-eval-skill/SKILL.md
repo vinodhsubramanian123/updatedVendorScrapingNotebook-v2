@@ -11,6 +11,10 @@ description: Use this skill for validating customer BOQs, hardware lists, Excel 
 
 This skill provides an automated, agentic workflow representing **Workflow 2 (Pre-Flight Evaluation)** of the dual-workflow paradigm. It ingests raw customer BOQs, pre-cleans input data, runs deterministic 7-aspect physical math assertions, executes 5-level dependency conflict graph validation, profiles Workload DNA, dynamically routes to Gemini Notebook RAG via `notebooks.json`, and outputs the results to the dashboard and a dynamically generated **Corrected BOQ Excel workbook**.
 
+> **New Architectural Mandates (Phase 3 & 4):**
+> - **Trace Context Constraint**: Any new async evaluation threads or functions added must bind to `PipelineTraceContext` (using `AsyncLocalStorage` via `scripts/lib/system/trace_context.js`) to guarantee end-to-end telemetry traceability.
+> - **Strict Error Boundaries**: Catch blocks that read catalog topologies or core rule data MUST fail-hard. You must throw `EvaluationError` or `DataCorruptionError` (instead of swallowing exceptions via `console.warn`) if the engine encounters corrupted disk states, ensuring the pipeline never silently degenerates into regex heuristics.
+
 ```mermaid
 graph TD
     A["Customer BOQ Intake (CSV / Excel Multi-Sheet / Quote)"] --> B["scripts/evaluators/eval_boq.js"]

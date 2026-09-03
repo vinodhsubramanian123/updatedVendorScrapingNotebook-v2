@@ -61,7 +61,16 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     fanKitsPerServer,
     fanKitExceedsMax,
     highPerfFanSku,
-    highPerfHeatsinkSku
+    highPerfHeatsinkSku,
+    // AMD EPYC 8004 single-socket edge detection (DL145 Gen11)
+    isAmdEpyc8004: items.some(it => (it.description || '').toLowerCase().includes('epyc 8')),
+    // DL380a 8DW GPU thermal envelope: high-TDP GPUs mandate high-perf cooling
+    isDl380aAccelerator: items.some(it => {
+      const d = (it.description || '').toLowerCase();
+      return d.includes('dl380a') || cleanBaseSKU(it.sku) === 'P76706-B21';
+    }),
+    // High TDP (> 185W) mandates High-Performance Fan Kit + Heatsink
+    needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)
   };
 }
 

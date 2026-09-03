@@ -265,6 +265,22 @@ The system leverages Google Jules for background code review, test generation, a
       - **Where Jules is Weak (Avoid Delegating)**: Large cross-directory architectural refactorings, multi-process orchestration, live browser scraping requiring authenticated CDP sessions, and domain ground-truth rule synthesis.
       - **Atomic Prompt Contract**: Keep Jules tasks single-responsibility (1 module + 1 test file), specify the exact file paths, mandate pure cross-platform JavaScript (no shell commands), provide the exact verification CLI command (`npm run test:isolated -- <testFile>`), and explicitly prohibit pausing for human confirmation.
 
+45. **DL380a Gen12 GPU Accelerator & DL145 Gen11 AMD EPYC Domain Isolation Protocol (`INV-54`)**:
+    - **DL380a Gen12 (`P76706-B21`)**: 8DW/16SW GPU Accelerator server with captive risers. Mandatory rules:
+      - Double-wide GPUs require dedicated GPU auxiliary power kits (`P76450-B21`) and captive risers.
+      - Rule 81017083: Minimum 5x 2400W Titanium PSUs (`P75008-B21` / `P75002-B21`) required when double-wide GPUs are present.
+      - Rule 81016788: Drive cage mutual exclusivity — 4SFF (`P74710-B21`) and 4EDSFF (`P74712-B21`) cages cannot be mixed.
+      - MR216i-o controller without cache carries RAID 5/6 risk warning.
+    - **DL145 Gen11 (`P71964-B21`)**: 1U short-depth edge server powered by single-socket AMD EPYC 8004 series processors.
+      - 4EDSFF default storage cage; maximum 1000W edge PSU profile (1600W+ enterprise PSUs physically incompatible).
+      - Extended thermal operational envelope (-5°C to 55°C).
+    - **Chassis Map Isolation**: In `chassis_map.json`, each is segregated into its own dedicated family entry (`ProLiant_DL380a_Gen12` and `ProLiant_DL145_Gen11`), ensuring zero SKU overlap or cross-pollution with DL380 Gen11 (`P5253...`) or DL380 Gen12 (`P7328...`) part numbering.
+
+46. **Safe Knowledge Query String Normalization & Regex Escaping Protocol (`INV-55`)**:
+    - `local_rag_search.js` and `notebook_query_utils.js` must safely normalize input query parameters to strings before invoking `.toLowerCase()`. Object query payloads (e.g. `{ query: "...", chassis: "..." }`) must be cleanly parsed (`query?.query || query?.text || JSON.stringify(query)`) to prevent `TypeError: (query || "").toLowerCase is not a function`.
+    - In `local_rag_search.js`, all keyword term matching via `RegExp` must escape markdown asterisks `**` and special regex characters (`term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`) to prevent `SyntaxError: Invalid regular expression: /\b**\b/i: Nothing to repeat`.
+
+
 
 
 

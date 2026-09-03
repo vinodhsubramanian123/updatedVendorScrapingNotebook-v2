@@ -12,12 +12,14 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 |---------|--------|---------------|-------------|---------|----------------|--------|
 | HPE ProLiant DL380 Gen12 | ProLiant | `DL380_Gen12` | 302 HW / 667 Svc (969 total) | 71 (Full OCA Scrape) | Advisory (No QS Link) | ✅ 100% PASS (Full Pipeline & Cloud NLM) |
 | HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 478 HW / 1109 Svc | 76 (Full OCA Scrape + Active GPLs) | ✅ Verified (2.06 MB) | ✅ 100% PASS (Full Pipeline & Cloud NLM) |
+| HPE ProLiant DL380a Gen12 | ProLiant | `DL380a_Gen12` | 1 (8DW/16SW GPU CTO) | Baseline + Deltas | ✅ Verified (NotebookLM) | ✅ Baseline & Delta PASS |
+| HPE ProLiant DL145 Gen11 | ProLiant | `DL145_Gen11` | 1 (AMD EPYC Edge CTO) | Baseline + Deltas | ✅ Verified (NotebookLM) | ✅ Baseline & Delta PASS |
 | HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 | 1 (Baseline + CTO variants) | ✅ Verified (2.06 MB) | ✅ Baseline PASS |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 | 1 (Baseline + CTO variants) | ⚠️ Advisory (No DOM link) | ✅ Baseline PASS |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.89 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **6 Canonical Product Generations Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 50+ test suites.
+**Total Verified Portfolio Intelligence**: **8 Canonical Product Generations Certified** across 5 families. 34/34 Aspect Math Tests + 5/5 Automated Benchmarks + 7/7 Pipeline Guardrails + 15/15 Excel Audit Checks Certified across 50+ test suites.
 
 > **SKU Count Source of Truth**: The correct HW SKU count for DL380 Gen12 is **302** (unique hardware part numbers) and **667** service SKUs. SFF, LFF, and EDSFF form factor variants are tracked within `DL380_Gen12`. The number of entries refers to categorized option groups. `updateScrapedRegistry()` reads `liveCatalogJson.metadata.totalUniqueSKUs` post-promotion.
 
@@ -352,6 +354,17 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 ### INV-53: Autonomous Jules Session Resumption, Auto-Unblocking & Final Authority Quality Review Protocol
 - **Pattern**: Jules background sessions frequently pause awaiting plan approvals (`awaitingPlanApproval`) or user feedback (`awaitingUserFeedback`), which causes automation stalls if waiting for human intervention.
 - **Rule**: AI agents MUST execute `node scripts/services/jules_task_manager.js unblock` (or `npm run jules:unblock` / `approveSession`) to auto-approve proposed plans and dispatch unblocking directives without human waiting. Antigravity maintains 100% Lead Architect authority, auditing all authored test suites, verifying isolated test passes (`npm run test:isolated`), inspecting git diffs for artifact hygiene (`INV-7`), and certifying 100% quality before integration. Jules tasks MUST follow the Atomic Contract pattern (1 module + 1 test file per session, pure cross-platform JS, zero shell commands).
+
+### INV-54: DL380a Gen12 GPU Accelerator & DL145 Gen11 AMD EPYC Domain Isolation Protocol
+- **Pattern**: Specialized AI/GPU accelerator servers (`DL380a_Gen12`) and edge servers (`DL145_Gen11`) have architectural physical rules that conflict with standard 2P enterprise servers if mixed.
+- **Rule**:
+  - `DL380a_Gen12` (`P76706-B21`): Captive risers mandate GPU auxiliary power kits (`P76450-B21`). Double-wide GPUs require min 5x 2400W Titanium PSUs (`P75008-B21` / `P75002-B21`). Drive cages 4SFF (`P74710-B21`) and 4EDSFF (`P74712-B21`) cannot be mixed (Rule 81016788). Cacheless MR216i-o controllers trigger RAID 5/6 risk warnings.
+  - `DL145_Gen11` (`P71964-B21`): 1U edge chassis powered by AMD EPYC 8004 single socket. 4EDSFF cage default, max 1000W edge PSU profile (1600W+ enterprise PSUs physically incompatible), and extended temperature operation (-5°C to 55°C).
+  - In `chassis_map.json`, each is segregated into dedicated family sections (`ProLiant_DL380a_Gen12` and `ProLiant_DL145_Gen11`).
+
+### INV-55: Safe Knowledge Query String Normalization & Regex Escaping Protocol
+- **Pattern**: Passing complex query objects (e.g. `{ query: "...", chassis: "..." }`) or markdown formatting (`**`) into RAG search causes runtime crashes (`TypeError: (query || "").toLowerCase is not a function`, `SyntaxError: Invalid regular expression: /\b**\b/i: Nothing to repeat`).
+- **Rule**: All knowledge search entry points (`local_rag_search.js`, `notebook_query_utils.js`) MUST safely coerce query inputs to strings (`query?.query || query?.text || JSON.stringify(query)`), and keyword RegExp constructors MUST escape special regex characters (`term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`).
 
 ---
 

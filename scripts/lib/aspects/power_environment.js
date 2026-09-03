@@ -54,6 +54,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   let estimatedGpuWatts = 0;
   let estimatedMemoryWatts = 0;
   let estimatedStorageWatts = 0;
+  let isDl380aGpuChassis = false;
+  let hasDl380aDoubleWideGpu = false;
+  let isDl145EdgeChassis = false;
 
   const dcLugSku = cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21');
 
@@ -90,6 +93,18 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
 
     if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
       isSynergy12000Frame = true;
+    }
+
+    // DL380a GPU chassis detection
+    if (sku === 'P76706-B21' || desc.includes('dl380a')) {
+      isDl380aGpuChassis = true;
+    }
+    if (sku === 'P75008-B21' || sku === 'P75002-B21' || (desc.includes('double-wide') && desc.includes('gpu'))) {
+      hasDl380aDoubleWideGpu = true;
+    }
+    // DL145 edge chassis detection
+    if (sku === 'P71964-B21' || desc.includes('dl145')) {
+      isDl145EdgeChassis = true;
     }
 
     if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
@@ -150,7 +165,13 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     needsHighLine220v,
     isSynergy12000Frame,
     synergyTitanium2650wCount,
-    hasSynergyRedundantPowerError
+    hasSynergyRedundantPowerError,
+    // DL380a GPU Power Mandate (Rule 81017083): Min 5x 2400W Titanium when double-wide GPUs present
+    isDl380aGpuChassis,
+    hasDl380aGpuPsuShortage: isDl380aGpuChassis && hasDl380aDoubleWideGpu && (psuCount < 5 || maxPsuWattage < 2400 || !hasTitaniumPsu),
+    // DL145 Edge PSU Profile: Max 1000W, 1600W+ PSUs are physically incompatible
+    isDl145EdgeChassis,
+    hasDl145PsuOversizing: isDl145EdgeChassis && maxPsuWattage > 1000
   };
 }
 

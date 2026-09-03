@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "productName": "HPE ProLiant DL145 Gen11",
+    "modelIdentifier": "DL145_Gen11",
+    "family": "ProLiant",
+    "gen": "Gen11",
+    "baseSku": "P71964-B21",
+    "baseDescription": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
+    "formFactor": "1U Compact Edge / 4EDSFF",
+    "scrapeDate": "2026-09-03",
+    "scrapeTimestamp": "2026-09-03T18:30:00.000Z",
+    "source": "NotebookLM Learnings + PartnerPortal BOM",
+    "totalUniqueSKUs": 8,
+    "totalEntries": 5,
+    "catalogVersion": "1.0.0-learnings"
+  },
+  "categories": {
+    "Chassis": [
+      { "sku": "P71964-B21", "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server", "listPrice": 2375, "category": "Chassis", "optionType": "CTO" }
+    ],
+    "Storage": [
+      { "sku": "P71985-B21", "description": "HPE ProLiant DL145 Gen11 4-Bay EDSFF E3.S Drive Cage Kit", "listPrice": 0, "category": "Storage", "optionType": "FIO" },
+      { "sku": "P77271-B21", "description": "HPE 1.92TB E3.S NVMe Read Intensive SFF BC Multi Vendor SSD", "listPrice": 960, "category": "Storage", "optionType": "FIO" }
+    ],
+    "Power Supplies": [
+      { "sku": "P54290-B21", "description": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply", "listPrice": 349, "category": "Power Supplies", "optionType": "FIO" }
+    ],
+    "Thermal Tracking": [
+      { "sku": "P73021-B21", "description": "HPE ProLiant DL145 Gen11 Extended Ambient Temperature Config Tracking (-5C to 45C)", "listPrice": 1, "category": "Thermal Tracking", "optionType": "FIO" }
+    ]
+  }
+}

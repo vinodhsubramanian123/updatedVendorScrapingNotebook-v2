@@ -32,7 +32,9 @@ function getChassisMap() {
     "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
     "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
     "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
-    "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "baseSku": "R0Q21A", "model": "Alletra Storage System" }
+    "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "baseSku": "R0Q21A", "model": "Alletra Storage System" },
+    "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "baseSku": "P76706-B21", "model": "DL380a Gen12" },
+    "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "baseSku": "P71964-B21", "model": "DL145 Gen11" }
   };
 
   const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
@@ -118,6 +120,8 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
+    if (desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
+    if (desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
     if (desc.includes('dl380') && desc.includes('gen12')) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
     if (desc.includes('dl380') && desc.includes('gen11')) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
     if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
@@ -260,8 +264,10 @@ function getCatalogDetail(catalogJsonPath) {
   if (!fs.existsSync(catalogJsonPath)) return null;
   try {
     return JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
-  } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e);
-return null;
+  } catch (e) {
+    const err = new Error(`DataCorruptionError: Failed to parse catalog at ${catalogJsonPath}: ${e.message}`);
+    err.code = 'DATA_CORRUPTION';
+    throw err;
   }
 }
 
