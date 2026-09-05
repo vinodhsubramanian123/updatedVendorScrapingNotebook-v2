@@ -13,11 +13,13 @@ const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const { startAsyncNotebookQueryJob, getAsyncNotebookQueryJobStatus } = require('../../scripts/lib/notebook/job_manager.js');
 const { postProcessNotebookResult, diagnoseNotebookFailure } = require('../../scripts/lib/notebook/query_diagnostics.js');
 const { inspectKnowledgeDrift } = require('../../scripts/lib/sync/drift_inspector.js');
 const { savePreprocessingRuleFeedback } = require('../../scripts/lib/preprocessor/feedback_persister.js');
+const { resolveNotebookIdAsync, buildNotebookQueryArgs } = require('../../scripts/lib/notebook/notebook_query_utils.js');
 
 test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
 
@@ -39,10 +41,47 @@ test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
     assert.strictEqual(parsedRes.citations.length, 1);
     assert.strictEqual(parsedRes.citations[0].sourceId, 'src_123');
     assert.strictEqual(parsedRes.citations[0].title, 'QuickSpecs 2026');
+    assert.strictEqual(parsedRes.groundingVerification, 'VERIFIED_GROUNDED');
+    assert.strictEqual(parsedRes.isCloudGrounded, true);
+
+    // Test rejection of customer BOQ / Quote as ground-truth source (INV-24)
+    const forbiddenSourceStdout = JSON.stringify({
+      answer: 'Rule derived from customer quote spreadsheet.',
+      citations: { '1': 'src_999' },
+      references: [{ source_id: 'src_999', cited_text: 'Customer_Tender_Quote_Final.xlsx' }],
+      sources_used: ['src_999']
+    });
+    const forbiddenRes = postProcessNotebookResult(forbiddenSourceStdout, 'What is the cable?');
+    assert.strictEqual(forbiddenRes.groundingVerification, 'REJECTED_FORBIDDEN_SOURCE');
+    assert.strictEqual(forbiddenRes.isCloudGrounded, false);
+    assert.ok(forbiddenRes.warning.includes('INV-24'));
 
     // Object input directly
     const objRes = postProcessNotebookResult({ answer: 'Direct object answer', citations: [] });
     assert.strictEqual(objRes.answer, 'Direct object answer');
+    assert.strictEqual(objRes.groundingVerification, 'UNCITED_ADVISORY');
+    assert.strictEqual(objRes.isCloudGrounded, false);
+
+    // Inline citation extraction when structured citations are empty
+    const inlineStdout = JSON.stringify({
+      answer: 'HPE ProLiant DL380 Gen12 supports 8SFF NVMe cages [cite: 1] and dual Platinum PSUs [Source: HPE DL380 QuickSpecs].',
+      citations: [],
+      references: [{ source_id: '1', title: 'HPE ProLiant DL380 Gen12 QuickSpecs' }]
+    });
+    const inlineRes = postProcessNotebookResult(inlineStdout, 'What are the cage options?');
+    assert.strictEqual(inlineRes.citations.length, 2);
+    assert.strictEqual(inlineRes.groundingVerification, 'VERIFIED_GROUNDED');
+    assert.strictEqual(inlineRes.isCloudGrounded, true);
+
+    // Non-authoritative citation rejection/advisory
+    const nonAuthStdout = JSON.stringify({
+      answer: 'According to a blog post, this configuration is fine.',
+      citations: [{ title: 'Random Blog Post' }]
+    });
+    const nonAuthRes = postProcessNotebookResult(nonAuthStdout, 'Is this fine?');
+    assert.strictEqual(nonAuthRes.groundingVerification, 'UNVERIFIED_NON_AUTHORITATIVE');
+    assert.strictEqual(nonAuthRes.isCloudGrounded, false);
+    assert.strictEqual(nonAuthRes.groundingTier, 'TIER_2_UNCITED_ADVISORY');
   });
 
   await t.test('2. Query Diagnostics — diagnoseNotebookFailure root cause classifier', () => {
@@ -62,6 +101,24 @@ test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
     assert.strictEqual(unknownErr.errorType, 'UNKNOWN_FAILURE');
   });
 
+  await t.test('2b. Product notebook firewall resolves exact mappings only', async () => {
+    const dl380a = await resolveNotebookIdAsync(null, { chassis: 'HPE ProLiant DL380a Gen12' });
+    assert.strictEqual(dl380a, 'b233ec88-4682-4164-a801-3ee6ca649dc1');
+    const unrelatedGen12 = await resolveNotebookIdAsync(null, { chassis: 'HPE ProLiant DL360 Gen12' });
+    assert.strictEqual(unrelatedGen12, null, 'A generic Gen12 label must not fall through to the DL380 Gen12 notebook');
+    const emptyStoreEver = await resolveNotebookIdAsync(null, { chassis: 'MSL3040_Tape' });
+    assert.strictEqual(emptyStoreEver, null, 'An empty/unready notebook mapping must fail closed');
+    const unknownExplicit = await resolveNotebookIdAsync('00000000-0000-0000-0000-000000000000', { chassis: 'DL380_Gen12' });
+    assert.strictEqual(unknownExplicit, null, 'An explicit UUID outside the trusted registry must not inherit another product source allow-list');
+  });
+
+  await t.test('2c. nlm CLI receives one comma-separated source allow-list and explicit timeout', () => {
+    const args = buildNotebookQueryArgs('nb-id', 'question', ['source-a', 'source-b'], 600000);
+    assert.deepStrictEqual(args.slice(args.indexOf('--source-ids'), args.indexOf('--source-ids') + 2), ['--source-ids', 'source-a,source-b']);
+    assert.deepStrictEqual(args.slice(args.indexOf('--timeout'), args.indexOf('--timeout') + 2), ['--timeout', '600']);
+    assert.ok(args.includes('--new-conversation'));
+  });
+
   await t.test('3. Async Notebook Query Job Manager lifecycle', async () => {
     let executionCalled = false;
     const mockExecuteFn = async (notebookId, payload, options) => {
@@ -73,13 +130,19 @@ test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
       };
     };
 
+    const { setJobsDirectory } = require('../../scripts/lib/notebook/persistent_job_store.js');
+    const testJobsDir = path.join(os.tmpdir(), `vendor-notebook-diagnostics-${process.pid}`);
+    setJobsDirectory(testJobsDir);
+
     const initialJob = startAsyncNotebookQueryJob('nb-test-123', 'What are the rules for MR416i-p?', { context: { chassis: 'DL380_Gen12_SFF' } }, mockExecuteFn);
     assert.ok(initialJob.jobId.startsWith('JOB_NLM_'));
     assert.strictEqual(initialJob.status, 'PROCESSING');
     assert.strictEqual(initialJob.chassis, 'DL380_Gen12_SFF');
 
-    // Wait for setImmediate execution
-    await new Promise(resolve => setTimeout(resolve, 50));
+    // Wait for execution
+    for (let i = 0; i < 20 && !executionCalled; i++) {
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
     assert.strictEqual(executionCalled, true);
 
     const completedStatus = getAsyncNotebookQueryJobStatus(initialJob.jobId);
@@ -87,9 +150,14 @@ test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
     assert.strictEqual(completedStatus.answer, 'Async answer for DL380 Gen12');
     assert.strictEqual(completedStatus.citations.length, 1);
 
-    // Job should be purged after reading completed state
-    const purgedStatus = getAsyncNotebookQueryJobStatus(initialJob.jobId);
-    assert.strictEqual(purgedStatus, null);
+    // Job should remain readable across multiple polls (not purged on first read)
+    const subsequentStatus = getAsyncNotebookQueryJobStatus(initialJob.jobId);
+    assert.ok(subsequentStatus, 'Job should remain readable on subsequent poll');
+    assert.strictEqual(subsequentStatus.status, 'COMPLETED');
+
+    // Reset and cleanup test job store
+    setJobsDirectory(null);
+    fs.rmSync(testJobsDir, { recursive: true, force: true });
   });
 
   await t.test('4. Drift Inspector metrics calculation', () => {

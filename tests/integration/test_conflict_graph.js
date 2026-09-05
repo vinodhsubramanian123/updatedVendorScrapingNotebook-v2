@@ -76,6 +76,8 @@ const cleanBoq = [
 
 const gClean = validateConflictGraph(cleanBoq, [], chassisDir);
 assert(gClean.isWholeSolutionValid === true, 'Homogeneous x4 memory build passes whole-solution validation');
+assert(Array.isArray(gClean.recommendedSolutions) && gClean.recommendedSolutions.length <= 3, 'Publishes at most 3 close, validated customer options');
+assert(gClean.recommendedSolutions.every(s => s.isUniqueBom && s.isParetoOptimal && s.physicalMathClean), 'Every published option is unique, Pareto-optimal, and physically clean');
 
 const mixedMemoryBoq = [
   { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },

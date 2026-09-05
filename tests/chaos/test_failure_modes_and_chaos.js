@@ -189,7 +189,8 @@ async function runChaosSuite() {
     const graphRes = validateConflictGraph(chaosBOQItems, chaosEval);
     report('Conflict graph builds ranked solutions without crashing', Array.isArray(graphRes.rankedSolutions) && graphRes.rankedSolutions.length === 5);
     report('Rank 1 (Intent Preserved) injects mandatory fixes', (graphRes.rankedSolutions[0].skuPartsList || graphRes.rankedSolutions[0].skuList || []).length > chaosBOQItems.length);
-    report('Rank 5 (Budget Optimized) has non-zero valid CapEx estimate', graphRes.rankedSolutions[4].estimatedCostUsd > 0);
+    report('Rank 5 pricing is either complete or explicitly identifies unavailable certified SKU prices',
+      graphRes.rankedSolutions[4].pricingComplete === true || graphRes.rankedSolutions[4].priceUnavailableSkus.length > 0);
 
     // ─────────────────────────────────────────────────────────────────────────────
     // TEST SUITE 5: PREPROCESSOR FRACTIONAL DIVISION & MULTI-CHASSIS ANOMALIES

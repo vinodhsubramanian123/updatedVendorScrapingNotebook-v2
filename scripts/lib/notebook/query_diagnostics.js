@@ -7,7 +7,7 @@
 
 const { stripAnsi } = require('./query_sanitizer.js');
 
-function postProcessNotebookResult(stdout, originalQuery = '') {
+function postProcessNotebookResult(stdout, originalQuery = '', context = {}) {
   const result = {
     query: originalQuery,
     answer: '',
@@ -27,7 +27,7 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
     result.answer = stdout.answer || stdout.response || JSON.stringify(stdout);
     result.citations = Array.isArray(stdout.citations) ? stdout.citations : Object.entries(stdout.citations || {}).map(([k, v]) => ({ index: k, sourceId: v }));
     result.sourcesUsed = stdout.sources_used || [];
-    return result;
+    return validateGroundingCitations(result, context);
   }
 
   const cleanStdout = stripAnsi(stdout).trim();
@@ -60,7 +60,98 @@ function postProcessNotebookResult(stdout, originalQuery = '') {
     } catch (_) {}
   }
 
-  return result;
+  // Parse inline citations if structured citations are empty
+  if ((!result.citations || result.citations.length === 0) && result.answer) {
+    const inlineMatches = [];
+    const regex = /\[(?:cite:\s*(\d+)|source:\s*([^\]]+)|ref(?:erence)?\s*(\d+)|(\d+))\]/gi;
+    let m;
+    while ((m = regex.exec(result.answer)) !== null) {
+      const index = m[1] || m[3] || m[4];
+      const text = m[2];
+      if (index) {
+        const ref = (result.references || []).find(r => String(r.source_id) === String(index) || String(r.index) === String(index));
+        inlineMatches.push({
+          index,
+          sourceId: ref?.source_id || index,
+          title: ref?.title || ref?.cited_text || `Source ${index}`
+        });
+      } else if (text) {
+        inlineMatches.push({
+          index: String(inlineMatches.length + 1),
+          sourceId: text.trim(),
+          title: text.trim()
+        });
+      }
+    }
+    if (inlineMatches.length > 0) {
+      result.citations = inlineMatches;
+    }
+  }
+
+  return validateGroundingCitations(result, context);
+}
+
+const FORBIDDEN_SOURCE_PATTERN = /(?:customer|quote|proposal|tender|rfp|partner.*bom|boq|procurement)/i;
+const AUTHORITATIVE_SOURCE_PATTERN = /(?:quickspecs|quick\s*specs|c0\d{5,}|oca[_\s-]*catalog|master[_\s-]*catalog|sku[_\s-]*catalog|universal[_\s-]*knowledge[_\s-]*charter|verified[_\s-]*knowledge[_\s-]*delta)/i;
+
+/**
+ * Validate that citations and sources used by NotebookLM reference ground-truth
+ * documents (QuickSpecs, Catalogs, Payload Charters) and strictly forbid customer BOQs (INV-24).
+ * @param {object} processedResult - Output from postProcessNotebookResult
+ * @param {object} [context] - Context containing chassis / product info
+ * @returns {object} Updated result with groundingTier and verificationStatus
+ */
+function validateGroundingCitations(processedResult, context = {}) {
+  if (!processedResult) return processedResult;
+
+  const citations = processedResult.citations || [];
+  const sourcesUsed = processedResult.sourcesUsed || [];
+  const references = processedResult.references || [];
+
+  // Check for forbidden sources (customer BOQs, quotes, BOMs)
+  const sourceText = value => typeof value === 'string'
+    ? value
+    : (value?.title || value?.name || value?.cited_text || value?.url || '');
+  const sourceId = value => typeof value === 'object' && value
+    ? (value.sourceId || value.source_id || value.id || '')
+    : '';
+  const allSources = [...citations, ...references, ...sourcesUsed];
+  const allSourceTexts = allSources.map(sourceText).filter(Boolean);
+  const citedSourceIds = allSources.map(sourceId).filter(Boolean).map(String);
+  const authoritativeSourceIds = new Set((context.authoritativeSourceIds || []).filter(Boolean).map(String));
+
+  const hasForbiddenSource = allSourceTexts.some(txt => FORBIDDEN_SOURCE_PATTERN.test(txt));
+
+  if (hasForbiddenSource) {
+    processedResult.groundingVerification = 'REJECTED_FORBIDDEN_SOURCE';
+    processedResult.isCloudGrounded = false;
+    processedResult.groundingTier = 'UNVERIFIED_FORBIDDEN_SOURCE';
+    processedResult.warning = 'Citations referenced customer quote/BOQ sources, violating INV-24 isolation. Grounding demoted.';
+    return processedResult;
+  }
+
+  // Verify authoritative source match
+  const hasAuthoritativeSource =
+    allSourceTexts.some(txt => AUTHORITATIVE_SOURCE_PATTERN.test(txt)) ||
+    citedSourceIds.some(id => authoritativeSourceIds.has(id));
+
+  if (citations.length > 0 && (hasAuthoritativeSource || allSourceTexts.length === 0)) {
+    processedResult.groundingVerification = 'VERIFIED_GROUNDED';
+    processedResult.isCloudGrounded = true;
+    processedResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
+  } else if (citations.length > 0 && !hasAuthoritativeSource) {
+    // Citations exist but none matched authoritative pattern
+    processedResult.groundingVerification = 'UNVERIFIED_NON_AUTHORITATIVE';
+    processedResult.isCloudGrounded = false;
+    processedResult.groundingTier = 'TIER_2_UNCITED_ADVISORY';
+    processedResult.warning = 'Citations do not match certified vendor QuickSpecs or catalog sources.';
+  } else {
+    processedResult.groundingVerification = 'UNCITED_ADVISORY';
+    processedResult.isCloudGrounded = false;
+    processedResult.groundingTier = 'TIER_2_UNCITED_ADVISORY';
+  }
+
+  return processedResult;
 }
 
 function diagnoseNotebookFailure(notebookId, err) {
@@ -96,5 +187,6 @@ function diagnoseNotebookFailure(notebookId, err) {
 
 module.exports = {
   postProcessNotebookResult,
+  validateGroundingCitations,
   diagnoseNotebookFailure
 };

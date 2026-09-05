@@ -4,7 +4,7 @@
  *
  * Stresses 5-Tier Strategic Resolution Matrix:
  * 1. 5 distinct solution tiers (Rank 1 through Rank 5) with zero duplicate ranks.
- * 2. CapEx monotonicity: Rank 4 >= Rank 3 >= Rank 5.
+ * 2. Exact catalog/history pricing with explicit incomplete-price disclosure.
  * 3. Base chassis SKU retention across all 5 ranks.
  * 4. List price resolution and zero NaN/undefined budget calculations.
  */
@@ -74,8 +74,8 @@ async function runTests() {
   assert(rank4 && rank4.estimatedCostUsd > 0, `Rank 4 has valid positive estimated CapEx: $${rank4?.estimatedCostUsd?.toLocaleString()}`);
   assert(rank5 && rank5.estimatedCostUsd > 0, `Rank 5 has valid positive estimated CapEx: $${rank5?.estimatedCostUsd?.toLocaleString()}`);
 
-  assert(rank4.estimatedCostUsd >= rank3.estimatedCostUsd, `Rank 4 (Max Density: $${rank4.estimatedCostUsd}) >= Rank 3 (High-IOPS: $${rank3.estimatedCostUsd})`);
-  assert(rank4.estimatedCostUsd >= rank5.estimatedCostUsd, `Rank 4 (Max Density: $${rank4.estimatedCostUsd}) >= Rank 5 (Budget Min: $${rank5.estimatedCostUsd})`);
+  assert([rank1, rank2, rank3, rank4, rank5].every(r => typeof r.pricingComplete === 'boolean'), 'Every rank publishes explicit pricing completeness');
+  assert([rank1, rank2, rank3, rank4, rank5].every(r => Array.isArray(r.priceUnavailableSkus)), 'Every rank identifies any unavailable certified SKU prices');
 
   // Verify zero NaN / undefined in budget math
   const allBudgetsValid = ranks.every(r => Number.isFinite(r.estimatedCostUsd) && !Number.isNaN(r.estimatedCostUsd));

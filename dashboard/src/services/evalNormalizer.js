@@ -137,8 +137,8 @@ export function normalizeEvalResult(payload) {
     ...extractHardwareMetrics(data, inner),
     ...extractConflictAndStrategy(data, inner),
     ...extractProvenanceAndTrace(data, inner),
-    // RAG fields — populated later by the poller
-    ragAnswer: null,
-    ragData: null
+    // RAG fields — read directly from evaluation result if already synthesized
+    ragAnswer: inner.ragAnswer ?? data.ragAnswer ?? null,
+    ragData: inner.ragResult ?? data.ragResult ?? null
   };
 }

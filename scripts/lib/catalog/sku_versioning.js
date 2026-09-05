@@ -332,11 +332,34 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
 
   const effectiveEvent = eventsOnOrBefore[eventsOnOrBefore.length - 1];
   let effectivePrice = effectiveEvent.price || 0;
+  let effectiveStatus = effectiveEvent.status || 'ACTIVE';
+  let rejectedAnomaly = null;
   if (effectivePrice === 0) {
     // Fall back to latest non-zero price recorded in trail on or before target date
     const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && (e.date || '') <= normalizedDate);
     if (nonZeroEvents.length > 0) {
       effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
+      effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
+    }
+  }
+  // OCA may transiently emit $1 or malformed multi-million values while an
+  // unbundled view is repainting. Preserve the immediately preceding credible
+  // GPL when a single event jumps by more than 20x in either direction (INV-34).
+  const priorNonZeroEvents = eventsOnOrBefore
+    .slice(0, -1)
+    .filter(e => Number(e.price) > 0);
+  const priorPrice = Number(priorNonZeroEvents[priorNonZeroEvents.length - 1]?.price || 0);
+  if (priorPrice >= 20 && effectivePrice > 0) {
+    const ratio = effectivePrice / priorPrice;
+    if (ratio > 20 || ratio < 0.05) {
+      rejectedAnomaly = {
+        rejectedPriceUsd: effectivePrice,
+        preservedPriceUsd: priorPrice,
+        eventDate: effectiveEvent.date,
+        ratio: parseFloat(ratio.toFixed(6))
+      };
+      effectivePrice = priorPrice;
+      effectiveStatus = 'ANOMALOUS_PORTAL_PRICE_REJECTED';
     }
   }
   const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
@@ -346,10 +369,11 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     targetDate: normalizedDate,
     effectiveDate: effectiveEvent.date,
     priceUsd: effectivePrice,
-    status: effectiveEvent.status || 'ACTIVE',
+    status: effectiveStatus,
     changeFromBaselinePercent: changePercent,
     isDiscontinued: effectiveEvent.status === 'REMOVED' || audit.currentStatus === 'DISCONTINUED',
-    priceTrail: sorted
+    priceTrail: sorted,
+    ...(rejectedAnomaly ? { rejectedAnomaly } : {})
   };
 }
 
@@ -527,5 +551,4 @@ module.exports = {
   recordVersionSnapshot,
   _clearCatalogPriceCache
 };
-
 

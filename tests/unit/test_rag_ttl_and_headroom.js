@@ -13,7 +13,7 @@
  *    - purgeExpiredRagCache purges expired files cleanly on startup.
  * 2. RAG Headroom & Guardrail Budget Cap:
  *    - GUARDRAIL_OVERALL_TIMEOUT_MS is 180s (3 minutes).
- *    - RAG_TIMEOUT_MS is 120s (2 minutes).
+ *    - RAG_TIMEOUT_MS is 600s (10 minutes).
  *    - GUARDRAIL_NLM_MAX_CALLS limit (3 calls) caps query bursts.
  */
 
@@ -55,7 +55,7 @@ describe('🧪 Dual-Brain RAG Headroom & TTL Cache Invalidation Suite', () => {
   });
 
   test('1. Constants assert correct Dual-Brain Headroom & Budget Cap (INV-41)', () => {
-    assert.strictEqual(RAG_TIMEOUT_MS, 120000, 'RAG_TIMEOUT_MS must be 120,000ms (120s)');
+    assert.strictEqual(RAG_TIMEOUT_MS, 600000, 'RAG_TIMEOUT_MS must be 600,000ms (10 minutes)');
     assert.strictEqual(RAG_CACHE_TTL_MS, 86400000, 'RAG_CACHE_TTL_MS must be 86,400,000ms (24 hours)');
     assert.strictEqual(GUARDRAIL_OVERALL_TIMEOUT_MS, 180000, 'GUARDRAIL_OVERALL_TIMEOUT_MS must be 180,000ms (3 minutes)');
     assert.strictEqual(GUARDRAIL_NLM_MAX_CALLS, 3, 'GUARDRAIL_NLM_MAX_CALLS must be 3 queries');

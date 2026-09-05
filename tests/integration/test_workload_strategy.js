@@ -57,7 +57,8 @@ const ranks = strategies.map(s => s.rank);
 const uniqueRanks = new Set(ranks);
 assert(uniqueRanks.size === 5 && Math.min(...ranks) === 1 && Math.max(...ranks) === 5, 'Ranks 1 through 5 generated dynamically without duplicates');
 assert(strategies.every(s => s.skuPartsList.length > 0 && s.skuPartsList.every(p => p.sku && p.sku !== 'HALLUCINATED_SKU')), 'No hallucinated SKU part numbers');
-assert(strategies.every(s => s.budgetBreakdown && s.budgetBreakdown.totalBudgetUsd > 0), 'Each tier calculates a budget greater than zero');
+assert(strategies.every(s => s.pricingComplete === false), 'Unknown SKU prices are explicitly marked incomplete');
+assert(strategies.every(s => s.estimatedCostUsd === 0), 'Customer-supplied or hardcoded placeholder prices are never treated as catalog truth');
 
 // 3. Stress-test fallback local RAG grounding
 console.log('\n--- 3. Fallback Local RAG Grounding ---');

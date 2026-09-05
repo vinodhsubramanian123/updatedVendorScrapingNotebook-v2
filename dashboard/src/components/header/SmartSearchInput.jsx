@@ -39,7 +39,7 @@ export default function SmartSearchInput({
       </form>
 
       {isSearchOpen && searchQuery.trim().length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 p-3 space-y-2 animate-in fade-in duration-150">
+        <div className="absolute top-full left-0 right-0 mt-16 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 p-3 space-y-2 animate-in fade-in duration-150">
           <div className="flex items-center justify-between text-[11px] pb-2 border-b border-slate-100">
             <span className="font-bold text-slate-700">
               Matching SKUs in Current Catalog ({localSearchResults.skus.length}):

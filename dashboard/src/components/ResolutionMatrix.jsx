@@ -58,7 +58,7 @@ export default function ResolutionMatrix({
       `Strategy: ${tier.subtitle} | CapEx: ${tier.capex}`,
       `Workload Alignment: ${tier.intentMatch}`,
       `--------------------------------------------------`,
-      ...tier.skuPartsList.map(p => `${p.quantity}x\t${p.sku}\t$${((p.unitPriceUsd || 0) * (p.quantity || 1)).toLocaleString()}\t[${p.category || 'Option'}]\t${p.description}`),
+      ...tier.skuPartsList.map(p => `${p.quantity}x\t${p.sku}\t${p.priceKnown === false ? 'PRICE N/A' : `$${((p.unitPriceUsd || 0) * (p.quantity || 1)).toLocaleString()}`}\t[${p.category || 'Option'}]\t${p.description}`),
       `--------------------------------------------------`,
       `Total Estimated CapEx Budget: ${tier.capex}`
     ];
@@ -69,7 +69,11 @@ export default function ResolutionMatrix({
     }, 2500);
   };
 
-  const rankedFromEval = evalResults?.conflictGraph?.rankedSolutions || evalResults?.rankedSolutions || [];
+  const rankedFromEval = evalResults?.conflictGraph?.recommendedSolutions
+    ?? evalResults?.recommendedSolutions
+    ?? evalResults?.conflictGraph?.rankedSolutions
+    ?? evalResults?.rankedSolutions
+    ?? [];
 
   const tiers = (rankedFromEval && rankedFromEval.length > 0)
     ? rankedFromEval.map(sol => {
@@ -88,7 +92,9 @@ export default function ResolutionMatrix({
           subtitle: sol.workloadDnaMatch || `Rank ${sol.rank} Solution`,
           score: sol.score || 0.9,
           intentMatch: sol.tradeoffMetrics?.intentAlignment || `${Math.round((sol.score || 0.9) * 100)}%`,
-          capex: sol.estimatedCostUsd ? `$${sol.estimatedCostUsd.toLocaleString()}` : 'Pricing N/A',
+          capex: sol.pricingComplete === false
+            ? `Pricing incomplete (${sol.priceUnavailableSkus?.length || 0} SKU${sol.priceUnavailableSkus?.length === 1 ? '' : 's'})`
+            : `$${Number(sol.estimatedCostUsd || 0).toLocaleString()}`,
           budgetBreakdown: sol.budgetBreakdown || null,
           badgeClass: sol.rank === 1 ? 'badge-emerald' : sol.rank <= 3 ? 'badge-blue' : 'badge-amber',
           rationale: sol.reasoning,
@@ -99,78 +105,7 @@ export default function ResolutionMatrix({
           cascadingImpact: sol.cascadingImpact || null
         };
       })
-    : [
-        {
-          rank: 1,
-          title: 'Rank 1: Intent Preserved (Direct Workload Alignment)',
-          subtitle: 'Direct hardware mapping preserving customer core/RAM ratio and storage specs with zero unrequested over-provisioning.',
-          score: 0.98,
-          intentMatch: '100% (Direct Match)',
-          capex: '$14,250',
-          badgeClass: 'badge-emerald',
-          rationale: 'Prioritizes original quote intent by keeping requested CPU/RAM footprint and injecting only mandatory physical thermal/power items.',
-          isOptimal: true,
-          swaps: ['Injected P48820-B21 High Performance Fan Kit', 'Paired P01366-B21 Smart Storage Battery with MR416i'],
-          skuPartsList: [],
-          cascadingImpact: null
-        },
-        {
-          rank: 2,
-          title: 'Rank 2: Standardized CTO Baseline & Factory Default Accessories',
-          subtitle: 'Standardized factory default cable and rail accessories for maximum factory assembly stability.',
-          score: 0.92,
-          intentMatch: '94% (Standardized)',
-          capex: '$14,500',
-          badgeClass: 'badge-blue',
-          rationale: 'Standardizes baseline options with factory default cable and rail accessories for maximum assembly stability.',
-          isOptimal: false,
-          swaps: ['Standardized factory default accessories', 'Standardized thermal paste and rail kit'],
-          skuPartsList: [],
-          cascadingImpact: null
-        },
-        {
-          rank: 3,
-          title: 'Rank 3: High-IOPS & Storage Performance Optimized',
-          subtitle: 'Upgrades storage write-cache and smart hybrid battery protection for enhanced database IOPS.',
-          score: 0.86,
-          intentMatch: '88% (Storage Heavy)',
-          capex: '$15,100',
-          badgeClass: 'badge-blue',
-          rationale: 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.',
-          isOptimal: false,
-          swaps: ['Upgraded to 4GB Flash-Backed Write Cache', 'Added redundant battery module'],
-          skuPartsList: [],
-          cascadingImpact: null
-        },
-        {
-          rank: 4,
-          title: 'Rank 4: Maximum Density & Future Scalability Expansion',
-          subtitle: 'Expands chassis with secondary PCIe riser cages and redundant power infrastructure for future multi-GPU/NVMe expansion.',
-          score: 0.80,
-          intentMatch: '82% (High-Capacity)',
-          capex: '$16,400',
-          badgeClass: 'badge-amber',
-          rationale: 'Expands chassis with secondary PCIe riser cages and redundant power infrastructure.',
-          isOptimal: false,
-          swaps: ['Added Secondary 2U Riser Cage', 'Upgraded to Dual 1600W Titanium PSUs'],
-          skuPartsList: [],
-          cascadingImpact: null
-        },
-        {
-          rank: 5,
-          title: 'Rank 5: Budget Minimized (Zero Over-Provisioning)',
-          subtitle: 'Strips non-essential accessories to provide the most cost-effective valid buildable configuration.',
-          score: 0.72,
-          intentMatch: '75% (CapEx Focused)',
-          capex: '$13,600',
-          badgeClass: 'badge-amber',
-          rationale: 'Strips optional secondary accessories, cable management arms, and discretionary brackets while retaining 100% physical validity.',
-          isOptimal: false,
-          swaps: ['Removed Optional Cable Management Arm', 'Selected Standard Tool-less Rails'],
-          skuPartsList: [],
-          cascadingImpact: null
-        }
-      ];
+    : [];
 
   const cluster = evalResults?.clusterSizing;
   const redundantDefaults = evalResults?.redundantDefaults || [];
@@ -306,7 +241,13 @@ export default function ResolutionMatrix({
         </div>
       )}
 
-      {matrixViewMode === 'vertical-matrix' ? (
+      {tiers.length === 0 && (
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
+          No candidate passed the buildability, uniqueness, Pareto, and customer-closeness gates. Review the reported conflicts before exporting a BOM.
+        </div>
+      )}
+
+      {tiers.length > 0 && (matrixViewMode === 'vertical-matrix' ? (
         <MatrixComparisonTable
           tiers={tiers}
           standardCategories={STANDARD_CATEGORIES}
@@ -334,7 +275,7 @@ export default function ResolutionMatrix({
             />
           ))}
         </div>
-      )}
+      ))}
 
       <RejectionModal
         modalData={rejectionModal}

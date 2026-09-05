@@ -173,7 +173,25 @@ function runAnalysis() {
   });
 
   console.log('\n================================================================');
-  return { results, allFunctions, highComplexity, criticalComplexity };
+
+  const args = process.argv.slice(2);
+  const failOnBreach = args.includes('--fail-on-breach');
+  const maxCcArg = args.find(a => a.startsWith('--max-cc=') || a.startsWith('--threshold='));
+  const maxCcThreshold = maxCcArg ? parseInt(maxCcArg.split('=')[1], 10) : 160;
+
+  const breaches = allFunctions.filter(f => f.complexity > maxCcThreshold);
+  if (breaches.length > 0) {
+    console.log(`⚠️  ${breaches.length} function(s) exceed CC threshold of ${maxCcThreshold}.`);
+    if (failOnBreach) {
+      console.error(`\n❌ COMPLEXITY GATE BREACH: ${breaches.length} function(s) exceed maximum CC threshold (${maxCcThreshold}):`);
+      breaches.forEach(b => console.error(`  • ${b.name}() [CC: ${b.complexity}] at ${b.file}:${b.startLine}`));
+      process.exit(1);
+    }
+  } else {
+    console.log(`✅ All scanned functions within acceptable CC threshold (<= ${maxCcThreshold}).`);
+  }
+
+  return { results, allFunctions, highComplexity, criticalComplexity, breaches };
 }
 
 if (require.main === module) {

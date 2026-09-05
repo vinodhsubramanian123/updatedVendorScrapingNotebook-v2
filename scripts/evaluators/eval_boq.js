@@ -36,16 +36,18 @@ function getDefaultNotebookId(chassisName = '') {
       const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       if (chassisName && cfg.notebooks && cfg.notebooks[chassisName]) {
         const entry = cfg.notebooks[chassisName];
-        const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
+        if (typeof entry !== 'object' || entry?.queryEnabled === false) return null;
+        if (!Array.isArray(entry.trustedSourceIds) || entry.trustedSourceIds.length === 0) return null;
+        const id = entry.notebookId;
         if (id && String(id).trim()) return String(id).trim();
       }
-      return cfg.defaultNotebookId || cfg.default || '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
+      return cfg.defaultNotebookId || null;
     } catch (e) {
       const _logger = require('../lib/system/pipeline_logger.js');
       _logger.warn('ERROR', 'eval_boq.js', e);
     }
   }
-  return '1d190853-4e9c-48df-aa70-eae66c6f2c1f';
+  return null;
 }
 
 // ============================================================
@@ -54,6 +56,7 @@ function getDefaultNotebookId(chassisName = '') {
 function parseEvaluationArguments(args = process.argv.slice(2)) {
   const JSON_MODE = args.includes('--json');
   const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
+  const DEFER_RAG = args.includes('--defer-rag');
 
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`
@@ -64,6 +67,7 @@ Options:
   --notebook-id <id>           Gemini Notebook ID for RAG validation
   --output <output_report.md>  Output report path
   --json                       Machine-parseable JSON output mode
+  --defer-rag                  Return local result and let the dashboard own the cloud job
   --budget <usd>               Target CapEx budget in USD
   --simulate-portal-error ".." Simulate a portal rejection error
   --output-dir <dir>           Output directory for feedback deltas
@@ -109,10 +113,14 @@ Examples:
     targetBudgetUsd = parseFloat(args[bIdx + 1]) || 0;
   }
 
+  const SYNC_RAG = args.includes('--sync-rag') || process.env.SYNC_RAG === '1';
+
   return {
     inputFile,
     JSON_MODE,
     OFFLINE_MODE,
+    DEFER_RAG,
+    SYNC_RAG,
     explicitNotebookId,
     chassisDir,
     targetSheetName,
@@ -298,6 +306,27 @@ async function executeGroundedRagValidation(ctx) {
   emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
 
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
+
+  // Dashboard mode returns the deterministic result immediately. The long-running
+  // NotebookLM child must be owned by the dashboard server, otherwise this CLI
+  // process remains alive and the UI never receives the provisional result.
+  if (!OFFLINE_MODE && ctx.DEFER_RAG) {
+    const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
+    evalResults.status = 'LOCAL_COMPLETE';
+    evalResults.cloudGroundingStatus = 'CLOUD_PENDING';
+    evalResults.notebookLmStatus = {
+      status: 'CLOUD_PENDING',
+      jobId: null,
+      isCloudGrounded: false,
+      isPending: true,
+      pollIntervalMs: 1500
+    };
+    evalResults.ragResult = null;
+    evalResults.ragAnswer = '';
+
+    return { ragAnswer: '', stage3RAGMs, stage4GuardrailMs: 0 };
+  }
+
   const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
     context: {
       chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || (chassisDetection && chassisDetection.detectedVariant && chassisDetection.detectedVariant.model) || detectedChassisName,
@@ -305,19 +334,46 @@ async function executeGroundedRagValidation(ctx) {
       items: items
     },
     offlineMode: OFFLINE_MODE,
-    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10)
+    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10)
   });
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
 
+  evalResults.status = 'LOCAL_COMPLETE';
+  evalResults.cloudGroundingStatus = ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : ((ragResult.source || '').includes('LOCAL') ? 'LOCAL_FALLBACK' : 'CLOUD_FAILED');
   evalResults.notebookLmStatus = {
     source: ragResult.source,
     sourcesUsed: ragResult.sourcesUsed || [],
     citationsCount: (ragResult.citations || []).length,
     fallbackReason: ragResult.fallbackReason || null,
+    groundingVerification: ragResult.groundingVerification || 'UNVERIFIED',
+    groundingTier: ragResult.groundingTier || (ragResult.isCloudGrounded ? 'TIER_1_LIVE_CLOUD_GROUNDED' : 'TIER_2_UNCITED_ADVISORY'),
     isFallback: (ragResult.source || '').includes('FALLBACK') || (ragResult.source || '').includes('LOCAL'),
-    isCloudGrounded: ragResult.source === 'NOTEBOOK_LM_CLOUD' || ragResult.source === 'NOTEBOOK_LM',
+    isCloudGrounded: Boolean(ragResult.isCloudGrounded && (ragResult.citations || []).length > 0 && ragResult.groundingVerification !== 'REJECTED_FORBIDDEN_SOURCE'),
     cached: ragResult.cached || false
   };
+
+  if (ragResult.warning) {
+    evalResults.warnings.push(ragResult.warning);
+  }
+
+  // Disagreement logging: Detect discrepancies between deterministic local aspect checks and advisory RAG commentary
+  evalResults.opinionDiscrepancies = evalResults.opinionDiscrepancies || [];
+  const localHasConflicts = (evalResults.errors || []).length > 0;
+  const ragAnswerLower = (ragResult.answer || '').toLowerCase();
+  const ragClaimsFullyCompliant = ragAnswerLower.includes('fully compatible') || ragAnswerLower.includes('no issues detected') || ragAnswerLower.includes('100% buildable');
+
+  if (localHasConflicts && ragClaimsFullyCompliant) {
+    const discrepancy = {
+      type: 'LOCAL_RULE_OVERRIDE',
+      severity: 'WARNING',
+      message: 'Local rule engine flagged physical/thermal conflicts, but cloud commentary reported full compatibility. Deterministic aspect checks prevail.',
+      localConflicts: evalResults.errors,
+      cloudAnswerSnippet: (ragResult.answer || '').slice(0, 200)
+    };
+    evalResults.opinionDiscrepancies.push(discrepancy);
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', 'Discrepancy detected: Deterministic local aspect rules prevail over cloud RAG commentary.');
+  }
 
   if (evalResults.notebookLmStatus.isFallback && !evalResults.notebookLmStatus.cached) {
     const fallbackWarning = `⚠️ NotebookLM Cloud was NOT consulted — used local RAG fallback (Reason: ${ragResult.fallbackReason || 'NLM CLI timeout or unavailable'}). Verify critical dependencies manually or re-run with longer RAG_TIMEOUT_MS.`;
@@ -325,12 +381,24 @@ async function executeGroundedRagValidation(ctx) {
     if (!JSON_MODE) console.log(`\n${fallbackWarning}`);
   }
   evalResults.ragResult = ragResult;
+  evalResults.ragAnswer = ragResult.answer || '';
 
   try {
-    const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
-      chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir)
-    });
-    evalResults.learnedDeltasCount = learnedResult.count;
+    // Phase 0 Fix: Only extract learned deltas from verified cloud grounding with citations.
+    // Unverified local fallback, error responses, or uncited RAG MUST NEVER generate learned deltas.
+    const isVerifiedCloud = evalResults.notebookLmStatus.isCloudGrounded && (evalResults.notebookLmStatus.citationsCount > 0);
+    if (isVerifiedCloud) {
+      const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
+        chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir),
+        source: ragResult.source,
+        groundingVerification: ragResult.groundingVerification,
+        citations: ragResult.citations || [],
+        catalogData
+      });
+      evalResults.learnedDeltasCount = learnedResult.count;
+    } else {
+      evalResults.learnedDeltasCount = 0;
+    }
   } catch (extractErr) {
     const _logger = require('../lib/system/pipeline_logger.js');
     _logger.warn('EVAL_BOQ', `Knowledge extraction skipped: ${extractErr.message}`);
@@ -550,18 +618,20 @@ function serializeAndExportResults(ctx) {
       stepId: 3,
       title: 'NotebookLM RAG Consultation',
       subtitle: 'HPE QuickSpecs Knowledge Grounding',
-      status: notebookId ? 'COMPLETED' : 'SKIPPED',
-      durationMs: 310,
-      details: notebookId ? `Dispatched non-blocking RAG consultation against QuickSpecs source Notebook (${notebookId}).` : `No specific Notebook ID mapped for chassis ${chassisPrefix}. Used fallback catalog rules.`,
-      metrics: { notebookId: notebookId || 'Catalog_Fallback', ragStatus: ragAnswer ? 'SYNTHESIZED' : 'ASYNC_PENDING' }
+      status: evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? 'COMPLETED' : (evalResults.cloudGroundingStatus === 'CLOUD_PENDING' ? 'PENDING' : 'SKIPPED'),
+      durationMs: stage3RAGMs,
+      details: evalResults.cloudGroundingStatus === 'CLOUD_PENDING'
+        ? `Cloud grounding is pending and will be owned by the dashboard worker for Notebook ${notebookId}.`
+        : (notebookId ? `NotebookLM grounding status: ${evalResults.cloudGroundingStatus}.` : `No dedicated Notebook ID mapped for ${chassisPrefix}; local rules remain available.`),
+      metrics: { notebookId: notebookId || 'UNMAPPED', ragStatus: evalResults.cloudGroundingStatus || 'LOCAL_FALLBACK' }
     },
     {
       stepId: 4,
       title: 'Agentic AI Cross-Verification',
       subtitle: 'Gemini LLM Dual-Brain Verification',
-      status: 'COMPLETED',
-      durationMs: 220,
-      details: `Gemini AI Brain cross-verified workload intent match (${graph.workloadDna?.workloadDescription || 'Compute/Storage'}) and verified zero cable/TDP thermal regressions.`,
+      status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN',
+      durationMs: stage4GuardrailMs,
+      details: stage4GuardrailMs > 0 ? 'Agentic guardrail completed.' : 'Agentic guardrail was not run during the provisional local phase.',
       metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score || 0.9 }
     },
     {
@@ -570,8 +640,8 @@ function serializeAndExportResults(ctx) {
       subtitle: '5-Tier Strategic Resolution Matrix',
       status: 'COMPLETED',
       durationMs: 150,
-      details: `Synthesized 5 ranked buildable solution candidates with vertical itemized SKU parts breakdown.`,
-      metrics: { rankedTiers: graph.rankedSolutions?.length || 5, topRankScore: graph.rankedSolutions?.[0]?.score || 0.9 }
+      details: `Synthesized ${graph.rankedSolutions?.length || 0} compatibility tiers; ${graph.recommendedSolutions?.length || 0} passed the buildability, Pareto, uniqueness, and closeness publication gates.`,
+      metrics: { rankedTiers: graph.rankedSolutions?.length || 0, recommendedSolutions: graph.recommendedSolutions?.length || 0, topRankScore: graph.recommendedSolutions?.[0]?.score || null }
     },
     {
       stepId: 6,
@@ -596,16 +666,16 @@ function serializeAndExportResults(ctx) {
       stages: [
         { stageId: 1, name: 'BOQ Parsing & Multi-Cluster Discovery', durationMs: stage1ParsingMs, status: 'COMPLETED' },
         { stageId: 2, name: '7-Aspect Physical Rule Engine', durationMs: stage2AspectMathMs, status: (evalResults.errors || []).length > 0 ? 'VIOLATIONS_FOUND' : 'CLEAN' },
-        { stageId: 3, name: 'NotebookLM Cloud RAG Grounding', durationMs: stage3RAGMs, status: evalResults.notebookLmStatus?.isCloudGrounded ? 'CLOUD_GROUNDED' : 'LOCAL_SAFETY_NET' },
-        { stageId: 4, name: 'Dual-Brain Agentic Guardrail', durationMs: stage4GuardrailMs, status: 'COMPLETED' },
+        { stageId: 3, name: 'NotebookLM Cloud RAG Grounding', durationMs: stage3RAGMs, status: evalResults.cloudGroundingStatus || 'LOCAL_FALLBACK' },
+        { stageId: 4, name: 'Dual-Brain Agentic Guardrail', durationMs: stage4GuardrailMs, status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN' },
         { stageId: 5, name: '5-Tier Strategy Matrix & Conflict Resolution', durationMs: stage5MatrixMs, status: 'SYNTHESIZED' },
-        { stageId: 6, name: 'Post-Flow Knowledge Sync', durationMs: 0, status: evalResults.postFlowSync?.success !== false ? 'SYNCED' : 'COMPLETED' }
+        { stageId: 6, name: 'Post-Flow Knowledge Sync', durationMs: 0, status: evalResults.postFlowSync?.syncStatus || 'LOCAL_PAYLOAD_ONLY' }
       ],
       grounding: {
         notebookId,
-        source: evalResults.notebookLmStatus?.source || 'NOTEBOOK_LM_CLOUD',
+        source: evalResults.notebookLmStatus?.source || (evalResults.cloudGroundingStatus === 'CLOUD_PENDING' ? 'NOTEBOOK_LM_PENDING' : 'LOCAL_RULE_ENGINE'),
         isCloudGrounded: Boolean(evalResults.notebookLmStatus?.isCloudGrounded),
-        groundingTier: evalResults.notebookLmStatus?.groundingTier || 'TIER_1_LIVE_CLOUD_GROUNDED',
+        groundingTier: evalResults.notebookLmStatus?.groundingTier || 'UNVERIFIED_PENDING',
         citationsCount: evalResults.notebookLmStatus?.citationsCount || 0,
         sourcesUsed: evalResults.notebookLmStatus?.sourcesUsed || [],
         latencyMs: stage3RAGMs
@@ -670,6 +740,8 @@ function serializeAndExportResults(ctx) {
           matrixTimeMs: stage5MatrixMs,
           totalEvalTimeMs: Date.now() - startTime
         },
+        ragAnswer: evalResults.ragAnswer || null,
+        ragResult: evalResults.ragResult || null,
         notebookLmStatus: evalResults.notebookLmStatus || null,
         postFlowSync: evalResults.postFlowSync || null,
         needsActions: evalResults.evalSummary?.needsActions || [],
@@ -737,7 +809,9 @@ async function main() {
     ...ingestCtx,
     evalResults,
     OFFLINE_MODE: options.OFFLINE_MODE,
-    JSON_MODE: options.JSON_MODE
+    JSON_MODE: options.JSON_MODE,
+    SYNC_RAG: options.SYNC_RAG,
+    DEFER_RAG: options.DEFER_RAG
   });
 
   const tMatrixStart = Date.now();

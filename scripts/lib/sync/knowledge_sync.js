@@ -28,7 +28,7 @@ function getNotebookIdForChassis(cfg, chassisName) {
     const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
     if (id && String(id).trim()) return String(id).trim();
   }
-  return (cfg && cfg.defaultNotebookId && String(cfg.defaultNotebookId).trim()) || "1d190853-4e9c-48df-aa70-eae66c6f2c1f";
+  return (cfg && cfg.defaultNotebookId && String(cfg.defaultNotebookId).trim()) || null;
 }
 
 function classifyKnowledgeScope(deltaOrText) {

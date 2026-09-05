@@ -5,6 +5,9 @@
  * Inspects knowledge drift between local evaluator rules and target notebook.
  */
 
+const fs = require('fs');
+const crypto = require('crypto');
+
 /**
  * Inspect knowledge drift between local evaluator rules and target notebook
  *
@@ -16,7 +19,7 @@
  */
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, cfg = {}, generatePayloadFn = null) {
   const entry = cfg && cfg.notebooks && cfg.notebooks[chassisName];
-  const defaultId = (cfg && cfg.defaultNotebookId !== undefined) ? cfg.defaultNotebookId : "17cb979a-14d2-430c-a99f-7c1514757e79";
+  const defaultId = (cfg && cfg.defaultNotebookId !== undefined) ? cfg.defaultNotebookId : null;
   const notebookId = (entry && typeof entry === 'object')
     ? entry.notebookId
     : (entry !== undefined && entry !== null ? entry : defaultId);
@@ -41,12 +44,19 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
 
   const payload = generatePayloadFn ? generatePayloadFn(chassisName, false) : { payloadPath: null };
 
+  let payloadChecksum = null;
+  if (payload && payload.payloadPath && fs.existsSync(payload.payloadPath)) {
+    try {
+      payloadChecksum = crypto.createHash('sha256').update(fs.readFileSync(payload.payloadPath)).digest('hex');
+    } catch (_) {}
+  }
+
   let status = 'SYNCHRONIZED';
   if (!notebookId) {
     status = 'NO_NOTEBOOK_CONFIGURED';
   } else if (chassisRuleCount === 0) {
     status = 'BASELINE_READY';
-  } else if (unSyncedDeltasCount > 0) {
+  } else if (unSyncedDeltasCount > 0 || (entry && entry.lastPayloadChecksum && payloadChecksum && entry.lastPayloadChecksum !== payloadChecksum)) {
     status = 'DRIFT_DETECTED';
   }
 
@@ -59,6 +69,7 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
     lastSyncedAt,
     unSyncedDeltasCount,
     payloadPath: payload.payloadPath,
+    payloadChecksum,
     status
   };
 }

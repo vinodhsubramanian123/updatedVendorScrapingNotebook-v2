@@ -121,7 +121,7 @@ export default function App() {
       if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
     },
     onTimeout: () => {
-      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received after 120 seconds.', source: 'ERROR' }));
+      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
       setIsQueryingRag(false);
       if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
     },
@@ -180,16 +180,21 @@ export default function App() {
 
       setEvalResults(normalised);
 
-      // Dispatch parallel RAG query once the matrix is rendered
-      if (raw.data?.notebookPayload) {
+      // Dispatch background RAG query ONLY if RAG was not already computed by the evaluator
+      if (!normalised.ragAnswer && !raw.data?.ragAnswer && raw.data?.notebookPayload) {
         fetch('/api/notebook-query-async', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: raw.data.notebookPayload, chassis: selectedChassisRef.current })
+          body: JSON.stringify({
+            query: raw.data.notebookPayload,
+            chassis: selectedChassisRef.current,
+            learningEligible: true,
+            chassisDir: raw.data.chassisDir
+          })
         })
           .then(res => res.json())
           .then(jobInfo => {
-            if (jobInfo.status === 'COMPLETED') {
+            if (['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'].includes(jobInfo.status)) {
               const answer = jobInfo.result?.answer || jobInfo.answer;
               setEvalResults(prev => ({ ...prev, ragAnswer: answer, ragData: jobInfo.result || jobInfo }));
             } else if (jobInfo.jobId) {
@@ -197,6 +202,12 @@ export default function App() {
             }
           })
           .catch(err => console.error('Failed to dispatch background RAG query:', err));
+      } else if (normalised.ragAnswer) {
+        setRagData(normalised.ragData || {
+          answer: normalised.ragAnswer,
+          citations: normalised.notebookLmStatus?.citationsCount ? [`Verified QuickSpecs Reference (${normalised.notebookLmStatus.citationsCount} citations)`] : [],
+          source: normalised.notebookLmStatus?.source || 'GROUNDED'
+        });
       }
     }, [startMatrixRagPoll])
   });
@@ -224,7 +235,7 @@ export default function App() {
       });
       const jobInfo = await initRes.json();
 
-      if (jobInfo.status === 'COMPLETED') {
+      if (['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'].includes(jobInfo.status)) {
         setRagData(jobInfo.result || jobInfo);
         setIsQueryingRag(false);
         if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }

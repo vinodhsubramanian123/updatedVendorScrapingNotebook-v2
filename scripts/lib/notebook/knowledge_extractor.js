@@ -18,6 +18,7 @@ const path = require('path');
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
+const { validateKnowledgeDelta, saveQuarantinedDelta, SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
 const logger = require('../system/pipeline_logger.js');
 
 const SKU_PATTERN = '([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11})';
@@ -36,9 +37,13 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
   const deltas = [];
   const seenKeys = new Set();
   const chassisName = context.chassis || (chassisDir ? path.basename(chassisDir) : 'Generic_Chassis');
+  const baseConfidence = typeof context.confidenceScore === 'number' ? context.confidenceScore : 0.70;
 
   // Helper to record unique delta
   function addDelta(deltaObj) {
+    if (typeof deltaObj.confidenceScore !== 'number') {
+      deltaObj.confidenceScore = baseConfidence;
+    }
     const key = `${deltaObj.chassis}:${deltaObj.affectedSku}:${deltaObj.requiredDependencySku || ''}:${deltaObj.ruleType}`;
     if (!seenKeys.has(key)) {
       seenKeys.add(key);
@@ -51,7 +56,11 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
 
   for (const unit of units) {
     const rawTokens = unit.match(/[A-Z0-9]{2,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11}/gi) || [];
-    const validSkus = [...new Set(rawTokens.map(cleanBaseSKU).filter(s => isValidHpeSKU(s)))];
+    const validSkus = [...new Set(
+      rawTokens
+        .map(cleanBaseSKU)
+        .filter(s => isValidHpeSKU(s) && !SKU_BLACKLIST.has(s.toUpperCase()))
+    )];
     const pLower = unit.toLowerCase();
 
     // 1. Extract BTO -> FIO Option Type Substitutions
@@ -199,14 +208,37 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
  * @returns {object} { count, deltas }
  */
 function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
+  // Disallow delta extraction from local fallbacks or forbidden source citations (INV-24)
+  const citations = Array.isArray(context.citations) ? context.citations : [];
+  if (
+    context.source !== 'NOTEBOOK_LM_CLOUD' ||
+    context.groundingVerification !== 'VERIFIED_GROUNDED' ||
+    citations.length === 0
+  ) {
+    logger.info('KNOWLEDGE_EXTRACTOR', 'Skipping delta extraction from fallback or forbidden source response.');
+    return { count: 0, quarantinedCount: 0, deltas: [] };
+  }
+
   const deltas = extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context);
+  deltas.forEach(delta => { delta.citations = citations; });
   if (!deltas || deltas.length === 0) {
-    return { count: 0, deltas: [] };
+    return { count: 0, quarantinedCount: 0, deltas: [] };
   }
 
   if (!chassisDir || !fs.existsSync(chassisDir)) {
     logger.warn('KNOWLEDGE_EXTRACTOR', 'Target chassis directory not provided or missing; skipping delta persistence.');
-    return { count: deltas.length, deltas };
+    return { count: deltas.length, quarantinedCount: 0, deltas };
+  }
+
+  // Load catalog data if available for Gate 1b SKU existence checks
+  let catalogData = context.catalogData || null;
+  if (!catalogData) {
+    const catalogPath = path.join(chassisDir, 'catalog.json');
+    if (fs.existsSync(catalogPath)) {
+      try {
+        catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+      } catch (_) {}
+    }
   }
 
   const historyDir = path.join(chassisDir, 'history');
@@ -226,25 +258,43 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
   }
 
   let addedCount = 0;
+  let quarantinedCount = 0;
+
   deltas.forEach(newDelta => {
+    const validation = validateKnowledgeDelta(newDelta, {
+      isHumanApproved: Boolean(context.isHumanApproved),
+      catalogData
+    });
+    if (!validation.valid || validation.status === 'REJECTED') {
+      logger.warn('KNOWLEDGE_EXTRACTOR', `Rejected invalid delta ${newDelta.affectedSku}: ${validation.reasons.join('; ')}`);
+      return;
+    }
+
+    if (validation.status === 'QUARANTINED') {
+      saveQuarantinedDelta(validation.sanitizedDelta, validation.reasons);
+      quarantinedCount++;
+      return;
+    }
+
+    const deltaToSave = validation.sanitizedDelta;
     // Avoid duplicate rules
     const exists = existingDeltas.some(d =>
-      d.affectedSku === newDelta.affectedSku &&
-      d.requiredDependencySku === newDelta.requiredDependencySku &&
-      d.ruleType === newDelta.ruleType
+      d.affectedSku === deltaToSave.affectedSku &&
+      d.requiredDependencySku === deltaToSave.requiredDependencySku &&
+      d.ruleType === deltaToSave.ruleType
     );
     if (!exists) {
-      existingDeltas.push(newDelta);
+      existingDeltas.push(deltaToSave);
       addedCount++;
     }
   });
 
   if (addedCount > 0) {
     safeWriteJsonAtomic(deltaFile, existingDeltas);
-    logger.info('KNOWLEDGE_EXTRACTOR', `Learned and persisted ${addedCount} new knowledge deltas from NotebookLM grounding to ${path.basename(deltaFile)}`);
+    logger.info('KNOWLEDGE_EXTRACTOR', `Learned and persisted ${addedCount} new knowledge deltas from NotebookLM grounding to ${path.basename(deltaFile)} (quarantined: ${quarantinedCount})`);
   }
 
-  return { count: addedCount, deltas: existingDeltas };
+  return { count: addedCount, quarantinedCount, deltas: existingDeltas };
 }
 
 module.exports = {

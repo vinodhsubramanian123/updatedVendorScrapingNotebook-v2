@@ -17,7 +17,7 @@ const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks
 
 function loadNotebookConfig() {
   const defaultCfg = {
-    defaultNotebookId: "17cb979a-14d2-430c-a99f-7c1514757e79",
+    defaultNotebookId: null,
     notebooks: {}
   };
   if (fs.existsSync(CONFIG_NOTEBOOKS)) {

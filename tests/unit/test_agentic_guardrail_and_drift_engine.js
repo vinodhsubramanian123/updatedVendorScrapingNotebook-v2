@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('node:path');
+const fs = require('node:fs');
 
 const { extractKnowledgeFromRagAnswer } = require('../../scripts/lib/notebook/knowledge_extractor.js');
 const { inspectKnowledgeDrift } = require('../../scripts/lib/sync/drift_inspector.js');
@@ -80,6 +81,7 @@ test('Test extractKnowledgeFromRagAnswer()', async (t) => {
 });
 
 test('Test inspectKnowledgeDrift()', async (t) => {
+  const noWritePayload = () => ({ payloadPath: '/tmp/test-notebook-sync-payload.md' });
   await t.test('Simulate BASELINE_READY', () => {
     const chassisName = 'DL380_Gen12_SFF';
     const registry = {
@@ -89,7 +91,7 @@ test('Test inspectKnowledgeDrift()', async (t) => {
     };
     const cfg = { notebooks: { 'DL380_Gen12_SFF': '123' }, defaultNotebookId: '123' };
     
-    const result = inspectKnowledgeDrift(chassisName, registry, cfg);
+    const result = inspectKnowledgeDrift(chassisName, registry, cfg, noWritePayload);
     assert.strictEqual(result.status, 'BASELINE_READY');
   });
 
@@ -102,7 +104,7 @@ test('Test inspectKnowledgeDrift()', async (t) => {
     };
     const cfg = { notebooks: { 'DL380_Gen12_SFF': null }, defaultNotebookId: "" };
     
-    const result = inspectKnowledgeDrift(chassisName, registry, cfg);
+    const result = inspectKnowledgeDrift(chassisName, registry, cfg, noWritePayload);
     assert.strictEqual(result.status, 'NO_NOTEBOOK_CONFIGURED');
   });
 
@@ -123,7 +125,7 @@ test('Test inspectKnowledgeDrift()', async (t) => {
       }
     };
     
-    const result = inspectKnowledgeDrift(chassisName, registry, cfg);
+    const result = inspectKnowledgeDrift(chassisName, registry, cfg, noWritePayload);
     assert.strictEqual(result.status, 'DRIFT_DETECTED');
     assert.strictEqual(result.chassisRuleCount, 2);
     assert.strictEqual(result.unSyncedDeltasCount, 2);
@@ -146,7 +148,7 @@ test('Test inspectKnowledgeDrift()', async (t) => {
       }
     };
     
-    const result = inspectKnowledgeDrift(chassisName, registry, cfg);
+    const result = inspectKnowledgeDrift(chassisName, registry, cfg, noWritePayload);
     assert.strictEqual(result.status, 'SYNCHRONIZED');
     assert.strictEqual(result.chassisRuleCount, 2);
     assert.strictEqual(result.unSyncedDeltasCount, 0);
@@ -173,5 +175,6 @@ test('Test INV-7 generateNotebookSyncPayload chassis pattern routing', async (t)
     assert.ok(payload.payloadPath !== null, "payloadPath should not be null");
     assert.ok(!payload.payloadPath.includes(path.join('outputs', 'temp', 'test_payloads')), "Should not route to outputs/temp/test_payloads/");
     assert.ok(payload.payloadPath.includes(path.join('outputs', 'history')), "Should route to outputs/history/");
+    fs.unlinkSync(payload.payloadPath);
   });
 });

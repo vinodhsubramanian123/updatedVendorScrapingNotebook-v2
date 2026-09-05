@@ -100,7 +100,8 @@ describe('🧪 Cascading Impact Analysis & 5-Tier Strategy Synthesis Fuzz Suite'
       assert(typeof tier.rank === 'number' && tier.rank >= 1 && tier.rank <= 5, `Tier rank must be between 1 and 5 (got ${tier.rank})`);
       assert(typeof tier.name === 'string' && tier.name.length > 0, 'Tier must have name');
       assert(typeof tier.estimatedCostUsd === 'number' && !isNaN(tier.estimatedCostUsd), 'Cost must be a valid number');
-      assert(tier.estimatedCostUsd > 0, 'Cost must be greater than 0');
+      assert.strictEqual(tier.pricingComplete, false, 'Unmapped price data must be reported as incomplete');
+      assert(Array.isArray(tier.priceUnavailableSkus) && tier.priceUnavailableSkus.length > 0, 'Missing certified price SKUs must be listed');
 
       if (tier.budgetBreakdown) {
         assert(typeof tier.budgetBreakdown.baseBomCost === 'number' && !isNaN(tier.budgetBreakdown.baseBomCost));

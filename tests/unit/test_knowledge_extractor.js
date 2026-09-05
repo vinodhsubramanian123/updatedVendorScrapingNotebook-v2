@@ -6,6 +6,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const {
   extractKnowledgeFromRagAnswer,
   extractAndPersistLearnedDeltas
@@ -56,21 +57,61 @@ assert.strictEqual(depDelta.affectedSku, 'P48803-B21');
 assert.strictEqual(depDelta.requiredDependencySku, 'P76471-B21');
 console.log('  ✅ PASS: Extracted riser cable dependency chain (P48803-B21 -> P76471-B21)');
 
-// Test 2: Persistence & Deduping
-const tempDir = path.join(__dirname, '../..', 'outputs', 'temp', 'test_learning_loop');
+// Test 2: Persistence & Deduping with High Confidence (Auto-Promotion)
+const { setQuarantineFilePath } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+const testRoot = path.join(os.tmpdir(), `vendor-notebook-extractor-${process.pid}`);
+fs.mkdirSync(testRoot, { recursive: true });
+const testQuarantineFile = path.join(testRoot, 'test_extractor_quarantine.json');
+setQuarantineFilePath(testQuarantineFile);
+
+const tempDir = path.join(testRoot, 'test_learning_loop');
 if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true });
 fs.mkdirSync(tempDir, { recursive: true });
 
-const persistResult1 = extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, { chassis: 'Test_Chassis' });
+const verifiedContext = {
+  chassis: 'Test_Chassis',
+  confidenceScore: 0.90,
+  source: 'NOTEBOOK_LM_CLOUD',
+  groundingVerification: 'VERIFIED_GROUNDED',
+  citations: [{ title: 'HPE DL380 Gen12 QuickSpecs', sourceId: 'trusted-source-1' }]
+};
+const persistResult1 = extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, verifiedContext);
 assert.ok(persistResult1.count >= 3, 'Expected at least 3 deltas saved');
-console.log(`  ✅ PASS: First pass persisted ${persistResult1.count} deltas to disk`);
+console.log(`  ✅ PASS: First pass persisted ${persistResult1.count} deltas to disk with confidence >= 0.85`);
 
-const persistResult2 = extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, { chassis: 'Test_Chassis' });
+const persistResult2 = extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, verifiedContext);
 assert.strictEqual(persistResult2.count, 0, 'Second pass with same text should add 0 duplicates');
 console.log('  ✅ PASS: Duplicate suppression verified (0 duplicates added)');
 
-// Clean up temp dir
-fs.rmSync(tempDir, { recursive: true });
+// Test 3: Default confidence (0.70) routes to Quarantine (INV-48)
+const quarantineTempDir = path.join(testRoot, 'test_learning_loop_q');
+if (fs.existsSync(quarantineTempDir)) fs.rmSync(quarantineTempDir, { recursive: true });
+fs.mkdirSync(quarantineTempDir, { recursive: true });
+
+const persistResultQ = extractAndPersistLearnedDeltas(sampleRagResponse, quarantineTempDir, {
+  ...verifiedContext,
+  chassis: 'Test_Chassis_Q',
+  confidenceScore: 0.70
+});
+assert.strictEqual(persistResultQ.count, 0, 'Default 0.70 confidence deltas must not be auto-promoted');
+assert.ok(persistResultQ.quarantinedCount >= 3, 'Default 0.70 confidence deltas must be held in quarantine');
+console.log(`  ✅ PASS: Default confidence (0.70) correctly held ${persistResultQ.quarantinedCount} deltas in quarantine`);
+
+// Test 4: Block extraction from Local Fallback or Forbidden Source
+const fallbackResult = extractAndPersistLearnedDeltas(sampleRagResponse, quarantineTempDir, {
+  chassis: 'Test_Chassis_Q',
+  source: 'LOCAL_RAG_FALLBACK'
+});
+assert.strictEqual(fallbackResult.count, 0, 'Must not extract deltas from LOCAL_RAG_FALLBACK');
+assert.strictEqual(fallbackResult.quarantinedCount, 0, 'Must not quarantine deltas from LOCAL_RAG_FALLBACK');
+console.log('  ✅ PASS: Blocked delta extraction from LOCAL_RAG_FALLBACK');
+
+// Clean up temp dirs and reset quarantine
+fs.rmSync(tempDir, { recursive: true, force: true });
+fs.rmSync(quarantineTempDir, { recursive: true, force: true });
+setQuarantineFilePath(null);
+if (fs.existsSync(testQuarantineFile)) fs.rmSync(testQuarantineFile, { force: true });
+fs.rmSync(testRoot, { recursive: true, force: true });
 
 console.log('================================================================');
 console.log('🎉 ALL KNOWLEDGE EXTRACTOR & LEARNING LOOP TESTS PASSED (100%)');

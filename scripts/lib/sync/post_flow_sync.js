@@ -53,18 +53,30 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     const registry = buildMasterKnowledgeRegistry();
     
     // 2. Generate updated sync payload for target chassis
-    const payload = generateNotebookSyncPayload(chassisName, options.autoUploadNLM || false);
+    const autoUpload = Boolean(options.autoUploadNLM);
+    const payload = generateNotebookSyncPayload(chassisName, autoUpload);
     
     // 3. Inspect drift metrics
     const drift = inspectKnowledgeDrift(chassisName);
-    
-    logger.info('POST_FLOW_SYNC', `Post-flow sync complete. Status: ${drift.status}, Total Rules: ${registry.totalLearnedRules}, Unsynced: ${drift.unSyncedDeltasCount}`);
+
+    let syncStatus;
+    if (!autoUpload) {
+      syncStatus = 'LOCAL_PAYLOAD_ONLY';
+    } else if (payload.uploadResult?.success) {
+      syncStatus = 'CLOUD_VERIFIED';
+    } else {
+      syncStatus = 'CLOUD_FAILED';
+    }
+
+    logger.info('POST_FLOW_SYNC', `Post-flow sync complete. Status: ${syncStatus} (Drift: ${drift.status}), Total Rules: ${registry.totalLearnedRules}, Unsynced: ${drift.unSyncedDeltasCount}`);
 
     // 4. GAP-7 FIX: Clean up stale test payload files from outputs/history/
     cleanTestPayloads();
     
     return {
-      success: true,
+      success: syncStatus !== 'CLOUD_FAILED',
+      syncStatus,
+      cloudUploaded: Boolean(autoUpload && payload.uploadResult?.success),
       flowType,
       chassisName,
       masterRegistryRulesCount: registry.totalLearnedRules,

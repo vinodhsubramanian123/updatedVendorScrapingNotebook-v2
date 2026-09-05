@@ -19,7 +19,25 @@ const xlsx = require('xlsx-js-style');
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { getMandatorySkusForChassis, DEFAULT_MANDATORY_SKUS } = require('../catalog/catalog_rules.js');
 const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('../conflict/conflict_graph.js');
+const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
 const { parseSkuLines } = require('./boq_parser.js');
+
+let _cachedChassisMap = null;
+function getCachedChassisMap() {
+  if (!_cachedChassisMap) {
+    try {
+      const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
+      if (fs.existsSync(mapPath)) {
+        _cachedChassisMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+      } else {
+        _cachedChassisMap = {};
+      }
+    } catch (_) {
+      _cachedChassisMap = {};
+    }
+  }
+  return _cachedChassisMap;
+}
 
 // Modular aspect subcomponents
 const { evalComputeThermal } = require('../aspects/compute_thermal.js');
@@ -570,7 +588,7 @@ function validateMemoryRules(ctx) {
   }
 }
 
-function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
+function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
   if (!items || !Array.isArray(items) || items.length === 0) {
     const reason = 'Empty BOQ: No SKUs or line items detected.';
     return {
@@ -637,21 +655,27 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData, 0, serverCount);
-  const lifecycle = evalSupportServices(items, catalogData);
-  const lifecycleRecommendations = generateLifecycleRecommendations(items, catalogData);
+  const lifecycle = (options.skipLifecycle || options.skipGraphValidation)
+    ? { hasObsoleteRisk: false, hasEolWarning: false, obsoleteParts: [], eolParts: [] }
+    : evalSupportServices(items, catalogData);
+  const lifecycleRecommendations = (options.skipLifecycle || options.skipGraphValidation)
+    ? []
+    : generateLifecycleRecommendations(items, catalogData);
 
   // Universal Zero-Hardcoding Generic Domain Template Evaluation (INV-56)
   let genericDomainAudit = null;
-  try {
-    const genericTemplates = require('../catalog/generic_domain_templates.js');
-    const detectedDomain = chassisInfo.family === 'Alletra' ? 'STORAGE' : (chassisInfo.family === 'Synergy' ? 'NETWORKING' : 'SERVER');
-    genericDomainAudit = genericTemplates.evaluateGenericDomainRules(items, {
-      domain: detectedDomain,
-      catalog: catalogData,
-      chassisProfile: (chassisInfo.model || '').toLowerCase().includes('dl145') ? 'EDGE' : 'ENTERPRISE'
-    });
-  } catch (genErr) {
-    console.warn('[BOQ_EVALUATOR] Generic domain rules evaluation advisory:', genErr.message);
+  if (!options.skipGraphValidation) {
+    try {
+      const genericTemplates = require('../catalog/generic_domain_templates.js');
+      const detectedDomain = chassisInfo.family === 'Alletra' ? 'STORAGE' : (chassisInfo.family === 'Synergy' ? 'NETWORKING' : 'SERVER');
+      genericDomainAudit = genericTemplates.evaluateGenericDomainRules(items, {
+        domain: detectedDomain,
+        catalog: catalogData,
+        chassisProfile: (chassisInfo.model || '').toLowerCase().includes('dl145') ? 'EDGE' : 'ENTERPRISE'
+      });
+    } catch (genErr) {
+      console.warn('[BOQ_EVALUATOR] Generic domain rules evaluation advisory:', genErr.message);
+    }
   }
 
   const errors = [];
@@ -662,10 +686,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
   let chassisDefaults = [];
 
   // Chassis Included Components & Default Hardware Analysis (GAP 2)
-  try {
-    const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
-    if (fs.existsSync(mapPath)) {
-      const fullMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+  if (!options.skipGraphValidation) {
+    try {
+      const fullMap = getCachedChassisMap();
       const incMap = fullMap.chassis_included_components || {};
       const baseKey = chassisInfo.baseSku || Object.keys(incMap).find(k => k === chassisInfo.sku || incMap[k].model === chassisInfo.model);
       chassisDefaults = (baseKey && incMap[baseKey]?.includedComponents) || [];
@@ -698,8 +721,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
           }
         });
       }
-    }
-  } catch (_) {}
+    } catch (_) {}
+  }
 
   if (lifecycle.hasObsoleteRisk) {
     warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');
@@ -891,15 +914,18 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '') {
     genericDomainAudit
   };
 
-  emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
+  let conflictGraphResults = { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
+  if (!options.skipGraphValidation) {
+    emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
 
-  let resolvedDir = targetDir;
-  if (!resolvedDir) {
-    const { autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
-    resolvedDir = autoDetectChassisDir(items);
+    let resolvedDir = targetDir;
+    if (!resolvedDir) {
+      const { autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
+      resolvedDir = autoDetectChassisDir(items);
+    }
+
+    conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir);
   }
-
-  const conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir);
 
   const isMathClean = errors.length === 0;
   const isGraphClean = conflictGraphResults.isWholeSolutionValid;
@@ -982,6 +1008,14 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
   const result = evaluatePhysicalMath(items, options.catalogData, options.targetDir || '');
   return { ...result, items };
 }
+
+setPhysicalMathValidator((items, catalogData, targetDir, options = {}) => {
+  return evaluatePhysicalMath(items, catalogData, targetDir, {
+    ...options,
+    skipGraphValidation: true,
+    skipLifecycle: true
+  });
+});
 
 module.exports = {
   HIGH_TDP_THRESHOLD_WATTS,

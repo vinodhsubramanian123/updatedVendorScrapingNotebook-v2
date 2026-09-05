@@ -11,6 +11,8 @@
   ],
   "overrides": {
     "jsdom": "^26.0.0",
+    "fast-uri": "^3.1.7",
+    "qs": "^6.16.0",
     "@google/jules-mcp": {
       "@google/jules-sdk": "$@google/jules-sdk"
     }
@@ -21,6 +23,7 @@
     "guardrail:check": "node scripts/maintenance/guardrail_health_check.js",
     "build": "npm run build --workspace=dashboard",
     "lint": "npx oxlint dashboard/src",
+    "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=160",
     "test": "node scripts/maintenance/run_test_matrix.js --tier fast",
     "test:portfolio": "node tests/integration/verify_all.js",
     "scrape": "node scripts/scrapers/scrape_oca_solution.js",
@@ -46,7 +49,6 @@
     "test:rotator": "node tests/unit/test_gemini_rotator.js",
     "test:offline": "node tests/chaos/test_offline_pipeline.js",
     "test:edges": "node tests/chaos/test_edge_cases.js",
-    "test:chaos": "node tests/chaos/test_failure_modes_and_chaos.js",
     "test:invariants": "node --test tests/unit/test_all_system_invariants.js",
     "test:history": "node tests/integration/test_historical_pricing_timeline.js",
     "test:audit": "node tests/integration/test_excel_alignment_and_audit.js",
@@ -147,12 +149,12 @@
   },
   "dependencies": {
     "@google/genai": "^2.16.0",
+    "google-auth-library": "^10.3.0",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "multer": "^2.3.0",
-    "vite": "^8.2.2",
     "ws": "^8.18.0",
     "xlsx-js-style": "^1.2.0",
     "zod": "^3.24.2"

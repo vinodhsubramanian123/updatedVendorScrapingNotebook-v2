@@ -217,7 +217,7 @@ const RankedSolutionSchema = z.object({
   }).default({}),
   ragSecondOpinion: z.string().default('✅ Verified'),
   reasoning: z.string().default('')
-});
+}).passthrough();
 
 const ConflictGraphSchema = z.object({
   unresolvedConflictsCount: z.number().default(0),
@@ -225,8 +225,9 @@ const ConflictGraphSchema = z.object({
     sku: SkuString,
     reasoning: z.string().default('')
   })).default([]),
-  rankedSolutions: z.array(RankedSolutionSchema).default([])
-});
+  rankedSolutions: z.array(RankedSolutionSchema).default([]),
+  recommendedSolutions: z.array(RankedSolutionSchema).default([])
+}).passthrough();
 
 const BOQEvaluationResultSchema = z.object({
   status: z.enum(['PASS', 'FAIL', 'WARN']).default('PASS'),

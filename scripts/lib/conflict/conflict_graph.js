@@ -12,7 +12,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
+const { SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
 const { loadCatalogRules, getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
 
 // Modular subcomponents
@@ -116,7 +117,18 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
       if (fs.existsSync(p)) {
         try {
           const content = JSON.parse(fs.readFileSync(p, 'utf-8'));
-          const list = Array.isArray(content) ? content : (content.deltas || []);
+          let list = [];
+          if (Array.isArray(content)) {
+            list = content;
+          } else if (content.deltas && Array.isArray(content.deltas)) {
+            list = content.deltas;
+          } else {
+            const univ = Array.isArray(content.universalRules) ? content.universalRules : [];
+            const fam = Array.isArray(content.familyGenRules) ? content.familyGenRules : [];
+            const chas = Array.isArray(content.chassisSpecificRules) ? content.chassisSpecificRules : [];
+            list = [...univ, ...fam, ...chas];
+          }
+
           list.forEach(d => {
             const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
             if (!seenDeltaKeys.has(key)) {
@@ -141,35 +153,59 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     const requiredSku = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
     const msg = delta.rawMessage || delta.errorMessage || delta.ruleUpdate || '';
 
-    if (affectedSku && affectedSku !== 'UNKNOWN_SKU') {
-      const hasAffected = fullBomList.some(it => cleanBaseSKU(it.sku) === affectedSku || (it.description || '').includes(affectedSku));
-      if (hasAffected) {
-        if (requiredSku) {
-          // Cycle detection guardrail: Check if reverse edge already exists
-          const edgeKey = `${affectedSku}->${requiredSku}`;
-          const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
+    // Gate 1: SKU validity & Blacklist token check
+    if (!affectedSku || affectedSku === 'UNKNOWN_SKU' || SKU_BLACKLIST.has(affectedSku.toUpperCase()) || !isValidHpeSKU(affectedSku)) {
+      return;
+    }
+    if (requiredSku && (SKU_BLACKLIST.has(requiredSku.toUpperCase()) || !isValidHpeSKU(requiredSku))) {
+      return;
+    }
 
-          if (dependencyEdges.has(reverseEdgeKey)) {
-            const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
-            recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
-            return;
-          }
-          dependencyEdges.add(edgeKey);
+    // Gate 2: Generation & Chassis Scoping Check (INV-48 Generation Firewall)
+    const deltaScope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
+    if (deltaScope !== 'UNIVERSAL_VENDOR' && deltaScope !== 'UNIVERSAL') {
+      const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
+      const deltaChassis = (delta.chassis || '').toLowerCase();
+      const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
+      const isGen11Target = targetChassis.includes('gen11') || targetChassis.includes('g11');
+      const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
+      const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');
 
-          const hasReq = fullBomList.some(it => cleanBaseSKU(it.sku) === requiredSku || (it.description || '').includes(requiredSku));
-          if (!hasReq) {
-            const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
-            conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });
-            recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
-          } else {
-            recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
-          }
-        } else if (msg) {
-          recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+      if (isGen12Target && isGen11Delta) return;
+      if (isGen11Target && isGen12Delta) return;
+
+      if (deltaScope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
+        if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
+          return;
         }
       }
-    } else if (msg && msg.toLowerCase().includes('rejected')) {
-      recordAudit('LEARNED_DELTA', `Learned Portal Rejection Rule`, 'INFO', `Historical Note: ${msg}`);
+    }
+
+    const hasAffected = fullBomMap.has(affectedSku) || fullBomList.some(it => (it.description || '').includes(affectedSku));
+    if (hasAffected) {
+      if (requiredSku) {
+        // Cycle detection guardrail: Check if reverse edge already exists
+        const edgeKey = `${affectedSku}->${requiredSku}`;
+        const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
+
+        if (dependencyEdges.has(reverseEdgeKey)) {
+          const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
+          recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
+          return;
+        }
+        dependencyEdges.add(edgeKey);
+
+        const hasReq = fullBomMap.has(requiredSku) || fullBomList.some(it => (it.description || '').includes(requiredSku));
+        if (!hasReq) {
+          const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
+          conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });
+          recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
+        } else {
+          recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
+        }
+      } else if (msg) {
+        recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+      }
     }
   });
 
@@ -304,6 +340,19 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     chassisInfo,
     targetDir
   );
+  const validDistances = rankedSolutions
+    .filter(solution => solution.isUniqueBom && solution.physicalMathClean)
+    .map(solution => solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY);
+  const minimumDistance = validDistances.length > 0 ? Math.min(...validDistances) : Number.POSITIVE_INFINITY;
+  const closenessWindow = Math.max(1, Math.ceil(fullBomList.length * 0.15));
+  const recommendedSolutions = rankedSolutions
+    .filter(solution =>
+      solution.isUniqueBom &&
+      solution.isParetoOptimal &&
+      solution.physicalMathClean &&
+      (solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY) <= minimumDistance + closenessWindow
+    )
+    .slice(0, 3);
 
   // Generic Dynamic SKU Introspection across full BOM
   const introspectedComponents = fullBomList.map(it => introspectSku(it, catalogData, chassisInfo));
@@ -318,6 +367,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     unresolvedConflicts,
     arbitrationResults,
     rankedSolutions,
+    recommendedSolutions,
     introspectedComponents,
     auditLog,
     rulesSource: catalogData.sourceFile,

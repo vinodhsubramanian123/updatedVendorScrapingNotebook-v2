@@ -60,22 +60,32 @@ function searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches) {
   if (!fs.existsSync(KNOWLEDGE_FILE)) return;
   try {
     const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
-    const rules = registry.chassisSpecificRules || [];
+    const universalRules = (registry.universalRules || []).map(r => ({ ...r, scope: 'UNIVERSAL_VENDOR' }));
+    const familyGenRules = (registry.familyGenRules || []).map(r => ({ ...r, scope: 'FAMILY_GEN' }));
+    const chassisRules = (registry.chassisSpecificRules || []).map(r => ({ ...r, scope: 'CHASSIS_SPECIFIC' }));
+    const rules = [...universalRules, ...familyGenRules, ...chassisRules];
 
     for (const rule of rules) {
       if (normChassisTarget) {
         const ruleChassisNorm = (rule.chassis || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR';
+        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR' || rule.scopeTaxonomy === 'UNIVERSAL_VENDOR';
+        const isFamilyGen = rule.scope === 'FAMILY_GEN' || rule.scopeTaxonomy === 'FAMILY_GEN';
         const isChassisMatch = ruleChassisNorm && (normChassisTarget.includes(ruleChassisNorm) || ruleChassisNorm.includes(normChassisTarget));
         const hasGen12Target = normChassisTarget.includes('gen12') || normChassisTarget.includes('g12');
         const hasGen11Target = normChassisTarget.includes('gen11') || normChassisTarget.includes('g11');
         const hasGen12Rule = ruleChassisNorm.includes('gen12') || ruleChassisNorm.includes('g12');
         const hasGen11Rule = ruleChassisNorm.includes('gen11') || ruleChassisNorm.includes('g11');
 
+        if (hasGen12Target && hasGen11Rule) continue;
+        if (hasGen11Target && hasGen12Rule) continue;
         if (!isUniversal) {
-          if (hasGen12Target && hasGen11Rule) continue;
-          if (hasGen11Target && hasGen12Rule) continue;
-          if (!isChassisMatch) continue;
+          if (isFamilyGen) {
+            // Family/Gen rule matches if generations align
+            if (hasGen12Target && !hasGen12Rule) continue;
+            if (hasGen11Target && !hasGen11Rule) continue;
+          } else if (!isChassisMatch) {
+            continue;
+          }
         }
       }
 
@@ -91,11 +101,14 @@ function searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches) {
       }
 
       if (score > 0) {
+        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR' || rule.scopeTaxonomy === 'UNIVERSAL_VENDOR';
+        const deltaTitle = isUniversal ? 'Learned Rule (Universal Vendor)' : `Learned Rule for ${rule.chassis}`;
+        const deltaTag = isUniversal ? 'Universal' : rule.chassis;
         rawMatches.push({
           score,
-          text: `• [Knowledge Delta - ${rule.chassis}] ${rule.rawMessage || rule.ruleUpdate}`,
+          text: `• [Knowledge Delta - ${deltaTag}] ${rule.rawMessage || rule.ruleUpdate}`,
           citation: {
-            title: `Learned Rule for ${rule.chassis}`,
+            title: deltaTitle,
             snippet: rule.rawMessage || rule.ruleUpdate,
             url: `/artifacts/outputs/history/master_knowledge_registry.json`
           }
@@ -416,11 +429,15 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   const { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery } = prepareSearchTerms(query);
   const normChassisTarget = (chassisName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-  searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches);
-
   const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
   const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
   const filteredCatalogPaths = filterCatalogsByChassisFirewall(catalogPaths, chassisName);
+
+  if (chassisName && filteredCatalogPaths.length === 0) {
+    return synthesizeRankedRagAnswer([], [], query, chassisName);
+  }
+
+  searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches);
 
   for (const cDir of filteredCatalogPaths) {
     if (!fs.existsSync(cDir)) continue;

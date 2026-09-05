@@ -31,6 +31,8 @@ const {
 const {
   startAsyncNotebookQueryJob: startJob,
   getAsyncNotebookQueryJobStatus,
+  cancelNotebookQueryJob,
+  resumePendingJobs,
   activeQueryJobs
 } = require('./job_manager.js');
 
@@ -100,89 +102,67 @@ function setCachedRagResult(cacheKey, result) {
   persistRagCache();
 }
 
-const KNOWN_NOTEBOOK_MAP = {
-  'dl380_gen12': '1d190853-4e9c-48df-aa70-eae66c6f2c1f',
-  'dl380_gen11': 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6',
-  'dl380a_gen12': 'b233ec88-4682-4164-a801-3ee6ca649dc1',
-  'dl145_gen11': '7a48061a-331a-429b-8477-7e0473491714',
-  'alletra': 'a67629ba-3434-42ab-b465-bd6d71852198',
-  'synergy': '49a3c69e-115f-4332-9454-c5d4f2941327'
-};
+const NOTEBOOK_CONFIG_FILE = path.join(__dirname, '..', '..', 'config', 'notebooks.json');
 
-// In-memory cache for live notebook catalog from nlm CLI (10 min TTL)
-let _cachedNotebookList = null;
-let _cachedNotebookListTime = 0;
-const NOTEBOOK_LIST_CACHE_TTL_MS = 10 * 60 * 1000;
+function getNotebookConfigEntry(notebookId, context = {}) {
+  try {
+    const cfg = JSON.parse(fs.readFileSync(NOTEBOOK_CONFIG_FILE, 'utf8'));
+    const entries = Object.entries(cfg.notebooks || {});
+    if (notebookId) {
+      const exact = entries.find(([, entry]) => (typeof entry === 'string' ? entry : entry?.notebookId) === notebookId);
+      if (exact) return { key: exact[0], entry: exact[1] };
+    }
 
-/**
- * Fetch and memoize live notebook catalog from Google NotebookLM via nlm CLI.
- */
-function fetchLiveNotebookCatalog(nlmExecutable, extendedPath) {
-  const now = Date.now();
-  if (_cachedNotebookList && (now - _cachedNotebookListTime) < NOTEBOOK_LIST_CACHE_TTL_MS) {
-    return Promise.resolve(_cachedNotebookList);
+    const normalizedContext = String(context.chassis || context.model || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const matches = entries
+      .map(([key, entry]) => ({ key, entry, normalizedKey: key.toLowerCase().replace(/[^a-z0-9]/g, '') }))
+      .filter(item => item.normalizedKey && normalizedContext.includes(item.normalizedKey))
+      .sort((a, b) => b.normalizedKey.length - a.normalizedKey.length);
+    return matches[0] || null;
+  } catch (_) {
+    return null;
   }
-  return new Promise((resolve) => {
-    execFile(nlmExecutable, ['notebook', 'list', '--json'], {
-      timeout: 15000,
-      env: { ...process.env, PATH: extendedPath },
-      maxBuffer: 5 * 1024 * 1024
-    }, (err, stdout) => {
-      if (err || !stdout) {
-        return resolve(_cachedNotebookList || []);
-      }
-      try {
-        const clean = stripAnsi(stdout).trim();
-        const parsed = JSON.parse(clean);
-        if (Array.isArray(parsed)) {
-          _cachedNotebookList = parsed;
-          _cachedNotebookListTime = now;
-        }
-      } catch (_) {}
-      resolve(_cachedNotebookList || []);
-    });
-  });
 }
 
 /**
  * Dynamically resolve target Notebook UUID:
  * 1. Explicit UUID if provided
- * 2. Static fast-path map (DL380 Gen12, Gen11, Alletra, Synergy)
- * 3. Live fuzzy-match against Google NotebookLM notebook catalog
- * 4. Safe flagship DL380 Gen12 fallback
+ * 2. Exact product mapping from scripts/config/notebooks.json
+ * 3. Fail closed when no dedicated mapping exists
  */
 async function resolveNotebookIdAsync(requestedId, context = {}, nlmExecutable, extendedPath) {
   if (requestedId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestedId.trim())) {
+    const requested = getNotebookConfigEntry(requestedId.trim(), {});
+    if (typeof requested?.entry !== 'object') return null;
+    if (requested.entry.queryEnabled === false) return null;
+    if (!Array.isArray(requested.entry.trustedSourceIds) || requested.entry.trustedSourceIds.length === 0) return null;
     return requestedId.trim();
   }
-  const chassis = String(context?.chassis || context?.model || '').toLowerCase();
-  if (chassis.includes('dl380a')) return KNOWN_NOTEBOOK_MAP.dl380a_gen12;
-  if (chassis.includes('dl145')) return KNOWN_NOTEBOOK_MAP.dl145_gen11;
-  if (chassis.includes('gen12') || chassis.includes('dl380 gen12')) return KNOWN_NOTEBOOK_MAP.dl380_gen12;
-  if (chassis.includes('gen11') || chassis.includes('dl380 gen11')) return KNOWN_NOTEBOOK_MAP.dl380_gen11;
-  if (chassis.includes('alletra')) return KNOWN_NOTEBOOK_MAP.alletra;
-  if (chassis.includes('synergy')) return KNOWN_NOTEBOOK_MAP.synergy;
+  const configured = getNotebookConfigEntry(null, context);
+  const configuredId = typeof configured?.entry === 'string' ? configured.entry : configured?.entry?.notebookId;
+  if (typeof configured?.entry !== 'object') return null;
+  if (configured.entry?.queryEnabled === false) return null;
+  if (!Array.isArray(configured.entry?.trustedSourceIds) || configured.entry.trustedSourceIds.length === 0) return null;
+  if (configuredId && /^[0-9a-f-]{36}$/i.test(configuredId)) return configuredId;
 
-  // Live dynamic catalog fuzzy matching
-  try {
-    const list = await fetchLiveNotebookCatalog(nlmExecutable, extendedPath);
-    if (Array.isArray(list) && list.length > 0 && chassis) {
-      const match = list.find(nb => {
-        const title = (nb.title || '').toLowerCase();
-        return title.includes(chassis) || (chassis.includes('380') && title.includes('380'));
-      });
-      if (match && match.id) return match.id;
-    }
-  } catch (_) {}
-
-  return KNOWN_NOTEBOOK_MAP.dl380_gen12; // Default to flagship Gen12 notebook
+  // Fail-closed to null if no explicit or dedicated notebook is mapped.
+  // Never cross-contaminate unmapped chassis with the DL380 Gen12 notebook (INV-24).
+  return null;
 }
 
 /**
  * Execute Cloud Query with Autonomous Exponential Backoff Retries.
  */
-function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, maxAttempts = 3) {
+function buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, timeoutMs) {
+  const args = ['notebook', 'query', targetNotebookId, sanitizedQuery];
+  if (trustedSourceIds.length > 0) args.push('--source-ids', trustedSourceIds.join(','));
+  args.push('--timeout', String(Math.ceil(timeoutMs / 1000)), '--new-conversation', '--json');
+  return args;
+}
+
+function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
+  const maxAttempts = typeof options === 'number' ? options : (options.maxRetries || 3);
 
   return new Promise((resolve, reject) => {
     let attempt = 0;
@@ -192,8 +172,11 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
       const startTime = Date.now();
       const currentTimeout = timeoutMs + (attempt > 1 ? 30000 : 0); // Add 30s buffer on retry
 
-      execFile(nlmExecutable, ['notebook', 'query', targetNotebookId, sanitizedQuery, '--json'], {
+      const trustedSourceIds = options.context?.authoritativeSourceIds || [];
+      const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout);
+      execFile(nlmExecutable, queryArgs, {
         timeout: currentTimeout,
+        signal: options.signal,
         env: { ...process.env, PATH: extendedPath },
         maxBuffer: 10 * 1024 * 1024
       }, (err, stdout, stderr) => {
@@ -214,19 +197,22 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
           return reject({ err, stderr, latencyMs, attempts: attempt });
         }
 
-        let processed = postProcessNotebookResult(stdout, sanitizedQuery);
+        let processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
         if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
           if (attempt < maxAttempts) {
             const backoffMs = 2000;
-            logger.warn('NOTEBOOK_QUERY', `Empty response on attempt ${attempt}/${maxAttempts}. Retrying in ${backoffMs}ms...`);
+            logger.warn('NOTEBOOK_QUERY', `Empty answer received. Retrying attempt ${attempt + 1}/${maxAttempts} in ${backoffMs}ms...`);
             return setTimeout(runAttempt, backoffMs);
           }
         }
 
-        processed.latencyMs = latencyMs;
-        processed.attempts = attempt;
-        processed.targetNotebookId = targetNotebookId;
-        resolve(processed);
+        resolve({
+          ...processed,
+          source: 'NOTEBOOK_LM_CLOUD',
+          targetNotebookId,
+          latencyMs,
+          attempts: attempt
+        });
       });
     }
 
@@ -252,24 +238,37 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
 
   const envPath = process.env.PATH || '';
   const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-  const nvmBin = path.join(process.env.HOME || '', '.nvm', 'versions', 'node', 'v22.12.0', 'bin');
-  const extendedPath = `${nvmBin}:${homeBin}:${envPath}`;
+  const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
   const nlmUserPath = path.join(homeBin, 'nlm');
-  const hasNlm = fs.existsSync(nlmUserPath) || fs.existsSync(path.join(homeBin, 'nlm.cmd'));
   const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : 'nlm';
 
   const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-  const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
+  const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10);
   const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
+
+  // Fail-closed to Local RAG if no notebook mapped for this chassis
+  if (!targetNotebookId) {
+    logger.info('NOTEBOOK_QUERY', 'No dedicated Notebook ID configured for this product. Failing-closed to deterministic Local RAG.');
+    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+    return {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      fallbackReason: 'No dedicated Notebook ID configured for this product (fail-closed to local rules)'
+    };
+  }
 
   const cacheKey = `${targetNotebookId}:${sanitizedQuery.trim()}`;
   if (!options.bypassCache) {
     const cached = getCachedRagResult(cacheKey);
-    if (cached) {
+    if (cached?.isCloudGrounded === true && cached?.groundingVerification === 'VERIFIED_GROUNDED') {
       logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
       return { ...cached, cached: true };
+    } else if (cached) {
+      queryCache.delete(cacheKey);
+      persistRagCache();
     }
   }
 
@@ -283,23 +282,33 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     };
   }
 
-  if (!hasNlm) {
-    logger.warn('NOTEBOOK_QUERY', 'nlm CLI executable not found in PATH (~/.local/bin/nlm). Falling back to Local RAG.');
-    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-    return {
-      ...localRes,
-      source: 'LOCAL_RAG_FALLBACK',
-      isCloudGrounded: false,
-      fallbackReason: 'NLM CLI executable not installed in environment'
-    };
-  }
-
   try {
-    const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options.maxRetries || 3);
-    cloudResult.isCloudGrounded = true;
-    cloudResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
+    const configured = getNotebookConfigEntry(targetNotebookId, options.context || {});
+    const configuredEntry = configured && typeof configured.entry === 'object' ? configured.entry : {};
+    const authoritativeSourceIds = [...(configuredEntry.trustedSourceIds || [])].filter(Boolean);
+    if (authoritativeSourceIds.length === 0) {
+      const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+      return {
+        ...localRes,
+        source: 'LOCAL_RAG_FALLBACK',
+        isCloudGrounded: false,
+        fallbackReason: 'Notebook has no canary-verified trusted source allow-list (INV-24 fail-closed)'
+      };
+    }
+    const queryOptions = {
+      ...options,
+      context: { ...(options.context || {}), authoritativeSourceIds }
+    };
+    const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, queryOptions);
+    if (cloudResult.groundingVerification === 'VERIFIED_GROUNDED') {
+      cloudResult.isCloudGrounded = true;
+      cloudResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
+    } else {
+      cloudResult.isCloudGrounded = false;
+      // Preserve groundingTier and warning from validateGroundingCitations
+    }
 
-    if (cloudResult.answer && !cloudResult.answer.includes('No response returned')) {
+    if (cloudResult.isCloudGrounded && cloudResult.answer && !cloudResult.answer.includes('No response returned')) {
       setCachedRagResult(cacheKey, cloudResult);
     }
     return cloudResult;
@@ -353,7 +362,7 @@ function purgeExpiredRagCache() {
   return evicted;
 }
 
-const RAG_TIMEOUT_MS = 120000;
+const RAG_TIMEOUT_MS = 600000;
 
 module.exports = {
   SCRIPTING_PATTERNS,
@@ -362,9 +371,13 @@ module.exports = {
   classifyQueryScenario,
   stripAnsi,
   postProcessNotebookResult,
+  buildNotebookQueryArgs,
+  resolveNotebookIdAsync,
   executeNotebookQuery,
   startAsyncNotebookQueryJob,
   getAsyncNotebookQueryJobStatus,
+  cancelNotebookQueryJob,
+  resumePendingJobs,
   diagnoseNotebookFailure,
   activeQueryJobs,
   extractKnowledgeFromRagAnswer,

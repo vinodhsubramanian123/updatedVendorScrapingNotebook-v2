@@ -48,12 +48,21 @@ const {
   executeNotebookQuery,
   sanitizeNotebookQuery,
   startAsyncNotebookQueryJob,
-  getAsyncNotebookQueryJobStatus
+  getAsyncNotebookQueryJobStatus,
+  cancelNotebookQueryJob,
+  resumePendingJobs
 } = require('../../scripts/lib/notebook/notebook_query_utils.js');
 const logger = require('../../scripts/lib/system/pipeline_logger.js');
 const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../../scripts/lib/sync/knowledge_sync.js');
 const { recordFeedbackTelemetry } = require('../../scripts/lib/system/telemetry.js');
 const { verifyVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
+
+if (process.env.NODE_ENV !== 'test') {
+  const recovery = resumePendingJobs(executeNotebookQuery);
+  if (recovery.length > 0) {
+    logger.info('NOTEBOOK_ROUTE', `Recovered ${recovery.length} durable NotebookLM job(s) after server startup.`);
+  }
+}
 
 /** Resolve the notebookId for a chassis from notebooks.json. Returns null if not found. */
 function resolveNotebookId(chassis) {
@@ -62,9 +71,10 @@ function resolveNotebookId(chassis) {
   try {
     const config = JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'));
     const entry = chassis && config.notebooks?.[chassis];
-    const id = typeof entry === 'string' ? entry : entry?.notebookId;
+    if (typeof entry !== 'object' || entry?.queryEnabled === false) return null;
+    if (!Array.isArray(entry.trustedSourceIds) || entry.trustedSourceIds.length === 0) return null;
+    const id = entry.notebookId;
     if (id?.trim()) return id.trim();
-    if (config.defaultNotebookId?.trim()) return config.defaultNotebookId.trim();
   } catch (e) { logger.warn('NOTEBOOK_ROUTE', 'Failed to read notebooks.json', e); }
   return null;
 }
@@ -110,8 +120,8 @@ router.post('/notebook-query', asyncHandler(async (req, res) => {
     telemetryLib.recordNotebookConsultationTelemetry({
       query: result.query, sanitizedQuery: sanitizationDetails.sanitizedQuery, answer: result.answer,
       citations: result.citations, durationMs, scenario: sanitizationDetails.scenario, chassis,
-      agreementScore: result.answer && !result.answer.includes('Fallback') ? 0.95 : 0.6,
-      nextActionExecuted: 'DEPENDENCY_VALIDATED_AND_DOUBLE_PROOFED'
+      agreementScore: result.isCloudGrounded ? 0.95 : 0.6,
+      nextActionExecuted: result.isCloudGrounded ? 'DEPENDENCY_VALIDATED_AND_DOUBLE_PROOFED' : 'LOCAL_FALLBACK_ADVISORY'
     });
     res.json({ ...result, durationMs, sanitizationDetails, scenario: sanitizationDetails.scenario, timestamps: { requestSentAt: new Date(startTime - durationMs).toISOString(), responseReceivedAt: new Date().toISOString() } });
   } catch (err) {
@@ -121,17 +131,32 @@ router.post('/notebook-query', asyncHandler(async (req, res) => {
 
 // ── Async Notebook Query ──────────────────────────────────────────────────────
 router.post('/notebook-query-async', (req, res) => {
-  const { query, chassis } = req.body;
+  const { query, chassis, learningEligible, chassisDir } = req.body;
   if (!query) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
 
   const notebookId = resolveNotebookId(chassis);
   if (!notebookId) {
     return res.status(202).json({
-      jobId: `job_${Date.now()}_local`, status: 'COMPLETED',
-      result: { query: sanitizeNotebookQuery(query, { chassis }), answer: 'Local Evaluation Engine: RAG notebook mapping unavailable for this chassis. Serving local 5-level conflict graph matrix.', citations: [], source: 'LOCAL_FALLBACK' }
+      jobId: `job_${Date.now()}_local`,
+      status: 'LOCAL_FALLBACK',
+      result: {
+        query: sanitizeNotebookQuery(query, { chassis }),
+        answer: 'Local Evaluation Engine: Dedicated RAG notebook mapping unavailable for this chassis. Fails closed to local deterministic rules.',
+        citations: [],
+        source: 'LOCAL_FALLBACK',
+        isCloudGrounded: false
+      }
     });
   }
-  const jobInfo = startAsyncNotebookQueryJob(notebookId, query, { context: { chassis } });
+  let safeChassisDir = null;
+  if (learningEligible && chassisDir) {
+    try { safeChassisDir = assertSafePath(chassisDir); } catch (err) {
+      return sendErrorResponse(res, 403, err, { source: 'NOTEBOOK_ROUTER' });
+    }
+  }
+  const jobInfo = startAsyncNotebookQueryJob(notebookId, query, {
+    context: { chassis, learningEligible: Boolean(learningEligible), chassisDir: safeChassisDir }
+  }, executeNotebookQuery);
   broadcastSSE({ type: 'LOG', text: `🤖 [ASYNC_RAG_LAUNCHED] Job ${jobInfo.jobId} started for ${chassis || 'DL380 Gen12 SFF'}`, stream: 'stdout' });
   res.status(202).json(jobInfo);
 });
@@ -141,6 +166,14 @@ router.get('/notebook-query-status/:jobId', (req, res) => {
   const status = getAsyncNotebookQueryJobStatus(req.params.jobId);
   if (!status) return sendErrorResponse(res, 404, `Query job '${req.params.jobId}' not found.`, { source: 'NOTEBOOK_ROUTER' });
   res.json(status);
+});
+
+router.post('/notebook-query-cancel/:jobId', (req, res) => {
+  const cancelled = cancelNotebookQueryJob(req.params.jobId, req.body?.reason || 'CANCELLED_BY_CLIENT');
+  if (!cancelled) {
+    return sendErrorResponse(res, 409, `Query job '${req.params.jobId}' is not actively processing.`, { source: 'NOTEBOOK_ROUTER' });
+  }
+  res.json({ jobId: req.params.jobId, status: 'CANCELLED' });
 });
 
 // ── NotebookLM Health Test ────────────────────────────────────────────────────

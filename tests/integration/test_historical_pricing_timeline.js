@@ -69,6 +69,10 @@ async function runHistoricalPricingSuite() {
         { date: '2026-08-01', price: 335.00, status: 'BASELINE' },
         { date: '2026-10-15', price: 335.00, status: 'REMOVED' },
         { date: '2026-12-01', price: 350.00, status: 'REINSTATED' }
+      ],
+      'P-BAD-PRICE': [
+        { date: '2026-08-01', price: 500.00, status: 'BASELINE' },
+        { date: '2026-09-01', price: 5000000.00, status: 'PRICE_CHANGED' }
       ]
     };
 
@@ -115,6 +119,9 @@ async function runHistoricalPricingSuite() {
     // Fan in Dec: Reinstated at $350.00
     const fanDec = getHistoricalSkuPrice('P48820-B21', '2026-12-05', testTempDir);
     report('Fan Kit in December reinstated ($350.00)', fanDec.priceUsd === 350 && fanDec.isDiscontinued === false && fanDec.status === 'REINSTATED');
+
+    const corruptPortalPrice = getHistoricalSkuPrice('P-BAD-PRICE', '2026-09-20', testTempDir);
+    report('Implausible portal price spike preserves prior certified GPL', corruptPortalPrice.priceUsd === 500 && corruptPortalPrice.status === 'ANOMALOUS_PORTAL_PRICE_REJECTED');
 
     // ─────────────────────────────────────────────────────────────────────────
     // TEST 3: Consolidated BOQ Multi-Month Historical Pricing

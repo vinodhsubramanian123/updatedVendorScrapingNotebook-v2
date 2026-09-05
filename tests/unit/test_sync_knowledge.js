@@ -2,9 +2,11 @@ const { test, describe } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { classifyKnowledgeScope, buildMasterKnowledgeRegistry } = require('../../scripts/lib/sync/knowledge_sync.js');
 const { generateNotebookSyncPayload } = require('../../scripts/lib/sync/sync_payload_builder.js');
 const { cleanTestPayloads } = require('../../scripts/lib/sync/post_flow_sync.js');
+const { loadCsvValues } = require('../../scripts/lib/sync/google_sheets_writer.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -86,5 +88,19 @@ describe('Closed-Loop Knowledge Sync & Multi-Family Drift engine tests', () => {
     assert.ok(registry.generatedAt, 'generatedAt should be present in the returned registry object');
     // Ensure it's a valid ISO string
     assert.doesNotThrow(() => new Date(registry.generatedAt).toISOString());
+  });
+
+  test('Google Sheets writer parses the certified master CSV without changing values', () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'google-sheet-writer-'));
+    const csvPath = path.join(tempDir, 'master.csv');
+    fs.writeFileSync(csvPath, 'SKU,Qty,Description\nP12345-B21,2,Test option\n');
+    try {
+      assert.deepStrictEqual(loadCsvValues(csvPath), [
+        ['SKU', 'Qty', 'Description'],
+        ['P12345-B21', '2', 'Test option']
+      ]);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });

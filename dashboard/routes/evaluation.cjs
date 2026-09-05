@@ -145,7 +145,7 @@ router.post('/eval-boq', (req, res) => {
   }
 
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
-  const args = [evalScript, targetPath, '--json'];
+  const args = [evalScript, targetPath, '--json', '--defer-rag'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
   if (process.env.OFFLINE_MODE === '1' || process.env.NODE_ENV === 'test') args.push('--offline');
 
