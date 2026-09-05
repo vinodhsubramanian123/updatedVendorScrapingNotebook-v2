@@ -301,11 +301,26 @@ The system leverages Google Jules for background code review, test generation, a
     - **Local Catalog RAG Modularization (`local_rag_search.js`)**: Multi-purpose search routines MUST separate processor searches (`searchProcessorSkusInEntry`), category matching (`searchCategorySkusInEntry`), and chassis base variant matching (`searchChassisBaseVariants`), ensuring orchestrator complexity stays below $CC \le 15$.
     - **Declarative SKU Encapsulation**: Domain aspect checkers MUST encapsulate vendor SKU strings into declarative lookup sets at the file header rather than scattering bare literals across nested conditionals.
 
+50. **Memoized O(1) Catalog SKU Index Contract (`INV-59`)**:
+    - Aspect checkers (`compute_thermal.js`, `memory_channel.js`, `networking_ocp.js`, `pcie_riser.js`, `power_environment.js`, `storage_tri_mode.js`, `support_manufacturing.js`, `support_services.js`) and conflict resolution engines (`resolution_matrix.js`) MUST NEVER perform unindexed $O(N \times M \times K)$ nested loops over `catalogData.entries` and each entry's `skus` array (`.find(...)`).
+    - All SKU lookups MUST leverage `buildCatalogSkuIndex(catalogData)` in `scripts/lib/catalog/sku.js`, which constructs and memoizes an amortized $O(1)$ lookup Map directly on `catalogData._skuIndex`.
 
+51. **Customer Tender Base SKU Quantity Accumulation Protocol (`INV-60`)**:
+    - Customer BOQ workbooks frequently contain repeated occurrences of identical base hardware part numbers (e.g. `P64707-B21` memory or drive cages) distributed across multiple lines, chassis nodes, or tender sections.
+    - In `conflict_graph.js` and all BOQ preprocessors, building the unified BOM map MUST accumulate quantities (`fullBomMap.get(sku).quantity += item.quantity`) rather than overwriting entries (`fullBomMap.set(sku, item)`), preventing silent hardware quantity loss and under-allocation.
 
+52. **Dynamic Generation-Aware Hardware Mandatory SKUs & SSOT Contract (`INV-61`)**:
+    - Mandatory hardware component definitions MUST maintain a Single Source of Truth (SSOT) centered in `scripts/lib/catalog/catalog_rules.js`. `boq_evaluator.js` MUST import and re-export `DEFAULT_MANDATORY_SKUS` from `catalog_rules.js` rather than maintaining duplicate divergent dictionaries.
+    - Riser enablement cable kits and high-performance heatsinks differ across server generations (Gen12: heatsink `P48818-B21`, cable kit `P76453-B21`; Gen11: heatsink `P74792-B21`, cable kits `P56073-B21` / `P56074-B21`). The engine MUST resolve these dynamically via `resolveMandatoryHeatsinkSku(gen)` and `resolveMandatoryCableKit(gen, riser)` to prevent cross-generation component pollution.
 
+53. **Strict Delimited Lifecycle & 90-Day Warning Token Parsing Protocol (`INV-62`)**:
+    - In `support_services.js` and `resolution_matrix.js`, lifecycle status checks for 90-Day Warning and EOL items must require explicit token boundaries: `/^(?:90|EOL)\s+/i`, `[90]`, `(90)`, or `90-DAY`.
+    - The engine MUST NEVER use loose prefix checks like `.startsWith('90')` on raw SKU strings, which cause false-positive EOL flags on standard production hardware SKUs that begin with the digits "90".
 
+54. **Enterprise Tender Multi-Cluster Sheet Preprocessing & Documentation Filtering Protocol (`INV-63`)**:
+    - Enterprise tender workbooks frequently lead with non-BOM documentation sheets preceding the actual hardware list (e.g. "Cover Page", "Terms & Conditions", "Audit Summary", "Compliance Matrix", "Instructions", "Readme").
+    - `multi_cluster_splitter.js` MUST NOT blindly parse `wb.SheetNames[0]`. It MUST filter candidate sheets using non-BOM keywords (`audit`, `architecture`, `terms`, `notes`, `readme`, `compliance`, `matrix`, `instructions`, `cover`) to locate the primary BOM data sheet dynamically.
 
-
-
-
+55. **Frontend Canonical Product Taxonomy & Invariant INV-36 Adherence (`INV-64`)**:
+    - All frontend hooks, selector components, and API routes (`useCatalogs.js`, `ChassisSelector.jsx`, `App.jsx`, `dashboard/routes/evaluation.cjs`) MUST standardize on canonical generation model directories (e.g. `'DL380_Gen12'`) per Invariant INV-36.
+    - `useCatalogs.js` MUST implement dynamic auto-fallback: if the requested chassis ID is not present in the active catalog pool, it automatically falls back to the first available valid catalog, ensuring the dashboard never crashes or loads blank catalog states.

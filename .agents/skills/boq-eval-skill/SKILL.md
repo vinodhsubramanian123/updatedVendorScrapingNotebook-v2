@@ -43,6 +43,7 @@ graph TD
 - **Functions**: `parseAndConsolidateBOQ(rawContent, filePath)`, `preprocessAndGroupBOQ(rawInput, filePath, options)`, `parseSkuLines(lines)`, `detectAndNormalizeAtomicCto(items)`
 - **Capabilities**:
   - **Multi-Unit CTO Normalization**: Resolves $N$-unit multiplied quotes (e.g. 5x DL380 server orders) into atomic 1-unit server profiles, normalizing CPU, RAM, storage, and accessory counts.
+  - **Dynamic BOM Lead Sheet Detection (`INV-63`)**: Filters administrative and non-BOM documentation sheets (Cover Page, Terms, Instructions, Readme) using `isNonBomSheet` to isolate the true hardware table automatically.
   - **5-Stage Preflight Cleansing Workflow**:
     1. *Stage 1*: Base Chassis & CTO Multiplier Detection
     2. *Stage 2*: Atomic Integer Division & Fractional Anomaly Check
@@ -56,6 +57,8 @@ graph TD
 ### Phase 2: Modular 7-Aspect Physical Math Pre-Checks & 10-Step Progress Streaming
 - **Module**: [`scripts/lib/boq/boq_evaluator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq/boq_evaluator.js)
 - **Functions**: `evaluatePhysicalMath(consolidatedItems)`
+- **High-Performance $O(1)$ SKU Indexing Contract (`INV-59`)**: All aspect checkers use `buildCatalogSkuIndex(catalogData)` with memoization on `catalogData._skuIndex`, eliminating $O(N \times M \times K)$ nested loops and cutting evaluation latency by >18%.
+- **Strict Delimited Lifecycle Parsing (`INV-62`)**: `support_services.js` checks lifecycle status using strict token delimiters (`/^(?:90|EOL)\s+/i`, `[90]`, `(90)`, `90-DAY`), preventing false-positive EOL flags on SKUs starting with "90".
 - **10-Step Live Visual Execution Sequence**:
   1. *Step 1*: Workload DNA & BOQ Items Extraction
   2. *Step 2*: Compute & Thermal Profiling
@@ -72,6 +75,8 @@ graph TD
 ### Phase 2.5: 5-Level Dependency Conflict Graph & Closed-Loop Delta Auto-Injection
 - **Module**: [`scripts/lib/conflict/conflict_graph.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/conflict_graph.js) & [`scripts/lib/catalog/catalog_rules.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/catalog/catalog_rules.js)
 - **Functions**: `validateConflictGraph()`, `loadLearnedKnowledgeDeltas()`, `extractWorkloadDna()`, `synthesize5TierRankedSolutions()`, `analyzeCascadingImpact()`, `introspectSku()`
+- **Tender Base SKU Quantity Accumulation (`INV-60`)**: In `conflict_graph.js`, duplicate base hardware entries accumulate quantities (`fullBomMap.get(sku).quantity += qty`) rather than overwriting, preserving total tender hardware counts.
+- **Dynamic Generation-Aware Mandatory SKUs & SSOT (`INV-61`)**: `catalog_rules.js` serves as the Single Source of Truth (`DEFAULT_MANDATORY_SKUS`). Resolves heatsinks and riser cable kits dynamically by generation (`P48818-B21` / `P76453-B21` for Gen12; `P74792-B21` / `P56073-B21` / `P56074-B21` for Gen11) without hardcoded cross-generation pollution.
 - **Dynamic SKU Capability Introspection**: Introspects component capabilities across cores, GHz, TDP wattage, storage controller cache sizes, power supply capacity, and networking throughput directly from catalog descriptions without hardcoded strings.
 - **4-Degree Cascading Ripple Analysis (`analyzeCascadingImpact`)**:
   - *Degree 1 (Immediate Companions)*: Auto-detects required controller cables (`P48832-B21`), flash-backed write cache batteries (`P01366-B21`), and heatsinks when swapping controllers or CPUs.

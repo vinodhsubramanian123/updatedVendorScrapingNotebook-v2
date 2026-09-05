@@ -389,6 +389,30 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   - Domain aspect checkers MUST encapsulate literal part numbers into declarative lookup sets at the module header.
 - **Enforcement**: `tests/unit/test_circular_and_complexity.js` enforces automated complexity ceilings on these functions as an automated gate.
 
+### INV-59: Memoized O(1) Catalog SKU Index Contract
+- **Pattern**: Aspect checkers and conflict resolution matrix previously performed repeated nested `.find()` loops over `catalogData.entries` and each entry's `skus` array ($O(N \times M \times K)$ complexity).
+- **Rule**: All physical aspect checkers (`compute_thermal.js`, `memory_channel.js`, `networking_ocp.js`, `pcie_riser.js`, `power_environment.js`, `storage_tri_mode.js`, `support_manufacturing.js`, `support_services.js`) and resolution engines (`resolution_matrix.js`) MUST use `buildCatalogSkuIndex(catalogData)` from `scripts/lib/catalog/sku.js` to look up SKU metadata in $O(1)$ amortized time via the cached `catalogData._skuIndex` Map.
+
+### INV-60: Customer Tender Base SKU Quantity Accumulation Protocol
+- **Pattern**: Customer BOQ spreadsheets often list identical base hardware part numbers (e.g. `P64707-B21` memory) multiple times across separate rows or tender partitions. Overwriting entries in `fullBomMap` caused severe quantity drops.
+- **Rule**: `conflict_graph.js` and all BOQ preprocessors MUST accumulate quantities (`fullBomMap.get(sku).quantity += item.quantity`) when identical base SKUs appear in an input tender, preventing hardware quantity loss.
+
+### INV-61: Dynamic Generation-Aware Hardware Mandatory SKUs & SSOT Contract
+- **Pattern**: Conflicting mandatory SKU dictionaries across `catalog_rules.js` and `boq_evaluator.js` with hardcoded heatsinks and riser cable kits caused cross-generation component pollution.
+- **Rule**: `catalog_rules.js` is the Single Source of Truth (`DEFAULT_MANDATORY_SKUS`). `boq_evaluator.js` MUST re-export this dictionary. Mandatory heatsinks and riser cable kits MUST be dynamically resolved via `resolveMandatoryHeatsinkSku(gen)` and `resolveMandatoryCableKit(gen, riser)` to correctly assign Gen12 vs Gen11 parts (`P48818-B21` / `P76453-B21` for Gen12; `P74792-B21` / `P56073-B21` / `P56074-B21` for Gen11).
+
+### INV-62: Strict Delimited Lifecycle & 90-Day Warning Token Parsing Protocol
+- **Pattern**: Using `.startsWith('90')` in `support_services.js` falsely flagged standard non-EOL SKUs beginning with "90" as 90-Day Warning items.
+- **Rule**: Lifecycle status checks for 90-Day Warnings and EOL parts must require strict delimiter tokens: `/^(?:90|EOL)\s+/i`, `[90]`, `(90)`, or `90-DAY`.
+
+### INV-63: Enterprise Tender Multi-Cluster Sheet Preprocessing & Documentation Filtering Protocol
+- **Pattern**: Enterprise customer quotes frequently prepend non-BOM documentation sheets (e.g. "Cover Page", "Terms & Conditions", "Readme"). Reading `wb.SheetNames[0]` caused empty BOM crashes.
+- **Rule**: `multi_cluster_splitter.js` MUST evaluate sheet names with `isNonBomSheet` (filtering `audit`, `terms`, `notes`, `readme`, `cover`, `compliance`, `matrix`) to dynamically target the true BOM data sheet.
+
+### INV-64: Frontend Canonical Product Taxonomy & Invariant INV-36 Adherence
+- **Pattern**: Stale form-factor model names (such as `'DL380_Gen12_SFF'`) in UI hooks and selectors violated Invariant INV-36 and caused blank catalog views.
+- **Rule**: Frontend selectors, hooks, and API routes MUST standardize on the canonical generation model directory (`'DL380_Gen12'`). `useCatalogs.js` MUST provide automated fallback to the first available catalog if the selected key is not found.
+
 ---
 
 
