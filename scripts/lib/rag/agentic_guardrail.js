@@ -55,7 +55,7 @@ function buildToolRegistry(ctx) {
           parameters: {
             type: Type.OBJECT,
             properties: {
-              chassis_id: { type: Type.STRING, description: "The chassis variant to evaluate against, e.g., 'DL380_Gen12_SFF'" },
+              chassis_id: { type: Type.STRING, description: "The chassis variant to evaluate against, e.g., 'DL380_Gen12'" },
               items_json: { type: Type.STRING, description: 'JSON stringified array of BOQ items.' }
             },
             required: ['items_json', 'chassis_id']
@@ -84,7 +84,7 @@ function buildToolRegistry(ctx) {
           parameters: {
             type: Type.OBJECT,
             properties: {
-              chassis_id: { type: Type.STRING, description: "The chassis variant to query, e.g., 'DL380_Gen12_SFF'" },
+              chassis_id: { type: Type.STRING, description: "The chassis variant to query, e.g., 'DL380_Gen12'" },
               query: { type: Type.STRING, description: 'The natural language prompt to ask NotebookLM.' }
             },
             required: ['chassis_id', 'query']

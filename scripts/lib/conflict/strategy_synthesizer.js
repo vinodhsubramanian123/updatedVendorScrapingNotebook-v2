@@ -122,7 +122,11 @@ function getStrategyConfig(chassisInfo) {
   const genKey = (chassisInfo.gen || '').toLowerCase();
 
   let key = 'default';
-  if (modelKey.includes('dl380')) {
+  if (modelKey.includes('dl380a')) {
+    key = strategyConfig.dl380a_gen12 ? 'dl380a_gen12' : (strategyConfig.dl380_gen12 ? 'dl380_gen12' : 'dl380');
+  } else if (modelKey.includes('dl145')) {
+    key = strategyConfig.dl145_gen11 ? 'dl145_gen11' : (strategyConfig.dl380_gen11 ? 'dl380_gen11' : 'default');
+  } else if (modelKey.includes('dl380')) {
     if (genKey.includes('12') || modelKey.includes('gen12')) key = 'dl380_gen12';
     else if (genKey.includes('11') || modelKey.includes('gen11')) key = 'dl380_gen11';
     else key = 'dl380';

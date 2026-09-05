@@ -33,7 +33,7 @@ const ACTIVE_VERSION = 'v1';
 
 /**
  * Build the system instruction string for the Guardrail agent.
- * @param {string} chassisId  e.g. 'DL380_Gen12_SFF'
+ * @param {string} chassisId  e.g. 'DL380_Gen12'
  * @param {string} [version]  Optional override; defaults to ACTIVE_VERSION
  * @returns {string}
  */

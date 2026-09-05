@@ -3,22 +3,23 @@
  * scripts/lib/aspects/compute_thermal.js — Compute & Thermal Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   let cpuCount = 0;
   let maxCpuTdpWatts = 0;
   let fanKitCount = 0;
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
 
     let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === sku));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    const catalogItem = skuIndex.get(sku);
+    if (catalogItem) {
+      role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
     if (role === 'Processor' || /^p\d{5}-b21$/i.test(it.sku)) {

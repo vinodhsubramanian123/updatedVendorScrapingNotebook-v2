@@ -95,7 +95,7 @@ router.post('/confirm-preflight-split', (req, res) => {
   try {
     let safeChassisDir = null;
     if (chassisDir) safeChassisDir = assertSafePath(chassisDir);
-    const targetDir = safeChassisDir && fs.existsSync(safeChassisDir) ? safeChassisDir : path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12_SFF');
+    const targetDir = safeChassisDir && fs.existsSync(safeChassisDir) ? safeChassisDir : path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12');
     const record = savePreprocessingRuleFeedback({ configId, splitReason, notes }, targetDir);
     const deltasFile = path.join(targetDir, 'history', 'catalog_deltas.json');
     let deltas = [];

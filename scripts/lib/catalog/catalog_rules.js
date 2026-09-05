@@ -38,12 +38,25 @@ function getMandatorySkusForChassis(chassisInfo) {
   const skus = { ...DEFAULT_MANDATORY_SKUS };
   const family = (chassisInfo?.family || '').toLowerCase();
   const model = (chassisInfo?.model || '').toLowerCase();
+  const gen = (chassisInfo?.gen || '').toLowerCase();
+  const isGen12 = gen.includes('12') || model.includes('gen12');
 
   if (family.includes('alletra')) {
     skus.NO_DRIVE_FIO_KIT = { sku: 'R0Q21A', name: 'HPE Alletra Storage Drive Blank Kit' };
   } else if (model.includes('dl360')) {
     skus.HIGH_PERF_FAN_KIT = { sku: 'P48821-B21', name: 'HPE ProLiant DL360 High Performance Fan Kit' };
     skus.HIGH_PERF_HEATSINK = { sku: 'P48822-B21', name: 'HPE ProLiant DL360 Performance Heat Sink Kit' };
+  } else if (isGen12) {
+    skus.HIGH_PERF_FAN_KIT = { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit' };
+    skus.HIGH_PERF_HEATSINK = { sku: 'P48818-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Heatsink' };
+    skus.PRIMARY_CABLE_KIT = { sku: 'P76453-B21', name: 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit' };
+    skus.SECONDARY_CABLE_KIT = { sku: 'P76453-B21', name: 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit' };
+  } else {
+    // Gen11 defaults
+    skus.HIGH_PERF_FAN_KIT = { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen11 High Performance Fan Kit' };
+    skus.HIGH_PERF_HEATSINK = { sku: 'P74792-B21', name: 'HPE ProLiant Performance Heat Sink Kit' };
+    skus.PRIMARY_CABLE_KIT = { sku: 'P56073-B21', name: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit' };
+    skus.SECONDARY_CABLE_KIT = { sku: 'P56074-B21', name: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit' };
   }
   return skus;
 }

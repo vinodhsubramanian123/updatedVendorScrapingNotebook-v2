@@ -13,7 +13,8 @@
     "pcie_riser.js",
     "networking_ocp.js",
     "power_environment.js",
-    "support_manufacturing.js"
+    "support_manufacturing.js",
+    "support_services.js"
   ],
   "primaryTestSuite": "tests/unit/test_aspect_checkers_comprehensive.js"
 }

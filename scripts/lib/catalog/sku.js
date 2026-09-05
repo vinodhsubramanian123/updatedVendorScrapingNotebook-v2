@@ -125,11 +125,46 @@ function isServiceSku(skuStr) {
   return /^[HURS][A-Z0-9]{4,11}$/i.test(clean) || /^[A-Z0-9]{5,8}AAE$/i.test(clean);
 }
 
+/**
+ * Build or retrieve a memoized Map index for O(1) catalog SKU lookups.
+ * @param {object} catalogData - Catalog JSON data object
+ * @returns {Map<string, { entry: object, skuData: object, parentCategory: string, subCategory: string, lifecycleStatus: string }>}
+ */
+function buildCatalogSkuIndex(catalogData) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return new Map();
+  if (catalogData._skuIndex instanceof Map) return catalogData._skuIndex;
+
+  const index = new Map();
+  for (const entry of catalogData.entries) {
+    const parentCategory = entry.parentCategory || '';
+    const subCategory = entry.subCategory || '';
+    if (Array.isArray(entry.skus)) {
+      for (const s of entry.skus) {
+        const raw = s['Product #'] || s.sku;
+        const clean = cleanBaseSKU(raw);
+        if (clean && !index.has(clean)) {
+          index.set(clean, {
+            entry,
+            skuData: s,
+            parentCategory,
+            subCategory,
+            lifecycleStatus: s['Lifecycle Status'] || ''
+          });
+        }
+      }
+    }
+  }
+
+  catalogData._skuIndex = index;
+  return index;
+}
+
 module.exports = {
   HPE_SKU_REGEX,
   HPE_SKU_EXTRACT_REGEX,
   isValidHpeSKU,
   cleanBaseSKU,
   classifyOptionType,
-  isServiceSku
+  isServiceSku,
+  buildCatalogSkuIndex
 };

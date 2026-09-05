@@ -22,8 +22,8 @@ export default function ChassisSelector({
   });
 
   const currentChassisObj = catalogs.find(c => c.id === selectedChassis) || {
-    id: selectedChassis || 'DL380_Gen12_SFF',
-    model: selectedChassis || 'DL380 Gen12 SFF',
+    id: selectedChassis || 'DL380_Gen12',
+    model: selectedChassis || 'DL380 Gen12',
     family: 'ProLiant'
   };
 

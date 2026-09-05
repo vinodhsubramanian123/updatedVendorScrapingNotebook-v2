@@ -3,20 +3,14 @@
  * scripts/lib/aspects/networking_ocp.js — Networking & OCP 3.0 Interconnect Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function buildSkuCategoryMap(catalogData) {
+  const index = buildCatalogSkuIndex(catalogData);
   const map = new Map();
-  if (catalogData && Array.isArray(catalogData.entries)) {
-    for (const e of catalogData.entries) {
-      if (Array.isArray(e.skus)) {
-        for (const s of e.skus) {
-          const sClean = cleanBaseSKU(s['Product #'] || s.sku);
-          if (sClean) map.set(sClean, e.parentCategory || e.subCategory || '');
-        }
-      }
-    }
+  for (const [sku, item] of index.entries()) {
+    map.set(sku, item.parentCategory || item.subCategory || '');
   }
   return map;
 }

@@ -3,13 +3,14 @@
  * scripts/lib/aspects/support_services.js — Lifecycle Status & EOL Aspect Evaluator
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 
 function evalSupportServices(items, catalogData = null) {
   let hasObsoleteRisk = false;
   let hasEolWarning = false;
   const obsoleteSkus = [];
   const eolSkus = [];
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
     const rawSku = String(it.sku || '').trim().toUpperCase();
@@ -17,25 +18,20 @@ function evalSupportServices(items, catalogData = null) {
     const rawDesc = String(it.description || '').trim().toUpperCase();
     const rawLifecycle = String(it.lifecycleStatus || '').trim().toUpperCase();
 
-    // Check embedded brackets in SKU or Description (e.g. "[OB]")
+    // Check embedded brackets/tokens in SKU or Description (e.g. "[OB]", "(OB)", "OB P123")
     const isObsolete = rawLifecycle.includes('OBSOLETE') || rawLifecycle.includes('(OB)') || 
-                       rawSku.includes('[OB]') || rawSku.startsWith('OB') ||
+                       rawSku.includes('[OB]') || /^(?:OB|DS)\s+/i.test(rawSku) ||
                        rawDesc.includes('[OB]');
                        
+    // Strict EOL check: require explicit delimiters to avoid false-positives on SKUs starting with '90'
     const isEolWarning = rawLifecycle.includes('90-DAY') || rawLifecycle.includes('EOL') || 
                          rawSku.includes('[90]') || rawSku.includes('[EOL]') ||
-                         rawSku.startsWith('90') || rawSku.startsWith('EOL') ||
-                         rawDesc.includes('[90]') || rawDesc.includes('[EOL]');
+                         rawSku.includes('90-DAY') || /^(?:90|EOL)\s+/i.test(rawSku) ||
+                         rawDesc.includes('[90]') || rawDesc.includes('[EOL]') || rawDesc.includes('90-DAY');
 
-    // Check matched catalog entries
-    let catalogStatus = '';
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanSku));
-      if (match && match.skus) {
-        const skuEntry = match.skus.find(s => cleanBaseSKU(s['Product #']) === cleanSku);
-        catalogStatus = String(skuEntry['Lifecycle Status'] || '').toUpperCase();
-      }
-    }
+    // Check matched catalog entry via O(1) indexed lookup
+    const catalogItem = skuIndex.get(cleanSku);
+    const catalogStatus = String(catalogItem?.lifecycleStatus || '').toUpperCase();
 
     if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
       hasObsoleteRisk = true;

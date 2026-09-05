@@ -3,7 +3,7 @@
  * scripts/lib/aspects/power_environment.js — Power & Environmental Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 // GPU TDP lookup by description keyword (watts). Ordered by most-specific first.
@@ -144,15 +144,16 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
 
   let totalHardwareWatts = 0;
   const dcLugSku = cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21');
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
 
     let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    const catalogItem = skuIndex.get(sku);
+    if (catalogItem) {
+      role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
     totalHardwareWatts += estimateSystemPowerWatts(it, desc, role);

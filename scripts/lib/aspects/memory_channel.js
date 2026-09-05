@@ -3,7 +3,7 @@
  * scripts/lib/aspects/memory_channel.js — Memory & Channel Symmetry Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
@@ -13,6 +13,7 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   let cpuCount = passedCpuCount;
   const btoMemoryViolations = [];
   const memoryItems = [];
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   // Check if chassis in items is CTO if not explicitly passed
   const isCto = isCtoChassis || items.some(it => {
@@ -24,10 +25,11 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   for (const it of items) {
     const desc = (it.description || '').toLowerCase();
     const rawSku = (it.sku || '').toUpperCase().trim();
+    const cleanSku = cleanBaseSKU(it.sku);
     let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    const catalogItem = skuIndex.get(cleanSku);
+    if (catalogItem) {
+      role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
     if (role === 'Memory' || desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) {

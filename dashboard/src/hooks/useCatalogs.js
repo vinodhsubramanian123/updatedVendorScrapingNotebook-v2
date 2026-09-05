@@ -13,7 +13,7 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 
-export function useCatalogs(initialChassis = 'DL380_Gen12_SFF') {
+export function useCatalogs(initialChassis = 'DL380_Gen12') {
   const [catalogs, setCatalogs] = useState([]);
   const [selectedChassis, setSelectedChassis] = useState(initialChassis);
   const [catalogData, setCatalogData] = useState(null);
@@ -26,9 +26,13 @@ export function useCatalogs(initialChassis = 'DL380_Gen12_SFF') {
       const data = await res.json();
       const list = data.catalogs || [];
       setCatalogs(list);
-      // Auto-select first catalog if none chosen yet
-      if (list.length > 0 && !initialChassis) {
-        setSelectedChassis(list[0].id);
+      // Auto-select first or matching catalog if current selection is invalid
+      if (list.length > 0) {
+        setSelectedChassis(prev => {
+          if (prev && list.some(c => c.id === prev)) return prev;
+          const defaultMatch = list.find(c => c.id === 'DL380_Gen12') || list[0];
+          return defaultMatch.id;
+        });
       }
     } catch (err) {
       console.error('[useCatalogs] Failed to fetch catalogs:', err);

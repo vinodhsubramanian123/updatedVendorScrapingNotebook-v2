@@ -56,7 +56,14 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // Combine original items + injected fix SKUs into unified BOM list
   const fullBomMap = new Map();
   boqItems.forEach(it => {
-    fullBomMap.set(cleanBaseSKU(it.sku), { ...it, isFix: false });
+    const sku = cleanBaseSKU(it.sku);
+    if (!sku) return;
+    const qty = it.quantity || 1;
+    if (fullBomMap.has(sku)) {
+      fullBomMap.get(sku).quantity = (fullBomMap.get(sku).quantity || 0) + qty;
+    } else {
+      fullBomMap.set(sku, { ...it, sku, quantity: qty, isFix: false });
+    }
   });
 
   const depsList = Array.isArray(missingDependencies)

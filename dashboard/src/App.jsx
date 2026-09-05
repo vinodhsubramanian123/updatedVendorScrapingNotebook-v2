@@ -70,7 +70,7 @@ export default function App() {
     selectedChassis,
     setSelectedChassis,
     refreshCatalogs
-  } = useCatalogs('DL380_Gen12_SFF');
+  } = useCatalogs('DL380_Gen12');
 
   const selectedChassisRef = useRef(selectedChassis);
   useEffect(() => { selectedChassisRef.current = selectedChassis; }, [selectedChassis]);

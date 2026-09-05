@@ -3,37 +3,32 @@
  * scripts/lib/conflict/resolution_matrix.js — Generates recommendations for Lifecycle Risks
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 
 function generateLifecycleRecommendations(items, catalogData = null) {
   const recommendations = [];
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
     const rawSku = String(it.sku || '').trim().toUpperCase();
+    const cleanSku = cleanBaseSKU(it.sku);
     const rawDesc = String(it.description || '').trim().toUpperCase();
     const rawLifecycle = String(it.lifecycleStatus || '').trim().toUpperCase();
 
     // Check embedded brackets in SKU or Description (e.g. "[OB]")
     const isObsolete = rawLifecycle.includes('OBSOLETE') || rawLifecycle.includes('(OB)') || 
-                       rawSku.includes('[OB]') || rawSku.startsWith('OB') ||
+                       rawSku.includes('[OB]') || /^(?:OB|DS)\s+/i.test(rawSku) ||
                        rawDesc.includes('[OB]');
                        
     const isEolWarning = rawLifecycle.includes('90-DAY') || rawLifecycle.includes('EOL') || 
                          rawSku.includes('[90]') || rawSku.includes('[EOL]') ||
-                         rawSku.startsWith('90') || rawSku.startsWith('EOL') ||
-                         rawDesc.includes('[90]') || rawDesc.includes('[EOL]');
+                         rawSku.includes('90-DAY') || /^(?:90|EOL)\s+/i.test(rawSku) ||
+                         rawDesc.includes('[90]') || rawDesc.includes('[EOL]') || rawDesc.includes('90-DAY');
 
-    // Check matched catalog entries
-    let catalogStatus = '';
-    let alternativeSku = '';
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku)));
-      if (match && match.skus) {
-        const skuEntry = match.skus.find(s => cleanBaseSKU(s['Product #']) === cleanBaseSKU(it.sku));
-        catalogStatus = String(skuEntry['Lifecycle Status'] || '').toUpperCase();
-        alternativeSku = skuEntry['Alternative SKU'] || '';
-      }
-    }
+    // Check matched catalog entries via O(1) lookup
+    const catalogItem = skuIndex.get(cleanSku);
+    const catalogStatus = String(catalogItem?.lifecycleStatus || '').toUpperCase();
+    const alternativeSku = catalogItem?.skuData?.['Alternative SKU'] || '';
 
     if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
       recommendations.push({

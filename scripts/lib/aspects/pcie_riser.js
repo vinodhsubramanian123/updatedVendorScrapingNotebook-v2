@@ -3,7 +3,7 @@
  * scripts/lib/aspects/pcie_riser.js — PCIe Slot Capacity & Riser Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function isGpuComponent(role, desc) {
@@ -83,6 +83,7 @@ function tallyRiserCards(tally, desc, sku, qty, role) {
 }
 
 function tallyPcieItems(items, catalogData) {
+  const skuIndex = buildCatalogSkuIndex(catalogData);
   const tally = {
     requiredPcieCards: 0,
     x16RequiredCount: 0,
@@ -102,9 +103,9 @@ function tallyPcieItems(items, catalogData) {
     const qty = it.quantity || 1;
 
     let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === sku));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    const catalogItem = skuIndex.get(sku);
+    if (catalogItem) {
+      role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
     tallyPcieCablesAndGpus(tally, desc, sku, qty, role);

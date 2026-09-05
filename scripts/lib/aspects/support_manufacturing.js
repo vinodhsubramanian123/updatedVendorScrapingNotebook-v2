@@ -3,7 +3,7 @@
  * scripts/lib/aspects/support_manufacturing.js — Support & Manufacturing Aspect Pre-Check
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 // Mandatory Process Control License SKUs (e.g. CLIC Rule 81322276)
@@ -53,6 +53,7 @@ function parseCpuInfo(desc, qty) {
 }
 
 function tallySupportItems(items, catalogData) {
+  const skuIndex = buildCatalogSkuIndex(catalogData);
   const tally = {
     hasSupportService: false,
     hasManagementLicense: false,
@@ -93,9 +94,9 @@ function tallySupportItems(items, catalogData) {
     }
 
     let role = classifyComponentRole('', desc);
-    if (catalogData && catalogData.entries) {
-      const match = catalogData.entries.find(e => e.skus && e.skus.find(s => cleanBaseSKU(s['Product #']) === sku));
-      if (match) role = classifyComponentRole(match.parentCategory, desc);
+    const catalogItem = skuIndex.get(sku);
+    if (catalogItem) {
+      role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
     // Processors

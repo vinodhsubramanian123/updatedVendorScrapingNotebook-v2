@@ -33,7 +33,8 @@ module.exports = {
     networkingOcp: require('./aspects/networking_ocp.js'),
     pcieRiser: require('./aspects/pcie_riser.js'),
     powerEnvironment: require('./aspects/power_environment.js'),
-    supportManufacturing: require('./aspects/support_manufacturing.js')
+    supportManufacturing: require('./aspects/support_manufacturing.js'),
+    supportServices: require('./aspects/support_services.js')
   },
 
   // BOQ Processing & Evaluation Subsystem

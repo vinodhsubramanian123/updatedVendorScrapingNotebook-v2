@@ -17,7 +17,7 @@ const path = require('path');
 const xlsx = require('xlsx-js-style');
 
 const { cleanBaseSKU } = require('../catalog/sku.js');
-const { getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
+const { getMandatorySkusForChassis, DEFAULT_MANDATORY_SKUS } = require('../catalog/catalog_rules.js');
 const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('../conflict/conflict_graph.js');
 const { parseSkuLines } = require('./boq_parser.js');
 
@@ -33,14 +33,6 @@ const { evalSupportServices } = require('../aspects/support_services.js');
 const { generateLifecycleRecommendations } = require('../conflict/resolution_matrix.js');
 
 const HIGH_TDP_THRESHOLD_WATTS = 240;
-
-const DEFAULT_MANDATORY_SKUS = {
-  HIGH_PERF_FAN_KIT: { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit' },
-  HIGH_PERF_HEATSINK: { sku: 'P48818-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Heatsink' },
-  SMART_STORAGE_BATTERY: { sku: 'P01366-B21', name: 'HPE 96W Smart Storage Battery (up to 20 Devices)' },
-  NO_DRIVE_FIO_KIT: { sku: '873763-B21', name: 'HPE DL380 Gen10/11/12 No Drive Configuration FIO Kit' },
-  DC_LUG_KIT: { sku: 'P36877-B21', name: 'HPE ProLiant Gen11/12 DC Power Supply Cable Lug Option Kit' }
-};
 
 function buildCtoBaseSkus() {
   const defaults = [
@@ -177,7 +169,7 @@ function validateNetworkingRules(ctx) {
 }
 
 function validatePCIeRules(ctx) {
-  const { pcie, serverCount, compute, errors, mathDeductions, warnings, missingDependencies } = ctx;
+  const { pcie, serverCount, compute, errors, mathDeductions, warnings, missingDependencies, mandatorySkus } = ctx;
   const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
   const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
   const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
@@ -194,26 +186,30 @@ function validatePCIeRules(ctx) {
   }
 
   if (pcie.needsPrimaryCableKit) {
-    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (P56073-B21).`;
+    const primaryCableSku = mandatorySkus?.PRIMARY_CABLE_KIT?.sku || 'P56073-B21';
+    const primaryCableName = mandatorySkus?.PRIMARY_CABLE_KIT?.name || 'HPE ProLiant DL380 Primary Cable Kit';
+    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (${primaryCableSku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'PRIMARY_RISER_CABLE_KIT',
       rule: 'CLIC Rule 81356091: Primary 3x16 Riser Cable Enablement',
-      sku: 'P56073-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit',
+      sku: primaryCableSku,
+      description: primaryCableName,
       quantity: serverCount,
       reasoning: reason
     });
   }
 
   if (pcie.needsSecondaryCableKit) {
-    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (P56074-B21).`;
+    const secCableSku = mandatorySkus?.SECONDARY_CABLE_KIT?.sku || 'P56074-B21';
+    const secCableName = mandatorySkus?.SECONDARY_CABLE_KIT?.name || 'HPE ProLiant DL380 Secondary Cable Kit';
+    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (${secCableSku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'SECONDARY_RISER_CABLE_KIT',
       rule: 'CLIC Rule 81170920: Secondary 3x16 Riser Cable Enablement',
-      sku: 'P56074-B21',
-      description: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit',
+      sku: secCableSku,
+      description: secCableName,
       quantity: serverCount,
       reasoning: reason
     });
