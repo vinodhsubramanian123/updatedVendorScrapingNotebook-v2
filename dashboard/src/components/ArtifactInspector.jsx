@@ -283,7 +283,7 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         <div className="glass-card p-4 space-y-2">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
             <span className="mono text-xs font-semibold text-slate-800">{viewFile}</span>
-            <button onClick={() => setViewFile(null)} className="text-xs text-slate-400 hover:text-slate-600">Close</button>
+            <button aria-label="Close file viewer" onClick={() => setViewFile(null)} className="text-xs text-slate-400 hover:text-slate-600">Close</button>
           </div>
           <pre className="terminal-view text-[11px] max-h-80 overflow-y-auto">
             {fileContent}
