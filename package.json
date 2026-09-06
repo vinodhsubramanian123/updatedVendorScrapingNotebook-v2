@@ -23,7 +23,7 @@
     "guardrail:check": "node scripts/maintenance/guardrail_health_check.js",
     "build": "npm run build --workspace=dashboard",
     "lint": "npx oxlint dashboard/src",
-    "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=160",
+    "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=135",
     "test": "node scripts/maintenance/run_test_matrix.js --tier fast",
     "test:portfolio": "node tests/integration/verify_all.js",
     "scrape": "node scripts/scrapers/scrape_oca_solution.js",

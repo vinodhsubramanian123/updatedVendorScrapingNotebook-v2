@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { normalizeLearningText } = require('./google_sheets_writer.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
@@ -28,6 +29,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
   let result = null;
   let driveSyncStatus = 'NOT_CONFIGURED';
   let driveSourceVerified = null;
+  let contentFingerprints = options.contentFingerprints || null;
   const payloadBasename = path.basename(payloadPath);
   const scrapeDate = new Date().toISOString().split('T')[0];
   const canonicalSourceName = `${chassisName}_OCA_Catalog_${scrapeDate}`;
@@ -76,69 +78,164 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
       const previousSourceId = (cfgEntry && typeof cfgEntry === 'object') ? cfgEntry.lastSyncedSourceId : null;
       const previousSourceName = (cfgEntry && typeof cfgEntry === 'object') ? cfgEntry.lastSyncedSourceName : null;
       const allowSourceDeletion = options.confirmSourceRetirement === true;
+      const useCanonicalDrive = cfgEntry?.canonicalDriveEnabled === true;
+      let canonicalDriveSheetId = cfgEntry?.driveSheetId || null;
+      let canonicalDriveSheetUrl = cfgEntry?.driveSheetUrl || null;
+      let canonicalDriveSourceId = cfgEntry?.driveSourceId || null;
 
       // TRANSACTIONAL REPLACEMENT SEQUENCE (INV-49 / Transactional Source Sync)
-      // Step 1: Upload fresh candidate source FIRST
-      let stdout;
+      // Step 1: Upload a fresh file candidate only for legacy notebooks. A
+      // canonical Drive-enabled notebook updates its one stable Sheet below.
+      let stdout = '';
       let newSourceId = null;
-      try {
-        stdout = execFileSync('nlm', [
-          'source', 'add', effectiveNotebookId,
-          '--file', payloadPath,
-          '--title', canonicalSourceName,
-          '--wait',
-          '--json'
-        ], {
-          encoding: 'utf-8',
-          timeout: 600000,
-          env: { ...process.env, PATH: extendedPath }
-        });
+      let canaryOk = false;
+      if (!useCanonicalDrive) {
         try {
-          const parsed = JSON.parse(stdout);
-          newSourceId = parsed.id || parsed.sourceId || parsed.source?.id;
-        } catch (_) {}
-        if (!newSourceId) {
-          const idMatch = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
-                          stdout.match(/"id"\s*:\s*"([^"]+)"/i) ||
-                          stdout.match(/\bsrc_([\w-]+)/i);
-          if (idMatch) newSourceId = idMatch[1];
+          stdout = execFileSync('nlm', [
+            'source', 'add', effectiveNotebookId,
+            '--file', payloadPath,
+            '--title', canonicalSourceName,
+            '--wait',
+            '--json'
+          ], {
+            encoding: 'utf-8',
+            timeout: 600000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          try {
+            const parsed = JSON.parse(stdout);
+            newSourceId = parsed.id || parsed.sourceId || parsed.source?.id;
+          } catch (_) {}
+          if (!newSourceId) {
+            const idMatch = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
+                            stdout.match(/"id"\s*:\s*"([^"]+)"/i) ||
+                            stdout.match(/\bsrc_([\w-]+)/i);
+            if (idMatch) newSourceId = idMatch[1];
+          }
+        } catch (uploadErr) {
+          throw new Error(`Transactional Sync Aborted during Candidate Upload: ${uploadErr.message}. Old source remains active.`);
         }
-      } catch (uploadErr) {
-        // Upload failed - existing source is completely preserved!
-        throw new Error(`Transactional Sync Aborted during Candidate Upload: ${uploadErr.message}. Old source remains active.`);
+
+        // Step 2: Canary Query Verification for the legacy file candidate.
+        try {
+          const canaryArgs = [
+            'notebook', 'query', effectiveNotebookId,
+            `Canary verification: Summarize base chassis model and SKUs for ${chassisName}.`
+          ];
+          if (newSourceId) canaryArgs.push('--source-ids', newSourceId);
+          const canaryTimeoutMs = parseInt(process.env.NLM_SYNC_CANARY_TIMEOUT_MS || '600000', 10);
+          canaryArgs.push('--timeout', String(Math.ceil(canaryTimeoutMs / 1000)), '--new-conversation', '--json');
+          const canaryOutput = execFileSync('nlm', canaryArgs, {
+            encoding: 'utf-8',
+            timeout: canaryTimeoutMs,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          const parsedCanary = JSON.parse(canaryOutput);
+          const canaryAnswer = String(parsedCanary.answer || parsedCanary.response || parsedCanary.result || '');
+          canaryOk = Boolean(newSourceId && canaryAnswer.length > 20 && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(canaryAnswer));
+        } catch (_) {
+          canaryOk = false;
+        }
+        if (!canaryOk) {
+          throw new Error(`Transactional Sync Failed Canary Verification for ${canonicalSourceName}. Candidate ${newSourceId || 'ID was not returned'} was not promoted; old source remains active.`);
+        }
       }
 
-      // Step 2: Canary Query Verification
-      let canaryOk = false;
-      try {
-        const canaryArgs = [
-          'notebook', 'query', effectiveNotebookId,
-          `Canary verification: Summarize base chassis model and SKUs for ${chassisName}.`
-        ];
-        if (newSourceId) {
-          canaryArgs.push('--source-ids', newSourceId);
+      // Step 2b: When a stable Google Sheet source is configured, update the
+      // complete product knowledge workbook before any old source retirement.
+      // The workbook contains catalog, verified learnings, change ledger, and
+      // semantic fingerprints. A failed write/refresh/canary aborts retirement.
+      if (useCanonicalDrive) {
+        try {
+          const masterCsvPath = path.join(path.dirname(payloadPath), `${chassisName}_Master_Catalog.csv`);
+          const writerArgs = [path.join(__dirname, 'google_sheets_writer.js')];
+          if (canonicalDriveSheetId) {
+            writerArgs.push(canonicalDriveSheetId, masterCsvPath, payloadPath, chassisName);
+          } else {
+            writerArgs.push('--create', `${chassisName} Canonical Knowledge`, masterCsvPath, payloadPath, chassisName);
+          }
+          const writerOutput = execFileSync(process.execPath, writerArgs, {
+            encoding: 'utf-8',
+            timeout: 600000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          const writerResult = JSON.parse(writerOutput);
+          contentFingerprints = writerResult.fingerprints || null;
+          canonicalDriveSheetId = writerResult.spreadsheetId || canonicalDriveSheetId;
+          canonicalDriveSheetUrl = writerResult.spreadsheetUrl || canonicalDriveSheetUrl
+            || `https://docs.google.com/spreadsheets/d/${canonicalDriveSheetId}/edit`;
+          if (canonicalDriveSourceId) {
+            const liveSourceOutput = execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
+              encoding: 'utf-8',
+              timeout: 30000,
+              env: { ...process.env, PATH: extendedPath }
+            });
+            const liveSources = JSON.parse(liveSourceOutput);
+            if (!Array.isArray(liveSources) || !liveSources.some(source => source.id === canonicalDriveSourceId)) {
+              canonicalDriveSourceId = null;
+            }
+          }
+          if (!canonicalDriveSourceId) {
+            const addDriveOutput = execFileSync('nlm', [
+              'source', 'add', effectiveNotebookId,
+              '--drive', canonicalDriveSheetId,
+              '--type', 'sheets',
+              '--title', `${chassisName} Canonical Knowledge`,
+              '--wait',
+              '--json'
+            ], {
+              encoding: 'utf-8',
+              timeout: 600000,
+              env: { ...process.env, PATH: extendedPath }
+            });
+            const addedDrive = JSON.parse(addDriveOutput);
+            canonicalDriveSourceId = addedDrive.id || addedDrive.sourceId || addedDrive.source?.id || null;
+            if (!canonicalDriveSourceId) throw new Error('NotebookLM did not return a Drive source ID');
+          } else {
+            execFileSync('nlm', [
+              'source', 'sync', effectiveNotebookId,
+              '--source-ids', canonicalDriveSourceId,
+              '--confirm'
+            ], {
+              encoding: 'utf-8',
+              timeout: 600000,
+              env: { ...process.env, PATH: extendedPath }
+            });
+          }
+          const driveCanaryOutput = execFileSync('nlm', [
+            'notebook', 'query', effectiveNotebookId,
+            `Drive source canary: identify ${chassisName} and summarize one certified catalog change or verified rule.`,
+            '--source-ids', canonicalDriveSourceId,
+            '--timeout', '600',
+            '--new-conversation',
+            '--json'
+          ], {
+            encoding: 'utf-8',
+            timeout: 600000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          const driveCanary = JSON.parse(driveCanaryOutput);
+          const driveAnswer = String(driveCanary.answer || driveCanary.response || driveCanary.result || '');
+          if (driveAnswer.length <= 20 || /no (?:relevant )?source|cannot (?:find|verify)/i.test(driveAnswer)) {
+            throw new Error('restricted Drive-source canary did not return a grounded answer');
+          }
+          driveSyncStatus = 'KNOWLEDGE_WORKBOOK_WRITTEN_REFRESHED_AND_CANARY_VERIFIED';
+          driveSourceVerified = canonicalDriveSourceId;
+          newSourceId = canonicalDriveSourceId;
+          canaryOk = true;
+        } catch (driveErr) {
+          driveSyncStatus = 'DRIVE_SYNC_FAILED_PRESERVED_OLD_SOURCE';
+          throw new Error(`Canonical Google Sheet synchronization failed before retirement: ${driveErr.message}. Old source remains active.`);
         }
-        const canaryTimeoutMs = parseInt(process.env.NLM_SYNC_CANARY_TIMEOUT_MS || '600000', 10);
-        canaryArgs.push('--timeout', String(Math.ceil(canaryTimeoutMs / 1000)), '--new-conversation', '--json');
-        const canaryOutput = execFileSync('nlm', canaryArgs, {
-          encoding: 'utf-8',
-          timeout: canaryTimeoutMs,
-          env: { ...process.env, PATH: extendedPath }
-        });
-        const parsedCanary = JSON.parse(canaryOutput);
-        const canaryAnswer = String(parsedCanary.answer || parsedCanary.response || parsedCanary.result || '');
-        canaryOk = Boolean(newSourceId && canaryAnswer.length > 20 && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(canaryAnswer));
-      } catch (_) {
-        // A source-list check alone proves indexing, not grounded answer quality.
-        canaryOk = false;
       }
 
       if (!canaryOk) {
-        throw new Error(`Transactional Sync Failed Canary Verification for ${canonicalSourceName}. Candidate ${newSourceId || 'ID was not returned'} was not promoted; old source remains active.`);
+        throw new Error(`Transactional Sync Failed: no verified canonical source is active for ${chassisName}. Old source remains active.`);
       }
 
       // Step 3: Retire Old Source (Now that candidate is verified and active)
-      if (allowSourceDeletion && previousSourceId && previousSourceId !== newSourceId) {
+      const previousSourceIsManaged = /(?:_OCA_Catalog_|notebook_sync_payload_|Canonical Knowledge)/i.test(previousSourceName || '');
+      if (allowSourceDeletion && previousSourceIsManaged && previousSourceId && previousSourceId !== newSourceId) {
         try {
           execFileSync('nlm', ['source', 'delete', previousSourceId, '--confirm'], {
             encoding: 'utf-8',
@@ -158,7 +255,9 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         const sources = JSON.parse(listOutput);
         const staleSources = Array.isArray(sources) ? sources.filter(s => {
           const title = String(s.title || s.filename || '');
+          const isManagedSource = /(?:_OCA_Catalog_|notebook_sync_payload_|Canonical Knowledge)/i.test(title);
           return (
+            isManagedSource &&
             (title.includes(chassisName) || (previousSourceName && title === previousSourceName) || title.includes(payloadBasename)) &&
             s.id !== undefined &&
             s.id !== newSourceId
@@ -219,38 +318,6 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         }
       }
 
-      // If a Google Drive Sheet source is configured, sync it in-place using valid CLI contract
-      if (cfgEntry && cfgEntry.driveSourceId) {
-        try {
-          const masterCsvPath = path.join(path.dirname(payloadPath), `${chassisName}_Master_Catalog.csv`);
-          execFileSync(process.execPath, [
-            path.join(__dirname, 'google_sheets_writer.js'),
-            cfgEntry.driveSheetId,
-            masterCsvPath,
-            cfgEntry.driveSheetName || ''
-          ], {
-            encoding: 'utf-8',
-            timeout: 600000,
-            env: { ...process.env, PATH: extendedPath }
-          });
-          execFileSync('nlm', [
-            'source', 'sync', effectiveNotebookId,
-            '--source-ids', cfgEntry.driveSourceId,
-            '--confirm'
-          ], {
-            encoding: 'utf-8',
-            timeout: 600000,
-            env: { ...process.env, PATH: extendedPath }
-          });
-          driveSyncStatus = 'SHEET_WRITTEN_AND_NOTEBOOK_SOURCE_REFRESHED';
-          driveSourceVerified = cfgEntry.driveSourceId;
-        } catch (driveErr) {
-          driveSyncStatus = 'DRIVE_SYNC_FAILED_PRESERVED_OLD_SOURCE';
-          const logger = require('../system/pipeline_logger.js');
-          logger.warn('NLM_SYNC', `Google Sheet write/NotebookLM refresh warning for ${cfgEntry.driveSourceId}: ${driveErr.message}`);
-        }
-      }
-
       if (!newSourceId && stdout) {
         const idMatchFallback = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
                                 stdout.match(/"id"\s*:\s*"([^"]+)"/i) ||
@@ -263,10 +330,15 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         cloudVerified: true,
         mode: 'CLI',
         newSourceId,
-        newSourceName: canonicalSourceName,
+        newSourceName: useCanonicalDrive ? `${chassisName} Canonical Knowledge` : canonicalSourceName,
         driveSyncStatus,
+        consolidationVerified: true,
+        contentFingerprints,
+        canonicalDriveSheetId,
+        canonicalDriveSheetUrl,
+        canonicalDriveSourceId,
         staleSourceIds: allowSourceDeletion ? [] : [previousSourceId].filter(id => id && id !== newSourceId),
-        message: `Uploaded and canary-verified "${canonicalSourceName}" in NotebookLM (${effectiveNotebookId}). Existing sources were preserved unless explicit retirement was confirmed.`
+        message: `${useCanonicalDrive ? 'Refreshed' : 'Uploaded'} and canary-verified "${useCanonicalDrive ? `${chassisName} Canonical Knowledge` : canonicalSourceName}" in NotebookLM (${effectiveNotebookId}). Existing sources were preserved unless explicit retirement was confirmed.`
       };
     } catch (cliErr) {
       result = {
@@ -294,7 +366,8 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         if (payloadPath && fs.existsSync(payloadPath)) {
           try {
             const crypto = require('crypto');
-            payloadChecksum = crypto.createHash('sha256').update(fs.readFileSync(payloadPath)).digest('hex');
+            const normalizedPayload = normalizeLearningText(fs.readFileSync(payloadPath, 'utf8'));
+            payloadChecksum = crypto.createHash('sha256').update(normalizedPayload).digest('hex');
           } catch (_) {}
         }
         cfg.notebooks[chassisName] = {
@@ -303,13 +376,17 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           lastSyncedAt: new Date().toISOString(),
           lastSyncDeltaCount: totalRulesCount,
           isolationLevel: 'CHASSIS_SPECIFIC',
-          lastSyncedSourceName: canonicalSourceName,
+          lastSyncedSourceName: result.newSourceName,
           trustedSourceIds: Array.from(new Set([
             ...(existing.trustedSourceIds || []).filter(id => !(options.confirmSourceRetirement === true && id === existing.lastSyncedSourceId)),
             result.newSourceId,
             driveSourceVerified
           ].filter(Boolean))),
           ...(payloadChecksum ? { lastPayloadChecksum: payloadChecksum } : {}),
+          ...(result.contentFingerprints ? { lastContentFingerprints: result.contentFingerprints } : {}),
+          ...(result.canonicalDriveSheetId ? { driveSheetId: result.canonicalDriveSheetId } : {}),
+          ...(result.canonicalDriveSheetUrl ? { driveSheetUrl: result.canonicalDriveSheetUrl } : {}),
+          ...(result.canonicalDriveSourceId ? { driveSourceId: result.canonicalDriveSourceId } : {}),
           ...(result.newSourceId ? { lastSyncedSourceId: result.newSourceId } : {})
         };
         safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);

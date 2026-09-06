@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('../system/pipeline_logger.js');
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
+const { buildKnowledgeWorkbookDatasets } = require('./google_sheets_writer.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -38,7 +39,7 @@ function loadNotebookConfig() {
  * @param {object} registry
  * @returns {{ payloadPath: string|null, markdownText: string, deltaCount: number, uploadResult: object|null }}
  */
-function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, registry = null) {
+function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, registry = null, syncOptions = {}) {
   const BLOCKED_CHASSIS = new Set([
     'Unknown_Chassis', 'outputs', 'General', '', 'Chassis Dir', 'OCA Solution', '-------------', 'Output Path'
   ]);
@@ -259,18 +260,35 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     logger.warn('KNOWLEDGE_SYNC', `Failed to write payload to ${payloadPath}`, err);
   }
 
+  let contentFingerprints = null;
+  const masterCsvPath = path.join(targetDir, `${chassisName}_Master_Catalog.csv`);
+  if (fs.existsSync(masterCsvPath) && fs.existsSync(payloadPath)) {
+    try {
+      contentFingerprints = buildKnowledgeWorkbookDatasets(masterCsvPath, payloadPath, {
+        chassisName,
+        targetDir
+      }).fingerprints;
+    } catch (fingerprintError) {
+      logger.warn('KNOWLEDGE_SYNC', `Unable to calculate canonical content fingerprints for ${chassisName}: ${fingerprintError.message}`);
+    }
+  }
+
   let uploadResult = null;
   if (autoUpload) {
     const notebookId = (cfg.notebooks && cfg.notebooks[chassisName])
       ? (typeof cfg.notebooks[chassisName] === 'object' ? cfg.notebooks[chassisName].notebookId : cfg.notebooks[chassisName])
       : cfg.defaultNotebookId;
-    uploadResult = syncToNotebookLM(notebookId, payloadPath, chassisName, totalRules);
+    uploadResult = syncToNotebookLM(notebookId, payloadPath, chassisName, totalRules, {
+      ...syncOptions,
+      contentFingerprints
+    });
   }
 
   return {
     payloadPath,
     markdownText: md,
     deltaCount: totalRules,
+    contentFingerprints,
     uploadResult
   };
 }

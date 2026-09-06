@@ -588,6 +588,48 @@ function validateMemoryRules(ctx) {
   }
 }
 
+function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraphValidation) {
+  if (skipGraphValidation) return { chassisDefaults: [], redundantDefaults: [] };
+  const redundantDefaults = [];
+  let chassisDefaults = [];
+  try {
+    const fullMap = getCachedChassisMap();
+    const includedMap = fullMap.chassis_included_components || {};
+    const baseKey = chassisInfo.baseSku
+      || Object.keys(includedMap).find(key => key === chassisInfo.sku || includedMap[key].model === chassisInfo.model);
+    chassisDefaults = (baseKey && includedMap[baseKey]?.includedComponents) || [];
+
+    for (const item of chassisDefaults.length > 0 ? items : []) {
+      const description = (item.description || '').toLowerCase();
+      const clean = cleanBaseSKU(item.sku);
+      const isStdFan = description.includes('standard fan')
+        || (description.includes('fan kit') && !description.includes('high perf') && !description.includes('performance') && !description.includes('p48820') && !description.includes('p40502'));
+      const isStdHeatsink = description.includes('standard heatsink')
+        || (description.includes('heat sink') && !description.includes('performance') && !description.includes('high perf') && !description.includes('p48818') && !description.includes('p74792'));
+      const isLomNic = description.includes('1gb 4-port') && description.includes('bcm5719') && !description.includes('pcie');
+      if (!isStdFan && !isStdHeatsink && !isLomNic) continue;
+
+      const includedDefault = chassisDefaults.find(component =>
+        (isStdFan && component.category === 'Cooling / Thermal' && component.description.includes('Fan'))
+        || (isStdHeatsink && component.category === 'Cooling / Thermal' && component.description.includes('Heatsink'))
+        || (isLomNic && component.category === 'Network Adapter')
+      );
+      if (!includedDefault) continue;
+      const advisory = `Chassis Default Advisory: SKU ${clean} (${item.description}) is already factory-included with base chassis ${baseKey} (${includedDefault.description}). Redundant line item not required unless explicitly ordered as a spare.`;
+      warnings.push(advisory);
+      redundantDefaults.push({
+        sku: clean,
+        description: item.description,
+        includedDefault: includedDefault.description,
+        advisory
+      });
+    }
+  } catch (_) {
+    // Chassis defaults are advisory; deterministic aspect checks still run.
+  }
+  return { chassisDefaults, redundantDefaults };
+}
+
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
   if (!items || !Array.isArray(items) || items.length === 0) {
     const reason = 'Empty BOQ: No SKUs or line items detected.';
@@ -682,47 +724,12 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const warnings = [];
   const missingDependencies = [];
   const mathDeductions = [];
-  const redundantDefaults = [];
-  let chassisDefaults = [];
-
-  // Chassis Included Components & Default Hardware Analysis (GAP 2)
-  if (!options.skipGraphValidation) {
-    try {
-      const fullMap = getCachedChassisMap();
-      const incMap = fullMap.chassis_included_components || {};
-      const baseKey = chassisInfo.baseSku || Object.keys(incMap).find(k => k === chassisInfo.sku || incMap[k].model === chassisInfo.model);
-      chassisDefaults = (baseKey && incMap[baseKey]?.includedComponents) || [];
-
-      if (chassisDefaults.length > 0) {
-        items.forEach(it => {
-          const desc = (it.description || '').toLowerCase();
-          const clean = cleanBaseSKU(it.sku);
-          // Flag redundant standard fans or heatsinks when not requiring high-TDP kits
-          const isStdFan = (desc.includes('standard fan') || (desc.includes('fan kit') && !desc.includes('high perf') && !desc.includes('performance') && !desc.includes('p48820') && !desc.includes('p40502')));
-          const isStdHeatsink = (desc.includes('standard heatsink') || (desc.includes('heat sink') && !desc.includes('performance') && !desc.includes('high perf') && !desc.includes('p48818') && !desc.includes('p74792')));
-          const isLomNic = desc.includes('1gb 4-port') && desc.includes('bcm5719') && !desc.includes('pcie');
-
-          if (isStdFan || isStdHeatsink || isLomNic) {
-            const matchDefault = chassisDefaults.find(d => 
-              (isStdFan && d.category === 'Cooling / Thermal' && d.description.includes('Fan')) ||
-              (isStdHeatsink && d.category === 'Cooling / Thermal' && d.description.includes('Heatsink')) ||
-              (isLomNic && d.category === 'Network Adapter')
-            );
-            if (matchDefault) {
-              const adv = `Chassis Default Advisory: SKU ${clean} (${it.description}) is already factory-included with base chassis ${baseKey} (${matchDefault.description}). Redundant line item not required unless explicitly ordered as a spare.`;
-              warnings.push(adv);
-              redundantDefaults.push({
-                sku: clean,
-                description: it.description,
-                includedDefault: matchDefault.description,
-                advisory: adv
-              });
-            }
-          }
-        });
-      }
-    } catch (_) {}
-  }
+  const { chassisDefaults, redundantDefaults } = collectChassisDefaultAdvisories(
+    items,
+    chassisInfo,
+    warnings,
+    options.skipGraphValidation
+  );
 
   if (lifecycle.hasObsoleteRisk) {
     warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');

@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const crypto = require('crypto');
+const { normalizeLearningText } = require('./google_sheets_writer.js');
 
 /**
  * Inspect knowledge drift between local evaluator rules and target notebook
@@ -47,16 +48,24 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
   let payloadChecksum = null;
   if (payload && payload.payloadPath && fs.existsSync(payload.payloadPath)) {
     try {
-      payloadChecksum = crypto.createHash('sha256').update(fs.readFileSync(payload.payloadPath)).digest('hex');
+      const normalizedPayload = normalizeLearningText(fs.readFileSync(payload.payloadPath, 'utf8'));
+      payloadChecksum = crypto.createHash('sha256').update(normalizedPayload).digest('hex');
     } catch (_) {}
   }
+
+  const contentFingerprint = payload?.contentFingerprints?.combined || null;
+  const previousContentFingerprint = entry?.lastContentFingerprints?.combined || null;
 
   let status = 'SYNCHRONIZED';
   if (!notebookId) {
     status = 'NO_NOTEBOOK_CONFIGURED';
   } else if (chassisRuleCount === 0) {
     status = 'BASELINE_READY';
-  } else if (unSyncedDeltasCount > 0 || (entry && entry.lastPayloadChecksum && payloadChecksum && entry.lastPayloadChecksum !== payloadChecksum)) {
+  } else if (
+    unSyncedDeltasCount > 0
+    || (entry && entry.lastPayloadChecksum && payloadChecksum && entry.lastPayloadChecksum !== payloadChecksum)
+    || (previousContentFingerprint && contentFingerprint && previousContentFingerprint !== contentFingerprint)
+  ) {
     status = 'DRIFT_DETECTED';
   }
 
@@ -70,6 +79,8 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
     unSyncedDeltasCount,
     payloadPath: payload.payloadPath,
     payloadChecksum,
+    contentFingerprint,
+    previousContentFingerprint,
     status
   };
 }

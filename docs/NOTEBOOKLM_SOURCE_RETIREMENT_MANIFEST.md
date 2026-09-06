@@ -1,12 +1,22 @@
 # NotebookLM Source Retirement Manifest
 
-Status: **PROPOSED — NOT EXECUTED**
+Status: **EXECUTED AND VERIFIED**
 
 Audited: 2026-09-06
 
+Executed: 2026-09-06
+
+## Execution record
+
+- All 37 proposed source IDs were re-listed and matched to the expected notebook and title before deletion.
+- The first cross-notebook bulk request was rejected without deleting anything. Membership was re-audited, then deletion succeeded in notebook-scoped batches: DL380 Gen12 `12`, DL380a Gen12 `10`, DL145 Gen11 `3`, and Synergy `12`.
+- Exact retained-source postchecks passed with counts `3`, `2`, `1`, and `2` respectively.
+- Restricted-source canary queries passed for all four notebooks and returned grounded product facts with inline citations.
+- Cloud deletion is permanent. Future retirement is governed by the canonical knowledge-workbook transaction: consolidate verified learnings and scrape deltas, calculate fingerprints, write/refresh the stable Google Sheet source, pass a restricted canary, and only then retire the preceding source.
+
 Policy: NotebookLM grounding sources are limited to official vendor documents, certified OCA catalogs, and verified/deduplicated KnowledgeDelta payloads. Customer BOQs, quotes, procurement lists, generated solution reports, and unverified notes are excluded.
 
-The application already queries only the trusted source IDs in `scripts/config/notebooks.json`. This manifest describes the remaining live-workspace cleanup. Deletion is irreversible and must not run until the user explicitly confirms this exact manifest.
+The application queries only the trusted source IDs in `scripts/config/notebooks.json`. This manifest records the completed live-workspace cleanup authorized by the user.
 
 ## DL380 Gen12
 

@@ -54,7 +54,9 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     
     // 2. Generate updated sync payload for target chassis
     const autoUpload = Boolean(options.autoUploadNLM);
-    const payload = generateNotebookSyncPayload(chassisName, autoUpload);
+    const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
+      confirmSourceRetirement: options.confirmSourceRetirement === true
+    });
     
     // 3. Inspect drift metrics
     const drift = inspectKnowledgeDrift(chassisName);

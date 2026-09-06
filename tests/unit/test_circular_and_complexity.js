@@ -108,4 +108,17 @@ test('Circular Dependencies & Cyclomatic Complexity Guardrails', async (t) => {
     assert.ok(fn, 'Expected queryLocalKnowledgeBase function to exist');
     assert.ok(fn.complexity <= 15, `Expected CC <= 15, got CC ${fn.complexity}`);
   });
+
+  for (const target of [
+    ['scripts/lib/boq/boq_preprocessor.js', 'preprocessAndGroupBOQ'],
+    ['scripts/lib/conflict/conflict_graph.js', 'validateConflictGraph'],
+    ['scripts/lib/boq/boq_evaluator.js', 'evaluatePhysicalMath']
+  ]) {
+    await t.test(`Complexity ratchet: ${target[1]} CC <= 120`, () => {
+      const result = analyzeFile(path.resolve(rootDir, target[0]));
+      const fn = result.functions.find(candidate => candidate.name === target[1]);
+      assert.ok(fn, `Expected ${target[1]} function to exist`);
+      assert.ok(fn.complexity <= 120, `Expected ${target[1]} CC <= 120, got CC ${fn.complexity}`);
+    });
+  }
 });

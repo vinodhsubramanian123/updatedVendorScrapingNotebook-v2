@@ -308,7 +308,7 @@ The dual-brain architecture maintains real-time synchronization between the loca
 
 | Milestone Event | Trigger Handler | Synchronized State |
 |---|---|---|
-| **Scrape Completion (Step 9/10)** | `promoteStagingDirectory()` | Uploads newly scraped master catalog markdown payload to cloud NotebookLM. |
+| **Scrape Completion (Step 9/10)** | `promoteStagingDirectory()` | After staging certification, updates the product's canonical four-tab Google Sheet, records semantic fingerprints and scrape deltas, refreshes its stable NotebookLM Drive source, and passes a restricted canary before any old source retirement. |
 | **BOQ Evaluation** | `eval_boq.js` | Emits `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. |
 | **Partner Quote Reconciliation** | `POST /api/verify-vendor-bom` | Auto-syncs discovered vendor quote discrepancies and CLIC rule updates. |
 | **HITL Feedback Submission** | `POST /api/feedback-submit` | Re-synchronizes verified engineer approvals to cloud sources. |
@@ -345,4 +345,3 @@ graph TD
 
 - **0-Cycle DAG Guarantee**: Verified via `npm run test:circular` across all 350+ project files.
 - **Complexity Caps**: CC $\le 20$ for high-level evaluators (`evalSupportManufacturing`, `evalPcieRiserSlots`, `evalStorageTriMode`, `evalNetworkingOcp`) and $\le 15$ for helper methods, with declarative lookup arrays replacing monolithic nested branches.
-

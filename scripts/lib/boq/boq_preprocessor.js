@@ -35,6 +35,137 @@ const {
   savePreprocessingRuleFeedback
 } = require('../preprocessor/feedback_persister.js');
 
+const INPUT_FILE_PATTERN = /\.(?:xlsx|xls|csv|tsv|txt)$/i;
+
+function resolveBoqInputs(filePathOrRaw, rawTextOrFilePath) {
+  const firstIsFile = typeof filePathOrRaw === 'string'
+    && INPUT_FILE_PATTERN.test(filePathOrRaw)
+    && fs.existsSync(filePathOrRaw);
+  const secondIsFile = typeof rawTextOrFilePath === 'string'
+    && INPUT_FILE_PATTERN.test(rawTextOrFilePath)
+    && fs.existsSync(rawTextOrFilePath);
+
+  if (firstIsFile) {
+    return {
+      filePath: filePathOrRaw,
+      rawText: typeof rawTextOrFilePath === 'string' ? rawTextOrFilePath : ''
+    };
+  }
+  if (secondIsFile) {
+    return {
+      filePath: rawTextOrFilePath,
+      rawText: typeof filePathOrRaw === 'string' ? filePathOrRaw : ''
+    };
+  }
+  return {
+    filePath: '',
+    rawText: typeof filePathOrRaw === 'string'
+      ? filePathOrRaw
+      : (typeof rawTextOrFilePath === 'string' ? rawTextOrFilePath : '')
+  };
+}
+
+function parseTextSections(rawText) {
+  const text = String(rawText || '');
+  const sectionRegex = /(?:^|\n)(?:[=#*\-]{3,}\s*(.*?)\s*[=#*\-]{3,}|\[(.*?)\]|Configuration\s+(\d+[:\s\w]*))/gi;
+  let match;
+  let lastIndex = 0;
+  const sections = [];
+
+  while ((match = sectionRegex.exec(text)) !== null) {
+    const secName = (match[1] || match[2] || match[3] || `Section_${sections.length + 1}`).trim();
+    if (match.index > lastIndex) {
+      const previous = text.substring(lastIndex, match.index).trim();
+      if (previous) {
+        sections.push({
+          sectionName: sections.length === 0 ? 'Main_Section' : `Section_${sections.length}`,
+          content: previous
+        });
+      }
+    }
+    lastIndex = sectionRegex.lastIndex;
+    sections.push({ sectionName: secName, content: '' });
+  }
+
+  if (sections.length === 0) return [{ sectionName: 'Main_BOQ', content: text }];
+  if (lastIndex < text.length) sections[sections.length - 1].content = text.substring(lastIndex).trim();
+  return sections.filter(section => section.content.length > 0);
+}
+
+function loadInputSections(filePath, rawText, auditTrail, addStep) {
+  if (!filePath || !/\.(?:xlsx|xls)$/i.test(filePath)) {
+    const sections = parseTextSections(rawText);
+    auditTrail.rawInputSummary.totalSheets = sections.length;
+    auditTrail.rawInputSummary.sheetNames = sections.map(section => section.sectionName);
+    addStep(2, 'Text Section Segmentation', `Identified ${sections.length} text block section(s)`);
+    return sections;
+  }
+
+  try {
+    const workbook = xlsx.readFile(filePath);
+    auditTrail.rawInputSummary.totalSheets = workbook.SheetNames.length;
+    auditTrail.rawInputSummary.sheetNames = workbook.SheetNames;
+    const sections = workbook.SheetNames.map(sheetName => ({
+      sectionName: sheetName,
+      content: xlsx.utils.sheet_to_csv(workbook.Sheets[sheetName])
+    }));
+    addStep(2, 'Multi-Sheet Excel Workbook Parsing', `Discovered ${workbook.SheetNames.length} sheet(s): ${workbook.SheetNames.join(', ')}`);
+    return sections;
+  } catch (err) {
+    addStep(2, 'Excel Parsing Fallback', `Failed to parse Excel workbook natively: ${err.message}. Treating as text.`, 'WARNING');
+    return [{ sectionName: 'Main_BOQ', content: String(rawText) }];
+  }
+}
+
+function isConfigBanner(line) {
+  const trimmed = String(line || '').trim();
+  if (!trimmed) return false;
+  if (/^[#*=\-_]{3,}\s*(.*?)\s*[#*=\-_]{3,}$/.test(trimmed)) return true;
+  if (/^\[(.*?)\]$/.test(trimmed)) return true;
+  if (!/^(?:Configuration|Config|Server|Chassis|Node|Solution|System|Quote\s*Item)\s*[\d:#\-_A-Za-z]/i.test(trimmed)) return false;
+  const parts = trimmed.split(/[\t,;|]/);
+  return !(parts.length >= 3 && parts.some(part => /^\d+$/.test(part.trim())));
+}
+
+/** Segments one sheet/text block into distinct configuration blocks. */
+function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
+  const blocks = [];
+  let currentBlock = { name: sheetName, lines: [], baseChassisFound: null };
+
+  for (const rawLine of lines) {
+    const line = String(rawLine || '').trim();
+    if (!line) continue;
+
+    if (isConfigBanner(line)) {
+      if (currentBlock.lines.length > 0) blocks.push(currentBlock);
+      const bannerClean = line.replace(/^[#*=\-_\[\]\s]+|[#*=\-_\[\]\s]+$/g, '').trim();
+      currentBlock = { name: `${sheetName} - ${bannerClean}`, lines: [line], baseChassisFound: null };
+      continue;
+    }
+
+    const skuMatches = line.match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/g) || [];
+    for (const skuMatch of skuMatches) {
+      const clean = cleanBaseSKU(skuMatch);
+      if (!isCtoBaseChassis({ sku: clean, description: line })) continue;
+      if (currentBlock.baseChassisFound && currentBlock.lines.length > 0) {
+        blocks.push(currentBlock);
+        currentBlock = {
+          name: `${sheetName} - Config ${blocks.length + 1}`,
+          lines: [],
+          baseChassisFound: clean
+        };
+      } else {
+        currentBlock.baseChassisFound = clean;
+      }
+      break;
+    }
+    currentBlock.lines.push(line);
+  }
+
+  if (currentBlock.lines.length > 0) blocks.push(currentBlock);
+  return blocks.length > 0 ? blocks : [{ name: sheetName, lines }];
+}
+
 /**
  * Main Preprocessor: Parse, group configuration variations, build audit trail & diffs.
  *
@@ -44,21 +175,7 @@ const {
  * @returns {object} Preprocessed BOQ result with variations and audit trail
  */
 function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, options = {}) {
-  let filePath = '';
-  let rawText = '';
-
-  if (typeof filePathOrRaw === 'string' && (filePathOrRaw.endsWith('.xlsx') || filePathOrRaw.endsWith('.xls') || filePathOrRaw.endsWith('.csv') || filePathOrRaw.endsWith('.tsv') || filePathOrRaw.endsWith('.txt')) && fs.existsSync(filePathOrRaw)) {
-    filePath = filePathOrRaw;
-    rawText = typeof rawTextOrFilePath === 'string' ? rawTextOrFilePath : '';
-  } else if (typeof rawTextOrFilePath === 'string' && (rawTextOrFilePath.endsWith('.xlsx') || rawTextOrFilePath.endsWith('.xls') || rawTextOrFilePath.endsWith('.csv') || rawTextOrFilePath.endsWith('.tsv') || rawTextOrFilePath.endsWith('.txt')) && fs.existsSync(rawTextOrFilePath)) {
-    filePath = rawTextOrFilePath;
-    rawText = typeof filePathOrRaw === 'string' ? filePathOrRaw : '';
-  } else if (typeof filePathOrRaw === 'string') {
-    rawText = filePathOrRaw;
-    filePath = (typeof rawTextOrFilePath === 'string' && fs.existsSync(rawTextOrFilePath)) ? rawTextOrFilePath : '';
-  } else if (typeof rawTextOrFilePath === 'string') {
-    rawText = rawTextOrFilePath;
-  }
+  const { filePath, rawText } = resolveBoqInputs(filePathOrRaw, rawTextOrFilePath);
 
   const auditTrail = {
     rawInputSummary: {
@@ -82,135 +199,7 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
 
   addStep(1, 'Raw File Intake & Sheet Discovery', `Reading BOQ input source: ${filePath ? path.basename(filePath) : 'Direct Text Input'}`);
 
-  let sheetsData = [];
-
-  if (filePath && (filePath.endsWith('.xlsx') || filePath.endsWith('.xls'))) {
-    try {
-      const workbook = xlsx.readFile(filePath);
-      auditTrail.rawInputSummary.totalSheets = workbook.SheetNames.length;
-      auditTrail.rawInputSummary.sheetNames = workbook.SheetNames;
-
-      workbook.SheetNames.forEach(sheetName => {
-        const sheet = workbook.Sheets[sheetName];
-        const csvText = xlsx.utils.sheet_to_csv(sheet);
-        sheetsData.push({
-          sectionName: sheetName,
-          content: csvText
-        });
-      });
-      addStep(2, 'Multi-Sheet Excel Workbook Parsing', `Discovered ${workbook.SheetNames.length} sheet(s): ${workbook.SheetNames.join(', ')}`);
-    } catch (err) {
-      addStep(2, 'Excel Parsing Fallback', `Failed to parse Excel workbook natively: ${err.message}. Treating as text.`, 'WARNING');
-      sheetsData.push({ sectionName: 'Main_BOQ', content: String(rawText) });
-    }
-  } else {
-    const text = String(rawText || '');
-    const sectionRegex = /(?:^|\n)(?:[=#*\-]{3,}\s*(.*?)\s*[=#*\-]{3,}|\[(.*?)\]|Configuration\s+(\d+[:\s\w]*))/gi;
-    let match;
-    let lastIndex = 0;
-    let sections = [];
-
-    while ((match = sectionRegex.exec(text)) !== null) {
-      const secName = (match[1] || match[2] || match[3] || `Section_${sections.length + 1}`).trim();
-      if (match.index > lastIndex) {
-        const prevText = text.substring(lastIndex, match.index).trim();
-        if (prevText) {
-          sections.push({ sectionName: sections.length === 0 ? 'Main_Section' : `Section_${sections.length}`, content: prevText });
-        }
-      }
-      lastIndex = sectionRegex.lastIndex;
-      sections.push({ sectionName: secName, content: '' });
-    }
-
-    if (sections.length > 0) {
-      if (lastIndex < text.length) {
-        sections[sections.length - 1].content = text.substring(lastIndex).trim();
-      }
-      sheetsData = sections.filter(s => s.content.length > 0);
-    } else {
-      sheetsData = [{ sectionName: 'Main_BOQ', content: text }];
-    }
-
-    auditTrail.rawInputSummary.totalSheets = sheetsData.length;
-    auditTrail.rawInputSummary.sheetNames = sheetsData.map(s => s.sectionName);
-    addStep(2, 'Text Section Segmentation', `Identified ${sheetsData.length} text block section(s)`);
-  }
-
-/**
- * Segments lines of a single sheet or text block into distinct configuration blocks.
- * Detects:
- * - Explicit configuration/server/chassis section banners (e.g. "Server 1", "Config 2", "Option B", "Chassis A", "### DL380 Gen12")
- * - Repeated CTO Base Chassis anchor lines (e.g. encountering a second CTO base chassis item triggers a new config block)
- * - Major blank/separator row divides between SKU tables
- */
-function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
-  const blocks = [];
-  let currentBlock = {
-    name: sheetName,
-    lines: [],
-    baseChassisFound: null
-  };
-
-  const isConfigBanner = (l) => {
-    const trimmed = String(l || '').trim();
-    if (!trimmed) return false;
-    if (/^[#*=\-_]{3,}\s*(.*?)\s*[#*=\-_]{3,}$/.test(trimmed)) return true;
-    if (/^\[(.*?)\]$/.test(trimmed)) return true;
-    if (/^(?:Configuration|Config|Server|Chassis|Node|Solution|System|Quote\s*Item)\s*[\d:#\-_A-Za-z]/i.test(trimmed)) {
-      const parts = trimmed.split(/[\t,;|]/);
-      const isTableData = parts.length >= 3 && parts.some(p => /^\d+$/.test(p.trim()));
-      if (!isTableData) return true;
-    }
-    return false;
-  };
-
-  for (let i = 0; i < lines.length; i++) {
-    const rawLine = lines[i];
-    const line = String(rawLine || '').trim();
-    if (!line) continue;
-
-    if (isConfigBanner(line)) {
-      if (currentBlock.lines.length > 0) {
-        blocks.push(currentBlock);
-      }
-      const bannerClean = line.replace(/^[#*=\-_\[\]\s]+|[#*=\-_\[\]\s]+$/g, '').trim();
-      currentBlock = {
-        name: `${sheetName} - ${bannerClean}`,
-        lines: [line],
-        baseChassisFound: null
-      };
-      continue;
-    }
-
-    // Check if line contains a CTO Base Chassis SKU
-    const skuMatches = line.match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/g) || [];
-    for (const match of skuMatches) {
-      const clean = cleanBaseSKU(match);
-      if (isCtoBaseChassis({ sku: clean, description: line })) {
-        if (currentBlock.baseChassisFound && currentBlock.lines.length > 0) {
-          // A second base chassis in the same sheet without an explicit header banner
-          blocks.push(currentBlock);
-          currentBlock = {
-            name: `${sheetName} - Config ${blocks.length + 1}`,
-            lines: [],
-            baseChassisFound: clean
-          };
-        } else {
-          currentBlock.baseChassisFound = clean;
-        }
-        break;
-      }
-    }
-
-    currentBlock.lines.push(line);
-  }
-
-  if (currentBlock.lines.length > 0) {
-    blocks.push(currentBlock);
-  }
-
-  return blocks.length > 0 ? blocks : [{ name: sheetName, lines }];
-}
+  const sheetsData = loadInputSections(filePath, rawText, auditTrail, addStep);
 
 // Parse items for each section / sheet with intelligent intra-sheet config segmentation
   const rawVariations = [];

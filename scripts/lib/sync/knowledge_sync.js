@@ -222,9 +222,9 @@ function buildMasterKnowledgeRegistry() {
   return registry;
 }
 
-function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false) {
+function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, syncOptions = {}) {
   const registry = buildMasterKnowledgeRegistry();
-  return buildPayload(chassisName, autoUpload, registry);
+  return buildPayload(chassisName, autoUpload, registry, syncOptions);
 }
 
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis') {
@@ -237,6 +237,7 @@ async function main() {
   const args = process.argv.slice(2);
   const JSON_MODE = args.includes('--json');
   const AUTO_UPLOAD = args.includes('--auto-upload-nlm');
+  const CONFIRM_SOURCE_RETIREMENT = args.includes('--confirm-source-retirement');
 
   let chassis = null;
   const chIdx = args.indexOf('--chassis');
@@ -255,7 +256,9 @@ async function main() {
 
   const results = [];
   for (const ch of targetChassisList) {
-    const payload = generateNotebookSyncPayload(ch, AUTO_UPLOAD);
+    const payload = generateNotebookSyncPayload(ch, AUTO_UPLOAD, {
+      confirmSourceRetirement: CONFIRM_SOURCE_RETIREMENT
+    });
     const notebookId = getNotebookIdForChassis(cfg, ch);
     results.push({
       chassis: ch,

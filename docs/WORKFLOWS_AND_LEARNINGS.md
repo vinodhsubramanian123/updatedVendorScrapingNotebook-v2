@@ -144,7 +144,9 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 ---
 
 ## 12. Gemini NotebookLM Anti-Clutter Clean Source Replacement & Dual-Brain Collaboration
-- **Source Hygiene & De-Duplication (`knowledge_sync.js`)**: Before uploading a new sync payload, the sync engine queries `nlm source list` and removes/replaces stale existing sources for that chassis before uploading the fresh charter (`notebook_sync_payload_<Chassis>.md`), preventing duplicate source clutter in NotebookLM.
+- **Canonical Product Knowledge Workbook**: Each product uses one stable Google Sheet source with four tabs: `Certified Catalog`, `Verified Learnings`, `Change Log`, and `Sync Metadata`. The change log records SKU, price, attribute, lifecycle, and promoted KnowledgeDelta changes; customer BOQs and generated customer reports are excluded.
+- **Semantic Fingerprints**: SHA-256 fingerprints are calculated independently for catalog rows, normalized learnings, and the change ledger, then combined. Volatile synchronization timestamps are normalized so timestamp-only rewrites do not create false drift.
+- **Add/Refresh → Canary → Retire Transaction (`knowledge_sync.js`)**: A fresh scrape must pass staging/cardinality/anomaly checks first. The canonical workbook is then written, its stable NotebookLM Drive source is refreshed (or bootstrapped once), and a query restricted to that source must pass. Only after those steps may an explicitly authorized preceding source be retired. Any write, refresh, or canary failure preserves the old source.
 - **Dual-Brain Principle**:
   - **Grounding Brain (NotebookLM)**: Houses product QuickSpecs, delta history, price trends, and universal vendor rules for natural language semantic retrieval.
   - **Deterministic Verification Brain (Local Rule Engine + Agentic Guardrail)**: Evaluates physical aspect math (TDP, memory symmetry, electrical lugs, PCIe slots) with 100% confidence.
@@ -681,4 +683,3 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Remediation**:
   - Standardized all UI selectors, hooks, and API routes on canonical generation model directories (`'DL380_Gen12'`).
   - Added dynamic auto-fallback in `useCatalogs.js` to select the first available valid catalog if the requested chassis ID is missing, guaranteeing 100% UI stability.
-

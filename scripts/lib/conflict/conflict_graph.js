@@ -24,6 +24,100 @@ const { introspectSku } = require('./cascading_impact_analyzer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
 
+function loadLearnedKnowledgeDeltas(resolvedTargetDir) {
+  const deltas = [];
+  const seenDeltaKeys = new Set();
+  const pathsToSearch = [
+    path.join(__dirname, '..', '..', 'outputs', 'history', 'master_knowledge_registry.json'),
+    path.join(__dirname, '..', '..', 'outputs', 'history', 'catalog_deltas.json')
+  ];
+  if (resolvedTargetDir && typeof resolvedTargetDir === 'string' && fs.existsSync(resolvedTargetDir)) {
+    pathsToSearch.push(path.join(resolvedTargetDir, 'history', 'catalog_deltas.json'));
+  }
+
+  for (const candidatePath of pathsToSearch) {
+    if (!fs.existsSync(candidatePath)) continue;
+    try {
+      const content = JSON.parse(fs.readFileSync(candidatePath, 'utf-8'));
+      let list = [];
+      if (Array.isArray(content)) {
+        list = content;
+      } else if (Array.isArray(content.deltas)) {
+        list = content.deltas;
+      } else {
+        list = [
+          ...(Array.isArray(content.universalRules) ? content.universalRules : []),
+          ...(Array.isArray(content.familyGenRules) ? content.familyGenRules : []),
+          ...(Array.isArray(content.chassisSpecificRules) ? content.chassisSpecificRules : [])
+        ];
+      }
+
+      for (const delta of list) {
+        const key = delta.deltaId || `${delta.chassis}:${delta.affectedSku}:${delta.requiredDependencySku || ''}:${delta.rawMessage || ''}`;
+        if (seenDeltaKeys.has(key)) continue;
+        seenDeltaKeys.add(key);
+        deltas.push(delta);
+      }
+    } catch (err) {
+      const logger = require('../system/pipeline_logger.js');
+      logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
+    }
+  }
+  return deltas;
+}
+
+function validateCategoryRules(fullBomList, conflicts, recordAudit) {
+  const descriptions = item => (item.description || '').toLowerCase();
+  const memoryItems = fullBomList.filter(item => {
+    const description = descriptions(item);
+    return description.includes('memory') || description.includes('rdimm');
+  });
+  const hasX4 = memoryItems.some(item => descriptions(item).includes('x4'));
+  const hasX8 = memoryItems.some(item => descriptions(item).includes('x8'));
+  const has96Gb = memoryItems.some(item => descriptions(item).includes('96gb'));
+  const otherMemory = memoryItems.filter(item => {
+    const description = descriptions(item);
+    return !description.includes('96gb') && !description.includes('128gb');
+  });
+
+  if (hasX4 && hasX8) {
+    const error = 'Mixing of x4 and x8 memory modules is strictly not allowed.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Mixing of x4 and x8 memory is not allowed', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Mixing of x4 and x8 memory is not allowed', 'PASS', 'All memory modules have uniform bit-width (x4).');
+  }
+
+  if (has96Gb && otherMemory.length > 0) {
+    const error = '96GB Memory modules cannot be mixed with any other Memory capacity.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', '96GB Memory cannot be mixed with any other Memory.', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', '96GB Memory cannot be mixed with any other Memory.', 'PASS', 'No 96GB capacity mixing detected.');
+  }
+
+  const psus = fullBomList.filter(item => {
+    const description = descriptions(item);
+    return description.includes('power supply') || description.includes('psu');
+  });
+  const hasAcPsu = psus.some(item => {
+    const description = descriptions(item);
+    return !description.includes('-48vdc') && !description.includes('dc');
+  });
+  const hasDcPsu = psus.some(item => {
+    const description = descriptions(item);
+    return description.includes('-48vdc') || description.includes('dc');
+  });
+
+  if (hasAcPsu && hasDcPsu) {
+    const error = 'Mixing of AC and DC power supplies is strictly not allowed.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'PASS', 'Power supply selection is homogenous (all DC or all AC).');
+  }
+}
+
 /**
  * Perform 5-level Dependency Conflict Graph validation.
  *
@@ -102,50 +196,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   }
 
   // 0. LEARNED KNOWLEDGE DELTAS VALIDATION
-  function loadLearnedKnowledgeDeltas() {
-    const deltas = [];
-    const seenDeltaKeys = new Set();
-    const pathsToSearch = [
-      path.join(__dirname, '..', '..', 'outputs', 'history', 'master_knowledge_registry.json'),
-      path.join(__dirname, '..', '..', 'outputs', 'history', 'catalog_deltas.json')
-    ];
-    if (resolvedTargetDir && typeof resolvedTargetDir === 'string' && fs.existsSync(resolvedTargetDir)) {
-      pathsToSearch.push(path.join(resolvedTargetDir, 'history', 'catalog_deltas.json'));
-    }
-
-    pathsToSearch.forEach(p => {
-      if (fs.existsSync(p)) {
-        try {
-          const content = JSON.parse(fs.readFileSync(p, 'utf-8'));
-          let list = [];
-          if (Array.isArray(content)) {
-            list = content;
-          } else if (content.deltas && Array.isArray(content.deltas)) {
-            list = content.deltas;
-          } else {
-            const univ = Array.isArray(content.universalRules) ? content.universalRules : [];
-            const fam = Array.isArray(content.familyGenRules) ? content.familyGenRules : [];
-            const chas = Array.isArray(content.chassisSpecificRules) ? content.chassisSpecificRules : [];
-            list = [...univ, ...fam, ...chas];
-          }
-
-          list.forEach(d => {
-            const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.rawMessage || ''}`;
-            if (!seenDeltaKeys.has(key)) {
-              seenDeltaKeys.add(key);
-              deltas.push(d);
-            }
-          });
-        } catch (err) {
-          const _logger = require('../system/pipeline_logger.js');
-          _logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
-        }
-      }
-    });
-    return deltas;
-  }
-
-  const learnedDeltas = loadLearnedKnowledgeDeltas();
+  const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
   const dependencyEdges = new Set(); // Stores "affectedSku->requiredSku"
 
   learnedDeltas.forEach(delta => {
@@ -238,39 +289,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   }
 
   // 3. CATEGORY LEVEL VALIDATION (Memory & Power Supply Mixing Rules)
-  const memoryItems = fullBomList.filter(it => it.description.toLowerCase().includes('memory') || it.description.toLowerCase().includes('rdimm'));
-  const hasX4 = memoryItems.some(it => it.description.toLowerCase().includes('x4'));
-  const hasX8 = memoryItems.some(it => it.description.toLowerCase().includes('x8'));
-  const has96Gb = memoryItems.some(it => it.description.toLowerCase().includes('96gb'));
-  const otherMemory = memoryItems.filter(it => !it.description.toLowerCase().includes('96gb') && !it.description.toLowerCase().includes('128gb'));
-
-  if (hasX4 && hasX8) {
-    const err = `Mixing of x4 and x8 memory modules is strictly not allowed.`;
-    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: err });
-    recordAudit('CATEGORY', 'Mixing of x4 and x8 memory is not allowed', 'FAIL', err);
-  } else {
-    recordAudit('CATEGORY', 'Mixing of x4 and x8 memory is not allowed', 'PASS', 'All memory modules have uniform bit-width (x4).');
-  }
-
-  if (has96Gb && otherMemory.length > 0) {
-    const err = `96GB Memory modules cannot be mixed with any other Memory capacity.`;
-    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: err });
-    recordAudit('CATEGORY', '96GB Memory cannot be mixed with any other Memory.', 'FAIL', err);
-  } else {
-    recordAudit('CATEGORY', '96GB Memory cannot be mixed with any other Memory.', 'PASS', 'No 96GB capacity mixing detected.');
-  }
-
-  const psus = fullBomList.filter(it => it.description.toLowerCase().includes('power supply') || it.description.toLowerCase().includes('psu'));
-  const hasAcPsu = psus.some(it => !it.description.toLowerCase().includes('-48vdc') && !it.description.toLowerCase().includes('dc'));
-  const hasDcPsu = psus.some(it => it.description.toLowerCase().includes('-48vdc') || it.description.toLowerCase().includes('dc'));
-
-  if (hasAcPsu && hasDcPsu) {
-    const err = `Mixing of AC and DC power supplies is strictly not allowed.`;
-    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: err });
-    recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'FAIL', err);
-  } else {
-    recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'PASS', 'Power supply selection is homogenous (all DC or all AC).');
-  }
+  validateCategoryRules(fullBomList, conflicts, recordAudit);
 
   // 4. SUBCATEGORY & SKU LEVEL DEPENDENCY VALIDATION
   depsList.forEach(fix => {
