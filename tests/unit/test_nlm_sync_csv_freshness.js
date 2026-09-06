@@ -37,6 +37,19 @@ test('Notebook payload and canary must remain exact-product and exact-source gro
     () => assertPayloadProductIsolation('# DL380a_Gen12\nDL380_Gen12 leaked rule', 'DL380a_Gen12', cfg),
     /Product isolation rejected/
   );
+  assert.equal(assertPayloadProductIsolation(
+    '# DL380a_Gen12\n1. [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12,DL380a_Gen12] P52341-B21 verified rail compatibility (Class: RAIL; Evidence: CERTIFIED_OCA_CATALOG; Sources: oca-dl380,oca-dl380a)',
+    'DL380a_Gen12',
+    cfg
+  ), true);
+  assert.throws(
+    () => assertPayloadProductIsolation(
+      '# DL380a_Gen12\n1. [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12,DL380a_Gen12] P52341-B21 claimed rail compatibility (Class: RAIL; Evidence: CERTIFIED_OCA_CATALOG)',
+      'DL380a_Gen12',
+      cfg
+    ),
+    /Product isolation rejected/
+  );
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['source-a'] }, 'source-a', 'DL380a_Gen12'), true);
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['wrong-source'] }, 'source-a', 'DL380a_Gen12'), false);
 });

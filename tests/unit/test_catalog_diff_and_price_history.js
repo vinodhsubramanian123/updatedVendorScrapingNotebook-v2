@@ -118,12 +118,18 @@ test('Catalog Diff and Price History suite', async (t) => {
     try {
       fs.writeFileSync(path.join(tempDir, 'catalog_2026-09-05.json'), JSON.stringify({
         metadata: { scrapeDate: '2026-09-05' },
-        entries: [{ parentCategory: 'Chassis', subCategory: 'Variants', skus: [
-          { 'Product #': 'P73282-B21', Description: 'HPE DL380 Gen12 CTO Server', 'Unit Price (USD)': '5584' }
-        ] }]
+        entries: [
+          { parentCategory: 'Chassis', subCategory: 'Variants', skus: [
+            { 'Product #': 'P73282-B21', Description: 'HPE DL380 Gen12 CTO Server', 'Unit Price (USD)': '5584' }
+          ] },
+          { parentCategory: 'Accessories', subCategory: 'Rails', skus: [
+            { 'Product #': 'P52341-B21', Description: 'HPE Easy Install Rail Kit', 'Unit Price (USD)': '164' }
+          ] }
+        ]
       }));
       fs.writeFileSync(path.join(tempDir, 'price_history.json'), JSON.stringify({
-        'P73282-B21': [{ date: '2026-09-05', price: 5584, status: 'BASELINE' }]
+        'P73282-B21': [{ date: '2026-09-05', price: 5584, status: 'BASELINE' }],
+        'P52341-B21': [{ date: '2026-09-05', price: 164, status: 'BASELINE' }]
       }));
       fs.writeFileSync(path.join(tempDir, 'attribute_history.json'), JSON.stringify([
         { date: '2026-09-05', productNumber: 'P73282-B21', field: 'Description' }
@@ -135,16 +141,29 @@ test('Catalog Diff and Price History suite', async (t) => {
       t2.mock.method(console, 'warn', () => {});
       const current = {
         metadata: { scrapeDate: '2026-09-06', chassis: 'DL380a Gen12' },
-        entries: [{ parentCategory: 'Chassis', subCategory: 'Variants', skus: [
-          { 'Product #': 'P76706-B21', Description: 'HPE DL380a Gen12 CTO Server', 'Unit Price (USD)': '0' }
-        ] }]
+        entries: [
+          { parentCategory: 'Chassis', subCategory: 'Variants', skus: [
+            { 'Product #': 'P76706-B21', Description: 'HPE DL380a Gen12 CTO Server', 'Unit Price (USD)': '0' }
+          ] },
+          { parentCategory: 'Accessories', subCategory: 'Rails', skus: [
+            { 'Product #': 'P52341-B21', Description: 'HPE Easy Install Rail Kit', 'Unit Price (USD)': '164' }
+          ] }
+        ]
       };
       const result = processCatalogDiff(current, tempDir, 'catalog', {
-        previousSkuFilter: ({ sku }) => /DL380a Gen12/i.test(sku.Description || '')
+        previousSkuFilter: ({ entry, sku }) => {
+          const isChassis = String(entry.parentCategory || '').toLowerCase() === 'chassis' ||
+            String(entry.subCategory || '').toLowerCase() === 'variants';
+          return !isChassis || /DL380a Gen12/i.test(sku.Description || '');
+        }
       });
       assert.equal(result.diffSummary.removed, 0);
       assert.ok(!result.enrichedCatalog.entries.some(entry => entry.skus.some(sku => sku['Product #'] === 'P73282-B21')));
       assert.ok(!JSON.parse(fs.readFileSync(path.join(tempDir, 'price_history.json'), 'utf8'))['P73282-B21']);
+      const sharedAccessoryHistory = JSON.parse(fs.readFileSync(path.join(tempDir, 'price_history.json'), 'utf8'))['P52341-B21'];
+      assert.ok(sharedAccessoryHistory,
+        'shared accessory history must not be purged merely because its snapshot also contained another chassis');
+      assert.equal(sharedAccessoryHistory.at(-1).status, 'UNCHANGED');
       assert.ok(!JSON.parse(fs.readFileSync(path.join(tempDir, 'discontinued_skus.json'), 'utf8'))['P73282-B21']);
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });

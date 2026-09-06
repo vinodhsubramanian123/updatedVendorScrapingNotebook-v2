@@ -11,7 +11,7 @@ const path = require('path');
 const logger = require('../system/pipeline_logger.js');
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
 const { buildKnowledgeWorkbookDatasets } = require('./google_sheets_writer.js');
-const { baseProductId, normalize, scopeRegistryForProduct } = require('../catalog/product_scope.js');
+const { baseProductId, normalize, isVerifiedSharedAccessoryRule, scopeRegistryForProduct } = require('../catalog/product_scope.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -183,6 +183,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   // 3. Chassis Specific Rules
   md += `## 🎯 3. Chassis & Solution-Type Gotchas (${chassisName})\n\n`;
   const relevantChassisRules = chassisSpecificRules.filter(r => {
+    if (isVerifiedSharedAccessoryRule(r, targetIdentity)) return true;
     const c = String(r.chassis || '').toLowerCase();
     const target = String(chassisName || '').toLowerCase();
     return !target || c.includes(target) || target.includes(c);
@@ -192,6 +193,13 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     md += `*No specific gotchas logged for ${chassisName}. Baseline chassis layout rules active.*\n\n`;
   } else {
     relevantChassisRules.forEach((r, idx) => {
+      if (isVerifiedSharedAccessoryRule(r, targetIdentity)) {
+        const compatible = r.compatibleProductIds.map(baseProductId).join(',');
+        const ruleText = String(r.ruleUpdate || '').replace(/\s+/g, ' ').trim();
+        const evidenceIds = r.verificationSourceIds.map(id => String(id).replace(/[^A-Za-z0-9_.:-]/g, '')).filter(Boolean).join(',');
+        md += `${idx + 1}. [SHARED_ACCESSORY_VERIFIED target=${compatible}] **[${r.deltaId}] ${r.affectedSku}**: ${ruleText} (Class: ${r.accessoryClass}; Evidence: ${r.compatibilityEvidenceType}; Sources: ${evidenceIds})\n\n`;
+        return;
+      }
       md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
       md += `   - **Rule**: ${r.ruleUpdate}\n`;
       md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;

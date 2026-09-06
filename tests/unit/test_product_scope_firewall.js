@@ -50,6 +50,27 @@ test('product registry projection contains only applicable rules', () => {
   assert.deepEqual([...scoped.universalRules, ...scoped.familyGenRules, ...scoped.chassisSpecificRules].map(r => r.deltaId), ['U', 'G12', '380a']);
 });
 
+test('shared accessory reuse requires exact target membership and trusted evidence', () => {
+  const dl380a = resolveProductIdentity('DL380a_Gen12', config);
+  const dl145 = resolveProductIdentity('DL145_Gen11', config);
+  const sharedRail = {
+    scopeTaxonomy: 'CHASSIS_SPECIFIC',
+    chassis: 'DL380_Gen11',
+    affectedSku: 'P52341-B21',
+    sharedAccessoryVerified: true,
+    accessoryClass: 'RAIL',
+    compatibleProductIds: ['DL380_Gen11', 'DL380a_Gen12'],
+    compatibilityEvidenceType: 'CERTIFIED_OCA_CATALOG',
+    verificationStatus: 'VERIFIED',
+    verificationSourceIds: ['oca-dl380', 'oca-dl380a']
+  };
+  assert.equal(ruleAppliesToProduct(sharedRail, dl380a, config), true);
+  assert.equal(ruleAppliesToProduct(sharedRail, dl145, config), false);
+  assert.equal(ruleAppliesToProduct({ ...sharedRail, verificationSourceIds: [] }, dl380a, config), false);
+  assert.equal(ruleAppliesToProduct({ ...sharedRail, sharedAccessoryVerified: false }, dl380a, config), false);
+  assert.equal(ruleAppliesToProduct({ ...sharedRail, scopeTaxonomy: 'UNIVERSAL_VENDOR' }, dl380a, config), false);
+});
+
 test('DL380 and DL380a never share canonical Drive identifiers', () => {
   const dl380 = notebookConfig.notebooks.DL380_Gen12;
   const dl380a = notebookConfig.notebooks.DL380a_Gen12;

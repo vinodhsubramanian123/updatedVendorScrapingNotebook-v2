@@ -35,10 +35,23 @@ function refreshMasterCatalogCsv(payloadPath, chassisName) {
 
 function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
   const text = String(payloadText || '');
+  const isVerifiedSharedLine = line => {
+    const marker = line.match(/^\s*\d+\. \[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
+    if (!marker) return false;
+    const targetListed = marker[1].split(',').some(product =>
+      normalizeLearningText(product) === normalizeLearningText(chassisName)
+    );
+    return targetListed && /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
+      /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/.test(line);
+  };
   const otherProducts = Object.keys(notebookCfg?.notebooks || {}).filter(name => name !== chassisName);
   for (const product of otherProducts) {
     const aliases = [product, product.replace(/_/g, ' ')];
-    if (aliases.some(alias => new RegExp(`(^|[^A-Za-z0-9])${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^A-Za-z0-9]|$)`, 'i').test(text))) {
+    const offendingLine = text.split(/\r?\n/).find(line =>
+      aliases.some(alias => new RegExp(`(^|[^A-Za-z0-9])${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^A-Za-z0-9]|$)`, 'i').test(line)) &&
+      !isVerifiedSharedLine(line)
+    );
+    if (offendingLine) {
       throw new Error(`Product isolation rejected ${chassisName} payload: reference to registered product ${product}`);
     }
   }

@@ -54,13 +54,35 @@ function same(left, right) {
   return Boolean(left && right && normalize(left) === normalize(right));
 }
 
+const SHARED_ACCESSORY_CLASSES = new Set([
+  'CABLE', 'ENABLEMENT_KIT', 'RAIL', 'CABLE_MANAGEMENT_ARM',
+  'POWER_CORD', 'TRANSCEIVER', 'OTHER_ACCESSORY'
+]);
+
+const TRUSTED_COMPATIBILITY_EVIDENCE = new Set([
+  'OFFICIAL_VENDOR_DOC', 'CERTIFIED_OCA_CATALOG', 'VERIFIED_PORTAL_RULE'
+]);
+
+function isVerifiedSharedAccessoryRule(rule, target) {
+  if (rule?.sharedAccessoryVerified !== true || !target || !rule.affectedSku) return false;
+  const scope = String(rule.scopeTaxonomy || rule.scope || 'CHASSIS_SPECIFIC').toUpperCase().replace(/_RULES$/, '');
+  if (scope !== 'CHASSIS_SPECIFIC') return false;
+  if (!SHARED_ACCESSORY_CLASSES.has(String(rule.accessoryClass || '').toUpperCase())) return false;
+  if (!TRUSTED_COMPATIBILITY_EVIDENCE.has(String(rule.compatibilityEvidenceType || '').toUpperCase())) return false;
+  if (String(rule.verificationStatus || '').toUpperCase() !== 'VERIFIED') return false;
+  if (!Array.isArray(rule.verificationSourceIds) || !rule.verificationSourceIds.some(id => String(id).trim())) return false;
+  const compatibleProducts = Array.isArray(rule.compatibleProductIds) ? rule.compatibleProductIds : [];
+  return compatibleProducts.some(productId => same(baseProductId(productId), target.productId));
+}
+
 function ruleAppliesToProduct(rule, target, config = {}) {
   if (!rule || !target) return false;
+  const source = identityFromRule(rule, config);
+  if (!same(source.vendor || target.vendor, target.vendor)) return false;
+  if (rule.sharedAccessoryVerified === true) return isVerifiedSharedAccessoryRule(rule, target);
   const normalizedScope = String(rule.scopeTaxonomy || rule.scope || 'CHASSIS_SPECIFIC').toUpperCase().replace(/_RULES$/, '');
   if (normalizedScope === 'UNIVERSAL_VENDOR') return !rule.vendor || same(rule.vendor, target.vendor);
 
-  const source = identityFromRule(rule, config);
-  if (!same(source.vendor || target.vendor, target.vendor)) return false;
   if (source.pillar && !same(source.pillar, target.pillar)) return false;
   if (normalizedScope === 'FAMILY_GEN') {
     // A legacy record may be labelled FAMILY_GEN even though its provenance is
@@ -87,4 +109,12 @@ function scopeRegistryForProduct(registry, productId, config = {}) {
   };
 }
 
-module.exports = { baseProductId, inferPillar, normalize, resolveProductIdentity, ruleAppliesToProduct, scopeRegistryForProduct };
+module.exports = {
+  baseProductId,
+  inferPillar,
+  normalize,
+  resolveProductIdentity,
+  isVerifiedSharedAccessoryRule,
+  ruleAppliesToProduct,
+  scopeRegistryForProduct
+};

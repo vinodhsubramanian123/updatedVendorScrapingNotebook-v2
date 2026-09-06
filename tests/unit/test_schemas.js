@@ -82,6 +82,18 @@ const parsedDelta = safeParseKnowledgeDelta(sampleDelta);
 assert.strictEqual(parsedDelta.success, true, `Knowledge delta validation failed: ${JSON.stringify(parsedDelta.errors)}`);
 assert.strictEqual(parsedDelta.data.scope, 'UNIVERSAL_VENDOR', 'Explicit scope should be preserved');
 assert.strictEqual(parsedDelta.data.scopeTaxonomy, 'UNIVERSAL_VENDOR', 'Explicit scopeTaxonomy should be preserved');
+const invalidSharedAccessory = safeParseKnowledgeDelta({
+  ...sampleDelta,
+  scope: 'CHASSIS_SPECIFIC',
+  scopeTaxonomy: 'CHASSIS_SPECIFIC',
+  sharedAccessoryVerified: true,
+  accessoryClass: 'RAIL',
+  compatibleProductIds: ['DL380a_Gen12'],
+  compatibilityEvidenceType: 'CERTIFIED_OCA_CATALOG',
+  verificationStatus: 'VERIFIED',
+  verificationSourceIds: []
+});
+assert.strictEqual(invalidSharedAccessory.success, false, 'Shared accessory claims without evidence IDs must fail schema validation');
 console.log('✅ [4/5] KnowledgeDeltaSchema validates learning records with canonical taxonomy enums.');
 
 // Test 5: Rejection of Malformed Inputs

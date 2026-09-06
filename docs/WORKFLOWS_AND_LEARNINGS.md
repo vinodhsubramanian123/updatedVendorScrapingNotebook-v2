@@ -715,3 +715,13 @@ When a BOQ evaluation results in low confidence or physical constraint violation
     - Use a dedicated project service account whose key is stored outside the repository.
     - Share a Google Drive folder (`GOOGLE_DRIVE_FOLDER_ID`) with the service account as Editor.
     - `scripts/services/google_sheets_service.js` creates spreadsheets directly inside the shared folder via Google Drive API v3 with 0 human browser interaction.
+
+---
+
+## 68. Evidence-Gated Shared Accessory Compatibility Protocol (`INV-68`)
+
+- **Catalog history preserves accessories independently of chassis identity**: Product isolation applies to chassis/base rows, not every SKU in a historical snapshot. Rails, cable-management arms, storage enablement kits, cables, power cords, and transceivers remain in a product's active or discontinued history according to that product's own certified OCA scrape.
+- **No blind cross-product reuse**: An accessory appearing in another product or generation is not sufficient evidence of compatibility. The target product's certified catalog remains authoritative by default.
+- **Explicit verified exception**: Cross-product learning is permitted only for a `CHASSIS_SPECIFIC` `KnowledgeDelta` with `sharedAccessoryVerified: true`, an approved accessory class, exact `compatibleProductIds`, `verificationStatus: VERIFIED`, a trusted evidence type, and one or more evidence source IDs.
+- **Fail-closed local/cloud parity**: `product_scope.js` applies the same gate to the local registry projection. Notebook sync emits a machine-auditable `SHARED_ACCESSORY_VERIFIED` record containing target products, SKU, evidence type, and source IDs; malformed or incomplete cross-product records are rejected before cloud sync.
+- **Removal is not deletion of history**: If a shared accessory disappears from the latest target-product scrape, it follows the standard removed/discontinued lifecycle and keeps its price trail. Another product's current catalog must never silently reactivate it.

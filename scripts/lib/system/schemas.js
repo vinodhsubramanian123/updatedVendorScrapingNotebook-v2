@@ -272,6 +272,17 @@ const KnowledgeDeltaSchema = z.object({
   family: z.string().optional(),
   generation: z.string().optional(),
   productId: z.string().optional(),
+  sharedAccessoryVerified: z.boolean().optional().default(false),
+  accessoryClass: z.enum([
+    'CABLE', 'ENABLEMENT_KIT', 'RAIL', 'CABLE_MANAGEMENT_ARM',
+    'POWER_CORD', 'TRANSCEIVER', 'OTHER_ACCESSORY'
+  ]).optional(),
+  compatibleProductIds: z.array(z.string().min(1)).optional().default([]),
+  compatibilityEvidenceType: z.enum([
+    'OFFICIAL_VENDOR_DOC', 'CERTIFIED_OCA_CATALOG', 'VERIFIED_PORTAL_RULE'
+  ]).optional(),
+  verificationStatus: z.enum(['PENDING', 'VERIFIED', 'REJECTED']).optional(),
+  verificationSourceIds: z.array(z.string().min(1)).optional().default([]),
   scope: z.enum(['UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC']).default('CHASSIS_SPECIFIC'),
   scopeTaxonomy: z.enum([
     'UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC',
@@ -282,7 +293,29 @@ const KnowledgeDeltaSchema = z.object({
   humanReasoning: z.string().default(''),
   confidence: z.number().min(0).max(1).default(1.0),
   timestamp: z.string().default(() => new Date().toISOString())
-}).passthrough();
+}).passthrough().superRefine((delta, ctx) => {
+  if (!delta.sharedAccessoryVerified) return;
+  const requiredFields = [
+    ['accessoryClass', delta.accessoryClass],
+    ['compatibilityEvidenceType', delta.compatibilityEvidenceType],
+    ['verificationStatus', delta.verificationStatus]
+  ];
+  for (const [field, value] of requiredFields) {
+    if (!value) ctx.addIssue({ code: z.ZodIssueCode.custom, path: [field], message: `${field} is required for a verified shared accessory` });
+  }
+  if (delta.scopeTaxonomy.replace(/_RULES$/, '') !== 'CHASSIS_SPECIFIC') {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['scopeTaxonomy'], message: 'Shared accessories require exact-product CHASSIS_SPECIFIC scope' });
+  }
+  if (delta.verificationStatus !== 'VERIFIED') {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['verificationStatus'], message: 'Shared accessory evidence must be VERIFIED' });
+  }
+  if (delta.compatibleProductIds.length === 0) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['compatibleProductIds'], message: 'At least one compatible product is required' });
+  }
+  if (delta.verificationSourceIds.length === 0) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['verificationSourceIds'], message: 'At least one evidence source is required' });
+  }
+});
 
 // ==========================================
 // 7. Safe Runtime Parsers with Error Recovery

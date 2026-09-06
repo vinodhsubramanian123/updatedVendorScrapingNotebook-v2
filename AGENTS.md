@@ -338,3 +338,9 @@ The system leverages Google Jules for background code review, test generation, a
       1. **Project Desktop App OAuth Client ID**: An operator-owned Desktop App client stored outside the repository and authenticated through Application Default Credentials; OR
       2. **Dedicated GCP Service Account + Shared Drive Folder**: A service account key stored outside the repository with access limited to a designated folder (`GOOGLE_DRIVE_FOLDER_ID`).
     - OAuth credentials can expire or be revoked; failures must preserve local artifacts and remain retryable.
+
+59. **Evidence-Gated Shared Accessory Compatibility Protocol (`INV-68`)**:
+    - Product isolation filters MUST reject foreign chassis/base rows without discarding ordinary accessory rows merely because the prior snapshot also contained another chassis.
+    - Rails, cable-management arms, storage enablement kits, cables, power cords, and transceivers may be reused across products or generations only through an exact-product, evidence-backed `KnowledgeDelta`; shared presence elsewhere is not proof of compatibility.
+    - A reusable record MUST use `CHASSIS_SPECIFIC` scope and include `sharedAccessoryVerified: true`, an approved `accessoryClass`, exact `compatibleProductIds`, `verificationStatus: VERIFIED`, trusted `compatibilityEvidenceType`, and non-empty `verificationSourceIds`.
+    - Local registry projection and NotebookLM payload isolation MUST apply the same gate. If an accessory disappears from a target product's fresh OCA scrape, preserve its discontinued and price history; never reactivate it from another product's catalog.
