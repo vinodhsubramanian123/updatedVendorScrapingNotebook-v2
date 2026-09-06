@@ -683,3 +683,35 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Remediation**:
   - Standardized all UI selectors, hooks, and API routes on canonical generation model directories (`'DL380_Gen12'`).
   - Added dynamic auto-fallback in `useCatalogs.js` to select the first available valid catalog if the requested chassis ID is missing, guaranteeing 100% UI stability.
+
+---
+
+## 65. Modern CDP Download Behavioral Protocol & Clean Filename Preservation (`INV-65`)
+- **The Numeric/GUID Download Bug**:
+  - Browser automation tools (Playwright/CDP) historically invoked `Page.setDownloadBehavior` with `{ behavior: 'allow', downloadPath: '/tmp' }`.
+  - In Chromium, this legacy mode intercepts downloads without renaming them, saving files as internal numeric timestamps (e.g. `178868...`) or raw UUIDs in temporary sandboxes (e.g. `/tmp/playwright-artifacts-*/13fdda59-...`).
+- **Remediation**:
+  - Upgraded `scripts/lib/scraper/cdp.js` and `scripts/scrapers/download_quickspecs_pdf.js` to use `Browser.setDownloadBehavior` with `{ behavior: 'allow', downloadPath: path.join(os.homedir(), 'Downloads'), eventsEnabled: true }`.
+  - `allowAndName` is intentionally not used because the CDP contract names those files by GUID. Completed downloads are validated before ingestion.
+
+---
+
+## 66. Browser Security Preservation (`INV-66`)
+- Automation does not disable Safe Browsing or weaken persistent browser-profile security controls.
+- Download permission is scoped through CDP, and downloaded files must pass type, size, and expected-name validation before entering a catalog pipeline.
+
+---
+
+## 67. Zero-Human-in-the-Loop Google Sheets & Drive OAuth Scope Protocol (`INV-67`)
+- **The "This App Is Blocked" Google OAuth Barrier**:
+  - Google Cloud imposes strict OAuth security rules on personal `@gmail.com` accounts: the default generic `gcloud` developer client ID (`32555940559...`) is prohibited from requesting sensitive Workspace scopes (`spreadsheets` and `drive`).
+  - Attempting to run `gcloud auth application-default login --scopes="...spreadsheets,drive"` without an owned client ID triggers the blocker screen: *"This app is blocked. This app tried to access sensitive info in your Google Account."*
+- **Remediation & Dual Architectural Solutions**:
+  - **Solution A (Desktop OAuth Client ID with One-Time Consent)**:
+    - Create an OAuth 2.0 Client ID of type `Desktop app` (`installed`) in the user's project (`bom-assistant`).
+    - Store the client configuration outside the repository and authenticate through Application Default Credentials with only the required scopes.
+    - Refresh tokens are long-lived but not permanent: they may expire or be revoked. The workflow preserves local artifacts and reports a retryable authentication failure.
+  - **Solution B (Service Account + Shared Drive Folder)**:
+    - Use a dedicated project service account whose key is stored outside the repository.
+    - Share a Google Drive folder (`GOOGLE_DRIVE_FOLDER_ID`) with the service account as Editor.
+    - `scripts/services/google_sheets_service.js` creates spreadsheets directly inside the shared folder via Google Drive API v3 with 0 human browser interaction.

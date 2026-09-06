@@ -67,11 +67,18 @@ async function main() {
   const ws = await connectWS(`ws://localhost:${CDP_PORT}/devtools/page/${newTargetId}`);
 
   try {
-    // Direct Chrome to save downloads into the same directory as destPath
-    await sendCommand(ws, 'Page.setDownloadBehavior', {
-      behavior: 'allow',
-      downloadPath: downloadDir
-    });
+    try {
+      await sendCommand(ws, 'Browser.setDownloadBehavior', {
+        behavior: 'allow',
+        downloadPath: downloadDir,
+        eventsEnabled: true
+      });
+    } catch {
+      await sendCommand(ws, 'Page.setDownloadBehavior', {
+        behavior: 'allow',
+        downloadPath: downloadDir
+      });
+    }
 
     // Navigate the new tab to the QuickSpecs document page
     console.log(`Navigating to ${targetUrl}...`);

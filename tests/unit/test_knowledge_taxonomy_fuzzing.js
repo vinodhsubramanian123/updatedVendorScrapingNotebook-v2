@@ -22,16 +22,16 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
     // 2. Object input - UNIVERSAL_VENDOR
     assert.strictEqual(classifyKnowledgeScope({ rawMessage: 'telco compliance issue' }), 'UNIVERSAL_VENDOR');
     
-    // 3. String input - FAMILY_GEN
-    assert.strictEqual(classifyKnowledgeScope('bto configuration not supported'), 'FAMILY_GEN');
+    // 3. Only explicit family/generation evidence may promote a rule.
+    assert.strictEqual(classifyKnowledgeScope('bto configuration not supported'), 'CHASSIS_SPECIFIC');
     assert.strictEqual(classifyKnowledgeScope('requires ddr5 memory'), 'FAMILY_GEN');
-    assert.strictEqual(classifyKnowledgeScope('high performance fan kit'), 'FAMILY_GEN');
+    assert.strictEqual(classifyKnowledgeScope('high performance fan kit'), 'CHASSIS_SPECIFIC');
 
     // 4. Object input - FAMILY_GEN (ruleType)
     assert.strictEqual(classifyKnowledgeScope({ ruleType: 'OPTION_TYPE_SUBSTITUTION' }), 'FAMILY_GEN');
     
-    // 5. Object input - FAMILY_GEN (chassis keyword)
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'DL380_Gen12_SFF' }), 'FAMILY_GEN');
+    // 5. A chassis keyword remains chassis-specific without promotion evidence.
+    assert.strictEqual(classifyKnowledgeScope({ chassis: 'DL380_Gen12_SFF' }), 'CHASSIS_SPECIFIC');
     
     // 6. Object input - CHASSIS_SPECIFIC
     assert.strictEqual(classifyKnowledgeScope({ chassis: 'custom_chassis_99', rawMessage: 'random issue' }), 'CHASSIS_SPECIFIC');
@@ -133,7 +133,7 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
       if (typeof p === 'string' && p.includes('history/catalog_deltas.json')) {
         return JSON.stringify([
           { deltaId: 'D1', affectedSku: 'S1', rawMessage: 'all hpe' },
-          { deltaId: 'D2', affectedSku: 'S2', rawMessage: 'bto' }
+          { deltaId: 'D2', affectedSku: 'S2', rawMessage: 'family-wide option policy' }
         ]);
       }
       if (typeof p === 'string' && p.includes('chassis_A/catalog_deltas.json')) {
@@ -144,7 +144,7 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
       return originalReadFileSync(p, encoding);
     });
 
-    const registry = buildMasterKnowledgeRegistry();
+    const registry = buildMasterKnowledgeRegistry({ persist: false });
     
     assert.strictEqual(registry.counts.universal, 1);
     assert.strictEqual(registry.counts.familyGen, 1);

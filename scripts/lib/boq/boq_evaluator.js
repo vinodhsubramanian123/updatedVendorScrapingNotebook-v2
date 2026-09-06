@@ -380,7 +380,7 @@ function validatePowerRules(ctx) {
     }
   }
 
-  if ((pcie.gpuCount >= 4 || h100Count >= 2) && !power.hasTitaniumPsu) {
+  if (!power.isDl380aGpuChassis && (pcie.gpuCount >= 4 || h100Count >= 2) && !power.hasTitaniumPsu) {
     const reason = `INV-27: Multi-GPU Thermal Envelope: 4x+ GPUs or dual high-end GPUs mandate dual 1800W/2200W Titanium PSUs (P44712-B21).`;
     warnings.push(reason);
     missingDependencies.push({
@@ -391,6 +391,12 @@ function validatePowerRules(ctx) {
       quantity: 2 * serverCount,
       reasoning: reason
     });
+  }
+
+  if (power.hasDl380aGpuPsuShortage) {
+    const reason = `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W power supplies per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount} PSU(s)${power.hasMixedPsuWattages ? ' with mixed wattages' : ` at ${power.maxPsuWattage}W maximum`}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
   }
   
   if (power.hasSynergyRedundantPowerError) {
@@ -482,18 +488,6 @@ function validateBaseChassisRules(ctx) {
     });
   }
 
-  if (hasBaseChassis && !support.hasManagementLicense) {
-    const reason = `CLIC Rule 81322276: CTO Chassis (${chassisInfo.baseSku || 'CTO'}) requires at least 1 Cloud Ops Management (COM) or OneView license per server (Base: R7A11AAE / E5Y43A).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'MANAGEMENT_LICENSE_COM',
-      rule: 'CLIC Rule 81322276: Mandatory CTO Management License',
-      sku: 'R7A11AAE',
-      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
-      quantity: serverCount,
-      reasoning: reason
-    });
-  }
 }
 
 function validateAlletraRules(ctx) {
@@ -836,27 +830,29 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       name: 'Power & Redundancy Math',
       iconType: 'Power',
       defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
-      status: power.hasDcPowerSupply && !power.hasDcLugKit ? 'FAIL' : 'PASS',
-      detail: power.hasDcPowerSupply && !power.hasDcLugKit ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.' : `Verified power supply and infrastructure dependencies (${psuPerServer} PSUs/node).`
+      status: (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
+      detail: power.hasDcPowerSupply && !power.hasDcLugKit
+        ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.'
+        : power.hasDl380aGpuPsuShortage
+        ? `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W PSUs per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount}.`
+        : `Verified power supply and infrastructure dependencies (${psuPerServer} PSUs/node).`
     },
     {
       id: 7,
       name: 'Vendor Support Taxonomy & Licensing',
       iconType: 'Award',
-      defaultRule: 'Hardware SKU validation against mandatory support SLA tiers, COM licensing & OS core multipliers (CLIC Rule 81322276, INV-28)',
+      defaultRule: 'Hardware SKU validation, requested support coverage, and OS core multipliers (INV-28, INV-32)',
       status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
         ? 'WARN'
-        : (!support.hasManagementLicense || !support.hasSupportService ? 'WARN' : 'PASS'),
+        : (!support.hasSupportService ? 'WARN' : 'PASS'),
       detail: support.needsAdditionalWindowsCores
         ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
         : support.needsAdditionalVmwareCores
         ? `VMware Licensing Deficit: Requires ${support.missingVmwareCores} additional VMware core licenses (${support.vmwareLicensedCores}/${support.requiredVmwareCores} cores covered).`
         : support.needsAdditionalLinuxSubscriptions
         ? `Linux OS Licensing Deficit: Requires ${support.missingLinuxSubscriptions} additional 1-2 socket subscription(s).`
-        : !support.hasManagementLicense
-        ? 'Management License Advisory (CLIC Rule 81322276): CTO models require at least 1 COM or OneView license (R7A11AAE / E5Y43A).'
         : support.hasSupportService
-        ? 'Verified mandatory support services, management licensing, and OS core allocations included.'
+        ? `Verified requested support services and OS core allocations${support.hasManagementLicense ? '; customer-selected management licensing is present' : ''}.`
         : 'Support Taxonomy Advisory: Missing Pointnext / Tech Care service line.'
     }
   ];

@@ -3,7 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const PROFILES_DIR = path.join(__dirname, '..', 'config', 'profiles');
+// system/ lives below scripts/lib; profiles are repository configuration under
+// scripts/config, not scripts/lib/config.  Keep this resolved from __dirname so
+// callers are independent of the process working directory.
+const PROFILES_DIR = path.join(__dirname, '..', '..', 'config', 'profiles');
 
 /**
  * Loads the base default profile, and merges any product-specific override

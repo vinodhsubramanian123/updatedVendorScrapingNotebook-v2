@@ -7,6 +7,7 @@ const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function isGpuComponent(role, desc) {
+  if (desc.includes('fio configuration')) return false;
   if (role === 'GPU / Accelerator') return true;
   return desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || 
          desc.includes('h100') || desc.includes('l4') || desc.includes('a16') || 
@@ -44,6 +45,7 @@ function tallyPcieCablesAndGpus(tally, desc, sku, qty, role) {
 
 function tallyPcieCardDemand(tally, desc, qty, role) {
   if (isExcludedPcieRole(role)) return;
+  if (desc.includes('fio configuration')) return;
 
   const isPcieCandidate = role === 'GPU / Accelerator' || role === 'Network Adapter' || 
                           role === 'Storage Controller' || role === 'Fibre Channel HBA' || 
@@ -191,4 +193,3 @@ function evalPcieRiserSlots(items, catalogData = null) {
 module.exports = {
   evalPcieRiserSlots
 };
-

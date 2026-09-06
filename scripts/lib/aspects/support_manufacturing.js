@@ -6,7 +6,8 @@
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
-// Mandatory Process Control License SKUs (e.g. CLIC Rule 81322276)
+// Recognized customer-selectable management license SKUs. Presence is tracked,
+// but none is injected or treated as mandatory (INV-32).
 const VALID_MANAGEMENT_SKUS = new Set([
   'R7A11AAE', // Base COM 3yr SaaS
   'R7A12AAE', // COM 5yr
@@ -275,7 +276,7 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     totalUnsolicitedCostUsd: t.totalUnsolicitedCostUsd,
     serverCount: nodes,
     defaultSupportSku: 'HU4B2A3',
-    defaultManagementSku: 'R7A11AAE'
+    defaultManagementSku: null
   };
 }
 
@@ -285,4 +286,3 @@ module.exports = {
   VALID_MANAGEMENT_SKUS,
   UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };
-

@@ -8,7 +8,7 @@
     "Processor": ["processor", "xeon", "epyc"],
     "Memory": ["memory", "rdimm", "ddr5", "ddr4"],
     "Power Supply": ["power", "power supply", "flex slot", "-48vdc"],
-    "Storage Controller": ["storage", "controller", "raid", "mr416i"],
+    "Storage Controller": ["storage controller", "controller", "raid", "mr416i"],
     "Network Adapter": ["network", "ethernet", "ocp", "adapter"],
     "Drive Cage / Drive": ["drive", "cage", "hdd", "ssd"],
     "Cooling / Thermal": ["fan", "cooling", "fan kit", "heatsink"],

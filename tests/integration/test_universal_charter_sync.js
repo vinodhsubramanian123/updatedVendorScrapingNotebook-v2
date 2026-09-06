@@ -12,37 +12,34 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const { buildMasterKnowledgeRegistry, getNotebookIdForChassis, loadNotebookConfig } = require('../../scripts/lib/sync/knowledge_sync.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const CHARTER_PATH = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_universal_knowledge_charter.md');
-const REGISTRY_PATH = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
-
 const C = {
   reset: '\x1b[0m', green: '\x1b[32m', red: '\x1b[31m',
   cyan: '\x1b[36m', bold: '\x1b[1m'
 };
 
-const REQUIRED_CLIC_RULES = [
-  '81354490',  // Container tree: BTO memory outside container
-  '91001655',  // Container tree: unparented component
-  '81354627',  // Y-Cable incompatibility (controller type)
-  '81354632',  // Y-Cable incompatibility (cage type)
-  '81354654',  // Fan kit cardinality (max 1 kit)
-  '81355854',  // OCP cable mutual exclusion
-  '81016755',  // Riser cable kit (primary Slot 1)
-  '81322276'   // Mandatory management license
-];
-
 const REQUIRED_SECTIONS = [
-  'Universal Vendor',
-  'Family & Generation',
-  'Chassis-Specific Gotchas',
-  'Master Knowledge Deltas Registry'
+  'Local Audit Index',
+  'Scoped Knowledge Delta Inventory'
 ];
 
 async function run() {
+  const tempOutputs = fs.mkdtempSync(path.join(os.tmpdir(), 'knowledge-charter-test-'));
+  const historyDir = path.join(tempOutputs, 'history');
+  fs.mkdirSync(historyDir, { recursive: true });
+  fs.writeFileSync(path.join(historyDir, 'catalog_deltas.json'), JSON.stringify([{
+    deltaId: 'TEST-UNIVERSAL',
+    chassis: 'DL380_Gen12',
+    affectedSku: 'P00000-B21',
+    ruleUpdate: 'Verified test-only audit rule',
+    scopeTaxonomy: 'CHASSIS_SPECIFIC'
+  }]));
+  const charterPath = path.join(historyDir, 'master_universal_knowledge_charter.md');
+  const registryPath = path.join(historyDir, 'master_knowledge_registry.json');
   console.log(`${C.bold}${C.cyan}================================================================${C.reset}`);
   console.log(`${C.bold}${C.cyan}🧪 UNIVERSAL KNOWLEDGE CHARTER & SYNC VERIFICATION SUITE${C.reset}`);
   console.log(`${C.bold}${C.cyan}================================================================${C.reset}\n`);
@@ -61,7 +58,7 @@ async function run() {
 
   // ─── TEST 1: buildMasterKnowledgeRegistry produces valid structure ───
   console.log(`\n  [1/5] Master Knowledge Registry Structure\n`);
-  const registry = buildMasterKnowledgeRegistry();
+  const registry = buildMasterKnowledgeRegistry({ outputsRoot: tempOutputs, persist: true });
   assert('Registry object is not null', registry !== null && registry !== undefined);
   assert('Registry has generatedAt (INV-4)', !!registry.generatedAt);
   assert('Registry has schemaVersion (INV-4)', registry.schemaVersion === '1.0');
@@ -72,9 +69,9 @@ async function run() {
 
   // ─── TEST 2: master_knowledge_registry.json persisted ───
   console.log(`\n  [2/5] Master Knowledge Registry JSON Persistence\n`);
-  assert('master_knowledge_registry.json exists', fs.existsSync(REGISTRY_PATH));
-  if (fs.existsSync(REGISTRY_PATH)) {
-    const onDisk = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
+  assert('master_knowledge_registry.json exists', fs.existsSync(registryPath));
+  if (fs.existsSync(registryPath)) {
+    const onDisk = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
     assert('On-disk registry has generatedAt', !!onDisk.generatedAt);
     assert('On-disk registry has schemaVersion 1.0', onDisk.schemaVersion === '1.0');
     assert('On-disk totalLearnedRules matches', onDisk.totalLearnedRules === registry.totalLearnedRules);
@@ -82,9 +79,9 @@ async function run() {
 
   // ─── TEST 3: master_universal_knowledge_charter.md emitted ───
   console.log(`\n  [3/5] Master Universal Knowledge Charter Markdown\n`);
-  assert('master_universal_knowledge_charter.md exists', fs.existsSync(CHARTER_PATH));
-  if (fs.existsSync(CHARTER_PATH)) {
-    const charterMd = fs.readFileSync(CHARTER_PATH, 'utf-8');
+  assert('local registry audit index exists', fs.existsSync(charterPath));
+  if (fs.existsSync(charterPath)) {
+    const charterMd = fs.readFileSync(charterPath, 'utf-8');
     assert('Charter is non-empty', charterMd.length > 100, `${charterMd.length} chars`);
 
     // Check all 4 required sections
@@ -93,14 +90,10 @@ async function run() {
     }
   }
 
-  // ─── TEST 4: Charter contains all CLIC rule references ───
-  console.log(`\n  [4/5] CLIC Rule Coverage in Charter\n`);
-  if (fs.existsSync(CHARTER_PATH)) {
-    const charterMd = fs.readFileSync(CHARTER_PATH, 'utf-8');
-    for (const ruleId of REQUIRED_CLIC_RULES) {
-      assert(`Charter references CLIC Rule ${ruleId}`, charterMd.includes(ruleId));
-    }
-  }
+  // ─── TEST 4: Master index is explicitly local-only ───
+  console.log(`\n  [4/5] Product Isolation Contract\n`);
+  const charterMd = fs.readFileSync(charterPath, 'utf-8');
+  assert('Index declares that it is not a NotebookLM source', charterMd.includes('not a NotebookLM source'));
 
   // ─── TEST 5: Every notebook in notebooks.json resolves to valid notebookId ───
   console.log(`\n  [5/5] Notebook Config Resolution\n`);
@@ -125,6 +118,7 @@ async function run() {
   }
   console.log(`${C.bold}${C.cyan}================================================================${C.reset}\n`);
 
+  fs.rmSync(tempOutputs, { recursive: true, force: true });
   if (passed < total) process.exit(1);
 }
 

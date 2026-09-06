@@ -145,6 +145,10 @@
     "jules:unblock": "node scripts/services/jules_task_manager.js unblock",
     "jules:resume": "node scripts/services/jules_task_manager.js resume",
     "jules:approve": "node scripts/services/jules_task_manager.js approve",
+    "sheets:status": "node scripts/services/google_sheets_service.js status",
+    "sheets:create": "node scripts/services/google_sheets_service.js create",
+    "sheets:upload": "node scripts/services/google_sheets_service.js upload",
+    "docs:create": "node scripts/services/google_sheets_service.js doc",
     "update:graph": "graphify update ."
   },
   "dependencies": {

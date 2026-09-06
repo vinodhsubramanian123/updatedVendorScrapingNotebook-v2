@@ -56,26 +56,43 @@ function readJsonIfPresent(filePath, fallback) {
   }
 }
 
-function toChangeRows(targetDir) {
+function toChangeRows(targetDir, options = {}) {
   const historyDir = path.join(targetDir, 'history');
   const rows = [['Change Type', 'Timestamp', 'SKU', 'Attribute', 'Previous Value', 'Current Value', 'Status', 'Evidence']];
+  const seen = new Set();
+  const pushChange = row => {
+    const key = JSON.stringify(row.slice(0, 7));
+    if (seen.has(key)) return;
+    seen.add(key);
+    rows.push(row);
+  };
   const attributeHistory = readJsonIfPresent(path.join(historyDir, 'attribute_history.json'), []);
   const priceHistory = readJsonIfPresent(path.join(historyDir, 'price_history.json'), {});
   const catalogDeltas = readJsonIfPresent(path.join(historyDir, 'catalog_deltas.json'), []);
   const discontinued = readJsonIfPresent(path.join(historyDir, 'discontinued_skus.json'), {});
+  const allowedSkus = options.allowedSkus instanceof Set ? options.allowedSkus : null;
+  const isAllowedCatalogSku = sku => !sku || !allowedSkus || allowedSkus.has(String(sku).toUpperCase());
 
   for (const item of Array.isArray(attributeHistory) ? attributeHistory : []) {
-    rows.push([
-      'ATTRIBUTE', item.timestamp || item.date || '', item.sku || item.productNumber || item['Product #'] || '',
+    const sku = item.sku || item.productNumber || item['Product #'] || '';
+    if (!isAllowedCatalogSku(sku)) continue;
+    pushChange([
+      'ATTRIBUTE', item.timestamp || item.date || '', sku,
       item.field || item.attribute || '', item.oldValue ?? '', item.newValue ?? '', item.status || 'CHANGED',
       item.source || item.evidence || 'certified scrape diff'
     ]);
   }
 
-  const priceEntries = Array.isArray(priceHistory) ? priceHistory : Object.values(priceHistory || {}).flatMap(value => Array.isArray(value) ? value : [value]);
+  const priceEntries = Array.isArray(priceHistory)
+    ? priceHistory
+    : Object.entries(priceHistory || {}).flatMap(([sku, value]) =>
+      (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }))
+    );
   for (const item of priceEntries.filter(Boolean)) {
-    rows.push([
-      'PRICE', item.timestamp || item.date || '', item.sku || item.productNumber || item['Product #'] || '',
+    const sku = item.sku || item.productNumber || item['Product #'] || '';
+    if (!isAllowedCatalogSku(sku)) continue;
+    pushChange([
+      'PRICE', item.timestamp || item.date || '', sku,
       'List Price', item.oldPrice ?? item.previousPrice ?? '', item.newPrice ?? item.price ?? '', item.status || 'CHANGED',
       item.source || 'certified price history'
     ]);
@@ -84,7 +101,7 @@ function toChangeRows(targetDir) {
   const deltaEntries = Array.isArray(catalogDeltas) ? catalogDeltas : (catalogDeltas.deltas || []);
   for (const item of deltaEntries) {
     if (!['ACTIVE', 'PROMOTED', 'VERIFIED', 'APPLIED_TO_PRECHECKS_AND_RAG'].includes(String(item.governanceStatus || item.status || '').toUpperCase())) continue;
-    rows.push([
+    pushChange([
       'VERIFIED_LEARNING', item.promotedAt || item.timestamp || item.createdAt || '', item.affectedSku || item.sku || '',
       item.errorType || item.scopeTaxonomy || '', '', item.ruleUpdate || item.rawMessage || '', 'VERIFIED',
       item.deltaId || item.source || 'verified KnowledgeDelta'
@@ -92,8 +109,10 @@ function toChangeRows(targetDir) {
   }
 
   for (const item of Object.values(discontinued || {})) {
-    rows.push([
-      'LIFECYCLE', item.discontinuedDate || item.timestamp || '', item.productNumber || item.sku || item['Product #'] || '',
+    const sku = item.productNumber || item.sku || item['Product #'] || '';
+    if (!isAllowedCatalogSku(sku)) continue;
+    pushChange([
+      'LIFECYCLE', item.discontinuedDate || item.timestamp || '', sku,
       'Lifecycle Status', item.previousStatus || '', item.status || '', item.status || '', item.source || 'certified scrape diff'
     ]);
   }
@@ -104,10 +123,12 @@ function toChangeRows(targetDir) {
 function buildKnowledgeWorkbookDatasets(csvPath, learningPath, options = {}) {
   if (!learningPath || !fs.existsSync(learningPath)) throw new Error(`Verified learning document not found: ${learningPath || '(empty path)'}`);
   const catalogRows = loadCsvValues(csvPath);
+  const skuColumn = catalogRows[0].findIndex(value => /^(?:product\s*#|part\s*no|sku)$/i.test(String(value).trim()));
+  const allowedSkus = new Set(skuColumn >= 0 ? catalogRows.slice(1).map(row => String(row[skuColumn] || '').toUpperCase()).filter(Boolean) : []);
   const normalizedLearning = normalizeLearningText(fs.readFileSync(learningPath, 'utf8'));
   const learningRows = [['Canonical Verified Product Learnings'], ...normalizedLearning.split('\n').map(line => [line])];
   const targetDir = options.targetDir || path.dirname(csvPath);
-  const changeRows = toChangeRows(targetDir);
+  const changeRows = toChangeRows(targetDir, { allowedSkus });
   const fingerprints = {
     catalog: stableRowsFingerprint(catalogRows),
     learnings: sha256(normalizedLearning),

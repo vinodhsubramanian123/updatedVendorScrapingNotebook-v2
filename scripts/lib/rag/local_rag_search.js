@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { baseProductId, resolveProductIdentity, ruleAppliesToProduct } = require('../catalog/product_scope.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
@@ -56,38 +57,20 @@ function prepareSearchTerms(query) {
   return { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery };
 }
 
-function searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches) {
+function searchKnowledgeDeltas(chassisName, activeTerms, rawMatches) {
   if (!fs.existsSync(KNOWLEDGE_FILE)) return;
   try {
     const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
+    const config = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf-8'));
+    const targetIdentity = resolveProductIdentity(chassisName, config);
+    if (!targetIdentity) return;
     const universalRules = (registry.universalRules || []).map(r => ({ ...r, scope: 'UNIVERSAL_VENDOR' }));
     const familyGenRules = (registry.familyGenRules || []).map(r => ({ ...r, scope: 'FAMILY_GEN' }));
     const chassisRules = (registry.chassisSpecificRules || []).map(r => ({ ...r, scope: 'CHASSIS_SPECIFIC' }));
     const rules = [...universalRules, ...familyGenRules, ...chassisRules];
 
     for (const rule of rules) {
-      if (normChassisTarget) {
-        const ruleChassisNorm = (rule.chassis || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR' || rule.scopeTaxonomy === 'UNIVERSAL_VENDOR';
-        const isFamilyGen = rule.scope === 'FAMILY_GEN' || rule.scopeTaxonomy === 'FAMILY_GEN';
-        const isChassisMatch = ruleChassisNorm && (normChassisTarget.includes(ruleChassisNorm) || ruleChassisNorm.includes(normChassisTarget));
-        const hasGen12Target = normChassisTarget.includes('gen12') || normChassisTarget.includes('g12');
-        const hasGen11Target = normChassisTarget.includes('gen11') || normChassisTarget.includes('g11');
-        const hasGen12Rule = ruleChassisNorm.includes('gen12') || ruleChassisNorm.includes('g12');
-        const hasGen11Rule = ruleChassisNorm.includes('gen11') || ruleChassisNorm.includes('g11');
-
-        if (hasGen12Target && hasGen11Rule) continue;
-        if (hasGen11Target && hasGen12Rule) continue;
-        if (!isUniversal) {
-          if (isFamilyGen) {
-            // Family/Gen rule matches if generations align
-            if (hasGen12Target && !hasGen12Rule) continue;
-            if (hasGen11Target && !hasGen11Rule) continue;
-          } else if (!isChassisMatch) {
-            continue;
-          }
-        }
-      }
+      if (!ruleAppliesToProduct(rule, targetIdentity, config)) continue;
 
       const raw = (rule.rawMessage || '').toLowerCase();
       const update = (rule.ruleUpdate || '').toLowerCase();
@@ -336,20 +319,11 @@ function searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcess
 
 function filterCatalogsByChassisFirewall(catalogPaths, chassisName) {
   if (!chassisName) return catalogPaths;
-  const normChassis = chassisName.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const hasGen12Target = normChassis.includes('gen12') || normChassis.includes('g12');
-  const hasGen11Target = normChassis.includes('gen11') || normChassis.includes('g11');
+  const normChassis = baseProductId(chassisName).toLowerCase().replace(/[^a-z0-9]/g, '');
 
   return catalogPaths.filter(cDir => {
-    const folderName = path.basename(cDir);
-    const normFolder = folderName.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const hasGen12Folder = normFolder.includes('gen12') || normFolder.includes('g12');
-    const hasGen11Folder = normFolder.includes('gen11') || normFolder.includes('g11');
-
-    if (hasGen12Target && !hasGen12Folder) return false;
-    if (hasGen11Target && !hasGen11Folder) return false;
-
-    return normChassis.includes(normFolder) || normFolder.includes(normChassis) || normChassis.includes(normFolder.replace('sff', ''));
+    const normFolder = baseProductId(path.basename(cDir)).toLowerCase().replace(/[^a-z0-9]/g, '');
+    return normChassis === normFolder;
   });
 }
 
@@ -427,8 +401,6 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   const matchedProcessorSkus = [];
 
   const { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery } = prepareSearchTerms(query);
-  const normChassisTarget = (chassisName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-
   const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
   const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
   const filteredCatalogPaths = filterCatalogsByChassisFirewall(catalogPaths, chassisName);
@@ -437,7 +409,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
     return synthesizeRankedRagAnswer([], [], query, chassisName);
   }
 
-  searchKnowledgeDeltas(normChassisTarget, activeTerms, rawMatches);
+  searchKnowledgeDeltas(chassisName, activeTerms, rawMatches);
 
   for (const cDir of filteredCatalogPaths) {
     if (!fs.existsSync(cDir)) continue;
@@ -467,7 +439,8 @@ async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId 
     try {
       const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'config', 'notebooks.json'), 'utf-8'));
       if (config.notebooks) {
-        for (const [chassis, nid] of Object.entries(config.notebooks)) {
+        for (const [chassis, entry] of Object.entries(config.notebooks)) {
+          const nid = typeof entry === 'object' && entry !== null ? entry.notebookId : entry;
           if (nid === notebookId) {
             resolvedChassis = chassis;
             break;

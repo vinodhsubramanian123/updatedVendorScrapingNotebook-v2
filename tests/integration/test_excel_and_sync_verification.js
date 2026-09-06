@@ -110,7 +110,7 @@ async function testCandidateBoqExcelExport() {
 async function testNotebookLmSyncPayload() {
   console.log(`\n${C.bold}${C.blue}▶ [TEST 3] Auditing Gemini NotebookLM Markdown Sync Payload & Rules Charter${C.reset}`);
 
-  buildMasterKnowledgeRegistry();
+  buildMasterKnowledgeRegistry({ persist: false });
   const syncResult = generateNotebookSyncPayload('DL380_Gen12');
   const payloadPath = syncResult.payloadPath || syncResult;
 

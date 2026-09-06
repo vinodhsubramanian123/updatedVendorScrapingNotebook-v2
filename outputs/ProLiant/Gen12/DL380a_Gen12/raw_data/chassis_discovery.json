@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "capturedAt": "2026-09-06",
+  "source": "HPE OCA Product Search via authenticated CDP session",
+  "query": "DL380a Gen12",
+  "selectionPolicy": "Exact product identity; CTO only; exclude BTO, TAA and GTA",
+  "candidates": [
+    {
+      "sku": "P76706-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server",
+      "listPriceUsd": 21407,
+      "startDate": "03/03/2025",
+      "discontinuedDate": "02/29/2028",
+      "offerType": "CTO",
+      "eligible": true,
+      "selected": true
+    },
+    {
+      "sku": "P76706-B21#GTA",
+      "description": "HPE ProLiant Compute DL380a Gen12 TAA/GTA variant",
+      "listPriceUsd": 0,
+      "offerType": "CTO_TAA_GTA",
+      "eligible": false,
+      "selected": false,
+      "exclusionReason": "TAA/GTA variant"
+    }
+  ]
+}

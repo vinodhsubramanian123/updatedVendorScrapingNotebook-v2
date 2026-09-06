@@ -16,6 +16,20 @@ Executed: 2026-09-06
 
 Policy: NotebookLM grounding sources are limited to official vendor documents, certified OCA catalogs, and verified/deduplicated KnowledgeDelta payloads. Customer BOQs, quotes, procurement lists, generated solution reports, and unverified notes are excluded.
 
+## Post-execution trust audit (2026-09-06)
+
+No additional source was deleted during this audit. Query allow-lists were tightened immediately, while physically retained sources remain available for learning extraction and evidence review.
+
+- Official QuickSpecs remain trusted for DL380 Gen12, DL380 Gen11, DL380a Gen12, DL145 Gen11, Alletra, and Synergy.
+- The DL380 Gen11 certified master catalog CSV remains trusted.
+- Previously generated catalog narratives and the shared universal charter are quarantined from queries because their historical payloads were not product-scoped.
+- `dl380a-gen12-configuration-architecture-guide.md` is retained but quarantined pending claim-by-claim validation. It contains useful product learnings, but also customer configuration material and claims that conflict with the no-unsolicited-software invariant.
+- The DL380a canonical Sheet transaction created one superseded duplicate source, `df80d531-156e-48e0-b4e1-91328615cf7f`. It is retained and quarantined. It is a newly discovered retirement candidate and was not covered by the prior deletion authorization.
+- `DL380 Gen11 Default Power Cable` is retained but quarantined pending extraction because it contains a Notebook conversation and customer configuration content rather than a clean verified learning source.
+- Alletra currently contains repeated generated catalog sources dated 2026-09-05 plus `Canvas Copied Confirmation`. These are quarantined and are not authorized for deletion by the earlier retirement grant.
+
+The next retirement transaction for any quarantined source is: extract candidate claims, verify each against official/OCA evidence, persist approved `KnowledgeDelta` records with exact product identity, refresh the canonical product Sheet, run a restricted-source canary, and only then request/consume deletion authorization for the newly proposed IDs.
+
 The application queries only the trusted source IDs in `scripts/config/notebooks.json`. This manifest records the completed live-workspace cleanup authorized by the user.
 
 ## DL380 Gen12
@@ -50,7 +64,12 @@ Notebook: `b233ec88-4682-4164-a801-3ee6ca649dc1`
 Keep:
 
 - `734fcb3d-d3a3-4ea2-9070-395c7193e2c9` — HPE ProLiant Compute DL380a Gen12 QuickSpecs
-- `01ddb8ef-cbd2-41bf-80c1-bbd7373a8b9c` — configuration architecture guide currently trusted by policy
+- `cd20f359-db6d-427a-8570-b54970b2fddd` — canonical certified catalog and verified-learning Google Sheet
+
+Retained but query-quarantined (not authorized for deletion):
+
+- `01ddb8ef-cbd2-41bf-80c1-bbd7373a8b9c` — configuration architecture guide; useful claims were extracted and individually checked, but the source also contains unverified/customer-derived assertions
+- `df80d531-156e-48e0-b4e1-91328615cf7f` — superseded duplicate canonical Sheet source from the first upload attempt
 
 Proposed retirement:
 

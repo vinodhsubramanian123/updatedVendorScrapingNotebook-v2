@@ -11,6 +11,7 @@ const path = require('path');
 const logger = require('../system/pipeline_logger.js');
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
 const { buildKnowledgeWorkbookDatasets } = require('./google_sheets_writer.js');
+const { baseProductId, normalize, scopeRegistryForProduct } = require('../catalog/product_scope.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -130,16 +131,22 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const totalActiveHwSKUs = catalogData?.metadata?.totalUniqueSKUs || 0;
   const totalActiveSrvSKUs = servicesData?.metadata?.totalUniqueSKUs || 0;
 
-  const totalRules = registry?.totalLearnedRules || 0;
-  const universalRules = registry?.universalRules || [];
-  const familyGenRules = registry?.familyGenRules || [];
-  const chassisSpecificRules = registry?.chassisSpecificRules || [];
+  const scopedRegistry = scopeRegistryForProduct(registry, chassisName, cfg);
+  if (!scopedRegistry.target && !isTestChassis) {
+    throw new Error(`SyncPayloadBuilderError: Product ${chassisName} is not registered with an exact vendor/family/generation identity.`);
+  }
+  const totalRules = scopedRegistry.totalLearnedRules || 0;
+  const universalRules = scopedRegistry.universalRules || [];
+  const familyGenRules = scopedRegistry.familyGenRules || [];
+  const chassisSpecificRules = scopedRegistry.chassisSpecificRules || [];
 
-  let md = `# HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter\n\n`;
-  md += `**Target Product**: \`${chassisName}\`  \n`;
-  md += `**Sync Timestamp**: ${new Date().toISOString()}  \n`;
-  md += `**Total Verified SKUs**: \`${totalActiveHwSKUs + totalActiveSrvSKUs}\` (\`${totalActiveHwSKUs}\` Hardware + \`${totalActiveSrvSKUs}\` Services)  \n`;
-  md += `**Total Synced KnowledgeDeltas**: \`${totalRules}\`  \n\n`;
+  const targetIdentity = scopedRegistry.target || { vendor: 'HPE', pillar: 'UNKNOWN', family: 'UNKNOWN', generation: 'UNKNOWN' };
+  let md = `# ${targetIdentity.vendor} ${chassisName} — Synchronized Catalog Knowledge\n\n`;
+  md += `**Target Product**: \`${chassisName}\`\n\n`;
+  md += `**Scope Identity**: \`${targetIdentity.vendor}/${targetIdentity.pillar}/${targetIdentity.family}/${targetIdentity.generation}/${targetIdentity.productId || chassisName}\`\n\n`;
+  md += `**Sync Timestamp**: ${new Date().toISOString()}\n\n`;
+  md += `**Total Verified SKUs**: \`${totalActiveHwSKUs + totalActiveSrvSKUs}\` (\`${totalActiveHwSKUs}\` Hardware + \`${totalActiveSrvSKUs}\` Services)\n\n`;
+  md += `**Total Synced KnowledgeDeltas**: \`${totalRules}\`\n\n`;
   md += `This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.\n\n`;
   md += `---\n\n`;
 
@@ -151,17 +158,10 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   md += `| **Support Services & SLAs** | ${totalActiveSrvSKUs} | ${srvDiff.added || 0} | ${srvDiff.priceChanged || 0} | ${srvDiff.attributeChanged || 0} | ${srvDiff.reinstated || 0} | **CERTIFIED** |\n`;
   md += `| **Total Portfolio** | **${totalActiveHwSKUs + totalActiveSrvSKUs}** | **${(hwDiff.added || 0) + (srvDiff.added || 0)}** | **${(hwDiff.priceChanged || 0) + (srvDiff.priceChanged || 0)}** | **${(hwDiff.attributeChanged || 0) + (srvDiff.attributeChanged || 0)}** | **${(hwDiff.reinstated || 0) + (srvDiff.reinstated || 0)}** | **ACTIVE** |\n\n`;
 
-  md += `### 🔍 Key Configuration & Physical Pre-Check Highlights:\n`;
-  md += `- **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).\n`;
-  md += `- **Memory Channels**: Enforces 1DPC / 2DPC symmetry and balanced population across memory controllers.\n`;
-  md += `- **Storage Tri-Mode**: Backplane and controller pairing validation (e.g. MR416i-p / SR932i-p require dedicated Box 1/2 Cable Kit \`P76453-B21\`).\n`;
-  md += `- **Support Services**: Complete lifecycle coverage across HPE Pointnext Complete Care and Tech Care Essential SLAs.\n\n`;
-  md += `---\n\n`;
-
   // 1. Universal Rules
-  md += `## 🌐 1. Universal Vendor Rules (Applies Across All HPE Product Lines)\n\n`;
+  md += `## 🌐 1. Universal Vendor Rules (${targetIdentity.vendor})\n\n`;
   if (universalRules.length === 0) {
-    md += `*No universal vendor restrictions logged yet. Baseline CTO/BTO mode rules active.*\n\n`;
+    md += `*No verified universal vendor rules are registered for this product.*\n\n`;
   } else {
     universalRules.forEach((r, idx) => {
       md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.errorType})*\n`;
@@ -170,9 +170,9 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   }
 
   // 2. Family & Gen Rules
-  md += `## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)\n\n`;
+  md += `## 🏛️ 2. Family & Generation Rules (${targetIdentity.family} ${targetIdentity.generation})\n\n`;
   if (familyGenRules.length === 0) {
-    md += `*No family/generation-level rules logged yet. Symmetric memory & power supply mixing rules active.*\n\n`;
+    md += `*No verified family/generation rules are registered for this product.*\n\n`;
   } else {
     familyGenRules.forEach((r, idx) => {
       md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}**: ${r.ruleUpdate} *(Affected SKU: ${r.affectedSku})*\n`;
@@ -194,7 +194,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     relevantChassisRules.forEach((r, idx) => {
       md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
       md += `   - **Rule**: ${r.ruleUpdate}\n`;
-      md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\` \n`;
+      md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;
       if (r.humanReasoning) {
         md += `   - 💡 **Human Engineer Rationale**: *"${r.humanReasoning}"*\n`;
       }
@@ -238,16 +238,20 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     md += `\n`;
   }
 
-  // 6. Cross-Chassis CTO Variant Matrix
-  md += `## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix\n\n`;
+  // 6. Same-product CTO variant matrix. Never disclose other products or generations.
+  md += `## 🧩 6. Same-Product CTO Variant Matrix\n\n`;
   const { getChassisMap } = require('../conflict/conflict_graph.js');
   const chassisMap = getChassisMap();
 
   md += `| Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |\n`;
   md += `|--------------------|----------------|------------|-------------|--------------|\n`;
-  for (const [id, info] of Object.entries(chassisMap)) {
+  const sameProductVariants = Object.entries(chassisMap).filter(([id]) =>
+    normalize(baseProductId(id)) === normalize(baseProductId(chassisName))
+  );
+  for (const [id, info] of sameProductVariants) {
     md += `| **${id}** | ${info.family || 'ProLiant'} | ${info.gen || 'Gen12'} | ${info.formFactor || 'SFF'} | \`${info.baseSku || 'N/A'}\` |\n`;
   }
+  if (sameProductVariants.length === 0) md += `| ${chassisName} | ${targetIdentity.family} | ${targetIdentity.generation} | N/A | \`N/A\` |\n`;
   md += `\n`;
 
   // Write payload file

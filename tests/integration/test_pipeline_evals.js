@@ -362,8 +362,8 @@ async function main() {
     'Post-flight: NotebookLM payload contains Discontinued SKUs section');
   assert(payloadResult.markdownText.includes('Recent Attribute & Specification Modifications Log'),
     'Post-flight: NotebookLM payload contains Attribute Modifications section');
-  assert(payloadResult.markdownText.includes('Cross-Chassis Variant & Platform Benchmark Matrix'),
-    'Post-flight: NotebookLM payload contains Cross-Chassis Variant Matrix section');
+  assert(payloadResult.markdownText.includes('Same-Product CTO Variant Matrix'),
+    'Post-flight: NotebookLM payload contains isolated same-product variant matrix section');
 
   // ── GUARDRAIL 7: Live Cloud NotebookLM Health & Token Verification ─────────
   console.log('\n--- TEST 7: Live Cloud NotebookLM Health & Token Verification ---');

@@ -51,46 +51,11 @@ function invalidateCatalogCache() {
 function getCachedCatalogs() {
   if (_catalogCache) return _catalogCache;
 
-  let convertCSVToCatalogJSON = null;
-  let syncAllProducts = null;
-  try {
-    const csvMod = require('../../scripts/catalogs/csv_to_catalog.js');
-    convertCSVToCatalogJSON = csvMod.convertCSVToCatalogJSON;
-    const syncMod = require('../../scripts/catalogs/sync_all_registered_catalogs.js');
-    syncAllProducts = syncMod.syncAllProducts;
-    if (syncAllProducts) syncAllProducts();
-  } catch (_) {
-    // Optional modules — skip gracefully
-  }
-
   const catalogs = [];
 
   function findCatalogs(dir) {
     if (!fs.existsSync(dir)) return;
     const items = fs.readdirSync(dir, { withFileTypes: true });
-
-    // Auto-sync CSV → JSON if stale
-    const csvFile = items.find(i => i.isFile() && i.name.endsWith('_Catalog_SKUs.csv'));
-    if (csvFile) {
-      const csvPath = path.join(dir, csvFile.name);
-      const jsonName = csvFile.name.replace(/_Catalog_SKUs\.csv$/, '_Catalog.json');
-      const jsonPath = path.join(dir, jsonName);
-      let needsSync = !fs.existsSync(jsonPath);
-      if (!needsSync) {
-        try {
-          const content = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-          const jsonSKUs = content.metadata?.totalUniqueSKUs || 0;
-          const csvLines = fs.readFileSync(csvPath, 'utf-8').split('\n').filter(l => l.trim()).length;
-          const csvSKUs = Math.max(0, csvLines - 1);
-          if (jsonSKUs < csvSKUs) needsSync = true;
-        } catch (_) { needsSync = true; }
-      }
-      if (needsSync && convertCSVToCatalogJSON) {
-        try { convertCSVToCatalogJSON(csvPath, jsonPath); } catch (e) {
-          console.error(`Error auto-converting ${csvFile.name}:`, e.message);
-        }
-      }
-    }
 
     for (const item of items) {
       const fullPath = path.join(dir, item.name);

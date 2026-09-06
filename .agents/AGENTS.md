@@ -413,6 +413,20 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: Stale form-factor model names (such as `'DL380_Gen12_SFF'`) in UI hooks and selectors violated Invariant INV-36 and caused blank catalog views.
 - **Rule**: Frontend selectors, hooks, and API routes MUST standardize on the canonical generation model directory (`'DL380_Gen12'`). `useCatalogs.js` MUST provide automated fallback to the first available catalog if the selected key is not found.
 
+### INV-65: Modern CDP Download Behavioral Protocol & Filename Preservation
+- **Pattern**: `Page.setDownloadBehavior` is deprecated, while `Browser.setDownloadBehavior` with `allowAndName` explicitly stores files under download GUIDs.
+- **Rule**: Automated downloads use `Browser.setDownloadBehavior` with `{ behavior: 'allow', downloadPath: path.join(os.homedir(), 'Downloads'), eventsEnabled: true }`, falling back to deprecated `Page.setDownloadBehavior` only for older Chromium. Consumers still validate and rename the completed file from the `suggestedFilename` event when required.
+
+### INV-66: Browser Security Preservation Protocol
+- **Rule**: Automation MUST NOT disable Safe Browsing or weaken the user's Chrome security profile. Download permission is scoped to the active automation flow, files are validated after completion, and paths are resolved dynamically with `os.homedir()`.
+
+### INV-67: Zero-Human-in-the-Loop Google Sheets & Docs Workspace Automation Protocol
+- **Pattern**: Google OAuth blocks personal `@gmail.com` accounts from requesting sensitive scopes (`spreadsheets`, `documents`, `drive`) using the default generic `gcloud` developer client ID with the error *"This app is blocked"*.
+- **Rule**: AI agents MUST NOT instruct users to authenticate sensitive Workspace scopes without an owned client ID. Zero-human-in-the-loop Google Sheets and Google Docs operations MUST use either:
+  1. An operator-owned Desktop App OAuth client stored outside the repository, with the operator registered as a Test User and authenticated through Application Default Credentials; OR
+  2. A dedicated service account whose key is stored outside the repository, with access limited to a designated Drive folder (`GOOGLE_DRIVE_FOLDER_ID`).
+- OAuth grants and refresh tokens can expire or be revoked. All flows must surface authentication failure and preserve local artifacts for retry.
+
 ---
 
 
@@ -430,4 +444,3 @@ The `outputs/{Family}/{Gen}/{Model}/history/` directory stores canonical diff ar
 | `notebook_sync_payload_{chassis}.md` | Latest RAG payload | Contains test chassis names |
 
 Run `node -e "require('./scripts/lib/sync/post_flow_sync.js').cleanTestPayloads()"` to purge stale test payloads from `outputs/history/` if they accumulate.
-

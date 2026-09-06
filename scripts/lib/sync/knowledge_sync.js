@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { inferPillar, resolveProductIdentity } = require('../catalog/product_scope.js');
 
 // Modular subcomponents
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
@@ -44,23 +45,24 @@ function classifyKnowledgeScope(deltaOrText) {
       raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
     return 'UNIVERSAL_VENDOR';
   }
-  // BTO→FIO substitutions apply to all CTO ProLiant builds — promote to FAMILY_GEN
-  if (ruleType === 'OPTION_TYPE_SUBSTITUTION' ||
-      raw.includes('bto') || raw.includes('fio') || raw.includes('configure-to-order') ||
-      raw.includes('factory integrated') || raw.includes('-f21') ||
-      raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc') ||
-      raw.includes('tri-mode') || raw.includes('mr416i') || raw.includes('sr932i') ||
-      raw.includes('storage battery') || raw.includes('p01366-b21') ||
-      raw.includes('high performance fan') || raw.includes('p48820-b21') ||
-      (c.includes('gen12') || c.includes('gen11') || c.includes('proliant') ||
-       c.includes('alletra') || c.includes('synergy') || c.includes('cray') ||
-       c.includes('storeever') || c.includes('msl'))) {
+  const explicitlyFamilyWide = raw.includes('family-wide') || raw.includes('entire family') ||
+    raw.includes('all gen11') || raw.includes('all gen12') || raw.includes('across this generation');
+  if (!c && (ruleType === 'OPTION_TYPE_SUBSTITUTION' || explicitlyFamilyWide ||
+      raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc'))) {
     return 'FAMILY_GEN';
   }
   return 'CHASSIS_SPECIFIC';
 }
 
-function collectAllDeltas() {
+function hasExplicitWideScopeEvidence(delta, level) {
+  const raw = String(`${delta.scopeEvidence || ''} ${delta.rawMessage || ''} ${delta.ruleUpdate || ''}`).toLowerCase();
+  if (level === 'vendor') {
+    return delta.vendorWideVerified === true || /vendor-wide|all hpe products|across all hpe|across all servers/.test(raw);
+  }
+  return delta.familyWideVerified === true || /family-wide|entire family|all gen\s*\d+|across this generation/.test(raw);
+}
+
+function collectAllDeltas(outputsRoot = OUTPUTS_ROOT) {
   const deltas = [];
   const seenIds = new Set();
 
@@ -70,6 +72,9 @@ function collectAllDeltas() {
     for (const ent of entries) {
       const full = path.join(dir, ent.name);
       if (ent.isDirectory()) {
+        const ephemeral = ent.name === 'temp' || ent.name.startsWith('staging_') ||
+          ent.name.startsWith('failed_') || ent.name.includes('_promotion_bak_');
+        if (ephemeral) continue;
         scanDir(full);
       } else if (ent.name === 'catalog_deltas.json') {
         try {
@@ -77,6 +82,8 @@ function collectAllDeltas() {
           const list = Array.isArray(content) ? content : (content.deltas || []);
           const inferredChassis = path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir);
           list.forEach(d => {
+            const governanceStatus = String(d.governanceStatus || d.status || '').toUpperCase();
+            if (/QUARANTIN|REJECT|CONTRADICT|PENDING/.test(governanceStatus)) return;
             // Skip orphan deltas with no meaningful data
             if (!d.chassis && !d.affectedSku && !d.ruleType && !d.rawMessage) return;
             if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
@@ -110,12 +117,15 @@ function collectAllDeltas() {
     }
   }
 
-  scanDir(OUTPUTS_ROOT);
+  scanDir(outputsRoot);
   return deltas;
 }
 
-function buildMasterKnowledgeRegistry() {
-  const allDeltas = collectAllDeltas();
+function buildMasterKnowledgeRegistry(options = {}) {
+  const outputsRoot = options.outputsRoot || OUTPUTS_ROOT;
+  const persist = options.persist !== false;
+  const allDeltas = collectAllDeltas(outputsRoot);
+  const notebookConfig = loadNotebookConfig();
   const universalRules = [];
   const familyGenRules = [];
   const chassisSpecificRules = [];
@@ -126,9 +136,25 @@ function buildMasterKnowledgeRegistry() {
     if (scope === 'UNIVERSAL_HPE') scope = 'UNIVERSAL_VENDOR';
     if (scope === 'FAMILY_GEN_SPECIFIC') scope = 'FAMILY_GEN';
 
+    // Legacy data frequently promoted a one-product portal observation merely
+    // because its prose contained words such as "global" or "Gen12". Keep it
+    // chassis-specific unless broad applicability was explicitly verified.
+    const hasProductProvenance = Boolean(d.chassis || d.productId);
+    const scopeWasCorrected =
+      (scope === 'UNIVERSAL_VENDOR' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'vendor')) ||
+      (scope === 'FAMILY_GEN' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'family'));
+    if (scopeWasCorrected) scope = 'CHASSIS_SPECIFIC';
+
+    const identity = resolveProductIdentity(d.chassis || '', notebookConfig);
     const enrichedDelta = {
       ...d,
+      vendor: d.vendor || identity?.vendor || 'HPE',
+      pillar: d.pillar || identity?.pillar || inferPillar(d.family),
+      family: d.family || identity?.family || '',
+      generation: d.generation || d.gen || identity?.generation || '',
+      productId: d.productId || identity?.productId || d.chassis || '',
       scopeTaxonomy: scope,
+      ...(scopeWasCorrected ? { scopeCorrection: 'CONSERVATIVE_PRODUCT_FIREWALL' } : {}),
       solutionType: d.solutionType || (d.chassis ? `${d.chassis} CTO Server` : 'General Server')
     };
 
@@ -165,48 +191,25 @@ function buildMasterKnowledgeRegistry() {
     chassisSpecificRules
   };
 
-  const historyDir = path.join(OUTPUTS_ROOT, 'history');
-  if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
-  safeWriteJsonAtomic(MASTER_REGISTRY_FILE, registry);
+  const historyDir = path.join(outputsRoot, 'history');
+  const registryFile = path.join(historyDir, 'master_knowledge_registry.json');
+  if (persist && !fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
+  if (persist) safeWriteJsonAtomic(registryFile, registry);
 
   // Emit consolidated master Markdown charter for universal cross-notebook sync
   const masterCharterFile = path.join(historyDir, 'master_universal_knowledge_charter.md');
-  let md = `# HPE Enterprise Server Architecture — Master Universal Knowledge Charter\n\n`;
+  let md = `# HPE Knowledge Registry — Local Audit Index\n\n`;
   md += `**Document Version**: \`2.0.0\` | **Generated**: \`${nowISO}\`  \n`;
-  md += `**Scope**: Universal Ground-Truth Knowledge across ProLiant, Synergy, Alletra, Cray, and StoreEver portfolios  \n`;
+  md += `**Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.  \n`;
   md += `**Total Verified Knowledge Deltas**: \`${allDeltas.length}\` (\`${universalRules.length}\` Universal + \`${familyGenRules.length}\` Family/Gen + \`${chassisSpecificRules.length}\` Chassis Specific)  \n\n`;
   md += `---\n\n`;
-
-  md += `## 1. 🌐 Universal Vendor & CPQ Commercial Policies (Level 1)\n\n`;
-  md += `These rules apply across all HPE servers, storage systems, and CTO configurator environments:\n\n`;
-  md += `1. **Hierarchical Container Tree & Option Tagging**: Every server configuration in HPE OCA/CLIC is a structured container tree. Components inside a CTO chassis must carry the \`#0D1\` (Factory Integrated Option / FIO) suffix. Unparented BTO components (e.g. standalone memory modules) outside the server container will fail CLIC validation (Rules 81354490 & 91001655).\n`;
-  md += `2. **Mandatory Management SaaS Licensing**: Every CTO server model requires an active management license (e.g. HPE Compute Ops Management Enhanced \`R7A11AAE\` or iLO Advanced) to be orderable (Rule 81322276).\n`;
-  md += `3. **Telco -48VDC Electrical Safety**: -48VDC power supply configurations mandate dedicated DC terminal lug connector kits (\`P36877-B21\`) for electrical safety compliance.\n`;
-  md += `4. **MEA / Dubai Compliance Exclusions**: Trade Agreements Act (TAA) and Government Trade Agreements (GTA) SKUs are strictly excluded from international MEA quotes.\n\n`;
-
-  md += `## 2. 🏛️ Family & Generation Rules (Level 2: ProLiant Gen11 / Gen12)\n\n`;
-  md += `1. **Memory Channel Topology**: ProLiant 2P platforms feature 16 memory channels (8 per socket). All populated channels must be balanced with identical DIMM capacities and CAS latencies. x4 and x8 registered DDR5 DIMMs must never be mixed.\n`;
-  md += `2. **Thermal & Fan Kit Bundle Cardinality**: Processors with TDP > 240W mandate High-Performance Fan Kits (\`P48820-B21\`). \`P48820-B21\` is a complete kit containing all 6 chassis fans; maximum allowed quantity is strictly 1 kit per base chassis (Rule 81354654).\n`;
-  md += `3. **Smart Storage Battery & Write-Back Cache**: Dedicated Tri-Mode RAID controllers (MR416i, SR932i, MR408i) require an HPE Smart Storage Battery (\`P01366-B21\` 96W) to enable write-back cache protection.\n`;
-  md += `4. **Storage Controller Form-Factor Cabling**: OCP slot controllers (\`-o\` suffix, e.g. MR408i-o \`P58335-B21\`) connecting to standard 8SFF cages (\`P48813-B21\`) require the Controller Enablement Cable Kit (\`P48918-B21\`). Tri-Mode Y-Splitter Cables (\`P48832-B21\`) are exclusively for PCIe riser cards (\`-p\`) routing to Premium NVMe Cages (\`P48814-B21\`) (Rules 81354627 & 81354632).\n`;
-  md += `5. **Storage Expander & Multi-Drive Channel Limits**: An 8-port controller directly connects up to 8 drives. Configurations with 16 or 24 drives on a single controller require a SAS Expander Card (\`P48835-B21\`) or Tri-Mode Switch Card (\`P55806-B21\`).\n`;
-  md += `6. **GPU Accelerator Auxiliary Power Cabling**: High-power PCIe GPUs (NVIDIA L40S, A100, H100) require dedicated GPU Auxiliary Power Cable Kits (\`P48816-B21\` / \`P76450-B21\`) to connect to the internal power distribution board.\n`;
-  md += `7. **Windows Server Core Licensing**: Windows Server licenses are priced per physical CPU core (16-core minimum base). If total server cores exceed 16, additional core license packs are mandatory.\n\n`;
-
-  md += `## 3. 🎯 Chassis-Specific Gotchas & Electrical Topology (Level 3)\n\n`;
-  md += `1. **DL380 Gen11 / Gen12 PCIe Riser Electrical Enablement**:\n`;
-  md += `   - Primary 3x16 Riser (\`P48803-B21\`): Slots 2 & 3 are active out-of-the-box. Slot 1 requires Primary Riser Cable Kit (\`P56073-B21\`) to connect to motherboard SlimSAS port (Rules 81016755 & 81354683).\n`;
-  md += `   - Secondary 3x16 Riser (\`P51083-B21\`): Slots 5 & 6 are active out-of-the-box. Slot 4 requires Secondary Riser Cable Kit (\`P56074-B21\`) (Rule 81356091).\n`;
-  md += `2. **OCP2 Enablement Mutual Exclusion**: \`P51911-B21\` (CPU1 to OCP2) and \`P48830-B21\` (CPU2 to OCP2) are mutually exclusive in the same server. Dual-processor servers must utilize \`P48830-B21\` (Rule 81355854).\n`;
-  md += `3. **Power Derating & Utility Voltage**: 1600W/1800W power supplies derate to 800W on 110V low-line utility power. Dense configurations (>800W node draw) mandate 200V-240V high-line PDU circuits.\n\n`;
-
-  md += `## 4. 📋 Master Knowledge Deltas Registry\n\n`;
+  md += `## Scoped Knowledge Delta Inventory\n\n`;
   if (allDeltas.length === 0) {
     md += `*No persistent knowledge deltas logged.*\n`;
   } else {
     allDeltas.forEach((d, idx) => {
       md += `### ${idx + 1}. [${d.deltaId || `DELTA-${idx+1}`}] ${d.chassis || 'Universal'} — ${d.ruleType || 'RULE'}\n`;
-      md += `- **Scope**: \`${d.scopeTaxonomy || 'UNIVERSAL_VENDOR'}\`\n`;
+      md += `- **Scope**: \`${d.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\`\n`;
       md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
       if (d.affectedSku) md += `- **Affected SKU**: \`${d.affectedSku}\`\n`;
       if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
@@ -215,9 +218,9 @@ function buildMasterKnowledgeRegistry() {
     });
   }
 
-  try {
-    fs.writeFileSync(masterCharterFile, md, 'utf-8');
-  } catch (_) {}
+  if (persist) {
+    try { fs.writeFileSync(masterCharterFile, md, 'utf-8'); } catch (_) {}
+  }
 
   return registry;
 }
@@ -310,6 +313,7 @@ module.exports = {
   syncToNotebookLM,
   inspectKnowledgeDrift,
   classifyKnowledgeScope,
+  hasExplicitWideScopeEvidence,
   loadNotebookConfig,
   getNotebookIdForChassis,
   collectAllDeltas

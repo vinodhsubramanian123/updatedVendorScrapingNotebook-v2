@@ -21,12 +21,9 @@ describe('Closed-Loop Knowledge Sync & Multi-Family Drift engine tests', () => {
     assert.strictEqual(classifyKnowledgeScope({ rawMessage: 'This is a global policy' }), 'UNIVERSAL_VENDOR');
     assert.strictEqual(classifyKnowledgeScope({ rawMessage: 'vendor-wide notice' }), 'UNIVERSAL_VENDOR');
 
-    // FAMILY_GEN (ProLiant, Synergy, Alletra, StoreEver, Cray)
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'proliant_gen11' }), 'FAMILY_GEN');
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'synergy_frame' }), 'FAMILY_GEN');
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'alletra_storage' }), 'FAMILY_GEN');
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'cray_ex' }), 'FAMILY_GEN');
-    assert.strictEqual(classifyKnowledgeScope({ chassis: 'storeever_tape' }), 'FAMILY_GEN');
+    // A named chassis is never promoted merely because its name resembles a family.
+    assert.strictEqual(classifyKnowledgeScope({ chassis: 'proliant_gen11' }), 'CHASSIS_SPECIFIC');
+    assert.strictEqual(classifyKnowledgeScope({ chassis: 'synergy_frame' }), 'CHASSIS_SPECIFIC');
 
     // Test rule types and substitutions that promote to FAMILY_GEN
     assert.strictEqual(classifyKnowledgeScope({ ruleType: 'OPTION_TYPE_SUBSTITUTION' }), 'FAMILY_GEN');
@@ -70,20 +67,8 @@ describe('Closed-Loop Knowledge Sync & Multi-Family Drift engine tests', () => {
 
   test('master_knowledge_registry.json generation includes canonical generatedAt and schemaVersion', () => {
     // Call buildMasterKnowledgeRegistry
-    const registry = buildMasterKnowledgeRegistry();
+    const registry = buildMasterKnowledgeRegistry({ persist: false });
 
-    // Check that it's written
-    const registryPath = path.join(HISTORY_DIR, 'master_knowledge_registry.json');
-    assert.ok(fs.existsSync(registryPath));
-
-    // Read and verify schemaVersion and generatedAt
-    const rawData = fs.readFileSync(registryPath, 'utf8');
-    const parsedData = JSON.parse(rawData);
-
-    assert.strictEqual(parsedData.schemaVersion, '1.0');
-    assert.ok(parsedData.generatedAt, 'generatedAt should be defined');
-
-    // Also verify the returned object directly matches what we expect
     assert.strictEqual(registry.schemaVersion, '1.0');
     assert.ok(registry.generatedAt, 'generatedAt should be present in the returned registry object');
     // Ensure it's a valid ISO string

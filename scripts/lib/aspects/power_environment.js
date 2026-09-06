@@ -62,21 +62,37 @@ function estimateSystemPowerWatts(it, desc, role) {
 }
 
 const DL380A_CHASSIS_SKUS = new Set(['P76706-B21']);
-const DL380A_GPU_SKUS = new Set(['P75008-B21', 'P75002-B21']);
 const DL145_CHASSIS_SKUS = new Set(['P71964-B21']);
 const PLATINUM_PSU_SKUS = new Set(['P38997-B21']);
 const TITANIUM_PSU_SKUS = new Set(['P44712-B21', 'P03178-B21']);
 const CE_REMOVAL_SKUS = new Set(['P35876-B21']);
 
-function tallyChassisFormFactor(tally, desc, sku) {
+function parseDl380aGpuModeCapacity(desc) {
+  if (!desc.includes('dl380a') || !desc.includes('fio configuration')) return 0;
+  const match = desc.match(/(\d+)\s*(?:double[\s-]*wide|dw)\b/i);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
+function isGpuModeConfiguration(desc) {
+  return parseDl380aGpuModeCapacity(desc) > 0;
+}
+
+function tallyChassisFormFactor(tally, it, desc, sku, role) {
   if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
     tally.isSynergy12000Frame = true;
   }
   if (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('dl380a')) {
     tally.isDl380aGpuChassis = true;
+    if (!desc.includes('fio configuration') && (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('configure-to-order') || desc.includes('cto server'))) {
+      tally.dl380aServerCount += (it.quantity || 1);
+    }
   }
-  if (DL380A_GPU_SKUS.has(sku) || (desc.includes('double-wide') && desc.includes('gpu'))) {
+  const gpuModeCapacity = parseDl380aGpuModeCapacity(desc);
+  if (gpuModeCapacity > 0) {
     tally.hasDl380aDoubleWideGpu = true;
+    tally.dl380aGpuModeCapacity = Math.max(tally.dl380aGpuModeCapacity, gpuModeCapacity);
+  } else if (role === 'GPU / Accelerator' || desc.includes('gpu accelerator')) {
+    tally.actualGpuCount += (it.quantity || 1);
   }
   if (DL145_CHASSIS_SKUS.has(sku) || desc.includes('dl145')) {
     tally.isDl145EdgeChassis = true;
@@ -90,6 +106,7 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
     if (psuWMatch) {
       const w = parseInt(psuWMatch[1], 10);
       if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
+      tally.psuWattages.add(w);
     }
     if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
       tally.hasDcPowerSupply = true;
@@ -113,13 +130,32 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
 }
 
 function tallyPowerHardware(tally, it, desc, sku, role, dcLugSku) {
-  tallyChassisFormFactor(tally, desc, sku);
+  tallyChassisFormFactor(tally, it, desc, sku, role);
   tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku);
 }
 
-function checkDl380aPsuShortage(tally) {
-  if (!tally.isDl380aGpuChassis || !tally.hasDl380aDoubleWideGpu) return false;
-  return tally.psuCount < 5 || tally.maxPsuWattage < 2400 || !tally.hasTitaniumPsu;
+function getDl380aPsuRequirement(tally) {
+  if (!tally.isDl380aGpuChassis) return { modeCapacity: 0, requiredCountPerServer: 0, requiredCount: 0 };
+  const serverCount = Math.max(1, tally.dl380aServerCount);
+  const modeCapacity = tally.dl380aGpuModeCapacity || Math.ceil(tally.actualGpuCount / serverCount);
+  if (modeCapacity <= 0) return { modeCapacity: 0, requiredCountPerServer: 0, requiredCount: 0 };
+  const requiredCountPerServer = modeCapacity > 4 ? 8 : 5;
+  return { modeCapacity, requiredCountPerServer, requiredCount: requiredCountPerServer * serverCount };
+}
+
+function checkDl380aPsuCompliance(tally) {
+  const requirement = getDl380aPsuRequirement(tally);
+  const wattages = [...tally.psuWattages];
+  const hasMixedWattages = wattages.length > 1;
+  const hasSupportedWattage = wattages.length === 1 && (wattages[0] === 2400 || wattages[0] === 3200);
+  return {
+    ...requirement,
+    hasMixedWattages,
+    hasSupportedWattage,
+    hasShortage: requirement.requiredCount > 0 && (
+      tally.psuCount < requirement.requiredCount || !hasSupportedWattage || hasMixedWattages
+    )
+  };
 }
 
 function checkLot9CeRemovalNeeds(tally, estimatedNodeWattage) {
@@ -135,10 +171,14 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     hasCeRemovalKit: false,
     psuCount: 0,
     maxPsuWattage: 800,
+    psuWattages: new Set(),
     isSynergy12000Frame: false,
     synergyTitanium2650wCount: 0,
     isDl380aGpuChassis: false,
     hasDl380aDoubleWideGpu: false,
+    dl380aGpuModeCapacity: 0,
+    dl380aServerCount: 0,
+    actualGpuCount: 0,
     isDl145EdgeChassis: false
   };
 
@@ -156,7 +196,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
       role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
-    totalHardwareWatts += estimateSystemPowerWatts(it, desc, role);
+    if (!isGpuModeConfiguration(desc)) {
+      totalHardwareWatts += estimateSystemPowerWatts(it, desc, role);
+    }
     tallyPowerHardware(tally, it, desc, sku, role, dcLugSku);
   }
 
@@ -164,6 +206,7 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
   const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
   const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
+  const dl380aPsu = checkDl380aPsuCompliance(tally);
 
   return {
     hasDcPowerSupply: tally.hasDcPowerSupply,
@@ -180,7 +223,12 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     synergyTitanium2650wCount: tally.synergyTitanium2650wCount,
     hasSynergyRedundantPowerError,
     isDl380aGpuChassis: tally.isDl380aGpuChassis,
-    hasDl380aGpuPsuShortage: checkDl380aPsuShortage(tally),
+    dl380aGpuModeCapacity: dl380aPsu.modeCapacity,
+    requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
+    requiredDl380aPsuCount: dl380aPsu.requiredCount,
+    hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
+    hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,
+    hasDl380aGpuPsuShortage: dl380aPsu.hasShortage,
     isDl145EdgeChassis: tally.isDl145EdgeChassis,
     hasDl145PsuOversizing: tally.isDl145EdgeChassis && tally.maxPsuWattage > 1000
   };

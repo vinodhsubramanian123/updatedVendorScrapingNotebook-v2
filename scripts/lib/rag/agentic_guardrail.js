@@ -24,8 +24,12 @@ const logger = require('../system/pipeline_logger.js');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
-const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(process.env.GUARDRAIL_TIMEOUT_MS || '180000', 10); // 180s (3m) max for multi-turn RAG
 const GUARDRAIL_NLM_MAX_CALLS = 3; // Maximum queries per agentic guardrail session
+const DEFAULT_NLM_CALL_TIMEOUT_MS = parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10);
+const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(
+  process.env.GUARDRAIL_TIMEOUT_MS || String(DEFAULT_NLM_CALL_TIMEOUT_MS * GUARDRAIL_NLM_MAX_CALLS + 120000),
+  10
+); // Headroom for every slow NotebookLM call plus local evaluation and synthesis.
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -189,7 +193,7 @@ async function sendWithRotation(message, rotationState, maxRetries, startTime) {
   let retries = 0;
   while (true) {
     if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
-      throw new Error('Agentic Guardrail execution timed out after 90 seconds.');
+      throw new Error(`Agentic Guardrail execution timed out after ${Math.ceil(GUARDRAIL_OVERALL_TIMEOUT_MS / 1000)} seconds.`);
     }
     try {
       const response = await rotationState.chat.sendMessage({ message });

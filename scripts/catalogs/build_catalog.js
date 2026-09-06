@@ -43,8 +43,8 @@ const SUBCAT_KEYWORD_PARENT_MAP = Object.freeze([
   { keywords: ['storage controller', 'sas controller', 'megaraid', 'smart array', 'vroc'], parent: 'Storage Controllers' },
   { keywords: ['drive cage', 'drive enclosure', 'drive blank', 'solid state drive', 'nvme', 'sata', 'sas'], parent: 'Drive Enclosures / Drives' },
   { keywords: ['networking', 'ethernet', 'ocp3', 'infiniband', 'transceiver', 'fibre channel'], parent: 'Networking' },
-  { keywords: ['cable kit', 'cables', 'jumper cable'], parent: 'Cables & Enablement Kits' },
-  { keywords: ['software', 'license', 'operating system', 'windows server', 'red hat', 'suse', 'vmware', 'ilo', 'oneview'], parent: 'Software & Licenses' },
+  { keywords: ['cable kit', 'cables', 'power cord', 'jumper cord', 'jumper cable'], parent: 'Cables & Enablement Kits' },
+  { keywords: ['software', 'license', 'operating system', 'windows server', 'windows cal', 'cal pack', 'red hat', 'suse', 'vmware', 'ilo', 'oneview'], parent: 'Software & Licenses' },
   { keywords: ['support', 'pointnext', 'tech care', 'service'], parent: 'Support Services' },
   { keywords: ['chassis infrastructure', 'smart chassis', 'rail', 'bezel', 'blank', 'enablement', 'options'], parent: 'Accessories & Infrastructure' },
   { keywords: ['base chassis', 'chassis variants', 'variants'], parent: 'Chassis' },
@@ -194,6 +194,11 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   const historyPriceMap = loadHistoricalPriceMap(targetDir);
 
   const rawData  = JSON.parse(fs.readFileSync(rawInputPath, 'utf-8'));
+  const discoveryPath = path.join(path.dirname(rawInputPath), 'chassis_discovery.json');
+  let chassisDiscovery = rawData.chassisDiscovery || null;
+  if (!chassisDiscovery && fs.existsSync(discoveryPath)) {
+    try { chassisDiscovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8')); } catch (_) {}
+  }
   const fullText = rawData.fullText || rawData.bodyText || '';
   const tables   = rawData.tables || [];
   diagnostics.setRawTableCount(tables.length);
@@ -217,7 +222,7 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
     rawInputPath, jsonOutputPath, IS_VERBOSE, JSON_MODE,
     targetDir, scrapsDir, catalogBaseName, filePrefix, chassisLabel,
     pipelineLogger, diagnostics, historyPriceMap,
-    rawData, fullText, tables, meta, profile, baseSKU, chassisRoot
+    rawData, fullText, tables, meta, profile, baseSKU, chassisRoot, chassisDiscovery
   };
 }
 
@@ -562,12 +567,17 @@ function resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, 
 
   const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
 
+  let matchedVia = 'fallback_accessories';
   if (matchedParent) {
     parentCat = matchedParent;
+    matchedVia = 'direct_taxonomy_keyword';
   } else if (detectedRole && detectedRole !== 'Option Component' && ROLE_TO_PARENT_MAP[detectedRole]) {
     parentCat = ROLE_TO_PARENT_MAP[detectedRole];
+    matchedVia = 'role_classifier';
   } else if (!parentCat || parentCat === 'Unknown') {
     parentCat = 'Accessories & Infrastructure';
+  } else {
+    matchedVia = matchedSubcat ? 'portal_text_position' : 'portal_parent';
   }
 
   const defaultConstraintObj = CATEGORY_DEFAULT_CONSTRAINTS[parentCat.toLowerCase()] || {};
@@ -590,7 +600,7 @@ function resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, 
     tableRules.push(`Selection constraint for ${subCat}: ${finalConstraint}`);
   }
 
-  return { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedParent };
+  return { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedParent, matchedVia };
 }
 
 function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap, diagnostics, profile, IS_VERBOSE) {
@@ -698,7 +708,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
     }
 
     const { matchedSubcat, textPos } = matchSubcategoryForTable(skus, headers, fullText, subcatList, ti, tables.length);
-    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedParent } =
+    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedVia } =
       resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, profile, skus);
 
     if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
@@ -722,7 +732,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
       tableIndex: ti,
       subCategory: subCat,
       parentCategory: parentCat,
-      matchedVia: matchedParent ? 'direct_taxonomy_keyword' : (matchedSubcat ? 'text_position' : 'role_classifier'),
+      matchedVia,
       detectedRole,
       constraint: finalConstraint,
       minQty: finalMinQty,
@@ -830,7 +840,54 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
 // ============================================================
 // Pipeline Stage 4: Historical Reconcile & Diff Engine
 // ============================================================
-async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel) {
+function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery = null) {
+  if (!baseSKU) return null;
+  const discovered = (chassisDiscovery?.candidates || []).find(candidate =>
+    cleanBaseSKU(candidate.sku) === baseSKU && candidate.eligible !== false
+  );
+  if (discovered) {
+    return {
+      'Product #': baseSKU,
+      sku: baseSKU,
+      'Option Type': 'CTO',
+      'Component Role': 'Base Chassis',
+      Description: discovered.description || `${chassisLabel} Configure-to-order Server`,
+      'Current Qty': '1',
+      'Unit Price (USD)': Number(discovered.listPriceUsd || 0).toFixed(2),
+      listPrice: Number(discovered.listPriceUsd || 0),
+      'CLIC Status': discovered.status || 'Active',
+      lifecycleStatus: discovered.status || 'Active',
+      'Start Date': discovered.startDate || '',
+      'Discontinued Date': discovered.discontinuedDate || '',
+      provenance: chassisDiscovery.source || 'HPE OCA product search'
+    };
+  }
+  for (const table of tables || []) {
+    for (const row of table.rows || []) {
+      const skuIndex = row.findIndex(cell => cleanBaseSKU(cell) === baseSKU);
+      if (skuIndex < 0) continue;
+      const description = row.slice(skuIndex + 1).find(cell => /configure-to-order|cto server/i.test(String(cell || '')));
+      if (description) {
+        return {
+          'Product #': baseSKU,
+          sku: baseSKU,
+          'Option Type': 'CTO',
+          'Component Role': 'Base Chassis',
+          Description: String(description).trim(),
+          'Current Qty': '1',
+          'Unit Price (USD)': '0.00',
+          listPrice: 0,
+          'CLIC Status': 'Active',
+          lifecycleStatus: 'Active',
+          provenance: `OCA active configuration for ${chassisLabel}`
+        };
+      }
+    }
+  }
+  return null;
+}
+
+async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU = '', tables = [], chassisDiscovery = null) {
   const hasChassisEntry = hardwareEntries.some(e =>
     (e.parentCategory || '').toLowerCase() === 'chassis' ||
     (e.subCategory || '').toLowerCase() === 'variants'
@@ -863,6 +920,7 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
       }
       try {
         const hCat = JSON.parse(rawContent);
+        const targetProduct = parseProductMeta(chassisLabel).cleanName;
         const hChassisEntries = (hCat.entries || []).filter(e =>
           (e.parentCategory || '').toLowerCase() === 'chassis' ||
           (e.subCategory || '').toLowerCase() === 'variants'
@@ -876,9 +934,12 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
             maxQty: 1,
             skus: (e.skus || []).filter(s => {
               const desc = (s['Description'] || s.description || '').toLowerCase();
+              const historicalProduct = parseProductMeta(desc).cleanName;
               return (s['Component Role'] === 'Base Chassis' || (s['Option Type'] || s.optionType) === 'CTO') &&
+                     historicalProduct === targetProduct &&
                      (desc.includes('cto server') || desc.includes('base chassis') || desc.includes('server cto') || desc.includes('cto rack') || desc.includes('cto chassis'));
             })
+          })).map(e => ({ ...e, skuCount: e.skus.length
           })).filter(e => e.skus.length > 0);
 
           if (cleanChassisEntries.length > 0) {
@@ -893,9 +954,24 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
   }
 
   if (!injectedFromHistory) {
-    console.warn(`  ⚠️  WARNING: No chassis entry found in scraped data or history for ${chassisLabel}.`);
-    console.warn(`      The catalog may be incomplete — base CTO chassis variants are missing.`);
-    console.warn(`      Ensure the OCA portal page shows the full product node menu.`);
+    const baseChassis = extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery);
+    if (baseChassis) {
+      hardwareEntries.unshift({
+        tableIndex: -1,
+        parentCategory: 'Chassis',
+        subCategory: 'Variants',
+        constraint: 'min 1, max 1 — Active OCA Base Chassis',
+        minQty: 1,
+        maxQty: 1,
+        rules: ['Base chassis captured from the active OCA configuration summary'],
+        headers: ['Product #', 'Description'],
+        skuCount: 1,
+        skus: [baseChassis]
+      });
+      console.log(`  📦 Active OCA base chassis injected from configuration evidence: ${baseSKU}`);
+    } else {
+      console.warn(`  ⚠️  WARNING: No exact-product chassis entry found in scraped data or history for ${chassisLabel}.`);
+    }
   }
 }
 
@@ -933,16 +1009,24 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
   };
 }
 
-async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesEntries, subcatList, targetDir, filePrefix, meta, chassisLabel, pipelineLogger) {
+async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesEntries, subcatList, targetDir, filePrefix, meta, chassisLabel, pipelineLogger, baseSKU = '', tables = [], chassisDiscovery = null) {
   console.log('\n--- Step 5: Catalog Diff Engine & Historical Price Tracking ---');
 
-  await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel);
+  await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU, tables, chassisDiscovery);
 
   const catalogObj = buildCatalogObject(hardwareEntries, filePrefix, meta, chassisLabel, subcatList);
   const servicesCatalogObj = buildCatalogObject(cleanServicesEntries, filePrefix, meta, chassisLabel, subcatList);
 
   const historyDir = path.join(targetDir, 'history');
-  const { enrichedCatalog } = processCatalogDiff(catalogObj, historyDir);
+  const targetProduct = parseProductMeta(chassisLabel).cleanName;
+  const previousSkuFilter = ({ entry, sku }) => {
+    const isChassis = String(entry.parentCategory || '').toLowerCase() === 'chassis' ||
+      String(entry.subCategory || '').toLowerCase() === 'variants';
+    if (!isChassis) return true;
+    const description = sku.Description || sku.description || '';
+    return parseProductMeta(description).cleanName === targetProduct;
+  };
+  const { enrichedCatalog } = processCatalogDiff(catalogObj, historyDir, 'catalog', { previousSkuFilter });
 
   const servicesHistoryDir = path.join(targetDir, 'services_history');
   const { enrichedCatalog: enrichedServicesCatalog } = processCatalogDiff(
@@ -1245,7 +1329,7 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   );
 
   const { enrichedCatalog, enrichedServicesCatalog, validationResult } = await reconcilePriceAndLifecycleHistory(
-    hardwareEntries, cleanServicesEntries, subcatList, ctx.targetDir, ctx.filePrefix, ctx.meta, ctx.chassisLabel, ctx.pipelineLogger
+    hardwareEntries, cleanServicesEntries, subcatList, ctx.targetDir, ctx.filePrefix, ctx.meta, ctx.chassisLabel, ctx.pipelineLogger, ctx.baseSKU, ctx.tables, ctx.chassisDiscovery
   );
 
   await exportCatalogArtifacts({
@@ -1274,6 +1358,7 @@ module.exports = {
   resolveTableTaxonomyAndRole,
   synthesizeCatalogEntries,
   injectChassisVariantsFromHistory,
+  extractBaseChassisEvidence,
   buildCatalogObject,
   reconcilePriceAndLifecycleHistory,
   buildChassisVariantMatrix,

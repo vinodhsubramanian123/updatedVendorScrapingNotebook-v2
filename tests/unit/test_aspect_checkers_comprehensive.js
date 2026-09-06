@@ -10,6 +10,7 @@ const { evalPcieRiserSlots } = require('../../scripts/lib/aspects/pcie_riser.js'
 const { evalStorageTriMode } = require('../../scripts/lib/aspects/storage_tri_mode.js');
 const { evalNetworkingOcp } = require('../../scripts/lib/aspects/networking_ocp.js');
 const { evalSupportManufacturing } = require('../../scripts/lib/aspects/support_manufacturing.js');
+const { evaluatePhysicalMath } = require('../../scripts/lib/boq/boq_evaluator.js');
 
 test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
 
@@ -126,6 +127,46 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.hasDcPowerSupply, false);
       assert.strictEqual(result.hasDcLugKit, false);
     });
+
+    await t2.test('applies source-verified DL380a GPU mode PSU cardinality without SKU hardcoding', () => {
+      const base = { sku: 'P76706-B21', description: 'HPE ProLiant Compute DL380a Gen12 CTO Server', quantity: 1 };
+      const psu2400 = { sku: 'PSU-2400', description: 'HPE 2400W Flex Slot Power Supply', quantity: 5 };
+      const fourDw = { sku: 'MODE-A', description: 'HPE ProLiant Compute DL380a Gen12 4 Double Wide FIO Configuration', quantity: 1 };
+      const eightDw = { sku: 'MODE-B', description: 'HPE ProLiant Compute DL380a Gen12 8 Double Wide NIC FIO Configuration', quantity: 1 };
+
+      const fourResult = evalPowerEnvironment([base, fourDw, psu2400]);
+      assert.strictEqual(fourResult.requiredDl380aPsuCount, 5);
+      assert.strictEqual(fourResult.hasDl380aGpuPsuShortage, false);
+
+      const eightShort = evalPowerEnvironment([base, eightDw, psu2400]);
+      assert.strictEqual(eightShort.requiredDl380aPsuCount, 8);
+      assert.strictEqual(eightShort.hasDl380aGpuPsuShortage, true);
+
+      const eightValid = evalPowerEnvironment([base, eightDw, { ...psu2400, quantity: 8 }]);
+      assert.strictEqual(eightValid.hasDl380aGpuPsuShortage, false);
+
+      const fleetShort = evalPowerEnvironment([
+        { ...base, quantity: 10 },
+        { ...fourDw, quantity: 10 },
+        { ...psu2400, quantity: 49 }
+      ]);
+      assert.strictEqual(fleetShort.requiredDl380aPsuCountPerServer, 5);
+      assert.strictEqual(fleetShort.requiredDl380aPsuCount, 50);
+      assert.strictEqual(fleetShort.hasDl380aGpuPsuShortage, true);
+    });
+
+    await t2.test('rejects mixed or unsupported DL380a PSU wattages', () => {
+      const items = [
+        { sku: 'P76706-B21', description: 'HPE ProLiant Compute DL380a Gen12 CTO Server', quantity: 1 },
+        { sku: 'MODE-C', description: 'HPE ProLiant Compute DL380a Gen12 10 Double Wide FIO Configuration', quantity: 1 },
+        { sku: 'PSU-A', description: 'HPE 2400W Flex Slot Power Supply', quantity: 4 },
+        { sku: 'PSU-B', description: 'HPE 3200W Flex Slot Power Supply', quantity: 4 }
+      ];
+      const result = evalPowerEnvironment(items);
+      assert.strictEqual(result.requiredDl380aPsuCount, 8);
+      assert.strictEqual(result.hasMixedPsuWattages, true);
+      assert.strictEqual(result.hasDl380aGpuPsuShortage, true);
+    });
   });
 
   await t.test('evalPcieRiserSlots', async (t2) => {
@@ -170,6 +211,15 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.tertiaryRiserCount, 0);
       assert.strictEqual(result.totalSlotsAvailable, 3);
       assert.strictEqual(result.needsSecondaryRiser, false);
+    });
+
+    await t2.test('does not count a DL380a GPU mode selector as a physical GPU card', () => {
+      const result = evalPcieRiserSlots([
+        { sku: 'P75008-B21', description: 'HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide FIO Configuration', quantity: 1 }
+      ]);
+      assert.strictEqual(result.gpuCount, 0);
+      assert.strictEqual(result.requiredPcieCards, 0);
+      assert.strictEqual(result.needsGpuPowerCableKit, false);
     });
   });
 
@@ -289,6 +339,18 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       const result = evalSupportManufacturing([]);
       assert.strictEqual(result.hasSupportService, false);
     });
+  });
+
+  await t.test('DL380a local fallback surfaces the source-verified PSU matrix', () => {
+    const result = evaluatePhysicalMath([
+      { sku: 'P76706-B21', description: 'HPE ProLiant Compute DL380a Gen12 CTO Server', quantity: 2 },
+      { sku: 'P75008-B21', description: 'HPE ProLiant Compute DL380a Gen12 8 Double Wide FIO Configuration', quantity: 2 },
+      { sku: 'PSU-2400', description: 'HPE 2400W Flex Slot Power Supply', quantity: 15 }
+    ]);
+    assert.ok(result.errors.some(error => error.includes('DL380a GPU Power Matrix Failed')));
+    const powerAspect = result.aspectChecks.find(aspect => aspect.name === 'Power & Redundancy Math');
+    assert.strictEqual(powerAspect.status, 'FAIL');
+    assert.equal(result.missingDependencies.some(dep => dep.key === 'MANAGEMENT_LICENSE_COM'), false);
   });
 
 });

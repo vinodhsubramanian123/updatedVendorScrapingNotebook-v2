@@ -13,6 +13,33 @@ const { sendCommand, connectWS, getOCATarget } = require('./cdp.js');
 
 const CDP_PORT = 9222;
 
+function normalizeProductText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/hewlett[\s-]+packard|enterprise|hpe|proliant|compute|configure[\s-]+to[\s-]+order|cto|server/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function extractModelGeneration(value) {
+  const normalized = normalizeProductText(value);
+  const model = normalized.match(/\b(?:dl|ml|rl|sy|gx)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
+  const generation = normalized.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
+  return { model, generation };
+}
+
+function isExactProductCandidate(query, candidate) {
+  const expected = extractModelGeneration(query);
+  const observed = extractModelGeneration(candidate.text);
+  const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
+    (!expected.generation || expected.generation === observed.generation));
+  const disallowed = candidate.isBto || candidate.isTaa || candidate.isGta ||
+    /(?:\btaa\b|#gta\b|\bbto\b)/i.test(candidate.text || '') || /#GTA$/i.test(candidate.sku || '');
+  const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b/i.test(candidate.text || '');
+  return exactIdentity && isCto && !disallowed;
+}
+
 /**
  * List all open page targets in Chrome on port 9222.
  */
@@ -61,7 +88,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
 
     // Test if already inside configuration Menu page
     const checkState = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `Boolean(document.querySelector('#extended_overview_menu') || document.querySelector('.menu_label') || document.body.scrollHeight > 5000)`
+      expression: `Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') || document.querySelectorAll('table').length > 40)`
     });
 
     if (checkState && checkState.result && checkState.result.value) {
@@ -83,8 +110,14 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
                             document.querySelector('input[type="search"]') ||
                             document.querySelector('input[placeholder*="Search"]');
         if (searchInput) {
-          searchInput.value = ${JSON.stringify(query)};
-          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          searchInput.focus();
+          searchInput.value = '';
+          const query = ${JSON.stringify(query)};
+          for (const char of query) {
+            searchInput.value += char;
+            searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: char, inputType: 'insertText' }));
+            await new Promise(r => setTimeout(r, 120));
+          }
           searchInput.dispatchEvent(new Event('change', { bubbles: true }));
           
           // Trigger search button or Enter key
@@ -93,37 +126,79 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
           else searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true }));
         }
 
-        // Wait 3s for catalog search cards to render
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise(r => setTimeout(r, 5000));
 
-        // Extract base chassis list price from card
-        let basePrice = 0;
-        const priceEl = document.querySelector('.price-value') || document.querySelector('[class*="price"]');
-        if (priceEl) {
-          const pText = priceEl.innerText.replace(/[^0-9.]/g, '');
-          basePrice = parseFloat(pText) || 0;
-        }
-
-        // Find standard non-TAA CTO chassis configure button
-        const configBtns = Array.from(document.querySelectorAll('button, a')).filter(el => {
+        const configBtns = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]')).filter(el => {
           const txt = (el.innerText || '').toLowerCase();
-          return txt.includes('configure') || txt.includes('customize') || txt.includes('create quote');
+          const value = (el.value || '').toLowerCase();
+          return txt.includes('configure') || txt.includes('customize') || txt.includes('create quote') ||
+            value.includes('configure') || value.includes('customize');
         });
-
-        if (configBtns.length > 0) {
-          configBtns[0].click();
-          return { success: true, basePrice, action: 'CONFIG_CLICKED' };
-        }
-
-        return { success: false, basePrice, message: 'Configure button not found on search results page' };
+        const candidates = configBtns.map((button, index) => {
+          const card = button.closest('[data-product-id], [data-bto], [data-istaa], tr, article, li, .card, .product-card, .product') || button.parentElement;
+          if (card) card.setAttribute('data-codex-oca-candidate-index', String(index));
+          const text = (card?.innerText || button.innerText || '').replace(/\\s+/g, ' ').trim();
+          const sku = text.match(/\\b(?=[A-Z0-9-]{5,}(?:#GTA)?\\b)(?=[A-Z0-9-]*\\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\\b/i)?.[0] || '';
+          const priceText = text.match(/(?:USD|\\$)\\s*[0-9,]+(?:\\.\\d{2})?/i)?.[0] || '';
+          const dates = text.match(/\\b\\d{1,2}\\/\\d{1,2}\\/\\d{4}\\b/g) || [];
+          const attr = name => String(card?.getAttribute(name) || '').toLowerCase();
+          return {
+            index, text, sku: sku.toUpperCase(),
+            listPriceUsd: parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0,
+            startDate: dates[0] || '', discontinuedDate: dates[1] || '',
+            isBto: attr('data-bto') === 'true', isTaa: attr('data-istaa') === 'true',
+            isGta: attr('data-isgta') === 'true',
+            isCto: attr('data-bto') === 'false' || /configure[\\s-]+to[\\s-]+order|\\bcto\\b/i.test(text)
+          };
+        });
+        return { success: candidates.length > 0, candidates, action: 'CANDIDATES_EXTRACTED' };
       })()
     `;
 
     const navResult = await sendCommand(ws, 'Runtime.evaluate', { expression: navExpr, awaitPromise: true });
+    const extracted = navResult?.result?.value || {};
+    const candidates = Array.isArray(extracted.candidates) ? extracted.candidates : [];
+    const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
+    if (eligibleCandidates.length === 0) {
+      ws.close();
+      const seen = candidates.map(c => `${c.sku || 'NO-SKU'}: ${String(c.text || '').slice(0, 120)}`).join('\n  - ');
+      throw new Error(`No exact standard CTO result found for "${query}". BTO, TAA, GTA, and neighboring product identities were rejected.\n  - ${seen || '(no result cards)'}`);
+    }
+    const selected = eligibleCandidates[0];
+    await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const card = document.querySelector('[data-codex-oca-candidate-index="${selected.index}"]');
+        const button = Array.from(card?.querySelectorAll('button, a, input[type="button"], input[type="submit"]') || [])
+          .find(el => /configure|customize|create quote/i.test((el.innerText || el.value || '').trim()));
+        if (!button) return false;
+        button.click();
+        return true;
+      })()`
+    });
     ws.close();
 
     console.log(`⏳ Waiting for OCA WebLogic DOM to fully load configuration Menu tab...`);
     await new Promise(r => setTimeout(r, 6000));
+
+    const intermediatePages = await getPageTargets();
+    const intermediate = intermediatePages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
+    if (intermediate) {
+      const intermediateWs = await connectWS(intermediate.webSocketDebuggerUrl);
+      await sendCommand(intermediateWs, 'Runtime.evaluate', {
+        expression: `(() => {
+          const body = (document.body?.innerText || '').toLowerCase();
+          const expectedSku = ${JSON.stringify(selected.sku.toLowerCase())};
+          if (expectedSku && !body.includes(expectedSku)) return false;
+          const button = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'))
+            .find(el => /customize|configure/i.test((el.innerText || el.value || '').trim()));
+          if (!button) return false;
+          button.click();
+          return true;
+        })()`
+      });
+      intermediateWs.close();
+      await new Promise(r => setTimeout(r, 6000));
+    }
 
     // Re-verify target page
     const updatedPages = await getPageTargets();
@@ -132,7 +207,16 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     return {
       targetUrl: activeOca ? activeOca.url : ocaTarget.url,
       pageId: activeOca ? activeOca.id : ocaTarget.id,
-      baseChassisPriceUsd: navResult?.result?.value?.basePrice || 0,
+      baseChassisPriceUsd: selected.listPriceUsd || 0,
+      selectedCandidate: selected,
+      chassisDiscovery: {
+        query,
+        selectedSku: selected.sku,
+        source: 'HPE OCA Product Search via authenticated CDP session',
+        capturedAt: new Date().toISOString(),
+        candidates: eligibleCandidates,
+        excludedCandidates: candidates.filter(candidate => !isExactProductCandidate(query, candidate))
+      },
       status: 'NAVIGATED_TO_CONFIG_PAGE'
     };
   }
@@ -166,20 +250,23 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     const partnerWs = await connectWS(partnerTarget.webSocketDebuggerUrl);
     const launchExpr = `
       (function() {
-        const ocaLink = Array.from(document.querySelectorAll('a')).find(a => 
-          (a.innerText || '').includes('OCA') || (a.href || '').includes('oca.ext.hpe.com')
-        );
+        const ocaLink = Array.from(document.querySelectorAll('a, button')).find(a => {
+          const text = (a.innerText || '').trim().toLowerCase();
+          return text.includes('one config advanced') || text === 'oca' || (a.href || '').includes('oca.ext.hpe.com');
+        });
         if (ocaLink) {
           ocaLink.click();
           return true;
         }
-        window.location.href = 'https://oca.ext.hpe.com';
-        return true;
+        return false;
       })()
     `;
 
-    await sendCommand(partnerWs, 'Runtime.evaluate', { expression: launchExpr });
+    const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', { expression: launchExpr });
     partnerWs.close();
+    if (!launchResult?.result?.value) {
+      throw new Error('One Config Advanced launcher was not found on the authenticated Partner Portal page. Direct OCA URL navigation is disabled to preserve SSO state.');
+    }
 
     console.log(`⏳ Waiting for newly created OCA tab to initialize...`);
     await new Promise(r => setTimeout(r, 5000));
@@ -227,5 +314,8 @@ if (require.main === module) {
 }
 
 module.exports = {
-  navigateToOCAChassis
+  navigateToOCAChassis,
+  normalizeProductText,
+  extractModelGeneration,
+  isExactProductCandidate
 };

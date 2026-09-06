@@ -167,10 +167,24 @@ async function setupDialogAutoHandler(ws) {
 
   try {
     await sendCommand(ws, 'Page.enable');
-    // Enable download behavior to prevent download confirmation dialogs
+    // Enable download behavior with clean naming to prevent GUID/numbered file naming and blocks
     try {
-      await sendCommand(ws, 'Page.setDownloadBehavior', { behavior: 'allow', downloadPath: '/tmp' });
-    } catch (_) { console.warn('Caught suppressed error in cdp.js:', _); }
+      const os = require('os');
+      const path = require('path');
+      const dlDir = path.join(os.homedir(), 'Downloads');
+      try {
+        await sendCommand(ws, 'Browser.setDownloadBehavior', {
+          behavior: 'allow',
+          downloadPath: dlDir,
+          eventsEnabled: true
+        });
+      } catch {
+        await sendCommand(ws, 'Page.setDownloadBehavior', {
+          behavior: 'allow',
+          downloadPath: dlDir
+        });
+      }
+    } catch (_) { console.warn('Caught suppressed error in cdp.js download setup:', _); }
 
     ws.on('message', async (data) => {
       try {

@@ -494,15 +494,6 @@ function analyzeAndPartitionClusters(rawItems) {
       });
     }
 
-    // 6. Add Mandatory Management SaaS License (CLIC Rule 81322276)
-    cluster.items.push({
-      sku: 'R7A11AAE',
-      description: 'HPE Compute Ops Management Enhanced 3-year SaaS',
-      quantity: 1,
-      totalQuantity: mult,
-      category: 'Operating System / License'
-    });
-
     cluster.clusterSizing = getClusterSizing(mult, cluster.items);
   });
 

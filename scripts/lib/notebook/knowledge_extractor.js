@@ -81,7 +81,9 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
             requiredDependencySku: fioSku,
             reasoning: `Grounding Verification: Standalone BTO option ${btoSku} is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is ${fioSku}.`,
             rawMessage: unit.slice(0, 300).trim(),
-            scopeTaxonomy: 'FAMILY_GEN',
+            // A substitution observed for one CTO product is not automatically
+            // safe across its generation. Promotion requires separate evidence.
+            scopeTaxonomy: context.scopeTaxonomy || 'CHASSIS_SPECIFIC',
             source: 'NOTEBOOKLM_GROUNDING',
             timestamp: new Date().toISOString()
           });

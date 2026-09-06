@@ -1,1 +1,1826 @@
-{}
+{
+  "P71117-B21": {
+    "productNumber": "P71117-B21",
+    "description": "Intel Xeon 6710E 2.4GHz 64-core 205W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73834-B21": {
+    "productNumber": "P73834-B21",
+    "description": "Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74506-B21": {
+    "productNumber": "P74506-B21",
+    "description": "Intel Xeon 6515P 2.3GHz 16-core 150W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74508-B21": {
+    "productNumber": "P74508-B21",
+    "description": "Intel Xeon 6714P 4.0GHz 8-core 165W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74509-B21": {
+    "productNumber": "P74509-B21",
+    "description": "Intel Xeon 6724P 3.6GHz 16-core 210W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74570-B21": {
+    "productNumber": "P74570-B21",
+    "description": "Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74571-B21": {
+    "productNumber": "P74571-B21",
+    "description": "Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71119-B21": {
+    "productNumber": "P71119-B21",
+    "description": "Intel Xeon 6740E 2.4GHz 96-core 250W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71120-B21": {
+    "productNumber": "P71120-B21",
+    "description": "Intel Xeon 6746E 2.0GHz 112-core 250W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71121-B21": {
+    "productNumber": "P71121-B21",
+    "description": "Intel Xeon 6756E 1.8GHz 128-core 225W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71122-B21": {
+    "productNumber": "P71122-B21",
+    "description": "Intel Xeon 6766E 1.9GHz 144-core 250W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71124-B21": {
+    "productNumber": "P71124-B21",
+    "description": "Intel Xeon 6780E 2.2GHz 144-core 330W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73829-B21": {
+    "productNumber": "P73829-B21",
+    "description": "Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73831-B21": {
+    "productNumber": "P73831-B21",
+    "description": "Intel Xeon 6747P 2.7GHz 48-core 330W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73832-B21": {
+    "productNumber": "P73832-B21",
+    "description": "Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73835-B21": {
+    "productNumber": "P73835-B21",
+    "description": "Intel Xeon 6768P 2.4GHz 64-core 330W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73837-B21": {
+    "productNumber": "P73837-B21",
+    "description": "Intel Xeon 6787P 2.0GHz 86-core 350W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73838-B21": {
+    "productNumber": "P73838-B21",
+    "description": "Intel Xeon 6788P 2.0GHz 86-core 350W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74503-B21": {
+    "productNumber": "P74503-B21",
+    "description": "Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74504-B21": {
+    "productNumber": "P74504-B21",
+    "description": "Intel Xeon 6507P 3.5GHz 8-core 150W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74507-B21": {
+    "productNumber": "P74507-B21",
+    "description": "Intel Xeon 6517P 3.2GHz 16-core 190W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74568-B21": {
+    "productNumber": "P74568-B21",
+    "description": "Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74572-B21": {
+    "productNumber": "P74572-B21",
+    "description": "Intel Xeon 6728P 2.7GHz 24-core 210W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74573-B21": {
+    "productNumber": "P74573-B21",
+    "description": "Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74575-B21": {
+    "productNumber": "P74575-B21",
+    "description": "Intel Xeon 6736P 2.0GHz 36-core 205W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74576-B21": {
+    "productNumber": "P74576-B21",
+    "description": "Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74577-B21": {
+    "productNumber": "P74577-B21",
+    "description": "Intel Xeon 6738P 2.9GHz 32-core 270W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74578-B21": {
+    "productNumber": "P74578-B21",
+    "description": "Intel Xeon 6732P 3.8GHz 32-core 350W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74579-B21": {
+    "productNumber": "P74579-B21",
+    "description": "Intel Xeon 6748P 2.5GHz 48-core 300W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P81591-B21": {
+    "productNumber": "P81591-B21",
+    "description": "Intel Xeon 6745P 3.1GHz 32-core 300W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P87302-B21": {
+    "productNumber": "P87302-B21",
+    "description": "Intel Xeon 6725P 3.7GHz 16-core 235W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P82520-B21": {
+    "productNumber": "P82520-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 CPU Direct Liquid Cooling FIO Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69728-F21": {
+    "productNumber": "P69728-F21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69726-B21": {
+    "productNumber": "P69726-B21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69726-F21": {
+    "productNumber": "P69726-F21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69727-B21": {
+    "productNumber": "P69727-B21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69728-B21": {
+    "productNumber": "P69728-B21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69729-B21": {
+    "productNumber": "P69729-B21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69730-B21": {
+    "productNumber": "P69730-B21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73447-B21": {
+    "productNumber": "P73447-B21",
+    "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69727-F21": {
+    "productNumber": "P69727-F21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69729-F21": {
+    "productNumber": "P69729-F21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69730-F21": {
+    "productNumber": "P69730-F21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73447-F21": {
+    "productNumber": "P73447-F21",
+    "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75002-B21": {
+    "productNumber": "P75002-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4 Double Wide FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75005-B21": {
+    "productNumber": "P75005-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 10 Double Wide FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75008-B21": {
+    "productNumber": "P75008-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75011-B21": {
+    "productNumber": "P75011-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8 Double Wide NIC FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75697-B21": {
+    "productNumber": "P75697-B21",
+    "description": "HPE MR932i-p x32 Lanes PCIe Gen5 SPDM Plug-in Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P47777-B21": {
+    "productNumber": "P47777-B21",
+    "description": "HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P47781-B21": {
+    "productNumber": "P47781-B21",
+    "description": "HPE MR416i-o Gen11 x16 Lanes 8GB Cache OCP SPDM Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74710-B21": {
+    "productNumber": "P74710-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4SFF FIO Drive Cage Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74712-B21": {
+    "productNumber": "P74712-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4EDSFF FIO Drive Cage Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74706-B21": {
+    "productNumber": "P74706-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8NVMe Front Direct Attach Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P79347-B21": {
+    "productNumber": "P79347-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 16EDSFF x2 Direct Attach Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P80572-B21": {
+    "productNumber": "P80572-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 MR932i-p FIO Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74702-B21": {
+    "productNumber": "P74702-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4NVMe Direct Attach Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74704-B21": {
+    "productNumber": "P74704-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4EDSFF Direct Attach Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74708-B21": {
+    "productNumber": "P74708-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8NVMe Rear Direct Attach Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74716-B21": {
+    "productNumber": "P74716-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4EDSFF Direct Attach Cable for NVIDIA",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78956-B21": {
+    "productNumber": "P78956-B21",
+    "description": "HPE DL380a G12 EDSFF DA PCIe4 Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76700-B21": {
+    "productNumber": "P76700-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76702-B21": {
+    "productNumber": "P76702-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode OCP FIO Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P02381-B21": {
+    "productNumber": "P02381-B21",
+    "description": "HPE Smart Storage Hybrid Capacitor with 260mm Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Smart Storage Batteries",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P01367-B21": {
+    "productNumber": "P01367-B21",
+    "description": "HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Smart Storage Batteries",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50219-B21": {
+    "productNumber": "P50219-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PM1733a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50233-B21": {
+    "productNumber": "P50233-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PM1735a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P84236-B21": {
+    "productNumber": "P84236-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Read Intensive BC U.3 Static V2 SPDM Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50227-B21": {
+    "productNumber": "P50227-B21",
+    "description": "HPE 1.6TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PM1735a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P64842-B21": {
+    "productNumber": "P64842-B21",
+    "description": "HPE 960GB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78801-B21": {
+    "productNumber": "P78801-B21",
+    "description": "HPE 3.2TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Static PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78804-B21": {
+    "productNumber": "P78804-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Static PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78806-B21": {
+    "productNumber": "P78806-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Static PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P84239-B21": {
+    "productNumber": "P84239-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 SPDM 7500b SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P84242-B21": {
+    "productNumber": "P84242-B21",
+    "description": "HPE 7.68TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 SPDM 7500 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P84244-B21": {
+    "productNumber": "P84244-B21",
+    "description": "HPE 3.84TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 SPDM 7500 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91241-B21": {
+    "productNumber": "P91241-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91243-B21": {
+    "productNumber": "P91243-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91247-B21": {
+    "productNumber": "P91247-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91249-B21": {
+    "productNumber": "P91249-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50222-B21": {
+    "productNumber": "P50222-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PM1733a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P70436-B21": {
+    "productNumber": "P70436-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78808-B21": {
+    "productNumber": "P78808-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Static PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50216-B21": {
+    "productNumber": "P50216-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PM1733a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P50224-B21": {
+    "productNumber": "P50224-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PM1733a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61019-B21": {
+    "productNumber": "P61019-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61027-B21": {
+    "productNumber": "P61027-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61035-B21": {
+    "productNumber": "P61035-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61043-B21": {
+    "productNumber": "P61043-B21",
+    "description": "HPE 1.6TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61051-B21": {
+    "productNumber": "P61051-B21",
+    "description": "HPE 3.2TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P61059-B21": {
+    "productNumber": "P61059-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P63829-B21": {
+    "productNumber": "P63829-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P63833-B21": {
+    "productNumber": "P63833-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P63837-B21": {
+    "productNumber": "P63837-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P63841-B21": {
+    "productNumber": "P63841-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P70426-B21": {
+    "productNumber": "P70426-B21",
+    "description": "HPE 3.2TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PS1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P70428-B21": {
+    "productNumber": "P70428-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PS1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P70434-B21": {
+    "productNumber": "P70434-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78810-B21": {
+    "productNumber": "P78810-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Static PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85662-B21": {
+    "productNumber": "P85662-B21",
+    "description": "HPE 1.6TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85664-B21": {
+    "productNumber": "P85664-B21",
+    "description": "HPE 3.2TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85666-B21": {
+    "productNumber": "P85666-B21",
+    "description": "HPE 6.4TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85668-B21": {
+    "productNumber": "P85668-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85670-B21": {
+    "productNumber": "P85670-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85672-B21": {
+    "productNumber": "P85672-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85674-B21": {
+    "productNumber": "P85674-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85676-B21": {
+    "productNumber": "P85676-B21",
+    "description": "HPE 30.72TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91237-B21": {
+    "productNumber": "P91237-B21",
+    "description": "HPE 1.6TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91239-B21": {
+    "productNumber": "P91239-B21",
+    "description": "HPE 3.2TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P91245-B21": {
+    "productNumber": "P91245-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "339777-B21": {
+    "productNumber": "339777-B21",
+    "description": "HPE RAID 0 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "339778-B21": {
+    "productNumber": "339778-B21",
+    "description": "HPE RAID 1 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "339779-B21": {
+    "productNumber": "339779-B21",
+    "description": "HPE RAID 5 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "339780-B21": {
+    "productNumber": "339780-B21",
+    "description": "HPE Raid 5 w/SP Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "389692-B21": {
+    "productNumber": "389692-B21",
+    "description": "HPE Customer Defined RAID Setting Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P08040-B21": {
+    "productNumber": "P08040-B21",
+    "description": "HPE iLO Common Password FIO Setting",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "875293-B21": {
+    "productNumber": "875293-B21",
+    "description": "HPE Smart Memory Fast Fault Tolerance FIO Setting",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74685-B21": {
+    "productNumber": "P74685-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 2DW Captive Riser FIO Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74690-B21": {
+    "productNumber": "P74690-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 PCIe Rear FIO Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74714-B21": {
+    "productNumber": "P74714-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Switchboard FIO Enablement Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74722-B21": {
+    "productNumber": "P74722-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Rear PCIe 5-slot Cable Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76927-B21": {
+    "productNumber": "P76927-B21",
+    "description": "HPE ProLiant Compute DL380a Front NIC FIO Enablement Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76929-B21": {
+    "productNumber": "P76929-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 10 Double Wide Captive FIO Riser Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76698-B21": {
+    "productNumber": "P76698-B21",
+    "description": "HPE ProLiant Compute DL380a Rear PCIe Slot1/4 FIO Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P10115-B21": {
+    "productNumber": "P10115-B21",
+    "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P42041-B21": {
+    "productNumber": "P42041-B21",
+    "description": "Mellanox MCX631432AS-ADAI Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P51181-B21": {
+    "productNumber": "P51181-B21",
+    "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P22767-B21": {
+    "productNumber": "P22767-B21",
+    "description": "Intel E810-CQDA2 Ethernet 100Gb 2-port QSFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P26256-B21": {
+    "productNumber": "P26256-B21",
+    "description": "Broadcom BCM57412 Ethernet 10Gb 2-port SFP+ OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P79833-B21": {
+    "productNumber": "P79833-B21",
+    "description": "Intel E610-IT4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P10097-B21": {
+    "productNumber": "P10097-B21",
+    "description": "Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P10106-B21": {
+    "productNumber": "P10106-B21",
+    "description": "Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P26269-B21": {
+    "productNumber": "P26269-B21",
+    "description": "Broadcom BCM57504 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P41614-B21": {
+    "productNumber": "P41614-B21",
+    "description": "Intel E810-XXVDA4 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73114-B21": {
+    "productNumber": "P73114-B21",
+    "description": "Broadcom BCM57608 Ethernet 100Gb 2-port QSFP112 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74694-B21": {
+    "productNumber": "P74694-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 OCPA Cable Kit",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74696-B21": {
+    "productNumber": "P74696-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 OCPB Cable Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P49764-B21": {
+    "productNumber": "P49764-B21",
+    "description": "HPE InfiniBand NDR/Ethernet 1x400Gb OSFP Multi-mode 50m HCA-side Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q8J73A": {
+    "productNumber": "Q8J73A",
+    "description": "HPE 100GbE QSFP28 500m 1310mm PSM4 Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q9S71A": {
+    "productNumber": "Q9S71A",
+    "description": "HPE 100GbE QSFP28 to QSFP28 5m Active Optical Cable",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "453151-B21": {
+    "productNumber": "453151-B21",
+    "description": "HPE BladeSystem c-Class Virtual Connect 1G SFP SX Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "453154-B21": {
+    "productNumber": "453154-B21",
+    "description": "HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "455883-B21": {
+    "productNumber": "455883-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "455886-B21": {
+    "productNumber": "455886-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "845398-B21": {
+    "productNumber": "845398-B21",
+    "description": "HPE 25Gb SFP28 SR 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "845966-B21": {
+    "productNumber": "845966-B21",
+    "description": "HPE 100Gb QSFP28 MPO SR4 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "845972-B21": {
+    "productNumber": "845972-B21",
+    "description": "HPE 100Gb QSFP28 Bidirectional Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P87585-B21": {
+    "productNumber": "P87585-B21",
+    "description": "HPE InfiniBand NDR/Ethernet 400Gb OSFP 1-port Single-mode 100m HCA-side Flat-Top Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P89422-B21": {
+    "productNumber": "P89422-B21",
+    "description": "HPE Ethernet 1x400Gb OSFP 1-port Multi-mode 50m NIC-side Flat-Top Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P89423-B21": {
+    "productNumber": "P89423-B21",
+    "description": "HPE Ethernet 1x400Gb QSFP112 1-port Multi-mode 50m NIC-side Flat-Top Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q2F19A": {
+    "productNumber": "Q2F19A",
+    "description": "HPE 100GbE QSFP28 SR4 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "845970-B21": {
+    "productNumber": "845970-B21",
+    "description": "HPE QSFP28 to SFP28 Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P67252-B21": {
+    "productNumber": "P67252-B21",
+    "description": "HPE 2400W M-CRPS Titanium Hot Plug Power Supply Kit",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P67248-B21": {
+    "productNumber": "P67248-B21",
+    "description": "HPE 3200W M-CRPS Titanium Hot Plug Power Supply Kit",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78196-B21": {
+    "productNumber": "P78196-B21",
+    "description": "HPE 2800W M-CRPS 277VAC Titanium Hot Plug Power Supply Kit",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P80098-B21": {
+    "productNumber": "P80098-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Upgrade Chassis Fan Module",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P79660-B21": {
+    "productNumber": "P79660-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Front Panel Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P85517-B21": {
+    "productNumber": "P85517-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Front I/O Chassis 3x Fan Panel Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P28727-B21": {
+    "productNumber": "P28727-B21",
+    "description": "HPE OCP Thermal Enhancement Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P62042-B21": {
+    "productNumber": "P62042-B21",
+    "description": "HPE ProLiant DL3XX Gen11 Direct Liquid Cooling 55cm Quick Disconnect Tube Set FIO Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P79656-B21": {
+    "productNumber": "P79656-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Front Chassis Fan Module Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P84311-B21": {
+    "productNumber": "P84311-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Front I/O Chassis 3x Fan Module Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P71432-B21": {
+    "productNumber": "P71432-B21",
+    "description": "HPE ProLiant Compute DL3X0 Gen12 SP MHS Serial Port Enablement Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74726-B21": {
+    "productNumber": "P74726-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 iLO DC-SCM 2.0 FIO Management Module Kit",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P74911-B21": {
+    "productNumber": "P74911-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 4U Bezel Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P28726-B21": {
+    "productNumber": "P28726-B21",
+    "description": "HPE Apollo 4200 Gen10 Plus Cable Management Arm",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P69770-B21": {
+    "productNumber": "P69770-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 Ball Bearing Rail Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P78279-B21": {
+    "productNumber": "P78279-B21",
+    "description": "HPE NS204i-u v2 480GB NVMe Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75284-B21": {
+    "productNumber": "P75284-B21",
+    "description": "HPE DL380a Gen12 NS204i-u Front Cage Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P81162-B21": {
+    "productNumber": "P81162-B21",
+    "description": "HPE NS204i-u v2 960GB NVMe SED Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P81160-B21": {
+    "productNumber": "P81160-B21",
+    "description": "HPE NS204i-u v2 960GB NVMe Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P75693-B21": {
+    "productNumber": "P75693-B21",
+    "description": "HPE NS204i-u Gen11 1.92TB Spl Boot Dev",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P73325-B21": {
+    "productNumber": "P73325-B21",
+    "description": "HPE ProLiant Compute Localization FIO Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "469774-409": {
+    "productNumber": "469774-409",
+    "description": "HPE Remove Standard Power Cords",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q9R65A": {
+    "productNumber": "Q9R65A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q9R66A": {
+    "productNumber": "Q9R66A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q9R67A": {
+    "productNumber": "Q9R67A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "Q9R68A": {
+    "productNumber": "Q9R68A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "512485-B21": {
+    "productNumber": "512485-B21",
+    "description": "HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "BD505A": {
+    "productNumber": "BD505A",
+    "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "512487-B21": {
+    "productNumber": "512487-B21",
+    "description": "HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "BD507A": {
+    "productNumber": "BD507A",
+    "description": "HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "E6U59ABE": {
+    "productNumber": "E6U59ABE",
+    "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "E6U64ABE": {
+    "productNumber": "E6U64ABE",
+    "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46191-AA1": {
+    "productNumber": "P46191-AA1",
+    "description": "Microsoft Windows Server 2022 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46191-B21": {
+    "productNumber": "P46191-B21",
+    "description": "Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46194-B21": {
+    "productNumber": "P46194-B21",
+    "description": "Microsoft Windows Server 2022 1 Device CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46215-AA1": {
+    "productNumber": "P46215-AA1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46215-AB1": {
+    "productNumber": "P46215-AB1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46215-B21": {
+    "productNumber": "P46215-B21",
+    "description": "Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46216-B21": {
+    "productNumber": "P46216-B21",
+    "description": "Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46217-B21": {
+    "productNumber": "P46217-B21",
+    "description": "Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46218-B21": {
+    "productNumber": "P46218-B21",
+    "description": "Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46219-B21": {
+    "productNumber": "P46219-B21",
+    "description": "Microsoft Windows Server 2022 50 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46220-B21": {
+    "productNumber": "P46220-B21",
+    "description": "Microsoft Windows Server 2022 50 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46221-B21": {
+    "productNumber": "P46221-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P46222-B21": {
+    "productNumber": "P46222-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77110-AA1": {
+    "productNumber": "P77110-AA1",
+    "description": "Microsoft Windows Server 2025 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77110-B21": {
+    "productNumber": "P77110-B21",
+    "description": "Microsoft Windows Server 2025 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77111-B21": {
+    "productNumber": "P77111-B21",
+    "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77112-AA1": {
+    "productNumber": "P77112-AA1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77112-AB1": {
+    "productNumber": "P77112-AB1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77112-B21": {
+    "productNumber": "P77112-B21",
+    "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77113-B21": {
+    "productNumber": "P77113-B21",
+    "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77114-B21": {
+    "productNumber": "P77114-B21",
+    "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77115-B21": {
+    "productNumber": "P77115-B21",
+    "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77116-B21": {
+    "productNumber": "P77116-B21",
+    "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77117-B21": {
+    "productNumber": "P77117-B21",
+    "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77118-B21": {
+    "productNumber": "P77118-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77119-B21": {
+    "productNumber": "P77119-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77120-B21": {
+    "productNumber": "P77120-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77121-B21": {
+    "productNumber": "P77121-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77122-B21": {
+    "productNumber": "P77122-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P77123-B21": {
+    "productNumber": "P77123-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "AC120A": {
+    "productNumber": "AC120A",
+    "description": "HPE Pallet Size Customization Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "AC129A": {
+    "productNumber": "AC129A",
+    "description": "HPE Consolidation Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F69A": {
+    "productNumber": "P1F69A",
+    "description": "HPE Delivery Site Above Ground Floor Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F70A": {
+    "productNumber": "P1F70A",
+    "description": "HPE Forklift at Delivery Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F71A": {
+    "productNumber": "P1F71A",
+    "description": "HPE Special Delivery Truck Size Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F72A": {
+    "productNumber": "P1F72A",
+    "description": "HPE Two People at Delivery SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F73A": {
+    "productNumber": "P1F73A",
+    "description": "HPE Campus Delivery Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F74A": {
+    "productNumber": "P1F74A",
+    "description": "HPE Unloading Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F75A": {
+    "productNumber": "P1F75A",
+    "description": "HPE Fixed Delivery Appointment Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P1F76A": {
+    "productNumber": "P1F76A",
+    "description": "HPE Pre-Delivery Site Survey SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "AC123A": {
+    "productNumber": "AC123A",
+    "description": "HPE Special Request/ Equipment Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "BQ335A": {
+    "productNumber": "BQ335A",
+    "description": "HPE Expedite Shipment Small Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "BQ337A": {
+    "productNumber": "BQ337A",
+    "description": "HPE Expedite Shipment Large Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  },
+  "P76706-B21": {
+    "productNumber": "P76706-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-09-06",
+    "status": "ACTIVE"
+  }
+}

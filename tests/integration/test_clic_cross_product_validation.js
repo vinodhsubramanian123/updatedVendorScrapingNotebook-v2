@@ -14,7 +14,7 @@
  *   3. Fan Kit Cardinality (Rule 81354654)
  *   4. OCP Cable Mutual Exclusion (Rule 81355854)
  *   5. PCIe Riser Cable Kit Enablement (Rules 81016755 & 81354683)
- *   6. Mandatory Management License (Rule 81322276)
+ *   6. Optional Management License Isolation (INV-32)
  *   7. Smart Storage Battery (Standard Rule)
  */
 
@@ -142,8 +142,8 @@ async function run() {
         `needsPrimaryCableKit=${needsPrimary}`);
     }
 
-    // ─── TEST 6: Mandatory Management License (Rule 81322276) ───
-    console.log(`${C.yellow}  [6/7] Mandatory Management License (Rule 81322276)${C.reset}`);
+    // ─── TEST 6: Optional Management License Isolation (INV-32) ───
+    console.log(`${C.yellow}  [6/7] Optional Management License Isolation (INV-32)${C.reset}`);
     {
       const items = [
         { sku: gen.baseSku, description: gen.desc, quantity: 1 },
@@ -154,9 +154,9 @@ async function run() {
         // Intentionally NO R7A11AAE management license
       ];
       const result = evaluatePhysicalMath(items);
-      const missingMgmt = result.missingDependencies.some(d => d.key === 'MANAGEMENT_LICENSE_COM');
-      assert(`${gen.name}: Missing management license detected in dependencies`, missingMgmt,
-        `MANAGEMENT_LICENSE_COM in missingDeps=${missingMgmt}`);
+      const injectedMgmt = result.missingDependencies.some(d => d.key === 'MANAGEMENT_LICENSE_COM');
+      assert(`${gen.name}: Optional management license is not injected`, !injectedMgmt,
+        `MANAGEMENT_LICENSE_COM in missingDeps=${injectedMgmt}`);
     }
 
     // ─── TEST 7: Smart Storage Battery (Standard Rule) ───

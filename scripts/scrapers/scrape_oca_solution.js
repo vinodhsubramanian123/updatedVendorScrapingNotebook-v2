@@ -6,7 +6,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const {
   sendCommand, getOCATarget, connectWS, setupDialogAutoHandler,
   expandSections, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
@@ -15,6 +15,7 @@ const {
 const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
+const { normalize, resolveProductIdentity } = require('../lib/catalog/product_scope.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
@@ -64,6 +65,7 @@ async function main() {
   await ensureChromeBrowserRunning(9222);
 
   let pageTarget;
+  let chassisDiscovery = null;
   try {
     pageTarget = await getOCATarget();
   } catch (err) {
@@ -72,11 +74,21 @@ async function main() {
     console.log(`🧭 Attempting smart auto-navigation via Partner Portal for "${navQuery}"...`);
     try {
       const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-      await navigateToOCAChassis(navQuery);
+      const navigation = await navigateToOCAChassis(navQuery);
+      chassisDiscovery = navigation.chassisDiscovery || null;
       pageTarget = await getOCATarget();
     } catch (navErr) {
       throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
     }
+  }
+
+  // A valid OCA tab may still be on the product-search page. Route it through
+  // the same exact-product, non-BTO/non-TAA selection gate before extraction.
+  if (targetChassisQuery && !chassisDiscovery) {
+    const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
+    const navigation = await navigateToOCAChassis(targetChassisQuery);
+    chassisDiscovery = navigation.chassisDiscovery || null;
+    pageTarget = await getOCATarget();
   }
 
   // STEP 1: CDP Handshake & Session Verification
@@ -273,6 +285,21 @@ async function main() {
       meta.cleanName = overrideMeta.cleanName || meta.cleanName;
     }
 
+    if (targetChassisQuery) {
+      const notebookConfig = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf8'));
+      const expectedIdentity = resolveProductIdentity(targetChassisQuery, notebookConfig);
+      const observedIdentity = resolveProductIdentity(meta.cleanName, notebookConfig);
+      if (!expectedIdentity) {
+        throw new Error(`Product identity gate: requested product "${targetChassisQuery}" is not registered.`);
+      }
+      if (!observedIdentity || normalize(observedIdentity.productId) !== normalize(expectedIdentity.productId)) {
+        throw new Error(`Product identity gate: requested ${expectedIdentity.productId}, but active OCA page resolved as ${meta.cleanName}. No data was promoted.`);
+      }
+      meta.cleanName = expectedIdentity.productId;
+      meta.family = expectedIdentity.family;
+      meta.gen = expectedIdentity.generation;
+    }
+
     const { loadProfile } = require('../lib/system/profile_loader.js');
     const profile = await loadProfile(meta.family, meta.gen);
     console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
@@ -385,6 +412,17 @@ async function main() {
     const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_\-]/g, '_')}_${Date.now()}`);
     outputDir = stagingDir;
 
+    if (!chassisDiscovery) {
+      const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
+      if (fs.existsSync(priorDiscoveryPath)) {
+        try {
+          chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
+        } catch (discoveryErr) {
+          console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
+        }
+      }
+    }
+
     console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
     console.log(`   ${stagingDir}`);
 
@@ -403,10 +441,14 @@ async function main() {
       fullText,
       sections,
       tables,
-      tableCount: tables.length
+      tableCount: tables.length,
+      chassisDiscovery
     };
     const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
     safeWriteJsonAtomic(rawJsonPath, rawData);
+    if (chassisDiscovery) {
+      safeWriteJsonAtomic(path.join(rawDir, 'chassis_discovery.json'), chassisDiscovery);
+    }
     console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
 
     // QuickSpecs PDF Download
@@ -414,8 +456,9 @@ async function main() {
       console.log(`\n--- QuickSpecs PDF Download ---`);
       pdfDestPath = path.join(outputDir, `HPE_${meta.cleanName}_QuickSpecs.pdf`);
       try {
-        execSync(
-          `node "${path.join(__dirname, 'download_quickspecs_pdf.js')}" "${qsLink}" "${pdfDestPath}"`,
+        execFileSync(
+          process.execPath,
+          [path.join(__dirname, 'download_quickspecs_pdf.js'), qsLink, pdfDestPath],
           { stdio: 'inherit', cwd: PROJECT_ROOT }
         );
       } catch (e) {
@@ -482,12 +525,14 @@ async function main() {
     stage: 'CATALOG_GEN', percent: 85, category: meta.cleanName
   });
 
-  execSync(
-    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js')}" "${rawJsonPath}" "${catalogJson}"`,
+  execFileSync(
+    process.execPath,
+    [path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js'), rawJsonPath, catalogJson],
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
-  execSync(
-    `node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'generate_xlsx.js')}" "${catalogXlsx}"`,
+  execFileSync(
+    process.execPath,
+    [path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'generate_xlsx.js'), catalogXlsx],
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
@@ -498,8 +543,9 @@ async function main() {
   });
 
   try {
-    execSync(
-      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
+    execFileSync(
+      process.execPath,
+      [path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js'), catalogXlsx],
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
 
@@ -585,11 +631,13 @@ async function main() {
   });
 
   // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
+  let postFlowSyncResult = null;
   try {
     const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
-    triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
+    postFlowSyncResult = triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
   } catch (syncErr) {
     console.warn('Warning during triggerPostFlowSync:', syncErr.message);
+    postFlowSyncResult = { success: false, error: syncErr.message };
   }
 
   // STEP 10: Re-sync all registered catalogs across workspace & Action Ledger
@@ -598,20 +646,20 @@ async function main() {
     stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
   });
 
-  // GAP-5 FIX: Rethrow on sync_all_registered_catalogs failure.
-  // Pipeline exits with code 1 — not silently console.warn and exit 0.
-  // percent:100 emitted AFTER this succeeds — never before.
-  try {
-    execSync(`node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
-  } catch (syncErr) {
-    emitProgress(10, 10, 'Portfolio Registry Sync Failed', 'error', syncErr.message, {
-      stage: 'REGISTRY_SYNC', percent: 98
-    });
-    throw new Error(`Step 10 sync_all_registered_catalogs failed: ${syncErr.message}`);
+  // The product registry row was already updated above. Never rebuild every
+  // product here: that write-on-success behavior can alter unrelated catalogs
+  // and can also overwrite the freshly audited product from stale CSV inputs.
+  const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
+  if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
+    throw new Error(`Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
   }
 
   // Clean up staging folder
   try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
+
+  if (!postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED') {
+    throw new Error(`Local catalog was promoted safely, but mandatory NotebookLM synchronization is pending: ${postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud failure'}`);
+  }
 
   const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
 

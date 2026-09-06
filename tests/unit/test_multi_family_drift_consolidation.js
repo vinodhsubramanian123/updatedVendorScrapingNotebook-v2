@@ -57,7 +57,7 @@ describe('🧪 Multi-Family Drift Consolidation & Knowledge Registry Suite', () 
   });
 
   test('2. buildMasterKnowledgeRegistry returns valid schemaVersion and productFamiliesSynced (INV-4)', () => {
-    const registry = buildMasterKnowledgeRegistry();
+    const registry = buildMasterKnowledgeRegistry({ persist: false });
     assert.ok(registry.generatedAt, 'generatedAt timestamp required');
     assert.ok(registry.schemaVersion, 'schemaVersion required');
     assert(Array.isArray(registry.productFamiliesSynced), 'productFamiliesSynced array required');

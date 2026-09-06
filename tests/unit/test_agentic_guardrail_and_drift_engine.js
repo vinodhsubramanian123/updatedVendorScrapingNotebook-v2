@@ -170,11 +170,10 @@ test('Test INV-7 generateNotebookSyncPayload chassis pattern routing', async (t)
     assert.ok(!payload.payloadPath.includes(path.join('outputs', 'history')), "Should not route to outputs/history/");
   });
 
-  await t.test('Test real chassis routing to outputs/history when no catalog exists', () => {
-    const payload = generateNotebookSyncPayload('Some_Valid_Chassis_No_Cat', false, null);
-    assert.ok(payload.payloadPath !== null, "payloadPath should not be null");
-    assert.ok(!payload.payloadPath.includes(path.join('outputs', 'temp', 'test_payloads')), "Should not route to outputs/temp/test_payloads/");
-    assert.ok(payload.payloadPath.includes(path.join('outputs', 'history')), "Should route to outputs/history/");
-    fs.unlinkSync(payload.payloadPath);
+  await t.test('Unregistered real chassis fails closed without writing a payload', () => {
+    assert.throws(
+      () => generateNotebookSyncPayload('Some_Valid_Chassis_No_Cat', false, null),
+      /not registered with an exact vendor\/family\/generation identity/
+    );
   });
 });

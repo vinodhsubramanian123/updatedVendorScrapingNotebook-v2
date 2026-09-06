@@ -124,6 +124,17 @@ function getNotebookConfigEntry(notebookId, context = {}) {
   }
 }
 
+function getAuthoritativeSourceIds(entry = {}) {
+  if (!entry || typeof entry !== 'object') return [];
+  const quarantined = new Set((entry.quarantinedSourceIds || []).map(String));
+  return Array.from(new Set([
+    ...(entry.officialSourceIds || []),
+    ...(entry.certifiedCatalogSourceIds || []),
+    ...(entry.verifiedLearningSourceIds || []),
+    ...(entry.canonicalKnowledgeSourceIds || [])
+  ].filter(id => id && !quarantined.has(String(id))).map(String)));
+}
+
 /**
  * Dynamically resolve target Notebook UUID:
  * 1. Explicit UUID if provided
@@ -135,14 +146,14 @@ async function resolveNotebookIdAsync(requestedId, context = {}, nlmExecutable, 
     const requested = getNotebookConfigEntry(requestedId.trim(), {});
     if (typeof requested?.entry !== 'object') return null;
     if (requested.entry.queryEnabled === false) return null;
-    if (!Array.isArray(requested.entry.trustedSourceIds) || requested.entry.trustedSourceIds.length === 0) return null;
+    if (getAuthoritativeSourceIds(requested.entry).length === 0) return null;
     return requestedId.trim();
   }
   const configured = getNotebookConfigEntry(null, context);
   const configuredId = typeof configured?.entry === 'string' ? configured.entry : configured?.entry?.notebookId;
   if (typeof configured?.entry !== 'object') return null;
   if (configured.entry?.queryEnabled === false) return null;
-  if (!Array.isArray(configured.entry?.trustedSourceIds) || configured.entry.trustedSourceIds.length === 0) return null;
+  if (getAuthoritativeSourceIds(configured.entry).length === 0) return null;
   if (configuredId && /^[0-9a-f-]{36}$/i.test(configuredId)) return configuredId;
 
   // Fail-closed to null if no explicit or dedicated notebook is mapped.
@@ -285,7 +296,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   try {
     const configured = getNotebookConfigEntry(targetNotebookId, options.context || {});
     const configuredEntry = configured && typeof configured.entry === 'object' ? configured.entry : {};
-    const authoritativeSourceIds = [...(configuredEntry.trustedSourceIds || [])].filter(Boolean);
+    const authoritativeSourceIds = getAuthoritativeSourceIds(configuredEntry);
     if (authoritativeSourceIds.length === 0) {
       const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
       return {
@@ -387,5 +398,6 @@ module.exports = {
   purgeExpiredRagCache,
   queryCache,
   RAG_CACHE_TTL_MS,
-  RAG_TIMEOUT_MS
+  RAG_TIMEOUT_MS,
+  getAuthoritativeSourceIds
 };

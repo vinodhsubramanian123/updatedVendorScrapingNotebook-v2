@@ -2,6 +2,9 @@
 
 const test = require('node:test');
 const assert = require('node:assert');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const {
   collectAllDeltas,
   buildMasterKnowledgeRegistry,
@@ -34,7 +37,7 @@ test('Knowledge Delta Deduplication & Scoped Taxonomy Unit Suite', async (t) => 
   });
 
   await t.test('buildMasterKnowledgeRegistry returns valid registry structure with timestamps (INV-4)', () => {
-    const registry = buildMasterKnowledgeRegistry();
+    const registry = buildMasterKnowledgeRegistry({ persist: false });
     assert.ok(registry.schemaVersion === '1.0');
     assert.ok(registry.generatedAt);
     assert.ok(Array.isArray(registry.productFamiliesSynced));
@@ -60,5 +63,24 @@ test('Knowledge Delta Deduplication & Scoped Taxonomy Unit Suite', async (t) => 
       seen.add(key);
     }
     assert.strictEqual(hasDuplicate, false, 'No duplicate deltas should exist in collection');
+  });
+
+  await t.test('temporary staging deltas can never enter the live knowledge registry', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'knowledge-scope-root-'));
+    try {
+      const live = path.join(root, 'ProLiant', 'Gen12', 'DL380a_Gen12');
+      const temp = path.join(root, 'temp', 'staging_DL380a_old');
+      fs.mkdirSync(live, { recursive: true });
+      fs.mkdirSync(temp, { recursive: true });
+      fs.writeFileSync(path.join(live, 'catalog_deltas.json'), JSON.stringify([
+        { deltaId: 'LIVE', chassis: 'DL380a_Gen12', affectedSku: 'P76706-B21', ruleUpdate: 'Verified live rule', status: 'VERIFIED' }
+      ]));
+      fs.writeFileSync(path.join(temp, 'catalog_deltas.json'), JSON.stringify([
+        { deltaId: 'STALE', chassis: 'DL380a_Gen12', affectedSku: 'P76706-B21', ruleUpdate: 'Stale staging rule', status: 'VERIFIED' }
+      ]));
+      assert.deepStrictEqual(collectAllDeltas(root).map(delta => delta.deltaId), ['LIVE']);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 });

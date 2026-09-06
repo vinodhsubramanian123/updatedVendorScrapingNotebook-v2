@@ -18,7 +18,7 @@ const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { autoDetectChassisDetailed } = require('../lib/catalog/catalog_discovery.js');
 const { emitProgress } = require('../lib/system/progress.js');
-const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
+const { executeNotebookQuery, getAuthoritativeSourceIds } = require('../lib/notebook/notebook_query_utils.js');
 const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
 const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
 const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
@@ -37,7 +37,7 @@ function getDefaultNotebookId(chassisName = '') {
       if (chassisName && cfg.notebooks && cfg.notebooks[chassisName]) {
         const entry = cfg.notebooks[chassisName];
         if (typeof entry !== 'object' || entry?.queryEnabled === false) return null;
-        if (!Array.isArray(entry.trustedSourceIds) || entry.trustedSourceIds.length === 0) return null;
+        if (getAuthoritativeSourceIds(entry).length === 0) return null;
         const id = entry.notebookId;
         if (id && String(id).trim()) return String(id).trim();
       }

@@ -21,12 +21,17 @@ function createFixture() {
   fs.writeFileSync(csvPath, 'Product #,Description,List Price\nP12345-B21,Example option,100\n');
   fs.writeFileSync(learningPath, '# Verified Learnings\n\n**Sync Timestamp**: 2026-09-06T01:00:00.000Z  \n\nRule A');
   fs.writeFileSync(path.join(historyDir, 'attribute_history.json'), JSON.stringify([
+    { timestamp: '2026-09-06', sku: 'P12345-B21', field: 'Status', oldValue: '90', newValue: 'Active' },
     { timestamp: '2026-09-06', sku: 'P12345-B21', field: 'Status', oldValue: '90', newValue: 'Active' }
   ]));
   fs.writeFileSync(path.join(historyDir, 'catalog_deltas.json'), JSON.stringify([
     { deltaId: 'D-1', status: 'QUARANTINED', affectedSku: 'P12345-B21', ruleUpdate: 'Do not publish' },
     { deltaId: 'D-2', governanceStatus: 'ACTIVE', affectedSku: 'P12345-B21', ruleUpdate: 'Requires verified cable' }
   ]));
+  fs.writeFileSync(path.join(historyDir, 'price_history.json'), JSON.stringify({
+    'P12345-B21': [{ date: '2026-09-06', price: 100, status: 'ACTIVE' }],
+    'P99999-B21': [{ date: '2026-09-06', price: 999, status: 'CONTAMINATED_OTHER_PRODUCT' }]
+  }));
   return { targetDir, csvPath, learningPath };
 }
 
@@ -46,8 +51,11 @@ test('canonical knowledge workbook consolidates catalog, verified learnings, dif
     assert.equal(first.fingerprints.combined, second.fingerprints.combined, 'timestamp-only changes must not create drift');
     assert.match(normalizeLearningText(fs.readFileSync(fixture.learningPath, 'utf8')), /managed by synchronization ledger/);
     assert.ok(first.changeRows.some(row => row[0] === 'ATTRIBUTE'));
+    assert.equal(first.changeRows.filter(row => row[0] === 'ATTRIBUTE').length, 1, 'duplicate history rows must not enter the Sheet');
     assert.ok(first.changeRows.some(row => row[0] === 'VERIFIED_LEARNING' && row[7] === 'D-2'));
     assert.ok(!first.changeRows.some(row => row[7] === 'D-1'), 'quarantined learnings must not enter the canonical source');
+    assert.ok(first.changeRows.some(row => row[0] === 'PRICE' && row[2] === 'P12345-B21'));
+    assert.ok(!first.changeRows.some(row => row[2] === 'P99999-B21'), 'non-catalog history must not enter the product Sheet');
   } finally {
     fs.rmSync(fixture.targetDir, { recursive: true, force: true });
   }

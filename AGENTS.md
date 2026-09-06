@@ -324,3 +324,17 @@ The system leverages Google Jules for background code review, test generation, a
 55. **Frontend Canonical Product Taxonomy & Invariant INV-36 Adherence (`INV-64`)**:
     - All frontend hooks, selector components, and API routes (`useCatalogs.js`, `ChassisSelector.jsx`, `App.jsx`, `dashboard/routes/evaluation.cjs`) MUST standardize on canonical generation model directories (e.g. `'DL380_Gen12'`) per Invariant INV-36.
     - `useCatalogs.js` MUST implement dynamic auto-fallback: if the requested chassis ID is not present in the active catalog pool, it automatically falls back to the first available valid catalog, ensuring the dashboard never crashes or loads blank catalog states.
+
+56. **Modern CDP Download Behavioral Protocol & Filename Preservation (`INV-65`)**:
+    - Use `Browser.setDownloadBehavior` with `behavior: 'allow'`, a dynamically resolved download directory, and download events. `allowAndName` is forbidden for filename preservation because Chromium explicitly names those files by download GUID. Use the deprecated Page method only as a compatibility fallback.
+
+57. **Browser Security Preservation Protocol (`INV-66`)**:
+    - Automation MUST NOT disable Safe Browsing, Enhanced Protection, or other user security controls. Download permission is applied through the scoped CDP session and every completed file is validated before ingestion.
+
+58. **Zero-Human-in-the-Loop Google Sheets & Docs Workspace Automation Protocol (`INV-67`)**:
+    - Personal `@gmail.com` accounts are protected by Google's OAuth security policy, which strictly blocks the default generic `gcloud` developer client ID (`32555940559...`) from requesting sensitive Workspace scopes (`https://www.googleapis.com/auth/spreadsheets`, `https://www.googleapis.com/auth/documents`, `https://www.googleapis.com/auth/drive`) with the error: *"This app is blocked. This app tried to access sensitive info in your Google Account."*
+    - AI agents MUST NOT instruct users to run bare `gcloud auth application-default login --scopes=...` without a project-owned client ID.
+    - Programmatic, zero-human-in-the-loop Google Sheets and Google Docs creation MUST use either:
+      1. **Project Desktop App OAuth Client ID**: An operator-owned Desktop App client stored outside the repository and authenticated through Application Default Credentials; OR
+      2. **Dedicated GCP Service Account + Shared Drive Folder**: A service account key stored outside the repository with access limited to a designated folder (`GOOGLE_DRIVE_FOLDER_ID`).
+    - OAuth credentials can expire or be revoked; failures must preserve local artifacts and remain retryable.

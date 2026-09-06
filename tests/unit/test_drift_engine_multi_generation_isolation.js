@@ -32,7 +32,7 @@ test('▶ [DRIFT-TEST 1]: 3-Tier Taxonomy Scoping & Isolation', () => {
     ruleUpdate: 'All ProLiant DDR5 DIMMs must be populated in matched channels'
   };
   const familyScope = classifyKnowledgeScope(familyRule);
-  assert.equal(familyScope, 'FAMILY_GEN', 'DDR5 DIMM balancing across ProLiant Gen11 must have FAMILY_GEN scope');
+  assert.equal(familyScope, 'CHASSIS_SPECIFIC', 'A chassis-tagged observation must remain isolated until explicitly promoted');
 
   // Test CHASSIS_SPECIFIC scoping
   const chassisRule = {
@@ -56,7 +56,7 @@ test('▶ [DRIFT-TEST 1]: 3-Tier Taxonomy Scoping & Isolation', () => {
 });
 
 test('▶ [DRIFT-TEST 2]: Master Knowledge Registry Schema Contracts (INV-4)', () => {
-  const registry = buildMasterKnowledgeRegistry();
+  const registry = buildMasterKnowledgeRegistry({ persist: false });
   assert.ok(registry, 'Registry must be generated');
   assert.ok(registry.generatedAt, 'Registry must contain generatedAt (INV-4)');
   assert.equal(registry.schemaVersion, '1.0', 'Schema version must be 1.0 (INV-4)');

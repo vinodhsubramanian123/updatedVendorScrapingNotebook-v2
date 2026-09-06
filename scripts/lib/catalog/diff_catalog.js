@@ -85,6 +85,24 @@ function buildTrailString(trail) {
   }).join(' → ');
 }
 
+function attributeEventKey(event) {
+  return [
+    event.date || event.timestamp || '', event.productNumber || event.sku || '', event.chassis || '',
+    event.mainCategory || '', event.subCategory || '', event.field || event.attribute || '',
+    event.oldValue ?? '', event.newValue ?? ''
+  ].map(value => String(value).trim()).join('\u001f');
+}
+
+function dedupeAttributeHistory(history) {
+  const seen = new Set();
+  return (Array.isArray(history) ? history : []).filter(event => {
+    const key = attributeEventKey(event);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 /**
  * Perform diff calculation and history update.
  * @param {object} catalogData    - Structured catalog object from build_catalog.js
@@ -93,7 +111,7 @@ function buildTrailString(trail) {
  *                                  Use 'services' when processing _Services.json
  * @returns {object} { enrichedCatalog, diffSummary, prevSnapshotPath }
  */
-function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
+function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', options = {}) {
   fs.mkdirSync(historyDir, { recursive: true });
 
   // GAP-6 FIX: Always normalize scrapeDate to YYYY-MM-DD for stable snapshot filenames.
@@ -145,11 +163,16 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
 
   // Build previous SKU lookup map
   const prevSkuMap = new Map();
+  const disallowedPreviousSkus = new Set();
   if (prevCatalog && Array.isArray(prevCatalog.entries)) {
     for (const entry of prevCatalog.entries) {
       for (const sku of entry.skus || []) {
         const pn = sku['Product #'];
         if (pn) {
+          if (options.previousSkuFilter && !options.previousSkuFilter({ entry, sku, productNumber: pn })) {
+            disallowedPreviousSkus.add(pn);
+            continue;
+          }
           prevSkuMap.set(pn, {
             ...sku,
             parentCategory: entry.parentCategory,
@@ -179,7 +202,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   if (fs.existsSync(attributeHistoryPath)) {
     try {
       attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
-      if (!Array.isArray(attributeHistory)) attributeHistory = [];
+      attributeHistory = dedupeAttributeHistory(attributeHistory);
+      if (disallowedPreviousSkus.size > 0) {
+        attributeHistory = attributeHistory.filter(item => !disallowedPreviousSkus.has(item.productNumber || item.sku));
+      }
     } catch (err) {
       console.warn(`  ⚠️ Warning: Corrupted ${path.basename(attributeHistoryPath)}: ${err.message}`);
     }
@@ -192,6 +218,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
     } catch (err) {
       console.warn(`  ⚠️ Warning: Corrupted ${path.basename(discontinuedSkusPath)}: ${err.message}`);
     }
+  }
+  for (const pn of disallowedPreviousSkus) {
+    delete priceHistory[pn];
+    delete discontinuedRegistry[pn];
   }
 
   // ── 1. Process current entries & compute diffs ────────────────────────────────
@@ -439,6 +469,7 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   // Save historical snapshot, price history, attribute history, and discontinued SKU registry atomically
   safeWriteJsonAtomic(currentSnapshotPath, catalogData);
   safeWriteJsonAtomic(priceHistoryPath, priceHistory);
+  attributeHistory = dedupeAttributeHistory(attributeHistory);
   safeWriteJsonAtomic(attributeHistoryPath, attributeHistory);
   safeWriteJsonAtomic(discontinuedSkusPath, discontinuedRegistry);
 
@@ -499,4 +530,4 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog') {
   return { enrichedCatalog: catalogData, diffSummary, prevSnapshotPath };
 }
 
-module.exports = { processCatalogDiff, parsePrice, appendTrailEvent };
+module.exports = { processCatalogDiff, parsePrice, appendTrailEvent, dedupeAttributeHistory };

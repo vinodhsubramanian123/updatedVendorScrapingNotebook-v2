@@ -105,9 +105,49 @@ test('Catalog Diff and Price History suite', async (t) => {
     assert.strictEqual(sku3AttrMutation.field, 'Description');
     assert.strictEqual(sku3AttrMutation.oldValue, 'Old desc 3');
     assert.strictEqual(sku3AttrMutation.newValue, 'New desc 3');
+    assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Description').length, 1,
+      'same semantic attribute change must be recorded once across reruns');
     assert.strictEqual(finalPriceHistory['SKU3'].find(e => e.date === '2026-08-02').status, 'ATTRIBUTE_CHANGED');
 
     // Clean up temp dir
     fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  await t.test('cross-product historical chassis are ignored and purged from history', (t2) => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'diff_catalog_firewall_'));
+    try {
+      fs.writeFileSync(path.join(tempDir, 'catalog_2026-09-05.json'), JSON.stringify({
+        metadata: { scrapeDate: '2026-09-05' },
+        entries: [{ parentCategory: 'Chassis', subCategory: 'Variants', skus: [
+          { 'Product #': 'P73282-B21', Description: 'HPE DL380 Gen12 CTO Server', 'Unit Price (USD)': '5584' }
+        ] }]
+      }));
+      fs.writeFileSync(path.join(tempDir, 'price_history.json'), JSON.stringify({
+        'P73282-B21': [{ date: '2026-09-05', price: 5584, status: 'BASELINE' }]
+      }));
+      fs.writeFileSync(path.join(tempDir, 'attribute_history.json'), JSON.stringify([
+        { date: '2026-09-05', productNumber: 'P73282-B21', field: 'Description' }
+      ]));
+      fs.writeFileSync(path.join(tempDir, 'discontinued_skus.json'), JSON.stringify({
+        'P73282-B21': { productNumber: 'P73282-B21', status: 'ACTIVE' }
+      }));
+      t2.mock.method(console, 'log', () => {});
+      t2.mock.method(console, 'warn', () => {});
+      const current = {
+        metadata: { scrapeDate: '2026-09-06', chassis: 'DL380a Gen12' },
+        entries: [{ parentCategory: 'Chassis', subCategory: 'Variants', skus: [
+          { 'Product #': 'P76706-B21', Description: 'HPE DL380a Gen12 CTO Server', 'Unit Price (USD)': '0' }
+        ] }]
+      };
+      const result = processCatalogDiff(current, tempDir, 'catalog', {
+        previousSkuFilter: ({ sku }) => /DL380a Gen12/i.test(sku.Description || '')
+      });
+      assert.equal(result.diffSummary.removed, 0);
+      assert.ok(!result.enrichedCatalog.entries.some(entry => entry.skus.some(sku => sku['Product #'] === 'P73282-B21')));
+      assert.ok(!JSON.parse(fs.readFileSync(path.join(tempDir, 'price_history.json'), 'utf8'))['P73282-B21']);
+      assert.ok(!JSON.parse(fs.readFileSync(path.join(tempDir, 'discontinued_skus.json'), 'utf8'))['P73282-B21']);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });

@@ -11,7 +11,12 @@
     "ruleUpdate": "On DL380a Gen12, replace standard risers P74571-B21/P74573-B21 with captive GPU riser P74685-B21.",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "QUARANTINED_CONTRADICTED",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "P74685-B21 is a captive GPU riser, but P74571-B21 and P74573-B21 are processors, not risers."
+    }
   },
   {
     "deltaId": "DELTA_DL380A_GEN12_GPU_KIT_MANDATE",
@@ -25,7 +30,12 @@
     "ruleUpdate": "Double-wide GPUs on DL380a mandate P75002-B21 (4DW) or P75008-B21 (8DW) GPU enablement kit.",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "QUARANTINED_NOT_STATED_IN_OFFICIAL_SOURCE",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "P75002-B21 and P75008-B21 were not present in the official QuickSpecs edition; current OCA also exposes additional GPU modes."
+    }
   },
   {
     "deltaId": "DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY",
@@ -39,7 +49,12 @@
     "ruleUpdate": "DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "SUPPORTED: QuickSpecs explicitly says mixing drive cages is not allowed."
+    }
   },
   {
     "deltaId": "DELTA_DL380A_GEN12_POWER_SUPPLY_THRESHOLD",
@@ -53,7 +68,12 @@
     "ruleUpdate": "DL380a Gen12 with double-wide GPUs mandates minimum 5x 2400W Titanium PSUs (P67252-B21).",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "QUARANTINED_CONTRADICTED",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "QuickSpecs requires five PSUs for 2/4DW and eight for 8/10DW; both 2400W and 3200W Titanium supplies are supported for H100/H200 NVL."
+    }
   },
   {
     "deltaId": "DELTA_DL380A_GEN12_GPU_POWER_CABLE",
@@ -67,7 +87,12 @@
     "ruleUpdate": "8DW GPU kit requires dedicated 16-pin GPU auxiliary power cables P83526-B21.",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "QUARANTINED_NOT_STATED_IN_OFFICIAL_SOURCE",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "QuickSpecs lists P83526-B21 for double-wide GPUs but does not state a P75008-B21-specific dependency."
+    }
   },
   {
     "deltaId": "DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION",
@@ -81,6 +106,49 @@
     "ruleUpdate": "When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A.",
     "scopeTaxonomy": "FAMILY_GEN",
     "solutionType": "DL380a Gen12 GPU Server",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "QUARANTINED_NOT_STATED_IN_OFFICIAL_SOURCE",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "QuickSpecs lists both licenses but does not state that Compute Ops Management makes iLO Advanced redundant."
+    }
+  },
+  {
+    "deltaId": "DELTA_DL380A_GEN12_DUAL_CPU_HOMOGENEOUS",
+    "timestamp": "2026-09-06T00:00:00.000Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Official QuickSpecs: DL380a Gen12 supports dual-processor configurations only and does not support mixing processor models.",
+    "errorType": "PROCESSOR_TOPOLOGY",
+    "ruleType": "PROCESSOR_POPULATION",
+    "affectedSku": "P76706-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupported.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL380a Gen12 GPU Server",
+    "status": "VERIFIED",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "SUPPORTED"
+    }
+  },
+  {
+    "deltaId": "DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX",
+    "timestamp": "2026-09-06T00:00:00.000Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Official QuickSpecs power matrix for double-wide GPU configurations.",
+    "errorType": "POWER_CAPACITY_VIOLATION",
+    "ruleType": "POWER_REDUNDANCY",
+    "affectedSku": "P76706-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "DL380a Gen12 GPU Server",
+    "status": "VERIFIED",
+    "validation": {
+      "validatedAt": "2026-09-06",
+      "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+      "result": "SUPPORTED"
+    }
   }
 ]

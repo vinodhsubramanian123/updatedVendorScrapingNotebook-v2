@@ -49,7 +49,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
     assert.equal(result.unsolicitedOptionalItems[0].sku, 'S1A05A');
     assert.equal(result.unsolicitedOptionalItems[1].sku, 'HA114A1 5A6');
     assert.equal(result.defaultSupportSku, 'HU4B2A3');
-    assert.equal(result.defaultManagementSku, 'R7A11AAE');
+    assert.equal(result.defaultManagementSku, null);
   });
 
   test('3. generatePartnerPortalUploadBOM produces exact 7-column schema matching ReactVendorSolution contract', () => {

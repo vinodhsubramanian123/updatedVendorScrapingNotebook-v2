@@ -47,7 +47,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
   });
 
   await t.test('INV-4: master_knowledge_registry.json contains generatedAt and schemaVersion', () => {
-    const registry = buildMasterKnowledgeRegistry();
+    const registry = buildMasterKnowledgeRegistry({ persist: false });
     assert.ok(registry.generatedAt, 'Registry must contain generatedAt ISO timestamp');
     assert.ok(registry.lastUpdated, 'Registry must contain lastUpdated for backward compatibility');
     assert.ok(registry.schemaVersion, 'Registry must contain schemaVersion');
@@ -192,5 +192,4 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
   });
 
 });
-
 

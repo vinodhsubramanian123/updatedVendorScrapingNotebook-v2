@@ -267,11 +267,16 @@ const KnowledgeDeltaSchema = z.object({
   chassis: z.string().min(1, 'Chassis identifier is required'),
   affectedSku: SkuString,
   requiredDependencySku: z.union([SkuString, z.null()]).optional(),
-  scope: z.enum(['UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC']).default('FAMILY_GEN'),
+  vendor: z.string().optional(),
+  pillar: z.enum(['SERVER', 'STORAGE', 'NETWORKING']).optional(),
+  family: z.string().optional(),
+  generation: z.string().optional(),
+  productId: z.string().optional(),
+  scope: z.enum(['UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC']).default('CHASSIS_SPECIFIC'),
   scopeTaxonomy: z.enum([
     'UNIVERSAL_VENDOR', 'FAMILY_GEN', 'CHASSIS_SPECIFIC',
     'UNIVERSAL_VENDOR_RULES', 'FAMILY_GEN_RULES', 'CHASSIS_SPECIFIC_RULES'
-  ]).default('FAMILY_GEN'),
+  ]).default('CHASSIS_SPECIFIC'),
   errorType: z.string().default('MISSING_MANDATORY_DEPENDENCY'),
   ruleUpdate: z.string().min(1, 'Rule description is required'),
   humanReasoning: z.string().default(''),

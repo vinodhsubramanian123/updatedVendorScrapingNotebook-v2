@@ -15,6 +15,46 @@ const { normalizeLearningText } = require('./google_sheets_writer.js');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
 
+function refreshMasterCatalogCsv(payloadPath, chassisName) {
+  const payloadDir = path.dirname(payloadPath);
+  const excelPath = path.join(payloadDir, `${chassisName}_OCA_Catalog.xlsx`);
+  const csvPath = path.join(payloadDir, `${chassisName}_Master_Catalog.csv`);
+  if (!fs.existsSync(excelPath)) {
+    if (!fs.existsSync(csvPath)) throw new Error(`Certified catalog workbook/CSV not found for ${chassisName}`);
+    return csvPath;
+  }
+  const xlsx = require('xlsx-js-style');
+  const workbook = xlsx.readFile(excelPath);
+  const sheet = workbook.Sheets['All SKUs'] || workbook.Sheets[workbook.SheetNames[0]];
+  if (!sheet) throw new Error(`Certified workbook has no readable sheet: ${excelPath}`);
+  const temporaryPath = `${csvPath}.tmp-${process.pid}`;
+  fs.writeFileSync(temporaryPath, xlsx.utils.sheet_to_csv(sheet), 'utf8');
+  fs.renameSync(temporaryPath, csvPath);
+  return csvPath;
+}
+
+function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
+  const text = String(payloadText || '');
+  const otherProducts = Object.keys(notebookCfg?.notebooks || {}).filter(name => name !== chassisName);
+  for (const product of otherProducts) {
+    const aliases = [product, product.replace(/_/g, ' ')];
+    if (aliases.some(alias => new RegExp(`(^|[^A-Za-z0-9])${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^A-Za-z0-9]|$)`, 'i').test(text))) {
+      throw new Error(`Product isolation rejected ${chassisName} payload: reference to registered product ${product}`);
+    }
+  }
+  return true;
+}
+
+function isGroundedCanary(parsed, sourceId, chassisName) {
+  const answer = String(parsed?.answer || parsed?.response || parsed?.result || '');
+  const citedIds = new Set([
+    ...(Array.isArray(parsed?.sources_used) ? parsed.sources_used : []),
+    ...Object.values(parsed?.citations || {})
+  ].map(String));
+  return answer.length > 20 && answer.toLowerCase().includes(String(chassisName).toLowerCase()) &&
+    citedIds.has(String(sourceId)) && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(answer);
+}
+
 /**
  * Synchronize knowledge note directly into Gemini NotebookLM via nlm CLI.
  *
@@ -82,6 +122,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
       let canonicalDriveSheetId = cfgEntry?.driveSheetId || null;
       let canonicalDriveSheetUrl = cfgEntry?.driveSheetUrl || null;
       let canonicalDriveSourceId = cfgEntry?.driveSourceId || null;
+      assertPayloadProductIsolation(fs.readFileSync(payloadPath, 'utf8'), chassisName, notebookCfg);
 
       // TRANSACTIONAL REPLACEMENT SEQUENCE (INV-49 / Transactional Source Sync)
       // Step 1: Upload a fresh file candidate only for legacy notebooks. A
@@ -147,7 +188,9 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
       // semantic fingerprints. A failed write/refresh/canary aborts retirement.
       if (useCanonicalDrive) {
         try {
-          const masterCsvPath = path.join(path.dirname(payloadPath), `${chassisName}_Master_Catalog.csv`);
+          // The newly audited XLSX is authoritative. Refresh its CSV before
+          // writing Drive so the canonical Sheet cannot lag one scrape behind.
+          const masterCsvPath = refreshMasterCatalogCsv(payloadPath, chassisName);
           const writerArgs = [path.join(__dirname, 'google_sheets_writer.js')];
           if (canonicalDriveSheetId) {
             writerArgs.push(canonicalDriveSheetId, masterCsvPath, payloadPath, chassisName);
@@ -215,8 +258,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
             env: { ...process.env, PATH: extendedPath }
           });
           const driveCanary = JSON.parse(driveCanaryOutput);
-          const driveAnswer = String(driveCanary.answer || driveCanary.response || driveCanary.result || '');
-          if (driveAnswer.length <= 20 || /no (?:relevant )?source|cannot (?:find|verify)/i.test(driveAnswer)) {
+          if (!isGroundedCanary(driveCanary, canonicalDriveSourceId, chassisName)) {
             throw new Error('restricted Drive-source canary did not return a grounded answer');
           }
           driveSyncStatus = 'KNOWLEDGE_WORKBOOK_WRITTEN_REFRESHED_AND_CANARY_VERIFIED';
@@ -275,48 +317,9 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         }
       } catch (_) { /* non-fatal */ }
 
-      // Also check for Excel workbook and upload tabular CSV representation
-      const payloadDir = path.dirname(payloadPath);
-      const possibleExcel = path.join(payloadDir, `${chassisName}_OCA_Catalog.xlsx`);
-      if (fs.existsSync(possibleExcel)) {
-        try {
-          const xlsx = require('xlsx-js-style');
-          const wb = xlsx.readFile(possibleExcel);
-          const sheet = wb.Sheets['All SKUs'] || wb.Sheets[wb.SheetNames[0]];
-          if (sheet) {
-            const csvData = xlsx.utils.sheet_to_csv(sheet);
-            const csvPath = path.join(payloadDir, `${chassisName}_Master_Catalog.csv`);
-            fs.writeFileSync(csvPath, csvData, 'utf-8');
-          }
-        } catch (csvErr) {
-          const logger = require('../system/pipeline_logger.js');
-          logger.warn('NLM_SYNC', `Tabular Master Catalog CSV generation/upload warning: ${csvErr.message}`);
-        }
-      }
-
-      // Upload shared universal knowledge charter to this notebook
-      const charterPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_universal_knowledge_charter.md');
-      if (fs.existsSync(charterPath)) {
-        const charterSourceName = `HPE_Universal_Knowledge_Charter_${scrapeDate}`;
-        try {
-          // Upload the fresh charter without destructive cleanup. Charter retirement
-          // needs its own add-first/canary/retire transaction.
-          execFileSync('nlm', [
-            'source', 'add', effectiveNotebookId,
-            '--file', charterPath,
-            '--title', charterSourceName,
-            '--wait',
-            '--json'
-          ], {
-            encoding: 'utf-8',
-            timeout: 600000,
-            env: { ...process.env, PATH: extendedPath }
-          });
-        } catch (charterErr) {
-          const logger = require('../system/pipeline_logger.js');
-          logger.warn('NLM_SYNC', `Universal Knowledge Charter sync warning: ${charterErr.message}`);
-        }
-      }
+      // Do not attach the local master registry index to product notebooks. It
+      // contains rules for multiple products by design. The canonical per-product
+      // payload and Sheet are the only managed knowledge sources for this flow.
 
       if (!newSourceId && stdout) {
         const idMatchFallback = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
@@ -378,7 +381,17 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           isolationLevel: 'CHASSIS_SPECIFIC',
           lastSyncedSourceName: result.newSourceName,
           trustedSourceIds: Array.from(new Set([
-            ...(existing.trustedSourceIds || []).filter(id => !(options.confirmSourceRetirement === true && id === existing.lastSyncedSourceId)),
+            ...(existing.officialSourceIds || []),
+            ...(existing.certifiedCatalogSourceIds || []),
+            ...(existing.verifiedLearningSourceIds || []),
+            result.newSourceId,
+            driveSourceVerified
+          ].filter(Boolean))),
+          canonicalKnowledgeSourceIds: Array.from(new Set([
+            result.newSourceId,
+            driveSourceVerified
+          ].filter(Boolean))),
+          certifiedCatalogSourceIds: Array.from(new Set([
             result.newSourceId,
             driveSourceVerified
           ].filter(Boolean))),
@@ -398,5 +411,8 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
 }
 
 module.exports = {
+  assertPayloadProductIsolation,
+  isGroundedCanary,
+  refreshMasterCatalogCsv,
   syncToNotebookLM
 };

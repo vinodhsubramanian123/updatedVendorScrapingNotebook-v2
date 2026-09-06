@@ -40,7 +40,7 @@ function parseProductMeta(rawText, pageTitle = '') {
   const family = detectProductFamily(fullText);
 
   // 3. Model & Form Factor Detection
-  const modelMatch = fullText.match(/\b(DL\d{3}|ML\d{3}|RL\d{3}|SY\d{3}|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
+  const modelMatch = fullText.match(/\b(DL\d{3}a?|ML\d{3}|RL\d{3}|SY\d{3}|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
   const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
   const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
   const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
@@ -49,7 +49,8 @@ function parseProductMeta(rawText, pageTitle = '') {
   if (modelMatch) {
     let model = modelMatch[0].replace(/\s+/g, '_');
     if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
-    const ff  = formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
+    const isRackServer = /^(?:DL|ML|RL)\d/i.test(model);
+    const ff  = !isRackServer && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
     cleanName = `${model}${gen && gen !== 'General' ? '_' + gen : ''}${ff ? '_' + ff : ''}`;
   } else {
     cleanName = rawText
@@ -76,14 +77,14 @@ const DEFAULT_ROLE_MAPPINGS = [
   { role: 'Processor', keywords: ['processor', 'xeon', 'epyc'] },
   { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5', 'ddr4', 'dimm blank'] },
   { role: 'Transceiver', keywords: ['transceiver', 'sfp28 sr', 'optical transceiver', 'qsfp28', 'sfp56', 'qsfp56'] },
-  { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'lug kit', 'box 1/2 cable', 'direct attach', 'enablement kit', 'fiber optic', 'om3', 'om4', 'lc to lc', 'serial cable', 'side-by-side cable'] },
+  { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'power cord', 'jumper cord', 'lug kit', 'box 1/2 cable', 'direct attach', 'enablement kit', 'fiber optic', 'om3', 'om4', 'lc to lc', 'serial cable', 'side-by-side cable'] },
   { role: 'Storage Battery', keywords: ['battery', 'smart storage battery', 'lithium-ion battery'] },
   { role: 'Boot Device', keywords: ['boot device', 'ns204i', 'boot optimized'] },
   { role: 'Power Supply', keywords: ['power', 'power supply', 'flex slot', '-48vdc', 'pdu', 'jumper cord', 'power cord'] },
   { role: 'GPU / Accelerator', keywords: ['gpu', 'accelerator', 'nvidia', 'tesla', 'quadro', 'radeon', 'rtx'] },
   { role: 'PCIe Riser', keywords: ['riser', 'riser kit', 'primary riser', 'secondary riser', 'tertiary riser', 'retimer', 'paddle card'] },
   { role: 'Fibre Channel HBA', keywords: ['fibre channel', 'host bus adapter', 'hba', 'qlogic', 'emulex'] },
-  { role: 'Storage Controller', keywords: ['storage', 'controller', 'raid', 'mr416i', 'sr932i', 'smart array', 'vroc', 'megaraid', 'smartraid'] },
+  { role: 'Storage Controller', keywords: ['storage controller', 'controller', 'raid', 'mr416i', 'sr932i', 'smart array', 'vroc', 'megaraid', 'smartraid'] },
   { role: 'Network Adapter', keywords: ['network', 'ethernet', 'ocp', 'adapter', 'bcm57', 'e810', 'mellanox', 'broadcom'] },
   { role: 'Drive Cage / Drive', keywords: ['drive', 'cage', 'hdd', 'ssd', 'nvme', 'media bay', 'drive blank', 'no drive', 'drive enclosure'] },
   { role: 'Cooling / Thermal', keywords: ['fan', 'cooling', 'fan kit', 'heatsink', 'heat sink', 'cold plate', 'liquid cooling'] },
@@ -131,9 +132,20 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
     return 'Base Chassis';
   }
 
-  const mappings = (profile && profile.component_mapping)
-    ? Object.entries(profile.component_mapping).map(([role, keywords]) => ({ role, keywords }))
-    : DEFAULT_ROLE_MAPPINGS;
+  // Product profiles are additive overrides. A narrowly scoped profile (for
+  // example one that only adds new controller model names) must not erase the
+  // universal drive, power, cable, boot, GPU, and software classifiers.
+  const profileMappings = profile && profile.component_mapping
+    ? profile.component_mapping
+    : {};
+  const knownRoles = new Set(DEFAULT_ROLE_MAPPINGS.map(({ role }) => role));
+  const mappings = DEFAULT_ROLE_MAPPINGS.map(({ role, keywords }) => ({
+    role,
+    keywords: Array.from(new Set([...keywords, ...(profileMappings[role] || [])]))
+  }));
+  for (const [role, keywords] of Object.entries(profileMappings)) {
+    if (!knownRoles.has(role)) mappings.push({ role, keywords });
+  }
 
   for (const { role, keywords } of mappings) {
     if (role === 'Base Chassis') continue; // Handled by explicit guard above
