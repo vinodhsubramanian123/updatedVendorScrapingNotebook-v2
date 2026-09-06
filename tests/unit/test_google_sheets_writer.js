@@ -30,7 +30,14 @@ function createFixture() {
   ]));
   fs.writeFileSync(path.join(historyDir, 'price_history.json'), JSON.stringify({
     'P12345-B21': [{ date: '2026-09-06', price: 100, status: 'ACTIVE' }],
+    'P77777-B21': [{ date: '2026-08-01', price: 75, status: 'BASELINE' }, { date: '2026-09-05', price: 75, status: 'REMOVED' }],
     'P99999-B21': [{ date: '2026-09-06', price: 999, status: 'CONTAMINATED_OTHER_PRODUCT' }]
+  }));
+  fs.writeFileSync(path.join(historyDir, 'discontinued_skus.json'), JSON.stringify({
+    'P77777-B21': {
+      productNumber: 'P77777-B21', status: 'DISCONTINUED',
+      discontinuedDate: '2026-09-05', trackingState: 'STOPPED_AFTER_REMOVAL'
+    }
   }));
   return { targetDir, csvPath, learningPath };
 }
@@ -55,6 +62,10 @@ test('canonical knowledge workbook consolidates catalog, verified learnings, dif
     assert.ok(first.changeRows.some(row => row[0] === 'VERIFIED_LEARNING' && row[7] === 'D-2'));
     assert.ok(!first.changeRows.some(row => row[7] === 'D-1'), 'quarantined learnings must not enter the canonical source');
     assert.ok(first.changeRows.some(row => row[0] === 'PRICE' && row[2] === 'P12345-B21'));
+    assert.ok(first.changeRows.some(row => row[0] === 'PRICE' && row[2] === 'P77777-B21' && row[6] === 'REMOVED'),
+      'discontinued SKU price trail must remain in the canonical change ledger after leaving the active catalog');
+    assert.ok(first.changeRows.some(row => row[0] === 'LIFECYCLE' && row[2] === 'P77777-B21'),
+      'compact discontinued tombstone must remain visible to NotebookLM/Sheets');
     assert.ok(!first.changeRows.some(row => row[2] === 'P99999-B21'), 'non-catalog history must not enter the product Sheet');
   } finally {
     fs.rmSync(fixture.targetDir, { recursive: true, force: true });

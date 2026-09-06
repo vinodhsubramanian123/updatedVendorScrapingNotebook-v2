@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('path');
-const { normalizeTargetDate } = require('../../scripts/lib/catalog/sku_versioning.js');
+const { getSkuAuditHistory, normalizeTargetDate } = require('../../scripts/lib/catalog/sku_versioning.js');
 const { processCatalogDiff } = require('../../scripts/lib/catalog/diff_catalog.js');
 const fs = require('fs');
 const os = require('os');
@@ -31,7 +31,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           skus: [
             { 'Product #': 'SKU1', 'Unit Price (USD)': '100', 'Description': 'Old desc 1' }, // Normal SKU
             { 'Product #': 'SKU2', 'Unit Price (USD)': '0' },   // $0 CTO SKU
-            { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'Old desc 3' } // SKU to change attributes
+            { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'Old desc 3', lifecycleStatus: 'Active' } // SKU to change attributes
           ]
         }
       ]
@@ -57,7 +57,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           parentCategory: 'Servers',
           subCategory: 'Base',
           skus: [
-             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3' }, // Attribute mutation
+             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' }, // Attribute mutation
              { 'Product #': 'SKU4', 'Unit Price (USD)': '200' }, // Added new
           ]
         }
@@ -72,7 +72,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           parentCategory: 'Servers',
           subCategory: 'Base',
           skus: [
-             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3' },
+             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' },
              { 'Product #': 'SKU4', 'Unit Price (USD)': '200' },
           ]
         }
@@ -97,6 +97,8 @@ test('Catalog Diff and Price History suite', async (t) => {
     // Check discontinued SKUs ($0 unpriced CTO excluded)
     assert.ok(finalDiscontinued['SKU1'], 'SKU1 should be in discontinued registry');
     assert.strictEqual(finalDiscontinued['SKU1'].status, 'DISCONTINUED');
+    assert.strictEqual(finalDiscontinued['SKU1'].trackingState, 'STOPPED_AFTER_REMOVAL');
+    assert.strictEqual(finalDiscontinued['SKU1'].retentionClass, 'COMPACT_LIFECYCLE_TOMBSTONE');
     assert.ok(!finalDiscontinued['SKU2'], 'SKU2 ($0 base placeholder) must be excluded from discontinued registry');
     
     // Check attribute mutations
@@ -107,10 +109,51 @@ test('Catalog Diff and Price History suite', async (t) => {
     assert.strictEqual(sku3AttrMutation.newValue, 'New desc 3');
     assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Description').length, 1,
       'same semantic attribute change must be recorded once across reruns');
+    assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Lifecycle Status').length, 1,
+      'lifecycle badge/status transition must be recorded once');
+    assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Discontinued Date').length, 1,
+      'vendor discontinuation date must be recorded once');
     assert.strictEqual(finalPriceHistory['SKU3'].find(e => e.date === '2026-08-02').status, 'ATTRIBUTE_CHANGED');
+
+    // A subsequent scrape sees the prior tombstone but must not re-remove or
+    // keep tracking the discontinued SKU as though it were active.
+    processCatalogDiff({
+      metadata: { scrapeDate: '2026-08-03', chassis: 'DL380 Gen12' },
+      entries: [{
+        parentCategory: 'Servers', subCategory: 'Base', skus: [
+          { 'Product #': 'SKU3', 'Unit Price (USD)': '500', Description: 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' },
+          { 'Product #': 'SKU4', 'Unit Price (USD)': '200' }
+        ]
+      }]
+    }, tempDir, 'catalog');
+    const stoppedHistory = JSON.parse(fs.readFileSync(path.join(tempDir, 'price_history.json'), 'utf8'))['SKU1'];
+    const stoppedRegistry = JSON.parse(fs.readFileSync(path.join(tempDir, 'discontinued_skus.json'), 'utf8'))['SKU1'];
+    assert.strictEqual(stoppedHistory.filter(event => event.status === 'REMOVED').length, 1,
+      'a discontinued SKU must receive exactly one removal event');
+    assert.strictEqual(stoppedRegistry.discontinuedDate, '2026-08-02',
+      'later scrapes must not move the original discontinuation date');
 
     // Clean up temp dir
     fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  await t.test('SKU audit reads the canonical discontinued object registry', () => {
+    const productDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sku_audit_discontinued_'));
+    const historyDir = path.join(productDir, 'history');
+    fs.mkdirSync(historyDir);
+    try {
+      fs.writeFileSync(path.join(historyDir, 'discontinued_skus.json'), JSON.stringify({
+        'P52341-B21': {
+          productNumber: 'P52341-B21', status: 'DISCONTINUED',
+          trackingState: 'STOPPED_AFTER_REMOVAL', discontinuedDate: '2026-09-06'
+        }
+      }));
+      const audit = getSkuAuditHistory('P52341-B21', productDir);
+      assert.equal(audit.currentStatus, 'DISCONTINUED');
+      assert.equal(audit.discontinuedInfo.trackingState, 'STOPPED_AFTER_REMOVAL');
+    } finally {
+      fs.rmSync(productDir, { recursive: true, force: true });
+    }
   });
 
   await t.test('cross-product historical chassis are ignored and purged from history', (t2) => {
@@ -163,7 +206,8 @@ test('Catalog Diff and Price History suite', async (t) => {
       const sharedAccessoryHistory = JSON.parse(fs.readFileSync(path.join(tempDir, 'price_history.json'), 'utf8'))['P52341-B21'];
       assert.ok(sharedAccessoryHistory,
         'shared accessory history must not be purged merely because its snapshot also contained another chassis');
-      assert.equal(sharedAccessoryHistory.at(-1).status, 'UNCHANGED');
+      assert.equal(sharedAccessoryHistory.length, 1, 'unchanged scrapes must not inflate the price delta ledger');
+      assert.equal(sharedAccessoryHistory.at(-1).status, 'BASELINE');
       assert.ok(!JSON.parse(fs.readFileSync(path.join(tempDir, 'discontinued_skus.json'), 'utf8'))['P73282-B21']);
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });

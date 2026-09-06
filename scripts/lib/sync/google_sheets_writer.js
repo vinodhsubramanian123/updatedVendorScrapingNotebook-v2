@@ -71,7 +71,11 @@ function toChangeRows(targetDir, options = {}) {
   const catalogDeltas = readJsonIfPresent(path.join(historyDir, 'catalog_deltas.json'), []);
   const discontinued = readJsonIfPresent(path.join(historyDir, 'discontinued_skus.json'), {});
   const allowedSkus = options.allowedSkus instanceof Set ? options.allowedSkus : null;
-  const isAllowedCatalogSku = sku => !sku || !allowedSkus || allowedSkus.has(String(sku).toUpperCase());
+  const discontinuedSkus = new Set(Object.values(discontinued || {}).map(item =>
+    String(item?.productNumber || item?.sku || item?.['Product #'] || '').toUpperCase()
+  ).filter(Boolean));
+  const isAllowedCatalogSku = sku => !sku || !allowedSkus || allowedSkus.has(String(sku).toUpperCase()) ||
+    discontinuedSkus.has(String(sku).toUpperCase());
 
   for (const item of Array.isArray(attributeHistory) ? attributeHistory : []) {
     const sku = item.sku || item.productNumber || item['Product #'] || '';
@@ -113,7 +117,9 @@ function toChangeRows(targetDir, options = {}) {
     if (!isAllowedCatalogSku(sku)) continue;
     pushChange([
       'LIFECYCLE', item.discontinuedDate || item.timestamp || '', sku,
-      'Lifecycle Status', item.previousStatus || '', item.status || '', item.status || '', item.source || 'certified scrape diff'
+      'Lifecycle Status', item.previousLifecycleStatus || item.previousStatus || '', item.status || '', item.status || '',
+      (item.source || 'certified scrape diff') +
+        ` | ${item.trackingState || 'LIFECYCLE_RETAINED'} | ${item.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'}`
     ]);
   }
 

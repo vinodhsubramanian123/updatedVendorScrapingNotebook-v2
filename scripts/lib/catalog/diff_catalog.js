@@ -103,6 +103,61 @@ function dedupeAttributeHistory(history) {
   });
 }
 
+function firstAttributeValue(item, keys) {
+  for (const key of keys) {
+    const value = item?.[key];
+    if (value !== undefined && value !== null && String(value).trim()) return String(value).trim();
+  }
+  return '';
+}
+
+function isRemovalTombstone(sku) {
+  return String(sku?.['Diff Status'] || '').toUpperCase() === 'REMOVED' ||
+    /^\[REMOVED SKU\]/i.test(String(sku?.Description || sku?.description || ''));
+}
+
+const TRACKED_ATTRIBUTES = [
+  { keys: ['Description', 'description'], label: 'Description' },
+  { keys: ['Constraint Text'], label: 'Constraint' },
+  { keys: ['Table Rule/Note'], label: 'Rule/Note' },
+  { keys: ['Subcategory Max Qty'], label: 'Max Qty' },
+  { keys: ['Component Role'], label: 'Component Role' },
+  { keys: ['Option Type', 'optionType'], label: 'Option Type' },
+  { keys: ['HPE Recommended'], label: 'HPE Recommended' },
+  { keys: ['Start Date'], label: 'Start Date' },
+  { keys: ['Discontinued Date'], label: 'Discontinued Date' },
+  { keys: ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus'], label: 'Lifecycle Status' },
+  { keys: ['Lifecycle Badge', 'lifecycleBadge'], label: 'Lifecycle Badge' }
+];
+
+function recordAttributeDeltas(sku, prevSku, context, attributeHistory) {
+  const deltas = [];
+  for (const attr of TRACKED_ATTRIBUTES) {
+    const currVal = firstAttributeValue(sku, attr.keys);
+    const prevVal = firstAttributeValue(prevSku, attr.keys);
+    if (currVal === prevVal || (!currVal && !prevVal)) continue;
+    deltas.push({ field: attr.label, oldValue: prevVal || '(None)', newValue: currVal || '(None)' });
+    attributeHistory.push({
+      date: context.scrapeDate,
+      productNumber: context.productNumber,
+      chassis: context.chassis,
+      mainCategory: context.mainCategory,
+      subCategory: context.subCategory,
+      field: attr.label,
+      oldValue: prevVal,
+      newValue: currVal
+    });
+  }
+  return deltas;
+}
+
+function isBusinessRelevantDiscontinuedSku(options, existingEntry, context) {
+  const explicitlyRelevant = typeof options.retainDiscontinuedSku === 'function' &&
+    options.retainDiscontinuedSku(context) === true;
+  return explicitlyRelevant || existingEntry?.businessRelevant === true ||
+    Number(existingEntry?.dealReferenceCount || 0) > 0 || Number(existingEntry?.ruleReferenceCount || 0) > 0;
+}
+
 /**
  * Perform diff calculation and history update.
  * @param {object} catalogData    - Structured catalog object from build_catalog.js
@@ -169,6 +224,11 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
       for (const sku of entry.skus || []) {
         const pn = sku['Product #'];
         if (pn) {
+          // A tombstone is historical evidence, not an active SKU. Excluding it
+          // prevents the same discontinued part from being "removed" again on
+          // every subsequent scrape while the registry remains available for
+          // deal validation and possible reinstatement.
+          if (isRemovalTombstone(sku)) continue;
           if (options.previousSkuFilter && !options.previousSkuFilter({ entry, sku, productNumber: pn })) {
             disallowedPreviousSkus.add(pn);
             continue;
@@ -293,40 +353,13 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
         sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
 
         // ── GAP FIX #3: Attribute history now includes subCategory & mainCategory ─
-        const attributeDeltas = [];
-        const attrsToCompare = [
-          { key: 'Description',         label: 'Description' },
-          { key: 'Constraint Text',     label: 'Constraint' },
-          { key: 'Table Rule/Note',     label: 'Rule/Note' },
-          { key: 'Subcategory Max Qty', label: 'Max Qty' },
-          { key: 'Component Role',      label: 'Component Role' },
-          { key: 'Option Type',         label: 'Option Type' },
-          { key: 'HPE Recommended',     label: 'HPE Recommended' },
-          { key: 'Start Date',          label: 'Start Date' }
-        ];
-
-        for (const attr of attrsToCompare) {
-          const currVal = String(sku[attr.key] || '').trim();
-          const prevVal = String(prevSku[attr.key] || '').trim();
-          if (currVal !== prevVal && (currVal || prevVal)) {
-            attributeDeltas.push({
-              field:    attr.label,
-              oldValue: prevVal || '(None)',
-              newValue: currVal || '(None)'
-            });
-
-            attributeHistory.push({
-              date:          scrapeDate,
-              productNumber: pn,
-              chassis:       catalogData.metadata?.chassis || 'Chassis',
-              mainCategory:  entry.parentCategory || prevSku.parentCategory || '',
-              subCategory:   entry.subCategory    || prevSku.subCategory    || '',
-              field:         attr.label,
-              oldValue:      prevVal,
-              newValue:      currVal
-            });
-          }
-        }
+        const attributeDeltas = recordAttributeDeltas(sku, prevSku, {
+          scrapeDate,
+          productNumber: pn,
+          chassis: catalogData.metadata?.chassis || 'Chassis',
+          mainCategory: entry.parentCategory || prevSku.parentCategory || '',
+          subCategory: entry.subCategory || prevSku.subCategory || ''
+        }, attributeHistory);
 
         const priceHasChanged  = Math.abs(currPrice - prevPrice) > 0.001;
         const attrsHaveChanged = attributeDeltas.length > 0;
@@ -361,7 +394,12 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
           sku['Diff Status']        = 'UNCHANGED';
           sku['Price Change (USD)'] = '$0.00';
           sku['Price Change (%)']   = '0.00%';
-          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'UNCHANGED' });
+          // price_history.json is a delta ledger, not a scrape heartbeat log.
+          // Preserve one baseline if legacy history is absent, but do not append
+          // identical UNCHANGED events on every scrape.
+          if (priceHistory[pn].length === 0) {
+            appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
+          }
           diffSummary.unchanged++;
         }
       }
@@ -394,6 +432,9 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
 
         // ── GAP FIX #4: Discontinued registry now includes firstSeenDate, daysActive, fullPriceTrail ──
         const existingEntry = discontinuedRegistry[pn];
+        const businessRelevant = isBusinessRelevantDiscontinuedSku(options, existingEntry, {
+          productNumber: pn, sku: prevSku, catalogData
+        });
         const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
         let daysActive = 0;
         if (firstSeenDate) {
@@ -412,6 +453,11 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
           lastKnownPrice: prevPrice.toFixed(2),
           fullPriceTrail: trailStr,
           status:         'DISCONTINUED',
+          previousLifecycleStatus: firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || 'Active',
+          vendorDiscontinuedDate: firstAttributeValue(prevSku, ['Discontinued Date']),
+          trackingState:  'STOPPED_AFTER_REMOVAL',
+          retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
+          businessRelevant,
           reason:         'Removed from active HPE OCA portal catalog'
         };
 

@@ -450,6 +450,9 @@ if (fs.existsSync(discontinuedJsonPath)) {
         'Days Active':      String(d.daysActive || ''),
         'Last Known Price': d.lastKnownPrice   || '',
         'Full Price Trail': d.fullPriceTrail   || '',
+        'Tracking State':   d.trackingState    || 'LIFECYCLE_RETAINED',
+        'Retention Class':  d.retentionClass   || 'COMPACT_LIFECYCLE_TOMBSTONE',
+        'Business Relevant':d.businessRelevant === true ? 'Yes' : 'No',
         'Reason':           d.reason           || '[DISCONTINUED] Deprecated from latest HPE OCA portal'
       };
     });
@@ -551,4 +554,3 @@ try {
 } catch (err) {
   console.warn(`\n⚠️  Could not clean up intermediate scraps: ${err.message}`);
 }
-

@@ -725,3 +725,13 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Explicit verified exception**: Cross-product learning is permitted only for a `CHASSIS_SPECIFIC` `KnowledgeDelta` with `sharedAccessoryVerified: true`, an approved accessory class, exact `compatibleProductIds`, `verificationStatus: VERIFIED`, a trusted evidence type, and one or more evidence source IDs.
 - **Fail-closed local/cloud parity**: `product_scope.js` applies the same gate to the local registry projection. Notebook sync emits a machine-auditable `SHARED_ACCESSORY_VERIFIED` record containing target products, SKU, evidence type, and source IDs; malformed or incomplete cross-product records are rejected before cloud sync.
 - **Removal is not deletion of history**: If a shared accessory disappears from the latest target-product scrape, it follows the standard removed/discontinued lifecycle and keeps its price trail. Another product's current catalog must never silently reactivate it.
+
+---
+
+## 69. Delta-Only SKU Lifecycle & Business Retention Protocol (`INV-69`)
+
+- **Complete lifecycle deltas**: Every certified scrape compares SKU presence, GPL price, description, constraints, option type, start date, discontinuation date, lifecycle status, and lifecycle badge. The ledger records `ADDED`, `PRICE_CHANGED`, `ATTRIBUTE_CHANGED`, `PRICE_AND_ATTRIBUTE_CHANGED`, `REMOVED`, and `REINSTATED` events.
+- **No unchanged-history inflation**: `price_history.json` contains meaningful price/lifecycle transitions rather than one `UNCHANGED` record per scrape. Stable catalog rows still report `UNCHANGED` in the current workbook, but do not enlarge the historical delta ledger.
+- **Stop after first removal**: A removed SKU receives one immutable removal event and a compact tombstone with `trackingState: STOPPED_AFTER_REMOVAL`. Tombstones in previous snapshots are never treated as active options or removed repeatedly; the original discontinuation date remains stable.
+- **Purposeful retention**: The compact tombstone and significant price trail remain available for historical deal validation, obsolete-SKU rejection, substitution reasoning, and reinstatement detection. Records explicitly referenced by deals or verified rules may be marked `BUSINESS_RELEVANT`; otherwise their retention class is `COMPACT_LIFECYCLE_TOMBSTONE`.
+- **Local/cloud parity**: The discontinued workbook sheet, canonical Google Sheet change ledger, and NotebookLM learning source expose the lifecycle, tracking, and retention states. A SKU that later returns to the certified target-product catalog is marked `REINSTATED` and resumes active tracking.

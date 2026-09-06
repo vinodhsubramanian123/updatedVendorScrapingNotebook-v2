@@ -54,4 +54,3 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
-

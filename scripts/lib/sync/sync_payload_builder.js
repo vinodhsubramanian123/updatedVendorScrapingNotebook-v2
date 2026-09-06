@@ -221,11 +221,11 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   if (discontinuedList.length === 0) {
     md += `*No discontinued or reinstated SKUs detected for ${chassisName}. All cataloged SKUs are active.*\n\n`;
   } else {
-    md += `| SKU | Description | Status | Discontinued Date | Last Known Price |\n`;
-    md += `|-----|-------------|--------|-------------------|------------------|\n`;
+    md += `| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |\n`;
+    md += `|-----|-------------|--------|-------------------|------------------|----------|-----------|\n`;
     discontinuedList.forEach(d => {
       const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
-      md += `| \`${skuPn}\` | ${d.description || 'N/A'} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} |\n`;
+      md += `| \`${skuPn}\` | ${d.description || 'N/A'} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
     });
     md += `\n`;
   }

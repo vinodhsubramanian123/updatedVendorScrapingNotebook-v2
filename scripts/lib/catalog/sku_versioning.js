@@ -122,12 +122,11 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   if (fs.existsSync(discontinuedPath)) {
     try {
       const discontinuedList = JSON.parse(fs.readFileSync(discontinuedPath, 'utf-8'));
-      if (Array.isArray(discontinuedList)) {
-        const match = discontinuedList.find(d => d.productNumber === cleanSku || d.sku === cleanSku);
-        if (match) {
-          auditResult.discontinuedInfo = match;
-          auditResult.currentStatus = 'DISCONTINUED';
-        }
+      const candidates = Array.isArray(discontinuedList) ? discontinuedList : Object.values(discontinuedList || {});
+      const match = candidates.find(d => d.productNumber === cleanSku || d.sku === cleanSku);
+      if (match) {
+        auditResult.discontinuedInfo = match;
+        auditResult.currentStatus = String(match.status || '').toUpperCase() === 'REINSTATED' ? 'ACTIVE' : 'DISCONTINUED';
       }
     } catch (err) {
       console.warn(`[sku_versioning] Error reading discontinued_skus.json: ${err.message}`);
@@ -551,4 +550,3 @@ module.exports = {
   recordVersionSnapshot,
   _clearCatalogPriceCache
 };
-

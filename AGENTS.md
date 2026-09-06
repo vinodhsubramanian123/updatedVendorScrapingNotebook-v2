@@ -344,3 +344,9 @@ The system leverages Google Jules for background code review, test generation, a
     - Rails, cable-management arms, storage enablement kits, cables, power cords, and transceivers may be reused across products or generations only through an exact-product, evidence-backed `KnowledgeDelta`; shared presence elsewhere is not proof of compatibility.
     - A reusable record MUST use `CHASSIS_SPECIFIC` scope and include `sharedAccessoryVerified: true`, an approved `accessoryClass`, exact `compatibleProductIds`, `verificationStatus: VERIFIED`, trusted `compatibilityEvidenceType`, and non-empty `verificationSourceIds`.
     - Local registry projection and NotebookLM payload isolation MUST apply the same gate. If an accessory disappears from a target product's fresh OCA scrape, preserve its discontinued and price history; never reactivate it from another product's catalog.
+
+60. **Delta-Only SKU Lifecycle & Business Retention Protocol (`INV-69`)**:
+    - Catalog diffs MUST capture SKU addition/removal/reinstatement, price changes, lifecycle badge/status transitions, start dates, and vendor discontinuation dates. Stable scrapes MUST NOT append redundant `UNCHANGED` price-history events.
+    - A SKU removed from the active OCA catalog receives exactly one `REMOVED` event and a compact tombstone marked `trackingState: STOPPED_AFTER_REMOVAL`; subsequent snapshots MUST NOT move its original discontinuation date or repeatedly remove it.
+    - Compact lifecycle evidence remains available for historical deal validation, obsolete-part rejection, replacement reasoning, and reinstatement detection. Extended retention may be marked `BUSINESS_RELEVANT` when deal or verified-rule references exist.
+    - Excel, Google Sheet, local audit, and NotebookLM representations MUST expose consistent lifecycle and retention state. Reappearance in the exact target-product catalog changes the state to `REINSTATED` and resumes tracking.
