@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../../scripts/lib/boq/boq_evaluator.js');
 const { calculateConfidenceScore, processPortalFeedback } = require('../../scripts/lib/feedback/feedback_loop.js');
 const { cleanBaseSKU, isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
@@ -95,15 +96,16 @@ assert(confidence.isHitlTriggered === true, `HITL review triggered automatically
 // -------------------------------------------------------------------
 console.log(`\n🔹 Test Group 5: Closed-Loop Portal Feedback & KnowledgeDelta Logging`);
 const portalErrorMsg = "ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit.";
-const testOutputDir = 'outputs/ProLiant/Gen12/DL380_Gen12';
+const testOutputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'all-aspects-feedback-'));
 
 const delta = processPortalFeedback(portalErrorMsg, testOutputDir);
 assert(delta.deltaId.startsWith('DELTA-'), `Generated unique KnowledgeDelta ID (${delta.deltaId})`);
 assert(delta.errorType === 'PERMANENT_PHYSICAL_DEPENDENCY', `Classified error as PERMANENT_PHYSICAL_DEPENDENCY`);
 assert(delta.affectedSku === 'P76453-B21', `Identified affected SKU P76453-B21`);
 
-const deltaLogFile = path.join(testOutputDir, 'history', 'catalog_deltas.json');
-assert(fs.existsSync(deltaLogFile), `KnowledgeDelta logged to persistent file history/catalog_deltas.json`);
+const deltaLogFile = path.join(testOutputDir, 'history', 'quarantined_deltas.json');
+assert(fs.existsSync(deltaLogFile), `Unverified observation held in product-scoped quarantine`);
+fs.rmSync(testOutputDir, { recursive: true, force: true });
 
 // -------------------------------------------------------------------
 // Test Group 6: Dynamic Attribute RAG Payload Formatting

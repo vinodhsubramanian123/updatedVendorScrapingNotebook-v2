@@ -70,7 +70,7 @@ function runTests() {
 
   const report2 = verifyVendorBOM(vendorBomWithAdditions, proposedRank1, chassisDir);
   assert(
-    !report2.is100PercentMatch && report2.discrepancies.addedByVendor.length === 1 && report2.discrepancies.addedByVendor[0].sku === 'P38997-B21',
+    !report2.is100PercentMatch && report2.discrepancies.addedByVendor.length === 1 && report2.discrepancies.addedByVendor[0].sku === 'P38997-B21' && report2.learnedDeltaCount === 0 && report2.quarantinedObservationCount === 1,
     'Test 2: Detect Vendor Portal auto-inserted SKU (addedByVendor)',
     `Added: ${report2.discrepancies.addedByVendor[0]?.sku}`
   );

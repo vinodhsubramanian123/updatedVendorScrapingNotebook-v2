@@ -43,6 +43,7 @@ const upload = multer({ storage });
 
 // Top-level imports for lib helpers
 const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('../../scripts/lib/boq/boq_preprocessor.js');
+const { resolveChassisDirectory } = require('../../scripts/lib/catalog/sku_versioning.js');
 const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
 const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr/ocr_service.js');
 const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/system/telemetry.js');
@@ -93,16 +94,11 @@ router.post('/preprocess-boq', asyncHandler(async (req, res) => {
 router.post('/confirm-preflight-split', (req, res) => {
   const { configId, splitReason, notes, chassisDir } = req.body;
   try {
-    let safeChassisDir = null;
-    if (chassisDir) safeChassisDir = assertSafePath(chassisDir);
-    const targetDir = safeChassisDir && fs.existsSync(safeChassisDir) ? safeChassisDir : path.join(OUTPUTS_DIR, 'ProLiant', 'Gen12', 'DL380_Gen12');
+    if (!chassisDir) return sendErrorResponse(res, 400, 'Exact chassisDir is required for preflight confirmation', { source: 'EVALUATION_ROUTER' });
+    const targetDir = assertSafePath(resolveChassisDirectory(chassisDir));
+    if (!fs.existsSync(targetDir)) return sendErrorResponse(res, 404, 'Product-generation directory does not exist', { source: 'EVALUATION_ROUTER' });
     const record = savePreprocessingRuleFeedback({ configId, splitReason, notes }, targetDir);
-    const deltasFile = path.join(targetDir, 'history', 'catalog_deltas.json');
-    let deltas = [];
-    try { if (fs.existsSync(deltasFile)) deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (_) {}
-    deltas.push({ deltaId: `PREPROC-DELTA-${Date.now()}`, timestamp: new Date().toISOString(), ruleType: 'PREPROCESSING_SPLIT_CONFIRMED', ruleUpdate: `Confirmed split reason '${splitReason}' for ${configId}`, notes: notes || '', scopeTaxonomy: 'CHASSIS_SPECIFIC' });
-    safeWriteJsonAtomic(deltasFile, deltas);
-    res.json({ status: 'SUCCESS', record });
+    res.json({ status: 'SUCCESS', record, governanceStatus: 'PREPROCESSING_HISTORY_ONLY', message: 'Split confirmation saved for preprocessing audit; active hardware knowledge was not changed.' });
   } catch (err) {
     const status = err.message?.startsWith('HTTP 403') ? 403 : 500;
     sendErrorResponse(res, status, err, { source: 'EVALUATION_ROUTER' });

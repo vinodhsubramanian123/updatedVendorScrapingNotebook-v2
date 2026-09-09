@@ -8,6 +8,25 @@ const fs = require('node:fs');
 const { extractKnowledgeFromRagAnswer } = require('../../scripts/lib/notebook/knowledge_extractor.js');
 const { inspectKnowledgeDrift } = require('../../scripts/lib/sync/drift_inspector.js');
 const { generateNotebookSyncPayload } = require('../../scripts/lib/sync/sync_payload_builder.js');
+const { submitGuardrailCandidates } = require('../../scripts/lib/rag/agentic_guardrail.js');
+
+test('Agentic rule candidates require exact product scope and quarantine is not counted as learning', () => {
+  const submitted = [];
+  const counts = submitGuardrailCandidates([
+    { chassisId: 'DL380_Gen12', affectedSku: 'P47777-B21', requiredDependencySku: 'P76453-B21', ruleUpdate: 'P47777-B21 requires P76453-B21' },
+    { chassisId: 'UNKNOWN_PRODUCT', affectedSku: 'P47777-B21', requiredDependencySku: 'P76453-B21', ruleUpdate: 'P47777-B21 requires P76453-B21' }
+  ], {
+    catalogs: [{ id: 'DL380_Gen12', catalogDir: '/certified/DL380_Gen12' }],
+    processFeedback: (message, catalogDir, delta) => {
+      submitted.push({ message, catalogDir, delta });
+      return { governanceStatus: 'QUARANTINED' };
+    }
+  });
+
+  assert.strictEqual(submitted.length, 1);
+  assert.strictEqual(submitted[0].catalogDir, '/certified/DL380_Gen12');
+  assert.deepStrictEqual(counts, { activatedDeltaCount: 0, quarantinedDeltaCount: 1, rejectedDeltaCount: 1 });
+});
 
 test('Test extractKnowledgeFromRagAnswer()', async (t) => {
   await t.test('Extract BTO -> FIO option substitution', () => {

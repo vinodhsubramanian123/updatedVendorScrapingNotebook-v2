@@ -64,9 +64,9 @@ describe('ResolutionMatrix', () => {
     expect(screen.getByText('P49057-B21')).toBeInTheDocument();
   });
 
-  it('renders default strategy matrix tiers if evalResults is null', () => {
+  it('fails closed with no synthesized candidates if evalResults is null', () => {
     render(<ResolutionMatrix evalResults={null} selectedChassis="DL380_Gen12_SFF" />);
     expect(screen.getByText(/Multi-Tier Strategic Resolution Matrix/i)).toBeInTheDocument();
-    expect(screen.getByText(/Optimal Workload Match/i)).toBeInTheDocument();
+    expect(screen.getByText(/No candidate passed the buildability/i)).toBeInTheDocument();
   });
 });

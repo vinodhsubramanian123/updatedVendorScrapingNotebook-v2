@@ -5,6 +5,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
   const [isOpen, setIsOpen] = useState(true);
   const [isQuerying, setIsQuerying] = useState(false);
   const [notebookResponse, setNotebookResponse] = useState('');
+  const [notebookMeta, setNotebookMeta] = useState(null);
   
   // Resolution form state
   const [ruleUpdate, setRuleUpdate] = useState('');
@@ -12,6 +13,10 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
   const [scopeTaxonomy, setScopeTaxonomy] = useState('CHASSIS_SPECIFIC');
   const [affectedSku, setAffectedSku] = useState('');
   const [requiredDependencySku, setRequiredDependencySku] = useState('');
+  const [reviewer, setReviewer] = useState('');
+  const [evidenceType, setEvidenceType] = useState('OFFICIAL_QUICKSPECS');
+  const [evidenceId, setEvidenceId] = useState('');
+  const [confirmedVerified, setConfirmedVerified] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
@@ -40,6 +45,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
   const handleQueryNotebookLM = async () => {
     setIsQuerying(true);
     setNotebookResponse('');
+    setNotebookMeta(null);
     setSubmitStatus(null);
     try {
       const errorsStr = evalResults.errors?.join('\n') || 'Unknown conflict';
@@ -52,14 +58,12 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       });
       const data = await res.json();
       setNotebookResponse(data.answer || 'No response received.');
-      
-      const skuRegex = /[A-Z0-9]{5,6}-[A-Z0-9]{2,3}/g;
-      const foundSkus = data.answer?.match(skuRegex) || [];
-      if (foundSkus.length > 0) setAffectedSku(foundSkus[0]);
-      if (foundSkus.length > 1) setRequiredDependencySku(foundSkus[1]);
-      
-      setRuleUpdate(data.answer);
-      setHumanReasoning(`Validated via NotebookLM QuickSpecs grounding for ${chassisContext}`);
+      setNotebookMeta(data);
+      if (data.learningEligible && data.citations?.length > 0) {
+        const firstCitation = data.citations[0];
+        setEvidenceType('NOTEBOOKLM_CITATION');
+        setEvidenceId(typeof firstCitation === 'string' ? firstCitation : (firstCitation.id || firstCitation.url || firstCitation.title || ''));
+      }
 
     } catch (err) {
       setNotebookResponse(`Error querying NotebookLM: ${err.message}`);
@@ -79,7 +83,10 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
         scopeTaxonomy,
         chassis: chassisContext,
         affectedSku,
-        requiredDependencySku
+        requiredDependencySku,
+        reviewer,
+        confirmedVerified,
+        evidence: [{ type: evidenceType, id: evidenceId }]
       };
       
       const res = await fetch('/api/resolve-ambiguity', {
@@ -89,7 +96,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       });
       const data = await res.json();
       if (data.success) {
-        setSubmitStatus({ type: 'success', msg: `Resolution logged [${data.deltaId}]` });
+        setSubmitStatus({ type: data.promoted ? 'success' : 'warning', msg: data.promoted ? `Verified rule promoted [${data.deltaId}]` : `Held in quarantine [${data.quarantineId || data.deltaId}]` });
       } else {
         setSubmitStatus({ type: 'error', msg: data.error });
       }
@@ -142,34 +149,9 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
               </div>
             )}
 
-            {/* Quick Verification Questions */}
-            <div className="pt-2 border-t border-amber-300 flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-bold text-slate-700 uppercase">Quick Verification Fixes:</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setRuleUpdate('Intel Xeon processors with TDP > 240W require High Performance Fan Kit P48820-B21 on Selected Chassis.');
-                  setAffectedSku('P74573-B21');
-                  setRequiredDependencySku('P48820-B21');
-                  setHumanReasoning('Confirmed 250W high thermal dissipation requirement for Selected Chassis.');
-                }}
-                className="px-2.5 py-1 bg-white hover:bg-amber-100 text-amber-950 text-[10px] font-bold rounded-lg border border-amber-300 transition-colors shadow-2xs"
-              >
-                + Inject High-TDP Fan Rule (P48820-B21)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setRuleUpdate('-48VDC Power Supplies (P17023-B21) require DC Power Cable Lug Kit P36877-B21.');
-                  setAffectedSku('P17023-B21');
-                  setRequiredDependencySku('P36877-B21');
-                  setHumanReasoning('Confirmed DC power feed lug terminal requirement.');
-                }}
-                className="px-2.5 py-1 bg-white hover:bg-amber-100 text-amber-950 text-[10px] font-bold rounded-lg border border-amber-300 transition-colors shadow-2xs"
-              >
-                + Inject DC Lug Kit Rule (P36877-B21)
-              </button>
-            </div>
+            <p className="pt-2 border-t border-amber-300 text-[11px] text-slate-700">
+              No canned SKU fix is applied here. Every decision must identify the exact product generation, evidence, reviewer, and reasoning.
+            </p>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
@@ -187,17 +169,21 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
             </button>
 
             {notebookResponse && (
-              <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded text-sm text-purple-950 font-medium whitespace-pre-wrap">
-                {notebookResponse}
+              <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded text-sm text-purple-950 font-medium whitespace-pre-wrap space-y-2">
+                <div className={`text-[10px] uppercase tracking-wider font-bold ${notebookMeta?.learningEligible ? 'text-emerald-800' : 'text-amber-900'}`}>
+                  {notebookMeta?.learningEligible ? 'Cloud grounded with traceable citations' : 'Advisory only — not eligible for learning'}
+                </div>
+                <div>{notebookResponse}</div>
+                {notebookMeta?.citations?.length > 0 && <div className="text-[11px] text-slate-700">Citations: {notebookMeta.citations.map(c => typeof c === 'string' ? c : (c.title || c.id || c.url)).filter(Boolean).join('; ')}</div>}
               </div>
             )}
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
             <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <PlusCircle className="w-4 h-4 text-emerald-800 stroke-[2.25px]" /> Step 2: Inject Learned Rule
+              <PlusCircle className="w-4 h-4 text-emerald-800 stroke-[2.25px]" /> Step 2: Submit Evidence-Backed Human Decision
             </h4>
-            <p className="text-[11px] text-slate-600 mb-4">Validate the resolution and inject it into the pipeline's Master Knowledge Registry. It will automatically apply to future BOQs.</p>
+            <p className="text-[11px] text-slate-600 mb-4">NotebookLM output is advisory. A rule is activated only after an engineer records independent reasoning and traceable evidence; unresolved conflicts remain quarantined.</p>
             
             <form onSubmit={handleResolve} className="space-y-3">
               <div>
@@ -214,7 +200,8 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
 
               <div>
                 <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Human Engineer Reasoning & Context</label>
-                <input 
+                <input
+                  required
                   type="text"
                   value={humanReasoning}
                   onChange={e => setHumanReasoning(e.target.value)}
@@ -233,13 +220,13 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
                   >
                     <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. Selected Chassis)</option>
                     <option value="FAMILY_GEN">Family & Gen (e.g. ProLiant Gen12)</option>
-                    <option value="SOLUTION_TYPE">Solution Type (e.g. Storage / Multi-Node)</option>
                     <option value="UNIVERSAL_VENDOR">Universal Vendor (All HPE)</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Affected SKU</label>
-                  <input 
+                  <input
+                    required
                     type="text"
                     value={affectedSku}
                     onChange={e => setAffectedSku(e.target.value)}
@@ -259,18 +246,44 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Reviewer</label>
+                  <input required value={reviewer} onChange={e => setReviewer(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Engineer name or ID" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence Type</label>
+                  <select value={evidenceType} onChange={e => setEvidenceType(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white [color-scheme:light]">
+                    <option value="OFFICIAL_QUICKSPECS">Official QuickSpecs</option>
+                    <option value="OFFICIAL_VENDOR_PORTAL">Official Vendor Portal</option>
+                    <option value="CERTIFIED_CATALOG">Certified Catalog</option>
+                    <option value="NOTEBOOKLM_CITATION">NotebookLM Citation</option>
+                    <option value="TESTED_BUILD">Tested OCA/CLIC Build</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence ID / URL / Rule ID</label>
+                  <input required value={evidenceId} onChange={e => setEvidenceId(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Source ID, URL, portal rule, or test trace" />
+                </div>
+              </div>
+
+              <label className="flex items-start gap-2 text-xs text-slate-700">
+                <input type="checkbox" required checked={confirmedVerified} onChange={e => setConfirmedVerified(e.target.checked)} className="mt-0.5" />
+                <span>I independently verified this rule for the exact product generation and confirm the evidence is authoritative. I understand conflicting rules will remain quarantined until supersession is documented.</span>
+              </label>
+
               <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
                 <button 
                   type="submit" 
-                  disabled={isSubmitting || !ruleUpdate}
+                  disabled={isSubmitting || !ruleUpdate || !humanReasoning || !affectedSku || !reviewer || !evidenceId || !confirmedVerified}
                   className="btn-primary text-xs text-white font-bold bg-indigo-600 hover:bg-indigo-700"
                 >
-                  {isSubmitting ? 'Saving...' : 'Resolve & Learn Rule'}
+                  {isSubmitting ? 'Validating...' : 'Submit Verified Human Decision'}
                 </button>
                 
                 {submitStatus && (
                   <div className="flex items-center gap-3">
-                    <span className={`text-xs font-bold flex items-center gap-1 ${submitStatus.type === 'success' ? 'text-emerald-800' : 'text-rose-800'}`}>
+                    <span className={`text-xs font-bold flex items-center gap-1 ${submitStatus.type === 'success' ? 'text-emerald-800' : submitStatus.type === 'warning' ? 'text-amber-900' : 'text-rose-800'}`}>
                       {submitStatus.type === 'success' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700 stroke-[2.25px]" /> : null}
                       {submitStatus.msg}
                     </span>
@@ -294,4 +307,3 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
     </div>
   );
 }
-

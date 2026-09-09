@@ -278,7 +278,7 @@ flowchart TD
    - The SKU is flagged as **`NEEDS_HUMAN_CLARIFICATION`**.
    - In the **Visual Topology Mindmap**, it renders with a pulsing Amber/Orange dashed border and `[HITL]` badge.
    - In the **Ambiguity Inbox**, the user is shown the exact contradiction or anomaly and can assign the category, affected SKU, and companion dependency.
-   - Upon submission, the engine writes an atomic **`KnowledgeDelta`** to `master_knowledge_registry.json`, permanently teaching the local rule engine so it never needs to ask again.
+   - Submission first creates or updates a product-scoped quarantined **`KnowledgeDelta`**. Promotion occurs only after a named reviewer supplies independent reasoning and traceable official evidence; conflicts also require explicit supersession metadata. Only promoted records enter active catalogs or the master registry.
 
 ---
 
@@ -311,7 +311,8 @@ The dual-brain architecture maintains real-time synchronization between the loca
 | **Scrape Completion (Step 9/10)** | `promoteStagingDirectory()` | After staging certification, updates the product's canonical four-tab Google Sheet, records semantic fingerprints and scrape deltas, refreshes its stable NotebookLM Drive source, and passes a restricted canary before any old source retirement. |
 | **BOQ Evaluation** | `eval_boq.js` | Emits `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. |
 | **Partner Quote Reconciliation** | `POST /api/verify-vendor-bom` | Auto-syncs discovered vendor quote discrepancies and CLIC rule updates. |
-| **HITL Feedback Submission** | `POST /api/feedback-submit` | Re-synchronizes verified engineer approvals to cloud sources. |
+| **Generic Feedback Submission** | `POST /api/feedback-submit` | Queues an observation only; it never changes active knowledge or cloud sources. |
+| **Evidence-Backed HITL Resolution** | `POST /api/resolve-ambiguity` | Validates exact product scope, reviewer reasoning, and evidence before active sync; unresolved records remain quarantined. |
 
 ---
 

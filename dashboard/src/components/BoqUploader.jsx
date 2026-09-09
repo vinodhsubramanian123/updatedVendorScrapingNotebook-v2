@@ -127,7 +127,7 @@ export default function BoqUploader({
         body: JSON.stringify({
           configId,
           splitReason,
-          chassis: preflightData?.detectedChassis?.id || 'DL380_Gen12_SFF'
+          chassisDir
         })
       });
       const data = await res.json();

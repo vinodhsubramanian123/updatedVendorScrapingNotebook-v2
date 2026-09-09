@@ -57,7 +57,7 @@ export function LearnedRulesModal({ isOpen, onClose, telemetry = {} }) {
       isOpen={isOpen}
       onClose={onClose}
       title="Learned Rules & Knowledge Deltas Inspector"
-      subtitle="Detailed ledger of rules, restrictions, and dependency overrides automatically learned from portal user feedback and evaluation validation."
+      subtitle="Detailed ledger of promoted rules, restrictions, and dependency overrides with review and evidence provenance."
       icon={Sparkles}
       iconColor="text-purple-600"
       headerBg="bg-purple-50/50"
@@ -294,7 +294,7 @@ export function ExportsModal({ isOpen, onClose }) {
         <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
           <strong className="text-slate-900 text-xs block">Human-in-the-Loop Action Protocol:</strong>
           <p className="text-slate-600 leading-relaxed">
-            When a vendor partner quote has uncataloged SKUs or price variances, the system logs an atomic KnowledgeDelta and provides a downloadable corrected workbook to import back into HPE OCA.
+            When a vendor partner quote has uncataloged SKUs or price variances, the system quarantines a product-scoped observation and provides a corrected workbook. No active rule is inferred from the quote alone.
           </p>
         </div>
       </div>

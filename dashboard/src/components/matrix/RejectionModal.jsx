@@ -43,13 +43,13 @@ export default function RejectionModal({
           <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2">
             <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
               <Check className="w-4 h-4 text-emerald-600" />
-              Feedback Recorded into Master Knowledge Registry!
+              Portal Observation Quarantined
             </div>
             <p className="text-xs text-emerald-700">
-              Delta ID: <code className="font-mono font-bold">{rejectionConfirmed.deltaId || 'LEARNED_DELTA'}</code>
+              Delta ID: <code className="font-mono font-bold">{rejectionConfirmed.deltaId || 'QUARANTINED_OBSERVATION'}</code>
             </p>
             <p className="text-xs text-slate-600">
-              Rule saved to <code className="font-mono text-[11px]">catalog_deltas.json</code> and synced to master knowledge registry.
+              The observation is product-scoped and has not changed active rules or NotebookLM. Promote it only through evidence-backed human review.
             </p>
             <button
               onClick={onClose}
@@ -66,7 +66,7 @@ export default function RejectionModal({
                 How this works:
               </div>
               <p className="text-[11px] text-amber-800">
-                Paste the exact error message from HPE OCA portal or describe what SKU was auto-inserted/rejected. The engine will extract the rule and update local pre-checks automatically.
+                Paste the exact error message from HPE OCA. The engine records it as evidence for review; it does not infer or activate a rule automatically.
               </p>
             </div>
 

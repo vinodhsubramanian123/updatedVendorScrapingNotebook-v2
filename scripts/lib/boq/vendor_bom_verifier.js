@@ -143,13 +143,22 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
 
   const requiresFreshScrape = discrepancies.uncatalogedSkus.length > 0;
 
-  // 3. Closed-Loop Auto-Learning: Log discrepancies into catalog_deltas.json & real-time sync
+  // 3. Record vendor observations in product-scoped quarantine. A portal-added
+  // line is useful evidence, but it is not sufficient proof of a general rule.
+  const quarantinedObservations = [];
+  const observationErrors = [];
   if (hasDiscrepancies) {
     discrepancies.addedByVendor.forEach(added => {
       try {
         const feedbackMsg = `Vendor Partner Portal auto-inserted SKU ${added.sku} (Qty ${added.quantity}): ${added.description}`;
-        processPortalFeedback(feedbackMsg, chassisDir);
-      } catch (_) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'vendor_bom_verifier.js', _); }
+        const observation = processPortalFeedback(feedbackMsg, chassisDir);
+        if (observation.governanceStatus === 'QUARANTINED') quarantinedObservations.push(observation.quarantineId);
+        else observationErrors.push({ sku: added.sku, reasons: observation.rejectionReasons || ['Observation was not quarantined'] });
+      } catch (error) {
+        observationErrors.push({ sku: added.sku, reasons: [error.message] });
+        const _logger = require('../system/pipeline_logger.js');
+        _logger.warn('VENDOR_BOM', `Could not persist portal observation for ${added.sku}`, error);
+      }
     });
   }
 
@@ -160,6 +169,10 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
     totalProposedSkus: proposedSkus.size,
     is100PercentMatch: !hasDiscrepancies,
     requiresFreshScrape,
+    learnedDeltaCount: 0,
+    quarantinedObservationCount: quarantinedObservations.length,
+    quarantinedObservationIds: quarantinedObservations,
+    observationErrors,
     discrepancies,
     verificationTimestamp: new Date().toISOString()
   };

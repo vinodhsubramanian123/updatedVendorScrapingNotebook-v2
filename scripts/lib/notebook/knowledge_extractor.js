@@ -4,7 +4,8 @@
  *
  * Automatically parses grounded natural language answers from Gemini NotebookLM / Local RAG,
  * extracts structured hardware dependencies, option substitutions, and cross-generation carry-overs,
- * and persists them as KnowledgeDeltas into catalog_deltas.json and master_knowledge_registry.json.
+ * and submits them to evidence, confidence, ambiguity, and scope governance.
+ * Non-promotable candidates remain in the product-specific quarantine ledger.
  *
  * This closes the autonomous learning loop:
  * 1. Pre-flight detects potential ambiguity or checks catalog rules.
@@ -203,7 +204,7 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
 }
 
 /**
- * Extract knowledge from RAG answer and persist into local catalog_deltas.json
+ * Extract governed knowledge candidates from a grounded RAG answer.
  * @param {string} ragAnswer 
  * @param {string} chassisDir 
  * @param {object} context 
@@ -235,12 +236,9 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
   // Load catalog data if available for Gate 1b SKU existence checks
   let catalogData = context.catalogData || null;
   if (!catalogData) {
-    const catalogPath = path.join(chassisDir, 'catalog.json');
-    if (fs.existsSync(catalogPath)) {
-      try {
-        catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-      } catch (_) {}
-    }
+    const catalogEntry = fs.readdirSync(chassisDir, { withFileTypes: true })
+      .find(entry => entry.isFile() && entry.name.endsWith('_Catalog.json'));
+    if (catalogEntry) catalogData = JSON.parse(fs.readFileSync(path.join(chassisDir, catalogEntry.name), 'utf-8'));
   }
 
   const historyDir = path.join(chassisDir, 'history');
@@ -251,11 +249,9 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
   const deltaFile = path.join(historyDir, 'catalog_deltas.json');
   let existingDeltas = [];
   if (fs.existsSync(deltaFile)) {
-    try {
-      existingDeltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
-      if (!Array.isArray(existingDeltas)) existingDeltas = [];
-    } catch (_) {
-      existingDeltas = [];
+    existingDeltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
+    if (!Array.isArray(existingDeltas)) {
+      throw new Error('catalog_deltas.json must contain a JSON array; refusing to overwrite active knowledge');
     }
   }
 
@@ -264,7 +260,7 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
 
   deltas.forEach(newDelta => {
     const validation = validateKnowledgeDelta(newDelta, {
-      isHumanApproved: Boolean(context.isHumanApproved),
+      humanReview: context.humanReview,
       catalogData
     });
     if (!validation.valid || validation.status === 'REJECTED') {
@@ -273,7 +269,9 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
     }
 
     if (validation.status === 'QUARANTINED') {
-      saveQuarantinedDelta(validation.sanitizedDelta, validation.reasons);
+      saveQuarantinedDelta(validation.sanitizedDelta, validation.reasons, {
+        filePath: path.join(historyDir, 'quarantined_deltas.json')
+      });
       quarantinedCount++;
       return;
     }

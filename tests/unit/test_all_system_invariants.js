@@ -93,7 +93,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
         humanReasoning: 'Initial observation'
       });
 
-      const historyFile = path.join(tmpDir, 'history', 'catalog_deltas.json');
+      const historyFile = path.join(tmpDir, 'history', 'quarantined_deltas.json');
       assert.ok(fs.existsSync(historyFile));
       let deltas = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
       assert.strictEqual(deltas.length, 1);
@@ -108,6 +108,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
       deltas = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
       assert.strictEqual(deltas.length, 1, 'Must deduplicate identical rule in place');
       assert.strictEqual(deltas[0].humanReasoning, 'Updated secondary verification reasoning', 'Must update metadata in place');
+      assert.strictEqual(deltas[0].observationCount, 2, 'Must retain duplicate observation count without creating stale copies');
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
@@ -192,4 +193,3 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
   });
 
 });
-

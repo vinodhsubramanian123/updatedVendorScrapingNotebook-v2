@@ -141,11 +141,11 @@ async function main() {
 
   // 4. Ingest extracted error into Feedback Loop Engine
   if (modalData.hasErrors) {
-    console.log(`Step 4: Logging KnowledgeDelta into history/catalog_deltas.json...`);
+    console.log(`Step 4: Quarantining portal observation for evidence-backed review...`);
     const simError = modalData.errorSnippet ? modalData.errorSnippet.substring(0, 200) : "ERR_UNBUILDABLE: Physical configuration requires enablement cables and fan kits.";
-    const delta = processPortalFeedback(simError, 'outputs/ProLiant/Gen12/DL380_Gen12_SFF');
-    console.log(`✅ KnowledgeDelta Logged: ${delta.deltaId}`);
-    console.log(`   Rule Update: ${delta.ruleUpdate}`);
+    const delta = processPortalFeedback(simError, 'outputs/ProLiant/Gen12/DL380_Gen12');
+    console.log(`✅ Portal Observation Recorded: ${delta.deltaId}`);
+    console.log(`   Governance Status: ${delta.governanceStatus}`);
   }
 
   ws.close();

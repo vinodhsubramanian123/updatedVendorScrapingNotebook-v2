@@ -195,7 +195,16 @@ function recordFeedbackTelemetry(delta) {
     errorType: delta.errorType || 'PERMANENT_PHYSICAL_DEPENDENCY',
     affectedSku: delta.affectedSku || '',
     requiredSku: delta.requiredDependencySku || null,
-    ruleUpdate: delta.ruleUpdate || ''
+    ruleUpdate: delta.ruleUpdate || '',
+    governanceStatus: delta.governanceStatus || delta.status || 'UNKNOWN',
+    knowledgeFingerprint: delta.knowledgeFingerprint || null,
+    preConfidenceScore: delta.preConfidenceScore ?? null,
+    postConfidenceScore: delta.postConfidenceScore ?? delta.confidenceScore ?? null,
+    reviewer: delta.humanReview?.reviewer || delta.promotedBy || null,
+    reviewerReasoning: delta.humanReview?.reasoning || delta.humanReasoning || null,
+    evidenceIds: Array.isArray(delta.humanReview?.evidence)
+      ? delta.humanReview.evidence.map(item => item.id || item.url).filter(Boolean)
+      : []
   };
 
   data.learnedDeltas.unshift(entry);
@@ -475,4 +484,3 @@ module.exports = {
   recordReconciliationTelemetry,
   recordGuardrailTelemetry
 };
-

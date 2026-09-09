@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ScraperTriggerCard from '../ScraperTriggerCard';
 
@@ -10,7 +10,7 @@ describe('ScraperTriggerCard', () => {
     });
   });
 
-  it('renders control actions header and mode selectors', () => {
+  it('renders control actions header and mode selectors', async () => {
     render(
       <ScraperTriggerCard
         logStream={[]}
@@ -24,9 +24,10 @@ describe('ScraperTriggerCard', () => {
       />
     );
     expect(screen.getByText(/Live CDP Scraper & Pipeline Controls/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/Ready on OCA Portal Page/i)).toBeInTheDocument());
   });
 
-  it('renders task running indicator when task is active', () => {
+  it('renders task running indicator when task is active', async () => {
     render(
       <ScraperTriggerCard
         logStream={['[SCRAPE] Starting execution']}
@@ -40,5 +41,6 @@ describe('ScraperTriggerCard', () => {
       />
     );
     expect(screen.getByText(/Cancel Task/i)).toBeInTheDocument();
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledWith('/api/history/runs'));
   });
 });

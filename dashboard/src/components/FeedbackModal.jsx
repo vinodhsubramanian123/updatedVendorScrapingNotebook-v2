@@ -65,7 +65,7 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
 
         {submitted ? (
           <div className="p-3 bg-emerald-50 rounded-xl text-center text-xs font-bold text-emerald-700">
-            Knowledge Delta Logged!
+            Feedback queued for review — no active rule changed.
           </div>
         ) : (
           <div className="flex gap-2">
@@ -73,7 +73,7 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
               Cancel
             </button>
             <button onClick={handleSubmit} className="flex-1 btn-primary justify-center text-xs">
-              <Send className="w-3.5 h-3.5" /> Submit Delta
+              <Send className="w-3.5 h-3.5" /> Queue Observation
             </button>
           </div>
         )}

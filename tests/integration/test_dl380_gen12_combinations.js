@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const xlsx = require('xlsx-js-style');
 
 const { evaluateBOQMultiAspect } = require('../../scripts/lib/boq/boq_evaluator.js');
@@ -283,7 +284,7 @@ P03178-B21,HPE 1000W Flex Slot Titanium Power Supply,2`);
   // -------------------------------------------------------------
   console.log(`\n${C.bold}${C.blue}▶ [COMBINATION 8] Closed-Loop Partner Portal Reconciliation & Knowledge Learning${C.reset}`);
   
-  const chassisDir = path.join(__dirname, '../..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+  const chassisDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dl380-feedback-quarantine-'));
   const delta = processPortalFeedback(
     'ERR_STORAGE_CABLE_REQUIRED: Controller MR416i-p requires secondary NVMe cable kit P76450-B21 for Box 1/2.',
     chassisDir,
@@ -296,14 +297,15 @@ P03178-B21,HPE 1000W Flex Slot Titanium Power Supply,2`);
     `Knowledge Delta ID: ${delta.deltaId || 'N/A'}`
   );
 
-  const deltaFile = path.join(chassisDir, 'history', 'catalog_deltas.json');
+  const deltaFile = path.join(chassisDir, 'history', 'quarantined_deltas.json');
   const savedDeltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
   const foundDelta = savedDeltas.some(d => d.deltaId === delta.deltaId);
   assertTest(
-    'KnowledgeDelta Retrieved in Feedback Registry for NotebookLM Sync',
+    'KnowledgeDelta Retrieved in Product-Scoped Quarantine',
     foundDelta,
-    'Persistent delta loaded for next evaluation runs'
+    'Observation is retained without changing active rules'
   );
+  fs.rmSync(chassisDir, { recursive: true, force: true });
 
   // -------------------------------------------------------------
   // SUMMARY REPORT

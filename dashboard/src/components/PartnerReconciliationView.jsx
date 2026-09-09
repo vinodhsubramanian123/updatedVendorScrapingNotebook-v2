@@ -63,7 +63,7 @@ export default function PartnerReconciliationView({
         body: JSON.stringify({
           vendorItems: items,
           proposedRankSolution,
-          chassisDir: evalResults?.chassisDir
+          chassisDir: evalResults?.chassisDir || selectedChassis
         })
       });
 
@@ -111,14 +111,14 @@ export default function PartnerReconciliationView({
               <h2 className="text-lg font-bold tracking-tight">HPE Partner Portal Quote Reconciliation & Learning Loop</h2>
             </div>
             <p className="text-xs text-indigo-200/80 max-w-2xl leading-relaxed">
-              Upload or paste quotes directly exported from HPE OCA / CLIC Partner Portal. The engine performs bi-directional delta calculations, classifies discrepancies into <strong className="text-amber-300">TEMPORARY_SUPPLY</strong> or <strong className="text-emerald-300">PERMANENT_PHYSICAL_DEPENDENCY</strong>, writes atomic <strong className="text-indigo-200">KnowledgeDelta</strong> logs, and synchronizes learnings with NotebookLM.
+              Upload or paste quotes directly exported from HPE OCA / CLIC Partner Portal. The engine performs bi-directional delta calculations and records discrepancies as product-scoped observations. Active rules and NotebookLM change only after evidence-backed review.
             </p>
           </div>
           <div className="flex items-center gap-2 bg-indigo-950/80 p-3 rounded-xl border border-indigo-500/30 text-xs">
             <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
             <div>
               <span className="block font-bold text-indigo-200">Bi-Directional Learning</span>
-              <span className="text-[11px] text-indigo-300/70">Auto-updates rules for chassis {selectedChassis || 'Unknown Chassis'}</span>
+              <span className="text-[11px] text-indigo-300/70">Quarantines observations for {selectedChassis || 'Unknown Chassis'} pending review</span>
             </div>
           </div>
         </div>
@@ -325,7 +325,7 @@ export default function PartnerReconciliationView({
               )}
 
               <div className="pt-3 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
-                <span>KnowledgeDelta written atomically to <code className="text-slate-700 font-mono">outputs/catalog_deltas.json</code></span>
+                <span>Observation written atomically to the product <code className="text-slate-700 font-mono">history/quarantined_deltas.json</code></span>
                 <button onClick={() => setReport(null)} className="btn-secondary text-xs">
                   Verify Another Quote
                 </button>

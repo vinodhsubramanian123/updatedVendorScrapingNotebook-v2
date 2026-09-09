@@ -3,8 +3,9 @@
  * scripts/lib/feedback_loop.js — Closed-Loop Portal Feedback & Knowledge Delta Engine
  *
  * Ingests unbuildable error messages and portal rejection warnings from HPE OCA (or vendor portals),
- * classifies error types, generates structured KnowledgeDeltas, logs history to catalog_deltas.json,
- * and automatically updates local pre-checks and NotebookLM rules.
+ * classifies error types and records product-scoped candidate KnowledgeDeltas.
+ * Candidates remain quarantined unless a complete evidence-backed human review
+ * authorizes promotion into active local rules and the NotebookLM sync pipeline.
  */
 
 const fs = require('fs');
@@ -12,6 +13,12 @@ const path = require('path');
 
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { getTraceId } = require('../system/trace_context.js');
+const {
+  validateKnowledgeDelta,
+  saveQuarantinedDelta,
+  promoteQuarantinedDelta,
+  buildKnowledgeFingerprint
+} = require('./quarantined_deltas.js');
 
 /**
  * Classify a portal error message into TEMPORARY_SUPPLY or PERMANENT_PHYSICAL_DEPENDENCY.
@@ -27,36 +34,17 @@ function classifyPortalError(errorMessage) {
     errorType = 'TEMPORARY_SUPPLY_CONSTRAINT';
   }
 
-  // Chain of Responsibility Extractors
-  const extractors = [
-    // 1. Strict Regex Extractor
-    (text) => {
-      const matches = text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
-      return { affectedSku: matches[0] || null, requiredSku: matches[1] || null };
-    },
-    // 2. Semantic NLP Fallback (using Notebook Extractor logic for inline text)
-    (text) => {
-      let aff = null; let req = null;
-      if (text.toLowerCase().includes('requires') || text.toLowerCase().includes('mandatory')) {
-         const parts = text.split(/(?:requires|mandatory)/i);
-         const affMatch = parts[0].match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/);
-         const reqMatch = parts[1] ? parts[1].match(/\b([A-Z0-9]{5,8}-[A-Z0-9]{3,4})\b/) : null;
-         aff = affMatch ? affMatch[1] : null;
-         req = reqMatch ? reqMatch[1] : null;
-      }
-      return { affectedSku: aff, requiredSku: req };
-    }
-  ];
-
-  let affectedSku = 'UNKNOWN_SKU';
+  const matches = msg.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+  let affectedSku = matches[0] || 'UNKNOWN_SKU';
   let requiredSku = null;
-
-  for (const ext of extractors) {
-    const res = ext(msg);
-    if (res.affectedSku && res.affectedSku !== 'UNKNOWN_SKU') {
-      affectedSku = res.affectedSku;
-      requiredSku = res.requiredSku || requiredSku;
-      break; // Match found, stop chain
+  const relation = msg.match(/\b(requires?|mandatory|must include|needs?)\b/i);
+  if (relation) {
+    const parts = msg.split(/\b(?:requires?|mandatory|must include|needs?)\b/i);
+    const before = (parts[0] || '').match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+    const after = (parts.slice(1).join(' ') || '').match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+    if (before.length > 0) {
+      affectedSku = before.at(-1);
+      requiredSku = after[0] || null;
     }
   }
 
@@ -72,7 +60,7 @@ function classifyPortalError(errorMessage) {
 /**
  * Process a portal unbuildable error and persist KnowledgeDelta.
  * @param {string} portalError 
- * @param {string} outputDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12_SFF"
+ * @param {string} outputDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12"
  * @param {object} options Optional parameters { humanReasoning, scopeTaxonomy, ruleUpdate, solutionType }
  * @returns {object} Generated KnowledgeDelta
  */
@@ -90,24 +78,8 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     fs.mkdirSync(historyDir, { recursive: true });
   }
 
-  const deltaFile = path.join(historyDir, 'catalog_deltas.json');
-  let deltas = [];
-  if (fs.existsSync(deltaFile)) {
-    try {
-      deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
-      if (!Array.isArray(deltas)) deltas = [];
-    } catch (parseErr) {
-      // Corruption detected — back up the corrupt file before resetting to prevent data loss
-      const corruptBackup = `${deltaFile}.corrupt_${Date.now()}.bak`;
-      try { fs.copyFileSync(deltaFile, corruptBackup); } catch (_) { /* backup best-effort */ }
-      const logger = require('../system/pipeline_logger.js');
-      logger.warn('FEEDBACK_LOOP', `catalog_deltas.json was corrupt (${parseErr.message}). Backed up to ${path.basename(corruptBackup)} and reset to []. Check backup for recovery.`);
-      deltas = [];
-    }
-  }
-
   const delta = {
-    deltaId: `DELTA-${Date.now()}`,
+    deltaId: `DELTA-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     traceId: getTraceId() !== 'NO_TRACE_CONTEXT' ? getTraceId() : null,
     timestamp: classification.timestamp,
     chassis: path.basename(outputDir),
@@ -115,84 +87,59 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     errorType: classification.errorType,
     affectedSku: options.affectedSku || classification.affectedSku,
     requiredDependencySku: options.requiredDependencySku || classification.requiredSku,
-    ruleUpdate: options.ruleUpdate || (classification.requiredSku 
-      ? `If ${classification.affectedSku} is present, ${classification.requiredSku} is mandatory.`
-      : `Portal validation flagged restriction on ${classification.affectedSku}.`),
+    ruleUpdate: options.ruleUpdate || classification.rawMessage,
     humanReasoning: options.humanReasoning || null,
-    sourceAgent: options.sourceAgent || 'HUMAN_HITL',
+    sourceAgent: options.sourceAgent || 'PORTAL_OBSERVATION',
+    source: options.source || 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
+    citations: Array.isArray(options.citations) ? options.citations : [],
     guardrailTurn: options.guardrailTurn || null,
-    preConfidenceScore: options.preConfidenceScore || null,
-    scopeTaxonomy: options.scopeTaxonomy || (() => {
-      try {
-        const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
-        return classifyKnowledgeScope({ chassis: path.basename(outputDir), rawMessage: classification.rawMessage, errorType: classification.errorType });
-      } catch (_) {
-        return 'CHASSIS_SPECIFIC';
-      }
-    })(),
+    preConfidenceScore: options.preConfidenceScore ?? 0.70,
+    scopeTaxonomy: options.scopeTaxonomy || 'CHASSIS_SPECIFIC',
     solutionType: options.solutionType || 'General Server',
-    status: 'APPLIED_TO_PRECHECKS_AND_RAG'
+    status: 'PENDING_HUMAN_REVIEW'
   };
 
   // Mirror scopeTaxonomy → scope so both fields are always populated and canonical
   delta.scope = delta.scopeTaxonomy;
 
-  // Deduplicate before appending: if identical rule exists, update timestamp & metadata instead of adding duplicate
-  const existingIdx = deltas.findIndex(d => 
-    d.chassis === delta.chassis &&
-    d.affectedSku === delta.affectedSku &&
-    (d.requiredDependencySku === delta.requiredDependencySku || (!d.requiredDependencySku && !delta.requiredDependencySku)) &&
-    (d.rawMessage === delta.rawMessage || d.ruleUpdate === delta.ruleUpdate)
-  );
+  const catalogPath = fs.readdirSync(outputDir, { withFileTypes: true })
+    .find(entry => entry.isFile() && entry.name.endsWith('_Catalog.json'));
+  let catalogData = null;
+  if (catalogPath) catalogData = JSON.parse(fs.readFileSync(path.join(outputDir, catalogPath.name), 'utf-8'));
 
-  // Negative delta reconciliation: if recording an exclusion/restriction, remove obsolete conflicting positive dependency
-  const isExclusion = (delta.rawMessage && (delta.rawMessage.toLowerCase().includes('not compatible') || delta.rawMessage.toLowerCase().includes('do not inject') || delta.rawMessage.toLowerCase().includes('restrict'))) ||
-                      delta.errorType === 'MUTUAL_EXCLUSION';
-
-  if (isExclusion && delta.affectedSku && delta.requiredDependencySku) {
-    deltas = deltas.filter(d => !(
-      d.chassis === delta.chassis &&
-      d.affectedSku === delta.affectedSku &&
-      d.requiredDependencySku === delta.requiredDependencySku &&
-      d.errorType === 'PERMANENT_PHYSICAL_DEPENDENCY'
-    ));
+  const validation = validateKnowledgeDelta(delta, { catalogData, humanReview: options.humanReview });
+  if (!validation.valid || validation.status === 'REJECTED') {
+    return { ...delta, governanceStatus: 'REJECTED', status: 'REJECTED', rejectionReasons: validation.reasons };
   }
 
-  if (existingIdx >= 0) {
-    deltas[existingIdx] = {
-      ...deltas[existingIdx],
-      timestamp: delta.timestamp,
-      humanReasoning: delta.humanReasoning || deltas[existingIdx].humanReasoning,
-      preConfidenceScore: delta.preConfidenceScore ?? deltas[existingIdx].preConfidenceScore,
-      guardrailTurn: delta.guardrailTurn ?? deltas[existingIdx].guardrailTurn
-    };
-  } else {
-    deltas.push(delta);
+  const candidate = { ...validation.sanitizedDelta, knowledgeFingerprint: validation.sanitizedDelta.knowledgeFingerprint || buildKnowledgeFingerprint(validation.sanitizedDelta) };
+  if (validation.status === 'QUARANTINED') {
+    return saveQuarantinedDelta(candidate, validation.reasons, {
+      filePath: path.join(historyDir, 'quarantined_deltas.json')
+    });
   }
 
-  safeWriteJsonAtomic(deltaFile, deltas);
-
-  // Auto-update Catalog Rules TSV / CSV if present
-  updateCatalogRulesFile(outputDir, delta);
-
-  // Record Telemetry
+  const quarantineFile = path.join(historyDir, 'quarantined_deltas.json');
+  const pending = saveQuarantinedDelta(candidate, ['Evidence-backed decision awaiting atomic promotion'], { filePath: quarantineFile });
+  const activated = promoteQuarantinedDelta(pending.quarantineId, options.humanReview.reviewer, {
+    filePath: quarantineFile,
+    activationDirectory: outputDir,
+    catalogData,
+    humanReview: options.humanReview
+  });
+  if (!activated) return pending;
+  updateCatalogRulesFile(outputDir, activated);
   try {
+    if (options.skipPostPromotionSideEffects === true) return activated;
     const { recordFeedbackTelemetry } = require('../system/telemetry.js');
-    recordFeedbackTelemetry(delta);
-  } catch (err) {
-    console.warn('⚠️ Telemetry logging advisory:', err.message);
-  }
-
-  // S1: Auto-trigger Master Knowledge Sync & NotebookLM payload generation
-  try {
+    recordFeedbackTelemetry(activated);
     const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../sync/knowledge_sync.js');
     buildMasterKnowledgeRegistry();
-    generateNotebookSyncPayload(delta.chassis);
+    generateNotebookSyncPayload(activated.chassis);
   } catch (err) {
-    console.warn('⚠️ Master Knowledge Sync advisory:', err.message);
+    console.warn('⚠️ Verified knowledge sync advisory:', err.message);
   }
-
-  return existingIdx >= 0 ? deltas[existingIdx] : delta;
+  return activated;
 }
 
 /**

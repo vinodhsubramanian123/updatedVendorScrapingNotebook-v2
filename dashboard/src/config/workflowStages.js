@@ -499,10 +499,10 @@ export const PHASE_2_STAGES = [
       },
       { 
         id: 'WRITE_DELTAS', 
-        title: 'Atomic KnowledgeDelta Ledger Creation', 
+        title: 'Atomic Observation Quarantine',
         ruleCode: 'Knowledge', 
         category: 'Delta Storage',
-        detail: 'Writes structured delta records to outputs/catalog_deltas.json with SHA-256 integrity hashes' 
+        detail: 'Writes product-scoped observations with semantic SHA-256 fingerprints; activation requires evidence-backed review'
       },
     ],
     deriveStatus(state) {
@@ -510,14 +510,14 @@ export const PHASE_2_STAGES = [
     },
     deriveMetrics(state) {
       return {
-        'Knowledge Delta': hasAudit(state) ? (state.auditReport.deltaId || 'NLM-RES-LOGGED') : 'Awaiting Audit',
+        'Governance Record': hasAudit(state) ? (state.auditReport.quarantinedObservationCount ? `${state.auditReport.quarantinedObservationCount} Quarantined` : 'No New Observation') : 'Awaiting Audit',
         'Telemetry Ledger': hasAudit(state) ? 'Committed' : 'Idle',
       };
     },
     deriveDurationMs() {
       return 45;
     },
-    details: 'Records pipeline performance telemetry and logs newly discovered vendor physical constraints into permanent memory.',
+    details: 'Records pipeline telemetry and quarantines newly observed vendor constraints until evidence-backed review promotes them.',
     action: { text: 'View System Telemetry', tab: 'telemetry' },
   },
   {

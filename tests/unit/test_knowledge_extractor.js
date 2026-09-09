@@ -106,6 +106,18 @@ assert.strictEqual(fallbackResult.count, 0, 'Must not extract deltas from LOCAL_
 assert.strictEqual(fallbackResult.quarantinedCount, 0, 'Must not quarantine deltas from LOCAL_RAG_FALLBACK');
 console.log('  ✅ PASS: Blocked delta extraction from LOCAL_RAG_FALLBACK');
 
+// Test 5: Corrupt active knowledge must fail closed and remain untouched.
+const corruptDeltaPath = path.join(tempDir, 'history', 'catalog_deltas.json');
+const corruptLedger = '[{"deltaId":"BROKEN"';
+fs.writeFileSync(corruptDeltaPath, corruptLedger, 'utf-8');
+assert.throws(
+  () => extractAndPersistLearnedDeltas(sampleRagResponse, tempDir, verifiedContext),
+  /JSON|Unexpected end/,
+  'Corrupt active knowledge must stop extraction instead of being replaced'
+);
+assert.strictEqual(fs.readFileSync(corruptDeltaPath, 'utf-8'), corruptLedger, 'Corrupt ledger must remain available for recovery');
+console.log('  ✅ PASS: Corrupt active knowledge ledger fails closed without overwrite');
+
 // Clean up temp dirs and reset quarantine
 fs.rmSync(tempDir, { recursive: true, force: true });
 fs.rmSync(quarantineTempDir, { recursive: true, force: true });

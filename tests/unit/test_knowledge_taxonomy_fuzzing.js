@@ -44,7 +44,7 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
   await t.test('processPortalFeedback() edge cases and resilience', async (t2) => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'oca-feedback-test-'));
     const historyDir = path.join(tmpDir, 'history');
-    const deltaFile = path.join(historyDir, 'catalog_deltas.json');
+    const deltaFile = path.join(historyDir, 'quarantined_deltas.json');
     
     try {
       // 1. Normal feedback generation
@@ -55,16 +55,17 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
       assert.strictEqual(f1.errorType, 'TEMPORARY_SUPPLY_CONSTRAINT');
       assert.strictEqual(f1.chassis, path.basename(tmpDir));
 
-      // 2. Corrupted JSON file recovery
+      // 2. Corrupted quarantine fails closed instead of silently erasing evidence
       fs.writeFileSync(deltaFile, '[{corrupted_json_syntax: true');
+      assert.throws(
+        () => processPortalFeedback('Random physical error on 123456-B21', tmpDir),
+        /Unexpected token|JSON/,
+        'Corrupt governance evidence must stop persistence for manual recovery'
+      );
+      fs.writeFileSync(deltaFile, '[]');
       const f2 = processPortalFeedback('Random physical error on 123456-B21', tmpDir);
       assert.strictEqual(f2.affectedSku, '123456-B21');
       assert.strictEqual(f2.errorType, 'PERMANENT_PHYSICAL_DEPENDENCY');
-      
-      // Verify backup was created
-      const files = fs.readdirSync(historyDir);
-      const bakFiles = files.filter(f => f.endsWith('.bak'));
-      assert.strictEqual(bakFiles.length, 1);
       
       // 3. Deduplication logic
       const f3 = processPortalFeedback('Random physical error on 123456-B21', tmpDir, { humanReasoning: 'Updated reasoning' });

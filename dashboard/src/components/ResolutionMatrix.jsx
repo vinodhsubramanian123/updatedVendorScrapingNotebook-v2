@@ -115,7 +115,7 @@ export default function ResolutionMatrix({
     setExportingRank(tier.rank);
     setExportError(null);
     try {
-      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12_SFF';
+      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
       const parts = tier.skuPartsList && tier.skuPartsList.length > 0
         ? tier.skuPartsList
         : (evalResults?.items || []);
@@ -154,25 +154,22 @@ export default function ResolutionMatrix({
     setRejectionError(null);
 
     try {
-      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12_SFF';
-      const res = await fetch('/api/feedback-rejection', {
+      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
+      const res = await fetch('/api/simulate-error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chassis: chassisId,
-          rankTier: rejectionModal.rank,
-          strategyName: rejectionModal.title,
-          rawRejectionText: rejectionText,
-          skuPartsList: rejectionModal.skuPartsList || []
+          errorMessage: `[Rank ${rejectionModal.rank} - ${rejectionModal.title}] ${rejectionText}`
         })
       });
 
       const data = await res.json();
-      if (!res.ok || !data.success) {
+      if (!res.ok) {
         throw new Error(data.error || 'Failed to record rejection feedback');
       }
 
-      setRejectionConfirmed(data.delta || { deltaId: 'LEARNED_DELTA' });
+      setRejectionConfirmed(data.delta || { deltaId: 'QUARANTINED_OBSERVATION' });
       if (onOpenPortalFeedback) {
         onOpenPortalFeedback(data.delta);
       }
@@ -296,7 +293,7 @@ export default function ResolutionMatrix({
       {vendorVerificationModal && (
         <VendorBomVerificationModal
           rankSolution={vendorVerificationModal}
-          selectedChassis={evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12_SFF'}
+          selectedChassis={evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12'}
           onClose={() => setVendorVerificationModal(null)}
           onApplyReconciliation={(_result) => {
             setVendorVerificationModal(null);

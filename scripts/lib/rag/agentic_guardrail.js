@@ -6,7 +6,6 @@
  */
 const { GoogleGenAI, Type } = require('@google/genai');
 const path = require('path');
-const fs = require('fs');
 
 const { evaluateBOQMultiAspect } = require('../boq/boq_evaluator.js');
 const { executeNotebookQuery } = require('../notebook/notebook_query_utils.js');
@@ -15,7 +14,6 @@ const { processPortalFeedback } = require('../feedback/feedback_loop.js');
 const { loadNotebookConfig, getNotebookIdForChassis } = require('../sync/knowledge_sync.js');
 const { emitProgress } = require('../system/progress.js');
 const { recordGuardrailTelemetry } = require('../system/telemetry.js');
-const { triggerPostFlowSync } = require('../sync/post_flow_sync.js');
 const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
 const { buildGuardrailSystemPrompt } = require('../prompts/guardrail_prompt.js');
 const geminiRotator = require('../system/gemini_rotator.js');
@@ -137,7 +135,7 @@ function buildToolRegistry(ctx) {
         schema: {
           name: 'record_knowledge_delta',
           description:
-            'Records a new physical dependency rule or fix to the persistent KnowledgeBase so the system automatically learns from this session.',
+            'Records a candidate physical dependency as a product-scoped observation. It remains quarantined until evidence-backed governance promotes it.',
           parameters: {
             type: Type.OBJECT,
             properties: {
@@ -171,6 +169,36 @@ function buildToolRegistry(ctx) {
       }
     ]
   ]);
+}
+
+/**
+ * Route agent-proposed rules through the same governance boundary as portal
+ * observations. Exact catalog registration is mandatory; this function never
+ * creates a fallback product directory and never treats quarantine as learning.
+ */
+function submitGuardrailCandidates(pendingDeltas, dependencies = {}) {
+  const catalogs = dependencies.catalogs || listAllCatalogs();
+  const submit = dependencies.processFeedback || processPortalFeedback;
+  const counts = { activatedDeltaCount: 0, quarantinedDeltaCount: 0, rejectedDeltaCount: 0 };
+
+  for (const delta of pendingDeltas || []) {
+    try {
+      const cat = catalogs.find(c => c.id === delta.chassisId);
+      if (!cat?.catalogDir) {
+        counts.rejectedDeltaCount++;
+        logger.warn('AGENTIC_GUARDRAIL', `Candidate rejected: no exact registered catalog for ${delta.chassisId}.`);
+        continue;
+      }
+      const governed = submit(delta.ruleUpdate || 'Agentic rule observation', cat.catalogDir, delta);
+      if (governed.governanceStatus === 'ACTIVE') counts.activatedDeltaCount++;
+      else if (governed.governanceStatus === 'REJECTED') counts.rejectedDeltaCount++;
+      else counts.quarantinedDeltaCount++;
+    } catch (commitErr) {
+      counts.rejectedDeltaCount++;
+      logger.warn('AGENTIC_GUARDRAIL', 'Failed to submit knowledge candidate', commitErr);
+    }
+  }
+  return counts;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -362,22 +390,8 @@ async function runAgenticGuardrail(items, chassisDir) {
     }
   }
 
-  // ── GAP-A4: Commit queued knowledge deltas after the loop ───────────────
-  let deltasRecordedCount = 0;
-  for (const delta of ctx.pendingDeltas) {
-    try {
-      const cat = listAllCatalogs().find(c => c.id === delta.chassisId);
-      let outputDir = cat ? cat.catalogDir : null;
-      if (!outputDir) {
-        outputDir = path.join(__dirname, '..', '..', 'outputs', delta.chassisId);
-      }
-      if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
-      processPortalFeedback('Agentic rule update', outputDir, delta);
-      deltasRecordedCount++;
-    } catch (commitErr) {
-      logger.warn('AGENTIC_GUARDRAIL', 'Failed to commit knowledge delta', commitErr);
-    }
-  }
+  // ── GAP-A4: Submit queued candidates to product-scoped governance ───────
+  const { activatedDeltaCount, quarantinedDeltaCount, rejectedDeltaCount } = submitGuardrailCandidates(ctx.pendingDeltas);
 
   const durationMs = Date.now() - startTime;
   logger.info('AGENTIC_GUARDRAIL',
@@ -397,7 +411,7 @@ async function runAgenticGuardrail(items, chassisDir) {
   }
 
   if (!extractedText && executedToolCalls.length > 0) {
-    extractedText = `Autonomous Agentic Guardrail completed in ${ctx.turns} turns, executing ${executedToolCalls.length} verification tools: [${executedToolCalls.join(', ')}]. Physical constraints and knowledge deltas successfully grounded against Gemini NotebookLM.`;
+    extractedText = `Agentic Guardrail completed in ${ctx.turns} turns, executing ${executedToolCalls.length} verification tools: [${executedToolCalls.join(', ')}]. Candidate observations were routed through product-scoped knowledge governance.`;
   }
 
   const guardrailSummary = {
@@ -407,7 +421,10 @@ async function runAgenticGuardrail(items, chassisDir) {
     executedToolCalls,
     durationMs,
     preConfidence,
-    postConfidence: ctx.latestConfidence
+    postConfidence: ctx.latestConfidence,
+    activatedDeltaCount,
+    quarantinedDeltaCount,
+    rejectedDeltaCount
   };
 
   // GAP-C3: Record Guardrail Telemetry
@@ -417,20 +434,12 @@ async function runAgenticGuardrail(items, chassisDir) {
     logger.warn('AGENTIC_GUARDRAIL', 'Failed to record guardrail telemetry', telErr);
   }
 
-  // GAP-M5: Trigger Post-Flow Sync if new deltas were learned
-  if (deltasRecordedCount > 0) {
-    try {
-      triggerPostFlowSync(chassisId, 'GUARDRAIL');
-    } catch (syncErr) {
-      logger.warn('AGENTIC_GUARDRAIL', 'Post-flow sync advisory', syncErr);
-    }
-  }
-
   return guardrailSummary;
 }
 
 module.exports = {
   runAgenticGuardrail,
+  submitGuardrailCandidates,
   GUARDRAIL_OVERALL_TIMEOUT_MS,
   GUARDRAIL_NLM_MAX_CALLS
 };

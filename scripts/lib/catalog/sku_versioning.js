@@ -541,6 +541,7 @@ function recordVersionSnapshot(catalogData, historyDir) {
 
 module.exports = {
   calculateChecksum,
+  resolveChassisDirectory,
   normalizeTargetDate,
   formatMonthLabel,
   getSkuAuditHistory,

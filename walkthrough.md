@@ -70,7 +70,8 @@ This is a Drive-only customer evaluation artifact. It is explicitly ineligible f
 
 ### Final Regression Certification
 
-- `npm run test:all`: 144/144 suites passed (79 unit, 38 chaos, 24 integration/portfolio, and 3 browser E2E).
+- `npm run test:all`: 145/145 suites certified (79 unit, 38 chaos, 25 integration/portfolio, and 3 browser E2E); the single initial E2E failure was isolated to a stale compiled dashboard bundle, rebuilt, and re-certified.
+- Dashboard component regression: 37/37 tests passed across 9 files; production build and zero-warning lint passed.
 - `npm run lint`: zero dashboard lint errors or warnings.
 - Static dependency/complexity audit: zero circular dependencies; all enforced complexity thresholds passed.
 
@@ -82,3 +83,5 @@ This is a Drive-only customer evaluation artifact. It is explicitly ineligible f
 - **`INV-67`**: Zero-Human-in-the-Loop Google Sheets & Docs Workspace Automation Protocol.
 - **`INV-68`**: Evidence-Gated Shared Accessory Compatibility Protocol. Common rails, cable-management arms, storage enablement kits, cables, power cords, and transceivers are retained when certified in the target product catalog; cross-product reuse requires exact product membership and verified evidence in both the local and NotebookLM knowledge paths.
 - **`INV-69`**: Delta-Only SKU Lifecycle & Business Retention Protocol. Meaningful price, SKU, status, and date transitions are preserved; unchanged runs do not inflate history; removed SKUs stop active tracking after one event but retain compact evidence for deal audits, substitution intelligence, and possible reinstatement.
+- **`INV-70`**: Evidence-Gated Human Resolution & Anti-Hallucination Protocol. Portal and NotebookLM outputs now enter product-scoped quarantine by default. Promotion requires a named reviewer, independent reasoning, traceable trusted evidence, exact scope, and contradiction supersession where applicable; confidence changes and decisions are auditable.
+- The agentic guardrail uses the same boundary: proposed rules require an exactly registered product, quarantined observations are not counted as learned knowledge, and no NotebookLM sync is triggered by an unreviewed candidate.

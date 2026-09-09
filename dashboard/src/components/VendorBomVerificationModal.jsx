@@ -19,7 +19,6 @@ export default function VendorBomVerificationModal({
 
   const [humanReasoning, setHumanReasoning] = useState('');
   const [ruleConstraint, setRuleConstraint] = useState('');
-  const [scopeTaxonomy, setScopeTaxonomy] = useState('CHASSIS_SPECIFIC');
   const [isRagVerifying, setIsRagVerifying] = useState(false);
   const [ragVerificationResult, setRagVerificationResult] = useState(null);
   const [isSubmittingDelta, setIsSubmittingDelta] = useState(false);
@@ -146,7 +145,7 @@ export default function VendorBomVerificationModal({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chassisId: selectedChassis || 'DL380_Gen12_SFF',
+          chassis: selectedChassis || 'DL380_Gen12',
           query: prompt
         })
       });
@@ -166,14 +165,12 @@ export default function VendorBomVerificationModal({
     setDeltaSyncSuccess(null);
 
     try {
-      const res = await fetch('/api/feedback-rejection', {
+      const res = await fetch('/api/simulate-error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chassis: selectedChassis || 'DL380_Gen12_SFF',
-          rawRejectionText: `${ruleConstraint} — ${humanReasoning}`,
-          scopeTaxonomy,
-          humanReasoning
+          chassis: selectedChassis || 'DL380_Gen12',
+          errorMessage: `${ruleConstraint} — ${humanReasoning}`
         })
       });
       const data = await res.json();
@@ -276,8 +273,6 @@ export default function VendorBomVerificationModal({
               setHumanReasoning={setHumanReasoning}
               ruleConstraint={ruleConstraint}
               setRuleConstraint={setRuleConstraint}
-              scopeTaxonomy={scopeTaxonomy}
-              setScopeTaxonomy={setScopeTaxonomy}
               onCrossVerifyRAG={handleCrossVerifyWithNotebookRAG}
               isRagVerifying={isRagVerifying}
               ragVerificationResult={ragVerificationResult}

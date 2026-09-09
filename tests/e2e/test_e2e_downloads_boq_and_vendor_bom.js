@@ -12,7 +12,7 @@
  * - 6-Aspect Physical Math Evaluation (CLIC FIO memory check, cooling, power)
  * - Stage 1.5: 5-Tier Strategic Resolution Matrix & Portal Feedback Modal
  * - Stage 3: Partner Quote Reconciliation with DL380 Gen12 Vendor BOM
- * - HITL Feedback Drawer & Knowledge Delta Synchronization
+ * - HITL Feedback Queue & Independent Knowledge Sync Health Check
  * - NotebookLM RAG Consultation Drawer
  * - Master Catalog Explorer & Telemetry Observability Ledger
  * - Master Excel Workbook Export
@@ -429,9 +429,9 @@ async function runE2ETest() {
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // STEP 6: HITL Feedback Queue & Knowledge Delta Sync
+    // STEP 6: HITL Feedback Queue & independent sync health check
     // ──────────────────────────────────────────────────────────────────────────
-    console.log('\n▶ [STEP 6] Testing HITL Feedback Drawer & Real-Time Knowledge Sync...');
+    console.log('\n▶ [STEP 6] Testing HITL Feedback Drawer, Review Queue & Sync Health...');
     const step6Start = Date.now();
 
     // Open User Feedback Drawer
@@ -451,7 +451,9 @@ async function runE2ETest() {
       await page.waitForTimeout(600);
     }
 
-    // Verify feedback and knowledge delta sync APIs directly
+    // A raw feedback submission must only enter the review queue. Exercise the
+    // sync endpoint separately; it may synchronize previously promoted rules,
+    // but must not imply that this unreviewed feedback became active knowledge.
     const syncRes = await page.evaluate(async () => {
       const fbSubmit = await fetch('/api/feedback-submit', {
         method: 'POST',
@@ -470,8 +472,9 @@ async function runE2ETest() {
       return { fbData, syncData };
     });
 
-    testResults.push({ name: '6. HITL Feedback Queue & Knowledge Sync', passed: !!syncRes.fbData.entry, durationMs: Date.now() - step6Start });
-    console.log(`  ✅ Feedback logged (ID: ${syncRes.fbData.entry?.id}) & Knowledge Sync executed`);
+    const feedbackQueuedOnly = !!syncRes.fbData.entry && syncRes.fbData.governanceStatus === 'PENDING_REVIEW';
+    testResults.push({ name: '6. HITL Feedback Review Queue & Sync Health', passed: feedbackQueuedOnly, durationMs: Date.now() - step6Start });
+    console.log(`  ✅ Feedback queued for review (ID: ${syncRes.fbData.entry?.id}); independent sync health check executed`);
 
     // ──────────────────────────────────────────────────────────────────────────
     // STEP 7: NotebookLM RAG Consultation Drawer

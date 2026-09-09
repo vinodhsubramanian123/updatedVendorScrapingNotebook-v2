@@ -53,9 +53,9 @@ const {
   resumePendingJobs
 } = require('../../scripts/lib/notebook/notebook_query_utils.js');
 const logger = require('../../scripts/lib/system/pipeline_logger.js');
-const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../../scripts/lib/sync/knowledge_sync.js');
-const { recordFeedbackTelemetry } = require('../../scripts/lib/system/telemetry.js');
 const { verifyVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
+const { processPortalFeedback } = require('../../scripts/lib/feedback/feedback_loop.js');
+const { resolveChassisDirectory } = require('../../scripts/lib/catalog/sku_versioning.js');
 
 if (process.env.NODE_ENV !== 'test') {
   const recovery = resumePendingJobs(executeNotebookQuery);
@@ -149,8 +149,15 @@ router.post('/notebook-query-async', (req, res) => {
     });
   }
   let safeChassisDir = null;
-  if (learningEligible && chassisDir) {
-    try { safeChassisDir = assertSafePath(chassisDir); } catch (err) {
+  if (learningEligible) {
+    if (!chassisDir || !chassis) return sendErrorResponse(res, 400, 'learningEligible queries require exact chassis and chassisDir values', { source: 'NOTEBOOK_ROUTER' });
+    try {
+      safeChassisDir = assertSafePath(chassisDir);
+      const expectedDir = resolveChassisDirectory(chassis);
+      if (!expectedDir || !fs.existsSync(expectedDir) || path.resolve(expectedDir) !== path.resolve(safeChassisDir)) {
+        return sendErrorResponse(res, 409, 'Learning target does not match the queried product generation; cross-product persistence blocked', { source: 'NOTEBOOK_ROUTER' });
+      }
+    } catch (err) {
       return sendErrorResponse(res, 403, err, { source: 'NOTEBOOK_ROUTER' });
     }
   }
@@ -214,57 +221,81 @@ router.post('/ask-notebook', asyncHandler(async (req, res) => {
   if (!notebookId) {
     logger.warn('NOTEBOOK_ROUTE', `No notebook configured for chassis "${chassis || 'unknown'}". Routing to LOCAL_RAG_FALLBACK.`);
     const localRes = queryLocalKnowledgeBase(prompt, chassis || '');
-    return res.json({ answer: localRes.answer, citations: localRes.citations || [], query: localRes.query, source: 'LOCAL_RAG_FALLBACK', warning: `No notebook configured for chassis "${chassis || 'unknown'}"` });
+    return res.json({ answer: localRes.answer, citations: localRes.citations || [], query: localRes.query, source: 'LOCAL_RAG_FALLBACK', groundingVerification: 'UNVERIFIED', isCloudGrounded: false, learningEligible: false, warning: `No notebook configured for chassis "${chassis || 'unknown'}"` });
   }
 
   try {
     const result = await executeNotebookQuery(notebookId, prompt, { context: { chassis } });
-    res.json({ answer: result.answer, citations: result.citations || [], query: result.query });
+    res.json({ answer: result.answer, citations: result.citations || [], query: result.query, source: result.source, groundingVerification: result.groundingVerification, isCloudGrounded: result.isCloudGrounded === true, learningEligible: result.isCloudGrounded === true && result.groundingVerification === 'VERIFIED_GROUNDED' && (result.citations || []).length > 0 });
   } catch (err) {
-    res.json({ answer: `To resolve this ambiguity: Inject a physical fixing rule for the requested hardware SKUs. (Notice: ${err.message})`, citations: [], query: sanitizeNotebookQuery(prompt, { chassis }) });
+    res.json({ answer: `NotebookLM is unavailable or did not return verified grounding. No hardware rule was inferred. Continue with deterministic local checks or submit evidence for human review. (${err.message})`, citations: [], query: sanitizeNotebookQuery(prompt, { chassis }), source: 'NOTEBOOK_LM_UNAVAILABLE', groundingVerification: 'UNVERIFIED', isCloudGrounded: false, learningEligible: false });
   }
 }));
 
 // ── Resolve Ambiguity (HITL) ──────────────────────────────────────────────────
 router.post('/resolve-ambiguity', (req, res) => {
-  const { ruleUpdate, chassis, affectedSku, requiredDependencySku, humanReasoning, scopeTaxonomy, solutionType } = req.body;
-  if (!ruleUpdate) return sendErrorResponse(res, 400, 'ruleUpdate is required', { source: 'NOTEBOOK_ROUTER' });
+  const { ruleUpdate, chassis, affectedSku, requiredDependencySku, humanReasoning, scopeTaxonomy, solutionType, reviewer, evidence, confirmedVerified, supersedesRuleIds } = req.body;
+  if (!chassis || !affectedSku || !ruleUpdate || !humanReasoning || !reviewer || !scopeTaxonomy) {
+    return sendErrorResponse(res, 400, 'chassis, affectedSku, ruleUpdate, humanReasoning, reviewer, and scopeTaxonomy are required', { source: 'NOTEBOOK_ROUTER' });
+  }
+  if (String(ruleUpdate).trim().length < 20 || String(humanReasoning).trim().length < 20) {
+    return sendErrorResponse(res, 400, 'ruleUpdate and humanReasoning must each contain at least 20 characters', { source: 'NOTEBOOK_ROUTER' });
+  }
+  if (confirmedVerified !== true || !Array.isArray(evidence) || evidence.length === 0) {
+    return sendErrorResponse(res, 400, 'Explicit verification and at least one traceable evidence record are required', { source: 'NOTEBOOK_ROUTER' });
+  }
+  const outputDir = resolveChassisDirectory(chassis);
+  if (!outputDir || !fs.existsSync(outputDir) || !path.resolve(outputDir).startsWith(`${OUTPUTS_DIR}${path.sep}`)) {
+    return sendErrorResponse(res, 404, `No exact product-generation catalog found for chassis '${chassis}'`, { source: 'NOTEBOOK_ROUTER' });
+  }
 
-  const deltaFile = path.join(OUTPUTS_DIR, 'history', 'catalog_deltas.json');
-  const deltaId = `NLM-RES-${Date.now().toString().slice(-6)}`;
-  const newDelta = { deltaId, timestamp: new Date().toISOString(), chassis: chassis || 'DL380_Gen12_SFF', errorType: 'MANUAL_NOTEBOOKLM_RESOLUTION', ruleUpdate, affectedSku: affectedSku || null, requiredDependencySku: requiredDependencySku || null, humanReasoning: humanReasoning || ruleUpdate, scopeTaxonomy: scopeTaxonomy || 'CHASSIS_SPECIFIC', solutionType: solutionType || 'General Server', source: 'dashboard_human_in_loop' };
-
-  let deltas = [];
-  try { if (fs.existsSync(deltaFile)) deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8')); } catch (_) {}
-  deltas.push(newDelta);
-  safeWriteJsonAtomic(deltaFile, deltas);
-
-  let syncInfo = null;
   try {
-    buildMasterKnowledgeRegistry();
-    syncInfo = generateNotebookSyncPayload(newDelta.chassis);
-    recordFeedbackTelemetry(newDelta);
-  } catch (syncErr) { logger.warn('NOTEBOOK_ROUTE', 'Real-time KnowledgeSync notice', syncErr); }
-
-  broadcastSSE({ type: 'LOG', text: `💡 [KNOWLEDGE_LEARNED] Delta ${deltaId} logged (${newDelta.scopeTaxonomy}). Real-time sync to NotebookLM triggered.`, stream: 'stdout' });
-  res.json({ success: true, deltaId, scopeTaxonomy: newDelta.scopeTaxonomy, syncInfo, message: 'Human resolution logged & synchronized to NotebookLM' });
+    const result = processPortalFeedback(ruleUpdate, outputDir, {
+      affectedSku,
+      requiredDependencySku: requiredDependencySku || null,
+      ruleUpdate,
+      humanReasoning,
+      scopeTaxonomy,
+      solutionType,
+      sourceAgent: 'DASHBOARD_HITL_REVIEW',
+      citations: evidence.map(item => item.id || item.url).filter(Boolean),
+      humanReview: {
+        reviewer,
+        reasoning: humanReasoning,
+        decision: 'APPROVE',
+        verified: true,
+        evidence,
+        supersedesRuleIds: Array.isArray(supersedesRuleIds) ? supersedesRuleIds : []
+      }
+    });
+    if (result.governanceStatus === 'REJECTED') {
+      return res.status(422).json({ success: false, promoted: false, deltaId: result.deltaId, governanceStatus: 'REJECTED', reasons: result.rejectionReasons || [], message: 'Candidate rejected by knowledge governance; no active knowledge was changed' });
+    }
+    const promoted = result.governanceStatus === 'ACTIVE';
+    broadcastSSE({ type: 'LOG', text: promoted ? `💡 [KNOWLEDGE_PROMOTED] ${result.deltaId} activated after evidence-backed review.` : `🛡️ [KNOWLEDGE_QUARANTINED] ${result.deltaId} retained for further review; no rule or NotebookLM source was updated.`, stream: promoted ? 'stdout' : 'stderr' });
+    return res.status(promoted ? 200 : 202).json({ success: true, promoted, deltaId: result.deltaId, quarantineId: result.quarantineId || null, governanceStatus: result.governanceStatus, reasons: result.quarantineReasons || result.rejectionReasons || [], scopeTaxonomy: result.scopeTaxonomy, message: promoted ? 'Verified human decision activated and queued for knowledge sync' : 'Decision retained in quarantine; no active knowledge was changed' });
+  } catch (err) {
+    return sendErrorResponse(res, 422, err, { source: 'NOTEBOOK_ROUTER' });
+  }
 });
 
 // ── Vendor BOM Cross-Verification ─────────────────────────────────────────────
 router.post('/verify-vendor-bom', (req, res) => {
   const { vendorItems, proposedRankSolution, chassisDir } = req.body;
   if (!vendorItems || !Array.isArray(vendorItems)) return sendErrorResponse(res, 400, 'vendorItems array is required', { source: 'NOTEBOOK_ROUTER' });
+  if (!chassisDir) return sendErrorResponse(res, 400, 'Exact chassisDir is required for vendor BOM verification', { source: 'NOTEBOOK_ROUTER' });
   let safeChassisDir;
   try {
-    safeChassisDir = chassisDir ? assertSafePath(chassisDir) : assertSafePath(path.join('ProLiant', 'Gen12', 'DL380_Gen12_SFF'));
+    safeChassisDir = assertSafePath(resolveChassisDirectory(chassisDir));
+    if (!fs.existsSync(safeChassisDir)) return sendErrorResponse(res, 404, 'Exact product-generation directory does not exist', { source: 'NOTEBOOK_ROUTER' });
   } catch (err) { return sendErrorResponse(res, 403, err, { source: 'NOTEBOOK_ROUTER' }); }
   try {
     const auditReport = verifyVendorBOM(vendorItems, proposedRankSolution, safeChassisDir);
-    broadcastSSE({ type: 'LOG', text: auditReport.requiresFreshScrape ? '⚠️ [VENDOR_BOM_AUDIT] Uncataloged SKUs found. Fresh targeted CDP scrape recommended.' : `✅ [VENDOR_BOM_AUDIT] Vendor BOM cross-verified (${auditReport.is100PercentMatch ? '100% Match' : 'Deltas Learned'}).`, stream: auditReport.requiresFreshScrape ? 'stderr' : 'stdout' });
+    broadcastSSE({ type: 'LOG', text: auditReport.requiresFreshScrape ? '⚠️ [VENDOR_BOM_AUDIT] Uncataloged SKUs found. Fresh targeted CDP scrape recommended.' : `✅ [VENDOR_BOM_AUDIT] Vendor BOM cross-verified (${auditReport.is100PercentMatch ? '100% Match' : `${auditReport.quarantinedObservationCount} observations quarantined`}).`, stream: auditReport.requiresFreshScrape ? 'stderr' : 'stdout' });
 
-    // AUTO-SYNC: After reconciliation, trigger knowledge sync so learned deltas 
-    // from CLIC/portal differences are immediately persisted to NotebookLM
-    if (auditReport.learnedDeltaCount > 0 || auditReport.autoInsertedSkus?.length > 0 || !auditReport.is100PercentMatch) {
+    // Only already-promoted knowledge may trigger sync. Raw vendor differences
+    // remain quarantined observations and cannot change NotebookLM sources.
+    if (auditReport.learnedDeltaCount > 0) {
       setImmediate(() => {
         try {
           const { triggerPostFlowSync } = require('../../scripts/lib/sync/post_flow_sync.js');
@@ -277,23 +308,24 @@ router.post('/verify-vendor-bom', (req, res) => {
       });
     }
 
-    res.json(auditReport);
+    res.json({ ...auditReport, knowledgeSyncTriggered: auditReport.learnedDeltaCount > 0 });
   } catch (err) { sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' }); }
 });
 
 // ── Simulate Portal Rejection ─────────────────────────────────────────────────
 router.post('/simulate-error', (req, res) => {
   const { boqPath, errorMessage, chassis } = req.body;
-  if (!errorMessage) return sendErrorResponse(res, 400, 'errorMessage is required', { source: 'NOTEBOOK_ROUTER' });
-  const deltasFile = path.join(OUTPUTS_DIR, 'history', 'catalog_deltas.json');
-  let deltas = [];
-  try { if (fs.existsSync(deltasFile)) deltas = JSON.parse(fs.readFileSync(deltasFile, 'utf-8')); } catch (_) {}
-  if (!Array.isArray(deltas)) deltas = [];
-  const newDelta = { id: `DELTA_${Date.now()}`, timestamp: new Date().toISOString(), source: 'PORTAL_REJECTION', chassis: chassis || 'UNKNOWN', boqPath: boqPath || null, errorMessage, status: 'PENDING_SYNC', scopeTaxonomy: chassis ? 'CHASSIS_SPECIFIC' : 'UNIVERSAL_VENDOR' };
-  deltas.push(newDelta);
-  safeWriteJsonAtomic(deltasFile, deltas);
-  broadcastSSE({ type: 'LOG', text: `⚠️ [PORTAL_REJECTION] Delta logged: ${errorMessage} (ID: ${newDelta.id})`, stream: 'stdout' });
-  res.json({ message: 'Portal rejection logged as KnowledgeDelta', delta: newDelta });
+  if (!errorMessage || !chassis) return sendErrorResponse(res, 400, 'errorMessage and exact chassis are required', { source: 'NOTEBOOK_ROUTER' });
+  const outputDir = resolveChassisDirectory(chassis);
+  if (!outputDir || !fs.existsSync(outputDir) || !path.resolve(outputDir).startsWith(`${OUTPUTS_DIR}${path.sep}`)) {
+    return sendErrorResponse(res, 404, `No exact product-generation catalog found for chassis '${chassis}'`, { source: 'NOTEBOOK_ROUTER' });
+  }
+  const delta = processPortalFeedback(errorMessage, outputDir, { scopeTaxonomy: 'CHASSIS_SPECIFIC', solutionType: 'Portal Trial', runtimeBoqReference: boqPath || null });
+  if (delta.governanceStatus === 'REJECTED') {
+    return res.status(422).json({ message: 'Portal observation rejected by validation; no knowledge was changed', delta });
+  }
+  broadcastSSE({ type: 'LOG', text: `⚠️ [PORTAL_OBSERVATION] ${delta.deltaId} quarantined for evidence-backed review.`, stream: 'stdout' });
+  res.status(202).json({ message: 'Portal observation quarantined; active rules and NotebookLM were not changed', delta });
 });
 
 // ── Notebook Config Registry ──────────────────────────────────────────────────
@@ -323,17 +355,7 @@ router.post('/feedback-submit', (req, res) => {
   if (!text) return sendErrorResponse(res, 400, 'Feedback text is required', { source: 'NOTEBOOK_ROUTER' });
   const entry = feedbackQueue.appendFeedback(text, category, context);
 
-  // AUTO-SYNC: After feedback submission, trigger lightweight async knowledge sync
-  // so new learnings from HITL review are persisted to NotebookLM automatically
-  setImmediate(() => {
-    try {
-      const { triggerPostFlowSync } = require('../../scripts/lib/sync/post_flow_sync.js');
-      const chassis = (context && context.chassis) || 'DL380_Gen12_SFF';
-      triggerPostFlowSync(chassis, 'HITL_FEEDBACK');
-    } catch (_) { /* non-blocking advisory sync */ }
-  });
-
-  res.json({ entry, agentPrompt: feedbackQueue.formatAgentTaskPrompt(entry) });
+  res.json({ entry, agentPrompt: feedbackQueue.formatAgentTaskPrompt(entry), governanceStatus: 'PENDING_REVIEW', message: 'Feedback queued only; no knowledge source or active rule was changed.' });
 });
 
 router.post('/feedback-mark-completed', (req, res) => {

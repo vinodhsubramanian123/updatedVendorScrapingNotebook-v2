@@ -267,7 +267,7 @@ export default function MacroOrchestratorFlow({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500">Reconcile final Vendor Portal Quote against Rank 1 Strategy, log atomic KnowledgeDeltas, and sync RAG.</p>
+                  <p className="text-xs text-slate-500">Reconcile the final Vendor Portal Quote, quarantine discrepancies, and sync only promoted evidence-backed knowledge.</p>
                 </div>
                 <div className="ml-auto">
                    {renderStatusBadge(isSyncing ? 'RUNNING' : (hasAudit ? 'COMPLETED' : 'READY'))}
@@ -349,4 +349,3 @@ export default function MacroOrchestratorFlow({
     </div>
   );
 }
-

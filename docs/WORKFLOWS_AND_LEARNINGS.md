@@ -735,3 +735,12 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - **Stop after first removal**: A removed SKU receives one immutable removal event and a compact tombstone with `trackingState: STOPPED_AFTER_REMOVAL`. Tombstones in previous snapshots are never treated as active options or removed repeatedly; the original discontinuation date remains stable.
 - **Purposeful retention**: The compact tombstone and significant price trail remain available for historical deal validation, obsolete-SKU rejection, substitution reasoning, and reinstatement detection. Records explicitly referenced by deals or verified rules may be marked `BUSINESS_RELEVANT`; otherwise their retention class is `COMPACT_LIFECYCLE_TOMBSTONE`.
 - **Local/cloud parity**: The discontinued workbook sheet, canonical Google Sheet change ledger, and NotebookLM learning source expose the lifecycle, tracking, and retention states. A SKU that later returns to the certified target-product catalog is marked `REINSTATED` and resumes active tracking.
+
+---
+
+## 70. Evidence-Gated HITL Resolution and Confidence Learning (`INV-70`)
+
+- NotebookLM and local-RAG answers are advisory until their grounding metadata is inspected. Local fallback, missing citations, timeouts, and unverified cloud answers cannot populate a rule form automatically or enter the learning pipeline.
+- Portal observations are written to `outputs/{Family}/{Gen}/{Model}/history/quarantined_deltas.json`. Stable semantic fingerprints merge repeat observations and retain first/last-seen timestamps plus an occurrence count.
+- Promotion requires the exact product generation, valid affected SKU, explicit scope, named reviewer, at least 20 characters of independent reasoning, affirmative verification, and a trusted evidence ID. A contradictory decision must list the rule IDs it supersedes.
+- Only promoted rules update deterministic rule artifacts and NotebookLM sync payloads. Each promotion or rejection is preserved in `knowledge_decisions.json`, including evidence and pre/post confidence. Corrupt governance ledgers stop the operation instead of being reset.

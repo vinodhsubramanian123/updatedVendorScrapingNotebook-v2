@@ -241,7 +241,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
             <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-blue-600" /> Sync Knowledge to NotebookLM
             </h4>
-            <p className="text-[11px] text-slate-500 mb-4">Push all learned KnowledgeDeltas and catalog updates to your Gemini Notebooks for RAG queries.</p>
+            <p className="text-[11px] text-slate-500 mb-4">Push certified catalog updates and promoted, evidence-backed KnowledgeDeltas to Gemini Notebooks. Quarantined observations are excluded.</p>
             
             <button
               onClick={onTriggerSyncKnowledge}

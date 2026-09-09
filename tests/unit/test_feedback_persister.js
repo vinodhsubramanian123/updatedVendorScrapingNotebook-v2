@@ -114,3 +114,42 @@ test('processPortalFeedback generates KnowledgeDelta with canonical scopeTaxonom
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 });
+
+test('processPortalFeedback activates only a complete evidence-backed human decision', () => {
+  const { processPortalFeedback } = require('../../scripts/lib/feedback/feedback_loop.js');
+  const tmpDir = path.join(os.tmpdir(), `test_verified_feedback_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`);
+  const historyDir = path.join(tmpDir, 'history');
+  fs.mkdirSync(historyDir, { recursive: true });
+  fs.writeFileSync(path.join(tmpDir, `${path.basename(tmpDir)}_Catalog.json`), JSON.stringify({
+    entries: [{ skus: [{ 'Product #': 'P55415-B21' }, { 'Product #': 'P01366-B21' }] }]
+  }));
+
+  try {
+    const delta = processPortalFeedback('P55415-B21 requires P01366-B21 for protected write-back cache.', tmpDir, {
+      affectedSku: 'P55415-B21',
+      requiredDependencySku: 'P01366-B21',
+      ruleUpdate: 'P55415-B21 requires P01366-B21 for protected write-back cache.',
+      humanReasoning: 'The exact controller and battery pairing was verified in the official QuickSpecs.',
+      scopeTaxonomy: 'CHASSIS_SPECIFIC',
+      humanReview: {
+        reviewer: 'TEST_ENGINEER',
+        reasoning: 'The exact controller and battery pairing was verified in the official QuickSpecs.',
+        decision: 'APPROVE',
+        verified: true,
+        evidence: [{ type: 'OFFICIAL_QUICKSPECS', id: 'QS-CONTROLLER-001' }]
+      },
+      skipPostPromotionSideEffects: true
+    });
+
+    assert.strictEqual(delta.governanceStatus, 'ACTIVE');
+    assert.ok(delta.postConfidenceScore > delta.preConfidenceScore);
+    assert.strictEqual(JSON.parse(fs.readFileSync(path.join(historyDir, 'quarantined_deltas.json'), 'utf-8')).length, 0);
+    assert.strictEqual(JSON.parse(fs.readFileSync(path.join(historyDir, 'catalog_deltas.json'), 'utf-8')).length, 1);
+    const decisions = JSON.parse(fs.readFileSync(path.join(historyDir, 'knowledge_decisions.json'), 'utf-8'));
+    assert.ok(decisions.some(item => item.decision === 'APPROVAL_VALIDATED_PENDING_ACTIVATION'));
+    assert.ok(decisions.some(item => item.decision === 'PROMOTED'));
+    assert.ok(decisions.every(item => item.reviewer === 'TEST_ENGINEER'));
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});

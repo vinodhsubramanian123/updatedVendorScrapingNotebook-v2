@@ -134,7 +134,7 @@ if (!fs.existsSync(testOutputDir)) fs.mkdirSync(testOutputDir, { recursive: true
 
 const delta = processPortalFeedback(simErr, testOutputDir);
 assert(delta.deltaId.startsWith('DELTA-'), `Generated valid KnowledgeDelta ID: ${delta.deltaId}`);
-assert(fs.existsSync(path.join(testOutputDir, 'history', 'catalog_deltas.json')), 'Logged delta persistently to history/catalog_deltas.json');
+assert(fs.existsSync(path.join(testOutputDir, 'history', 'quarantined_deltas.json')), 'Held unverified delta in product-scoped quarantine');
 
 // Cleanup temp dir
 try { fs.rmSync(testOutputDir, { recursive: true, force: true }); } catch (err) {}
