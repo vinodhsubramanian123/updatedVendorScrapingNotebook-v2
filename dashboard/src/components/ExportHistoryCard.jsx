@@ -48,6 +48,9 @@ export default function ExportHistoryCard() {
             onClick={() => setIsConfigOpen(!isConfigOpen)}
             className="text-slate-400 hover:text-slate-600 p-1 rounded-md hover:bg-slate-100 transition-colors"
             title="Configure limit"
+            aria-label="Configure display limit"
+            aria-expanded={isConfigOpen}
+            aria-haspopup="true"
           >
             <Settings className="w-4 h-4" />
           </button>
