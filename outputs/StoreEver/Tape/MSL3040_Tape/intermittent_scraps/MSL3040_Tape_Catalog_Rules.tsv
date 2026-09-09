@@ -1,3 +1,24 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Chassis	Variants	max 1	Quantity Constraint	Quantity: max 1
-Chassis	Variants	Chassis Standard (Max 1)	Configuration Rule	Mandatory base chassis selection required for solution build
+Unknown	Tape Drives	max 3	Quantity Constraint	Quantity: max 3
+Unknown	Encryption Kit	max 999	Quantity Constraint	Quantity: max 999
+Unknown	Power Supply	max 1	Quantity Constraint	Quantity: max 1
+Unknown	FibreChannel Cables	max 999	Quantity Constraint	Quantity: max 999
+Unknown	SAS Cables	max 999	Quantity Constraint	Quantity: max 999
+Unknown	Expansion Modules	max 15	Quantity Constraint	Quantity: max 15
+Unknown	Power Cord	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	Storage Media	max 999	Quantity Constraint	Quantity: max 999
+Unknown	Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
+Accessories & Infrastructure	Encryption Kit	max 999	Configuration Rule	Selection constraint for Encryption Kit: max 999
+Power Supplies	Power Supply	max 1	Configuration Rule	Selection constraint for Power Supply: max 1
+Cables & Enablement Kits	FibreChannel Cables	max 999	Configuration Rule	Selection constraint for FibreChannel Cables: max 999
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	Selection constraint for SAS Cables: max 999
+Accessories & Infrastructure	Expansion Modules	max 15	Configuration Rule	Selection constraint for Expansion Modules: max 15
+Accessories & Infrastructure	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	Supported on LTO-9 SAS Drive (R6Q75A) Only.
+Storage Controllers	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
+Cables & Enablement Kits	Power Cord	no max	Configuration Rule	Selection constraint for Power Cord: no max
+Software & Licenses	Software	no max	Configuration Rule	Selection constraint for Software: no max
+Storage Controllers	Tape Drives	max 3	Configuration Rule	Selection constraint for Tape Drives: max 3
+Support Services	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
+Chassis	Encryption Kit	max 999	Configuration Rule	Selection constraint for Encryption Kit: max 999

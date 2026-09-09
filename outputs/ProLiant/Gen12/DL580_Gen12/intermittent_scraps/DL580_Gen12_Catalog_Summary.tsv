@@ -1,0 +1,20 @@
+Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
+Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	1	1	1	Yes	1
+Accessories & Infrastructure	Energy Star Configuration Presets	optional	0	Optional	1	Yes	1
+Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	1	2	7	Yes	1
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	0	6	4	Yes	1
+Accessories & Infrastructure	System Options	optional	0	Optional	31	Yes	12
+Memory	DDR5 Registered Smart Memory	max 32	0	32	8	Yes	3
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	0	24	5	Yes	1
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	0	4	79	Yes	6
+Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	0	24	1	Yes	1
+Software & Licenses	Server Management & Operating System Licenses	no max	0	Unlimited	618	Yes	26
+PCIe Risers	PCIe Riser Kits	max 3	0	3	4	Yes	2
+Networking	PCIe Networking Adapters	max 8	0	8	43	Yes	5
+Networking	OCP3 Networking Adapters	max 8	0	8	16	Yes	3
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	0	24	5	Yes	1
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	0	Optional	3	Yes	2
+Cables & Enablement Kits	Power Cords & Jumper Cables		0	N/A	8	Yes	3
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	1	2	1	Yes	1
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	31	Yes	3
+Networking	Fibre Channel Host Bus Adapters	max 8	0	8	2	Yes	1

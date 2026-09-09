@@ -1,0 +1,321 @@
+[
+  {
+    "summary": {
+      "runId": "run_MSL3040_Tape_1788942093974",
+      "sessionName": "MSL3040_Tape",
+      "startTime": "2026-09-09T08:21:33.974Z",
+      "endTime": "2026-09-09T08:21:34.311Z",
+      "durationMs": 337,
+      "durationSec": "0.34",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 193,
+      "warningCount": 56,
+      "errorCount": 0,
+      "totalUniqueSKUs": 104,
+      "validationStats": {
+        "totalEntries": 17,
+        "totalSKUs": 193,
+        "validSKUs": 193,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 33,
+        "priceErrors": 0,
+        "ruleCount": 17,
+        "categoryCount": 7
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-09T08:21:33.975Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_MSL3040_Tape_1788942093801/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_MSL3040_Tape_1788942093801/MSL3040_Tape_Catalog.json",
+          "chassisLabel": "MSL3040 Tape"
+        }
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.220Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 9,
+          "totalUniqueSKUs": 104,
+          "incrementalStats": {
+            "totalScrapedSkus": 193,
+            "unchangedSkusCount": 1,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 192,
+            "removedSkusCount": 1,
+            "estimatedTokensSaved": 150,
+            "estimatedProcessingTimeSavedMs": 200
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.239Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 56,
+          "stats": {
+            "totalEntries": 17,
+            "totalSKUs": 193,
+            "validSKUs": 193,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 33,
+            "priceErrors": 0,
+            "ruleCount": 17,
+            "categoryCount": 7
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.310Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_MSL3040_Tape_1788942093801/MSL3040_Tape_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [AM495A] has inconsistent list prices: $10 in [Encryption Kit] vs $2500 in [Encryption Kit]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [Q6Q64A] has inconsistent list prices: $12 in [Power Supply] vs $780 in [Power Supply]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [Q6Q63A] has inconsistent list prices: $12 in [Expansion Modules] vs $7275 in [SAS Cables]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [C7973A] has inconsistent list prices: $10 in [Storage Media] vs $61.35 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [C7974AN] has inconsistent list prices: $10 in [Storage Media] vs $695.91 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.234Z",
+        "message": "Duplicate SKU [C7974AL] has inconsistent list prices: $10 in [Storage Media] vs $1182.63 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [Q2009A] has inconsistent list prices: $10 in [Storage Media] vs $197.87 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [Q2010A] has inconsistent list prices: $10 in [Storage Media] vs $199.05 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7975AL] has inconsistent list prices: $10 in [Storage Media] vs $929.43 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7975A] has inconsistent list prices: $10 in [Storage Media] vs $46.46 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7975W] has inconsistent list prices: $10 in [Storage Media] vs $53.12 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7975AN] has inconsistent list prices: $10 in [Storage Media] vs $929.43 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [Q2011A] has inconsistent list prices: $10 in [Storage Media] vs $92.99 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [Q2012A] has inconsistent list prices: $10 in [Storage Media] vs $199.05 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7976BL] has inconsistent list prices: $10 in [Storage Media] vs $1146.39 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.235Z",
+        "message": "Duplicate SKU [C7976B] has inconsistent list prices: $10 in [Storage Media] vs $57.32 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976BN] has inconsistent list prices: $10 in [Storage Media] vs $1293.13 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976BW] has inconsistent list prices: $10 in [Storage Media] vs $86.76 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976AC] has inconsistent list prices: $10 in [Storage Media] vs $1530.46 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976AL] has inconsistent list prices: $10 in [Storage Media] vs $1530.47 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976A] has inconsistent list prices: $10 in [Storage Media] vs $76.53 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976AN] has inconsistent list prices: $10 in [Storage Media] vs $1530.47 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976WL] has inconsistent list prices: $10 in [Storage Media] vs $2176.5 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7976W] has inconsistent list prices: $10 in [Storage Media] vs $108.82 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [Q2013A] has inconsistent list prices: $10 in [Storage Media] vs $92.99 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.236Z",
+        "message": "Duplicate SKU [C7977AH] has inconsistent list prices: $10 in [Storage Media] vs $2205.96 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977A] has inconsistent list prices: $10 in [Storage Media] vs $110.3 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977AN] has inconsistent list prices: $10 in [Storage Media] vs $2205.96 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2014A] has inconsistent list prices: $10 in [Storage Media] vs $92.99 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977AL] has inconsistent list prices: $10 in [Storage Media] vs $2205.96 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977AC] has inconsistent list prices: $10 in [Storage Media] vs $2205.96 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078MC] has inconsistent list prices: $2 in [Storage Media] vs $1617.88 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078ML] has inconsistent list prices: $2 in [Storage Media] vs $1617.88 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078MN] has inconsistent list prices: $2 in [Storage Media] vs $1617.88 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2016A] has inconsistent list prices: $2 in [Storage Media] vs $199.05 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977WL] has inconsistent list prices: $10 in [Storage Media] vs $3044.17 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [C7977W] has inconsistent list prices: $10 in [Storage Media] vs $152.2 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078AH] has inconsistent list prices: $8 in [Storage Media] vs $2348.24 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078AL] has inconsistent list prices: $8 in [Storage Media] vs $2348.24 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.237Z",
+        "message": "Duplicate SKU [Q2078AC] has inconsistent list prices: $8 in [Storage Media] vs $2348.24 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2078A] has inconsistent list prices: $8 in [Storage Media] vs $117.43 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2078AN] has inconsistent list prices: $8 in [Storage Media] vs $2348.24 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2078WL] has inconsistent list prices: $8 in [Storage Media] vs $3240.72 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2078W] has inconsistent list prices: $8 in [Storage Media] vs $162.07 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2015A] has inconsistent list prices: $12 in [Storage Media] vs $92.99 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079AH] has inconsistent list prices: $9 in [Storage Media] vs $2911.01 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079AL] has inconsistent list prices: $9 in [Storage Media] vs $2911.01 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079AC] has inconsistent list prices: $9 in [Storage Media] vs $2911.01 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079A] has inconsistent list prices: $9 in [Storage Media] vs $145.56 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079AN] has inconsistent list prices: $9 in [Storage Media] vs $2911.01 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079WL] has inconsistent list prices: $9 in [Storage Media] vs $3976.02 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2079W] has inconsistent list prices: $9 in [Storage Media] vs $198.8 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [Q2017A] has inconsistent list prices: $9 in [Storage Media] vs $92.99 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.238Z",
+        "message": "Duplicate SKU [C7974A] has inconsistent list prices: $10 in [Storage Media] vs $58.24 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.239Z",
+        "message": "Duplicate SKU [C7974W] has inconsistent list prices: $10 in [Storage Media] vs $41.63 in [Storage Media]."
+      },
+      {
+        "timestamp": "2026-09-09T08:21:34.239Z",
+        "message": "Duplicate SKU [C7978A] has inconsistent list prices: $10 in [Storage Media] vs $77.62 in [Storage Media]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 193,
+      "classified": 193,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

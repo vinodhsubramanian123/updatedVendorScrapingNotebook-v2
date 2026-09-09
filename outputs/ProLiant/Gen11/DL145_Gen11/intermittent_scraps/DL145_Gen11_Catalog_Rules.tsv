@@ -1,3 +1,26 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Chassis	Variants	max 1	Quantity Constraint	Quantity: max 1
-Chassis	Variants	Chassis Standard (Max 1)	Configuration Rule	Mandatory base chassis selection required for solution build
+Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
+Accessories & Infrastructure	System Options	optional	Configuration Rule	"HPE DL145 Gen11 Desk/Wall Mount Kit" and "HPE DL145 Gen11 Rack enable kit" cannot be selected together.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
+Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR5 Registered Smart Memory: max 32
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Product is not yet available
+Accessories & Infrastructure	System Options	optional	Configuration Rule	CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+PCIe Risers	PCIe Riser Kits	max 3	Configuration Rule	Selection constraint for PCIe Riser Kits: max 3
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 8
+Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
+Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Max quantity of product limited by space available.
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Selection constraint for Hard Disk Drives (SAS/SATA): max 24
+Cooling / Thermal	High Performance & Standard Fan Kits	max 6	Configuration Rule	Selection constraint for High Performance & Standard Fan Kits: max 6
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selection constraint for Flex Slot Power Supplies: min 1, max 2
+Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Mixing of Power Supplies is not allowed.
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.

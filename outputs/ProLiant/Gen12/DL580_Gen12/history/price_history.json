@@ -1,0 +1,1696 @@
+{
+  "P68503-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "P74508-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 8941,
+      "status": "BASELINE"
+    }
+  ],
+  "P74509-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 11074,
+      "status": "BASELINE"
+    }
+  ],
+  "P73835-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 48922,
+      "status": "BASELINE"
+    }
+  ],
+  "P73838-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 58094,
+      "status": "BASELINE"
+    }
+  ],
+  "P74572-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 7493,
+      "status": "BASELINE"
+    }
+  ],
+  "P74577-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 17305,
+      "status": "BASELINE"
+    }
+  ],
+  "P74579-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 38913,
+      "status": "BASELINE"
+    }
+  ],
+  "P80383-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 710,
+      "status": "BASELINE"
+    }
+  ],
+  "P78016-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3893,
+      "status": "BASELINE"
+    }
+  ],
+  "P80382-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 431,
+      "status": "BASELINE"
+    }
+  ],
+  "P80441-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 73,
+      "status": "BASELINE"
+    }
+  ],
+  "P80445-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 5962,
+      "status": "BASELINE"
+    }
+  ],
+  "P69728-F21": [
+    {
+      "date": "2026-09-09",
+      "price": 28532,
+      "status": "BASELINE"
+    }
+  ],
+  "P69728-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 28532,
+      "status": "BASELINE"
+    }
+  ],
+  "P69729-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 47056,
+      "status": "BASELINE"
+    }
+  ],
+  "P69730-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 60190,
+      "status": "BASELINE"
+    }
+  ],
+  "P73447-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 133186,
+      "status": "BASELINE"
+    }
+  ],
+  "P69729-F21": [
+    {
+      "date": "2026-09-09",
+      "price": 47056,
+      "status": "BASELINE"
+    }
+  ],
+  "P69730-F21": [
+    {
+      "date": "2026-09-09",
+      "price": 60190,
+      "status": "BASELINE"
+    }
+  ],
+  "P73447-F21": [
+    {
+      "date": "2026-09-09",
+      "price": 133186,
+      "status": "BASELINE"
+    }
+  ],
+  "P80429-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 390,
+      "status": "BASELINE"
+    }
+  ],
+  "P80430-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 513,
+      "status": "BASELINE"
+    }
+  ],
+  "P80431-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80432-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80447-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P75697-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 11399,
+      "status": "BASELINE"
+    }
+  ],
+  "P47777-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 5999,
+      "status": "BASELINE"
+    }
+  ],
+  "P47789-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3449,
+      "status": "BASELINE"
+    }
+  ],
+  "P47785-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3499,
+      "status": "BASELINE"
+    }
+  ],
+  "804398-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1775,
+      "status": "BASELINE"
+    }
+  ],
+  "P47781-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 5699,
+      "status": "BASELINE"
+    }
+  ],
+  "P95072-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1775,
+      "status": "BASELINE"
+    }
+  ],
+  "P74775-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4699,
+      "status": "BASELINE"
+    }
+  ],
+  "P58335-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4599,
+      "status": "BASELINE"
+    }
+  ],
+  "P80426-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 74,
+      "status": "BASELINE"
+    }
+  ],
+  "P02381-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 422,
+      "status": "BASELINE"
+    }
+  ],
+  "P01367-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 140,
+      "status": "BASELINE"
+    }
+  ],
+  "P80384-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80385-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80386-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80387-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 102,
+      "status": "BASELINE"
+    }
+  ],
+  "P80388-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80389-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80390-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80391-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80393-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80394-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80395-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80396-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80397-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80398-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80399-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80400-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80401-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80402-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80403-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80408-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 363,
+      "status": "BASELINE"
+    }
+  ],
+  "P80409-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80411-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1833,
+      "status": "BASELINE"
+    }
+  ],
+  "P80412-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2431,
+      "status": "BASELINE"
+    }
+  ],
+  "P80413-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80414-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80415-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80416-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2024,
+      "status": "BASELINE"
+    }
+  ],
+  "P80417-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80418-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80419-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80420-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 866,
+      "status": "BASELINE"
+    }
+  ],
+  "P80421-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P80745-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 448,
+      "status": "BASELINE"
+    }
+  ],
+  "P80746-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 431,
+      "status": "BASELINE"
+    }
+  ],
+  "P80747-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 829,
+      "status": "BASELINE"
+    }
+  ],
+  "P80748-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1172,
+      "status": "BASELINE"
+    }
+  ],
+  "P80749-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1516,
+      "status": "BASELINE"
+    }
+  ],
+  "P80751-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P81000-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P81001-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P81002-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P81003-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P89800-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 797,
+      "status": "BASELINE"
+    }
+  ],
+  "P89801-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 984,
+      "status": "BASELINE"
+    }
+  ],
+  "P89802-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 205,
+      "status": "BASELINE"
+    }
+  ],
+  "P89803-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 325,
+      "status": "BASELINE"
+    }
+  ],
+  "P89804-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 207,
+      "status": "BASELINE"
+    }
+  ],
+  "P89805-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 307,
+      "status": "BASELINE"
+    }
+  ],
+  "P89806-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 741,
+      "status": "BASELINE"
+    }
+  ],
+  "P89807-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1183,
+      "status": "BASELINE"
+    }
+  ],
+  "P89808-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 917,
+      "status": "BASELINE"
+    }
+  ],
+  "P89809-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1431,
+      "status": "BASELINE"
+    }
+  ],
+  "P89810-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1118,
+      "status": "BASELINE"
+    }
+  ],
+  "P89811-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 504,
+      "status": "BASELINE"
+    }
+  ],
+  "P89813-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 868,
+      "status": "BASELINE"
+    }
+  ],
+  "P89814-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 852,
+      "status": "BASELINE"
+    }
+  ],
+  "P89815-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 544,
+      "status": "BASELINE"
+    }
+  ],
+  "P89816-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 820,
+      "status": "BASELINE"
+    }
+  ],
+  "P89817-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 846,
+      "status": "BASELINE"
+    }
+  ],
+  "P89909-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 829,
+      "status": "BASELINE"
+    }
+  ],
+  "P80410-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1236,
+      "status": "BASELINE"
+    }
+  ],
+  "P80423-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 828,
+      "status": "BASELINE"
+    }
+  ],
+  "P80424-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1244,
+      "status": "BASELINE"
+    }
+  ],
+  "P80425-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1622,
+      "status": "BASELINE"
+    }
+  ],
+  "P80750-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1148,
+      "status": "BASELINE"
+    }
+  ],
+  "P89812-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1235,
+      "status": "BASELINE"
+    }
+  ],
+  "P89818-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 789,
+      "status": "BASELINE"
+    }
+  ],
+  "339777-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "339778-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "339779-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "339780-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "339781-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "389692-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "726536-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 124,
+      "status": "BASELINE"
+    }
+  ],
+  "726537-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 161,
+      "status": "BASELINE"
+    }
+  ],
+  "701498-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 203,
+      "status": "BASELINE"
+    }
+  ],
+  "666987-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 18,
+      "status": "BASELINE"
+    }
+  ],
+  "P08040-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "P36394-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1839,
+      "status": "BASELINE"
+    }
+  ],
+  "P42104-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "P80379-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 175,
+      "status": "BASELINE"
+    }
+  ],
+  "P80380-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1323,
+      "status": "BASELINE"
+    }
+  ],
+  "P80381-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 466,
+      "status": "BASELINE"
+    }
+  ],
+  "P81004-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P08443-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1680,
+      "status": "BASELINE"
+    }
+  ],
+  "P25960-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4373,
+      "status": "BASELINE"
+    }
+  ],
+  "P26253-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1105,
+      "status": "BASELINE"
+    }
+  ],
+  "P26259-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 940,
+      "status": "BASELINE"
+    }
+  ],
+  "P26262-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1184,
+      "status": "BASELINE"
+    }
+  ],
+  "P42044-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1500,
+      "status": "BASELINE"
+    }
+  ],
+  "P51178-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 485,
+      "status": "BASELINE"
+    }
+  ],
+  "P21112-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3600,
+      "status": "BASELINE"
+    }
+  ],
+  "P08458-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3770,
+      "status": "BASELINE"
+    }
+  ],
+  "P26264-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2598,
+      "status": "BASELINE"
+    }
+  ],
+  "P73111-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4855,
+      "status": "BASELINE"
+    }
+  ],
+  "P45641-H23": [
+    {
+      "date": "2026-09-09",
+      "price": 6377,
+      "status": "BASELINE"
+    }
+  ],
+  "P45642-H23": [
+    {
+      "date": "2026-09-09",
+      "price": 4904,
+      "status": "BASELINE"
+    }
+  ],
+  "P66386-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 15334,
+      "status": "BASELINE"
+    }
+  ],
+  "P79115-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 8910,
+      "status": "BASELINE"
+    }
+  ],
+  "P45641-B23": [
+    {
+      "date": "2026-09-09",
+      "price": 6377,
+      "status": "BASELINE"
+    }
+  ],
+  "P45641-H24": [
+    {
+      "date": "2026-09-09",
+      "price": 6517,
+      "status": "BASELINE"
+    }
+  ],
+  "P45642-B22": [
+    {
+      "date": "2026-09-09",
+      "price": 4568,
+      "status": "BASELINE"
+    }
+  ],
+  "P45642-H22": [
+    {
+      "date": "2026-09-09",
+      "price": 4568,
+      "status": "BASELINE"
+    }
+  ],
+  "P65333-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 7331,
+      "status": "BASELINE"
+    }
+  ],
+  "P65333-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 5425,
+      "status": "BASELINE"
+    }
+  ],
+  "P66387-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 14399,
+      "status": "BASELINE"
+    }
+  ],
+  "P79114-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 8910,
+      "status": "BASELINE"
+    }
+  ],
+  "P81264-H21": [
+    {
+      "date": "2026-09-09",
+      "price": 734,
+      "status": "BASELINE"
+    }
+  ],
+  "487655-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 285,
+      "status": "BASELINE"
+    }
+  ],
+  "P10115-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1231,
+      "status": "BASELINE"
+    }
+  ],
+  "P42041-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1398,
+      "status": "BASELINE"
+    }
+  ],
+  "P51181-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 485,
+      "status": "BASELINE"
+    }
+  ],
+  "P22767-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3600,
+      "status": "BASELINE"
+    }
+  ],
+  "P26256-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 940,
+      "status": "BASELINE"
+    }
+  ],
+  "P79833-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1580,
+      "status": "BASELINE"
+    }
+  ],
+  "P10097-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1105,
+      "status": "BASELINE"
+    }
+  ],
+  "P10106-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1680,
+      "status": "BASELINE"
+    }
+  ],
+  "P26269-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2598,
+      "status": "BASELINE"
+    }
+  ],
+  "P41614-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3770,
+      "status": "BASELINE"
+    }
+  ],
+  "P73114-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4855,
+      "status": "BASELINE"
+    }
+  ],
+  "P80427-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 154,
+      "status": "BASELINE"
+    }
+  ],
+  "P80428-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P85004-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 94,
+      "status": "BASELINE"
+    }
+  ],
+  "P49764-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1866,
+      "status": "BASELINE"
+    }
+  ],
+  "453151-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 427,
+      "status": "BASELINE"
+    }
+  ],
+  "453154-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 426,
+      "status": "BASELINE"
+    }
+  ],
+  "455883-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 842,
+      "status": "BASELINE"
+    }
+  ],
+  "455886-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1751,
+      "status": "BASELINE"
+    }
+  ],
+  "845398-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2110,
+      "status": "BASELINE"
+    }
+  ],
+  "845966-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4252,
+      "status": "BASELINE"
+    }
+  ],
+  "845972-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2585,
+      "status": "BASELINE"
+    }
+  ],
+  "P65334-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3875,
+      "status": "BASELINE"
+    }
+  ],
+  "P82314-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4939,
+      "status": "BASELINE"
+    }
+  ],
+  "P86377-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3682,
+      "status": "BASELINE"
+    }
+  ],
+  "P87585-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 7359,
+      "status": "BASELINE"
+    }
+  ],
+  "P89422-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2400,
+      "status": "BASELINE"
+    }
+  ],
+  "P89423-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2428,
+      "status": "BASELINE"
+    }
+  ],
+  "845970-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 227,
+      "status": "BASELINE"
+    }
+  ],
+  "P78279-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 9199,
+      "status": "BASELINE"
+    }
+  ],
+  "P79031-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 154,
+      "status": "BASELINE"
+    }
+  ],
+  "P81162-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 14299,
+      "status": "BASELINE"
+    }
+  ],
+  "P80440-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P81160-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 14299,
+      "status": "BASELINE"
+    }
+  ],
+  "P80446-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 167,
+      "status": "BASELINE"
+    }
+  ],
+  "P74911-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 146,
+      "status": "BASELINE"
+    }
+  ],
+  "P73325-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 4,
+      "status": "BASELINE"
+    }
+  ],
+  "469774-409": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "P28726-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 175,
+      "status": "BASELINE"
+    }
+  ],
+  "P69770-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 950,
+      "status": "BASELINE"
+    }
+  ],
+  "P67252-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2509,
+      "status": "BASELINE"
+    }
+  ],
+  "P67244-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1485,
+      "status": "BASELINE"
+    }
+  ],
+  "P67248-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2723,
+      "status": "BASELINE"
+    }
+  ],
+  "P73210-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2540,
+      "status": "BASELINE"
+    }
+  ],
+  "P79839-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 175,
+      "status": "BASELINE"
+    }
+  ],
+  "P78384-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 20,
+      "status": "BASELINE"
+    }
+  ],
+  "P78148-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 135,
+      "status": "BASELINE"
+    }
+  ],
+  "P78155-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 114,
+      "status": "BASELINE"
+    }
+  ],
+  "P78164-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 174,
+      "status": "BASELINE"
+    }
+  ],
+  "P78157-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 72,
+      "status": "BASELINE"
+    }
+  ],
+  "A0K02A": [
+    {
+      "date": "2026-09-09",
+      "price": 34,
+      "status": "BASELINE"
+    }
+  ],
+  "A0N33A": [
+    {
+      "date": "2026-09-09",
+      "price": 78,
+      "status": "BASELINE"
+    }
+  ],
+  "P28727-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 199,
+      "status": "BASELINE"
+    }
+  ],
+  "P62042-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1213,
+      "status": "BASELINE"
+    }
+  ],
+  "Q5T84A": [
+    {
+      "date": "2026-09-09",
+      "price": 752,
+      "status": "BASELINE"
+    }
+  ],
+  "Q5T85A": [
+    {
+      "date": "2026-09-09",
+      "price": 3390,
+      "status": "BASELINE"
+    }
+  ],
+  "512485-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 399,
+      "status": "BASELINE"
+    }
+  ],
+  "BD505A": [
+    {
+      "date": "2026-09-09",
+      "price": 469,
+      "status": "BASELINE"
+    }
+  ],
+  "512487-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 399,
+      "status": "BASELINE"
+    }
+  ],
+  "BD507A": [
+    {
+      "date": "2026-09-09",
+      "price": 469,
+      "status": "BASELINE"
+    }
+  ],
+  "E6U59ABE": [
+    {
+      "date": "2026-09-09",
+      "price": 399,
+      "status": "BASELINE"
+    }
+  ],
+  "E6U64ABE": [
+    {
+      "date": "2026-09-09",
+      "price": 467,
+      "status": "BASELINE"
+    }
+  ],
+  "512486-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 399,
+      "status": "BASELINE"
+    }
+  ],
+  "BD506A": [
+    {
+      "date": "2026-09-09",
+      "price": 469,
+      "status": "BASELINE"
+    }
+  ],
+  "P46191-AA1": [
+    {
+      "date": "2026-09-09",
+      "price": 99999,
+      "status": "BASELINE"
+    }
+  ],
+  "P46191-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "BASELINE"
+    }
+  ],
+  "P46194-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 44,
+      "status": "BASELINE"
+    }
+  ],
+  "P46215-AA1": [
+    {
+      "date": "2026-09-09",
+      "price": 99999,
+      "status": "BASELINE"
+    }
+  ],
+  "P46215-AB1": [
+    {
+      "date": "2026-09-09",
+      "price": 99999,
+      "status": "BASELINE"
+    }
+  ],
+  "P46215-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 271,
+      "status": "BASELINE"
+    }
+  ],
+  "P46216-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 216,
+      "status": "BASELINE"
+    }
+  ],
+  "P46217-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 539,
+      "status": "BASELINE"
+    }
+  ],
+  "P46218-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 429,
+      "status": "BASELINE"
+    }
+  ],
+  "P46219-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2695,
+      "status": "BASELINE"
+    }
+  ],
+  "P46220-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2145,
+      "status": "BASELINE"
+    }
+  ],
+  "P46221-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 935,
+      "status": "BASELINE"
+    }
+  ],
+  "P46222-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 880,
+      "status": "BASELINE"
+    }
+  ],
+  "P77110-AA1": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P77110-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 72,
+      "status": "BASELINE"
+    }
+  ],
+  "P77111-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 52,
+      "status": "BASELINE"
+    }
+  ],
+  "P77112-AA1": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P77112-AB1": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P77112-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 322,
+      "status": "BASELINE"
+    }
+  ],
+  "P77113-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 226,
+      "status": "BASELINE"
+    }
+  ],
+  "P77114-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 636,
+      "status": "BASELINE"
+    }
+  ],
+  "P77115-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 444,
+      "status": "BASELINE"
+    }
+  ],
+  "P77116-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 3143,
+      "status": "BASELINE"
+    }
+  ],
+  "P77117-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 2184,
+      "status": "BASELINE"
+    }
+  ],
+  "P77118-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 280,
+      "status": "BASELINE"
+    }
+  ],
+  "P77119-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 201,
+      "status": "BASELINE"
+    }
+  ],
+  "P77120-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 1364,
+      "status": "BASELINE"
+    }
+  ],
+  "P77121-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 974,
+      "status": "BASELINE"
+    }
+  ],
+  "P77122-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 13566,
+      "status": "BASELINE"
+    }
+  ],
+  "P77123-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 9666,
+      "status": "BASELINE"
+    }
+  ],
+  "P75399-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 9950,
+      "status": "BASELINE"
+    }
+  ]
+}

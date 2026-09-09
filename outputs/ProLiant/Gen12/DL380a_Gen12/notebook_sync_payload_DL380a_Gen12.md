@@ -1,9 +1,13 @@
 # HPE DL380a_Gen12 — Synchronized Catalog Knowledge
 
 **Target Product**: `DL380a_Gen12`
+
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
-**Sync Timestamp**: 2026-09-06T12:52:47.108Z
-**Total Verified SKUs**: `756` (`227` Hardware + `529` Services)
+
+**Sync Timestamp**: 2026-09-09T10:09:36.224Z
+
+**Total Verified SKUs**: `653` (`214` Hardware + `439` Services)
+
 **Total Synced KnowledgeDeltas**: `3`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
@@ -14,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 227 | 227 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 529 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **756** | **227** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 214 | 1 | 0 | 0 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 439 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **653** | **1** | **0** | **0** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -43,7 +47,22 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for DL380a_Gen12. All cataloged SKUs are active.*
+| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
+|-----|-------------|--------|-------------------|------------------|----------|-----------|
+| `AC120A` | HPE Pallet Size Customization Service | **DISCONTINUED** | 2026-09-09 | $7.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `AC129A` | HPE Consolidation Logistic Service | **DISCONTINUED** | 2026-09-09 | $26.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F69A` | HPE Delivery Site Above Ground Floor Service | **DISCONTINUED** | 2026-09-09 | $289.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F70A` | HPE Forklift at Delivery Service | **DISCONTINUED** | 2026-09-09 | $1399.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F71A` | HPE Special Delivery Truck Size Service | **DISCONTINUED** | 2026-09-09 | $292.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F72A` | HPE Two People at Delivery SVC | **DISCONTINUED** | 2026-09-09 | $466.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F73A` | HPE Campus Delivery Service | **DISCONTINUED** | 2026-09-09 | $104.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F74A` | HPE Unloading Logistic Service | **DISCONTINUED** | 2026-09-09 | $350.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F75A` | HPE Fixed Delivery Appointment Service | **DISCONTINUED** | 2026-09-09 | $466.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F76A` | HPE Pre-Delivery Site Survey SVC | **DISCONTINUED** | 2026-09-09 | $758.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `AC123A` | HPE Special Request/ Equipment Logistic Service | **DISCONTINUED** | 2026-09-09 | $816.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-09-09 | $44.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-09-09 | $100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P76706-B21` | HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $21407.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
@@ -54,3 +73,4 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
+

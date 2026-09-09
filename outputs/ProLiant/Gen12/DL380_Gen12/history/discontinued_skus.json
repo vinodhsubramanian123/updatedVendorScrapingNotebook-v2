@@ -148,13 +148,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "5584.00",
-    "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼) → 2026-09-09: $5584.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P73283-B21": {
     "productNumber": "P73283-B21",
@@ -162,13 +166,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "5980.00",
-    "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P73284-B21": {
     "productNumber": "P73284-B21",
@@ -176,13 +184,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "6350.00",
-    "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P73285-B21": {
     "productNumber": "P73285-B21",
@@ -190,13 +202,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "6890.00",
-    "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P73286-B21": {
     "productNumber": "P73286-B21",
@@ -204,13 +220,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "7120.00",
-    "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P73287-B21": {
     "productNumber": "P73287-B21",
@@ -218,13 +238,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-08-24",
-    "daysActive": 12,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
     "lastKnownPrice": "7450.00",
-    "fullPriceTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-24"
+    "fullPriceTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED) → 2026-09-09: $7450.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -4471,34 +4495,74 @@
   "Q9R65A": {
     "productNumber": "Q9R65A",
     "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
+    "lastKnownPrice": "6737.00",
+    "fullPriceTrail": "2026-08-12: $6737.00 → 2026-08-12: $6737.00 → 2026-08-13: $6737.00 → 2026-08-14: $6737.00 → 2026-08-24: $6737.00 → 2026-09-09: $6737.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "Q9R66A": {
     "productNumber": "Q9R66A",
     "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
+    "lastKnownPrice": "11229.00",
+    "fullPriceTrail": "2026-08-12: $11229.00 → 2026-08-12: $11229.00 → 2026-08-13: $11229.00 → 2026-08-14: $11229.00 → 2026-08-24: $11229.00 → 2026-09-09: $11229.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "Q9R67A": {
     "productNumber": "Q9R67A",
     "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
+    "lastKnownPrice": "24680.00",
+    "fullPriceTrail": "2026-08-12: $24680.00 → 2026-08-12: $24680.00 → 2026-08-13: $24680.00 → 2026-08-14: $24680.00 → 2026-08-24: $24680.00 → 2026-09-09: $24680.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "Q9R68A": {
     "productNumber": "Q9R68A",
     "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 28,
+    "lastKnownPrice": "41134.00",
+    "fullPriceTrail": "2026-08-12: $41134.00 → 2026-08-12: $41134.00 → 2026-08-13: $41134.00 → 2026-08-14: $41134.00 → 2026-08-24: $41134.00 → 2026-09-09: $41134.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "Q5T84A": {
     "productNumber": "Q5T84A",
@@ -5375,64 +5439,64 @@
   "P77104-B21": {
     "productNumber": "P77104-B21",
     "description": "Microsoft Windows Server 2025 16-core Standard Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77105-B21": {
     "productNumber": "P77105-B21",
     "description": "Microsoft Windows Server 2025 4-core Standard Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77106-AA1": {
     "productNumber": "P77106-AA1",
     "description": "Microsoft Windows Server 2025 2-core Standard Additional License Chinese Simplified SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77106-AB1": {
     "productNumber": "P77106-AB1",
     "description": "Microsoft Windows Server 2025 2-core Standard Additional License Chinese Traditional SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77106-B21": {
     "productNumber": "P77106-B21",
     "description": "Microsoft Windows Server 2025 2-core Standard Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77107-B21": {
     "productNumber": "P77107-B21",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77108-B21": {
     "productNumber": "P77108-B21",
     "description": "Microsoft Windows Server 2025 4-core Datacenter Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77109-B21": {
     "productNumber": "P77109-B21",
     "description": "Microsoft Windows Server 2025 2-core Datacenter Additional License WW SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -5695,8 +5759,8 @@
   "P77102-291": {
     "productNumber": "P77102-291",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit Japanese SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -5711,32 +5775,32 @@
   "P77102-B21": {
     "productNumber": "P77102-B21",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit en/fr/de/es SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-AA1": {
     "productNumber": "P77101-AA1",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Simplified SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-AB1": {
     "productNumber": "P77101-AB1",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Traditional SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-291": {
     "productNumber": "P77101-291",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Japanese SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -5751,56 +5815,56 @@
   "P77101-021": {
     "productNumber": "P77101-021",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/cs/pl/ru/sv SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-A21": {
     "productNumber": "P77101-A21",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/fr/de/es/it/pt/nl SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-DN1": {
     "productNumber": "P77101-DN1",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/fr/es/xc SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77101-371": {
     "productNumber": "P77101-371",
     "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/ko SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-AA1": {
     "productNumber": "P77100-AA1",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Chinese Simplified SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-AB1": {
     "productNumber": "P77100-AB1",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Chinese Traditional SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-291": {
     "productNumber": "P77100-291",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Japanese SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -5815,32 +5879,32 @@
   "P77100-021": {
     "productNumber": "P77100-021",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/cs/pl/ru/sv SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-A21": {
     "productNumber": "P77100-A21",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/fr/de/es/it/pt/nl SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-DN1": {
     "productNumber": "P77100-DN1",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/fr/es/xc SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "P77100-371": {
     "productNumber": "P77100-371",
     "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/ko SW",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Operating System Licenses",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -6351,40 +6415,40 @@
   "H1SR4AS": {
     "productNumber": "H1SR4AS",
     "description": "HPE ProLiant Server Option (H1SR4AS)",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Service & Support",
+    "subCategory": "Support Services",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "H0JD4A5": {
     "productNumber": "H0JD4A5",
     "description": "HPE ProLiant Server Option (H0JD4A5)",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Service & Support",
+    "subCategory": "Support Services",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "H39VPA1": {
     "productNumber": "H39VPA1",
     "description": "HPE ProLiant Server Option (H39VPA1)",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Service & Support",
+    "subCategory": "Support Services",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "HU4A6A5": {
     "productNumber": "HU4A6A5",
     "description": "HPE ProLiant Server Option (HU4A6A5)",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Service & Support",
+    "subCategory": "Support Services",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
   "HU4A6A50C4V": {
     "productNumber": "HU4A6A50C4V",
     "description": "HPE ProLiant Server Option (HU4A6A50C4V)",
-    "mainCategory": "Unknown",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Service & Support",
+    "subCategory": "Support Services",
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
@@ -6434,7 +6498,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "7.00",
+    "fullPriceTrail": "2026-08-24: $7.00 → 2026-09-09: $7.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "AC129A": {
     "productNumber": "AC129A",
@@ -6442,7 +6516,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "26.00",
+    "fullPriceTrail": "2026-08-24: $26.00 → 2026-09-09: $26.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F69A": {
     "productNumber": "P1F69A",
@@ -6450,7 +6534,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "289.00",
+    "fullPriceTrail": "2026-08-24: $289.00 → 2026-09-09: $289.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F70A": {
     "productNumber": "P1F70A",
@@ -6458,7 +6552,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "1399.00",
+    "fullPriceTrail": "2026-08-24: $1399.00 → 2026-09-09: $1399.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F71A": {
     "productNumber": "P1F71A",
@@ -6466,7 +6570,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "292.00",
+    "fullPriceTrail": "2026-08-24: $292.00 → 2026-09-09: $292.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F72A": {
     "productNumber": "P1F72A",
@@ -6474,7 +6588,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-08-24: $466.00 → 2026-09-09: $466.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F73A": {
     "productNumber": "P1F73A",
@@ -6482,7 +6606,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "104.00",
+    "fullPriceTrail": "2026-08-24: $104.00 → 2026-09-09: $104.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F74A": {
     "productNumber": "P1F74A",
@@ -6490,7 +6624,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "350.00",
+    "fullPriceTrail": "2026-08-24: $350.00 → 2026-09-09: $350.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F75A": {
     "productNumber": "P1F75A",
@@ -6498,7 +6642,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-08-24: $466.00 → 2026-09-09: $466.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F76A": {
     "productNumber": "P1F76A",
@@ -6506,7 +6660,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "758.00",
+    "fullPriceTrail": "2026-08-24: $758.00 → 2026-09-09: $758.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "AC123A": {
     "productNumber": "AC123A",
@@ -6514,7 +6678,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "816.00",
+    "fullPriceTrail": "2026-08-24: $816.00 → 2026-09-09: $816.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "BQ335A": {
     "productNumber": "BQ335A",
@@ -6522,7 +6696,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "44.00",
+    "fullPriceTrail": "2026-08-24: $44.00 → 2026-09-09: $44.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "BQ337A": {
     "productNumber": "BQ337A",
@@ -6530,7 +6714,17 @@
     "mainCategory": "Accessories & Infrastructure",
     "subCategory": "System Options",
     "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 16,
+    "lastKnownPrice": "100.00",
+    "fullPriceTrail": "2026-08-24: $100.00 → 2026-09-09: $100.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P76706-B21": {
     "productNumber": "P76706-B21",
@@ -6538,6 +6732,230 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-24",
+    "status": "ACTIVE"
+  },
+  "P94926-B21": {
+    "productNumber": "P94926-B21",
+    "description": "Intel Xeon 6503P 2.8GHz 8-core 135W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P95072-B21": {
+    "productNumber": "P95072-B21",
+    "description": "HPE Smart Array E208e-p SR Gen12 x8 Lanes without Cache SAS 12G PCIe Plug-in Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "436007-B21": {
+    "productNumber": "436007-B21",
+    "description": "HPE 200GB Logical Size FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P66386-H21": {
+    "productNumber": "P66386-H21",
+    "description": "HPE Data Processing Unit InfiniBand NDR200/Ethernet 200Gb 2-port QSFP112 FHHL B3220 Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P45641-B23": {
+    "productNumber": "P45641-B23",
+    "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P45642-B22": {
+    "productNumber": "P45642-B22",
+    "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P45642-H22": {
+    "productNumber": "P45642-H22",
+    "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P65333-B21": {
+    "productNumber": "P65333-B21",
+    "description": "HPE InfiniBand NDR200/Ethernet 200GbE 2-port QSFP112 PCIe5 x16 MCX755106AC-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P66387-H21": {
+    "productNumber": "P66387-H21",
+    "description": "HPE Data Processing Unit InfiniBand NDR/Ethernet 400Gb 1-port QSFP112 HHHL B3140H Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79115-B21": {
+    "productNumber": "P79115-B21",
+    "description": "HPE InfiniBand XDR400/Ethernet 400GbE 2-port QSFP112 PCIe6 x16 HHHL CX8 Crypto Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "845972-B21": {
+    "productNumber": "845972-B21",
+    "description": "HPE 100Gb QSFP28 Bidirectional Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P89140-B21": {
+    "productNumber": "P89140-B21",
+    "description": "HPE 100G 2p MCX623436AN OCP3 Spl Adp",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P95271-B21": {
+    "productNumber": "P95271-B21",
+    "description": "HPE ProLiant Compute DL360/DL380 Gen12 B3220 Power Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P74606-B21": {
+    "productNumber": "P74606-B21",
+    "description": "HPE DL380G11 DPU B3220 Spl PWR CBL",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P22020-B21": {
+    "productNumber": "P22020-B21",
+    "description": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46191-AA1": {
+    "productNumber": "P46191-AA1",
+    "description": "Microsoft Windows Server 2022 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46191-B21": {
+    "productNumber": "P46191-B21",
+    "description": "Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46194-B21": {
+    "productNumber": "P46194-B21",
+    "description": "Microsoft Windows Server 2022 1 Device CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-AA1": {
+    "productNumber": "P46215-AA1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-AB1": {
+    "productNumber": "P46215-AB1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-B21": {
+    "productNumber": "P46215-B21",
+    "description": "Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46216-B21": {
+    "productNumber": "P46216-B21",
+    "description": "Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46217-B21": {
+    "productNumber": "P46217-B21",
+    "description": "Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46218-B21": {
+    "productNumber": "P46218-B21",
+    "description": "Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46219-B21": {
+    "productNumber": "P46219-B21",
+    "description": "Microsoft Windows Server 2022 50 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46220-B21": {
+    "productNumber": "P46220-B21",
+    "description": "Microsoft Windows Server 2022 50 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46221-B21": {
+    "productNumber": "P46221-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46222-B21": {
+    "productNumber": "P46222-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
     "status": "ACTIVE"
   }
 }

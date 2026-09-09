@@ -1,0 +1,58 @@
+{
+  "query": "DL580 Gen12",
+  "selectedSku": "P75399-B21",
+  "source": "HPE OCA Product Search via authenticated CDP session",
+  "capturedAt": "2026-09-09T07:52:32.045Z",
+  "candidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": ".cto-card",
+      "optionValue": "P75399-B21",
+      "text": "P75399-B21 - HPE ProLiant Compute DL580 Gen12 SFF Configure-to-order Server",
+      "sku": "P75399-B21",
+      "listPriceUsd": 0,
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": ".cto-card",
+      "optionValue": "P83540-B21",
+      "text": "P83540-B21 - HPE ProLiant Compute DL580 Gen12 Solution Server",
+      "sku": "P83540-B21",
+      "listPriceUsd": 0,
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true
+    }
+  ],
+  "excludedCandidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": ".cto-card",
+      "optionValue": "P75399-B21#GTA",
+      "text": "P75399-B21#GTA - HPE ProLiant Compute DL580 Gen12 SFF TAA Compliant Configure-to-order Server",
+      "sku": "P75399-B21#GTA",
+      "listPriceUsd": 0,
+      "isBto": false,
+      "isTaa": false,
+      "isGta": true,
+      "isCto": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": ".cto-card",
+      "optionValue": "P83540-B21#GTA",
+      "text": "P83540-B21#GTA - HPE ProLiant Compute DL580 Gen12 TAA Compliant Server for SAP HANA",
+      "sku": "P83540-B21#GTA",
+      "listPriceUsd": 0,
+      "isBto": false,
+      "isTaa": false,
+      "isGta": true,
+      "isCto": true
+    }
+  ]
+}

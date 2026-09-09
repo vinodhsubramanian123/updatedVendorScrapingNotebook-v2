@@ -1,16 +1,730 @@
 {
   "Q2R41A": [
     {
-      "date": "2026-08-10",
+      "date": "2026-09-09",
       "price": 4500,
-      "status": "BASELINE"
+      "status": "ADDED"
     }
   ],
-  "Q2R42A": [
+  "AM495A": [
     {
-      "date": "2026-08-10",
-      "price": 2800,
-      "status": "BASELINE"
+      "date": "2026-09-09",
+      "price": 2500,
+      "status": "ADDED"
+    }
+  ],
+  "Q6Q64A": [
+    {
+      "date": "2026-09-09",
+      "price": 780,
+      "status": "ADDED"
+    }
+  ],
+  "AJ838A": [
+    {
+      "date": "2026-09-09",
+      "price": 208,
+      "status": "ADDED"
+    }
+  ],
+  "AJ836A": [
+    {
+      "date": "2026-09-09",
+      "price": 115,
+      "status": "ADDED"
+    }
+  ],
+  "AJ839A": [
+    {
+      "date": "2026-09-09",
+      "price": 253,
+      "status": "ADDED"
+    }
+  ],
+  "QK732A": [
+    {
+      "date": "2026-09-09",
+      "price": 115,
+      "status": "ADDED"
+    }
+  ],
+  "QK737A": [
+    {
+      "date": "2026-09-09",
+      "price": 415,
+      "status": "ADDED"
+    }
+  ],
+  "AJ837A": [
+    {
+      "date": "2026-09-09",
+      "price": 162,
+      "status": "ADDED"
+    }
+  ],
+  "QK735A": [
+    {
+      "date": "2026-09-09",
+      "price": 195,
+      "status": "ADDED"
+    }
+  ],
+  "QK733A": [
+    {
+      "date": "2026-09-09",
+      "price": 130,
+      "status": "ADDED"
+    }
+  ],
+  "QK736A": [
+    {
+      "date": "2026-09-09",
+      "price": 239,
+      "status": "ADDED"
+    }
+  ],
+  "QK734A": [
+    {
+      "date": "2026-09-09",
+      "price": 147,
+      "status": "ADDED"
+    }
+  ],
+  "716191-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 221,
+      "status": "ADDED"
+    }
+  ],
+  "716193-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 324,
+      "status": "ADDED"
+    }
+  ],
+  "K2R10A": [
+    {
+      "date": "2026-09-09",
+      "price": 501,
+      "status": "ADDED"
+    }
+  ],
+  "AE470A": [
+    {
+      "date": "2026-09-09",
+      "price": 78,
+      "status": "ADDED"
+    }
+  ],
+  "AE465A": [
+    {
+      "date": "2026-09-09",
+      "price": 110,
+      "status": "ADDED"
+    }
+  ],
+  "AN975A": [
+    {
+      "date": "2026-09-09",
+      "price": 264,
+      "status": "ADDED"
+    }
+  ],
+  "AN976A": [
+    {
+      "date": "2026-09-09",
+      "price": 410,
+      "status": "ADDED"
+    }
+  ],
+  "K2R09A": [
+    {
+      "date": "2026-09-09",
+      "price": 358,
+      "status": "ADDED"
+    }
+  ],
+  "716197-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 177,
+      "status": "ADDED"
+    }
+  ],
+  "716199-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 287,
+      "status": "ADDED"
+    }
+  ],
+  "P35176-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 206,
+      "status": "ADDED"
+    }
+  ],
+  "P35175-B21": [
+    {
+      "date": "2026-09-09",
+      "price": 369,
+      "status": "ADDED"
+    }
+  ],
+  "Q6Q63A": [
+    {
+      "date": "2026-09-09",
+      "price": 7275,
+      "status": "ADDED"
+    }
+  ],
+  "C7973A": [
+    {
+      "date": "2026-09-09",
+      "price": 61.35,
+      "status": "ADDED"
+    }
+  ],
+  "C7973W": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7973AL": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7974AN": [
+    {
+      "date": "2026-09-09",
+      "price": 695.91,
+      "status": "ADDED"
+    }
+  ],
+  "C7974AL": [
+    {
+      "date": "2026-09-09",
+      "price": 1182.63,
+      "status": "ADDED"
+    }
+  ],
+  "Q2009A": [
+    {
+      "date": "2026-09-09",
+      "price": 197.87,
+      "status": "ADDED"
+    }
+  ],
+  "Q2010A": [
+    {
+      "date": "2026-09-09",
+      "price": 199.05,
+      "status": "ADDED"
+    }
+  ],
+  "C7975AL": [
+    {
+      "date": "2026-09-09",
+      "price": 929.43,
+      "status": "ADDED"
+    }
+  ],
+  "C7975AA": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7975A": [
+    {
+      "date": "2026-09-09",
+      "price": 46.46,
+      "status": "ADDED"
+    }
+  ],
+  "C7975W": [
+    {
+      "date": "2026-09-09",
+      "price": 53.12,
+      "status": "ADDED"
+    }
+  ],
+  "C7975AN": [
+    {
+      "date": "2026-09-09",
+      "price": 929.43,
+      "status": "ADDED"
+    }
+  ],
+  "Q2011A": [
+    {
+      "date": "2026-09-09",
+      "price": 92.99,
+      "status": "ADDED"
+    }
+  ],
+  "Q2012A": [
+    {
+      "date": "2026-09-09",
+      "price": 199.05,
+      "status": "ADDED"
+    }
+  ],
+  "C7976BL": [
+    {
+      "date": "2026-09-09",
+      "price": 1146.39,
+      "status": "ADDED"
+    }
+  ],
+  "C7976B": [
+    {
+      "date": "2026-09-09",
+      "price": 57.32,
+      "status": "ADDED"
+    }
+  ],
+  "C7976BN": [
+    {
+      "date": "2026-09-09",
+      "price": 1293.13,
+      "status": "ADDED"
+    }
+  ],
+  "C7976BW": [
+    {
+      "date": "2026-09-09",
+      "price": 86.76,
+      "status": "ADDED"
+    }
+  ],
+  "C7976AF": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7976AA": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7976AC": [
+    {
+      "date": "2026-09-09",
+      "price": 1530.46,
+      "status": "ADDED"
+    }
+  ],
+  "C7976AL": [
+    {
+      "date": "2026-09-09",
+      "price": 1530.47,
+      "status": "ADDED"
+    }
+  ],
+  "C7976A": [
+    {
+      "date": "2026-09-09",
+      "price": 76.53,
+      "status": "ADDED"
+    }
+  ],
+  "C7976AN": [
+    {
+      "date": "2026-09-09",
+      "price": 1530.47,
+      "status": "ADDED"
+    }
+  ],
+  "C7976WL": [
+    {
+      "date": "2026-09-09",
+      "price": 2176.5,
+      "status": "ADDED"
+    }
+  ],
+  "C7976W": [
+    {
+      "date": "2026-09-09",
+      "price": 108.82,
+      "status": "ADDED"
+    }
+  ],
+  "Q2013A": [
+    {
+      "date": "2026-09-09",
+      "price": 92.99,
+      "status": "ADDED"
+    }
+  ],
+  "C7977AH": [
+    {
+      "date": "2026-09-09",
+      "price": 2205.96,
+      "status": "ADDED"
+    }
+  ],
+  "C7977A": [
+    {
+      "date": "2026-09-09",
+      "price": 110.3,
+      "status": "ADDED"
+    }
+  ],
+  "C7977AN": [
+    {
+      "date": "2026-09-09",
+      "price": 2205.96,
+      "status": "ADDED"
+    }
+  ],
+  "C7977AF": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q2014A": [
+    {
+      "date": "2026-09-09",
+      "price": 92.99,
+      "status": "ADDED"
+    }
+  ],
+  "C7977AL": [
+    {
+      "date": "2026-09-09",
+      "price": 2205.96,
+      "status": "ADDED"
+    }
+  ],
+  "C7977AC": [
+    {
+      "date": "2026-09-09",
+      "price": 2205.96,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078MC": [
+    {
+      "date": "2026-09-09",
+      "price": 1617.88,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078ML": [
+    {
+      "date": "2026-09-09",
+      "price": 1617.88,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078MN": [
+    {
+      "date": "2026-09-09",
+      "price": 1617.88,
+      "status": "ADDED"
+    }
+  ],
+  "Q2016A": [
+    {
+      "date": "2026-09-09",
+      "price": 199.05,
+      "status": "ADDED"
+    }
+  ],
+  "C7977WL": [
+    {
+      "date": "2026-09-09",
+      "price": 3044.17,
+      "status": "ADDED"
+    }
+  ],
+  "C7977W": [
+    {
+      "date": "2026-09-09",
+      "price": 152.2,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078AH": [
+    {
+      "date": "2026-09-09",
+      "price": 2348.24,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078AL": [
+    {
+      "date": "2026-09-09",
+      "price": 2348.24,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078AC": [
+    {
+      "date": "2026-09-09",
+      "price": 2348.24,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078A": [
+    {
+      "date": "2026-09-09",
+      "price": 117.43,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078AN": [
+    {
+      "date": "2026-09-09",
+      "price": 2348.24,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078WL": [
+    {
+      "date": "2026-09-09",
+      "price": 3240.72,
+      "status": "ADDED"
+    }
+  ],
+  "Q2078W": [
+    {
+      "date": "2026-09-09",
+      "price": 162.07,
+      "status": "ADDED"
+    }
+  ],
+  "Q2015A": [
+    {
+      "date": "2026-09-09",
+      "price": 92.99,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079AH": [
+    {
+      "date": "2026-09-09",
+      "price": 2911.01,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079AL": [
+    {
+      "date": "2026-09-09",
+      "price": 2911.01,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079AC": [
+    {
+      "date": "2026-09-09",
+      "price": 2911.01,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079A": [
+    {
+      "date": "2026-09-09",
+      "price": 145.56,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079AN": [
+    {
+      "date": "2026-09-09",
+      "price": 2911.01,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079WL": [
+    {
+      "date": "2026-09-09",
+      "price": 3976.02,
+      "status": "ADDED"
+    }
+  ],
+  "Q2079W": [
+    {
+      "date": "2026-09-09",
+      "price": 198.8,
+      "status": "ADDED"
+    }
+  ],
+  "Q2017A": [
+    {
+      "date": "2026-09-09",
+      "price": 92.99,
+      "status": "ADDED"
+    }
+  ],
+  "C7972A": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7974A": [
+    {
+      "date": "2026-09-09",
+      "price": 58.24,
+      "status": "ADDED"
+    }
+  ],
+  "C7974W": [
+    {
+      "date": "2026-09-09",
+      "price": 41.63,
+      "status": "ADDED"
+    }
+  ],
+  "Q2007A": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q2008A": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7972AN": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7973AN": [
+    {
+      "date": "2026-09-09",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "C7978A": [
+    {
+      "date": "2026-09-09",
+      "price": 77.62,
+      "status": "ADDED"
+    }
+  ],
+  "AG467A": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "ADDED"
+    }
+  ],
+  "AG629A": [
+    {
+      "date": "2026-09-09",
+      "price": 25,
+      "status": "ADDED"
+    }
+  ],
+  "P1F69A": [
+    {
+      "date": "2026-09-09",
+      "price": 289,
+      "status": "ADDED"
+    }
+  ],
+  "P1F70A": [
+    {
+      "date": "2026-09-09",
+      "price": 1399,
+      "status": "ADDED"
+    }
+  ],
+  "P1F71A": [
+    {
+      "date": "2026-09-09",
+      "price": 292,
+      "status": "ADDED"
+    }
+  ],
+  "P1F72A": [
+    {
+      "date": "2026-09-09",
+      "price": 466,
+      "status": "ADDED"
+    }
+  ],
+  "P1F73A": [
+    {
+      "date": "2026-09-09",
+      "price": 104,
+      "status": "ADDED"
+    }
+  ],
+  "P1F74A": [
+    {
+      "date": "2026-09-09",
+      "price": 350,
+      "status": "ADDED"
+    }
+  ],
+  "P1F75A": [
+    {
+      "date": "2026-09-09",
+      "price": 466,
+      "status": "ADDED"
+    }
+  ],
+  "P1F76A": [
+    {
+      "date": "2026-09-09",
+      "price": 758,
+      "status": "ADDED"
+    }
+  ],
+  "P1F78A": [
+    {
+      "date": "2026-09-09",
+      "price": 350,
+      "status": "ADDED"
+    }
+  ],
+  "AG628A": [
+    {
+      "date": "2026-09-09",
+      "price": 816,
+      "status": "ADDED"
+    }
+  ],
+  "BQ335A": [
+    {
+      "date": "2026-09-09",
+      "price": 44,
+      "status": "ADDED"
+    }
+  ],
+  "BQ337A": [
+    {
+      "date": "2026-09-09",
+      "price": 100,
+      "status": "ADDED"
     }
   ]
 }

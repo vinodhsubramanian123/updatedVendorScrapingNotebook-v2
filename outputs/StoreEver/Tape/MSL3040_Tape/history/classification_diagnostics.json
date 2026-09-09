@@ -1,0 +1,382 @@
+{
+  "version": "1.0.0",
+  "chassis": "MSL3040_Tape",
+  "generatedAt": "2026-09-09T08:21:33.975Z",
+  "executionDurationMs": 340,
+  "summary": {
+    "totalRawTables": 27,
+    "validProductTables": 27,
+    "skippedTablesCount": 2,
+    "totalExtractedSKUs": 0,
+    "totalUniqueSKUs": 104,
+    "totalRulesExtracted": 14,
+    "chassisVariantsCount": 2
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 19,
+      "reason": "BOM summary report table header",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 28,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    }
+  ],
+  "tableDecisions": [
+    {
+      "tableIndex": 0,
+      "subCategory": "Tape Drives",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 1,
+      "subCategory": "Encryption Kit",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 2,
+      "subCategory": "Power Supply",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 1,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 3,
+      "subCategory": "FibreChannel Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 4,
+      "subCategory": "SAS Cables",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 12,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 5,
+      "subCategory": "Expansion Modules",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 15",
+      "minQty": 0,
+      "maxQty": 15,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 6,
+      "subCategory": "Power Cord",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 18,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 7,
+      "subCategory": "Storage Media",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 64,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 8,
+      "subCategory": "Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 9,
+      "subCategory": "Tape Drives",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Fibre Channel HBA",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 10,
+      "subCategory": "Encryption Kit",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 11,
+      "subCategory": "Power Supply",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 1,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 12,
+      "subCategory": "FibreChannel Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 13,
+      "subCategory": "SAS Cables",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 14,
+      "subCategory": "SAS Cables",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 15,
+      "subCategory": "SAS Cables",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 16,
+      "subCategory": "Power Cord",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 18,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 17,
+      "subCategory": "Storage Media",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 64,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 18,
+      "subCategory": "Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 20,
+      "subCategory": "Power Cord",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 21,
+      "subCategory": "Storage Media",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 22,
+      "subCategory": "Storage Media",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 23,
+      "subCategory": "Storage Media",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 29,
+      "subCategory": "Encryption Kit",
+      "parentCategory": "Chassis",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Base Chassis",
+      "constraint": "max 999",
+      "minQty": 1,
+      "maxQty": 999,
+      "skuCount": 20,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 30,
+      "subCategory": "Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 31,
+      "subCategory": "Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 34,
+      "subCategory": "Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 1,
+    "Accessories & Infrastructure": 67,
+    "Power Supplies": 2,
+    "Cables & Enablement Kits": 21,
+    "Drive Enclosures / Drives": 25,
+    "Storage Controllers": 64,
+    "Software & Licenses": 13
+  },
+  "chassisVariantsMatrix": {
+    "Q2R41A": {
+      "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+      "formFactor": "Unknown",
+      "listPrice": 4500,
+      "diffStatus": "BASELINE"
+    },
+    "Q2R42A": {
+      "description": "HPE StoreEver MSL3040 Tape Library Expansion Module CTO Chassis",
+      "formFactor": "Unknown",
+      "listPrice": 2800,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  }
+}

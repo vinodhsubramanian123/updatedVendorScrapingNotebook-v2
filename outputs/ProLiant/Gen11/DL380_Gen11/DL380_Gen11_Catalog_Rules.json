@@ -4,230 +4,239 @@
     "model": "DL380_Gen11",
     "family": "ProLiant",
     "generation": "Gen11",
-    "scrapeDate": "2026-08-28",
-    "scrapeTimestamp": "2026-08-28T17:32:52.412Z",
+    "scrapeDate": "2026-09-09",
+    "scrapeTimestamp": "2026-09-09T07:37:47.277Z",
     "totalSubcategories": 26,
-    "totalUniqueSKUs": 489,
+    "totalUniqueSKUs": 377,
     "totalTables": 84,
     "diffSummary": {
-      "added": 31,
-      "removed": 20,
-      "priceChanged": 0,
-      "attributeChanged": 0,
-      "priceAndAttributeChanged": 0,
-      "unchanged": 458,
-      "reinstated": 2,
-      "discontinuedTotal": 20
+      "added": 44,
+      "removed": 6,
+      "priceChanged": 297,
+      "attributeChanged": 2,
+      "priceAndAttributeChanged": 6,
+      "unchanged": 28,
+      "reinstated": 0,
+      "discontinuedTotal": 6
     },
-    "historySnapshot": "catalog_2026-08-28.json",
+    "historySnapshot": "catalog_2026-09-09.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-08-28",
+      "scrapeDate": "2026-09-09",
       "categoryBreakdown": {
         "Accessories & Infrastructure": {
-          "totalSKUs": 10,
-          "totalPrice": 1766,
+          "totalSKUs": 72,
+          "totalPrice": 120538,
           "minPrice": 1,
-          "maxPrice": 816,
+          "maxPrice": 42269,
           "subcategories": {
             "Energy Star Configuration Presets": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             },
             "System Options": {
-              "totalSKUs": 3,
-              "totalPrice": 399,
-              "avgPrice": 133
-            },
-            "Smart Storage Batteries": {
-              "totalSKUs": 1,
-              "totalPrice": 38,
-              "avgPrice": 38
+              "totalSKUs": 65,
+              "totalPrice": 119981,
+              "avgPrice": 1845.8615384615384
             },
             "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 2,
-              "totalPrice": 253,
-              "avgPrice": 126.5
-            },
-            "HPE Virtualization": {
-              "totalSKUs": 4,
-              "totalPrice": 1076,
-              "avgPrice": 269
+              "totalSKUs": 6,
+              "totalPrice": 556,
+              "avgPrice": 92.66666666666667
             }
           },
-          "avgPrice": 176.6
+          "avgPrice": 1674.138888888889
         },
         "Processor": {
-          "totalSKUs": 3,
-          "totalPrice": 29700,
-          "minPrice": 890,
-          "maxPrice": 23877,
+          "totalSKUs": 70,
+          "totalPrice": 803619,
+          "minPrice": 524,
+          "maxPrice": 62375,
           "subcategories": {
             "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 2,
-              "totalPrice": 28810,
-              "avgPrice": 14405
+              "totalSKUs": 66,
+              "totalPrice": 799718,
+              "avgPrice": 12116.939393939394
             },
             "Intel Xeon Scalable Processors": {
-              "totalSKUs": 1,
-              "totalPrice": 890,
-              "avgPrice": 890
+              "totalSKUs": 4,
+              "totalPrice": 3901,
+              "avgPrice": 975.25
             }
           },
-          "avgPrice": 9900
+          "avgPrice": 11480.271428571428
         },
         "Cooling / Thermal": {
-          "totalSKUs": 2,
-          "totalPrice": 1205,
-          "minPrice": 233,
-          "maxPrice": 972,
+          "totalSKUs": 10,
+          "totalPrice": 8391,
+          "minPrice": 115,
+          "maxPrice": 1843,
           "subcategories": {
             "Standard & Performance Heat Sinks": {
-              "totalSKUs": 1,
-              "totalPrice": 233,
-              "avgPrice": 233
+              "totalSKUs": 6,
+              "totalPrice": 4891,
+              "avgPrice": 815.1666666666666
             },
             "High Performance & Standard Fan Kits": {
-              "totalSKUs": 1,
-              "totalPrice": 972,
-              "avgPrice": 972
+              "totalSKUs": 4,
+              "totalPrice": 3500,
+              "avgPrice": 875
             }
           },
-          "avgPrice": 602.5
+          "avgPrice": 839.1
         },
         "Memory": {
-          "totalSKUs": 1,
-          "totalPrice": 28532,
-          "minPrice": 28532,
-          "maxPrice": 28532,
+          "totalSKUs": 33,
+          "totalPrice": 1564535,
+          "minPrice": 1,
+          "maxPrice": 133186,
           "subcategories": {
             "DDR5 Registered Smart Memory": {
-              "totalSKUs": 1,
-              "totalPrice": 28532,
-              "avgPrice": 28532
+              "totalSKUs": 32,
+              "totalPrice": 1564406,
+              "avgPrice": 48887.6875
             },
             "DDR4 Registered Smart Memory": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 129,
+              "avgPrice": 129
             }
           },
-          "avgPrice": 28532
+          "avgPrice": 47410.15151515151
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 3,
-          "totalPrice": 8693,
-          "minPrice": 164,
-          "maxPrice": 7799,
+          "totalSKUs": 59,
+          "totalPrice": 260847,
+          "minPrice": 1,
+          "maxPrice": 70465,
           "subcategories": {
             "Solid State Drives (NVMe/SAS/SATA)": {
-              "totalSKUs": 3,
-              "totalPrice": 8693,
-              "avgPrice": 2897.6666666666665
+              "totalSKUs": 28,
+              "totalPrice": 191816,
+              "avgPrice": 6850.571428571428
             },
             "Drive Blank & FIO Enablement Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 14,
+              "avgPrice": 14
             },
             "SFF Drive Cages & Enablement": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 7,
+              "totalPrice": 3461,
+              "avgPrice": 494.42857142857144
             },
             "Hard Disk Drives (SAS/SATA)": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 23,
+              "totalPrice": 65556,
+              "avgPrice": 2850.2608695652175
             }
           },
-          "avgPrice": 2897.6666666666665
+          "avgPrice": 4421.135593220339
         },
         "Software & Licenses": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 42,
+          "totalPrice": 451084,
+          "minPrice": 1,
+          "maxPrice": 99999,
           "subcategories": {
             "Server Management & Operating System Licenses": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 42,
+              "totalPrice": 451084,
+              "avgPrice": 10740.095238095239
             }
           },
-          "avgPrice": 0
+          "avgPrice": 10740.095238095239
         },
         "Storage Controllers": {
-          "totalSKUs": 1,
-          "totalPrice": 5999,
-          "minPrice": 5999,
-          "maxPrice": 5999,
+          "totalSKUs": 8,
+          "totalPrice": 36509,
+          "minPrice": 334,
+          "maxPrice": 11155,
           "subcategories": {
             "Tri-Mode MegaRAID Storage Controllers": {
-              "totalSKUs": 1,
-              "totalPrice": 5999,
-              "avgPrice": 5999
+              "totalSKUs": 6,
+              "totalPrice": 25020,
+              "avgPrice": 4170
             },
             "Tri-Mode SmartRAID Storage Controllers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 11155,
+              "avgPrice": 11155
             },
             "Storage Controller Cable Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 334,
+              "avgPrice": 334
             }
           },
-          "avgPrice": 5999
+          "avgPrice": 4563.625
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 4,
+          "totalPrice": 183,
+          "minPrice": 1,
+          "maxPrice": 110,
+          "subcategories": {
+            "Smart Storage Batteries": {
+              "totalSKUs": 2,
+              "totalPrice": 148,
+              "avgPrice": 74
+            },
+            "Power Cords & Jumper Cables": {
+              "totalSKUs": 2,
+              "totalPrice": 35,
+              "avgPrice": 17.5
+            }
+          },
+          "avgPrice": 45.75
         },
         "PCIe Risers": {
-          "totalSKUs": 4,
-          "totalPrice": 1430,
-          "minPrice": 262,
-          "maxPrice": 416,
+          "totalSKUs": 16,
+          "totalPrice": 7954,
+          "minPrice": 1,
+          "maxPrice": 994,
           "subcategories": {
             "Secondary PCIe Risers": {
-              "totalSKUs": 2,
-              "totalPrice": 759,
-              "avgPrice": 379.5
+              "totalSKUs": 10,
+              "totalPrice": 5913,
+              "avgPrice": 591.3
             },
             "Primary PCIe Risers": {
-              "totalSKUs": 1,
-              "totalPrice": 262,
-              "avgPrice": 262
+              "totalSKUs": 3,
+              "totalPrice": 980,
+              "avgPrice": 326.6666666666667
             },
             "Tertiary PCIe Risers": {
-              "totalSKUs": 1,
-              "totalPrice": 409,
-              "avgPrice": 409
+              "totalSKUs": 3,
+              "totalPrice": 1061,
+              "avgPrice": 353.6666666666667
             }
           },
-          "avgPrice": 357.5
+          "avgPrice": 497.125
         },
         "Networking": {
-          "totalSKUs": 4,
-          "totalPrice": 3941,
-          "minPrice": 115,
-          "maxPrice": 2110,
+          "totalSKUs": 54,
+          "totalPrice": 152044,
+          "minPrice": 107,
+          "maxPrice": 7359,
           "subcategories": {
             "PCIe Networking Adapters": {
-              "totalSKUs": 1,
-              "totalPrice": 2110,
-              "avgPrice": 2110
+              "totalSKUs": 35,
+              "totalPrice": 116948,
+              "avgPrice": 3341.3714285714286
             },
             "OCP3 Networking Adapters": {
-              "totalSKUs": 3,
-              "totalPrice": 1831,
-              "avgPrice": 610.3333333333334
+              "totalSKUs": 19,
+              "totalPrice": 35096,
+              "avgPrice": 1847.157894736842
             }
           },
-          "avgPrice": 985.25
+          "avgPrice": 2815.6296296296296
         },
         "Power Supplies": {
-          "totalSKUs": 1,
-          "totalPrice": 1588,
-          "minPrice": 1588,
+          "totalSKUs": 2,
+          "totalPrice": 1723,
+          "minPrice": 135,
           "maxPrice": 1588,
           "subcategories": {
             "Flex Slot Power Supplies": {
@@ -236,26 +245,12 @@
               "avgPrice": 1588
             },
             "-48VDC Power Supplies & Cable Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 1588
-        },
-        "Cables & Enablement Kits": {
-          "totalSKUs": 1,
-          "totalPrice": 1,
-          "minPrice": 1,
-          "maxPrice": 1,
-          "subcategories": {
-            "Power Cords & Jumper Cables": {
               "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
+              "totalPrice": 135,
+              "avgPrice": 135
             }
           },
-          "avgPrice": 1
+          "avgPrice": 861.5
         },
         "Chassis": {
           "totalSKUs": 6,
@@ -270,34 +265,20 @@
             }
           },
           "avgPrice": 1950
-        },
-        "Graphics & GPU": {
-          "totalSKUs": 10,
-          "totalPrice": 3503,
-          "minPrice": 7,
-          "maxPrice": 1399,
-          "subcategories": {
-            "NVIDIA GPU SW": {
-              "totalSKUs": 10,
-              "totalPrice": 3503,
-              "avgPrice": 350.3
-            }
-          },
-          "avgPrice": 350.3
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 509,
-      "unchangedSkusCount": 458,
-      "modifiedSkusCount": 46,
-      "addedSkusCount": 5,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 68700,
-      "estimatedProcessingTimeSavedMs": 91600
+      "totalScrapedSkus": 383,
+      "unchangedSkusCount": 30,
+      "modifiedSkusCount": 311,
+      "addedSkusCount": 42,
+      "removedSkusCount": 163,
+      "estimatedTokensSaved": 4500,
+      "estimatedProcessingTimeSavedMs": 6000
     },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-08-28T17:32:52.806Z"
+    "rulesGeneratedAt": "2026-09-09T07:37:47.662Z"
   },
   "chassisVariants": [
     {
@@ -307,12 +288,12 @@
       "listPrice": 1750,
       "listPriceFormatted": "$1750.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED) → 2026-09-09: $1750.00 (✕ REMOVED)"
     },
     {
       "sku": "P52533-B21",
@@ -321,12 +302,12 @@
       "listPrice": 1900,
       "listPriceFormatted": "$1900.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED) → 2026-09-09: $1900.00 (✕ REMOVED)"
     },
     {
       "sku": "P52534-B21",
@@ -335,12 +316,12 @@
       "listPrice": 1650,
       "listPriceFormatted": "$1650.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED) → 2026-09-09: $1650.00 (✕ REMOVED)"
     },
     {
       "sku": "P52535-B21",
@@ -349,12 +330,12 @@
       "listPrice": 2100,
       "listPriceFormatted": "$2100.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED) → 2026-09-09: $2100.00 (✕ REMOVED)"
     },
     {
       "sku": "P52536-B21",
@@ -363,12 +344,12 @@
       "listPrice": 2250,
       "listPriceFormatted": "$2250.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED) → 2026-09-09: $2250.00 (✕ REMOVED)"
     },
     {
       "sku": "P52537-B21",
@@ -377,12 +358,12 @@
       "listPrice": 2050,
       "listPriceFormatted": "$2050.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED) → 2026-09-09: $2050.00 (✕ REMOVED)"
     }
   ],
   "chassisVariantMatrix": {
@@ -393,12 +374,12 @@
       "listPrice": 1750,
       "listPriceFormatted": "$1750.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED) → 2026-09-09: $1750.00 (✕ REMOVED)"
     },
     "P52533-B21": {
       "sku": "P52533-B21",
@@ -407,12 +388,12 @@
       "listPrice": 1900,
       "listPriceFormatted": "$1900.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED) → 2026-09-09: $1900.00 (✕ REMOVED)"
     },
     "P52534-B21": {
       "sku": "P52534-B21",
@@ -421,12 +402,12 @@
       "listPrice": 1650,
       "listPriceFormatted": "$1650.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED) → 2026-09-09: $1650.00 (✕ REMOVED)"
     },
     "P52535-B21": {
       "sku": "P52535-B21",
@@ -435,12 +416,12 @@
       "listPrice": 2100,
       "listPriceFormatted": "$2100.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED) → 2026-09-09: $2100.00 (✕ REMOVED)"
     },
     "P52536-B21": {
       "sku": "P52536-B21",
@@ -449,12 +430,12 @@
       "listPrice": 2250,
       "listPriceFormatted": "$2250.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED) → 2026-09-09: $2250.00 (✕ REMOVED)"
     },
     "P52537-B21": {
       "sku": "P52537-B21",
@@ -463,12 +444,12 @@
       "listPrice": 2050,
       "listPriceFormatted": "$2050.00",
       "optionType": "CTO",
-      "startDate": "2026-08-27",
-      "discontinuedDate": "2026-08-28",
+      "startDate": "2026-08-28",
+      "discontinuedDate": "2026-09-09",
       "constraint": "Discontinued",
       "maxQty": "Discontinued",
       "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED)"
+      "priceHistoryTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED) → 2026-09-09: $2050.00 (✕ REMOVED)"
     }
   },
   "subcategories": [],
@@ -569,7 +550,7 @@
       "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
       "constraint": "max 24",
       "maxQty": 24,
-      "rule": "Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24"
+      "rule": "NVMe Bundle is supported with 8SFF CTO Server Only"
     },
     {
       "parentCategory": "Accessories & Infrastructure",
@@ -590,7 +571,7 @@
       "subCategory": "Drive Blank & FIO Enablement Kits",
       "constraint": "max 24",
       "maxQty": 24,
-      "rule": "Selection constraint for Drive Blank & FIO Enablement Kits: max 24"
+      "rule": "Supported with 8SFF CTO Server only."
     },
     {
       "parentCategory": "Storage Controllers",
@@ -598,6 +579,13 @@
       "constraint": "max 4",
       "maxQty": 4,
       "rule": "Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Gen4 Re timer card is supported with 8SFF CTO Server Only."
     },
     {
       "parentCategory": "Accessories & Infrastructure",
@@ -615,31 +603,31 @@
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Smart Storage Batteries",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "Selection constraint for Smart Storage Batteries: optional"
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
       "subCategory": "System Options",
       "constraint": "optional",
       "maxQty": -3,
       "rule": "Max quantity of product limited by space available."
     },
     {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "This Cable is supported with 8SFF CTO Server Only."
+    },
+    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "System Options",
       "constraint": "optional",
       "maxQty": -3,
-      "rule": "This Cable is supported with 8LFF CTO Server and 12LFF CTO Server Only."
+      "rule": "This Cable is supported with 8SFF CTO Server and EDSFF CTO Server Only."
     },
     {
       "parentCategory": "Storage Controllers",
       "subCategory": "Storage Controller Cable Kits",
       "constraint": "max 4",
       "maxQty": 4,
-      "rule": "For 8SFF CTO Server, It can be selected only if NVMe bundle is selected."
+      "rule": "This Cable is supported with 8SFF CTO Server and 24SFF CTO Server Only."
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
@@ -671,17 +659,38 @@
     },
     {
       "parentCategory": "PCIe Risers",
-      "subCategory": "Primary PCIe Risers",
+      "subCategory": "Secondary PCIe Risers",
       "constraint": "max 3",
       "maxQty": 3,
-      "rule": "This Drive cage can be selected with 8LFF CTO Server and 12LFF CTO Server Only."
+      "rule": "This Drive cage can be selected with 8SFF CTO Server and 24SFF CTO Server Only."
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "max 24",
       "maxQty": 24,
-      "rule": "This Drive cage can be selected with 8LFF CTO Server Only."
+      "rule": "This Drive cage can be selected with 8SFF CTO Server and 12EDSFF CTO Server"
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "Primary PCIe Risers",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "If this Primary Riser is selected then default Primary riser is replaced with this Riser. The “PCIe Card Capacity Limits” must account for this limitation..."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "This Drive cage can be selected with 8SFF CTO Server Only."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24"
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
@@ -691,39 +700,11 @@
       "rule": "Selection constraint for Hard Disk Drives (SAS/SATA): max 24"
     },
     {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Hard Disk Drives (SAS/SATA)",
-      "constraint": "max 24",
-      "maxQty": 24,
-      "rule": "Private Product is not valid for current customer account"
-    },
-    {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Hard Disk Drives (SAS/SATA)",
-      "constraint": "max 24",
-      "maxQty": 24,
-      "rule": "Available There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
-    },
-    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "System Options",
       "constraint": "optional",
       "maxQty": -3,
       "rule": "BTO products are not allowed in CTO Base Model."
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "This Cable is supported with 8LFF CTO Server Only."
-    },
-    {
-      "parentCategory": "PCIe Risers",
-      "subCategory": "Primary PCIe Risers",
-      "constraint": "max 3",
-      "maxQty": 3,
-      "rule": "If this Primary Riser is selected then default Primary riser is replaced with this Riser. The “PCIe Card Capacity Limits” must account for this limitation..."
     },
     {
       "parentCategory": "PCIe Risers",
@@ -744,7 +725,7 @@
       "subCategory": "PCIe Networking Adapters",
       "constraint": "max 8",
       "maxQty": 8,
-      "rule": "Available There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+      "rule": "Selection constraint for PCIe Networking Adapters: max 8"
     },
     {
       "parentCategory": "Networking",
@@ -766,13 +747,6 @@
       "constraint": "max 8",
       "maxQty": 8,
       "rule": "Private Product is not valid for current customer account"
-    },
-    {
-      "parentCategory": "Networking",
-      "subCategory": "PCIe Networking Adapters",
-      "constraint": "max 8",
-      "maxQty": 8,
-      "rule": "Selection constraint for PCIe Networking Adapters: max 8"
     },
     {
       "parentCategory": "Networking",
@@ -838,22 +812,15 @@
       "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: optional"
     },
     {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "System Options",
+      "constraint": "optional",
+      "maxQty": -3,
+      "rule": "Can be selected with 8SFF CTO Server and 24SFF CTO Server only."
+    },
+    {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "NVIDIA GPU SW",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "HPE Virtualization",
       "constraint": "Discontinued",
       "maxQty": "",
       "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
@@ -878,41 +845,6 @@
       "constraint": "min 1, max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2"
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Reseller Option Kit",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "SUSE Add-ons",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "SUSE containers",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Cooling / Thermal",
-      "subCategory": "Heatsink Kit",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
-    {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Integrated Lights Out Software",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
     },
     {
       "parentCategory": "Learned Feedback Rules",

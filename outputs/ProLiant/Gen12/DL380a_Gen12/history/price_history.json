@@ -1208,6 +1208,11 @@
       "date": "2026-09-06",
       "price": 4,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 4,
+      "status": "ADDED"
     }
   ],
   "469774-409": [
@@ -1502,6 +1507,11 @@
       "date": "2026-09-06",
       "price": 7,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 7,
+      "status": "REMOVED"
     }
   ],
   "AC129A": [
@@ -1509,6 +1519,11 @@
       "date": "2026-09-06",
       "price": 26,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 26,
+      "status": "REMOVED"
     }
   ],
   "P1F69A": [
@@ -1516,6 +1531,11 @@
       "date": "2026-09-06",
       "price": 289,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 289,
+      "status": "REMOVED"
     }
   ],
   "P1F70A": [
@@ -1523,6 +1543,11 @@
       "date": "2026-09-06",
       "price": 1399,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 1399,
+      "status": "REMOVED"
     }
   ],
   "P1F71A": [
@@ -1530,6 +1555,11 @@
       "date": "2026-09-06",
       "price": 292,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 292,
+      "status": "REMOVED"
     }
   ],
   "P1F72A": [
@@ -1537,6 +1567,11 @@
       "date": "2026-09-06",
       "price": 466,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 466,
+      "status": "REMOVED"
     }
   ],
   "P1F73A": [
@@ -1544,6 +1579,11 @@
       "date": "2026-09-06",
       "price": 104,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 104,
+      "status": "REMOVED"
     }
   ],
   "P1F74A": [
@@ -1551,6 +1591,11 @@
       "date": "2026-09-06",
       "price": 350,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 350,
+      "status": "REMOVED"
     }
   ],
   "P1F75A": [
@@ -1558,6 +1603,11 @@
       "date": "2026-09-06",
       "price": 466,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 466,
+      "status": "REMOVED"
     }
   ],
   "P1F76A": [
@@ -1565,6 +1615,11 @@
       "date": "2026-09-06",
       "price": 758,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 758,
+      "status": "REMOVED"
     }
   ],
   "AC123A": [
@@ -1572,6 +1627,11 @@
       "date": "2026-09-06",
       "price": 816,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 816,
+      "status": "REMOVED"
     }
   ],
   "BQ335A": [
@@ -1579,6 +1639,11 @@
       "date": "2026-09-06",
       "price": 44,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 44,
+      "status": "REMOVED"
     }
   ],
   "BQ337A": [
@@ -1586,6 +1651,11 @@
       "date": "2026-09-06",
       "price": 100,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 100,
+      "status": "REMOVED"
     }
   ],
   "P76706-B21": [
@@ -1593,6 +1663,11 @@
       "date": "2026-09-06",
       "price": 21407,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-09",
+      "price": 21407,
+      "status": "REMOVED"
     }
   ]
 }

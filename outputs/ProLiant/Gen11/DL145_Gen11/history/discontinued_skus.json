@@ -1,1 +1,2154 @@
-{}
+{
+  "P22020-B21": {
+    "productNumber": "P22020-B21",
+    "description": "HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P52349-B21": {
+    "productNumber": "P52349-B21",
+    "description": "HPE Easy Install Rail 1 Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72008-B21": {
+    "productNumber": "P72008-B21",
+    "description": "HPE ProLiant DL145 Gen11 Rack Enablement Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78764-B21": {
+    "productNumber": "P78764-B21",
+    "description": "HPE ProLiant DL145 Gen11 2-post Rail Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72006-B21": {
+    "productNumber": "P72006-B21",
+    "description": "HPE ProLiant DL145 Gen11 Desk/Wall Mounting Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73006-B21": {
+    "productNumber": "P73006-B21",
+    "description": "HPE ProLiant DL145 Gen11 Optimised Acoustics FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72891-B21": {
+    "productNumber": "P72891-B21",
+    "description": "HPE ProLiant DL145 Gen11 High Temperature Support FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73015-B21": {
+    "productNumber": "P73015-B21",
+    "description": "HPE ProLiant DL145 Gen11 5C-35C/41F-95F Degrees Operational Temperature FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73018-B21": {
+    "productNumber": "P73018-B21",
+    "description": "HPE ProLiant DL145 Gen11 -5C-40C/23F-104F Degrees Operational Temperature FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73021-B21": {
+    "productNumber": "P73021-B21",
+    "description": "HPE ProLiant DL145 Gen11 -5C-45C/23F - 113F Degrees Operational Temperature FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73024-B21": {
+    "productNumber": "P73024-B21",
+    "description": "HPE ProLiant DL145 Gen11 -5C-50C/23F-122F Degrees Operational Temperature FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73027-B21": {
+    "productNumber": "P73027-B21",
+    "description": "HPE ProLiant DL145 Gen11 -5C-55C/23F-131F Degrees Operational Temperature FIO Configuration",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69259-B21": {
+    "productNumber": "P69259-B21",
+    "description": "AMD EPYC 8124P 2.45GHz 16-core 125W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69262-B21": {
+    "productNumber": "P69262-B21",
+    "description": "AMD EPYC 8434P 2.5GHz 48-core 200W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69263-B21": {
+    "productNumber": "P69263-B21",
+    "description": "AMD EPYC 8534P 2.3GHz 64-core 200W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71859-B21": {
+    "productNumber": "P71859-B21",
+    "description": "AMD EPYC 8024PN 2.05GHz 8-core 80W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71862-B21": {
+    "productNumber": "P71862-B21",
+    "description": "AMD EPYC 8124PN 2.0GHz 16-core 100W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71871-B21": {
+    "productNumber": "P71871-B21",
+    "description": "AMD EPYC 8434PN 2.0GHz 48-core 155W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71874-B21": {
+    "productNumber": "P71874-B21",
+    "description": "AMD EPYC 8534PN 2.0GHz 64-core 175W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88840-B21": {
+    "productNumber": "P88840-B21",
+    "description": "AMD EPYC 8635P 1.6GHz 84-core 225W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88842-B21": {
+    "productNumber": "P88842-B21",
+    "description": "AMD EPYC 8535P 2.0GHz 64-core 210W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88850-B21": {
+    "productNumber": "P88850-B21",
+    "description": "AMD EPYC 8125P 2.65GHz 16-core 125W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69258-B21": {
+    "productNumber": "P69258-B21",
+    "description": "AMD EPYC 8024P 2.4GHz 8-core 90W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69260-B21": {
+    "productNumber": "P69260-B21",
+    "description": "AMD EPYC 8224P 2.55GHz 24-core 160W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69261-B21": {
+    "productNumber": "P69261-B21",
+    "description": "AMD EPYC 8324P 2.65GHz 32-core 180W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71865-B21": {
+    "productNumber": "P71865-B21",
+    "description": "AMD EPYC 8224PN 2.0GHz 24-core 120W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71868-B21": {
+    "productNumber": "P71868-B21",
+    "description": "AMD EPYC 8324PN 2.05GHz 32-core 130W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88844-B21": {
+    "productNumber": "P88844-B21",
+    "description": "AMD EPYC 8435P 2.45GHz 48-core 200W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88846-B21": {
+    "productNumber": "P88846-B21",
+    "description": "AMD EPYC 8325P 2.7GHz 32-core 175W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88848-B21": {
+    "productNumber": "P88848-B21",
+    "description": "AMD EPYC 8225P 2.95GHz 24-core 160W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88852-B21": {
+    "productNumber": "P88852-B21",
+    "description": "AMD EPYC 8025P 2.9GHz 8-core 95W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72580-B21": {
+    "productNumber": "P72580-B21",
+    "description": "HPE ProLiant DL145 Gen11 1U Heat Sink Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50311-F21": {
+    "productNumber": "P50311-F21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50312-F21": {
+    "productNumber": "P50312-F21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64986-F21": {
+    "productNumber": "P64986-F21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50309-F21": {
+    "productNumber": "P50309-F21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64985-F21": {
+    "productNumber": "P64985-F21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64987-F21": {
+    "productNumber": "P64987-F21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64988-F21": {
+    "productNumber": "P64988-F21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P66676-F21": {
+    "productNumber": "P66676-F21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-4800 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69982-F21": {
+    "productNumber": "P69982-F21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-4800 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50309-B21": {
+    "productNumber": "P50309-B21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50311-B21": {
+    "productNumber": "P50311-B21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P50312-B21": {
+    "productNumber": "P50312-B21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64984-B21": {
+    "productNumber": "P64984-B21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64984-F21": {
+    "productNumber": "P64984-F21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64985-B21": {
+    "productNumber": "P64985-B21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64986-B21": {
+    "productNumber": "P64986-B21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64987-B21": {
+    "productNumber": "P64987-B21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P64988-B21": {
+    "productNumber": "P64988-B21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P66676-B21": {
+    "productNumber": "P66676-B21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-4800 CAS-46-45-45 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69982-B21": {
+    "productNumber": "P69982-B21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "DDR5 Registered Smart Memory",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P47777-B21": {
+    "productNumber": "P47777-B21",
+    "description": "HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P47785-B21": {
+    "productNumber": "P47785-B21",
+    "description": "HPE MR216i-p Gen11 x16 Lanes without Cache PCI SPDM Plug-in Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "804398-B21": {
+    "productNumber": "804398-B21",
+    "description": "HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P58335-B21": {
+    "productNumber": "P58335-B21",
+    "description": "HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P01366-B21": {
+    "productNumber": "P01366-B21",
+    "description": "HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Batteries",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P02377-B21": {
+    "productNumber": "P02377-B21",
+    "description": "HPE Smart Storage Hybrid Capacitor with 145mm Cable Kit",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Batteries",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P65038-B21": {
+    "productNumber": "P65038-B21",
+    "description": "HPE 16W Smart Hybrid Capacitor with 145mm Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Batteries",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72000-B21": {
+    "productNumber": "P72000-B21",
+    "description": "HPE ProLiant DL145 Gen11 MR216i-p 2SFF Storage Controller Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72002-B21": {
+    "productNumber": "P72002-B21",
+    "description": "HPE ProLiant DL145 Gen11 MR408i-o 4EDSFF Storage Controller Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73003-B21": {
+    "productNumber": "P73003-B21",
+    "description": "HPE ProLiant DL145 Gen11 MR216i-p/MR416i-p 4EDSFF Storage Controller Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "339777-B21": {
+    "productNumber": "339777-B21",
+    "description": "HPE RAID 0 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "339778-B21": {
+    "productNumber": "339778-B21",
+    "description": "HPE RAID 1 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "339779-B21": {
+    "productNumber": "339779-B21",
+    "description": "HPE RAID 5 Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "339780-B21": {
+    "productNumber": "339780-B21",
+    "description": "HPE Raid 5 w/SP Drive 1 FIO Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "339781-B21": {
+    "productNumber": "339781-B21",
+    "description": "HPE RAID FIO Advanced Data Guarding Option",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "389692-B21": {
+    "productNumber": "389692-B21",
+    "description": "HPE Customer Defined RAID Setting Service",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71981-B21": {
+    "productNumber": "P71981-B21",
+    "description": "HPE ProLiant DL145 Gen11 6EDSFF Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72004-B21": {
+    "productNumber": "P72004-B21",
+    "description": "HPE ProLiant DL145 Gen11 MR216i-p/MR416i-p 6EDSFF Storage Controller Cable Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71977-B21": {
+    "productNumber": "P71977-B21",
+    "description": "HPE ProLiant DL145 Gen11 2SFF Drive Cage Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71985-B21": {
+    "productNumber": "P71985-B21",
+    "description": "HPE ProLiant DL145 Gen11 4EDSFF Drive Cage Kit",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P57803-B21": {
+    "productNumber": "P57803-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM PM1743 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P61191-B21": {
+    "productNumber": "P61191-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69237-B21": {
+    "productNumber": "P69237-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70669-B21": {
+    "productNumber": "P70669-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70672-B21": {
+    "productNumber": "P70672-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77265-B21": {
+    "productNumber": "P77265-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 EDSFF SPDM PE1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78787-B21": {
+    "productNumber": "P78787-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87719-B21": {
+    "productNumber": "P87719-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87721-B21": {
+    "productNumber": "P87721-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91084-B21": {
+    "productNumber": "P91084-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91086-B21": {
+    "productNumber": "P91086-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91088-B21": {
+    "productNumber": "P91088-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91090-B21": {
+    "productNumber": "P91090-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91092-B21": {
+    "productNumber": "P91092-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91094-B21": {
+    "productNumber": "P91094-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91096-B21": {
+    "productNumber": "P91096-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91098-B21": {
+    "productNumber": "P91098-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91100-B21": {
+    "productNumber": "P91100-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91102-B21": {
+    "productNumber": "P91102-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91229-B21": {
+    "productNumber": "P91229-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91233-B21": {
+    "productNumber": "P91233-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P61179-B21": {
+    "productNumber": "P61179-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P61183-B21": {
+    "productNumber": "P61183-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P63930-B21": {
+    "productNumber": "P63930-B21",
+    "description": "HPE 3.84TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P63934-B21": {
+    "productNumber": "P63934-B21",
+    "description": "HPE 7.68TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69234-B21": {
+    "productNumber": "P69234-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69239-B21": {
+    "productNumber": "P69239-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70397-B21": {
+    "productNumber": "P70397-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77053-B21": {
+    "productNumber": "P77053-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77055-B21": {
+    "productNumber": "P77055-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77059-B21": {
+    "productNumber": "P77059-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77061-B21": {
+    "productNumber": "P77061-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78914-B21": {
+    "productNumber": "P78914-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78923-B21": {
+    "productNumber": "P78923-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79122-B21": {
+    "productNumber": "P79122-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85128-B21": {
+    "productNumber": "P85128-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85731-B21": {
+    "productNumber": "P85731-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P57799-B21": {
+    "productNumber": "P57799-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM PM1743 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P61187-B21": {
+    "productNumber": "P61187-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P61195-B21": {
+    "productNumber": "P61195-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P63938-B21": {
+    "productNumber": "P63938-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69241-B21": {
+    "productNumber": "P69241-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69243-B21": {
+    "productNumber": "P69243-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69245-B21": {
+    "productNumber": "P69245-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69546-B21": {
+    "productNumber": "P69546-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70392-B21": {
+    "productNumber": "P70392-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70395-B21": {
+    "productNumber": "P70395-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70399-B21": {
+    "productNumber": "P70399-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 PS1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70401-B21": {
+    "productNumber": "P70401-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 PS1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70403-B21": {
+    "productNumber": "P70403-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3S EC1 PS1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70674-B21": {
+    "productNumber": "P70674-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77050-B21": {
+    "productNumber": "P77050-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77057-B21": {
+    "productNumber": "P77057-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77262-B21": {
+    "productNumber": "P77262-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 EDSFF SPDM PE1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77267-B21": {
+    "productNumber": "P77267-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 EDSFF SPDM PE1030 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77269-B21": {
+    "productNumber": "P77269-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PE1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77271-B21": {
+    "productNumber": "P77271-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PE1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77273-B21": {
+    "productNumber": "P77273-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PE1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77275-B21": {
+    "productNumber": "P77275-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PE1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78784-B21": {
+    "productNumber": "P78784-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78789-B21": {
+    "productNumber": "P78789-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78791-B21": {
+    "productNumber": "P78791-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78793-B21": {
+    "productNumber": "P78793-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78917-B21": {
+    "productNumber": "P78917-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78919-B21": {
+    "productNumber": "P78919-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P78921-B21": {
+    "productNumber": "P78921-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79065-B21": {
+    "productNumber": "P79065-B21",
+    "description": "HPE 30.72TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79147-B21": {
+    "productNumber": "P79147-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF Self-encrypting PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79965-B21": {
+    "productNumber": "P79965-B21",
+    "description": "HPE 30.72TB NVMe Gen5 High Performance Read Intensive E3.S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85114-B21": {
+    "productNumber": "P85114-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85117-B21": {
+    "productNumber": "P85117-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85119-B21": {
+    "productNumber": "P85119-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85121-B21": {
+    "productNumber": "P85121-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85124-B21": {
+    "productNumber": "P85124-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85126-B21": {
+    "productNumber": "P85126-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85733-B21": {
+    "productNumber": "P85733-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85735-B21": {
+    "productNumber": "P85735-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85739-B21": {
+    "productNumber": "P85739-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85741-B21": {
+    "productNumber": "P85741-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85743-B21": {
+    "productNumber": "P85743-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P85745-B21": {
+    "productNumber": "P85745-B21",
+    "description": "HPE 30.72TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87715-B21": {
+    "productNumber": "P87715-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87717-B21": {
+    "productNumber": "P87717-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87723-B21": {
+    "productNumber": "P87723-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P91231-B21": {
+    "productNumber": "P91231-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79615-B21": {
+    "productNumber": "P79615-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79618-B21": {
+    "productNumber": "P79618-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79620-B21": {
+    "productNumber": "P79620-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P79623-B21": {
+    "productNumber": "P79623-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86016-B21": {
+    "productNumber": "P86016-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86018-B21": {
+    "productNumber": "P86018-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86020-B21": {
+    "productNumber": "P86020-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86024-B21": {
+    "productNumber": "P86024-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86026-B21": {
+    "productNumber": "P86026-B21",
+    "description": "HPE ProLiant DL385 Gen11 with iLO GPU 550W Power Capping FIO Enablement Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86028-B21": {
+    "productNumber": "P86028-B21",
+    "description": "HPE ProLiant DL385 Gen11 with iLO GPU 450W Power Capping FIO Enablement Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86030-B21": {
+    "productNumber": "P86030-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86032-B21": {
+    "productNumber": "P86032-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86746-B21": {
+    "productNumber": "P86746-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 Self-encrypting 6600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P86748-B21": {
+    "productNumber": "P86748-B21",
+    "description": "HPE 122.8TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 Self-encrypting 6600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88535-B21": {
+    "productNumber": "P88535-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88537-B21": {
+    "productNumber": "P88537-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88539-B21": {
+    "productNumber": "P88539-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88541-B21": {
+    "productNumber": "P88541-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P88543-B21": {
+    "productNumber": "P88543-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73214-B21": {
+    "productNumber": "P73214-B21",
+    "description": "HPE ProLiant DL145 Gen11 Disabled External USB Port FIO System Setting",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P35876-B21": {
+    "productNumber": "P35876-B21",
+    "description": "HPE CE Mark Removal FIO Enablement Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P63226-B21": {
+    "productNumber": "P63226-B21",
+    "description": "HPE ProLiant vSAN ReadyNode Express Storage Architecture FIO Tracking",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P08040-B21": {
+    "productNumber": "P08040-B21",
+    "description": "HPE iLO Common Password FIO Setting",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71989-B21": {
+    "productNumber": "P71989-B21",
+    "description": "HPE ProLiant DL145 Gen11 x16 FHFL PCIe Gen5 Slot 2 Riser Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71991-B21": {
+    "productNumber": "P71991-B21",
+    "description": "HPE ProLiant DL145 Gen11 x16 FHFL PCIe Gen5 Slot 1 Riser Kit",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "PCIe Riser Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P08443-B21": {
+    "productNumber": "P08443-B21",
+    "description": "Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26253-B21": {
+    "productNumber": "P26253-B21",
+    "description": "Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26259-B21": {
+    "productNumber": "P26259-B21",
+    "description": "Broadcom BCM57412 Ethernet 10Gb 2-port SFP+ Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26262-B21": {
+    "productNumber": "P26262-B21",
+    "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P42044-B21": {
+    "productNumber": "P42044-B21",
+    "description": "Mellanox MCX631102AS-ADAT Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P51178-B21": {
+    "productNumber": "P51178-B21",
+    "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P08458-B21": {
+    "productNumber": "P08458-B21",
+    "description": "Intel E810-XXVDA4 Ethernet 10/25Gb 4-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26264-B21": {
+    "productNumber": "P26264-B21",
+    "description": "Broadcom BCM57504 Ethernet 10/25Gb 4-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P51181-B21": {
+    "productNumber": "P51181-B21",
+    "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P10115-B21": {
+    "productNumber": "P10115-B21",
+    "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P42041-B21": {
+    "productNumber": "P42041-B21",
+    "description": "Mellanox MCX631432AS-ADAI Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26256-B21": {
+    "productNumber": "P26256-B21",
+    "description": "Broadcom BCM57412 Ethernet 10Gb 2-port SFP+ OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P08449-B21": {
+    "productNumber": "P08449-B21",
+    "description": "Intel I350-T4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P10097-B21": {
+    "productNumber": "P10097-B21",
+    "description": "Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P10106-B21": {
+    "productNumber": "P10106-B21",
+    "description": "Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P26269-B21": {
+    "productNumber": "P26269-B21",
+    "description": "Broadcom BCM57504 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "OCP3 Networking Adapters",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "453151-B21": {
+    "productNumber": "453151-B21",
+    "description": "HPE BladeSystem c-Class Virtual Connect 1G SFP SX Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "453154-B21": {
+    "productNumber": "453154-B21",
+    "description": "HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "455883-B21": {
+    "productNumber": "455883-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "455886-B21": {
+    "productNumber": "455886-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "845398-B21": {
+    "productNumber": "845398-B21",
+    "description": "HPE 25Gb SFP28 SR 100m Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "JL486A": {
+    "productNumber": "JL486A",
+    "description": "HPE Aruba Networking 25G SFP28 LC LR 10km SMF Transceiver",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P48183-B21": {
+    "productNumber": "P48183-B21",
+    "description": "HPE NS204i-u Gen11 NVMe Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P81162-B21": {
+    "productNumber": "P81162-B21",
+    "description": "HPE NS204i-u v2 960GB NVMe SED Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71992-B21": {
+    "productNumber": "P71992-B21",
+    "description": "HPE ProLiant DL145 Gen11 NS204i-u Enablement Kit",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P81160-B21": {
+    "productNumber": "P81160-B21",
+    "description": "HPE NS204i-u v2 960GB NVMe Hot Plug Boot Optimized Storage Device",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71995-B21": {
+    "productNumber": "P71995-B21",
+    "description": "HPE ProLiant DL145 Gen11 Double Wide GPU Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73002-B21": {
+    "productNumber": "P73002-B21",
+    "description": "HPE ProLiant DL145 Gen11 Double Wide GPU Air Baffle Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72581-B21": {
+    "productNumber": "P72581-B21",
+    "description": "HPE ProLiant DL145 Gen11 2U Performance Fan Kit",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "High Performance & Standard Fan Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P54290-B21": {
+    "productNumber": "P54290-B21",
+    "description": "HPE ProLiant DL110 900W-1000W Titanium Hot Plug Low Halogen AC Power Supply Kit",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P43150-B21": {
+    "productNumber": "P43150-B21",
+    "description": "HPE ProLiant DL110 700W Flex Slot -48VDC Hot Plug Low Halogen Power Supply Kit",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P44975-B21": {
+    "productNumber": "P44975-B21",
+    "description": "HPE ProLiant DL110 700W Flex Slot Platinum Hot Plug Low Halogen AC Power Supply Kit",
+    "mainCategory": "Processor",
+    "subCategory": "Intel Xeon Scalable Processors",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q0H80A": {
+    "productNumber": "Q0H80A",
+    "description": "HPE 48VDC 2.85m Power Cable",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "A0K02A": {
+    "productNumber": "A0K02A",
+    "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "A0N33A": {
+    "productNumber": "A0N33A",
+    "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "875519-B21": {
+    "productNumber": "875519-B21",
+    "description": "HPE Bezel Lock Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72582-B21": {
+    "productNumber": "P72582-B21",
+    "description": "HPE ProLiant DL145 Gen11 FIO Bezel Filter Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P72583-B21": {
+    "productNumber": "P72583-B21",
+    "description": "HPE ProLiant DL145 Gen11 Filter Replacement Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71998-B21": {
+    "productNumber": "P71998-B21",
+    "description": "HPE ProLiant DL145 Gen11 RJ45 Serial Port Cable Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P87008-B21": {
+    "productNumber": "P87008-B21",
+    "description": "HPE ProLiant DL145 Gen11 Military Ruggedization FIO Kit",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46191-AA1": {
+    "productNumber": "P46191-AA1",
+    "description": "Microsoft Windows Server 2022 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46191-B21": {
+    "productNumber": "P46191-B21",
+    "description": "Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46194-B21": {
+    "productNumber": "P46194-B21",
+    "description": "Microsoft Windows Server 2022 1 Device CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-AA1": {
+    "productNumber": "P46215-AA1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-AB1": {
+    "productNumber": "P46215-AB1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46215-B21": {
+    "productNumber": "P46215-B21",
+    "description": "Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46216-B21": {
+    "productNumber": "P46216-B21",
+    "description": "Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46217-B21": {
+    "productNumber": "P46217-B21",
+    "description": "Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46218-B21": {
+    "productNumber": "P46218-B21",
+    "description": "Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46219-B21": {
+    "productNumber": "P46219-B21",
+    "description": "Microsoft Windows Server 2022 50 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46220-B21": {
+    "productNumber": "P46220-B21",
+    "description": "Microsoft Windows Server 2022 50 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46221-B21": {
+    "productNumber": "P46221-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46222-B21": {
+    "productNumber": "P46222-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77110-AA1": {
+    "productNumber": "P77110-AA1",
+    "description": "Microsoft Windows Server 2025 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77110-B21": {
+    "productNumber": "P77110-B21",
+    "description": "Microsoft Windows Server 2025 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77111-B21": {
+    "productNumber": "P77111-B21",
+    "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77112-AA1": {
+    "productNumber": "P77112-AA1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77112-AB1": {
+    "productNumber": "P77112-AB1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77112-B21": {
+    "productNumber": "P77112-B21",
+    "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77113-B21": {
+    "productNumber": "P77113-B21",
+    "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77114-B21": {
+    "productNumber": "P77114-B21",
+    "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77115-B21": {
+    "productNumber": "P77115-B21",
+    "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77116-B21": {
+    "productNumber": "P77116-B21",
+    "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77117-B21": {
+    "productNumber": "P77117-B21",
+    "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77118-B21": {
+    "productNumber": "P77118-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77119-B21": {
+    "productNumber": "P77119-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77120-B21": {
+    "productNumber": "P77120-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77121-B21": {
+    "productNumber": "P77121-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77122-B21": {
+    "productNumber": "P77122-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77123-B21": {
+    "productNumber": "P77123-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46155-291": {
+    "productNumber": "P46155-291",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Pre-installed UEFI Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P46155-B21": {
+    "productNumber": "P46155-B21",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Pre-installed UEFI en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77096-291": {
+    "productNumber": "P77096-291",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77096-B21": {
+    "productNumber": "P77096-B21",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P77099-291": {
+    "productNumber": "P77099-291",
+    "description": "Microsoft Windows Server 2025 10-core Essentials FIO Pre-installed UEFI Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "512485-B21": {
+    "productNumber": "512485-B21",
+    "description": "HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "BD505A": {
+    "productNumber": "BD505A",
+    "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "512487-B21": {
+    "productNumber": "512487-B21",
+    "description": "HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "BD507A": {
+    "productNumber": "BD507A",
+    "description": "HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "E6U59ABE": {
+    "productNumber": "E6U59ABE",
+    "description": "HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "E6U64ABE": {
+    "productNumber": "E6U64ABE",
+    "description": "HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "512486-B21": {
+    "productNumber": "512486-B21",
+    "description": "HPE iLO Advanced Flexible Quantity License with 1yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "BD506A": {
+    "productNumber": "BD506A",
+    "description": "HPE iLO Advanced Flexible Quantity License with 3yr Support on iLO Licensed Features",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q5T84A": {
+    "productNumber": "Q5T84A",
+    "description": "SUSE Linux Enterprise High Availability Extension 1-2 Sockets 1yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q5T85A": {
+    "productNumber": "Q5T85A",
+    "description": "SUSE Linux Enterprise High Availability Extension 1-2 Sockets 5yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2A48A": {
+    "productNumber": "Q2A48A",
+    "description": "HPE Performance Message Passing Interface for 1 Socket 3yr Support LTU",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P71964-B21": {
+    "productNumber": "P71964-B21",
+    "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  }
+}

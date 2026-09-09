@@ -1,9 +1,14 @@
-# HPE OCA Catalog Intelligence — Synchronized Knowledge & Rules Charter
+# HPE DL380_Gen12 — Synchronized Catalog Knowledge
 
-**Target Product**: `DL380_Gen12`  
-**Sync Timestamp**: 2026-09-03T20:32:44.762Z  
-**Total Verified SKUs**: `945` (`302` Hardware + `643` Services)  
-**Total Synced KnowledgeDeltas**: `61`  
+**Target Product**: `DL380_Gen12`
+
+**Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
+
+**Sync Timestamp**: 2026-09-09T10:09:31.884Z
+
+**Total Verified SKUs**: `1015` (`307` Hardware + `708` Services)
+
+**Total Synced KnowledgeDeltas**: `36`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -13,215 +18,235 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 302 | 40 | 0 | 9 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 643 | 82 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **945** | **122** | **0** | **9** | **0** | **ACTIVE** |
+| **Hardware Components** | 307 | 31 | 0 | 276 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 708 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1015** | **31** | **0** | **276** | **0** | **ACTIVE** |
 
-### 🔍 Key Configuration & Physical Pre-Check Highlights:
-- **Compute & Thermal**: Validates TDP heatsink class (>240W requires high-performance fan kits).
-- **Memory Channels**: Enforces 1DPC / 2DPC symmetry and balanced population across memory controllers.
-- **Storage Tri-Mode**: Backplane and controller pairing validation (e.g. MR416i-p / SR932i-p require dedicated Box 1/2 Cable Kit `P76453-B21`).
-- **Support Services**: Complete lifecycle coverage across HPE Pointnext Complete Care and Tech Care Essential SLAs.
+## 🌐 1. Universal Vendor Rules (HPE)
 
----
+*No verified universal vendor rules are registered for this product.*
 
-## 🌐 1. Universal Vendor Rules (Applies Across All HPE Product Lines)
+## 🏛️ 2. Family & Generation Rules (ProLiant Gen12)
 
-1. **[DELTA-1787856163549]**: If PORTAL is present, P64707-B21 is mandatory. *(Type: TEMPORARY_SUPPLY_CONSTRAINT)*
-
-## 🏛️ 2. Family & Generation Rules (ProLiant / Alletra / Synergy)
-
-1. **[DELTA-1787856163365] DL380_Gen11**: If PORTAL is present, P52534-B21 is mandatory. *(Affected SKU: PORTAL)*
-2. **[DELTA-1787856163672] DL380_Gen11**: Portal validation flagged restriction on PORTAL. *(Affected SKU: PORTAL)*
-3. **[DELTA-1787856163759] DL380_Gen11**: If PORTAL is present, P58335-B21 is mandatory. *(Affected SKU: PORTAL)*
-4. **[DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11**: If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory. *(Affected SKU: P48832-B21)*
-5. **[DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11**: If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mandatory. *(Affected SKU: P02377-B21)*
-6. **[DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11**: P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21. *(Affected SKU: P51911-B21)*
-7. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1. *(Affected SKU: P48803-B21)*
-8. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21). *(Affected SKU: P38997-B21)*
-9. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380 Gen11**: undefined *(Affected SKU: P02377-B21)*
-10. **[DELTA_DL380_GEN12_NO_DRIVE_BYPASS] DL380_Gen12**: When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. *(Affected SKU: 873763-B21)*
-11. **[DELTA_DL380_GEN12_LOCALIZATION_GATE] DL380_Gen12**: If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. *(Affected SKU: P73282-B21)*
-12. **[DELTA_DL380_GEN12_COM_SAAS_MANDATE] DL380_Gen12**: Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. *(Affected SKU: P73282-B21)*
-13. **[DELTA_DL380_GEN12_LOT9_CE_BYPASS] DL380_Gen12**: If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts. *(Affected SKU: P38995-B21)*
-14. **[DELTA_DL380_GEN12_HIGH_TDP_COOLING] DL380_Gen12**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. *(Affected SKU: P74507-B21)*
-15. **[DELTA-1787561844831] DL380_Gen12_SFF**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-16. **[DELTA-1787315096377] DL380_Gen12_SFF**: If P69728-F21 is present, DDR5-6400 is mandatory. *(Affected SKU: P69728-F21)*
-17. **[DELTA-1787939245188] DL380_Gen12**: Portal validation flagged restriction on P76450-B21. *(Affected SKU: P76449-B21)*
-18. **[DELTA-1787939298644] DL380_Gen12**: Portal validation flagged restriction on P76453-B21. *(Affected SKU: P76453-B21)*
-19. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P69728-B21)*
-20. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
-21. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380 Gen12**: undefined *(Affected SKU: P47777-B21)*
-22. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P28586-B21)*
-23. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380 Gen12**: undefined *(Affected SKU: P76453-B21)*
-24. **[DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380 Gen12**: undefined *(Affected SKU: P64707-B21)*
-25. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380 Gen12**: undefined *(Affected SKU: P75740-B21)*
-26. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380 Gen12**: undefined *(Affected SKU: P01366-B21)*
-27. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380 Gen12**: undefined *(Affected SKU: P74573-B21)*
-28. **[DELTA-1788462981839] DL380_Gen12**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. *(Affected SKU: P10180-B21)*
-29. **[DELTA_DL380A_GEN12_SOFTWARE_DEDUPLICATION] DL380a_Gen12**: When R7A11AAE is selected on Gen12, remove redundant iLO Advanced license BD505A. *(Affected SKU: BD505A)*
+*No verified family/generation rules are registered for this product.*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen12)
 
-1. **[DELTA_DL380_GEN12_25C_AMBIENT_TRACKING] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+1. **[DELTA_DL380_GEN12_NO_DRIVE_BYPASS] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+   - **Rule**: When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums.
+   - **Affected SKU**: `873763-B21` | **Required Dependency**: `N/A`
+
+2. **[DELTA_DL380_GEN12_LOCALIZATION_GATE] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+   - **Rule**: If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability.
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P73325-B21`
+
+3. **[DELTA_DL380_GEN12_COM_SAAS_MANDATE] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+   - **Rule**: Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected.
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `R7A11AAE`
+
+4. **[DELTA_DL380_GEN12_LOT9_CE_BYPASS] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+   - **Rule**: If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts.
+   - **Affected SKU**: `P38995-B21` | **Required Dependency**: `P35876-B21`
+
+5. **[DELTA_DL380_GEN12_25C_AMBIENT_TRACKING] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
    - **Rule**: P79558-B21 tracks 25C ambient baseline for Gen12 chassis.
-   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P79558-B21` 
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P79558-B21`
 
-2. **[DELTA-1786705957681] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+6. **[DELTA_DL380_GEN12_HIGH_TDP_COOLING] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380 Gen12 CTO Server`):
+   - **Rule**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21.
+   - **Affected SKU**: `P74507-B21` | **Required Dependency**: `P48820-B21`
+
+7. **[DELTA-1787939298644] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Portal validation flagged restriction on P76453-B21.
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A`
+
+8. **[DELTA-1786705957681] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P73282-B21 is present, P73282-B21 is mandatory.
-   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P73282-B21` 
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P73282-B21`
 
-3. **[DELTA-1786705957757] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+9. **[DELTA-1786705957757] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P74573-B21 is present, P74573-B21 is mandatory.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74573-B21` 
+   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74573-B21`
 
-4. **[DELTA-1786705957802] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+10. **[DELTA-1786705957802] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P48820-B21 is present, P48820-B21 is mandatory.
-   - **Affected SKU**: `P48820-B21` | **Required Dependency**: `P48820-B21` 
+   - **Affected SKU**: `P48820-B21` | **Required Dependency**: `P48820-B21`
 
-5. **[DELTA-1786705957846] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+11. **[DELTA-1786705957846] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P69728-B21 is present, P69728-B21 is mandatory.
-   - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-B21` 
+   - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-B21`
 
-6. **[DELTA-1786705957894] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+12. **[DELTA-1786705957894] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P47777-B21 is present, P47777-B21 is mandatory.
-   - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P47777-B21` 
+   - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P47777-B21`
 
-7. **[DELTA-1786705957933] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+13. **[DELTA-1786705957933] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P01366-B21 is present, P01366-B21 is mandatory.
-   - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P01366-B21` 
+   - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P01366-B21`
 
-8. **[DELTA-1786705957977] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+14. **[DELTA-1786705957977] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P03178-B21 is present, P03178-B21 is mandatory.
-   - **Affected SKU**: `P03178-B21` | **Required Dependency**: `P03178-B21` 
+   - **Affected SKU**: `P03178-B21` | **Required Dependency**: `P03178-B21`
 
-9. **[DELTA-1786706928358] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+15. **[DELTA-1787939245188] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76450-B21.
-   - **Affected SKU**: `P76449-B21` | **Required Dependency**: `P76450-B21` 
+   - **Affected SKU**: `P76449-B21` | **Required Dependency**: `P76450-B21`
 
-10. **[PREPROC-DELTA-1786781599909] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12_SFF CTO Server`):
+16. **[PREPROC-DELTA-1786781599909] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
-   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A` 
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
-11. **[DELTA-1786880389958] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+17. **[DELTA-1786880389958] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21` 
+   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21`
    - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
 
-12. **[DELTA-1786880394092] DL380_Gen12_SFF** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+18. **[DELTA-1786880394092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.
-   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21` 
+   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21`
    - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
+
+19. **[DELTA-1787315096377] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: If P69728-F21 is present, DDR5-6400 is mandatory.
+   - **Affected SKU**: `P69728-F21` | **Required Dependency**: `DDR5-6400`
+
+20. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-F21`
+
+21. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P75740-B21` | **Required Dependency**: `873763-B21`
+
+22. **[DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P28586-B21` | **Required Dependency**: `P75740-B21`
+
+23. **[DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P51083-B21` | **Required Dependency**: `P74573-B21`
+
+24. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P01366-B21`
+
+25. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P28586-B21` | **Required Dependency**: `P40430-B21`
+
+26. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `P75740-B21`
+
+27. **[DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P64707-B21` | **Required Dependency**: `P69728-F21`
+
+28. **[DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P48818-B21` | **Required Dependency**: `P38995-B21`
+
+29. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P75741-B21`
+
+30. **[DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P47777-B21` | **Required Dependency**: `N/A`
+
+31. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P48918-B21`
+
+32. **[DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P10180-B21` | **Required Dependency**: `P72203-B21`
+
+33. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21`
+
+34. **[DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21`
+
+35. **[DELTA-1788462981839] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21.
+   - **Affected SKU**: `P10180-B21` | **Required Dependency**: `P51181-B21`
+   - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
+
+36. **[DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P76453-B21` | **Required Dependency**: `P48918-B21`
 
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-| SKU | Description | Status | Discontinued Date | Last Known Price |
-|-----|-------------|--------|-------------------|------------------|
-| `P77955-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P77958-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P77931-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P78064-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 |
-| `P77934-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P77937-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P77940-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P77961-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P78070-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P78047-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P78058-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 |
-| `P78061-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 |
-| `P77943-B21` | HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 |
-| `P73282-B21` | HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server | **REINSTATED** | 2026-08-24 | $5584.00 |
-| `P73283-B21` | HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server | **REINSTATED** | 2026-08-24 | $5980.00 |
-| `P73284-B21` | HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server | **REINSTATED** | 2026-08-24 | $6350.00 |
-| `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-08-24 | $6890.00 |
-| `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-08-24 | $7120.00 |
-| `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **REINSTATED** | 2026-08-24 | $7450.00 |
-| `P52341-B21` | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-24 | $164.00 |
-| `P70744-B21` | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-24 | $172.00 |
-| `P74748-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-24 | $117.00 |
-| `Q9R65A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $6737.00 |
-| `Q9R66A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $11229.00 |
-| `Q9R67A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $24680.00 |
-| `Q9R68A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-08-24 | $41134.00 |
-| `512485-B21` | HPE iLO Advanced 1-server License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
-| `BD505A` | HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $469.00 |
-| `512487-B21` | HPE iLO Advanced AKA Tracking License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
-| `BD507A` | HPE iLO Advanced AKA Tracking License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $469.00 |
-| `E6U59ABE` | HPE iLO Advanced Electronic License with 1yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $399.00 |
-| `E6U64ABE` | HPE iLO Advanced Electronic License with 3yr Support on iLO Licensed Features | **DISCONTINUED** | 2026-08-24 | $467.00 |
-| `P77110-B21` | Microsoft Windows Server 2025 1 User CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $72.00 |
-| `P77111-B21` | Microsoft Windows Server 2025 1 Device CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $52.00 |
-| `P77112-B21` | Microsoft Windows Server 2025 5 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $322.00 |
-| `P77113-B21` | Microsoft Windows Server 2025 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $226.00 |
-| `P77114-B21` | Microsoft Windows Server 2025 10 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $636.00 |
-| `P77115-B21` | Microsoft Windows Server 2025 10 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $444.00 |
-| `P77116-B21` | Microsoft Windows Server 2025 50 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $3143.00 |
-| `P77117-B21` | Microsoft Windows Server 2025 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $2184.00 |
-| `P77118-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $280.00 |
-| `P77119-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $201.00 |
-| `P77120-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $1364.00 |
-| `P77121-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $974.00 |
-| `P77122-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $13566.00 |
-| `P77123-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-08-24 | $9666.00 |
+| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
+|-----|-------------|--------|-------------------|------------------|----------|-----------|
+| `P77955-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77958-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77931-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P78064-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77934-B21` | HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77937-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77940-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77961-B21` | HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P78070-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P78047-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P78058-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P78061-B21` | HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $0.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77943-B21` | HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected. | **REINSTATED** | 2026-08-12 | $1.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73282-B21` | HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server | **DISCONTINUED** | 2026-09-09 | $5584.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73283-B21` | HPE ProLiant Compute DL380 Gen12 24SFF NC CTO Server | **DISCONTINUED** | 2026-09-09 | $5980.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73284-B21` | HPE ProLiant Compute DL380 Gen12 12LFF NC CTO Server | **DISCONTINUED** | 2026-09-09 | $6350.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **DISCONTINUED** | 2026-09-09 | $6890.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **DISCONTINUED** | 2026-09-09 | $7120.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **DISCONTINUED** | 2026-09-09 | $7450.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52341-B21` | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-24 | $164.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P70744-B21` | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-24 | $172.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P74748-B21` | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **REINSTATED** | 2026-08-24 | $117.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `Q9R65A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-09 | $6737.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `Q9R66A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-09 | $11229.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `Q9R67A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-09 | $24680.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `Q9R68A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-09 | $41134.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `AC120A` | HPE Pallet Size Customization Service | **DISCONTINUED** | 2026-09-09 | $7.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `AC129A` | HPE Consolidation Logistic Service | **DISCONTINUED** | 2026-09-09 | $26.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F69A` | HPE Delivery Site Above Ground Floor Service | **DISCONTINUED** | 2026-09-09 | $289.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F70A` | HPE Forklift at Delivery Service | **DISCONTINUED** | 2026-09-09 | $1399.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F71A` | HPE Special Delivery Truck Size Service | **DISCONTINUED** | 2026-09-09 | $292.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F72A` | HPE Two People at Delivery SVC | **DISCONTINUED** | 2026-09-09 | $466.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F73A` | HPE Campus Delivery Service | **DISCONTINUED** | 2026-09-09 | $104.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F74A` | HPE Unloading Logistic Service | **DISCONTINUED** | 2026-09-09 | $350.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F75A` | HPE Fixed Delivery Appointment Service | **DISCONTINUED** | 2026-09-09 | $466.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P1F76A` | HPE Pre-Delivery Site Survey SVC | **DISCONTINUED** | 2026-09-09 | $758.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `AC123A` | HPE Special Request/ Equipment Logistic Service | **DISCONTINUED** | 2026-09-09 | $816.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-09-09 | $44.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-09-09 | $100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P52341-B21` | Description | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit** |
-| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
-| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
-| 2026-08-24 | `P73282-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73283-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73284-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73285-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73286-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P73287-B21` | Start Date | 2026-08-22 | **2026-08-24** |
-| 2026-08-24 | `P52341-B21` | Description | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit** |
-| 2026-08-24 | `P70744-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit** |
-| 2026-08-24 | `P74748-B21` | Description | [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit | **[REMOVED SKU] [REMOVED SKU] HPE ProLiant Compute DL380 Gen12 System Insight Display Kit** |
+| 2026-09-09 | `P77119-B21` | Start Date |  | **12/02/2024** |
+| 2026-09-09 | `P77119-B21` | Discontinued Date |  | **11/30/2027** |
+| 2026-09-09 | `P77119-B21` | Lifecycle Status |  | **Active** |
+| 2026-09-09 | `P77120-B21` | Start Date |  | **12/02/2024** |
+| 2026-09-09 | `P77120-B21` | Discontinued Date |  | **11/30/2027** |
+| 2026-09-09 | `P77120-B21` | Lifecycle Status |  | **Active** |
+| 2026-09-09 | `P77121-B21` | Start Date |  | **12/02/2024** |
+| 2026-09-09 | `P77121-B21` | Discontinued Date |  | **11/30/2027** |
+| 2026-09-09 | `P77121-B21` | Lifecycle Status |  | **Active** |
+| 2026-09-09 | `P77122-B21` | Start Date |  | **12/02/2024** |
+| 2026-09-09 | `P77122-B21` | Discontinued Date |  | **11/30/2027** |
+| 2026-09-09 | `P77122-B21` | Lifecycle Status |  | **Active** |
+| 2026-09-09 | `P77123-B21` | Start Date |  | **12/02/2024** |
+| 2026-09-09 | `P77123-B21` | Discontinued Date |  | **11/30/2027** |
+| 2026-09-09 | `P77123-B21` | Lifecycle Status |  | **Active** |
 
-## 🧩 6. Cross-Chassis Variant & Platform Benchmark Matrix
+## 🧩 6. Same-Product CTO Variant Matrix
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380_Gen12** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
-| **DL380_Gen11** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **MSL3040_Tape** | StoreEver | Gen1 | Rack | `Q6Q67A` |
-| **GX5000_General_RACK** | Cray | Gen1 | Rack | `P57100-B21` |
-| **SY100Gb_F32_Module** | Synergy | Gen1 | Blade | `864273-B21` |
-| **Alletra_Storage_System** | Alletra | Gen1 | Array | `R0Q21A` |
-| **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
-| **DL145_Gen11** | ProLiant | Gen11 | 4EDSFF | `P71964-B21` |
-| **P73282-B21** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
-| **P73283-B21** | ProLiant | Gen12 | 24SFF | `P73283-B21` |
-| **P73284-B21** | ProLiant | Gen12 | 12LFF | `P73284-B21` |
-| **P73285-B21** | ProLiant | Gen12 | 8LFF | `P73285-B21` |
-| **P73286-B21** | ProLiant | Gen12 | 16EDSFF | `P73286-B21` |
-| **P73287-B21** | ProLiant | Gen12 | High Power | `P73287-B21` |
-| **P76706-B21** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
-| **P52532-B21** | ProLiant | Gen11 | 8LFF | `P52532-B21` |
-| **P52533-B21** | ProLiant | Gen11 | 12LFF | `P52533-B21` |
-| **P52534-B21** | ProLiant | Gen11 | 8SFF | `P52534-B21` |
-| **P52535-B21** | ProLiant | Gen11 | 24SFF | `P52535-B21` |
-| **P52536-B21** | ProLiant | Gen11 | 24EDSFF | `P52536-B21` |
-| **P52537-B21** | ProLiant | Gen11 | 8SFF NVMe | `P52537-B21` |
-| **P71964-B21** | ProLiant | Gen11 | 4EDSFF | `P71964-B21` |
-| **R0Q35A** | Alletra | Storage | Storage Chassis | `R0Q35A` |
-| **R0Q36A** | Alletra | Storage | Storage Chassis | `R0Q36A` |
-| **R0Q37A** | Alletra | Storage | Storage Controller | `R0Q37A` |
-| **Q2R41A** | StoreEver | Tape | Base Module | `Q2R41A` |
-| **Q2R42A** | StoreEver | Tape | Expansion Module | `Q2R42A` |
-| **P25902-B21** | Synergy | General | Compute Module | `P25902-B21` |
-| **797740-B21** | Synergy | General | Frame Chassis | `797740-B21` |
-| **P06584-B21** | Synergy | General | Interconnect Module | `P06584-B21` |
-| **P57100-B21** | Cray | General | Rack | `P57100-B21` |
-| **P57101-B21** | Cray | General | Blade | `P57101-B21` |
-| **controller_cache_map** | ProLiant | Gen12 | SFF | `controller_cache_map` |
-| **chassis_included_components** | ProLiant | Gen12 | SFF | `chassis_included_components` |
-| **form_factor_duals** | ProLiant | Gen12 | SFF | `form_factor_duals` |
 

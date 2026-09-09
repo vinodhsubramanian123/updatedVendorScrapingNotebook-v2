@@ -1717,7 +1717,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "7.00",
+    "fullPriceTrail": "2026-09-06: $7.00 → 2026-09-09: $7.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "AC129A": {
     "productNumber": "AC129A",
@@ -1725,7 +1735,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "26.00",
+    "fullPriceTrail": "2026-09-06: $26.00 → 2026-09-09: $26.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F69A": {
     "productNumber": "P1F69A",
@@ -1733,7 +1753,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "289.00",
+    "fullPriceTrail": "2026-09-06: $289.00 → 2026-09-09: $289.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F70A": {
     "productNumber": "P1F70A",
@@ -1741,7 +1771,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "1399.00",
+    "fullPriceTrail": "2026-09-06: $1399.00 → 2026-09-09: $1399.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F71A": {
     "productNumber": "P1F71A",
@@ -1749,7 +1789,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "292.00",
+    "fullPriceTrail": "2026-09-06: $292.00 → 2026-09-09: $292.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F72A": {
     "productNumber": "P1F72A",
@@ -1757,7 +1807,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-09-06: $466.00 → 2026-09-09: $466.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F73A": {
     "productNumber": "P1F73A",
@@ -1765,7 +1825,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "104.00",
+    "fullPriceTrail": "2026-09-06: $104.00 → 2026-09-09: $104.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F74A": {
     "productNumber": "P1F74A",
@@ -1773,7 +1843,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "350.00",
+    "fullPriceTrail": "2026-09-06: $350.00 → 2026-09-09: $350.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F75A": {
     "productNumber": "P1F75A",
@@ -1781,7 +1861,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "466.00",
+    "fullPriceTrail": "2026-09-06: $466.00 → 2026-09-09: $466.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P1F76A": {
     "productNumber": "P1F76A",
@@ -1789,7 +1879,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "758.00",
+    "fullPriceTrail": "2026-09-06: $758.00 → 2026-09-09: $758.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "AC123A": {
     "productNumber": "AC123A",
@@ -1797,7 +1897,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "816.00",
+    "fullPriceTrail": "2026-09-06: $816.00 → 2026-09-09: $816.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "BQ335A": {
     "productNumber": "BQ335A",
@@ -1805,7 +1915,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "44.00",
+    "fullPriceTrail": "2026-09-06: $44.00 → 2026-09-09: $44.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "BQ337A": {
     "productNumber": "BQ337A",
@@ -1813,7 +1933,17 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "iLO",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "100.00",
+    "fullPriceTrail": "2026-09-06: $100.00 → 2026-09-09: $100.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P76706-B21": {
     "productNumber": "P76706-B21",
@@ -1821,6 +1951,16 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 3,
+    "lastKnownPrice": "21407.00",
+    "fullPriceTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "02/29/2028",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   }
 }

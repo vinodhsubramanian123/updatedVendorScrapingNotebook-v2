@@ -1,1 +1,834 @@
-{}
+{
+  "Q2R41A": {
+    "productNumber": "Q2R41A",
+    "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AM495A": {
+    "productNumber": "AM495A",
+    "description": "2,500.00",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q6Q64A": {
+    "productNumber": "Q6Q64A",
+    "description": "780.00",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supply",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AJ838A": {
+    "productNumber": "AJ838A",
+    "description": "208.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AJ836A": {
+    "productNumber": "AJ836A",
+    "description": "115.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AJ839A": {
+    "productNumber": "AJ839A",
+    "description": "253.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK732A": {
+    "productNumber": "QK732A",
+    "description": "115.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK737A": {
+    "productNumber": "QK737A",
+    "description": "415.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AJ837A": {
+    "productNumber": "AJ837A",
+    "description": "162.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK735A": {
+    "productNumber": "QK735A",
+    "description": "195.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK733A": {
+    "productNumber": "QK733A",
+    "description": "130.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK736A": {
+    "productNumber": "QK736A",
+    "description": "239.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "QK734A": {
+    "productNumber": "QK734A",
+    "description": "147.00",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "716191-B21": {
+    "productNumber": "716191-B21",
+    "description": "221.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "716193-B21": {
+    "productNumber": "716193-B21",
+    "description": "324.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "K2R10A": {
+    "productNumber": "K2R10A",
+    "description": "501.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AE470A": {
+    "productNumber": "AE470A",
+    "description": "78.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AE465A": {
+    "productNumber": "AE465A",
+    "description": "110.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AN975A": {
+    "productNumber": "AN975A",
+    "description": "264.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AN976A": {
+    "productNumber": "AN976A",
+    "description": "410.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "K2R09A": {
+    "productNumber": "K2R09A",
+    "description": "358.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "716197-B21": {
+    "productNumber": "716197-B21",
+    "description": "Description",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "716199-B21": {
+    "productNumber": "716199-B21",
+    "description": "287.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P35176-B21": {
+    "productNumber": "P35176-B21",
+    "description": "206.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P35175-B21": {
+    "productNumber": "P35175-B21",
+    "description": "369.00",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q6Q63A": {
+    "productNumber": "Q6Q63A",
+    "description": "7,275.00",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Expansion Modules",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7973A": {
+    "productNumber": "C7973A",
+    "description": "61.35",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7973W": {
+    "productNumber": "C7973W",
+    "description": "HPE ProLiant Server Option (C7973W)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7973AL": {
+    "productNumber": "C7973AL",
+    "description": "HPE ProLiant Server Option (C7973AL)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7974AN": {
+    "productNumber": "C7974AN",
+    "description": "695.91",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7974AL": {
+    "productNumber": "C7974AL",
+    "description": "1,182.63",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2009A": {
+    "productNumber": "Q2009A",
+    "description": "197.87",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2010A": {
+    "productNumber": "Q2010A",
+    "description": "199.05",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7975AL": {
+    "productNumber": "C7975AL",
+    "description": "929.43",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7975AA": {
+    "productNumber": "C7975AA",
+    "description": "HPE ProLiant Server Option (C7975AA)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7975A": {
+    "productNumber": "C7975A",
+    "description": "46.46",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7975W": {
+    "productNumber": "C7975W",
+    "description": "53.12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7975AN": {
+    "productNumber": "C7975AN",
+    "description": "929.43",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2011A": {
+    "productNumber": "Q2011A",
+    "description": "92.99",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2012A": {
+    "productNumber": "Q2012A",
+    "description": "199.05",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976BL": {
+    "productNumber": "C7976BL",
+    "description": "1,146.39",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976B": {
+    "productNumber": "C7976B",
+    "description": "57.32",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976BN": {
+    "productNumber": "C7976BN",
+    "description": "1,293.13",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976BW": {
+    "productNumber": "C7976BW",
+    "description": "86.76",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976AF": {
+    "productNumber": "C7976AF",
+    "description": "HPE ProLiant Server Option (C7976AF)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976AA": {
+    "productNumber": "C7976AA",
+    "description": "HPE ProLiant Server Option (C7976AA)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976AC": {
+    "productNumber": "C7976AC",
+    "description": "1,530.46",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976AL": {
+    "productNumber": "C7976AL",
+    "description": "1,530.47",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976A": {
+    "productNumber": "C7976A",
+    "description": "76.53",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976AN": {
+    "productNumber": "C7976AN",
+    "description": "1,530.47",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976WL": {
+    "productNumber": "C7976WL",
+    "description": "2,176.50",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7976W": {
+    "productNumber": "C7976W",
+    "description": "108.82",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2013A": {
+    "productNumber": "Q2013A",
+    "description": "92.99",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977AH": {
+    "productNumber": "C7977AH",
+    "description": "2,205.96",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977A": {
+    "productNumber": "C7977A",
+    "description": "110.30",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977AN": {
+    "productNumber": "C7977AN",
+    "description": "2,205.96",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977AF": {
+    "productNumber": "C7977AF",
+    "description": "HPE ProLiant Server Option (C7977AF)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2014A": {
+    "productNumber": "Q2014A",
+    "description": "92.99",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977AL": {
+    "productNumber": "C7977AL",
+    "description": "2,205.96",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977AC": {
+    "productNumber": "C7977AC",
+    "description": "2,205.96",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078MC": {
+    "productNumber": "Q2078MC",
+    "description": "1,617.88",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078ML": {
+    "productNumber": "Q2078ML",
+    "description": "1,617.88",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078MN": {
+    "productNumber": "Q2078MN",
+    "description": "1,617.88",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2016A": {
+    "productNumber": "Q2016A",
+    "description": "199.05",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977WL": {
+    "productNumber": "C7977WL",
+    "description": "3,044.17",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7977W": {
+    "productNumber": "C7977W",
+    "description": "152.20",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078AH": {
+    "productNumber": "Q2078AH",
+    "description": "2,348.24",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078AL": {
+    "productNumber": "Q2078AL",
+    "description": "2,348.24",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078AC": {
+    "productNumber": "Q2078AC",
+    "description": "2,348.24",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078A": {
+    "productNumber": "Q2078A",
+    "description": "117.43",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078AN": {
+    "productNumber": "Q2078AN",
+    "description": "2,348.24",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078WL": {
+    "productNumber": "Q2078WL",
+    "description": "3,240.72",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2078W": {
+    "productNumber": "Q2078W",
+    "description": "162.07",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2015A": {
+    "productNumber": "Q2015A",
+    "description": "92.99",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079AH": {
+    "productNumber": "Q2079AH",
+    "description": "2,911.01",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079AL": {
+    "productNumber": "Q2079AL",
+    "description": "2,911.01",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079AC": {
+    "productNumber": "Q2079AC",
+    "description": "2,911.01",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079A": {
+    "productNumber": "Q2079A",
+    "description": "145.56",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079AN": {
+    "productNumber": "Q2079AN",
+    "description": "2,911.01",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079WL": {
+    "productNumber": "Q2079WL",
+    "description": "3,976.02",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2079W": {
+    "productNumber": "Q2079W",
+    "description": "198.80",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2017A": {
+    "productNumber": "Q2017A",
+    "description": "92.99",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7972A": {
+    "productNumber": "C7972A",
+    "description": "HPE ProLiant Server Option (C7972A)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7974A": {
+    "productNumber": "C7974A",
+    "description": "58.24",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7974W": {
+    "productNumber": "C7974W",
+    "description": "41.63",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2007A": {
+    "productNumber": "Q2007A",
+    "description": "HPE ProLiant Server Option (Q2007A)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q2008A": {
+    "productNumber": "Q2008A",
+    "description": "HPE ProLiant Server Option (Q2008A)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7972AN": {
+    "productNumber": "C7972AN",
+    "description": "HPE ProLiant Server Option (C7972AN)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7973AN": {
+    "productNumber": "C7973AN",
+    "description": "HPE ProLiant Server Option (C7973AN)",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "C7978A": {
+    "productNumber": "C7978A",
+    "description": "77.62",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AG467A": {
+    "productNumber": "AG467A",
+    "description": "HPE Medium Standard Delivery-Door/Dock Service",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AG629A": {
+    "productNumber": "AG629A",
+    "description": "HPE Consolidated Delivery Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F69A": {
+    "productNumber": "P1F69A",
+    "description": "HPE Delivery Site Above Ground Floor Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F70A": {
+    "productNumber": "P1F70A",
+    "description": "HPE Forklift at Delivery Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F71A": {
+    "productNumber": "P1F71A",
+    "description": "HPE Special Delivery Truck Size Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F72A": {
+    "productNumber": "P1F72A",
+    "description": "HPE Two People at Delivery SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F73A": {
+    "productNumber": "P1F73A",
+    "description": "HPE Campus Delivery Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F74A": {
+    "productNumber": "P1F74A",
+    "description": "HPE Unloading Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F75A": {
+    "productNumber": "P1F75A",
+    "description": "HPE Fixed Delivery Appointment Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F76A": {
+    "productNumber": "P1F76A",
+    "description": "HPE Pre-Delivery Site Survey SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P1F78A": {
+    "productNumber": "P1F78A",
+    "description": "HPE Delivery Any Day at 0800 Hours Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "AG628A": {
+    "productNumber": "AG628A",
+    "description": "HPE Special Equipment Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "BQ335A": {
+    "productNumber": "BQ335A",
+    "description": "HPE Expedite Shipment Small Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "BQ337A": {
+    "productNumber": "BQ337A",
+    "description": "HPE Expedite Shipment Large Logistic Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  }
+}

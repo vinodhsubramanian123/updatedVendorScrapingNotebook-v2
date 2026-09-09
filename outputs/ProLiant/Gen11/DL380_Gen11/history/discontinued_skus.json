@@ -13,13 +13,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 18,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 30,
     "lastKnownPrice": "1650.00",
-    "fullPriceTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-10: $5070.00 → 2026-08-27: $1650.00 (✕ REMOVED) → 2026-08-28: $1650.00 (✕ REMOVED) → 2026-09-09: $1650.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P52535-B21": {
     "productNumber": "P52535-B21",
@@ -27,13 +31,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 18,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 30,
     "lastKnownPrice": "2100.00",
-    "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-10: $1900.00 → 2026-08-27: $2100.00 (▲) → 2026-08-28: $2100.00 (✕ REMOVED) → 2026-09-09: $2100.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P52536-B21": {
     "productNumber": "P52536-B21",
@@ -41,13 +49,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 18,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 30,
     "lastKnownPrice": "2250.00",
-    "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-10: $2250.00 → 2026-08-27: $2250.00 (✕ REMOVED) → 2026-08-28: $2250.00 (✕ REMOVED) → 2026-09-09: $2250.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P52537-B21": {
     "productNumber": "P52537-B21",
@@ -55,13 +67,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-10",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 18,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 30,
     "lastKnownPrice": "2050.00",
-    "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-10: $2050.00 → 2026-08-27: $2050.00 (✕ REMOVED) → 2026-08-28: $2050.00 (✕ REMOVED) → 2026-09-09: $2050.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P52532-B21": {
     "productNumber": "P52532-B21",
@@ -69,13 +85,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-27",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 1,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 13,
     "lastKnownPrice": "1750.00",
-    "fullPriceTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-27: $1750.00 → 2026-08-28: $1750.00 (✕ REMOVED) → 2026-09-09: $1750.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P52533-B21": {
     "productNumber": "P52533-B21",
@@ -83,13 +103,17 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-27",
-    "discontinuedDate": "2026-08-28",
-    "daysActive": 1,
+    "discontinuedDate": "2026-09-09",
+    "daysActive": 13,
     "lastKnownPrice": "1900.00",
-    "fullPriceTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED)",
-    "status": "REINSTATED",
-    "reason": "Removed from active HPE OCA portal catalog",
-    "reinstatedDate": "2026-08-28"
+    "fullPriceTrail": "2026-08-27: $1900.00 → 2026-08-28: $1900.00 (✕ REMOVED) → 2026-09-09: $1900.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P68503-B21": {
     "productNumber": "P68503-B21",
@@ -4217,6 +4241,302 @@
     "mainCategory": "Chassis",
     "subCategory": "Variants",
     "firstSeenDate": "2026-08-28",
+    "status": "ACTIVE"
+  },
+  "P47808-B21": {
+    "productNumber": "P47808-B21",
+    "description": "HPE 960GB SATA 6G Read Intensive LFF LPC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P49040-B21": {
+    "productNumber": "P49040-B21",
+    "description": "HPE 7.68TB SAS 24G Read Intensive LFF LPC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P58232-B21": {
+    "productNumber": "P58232-B21",
+    "description": "HPE 7.68TB SATA 6G Very Read Optimized LFF LPC 5400 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P69779-B21": {
+    "productNumber": "P69779-B21",
+    "description": "HPE 7.68TB SAS RI LFF LPC Spl SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P37009-B21": {
+    "productNumber": "P37009-B21",
+    "description": "HPE 960GB SAS 12G Mixed Use LFF LPC Value SAS Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "834028-B21": {
+    "productNumber": "834028-B21",
+    "description": "HPE 8TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "834031-B21": {
+    "productNumber": "834031-B21",
+    "description": "HPE 8TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "861683-B21": {
+    "productNumber": "861683-B21",
+    "description": "HPE 4TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "881781-B21": {
+    "productNumber": "881781-B21",
+    "description": "HPE 12TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P53553-B21": {
+    "productNumber": "P53553-B21",
+    "description": "HPE 20TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P53554-B21": {
+    "productNumber": "P53554-B21",
+    "description": "HPE 20TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "833926-B21": {
+    "productNumber": "833926-B21",
+    "description": "HPE 2TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "833928-B21": {
+    "productNumber": "833928-B21",
+    "description": "HPE 4TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "861681-B21": {
+    "productNumber": "861681-B21",
+    "description": "HPE 2TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "861686-B21": {
+    "productNumber": "861686-B21",
+    "description": "HPE 1TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "861746-B21": {
+    "productNumber": "861746-B21",
+    "description": "HPE 6TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "881787-B21": {
+    "productNumber": "881787-B21",
+    "description": "HPE 12TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P09155-B21": {
+    "productNumber": "P09155-B21",
+    "description": "HPE 14TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P09165-B21": {
+    "productNumber": "P09165-B21",
+    "description": "HPE 14TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P23449-B21": {
+    "productNumber": "P23449-B21",
+    "description": "HPE 16TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P23608-B21": {
+    "productNumber": "P23608-B21",
+    "description": "HPE 16TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P37669-B21": {
+    "productNumber": "P37669-B21",
+    "description": "HPE 18TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P53556-B21": {
+    "productNumber": "P53556-B21",
+    "description": "HPE 10TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P53557-B21": {
+    "productNumber": "P53557-B21",
+    "description": "HPE 10TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P68583-B21": {
+    "productNumber": "P68583-B21",
+    "description": "HPE 24TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P68585-B21": {
+    "productNumber": "P68585-B21",
+    "description": "HPE 24TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P80577-B21": {
+    "productNumber": "P80577-B21",
+    "description": "HPE 26TB SAS 12G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P80578-B21": {
+    "productNumber": "P80578-B21",
+    "description": "HPE 26TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty Helium 512e ISE Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hard Disk Drives (SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "861742-B21": {
+    "productNumber": "861742-B21",
+    "description": "HPE 6TB SATA 6G Business Critical 7.2K LFF LP 1-year Warranty 512e Multi Vendor HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P18882-B21": {
+    "productNumber": "P18882-B21",
+    "description": "HPE 1.92TB SATA MU LFF LPC DS SPL SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70069-B21": {
+    "productNumber": "P70069-B21",
+    "description": "HPE 16TB SAS 7.2K LFF LP SV Spl HDD                       is obsolete: P70069-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70072-B21": {
+    "productNumber": "P70072-B21",
+    "description": "HPE 20TB SAS 7.2K LFF LP SV Spl HDD                       is obsolete: P70072-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70587-B21": {
+    "productNumber": "P70587-B21",
+    "description": "HPE 2TB SAS 12G 7.2K LFF LP Spl HDD                       is obsolete: P70587-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70591-B21": {
+    "productNumber": "P70591-B21",
+    "description": "HPE 4TB SAS 12G 7.2K LFF LP Spl HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P70593-B21": {
+    "productNumber": "P70593-B21",
+    "description": "HPE 8TB 12G SAS 7.2K LFF LP Spl HDD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P73631-B21": {
+    "productNumber": "P73631-B21",
+    "description": "HPE 8TB SAS 12G 7.2K LFF LPC SPL HDD                       is obsolete: P73631-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "P75863-B21": {
+    "productNumber": "P75863-B21",
+    "description": "HPE 16TB SAS 7.2K LFF ISE He LP Spl HDD                       is obsolete: P75863-B21",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-09",
     "status": "ACTIVE"
   }
 }

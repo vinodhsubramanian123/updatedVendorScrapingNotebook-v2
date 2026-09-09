@@ -1,0 +1,32 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
+Accessories & Infrastructure	Energy Star Configuration Presets	optional	Configuration Rule	Selection constraint for Energy Star Configuration Presets: optional
+Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
+Accessories & Infrastructure	System Options	optional	Configuration Rule	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR5 Registered Smart Memory: max 32
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Mixing of memory DIMMs of different capacities is not allowed.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Selection constraint for SFF Drive Cages & Enablement: max 24
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.
+Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
+Accessories & Infrastructure	System Options	optional	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+PCIe Risers	PCIe Riser Kits	max 3	Configuration Rule	Selection constraint for PCIe Riser Kits: max 3
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 8
+Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	These products are hidden due to Supply constraints
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.
+Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selection constraint for Flex Slot Power Supplies: min 1, max 2
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Mixing of Power Supplies is not allowed.
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: min 1, max 2
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Mixing of Power cords is not allowed
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
+Networking	Fibre Channel Host Bus Adapters	max 8	Configuration Rule	Selection constraint for Fibre Channel Host Bus Adapters: max 8
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Supports C19/ C19-C20 Power Cords only.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Private Product is not valid for current customer account

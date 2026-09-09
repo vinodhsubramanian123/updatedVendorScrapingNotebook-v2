@@ -1,45 +1,31 @@
 {
   "metadata": {
-    "chassis": "DL380 Gen12 SFF",
-    "model": "DL380_Gen12_SFF",
+    "chassis": "DL380 Gen12",
+    "model": "DL380_Gen12",
     "family": "ProLiant",
     "generation": "Gen12",
-    "scrapeDate": "2026-08-24",
-    "scrapeTimestamp": "2026-08-24T14:07:31.662Z",
-    "totalSubcategories": 26,
-    "totalUniqueSKUs": 302,
+    "scrapeDate": "2026-09-09",
+    "scrapeTimestamp": "2026-09-09T07:27:26.884Z",
+    "totalSubcategories": 25,
+    "totalUniqueSKUs": 307,
     "totalTables": 71,
     "diffSummary": {
-      "added": 40,
-      "removed": 0,
+      "added": 31,
+      "removed": 23,
       "priceChanged": 0,
-      "attributeChanged": 9,
+      "attributeChanged": 276,
       "priceAndAttributeChanged": 0,
-      "unchanged": 253,
+      "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 0
+      "discontinuedTotal": 23
     },
-    "historySnapshot": "catalog_2026-08-24.json",
+    "historySnapshot": "catalog_2026-09-09.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-08-24",
+      "scrapeDate": "2026-09-09",
       "categoryBreakdown": {
-        "Chassis": {
-          "totalSKUs": 6,
-          "totalPrice": 39374,
-          "minPrice": 5584,
-          "maxPrice": 7450,
-          "subcategories": {
-            "Variants": {
-              "totalSKUs": 6,
-              "totalPrice": 39374,
-              "avgPrice": 6562.333333333333
-            }
-          },
-          "avgPrice": 6562.333333333333
-        },
         "Accessories & Infrastructure": {
           "totalSKUs": 57,
-          "totalPrice": 10511,
+          "totalPrice": 9688,
           "minPrice": 1,
           "maxPrice": 1839,
           "subcategories": {
@@ -49,33 +35,28 @@
               "avgPrice": 1
             },
             "System Options": {
-              "totalSKUs": 49,
-              "totalPrice": 9115,
-              "avgPrice": 186.0204081632653
-            },
-            "Smart Storage Batteries": {
-              "totalSKUs": 4,
-              "totalPrice": 942,
-              "avgPrice": 235.5
+              "totalSKUs": 52,
+              "totalPrice": 9145,
+              "avgPrice": 175.8653846153846
             },
             "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 3,
-              "totalPrice": 453,
-              "avgPrice": 151
+              "totalSKUs": 4,
+              "totalPrice": 542,
+              "avgPrice": 135.5
             }
           },
-          "avgPrice": 184.40350877192984
+          "avgPrice": 169.96491228070175
         },
         "Processor": {
-          "totalSKUs": 36,
-          "totalPrice": 510554,
+          "totalSKUs": 37,
+          "totalPrice": 512379,
           "minPrice": 524,
           "maxPrice": 58094,
           "subcategories": {
             "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 33,
-              "totalPrice": 507552,
-              "avgPrice": 15380.363636363636
+              "totalSKUs": 34,
+              "totalPrice": 509377,
+              "avgPrice": 14981.676470588236
             },
             "Intel Xeon Scalable Processors": {
               "totalSKUs": 3,
@@ -83,7 +64,7 @@
               "avgPrice": 1000.6666666666666
             }
           },
-          "avgPrice": 14182.055555555555
+          "avgPrice": 13848.081081081082
         },
         "Cooling / Thermal": {
           "totalSKUs": 11,
@@ -172,15 +153,15 @@
           "avgPrice": 2438
         },
         "Storage Controllers": {
-          "totalSKUs": 47,
-          "totalPrice": 48747,
+          "totalSKUs": 48,
+          "totalPrice": 50522,
           "minPrice": 1,
           "maxPrice": 11399,
           "subcategories": {
             "Tri-Mode MegaRAID Storage Controllers": {
-              "totalSKUs": 8,
-              "totalPrice": 39976,
-              "avgPrice": 4997
+              "totalSKUs": 9,
+              "totalPrice": 41751,
+              "avgPrice": 4639
             },
             "Smart Array SAS Controllers": {
               "totalSKUs": 1,
@@ -193,54 +174,59 @@
               "avgPrice": 184.10526315789474
             }
           },
-          "avgPrice": 1037.1702127659576
-        },
-        "Software & Licenses": {
-          "totalSKUs": 28,
-          "totalPrice": 123656,
-          "minPrice": 1,
-          "maxPrice": 41134,
-          "subcategories": {
-            "Server Management & Operating System Licenses": {
-              "totalSKUs": 28,
-              "totalPrice": 123656,
-              "avgPrice": 4416.285714285715
-            }
-          },
-          "avgPrice": 4416.285714285715
-        },
-        "Networking": {
-          "totalSKUs": 40,
-          "totalPrice": 114090,
-          "minPrice": 77,
-          "maxPrice": 8910,
-          "subcategories": {
-            "PCIe Networking Adapters": {
-              "totalSKUs": 25,
-              "totalPrice": 90439,
-              "avgPrice": 3617.56
-            },
-            "OCP3 Networking Adapters": {
-              "totalSKUs": 15,
-              "totalPrice": 23651,
-              "avgPrice": 1576.7333333333333
-            }
-          },
-          "avgPrice": 2852.25
+          "avgPrice": 1052.5416666666667
         },
         "Cables & Enablement Kits": {
-          "totalSKUs": 6,
-          "totalPrice": 227,
+          "totalSKUs": 10,
+          "totalPrice": 1169,
           "minPrice": 1,
-          "maxPrice": 99,
+          "maxPrice": 397,
           "subcategories": {
+            "Smart Storage Batteries": {
+              "totalSKUs": 4,
+              "totalPrice": 942,
+              "avgPrice": 235.5
+            },
             "Power Cords & Jumper Cables": {
               "totalSKUs": 6,
               "totalPrice": 227,
               "avgPrice": 37.833333333333336
             }
           },
-          "avgPrice": 37.833333333333336
+          "avgPrice": 116.9
+        },
+        "Software & Licenses": {
+          "totalSKUs": 41,
+          "totalPrice": 431862,
+          "minPrice": 1,
+          "maxPrice": 99999,
+          "subcategories": {
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 41,
+              "totalPrice": 431862,
+              "avgPrice": 10533.219512195123
+            }
+          },
+          "avgPrice": 10533.219512195123
+        },
+        "Networking": {
+          "totalSKUs": 49,
+          "totalPrice": 186238,
+          "minPrice": 77,
+          "maxPrice": 15334,
+          "subcategories": {
+            "PCIe Networking Adapters": {
+              "totalSKUs": 33,
+              "totalPrice": 154838,
+              "avgPrice": 4692.060606060606
+            },
+            "OCP3 Networking Adapters": {
+              "totalSKUs": 16,
+              "totalPrice": 31400,
+              "avgPrice": 1962.5
+            }
+          },
+          "avgPrice": 3800.7755102040815
         },
         "Power Supplies": {
           "totalSKUs": 4,
@@ -260,20 +246,34 @@
             }
           },
           "avgPrice": 860
+        },
+        "Chassis": {
+          "totalSKUs": 6,
+          "totalPrice": 39374,
+          "minPrice": 5584,
+          "maxPrice": 7450,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 6,
+              "totalPrice": 39374,
+              "avgPrice": 6562.333333333333
+            }
+          },
+          "avgPrice": 6562.333333333333
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 302,
-      "unchangedSkusCount": 302,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 0,
+      "totalScrapedSkus": 330,
+      "unchangedSkusCount": 268,
+      "modifiedSkusCount": 34,
+      "addedSkusCount": 28,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 45300,
-      "estimatedProcessingTimeSavedMs": 60400
+      "estimatedTokensSaved": 40200,
+      "estimatedProcessingTimeSavedMs": 53600
     },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-08-24T14:07:32.057Z"
+    "rulesGeneratedAt": "2026-09-09T07:27:27.240Z"
   },
   "chassisVariants": [
     {
@@ -283,12 +283,12 @@
       "listPrice": 5584,
       "listPriceFormatted": "$5584.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼) → 2026-09-09: $5584.00 (✕ REMOVED)"
     },
     {
       "sku": "P73283-B21",
@@ -297,12 +297,12 @@
       "listPrice": 5980,
       "listPriceFormatted": "$5980.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED)"
     },
     {
       "sku": "P73284-B21",
@@ -311,12 +311,12 @@
       "listPrice": 6350,
       "listPriceFormatted": "$6350.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED)"
     },
     {
       "sku": "P73285-B21",
@@ -325,12 +325,12 @@
       "listPrice": 6890,
       "listPriceFormatted": "$6890.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED)"
     },
     {
       "sku": "P73286-B21",
@@ -339,12 +339,12 @@
       "listPrice": 7120,
       "listPriceFormatted": "$7120.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED)"
     },
     {
       "sku": "P73287-B21",
@@ -353,12 +353,12 @@
       "listPrice": 7450,
       "listPriceFormatted": "$7450.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED) → 2026-09-09: $7450.00 (✕ REMOVED)"
     }
   ],
   "chassisVariantMatrix": {
@@ -369,12 +369,12 @@
       "listPrice": 5584,
       "listPriceFormatted": "$5584.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼) → 2026-09-09: $5584.00 (✕ REMOVED)"
     },
     "P73283-B21": {
       "sku": "P73283-B21",
@@ -383,12 +383,12 @@
       "listPrice": 5980,
       "listPriceFormatted": "$5980.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED)"
     },
     "P73284-B21": {
       "sku": "P73284-B21",
@@ -397,12 +397,12 @@
       "listPrice": 6350,
       "listPriceFormatted": "$6350.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED)"
     },
     "P73285-B21": {
       "sku": "P73285-B21",
@@ -411,12 +411,12 @@
       "listPrice": 6890,
       "listPriceFormatted": "$6890.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED)"
     },
     "P73286-B21": {
       "sku": "P73286-B21",
@@ -425,12 +425,12 @@
       "listPrice": 7120,
       "listPriceFormatted": "$7120.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED)"
     },
     "P73287-B21": {
       "sku": "P73287-B21",
@@ -439,23 +439,16 @@
       "listPrice": 7450,
       "listPriceFormatted": "$7450.00",
       "optionType": "CTO",
-      "startDate": "2026-08-22",
-      "discontinuedDate": "2026-08-24",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED)"
+      "startDate": "2026-08-24",
+      "discontinuedDate": "2026-09-09",
+      "constraint": "Discontinued",
+      "maxQty": "Discontinued",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-08-12: $7450.00 → 2026-08-13: $7450.00 → 2026-08-14: $7450.00 → 2026-08-16: $7450.00 → 2026-08-19: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 → 2026-08-22: $7450.00 (✕ REMOVED) → 2026-08-22: $7450.00 (↩ REINSTATED) → 2026-08-24: $7450.00 (✕ REMOVED) → 2026-09-09: $7450.00 (✕ REMOVED)"
     }
   },
   "subcategories": [],
   "rules": [
-    {
-      "parentCategory": "Chassis",
-      "subCategory": "Variants",
-      "constraint": "Discontinued",
-      "maxQty": 1,
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
-    },
     {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "Energy Star Configuration Presets",
@@ -618,13 +611,6 @@
       "rule": "Selection constraint for System Options: optional"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Smart Storage Batteries",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "Selection constraint for Smart Storage Batteries: optional"
-    },
-    {
       "parentCategory": "Storage Controllers",
       "subCategory": "Storage Controller Cable Kits",
       "constraint": "max 4",
@@ -709,6 +695,20 @@
       "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
     },
     {
+      "parentCategory": "Networking",
+      "subCategory": "OCP3 Networking Adapters",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "System Options",
+      "constraint": "optional",
+      "maxQty": -3,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
       "constraint": "max 24",
@@ -765,6 +765,13 @@
       "rule": "BTO products are not allowed in CTO Base Model."
     },
     {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "System Options",
       "constraint": "optional",
@@ -784,13 +791,6 @@
       "constraint": "optional",
       "maxQty": -3,
       "rule": "Not Supported ProStack Server Software"
-    },
-    {
-      "parentCategory": "Processor",
-      "subCategory": "Intel Xeon Scalable Processors",
-      "constraint": "min 1, max 2",
-      "maxQty": 2,
-      "rule": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2"
     },
     {
       "parentCategory": "Learned Feedback Rules",
