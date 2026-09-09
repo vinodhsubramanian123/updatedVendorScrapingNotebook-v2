@@ -421,6 +421,8 @@ for (const cat of orderedCategories) {
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
+const { isServiceSku } = require('../lib/catalog/sku.js');
+
 // Discontinued SKUs Sheet
 const discontinuedJsonPath = path.join(targetDir, 'history', 'discontinued_skus.json');
 let discontinuedRows = [];
@@ -428,16 +430,31 @@ if (fs.existsSync(discontinuedJsonPath)) {
   try {
     const discObj = JSON.parse(fs.readFileSync(discontinuedJsonPath, 'utf-8'));
     discontinuedRows = Object.values(discObj).map(d => {
-      // If category is unknown, resolve from allCombinedData
+      // If category is unknown, resolve from allCombinedData or infer from description/SKU
       let mainCat = d.mainCategory || '';
       let subCat = d.subCategory || '';
       if (!mainCat || mainCat === 'Unknown' || mainCat === 'Deprecation Archive') {
         const found = allCombinedData.find(r => r['Product #'] === d.productNumber);
-        if (found) {
+        if (found && found['Main Category'] && found['Main Category'] !== 'Unknown') {
           mainCat = found['Main Category'];
           subCat = found['Sub-Category'];
+        } else {
+          const desc = (d.description || '').toLowerCase();
+          const pn = (d.productNumber || '').toUpperCase();
+          if (desc.includes('windows server') || desc.includes('operating system') || desc.includes('license') || desc.includes('e-ltu') || desc.includes('datacenter') || desc.includes('standard reseller')) {
+            mainCat = 'Software & Licenses';
+            subCat = 'Operating System Licenses';
+          } else if (isServiceSku(pn) || desc.includes('service') || desc.includes('support') || desc.includes('care') || desc.includes('proliant server option') || desc.includes('pointnext')) {
+            mainCat = 'Service & Support';
+            subCat = 'Support Services';
+          } else {
+            mainCat = 'General Hardware';
+            subCat = 'Discontinued Options';
+          }
         }
       }
+      if (!mainCat || mainCat === 'Unknown') mainCat = 'General Hardware';
+      if (!subCat || subCat === '(Sub-table)') subCat = 'Discontinued Options';
       return {
         'Product #':        d.productNumber    || '',
         'Description':      d.description      || '',

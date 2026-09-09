@@ -80,14 +80,26 @@ function buildChassisVariantsEntry(prod) {
   const matchedSkus = [];
   const matchedRows = [];
 
-  // Find target group by exact family + gen match
+  // Match target group by exact model/shorthand first, then fallback to family+gen
   let targetGroup = null;
+  const normShorthand = (prod.chassisShorthand || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   for (const [groupKey, group] of Object.entries(byFamilyGen)) {
-    const famMatch = (group.family || '').toLowerCase() === (prod.family || '').toLowerCase();
-    const genMatch = (group.gen || '').toLowerCase() === (prod.gen || '').toLowerCase();
-    if (famMatch && genMatch) {
+    const normKey = groupKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const normModel = (group.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (normKey.includes(normShorthand) || (normModel && normShorthand.includes(normModel))) {
       targetGroup = group;
       break;
+    }
+  }
+
+  if (!targetGroup) {
+    for (const [groupKey, group] of Object.entries(byFamilyGen)) {
+      const famMatch = (group.family || '').toLowerCase() === (prod.family || '').toLowerCase();
+      const genMatch = (group.gen || '').toLowerCase() === (prod.gen || '').toLowerCase();
+      if (famMatch && genMatch) {
+        targetGroup = group;
+        break;
+      }
     }
   }
 

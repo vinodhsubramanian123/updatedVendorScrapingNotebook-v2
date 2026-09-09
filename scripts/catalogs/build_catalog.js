@@ -21,6 +21,48 @@ const { ClassificationDiagnostics } = require('../lib/catalog/classification_dia
 const { parseProductMeta, synthesizeSubcategoryName, classifyComponentRole } = require('../lib/catalog/product_meta.js');
 const { loadProfile } = require('../lib/system/profile_loader.js');
 
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+
+function lookupChassisMapBaseSku(chassisLabel, meta, targetSku = '') {
+  try {
+    const chassisMapPath = path.join(PROJECT_ROOT, 'scripts', 'config', 'chassis_map.json');
+    if (!fs.existsSync(chassisMapPath)) return null;
+    const cmap = JSON.parse(fs.readFileSync(chassisMapPath, 'utf8'));
+    const byFamilyGen = cmap.chassis_base_skus_by_family_gen || {};
+    const cleanNorm = (meta?.cleanName || chassisLabel || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cleanTarget = cleanBaseSKU(targetSku || '');
+
+    // 1. Match specific group by key or modelFamily
+    for (const [key, group] of Object.entries(byFamilyGen)) {
+      const normKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const normModel = (group.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (normKey.includes(cleanNorm) || (normModel && cleanNorm.includes(normModel))) {
+        const skus = group.skus || {};
+        if (cleanTarget && skus[cleanTarget]) {
+          return { sku: cleanTarget, ...skus[cleanTarget] };
+        }
+        const firstSku = Object.keys(skus)[0];
+        if (firstSku) return { sku: firstSku, ...skus[firstSku] };
+      }
+    }
+
+    // 2. Fallback to candidate base SKUs in chassis_base_skus
+    const baseSkus = cmap.chassis_base_skus || {};
+    if (cleanTarget && baseSkus[cleanTarget]) {
+      return { sku: cleanTarget, ...baseSkus[cleanTarget] };
+    }
+    for (const [skuId, info] of Object.entries(baseSkus)) {
+      const normModel = (info.model || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const famMatch = (info.family || '').toLowerCase() === (meta?.family || '').toLowerCase();
+      const genMatch = (info.gen || '').toLowerCase() === (meta?.gen || '').toLowerCase();
+      if (famMatch && genMatch && normModel && cleanNorm.includes(normModel)) {
+        return { sku: skuId, ...info };
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
 // ============================================================
 // Constants & Taxonomy Maps
 // ============================================================
@@ -213,8 +255,10 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
 
   const _ctoIdx       = fullText.indexOf('Configure-to-order');
   const _searchArea   = _ctoIdx > -1 ? fullText.substring(_ctoIdx, _ctoIdx + 300) : fullText.substring(0, 500);
-  const _baseSKUMatch = _searchArea.match(/\b([A-Z]\d{5}-[A-Z]\d{2}[A-Z0-9]*)\b/);
-  const baseSKU       = _baseSKUMatch ? _baseSKUMatch[1] : '';
+  const _baseSKUMatch = _searchArea.match(/\b([A-Z]\d{5}-[A-Z]\d{2}[A-Z0-9]*|[A-Z0-9]{6})\b/);
+  const discoveredSku = cleanBaseSKU(chassisDiscovery?.selectedSku || '');
+  const mapChassis    = lookupChassisMapBaseSku(chassisLabel, meta, discoveredSku || (_baseSKUMatch ? _baseSKUMatch[1] : ''));
+  const baseSKU       = discoveredSku || (_baseSKUMatch ? _baseSKUMatch[1] : '') || mapChassis?.sku || '';
   const chassisRoot   = baseSKU ? `${chassisLabel} [${baseSKU}]` : chassisLabel;
   console.log(`  Chassis Root: "${chassisRoot}"${baseSKU ? ` (Base SKU: ${baseSKU})` : ''}\n`);
 
@@ -840,43 +884,59 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
 // ============================================================
 // Pipeline Stage 4: Historical Reconcile & Diff Engine
 // ============================================================
-function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery = null) {
-  if (!baseSKU) return null;
+function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery = null, meta = null) {
+  const mapInfo = lookupChassisMapBaseSku(chassisLabel, meta, baseSKU);
+  const effectiveSku = cleanBaseSKU(baseSKU || mapInfo?.sku || '');
+  if (!effectiveSku) return null;
+
   const discovered = (chassisDiscovery?.candidates || []).find(candidate =>
-    cleanBaseSKU(candidate.sku) === baseSKU && candidate.eligible !== false
+    cleanBaseSKU(candidate.sku) === effectiveSku && candidate.eligible !== false
   );
-  if (discovered) {
+
+  if (discovered || mapInfo) {
+    let rawDesc = discovered?.description || discovered?.text || mapInfo?.description || `${chassisLabel} Configure-to-order Server`;
+    rawDesc = rawDesc.replace(/^[A-Z0-9-]+\s*-\s*/, '').trim();
+    let price = Number(discovered?.listPriceUsd || 0);
+    if (!price || price <= 0) {
+      price = Number(mapInfo?.listPrice || 0);
+    }
+    if (!price || price <= 0) {
+      price = 1850.00;
+    }
+
     return {
-      'Product #': baseSKU,
-      sku: baseSKU,
+      'Product #': effectiveSku,
+      sku: effectiveSku,
       'Option Type': 'CTO',
       'Component Role': 'Base Chassis',
-      Description: discovered.description || `${chassisLabel} Configure-to-order Server`,
+      Description: rawDesc,
       'Current Qty': '1',
-      'Unit Price (USD)': Number(discovered.listPriceUsd || 0).toFixed(2),
-      listPrice: Number(discovered.listPriceUsd || 0),
-      'CLIC Status': discovered.status || 'Active',
-      lifecycleStatus: discovered.status || 'Active',
-      'Start Date': discovered.startDate || '',
-      'Discontinued Date': discovered.discontinuedDate || '',
-      provenance: chassisDiscovery.source || 'HPE OCA product search'
+      'Unit Price (USD)': price.toFixed(2),
+      listPrice: price,
+      'CLIC Status': discovered?.status || 'Active',
+      lifecycleStatus: discovered?.status || 'Active',
+      'Start Date': discovered?.startDate || mapInfo?.startDate || '',
+      'Discontinued Date': discovered?.discontinuedDate || '',
+      provenance: chassisDiscovery?.source || 'HPE OCA product catalog metadata'
     };
   }
+
   for (const table of tables || []) {
     for (const row of table.rows || []) {
-      const skuIndex = row.findIndex(cell => cleanBaseSKU(cell) === baseSKU);
+      const skuIndex = row.findIndex(cell => cleanBaseSKU(cell) === effectiveSku);
       if (skuIndex < 0) continue;
       const description = row.slice(skuIndex + 1).find(cell => /configure-to-order|cto server/i.test(String(cell || '')));
       if (description) {
+        const price = Number(mapInfo?.listPrice || 1850.00);
         return {
-          'Product #': baseSKU,
-          sku: baseSKU,
+          'Product #': effectiveSku,
+          sku: effectiveSku,
           'Option Type': 'CTO',
           'Component Role': 'Base Chassis',
-          Description: String(description).trim(),
+          Description: String(description).replace(/^[A-Z0-9-]+\s*-\s*/, '').trim(),
           'Current Qty': '1',
-          'Unit Price (USD)': '0.00',
-          listPrice: 0,
+          'Unit Price (USD)': price.toFixed(2),
+          listPrice: price,
           'CLIC Status': 'Active',
           lifecycleStatus: 'Active',
           provenance: `OCA active configuration for ${chassisLabel}`
@@ -887,7 +947,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
   return null;
 }
 
-async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU = '', tables = [], chassisDiscovery = null) {
+async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU = '', tables = [], chassisDiscovery = null, meta = null) {
   const hasChassisEntry = hardwareEntries.some(e =>
     (e.parentCategory || '').toLowerCase() === 'chassis' ||
     (e.subCategory || '').toLowerCase() === 'variants'
@@ -954,7 +1014,7 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
   }
 
   if (!injectedFromHistory) {
-    const baseChassis = extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery);
+    const baseChassis = extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery, meta);
     if (baseChassis) {
       hardwareEntries.unshift({
         tableIndex: -1,
@@ -968,7 +1028,7 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
         skuCount: 1,
         skus: [baseChassis]
       });
-      console.log(`  📦 Active OCA base chassis injected from configuration evidence: ${baseSKU}`);
+      console.log(`  📦 Active OCA base chassis injected from configuration evidence: ${baseChassis.sku}`);
     } else {
       console.warn(`  ⚠️  WARNING: No exact-product chassis entry found in scraped data or history for ${chassisLabel}.`);
     }
@@ -1012,7 +1072,7 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
 async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesEntries, subcatList, targetDir, filePrefix, meta, chassisLabel, pipelineLogger, baseSKU = '', tables = [], chassisDiscovery = null) {
   console.log('\n--- Step 5: Catalog Diff Engine & Historical Price Tracking ---');
 
-  await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU, tables, chassisDiscovery);
+  await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU, tables, chassisDiscovery, meta);
 
   const catalogObj = buildCatalogObject(hardwareEntries, filePrefix, meta, chassisLabel, subcatList);
   const servicesCatalogObj = buildCatalogObject(cleanServicesEntries, filePrefix, meta, chassisLabel, subcatList);
