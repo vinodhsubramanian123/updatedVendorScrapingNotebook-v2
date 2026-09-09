@@ -158,7 +158,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           });
           try {
             const parsed = JSON.parse(stdout);
-            newSourceId = parsed.id || parsed.sourceId || parsed.source?.id;
+            newSourceId = parsed.source_id || parsed.id || parsed.sourceId || parsed.source?.id;
           } catch (_) {}
           if (!newSourceId) {
             const idMatch = stdout.match(/source[^:]*(?:added|id)[^:]*:\s*([\w-]+)/i) ||
@@ -245,7 +245,13 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
               env: { ...process.env, PATH: extendedPath }
             });
             const addedDrive = JSON.parse(addDriveOutput);
-            canonicalDriveSourceId = addedDrive.id || addedDrive.sourceId || addedDrive.source?.id || null;
+            canonicalDriveSourceId = addedDrive.source_id || addedDrive.id || addedDrive.sourceId || addedDrive.source?.id || null;
+            if (!canonicalDriveSourceId && typeof addDriveOutput === 'string') {
+              const match = addDriveOutput.match(/source_id["']?\s*:\s*["']?([\w-]+)/i) ||
+                            addDriveOutput.match(/"id"\s*:\s*"([^"]+)"/i) ||
+                            addDriveOutput.match(/\bsrc_([\w-]+)/i);
+              if (match) canonicalDriveSourceId = match[1];
+            }
             if (!canonicalDriveSourceId) throw new Error('NotebookLM did not return a Drive source ID');
           } else {
             execFileSync('nlm', [

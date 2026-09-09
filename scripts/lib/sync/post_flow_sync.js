@@ -74,6 +74,17 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
 
     // 4. GAP-7 FIX: Clean up stale test payload files from outputs/history/
     cleanTestPayloads();
+
+    // 5. Optionally trigger running knowledge charter sync if requested
+    let runningKnowledgeResult = null;
+    if (options.syncRunningKnowledge) {
+      try {
+        const { syncRunningKnowledge } = require('../../services/running_knowledge_sync.js');
+        runningKnowledgeResult = syncRunningKnowledge({ dryRun: false });
+      } catch (rkErr) {
+        logger.warn('POST_FLOW_SYNC', `Running knowledge sync advisory: ${rkErr.message}`);
+      }
+    }
     
     return {
       success: syncStatus !== 'CLOUD_FAILED',
@@ -85,7 +96,8 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
       payloadPath: payload.payloadPath,
       driftStatus: drift.status,
       unSyncedDeltasCount: drift.unSyncedDeltasCount,
-      uploadResult: payload.uploadResult || null
+      uploadResult: payload.uploadResult || null,
+      runningKnowledgeSynced: Boolean(runningKnowledgeResult)
     };
   } catch (err) {
     logger.error('POST_FLOW_SYNC', `Failed post-flow knowledge sync for ${chassisName}`, err);

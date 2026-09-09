@@ -323,6 +323,89 @@ async function createGoogleDoc(title, content = '', options = {}) {
   return { documentId, documentUrl, title: title || 'Antigravity Generated Doc' };
 }
 
+/**
+ * Updates an existing Google Doc in Google Drive by replacing its text content.
+ * Preserves the documentId and shareable URL.
+ *
+ * @param {string} documentId - The Google Docs file ID
+ * @param {string} content - New text content to populate
+ * @param {Object} [options]
+ * @param {string} [options.title] - Optional title update for the file
+ * @param {GoogleAuth} [options.auth] - Optional custom auth instance
+ * @param {any} [options.client] - Optional mock/custom client
+ * @returns {Promise<{documentId: string, documentUrl: string, title: string}>}
+ */
+async function updateGoogleDoc(documentId, content = '', options = {}) {
+  const auth = options.auth || new GoogleAuth({ scopes: SCOPES });
+  const client = options.client || await auth.getClient();
+
+  // 1. Get current document to find the endIndex of body.content
+  const docRes = await client.request({
+    url: `https://docs.googleapis.com/v1/documents/${encodeURIComponent(documentId)}`,
+    method: 'GET'
+  });
+
+  const docData = docRes.data || {};
+  const title = options.title || docData.title || 'Antigravity Knowledge Doc';
+  const bodyContent = docData.body?.content || [];
+  let maxEndIndex = 1;
+
+  for (const elem of bodyContent) {
+    if (typeof elem.endIndex === 'number' && elem.endIndex > maxEndIndex) {
+      maxEndIndex = elem.endIndex;
+    }
+  }
+
+  const requests = [];
+
+  // Delete existing body content (index 1 to maxEndIndex - 1)
+  // Docs API restricts deleting the trailing newline at maxEndIndex - 1
+  if (maxEndIndex > 2) {
+    requests.push({
+      deleteContentRange: {
+        range: {
+          startIndex: 1,
+          endIndex: maxEndIndex - 1
+        }
+      }
+    });
+  }
+
+  // Insert new content at index 1
+  if (content && typeof content === 'string' && content.trim().length > 0) {
+    requests.push({
+      insertText: {
+        location: { index: 1 },
+        text: content
+      }
+    });
+  }
+
+  if (requests.length > 0) {
+    await client.request({
+      url: `https://docs.googleapis.com/v1/documents/${encodeURIComponent(documentId)}:batchUpdate`,
+      method: 'POST',
+      data: { requests }
+    });
+  }
+
+  // Update title in Drive if specified and different
+  if (options.title && options.title !== docData.title) {
+    try {
+      await client.request({
+        url: `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(documentId)}`,
+        method: 'PATCH',
+        data: { name: options.title }
+      });
+    } catch {
+      // Non-fatal title patch error
+    }
+  }
+
+  const documentUrl = `https://docs.google.com/document/d/${documentId}/edit`;
+  return { documentId, documentUrl, title };
+}
+
 // CLI Interface
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -368,6 +451,19 @@ if (require.main === module) {
         console.log('\n[SUCCESS] Google Doc created successfully:');
         console.log(`URL: ${result.documentUrl}`);
         console.log(`ID:  ${result.documentId}\n`);
+      } else if (command === 'update-doc') {
+        const docId = args[1];
+        if (!docId) {
+          console.error('Usage: node google_sheets_service.js update-doc <documentId> [content] [title]');
+          process.exit(1);
+        }
+        const content = args[2] || `Updated Knowledge Content\nTimestamp: ${new Date().toISOString()}\n`;
+        const title = args[3] || undefined;
+        console.log(`Updating Google Doc: ${docId}...`);
+        const result = await updateGoogleDoc(docId, content, { title });
+        console.log('\n[SUCCESS] Google Doc updated successfully:');
+        console.log(`URL: ${result.documentUrl}`);
+        console.log(`ID:  ${result.documentId}\n`);
       } else if (command === 'upload') {
         const file = args[1];
         if (!file) {
@@ -383,7 +479,7 @@ if (require.main === module) {
         console.log(`Sheets: ${result.sheets.join(', ')}\n`);
       } else {
         console.log('Unknown command:', command);
-        console.log('Available commands: status, create [title], doc [title] [content], upload <file> [title]');
+        console.log('Available commands: status, create [title], doc [title] [content], update-doc <id> [content] [title], upload <file> [title]');
         process.exit(1);
       }
     } catch (err) {
@@ -399,6 +495,7 @@ module.exports = {
   checkGoogleAuth,
   createGoogleSheet,
   createGoogleDoc,
+  updateGoogleDoc,
   uploadFileToGoogleSheet,
   assertNotebookSourceEligible,
   NOTEBOOK_SOURCE_CLASSES
