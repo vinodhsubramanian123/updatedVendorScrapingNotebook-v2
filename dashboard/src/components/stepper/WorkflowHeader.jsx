@@ -42,6 +42,7 @@ export default function WorkflowHeader({
         </div>
 
         <button
+          aria-label={showLogConsole ? "Hide Console" : "Show Console"}
           onClick={() => setShowLogConsole(!showLogConsole)}
           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
             showLogConsole
@@ -53,6 +54,7 @@ export default function WorkflowHeader({
         </button>
 
         <button
+          aria-label={isExpanded ? "Collapse Workflow" : "Expand Workflow"}
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
           title={isExpanded ? 'Collapse Workflow' : 'Expand Workflow'}
