@@ -313,16 +313,25 @@ function autoDetectChassisDetailed(boqItems = []) {
     const catalogs = listAllCatalogs();
     const modelClean = variant.model.replace(/\s+/g, '_').replace(/HPE_?/i, '');
 
-    // 1. Try exact match by model or base SKU
+    // 1. A base SKU found inside a catalog is the strongest product boundary.
+    // Do not infer this from family/generation naming: multiple models share both.
     if (variant.baseSku && variant.baseSku !== 'CUSTOM_OVERRIDE' && variant.baseSku !== 'UNKNOWN') {
       for (const cat of catalogs) {
-        if (cat.id === modelClean || cat.chassis.includes(variant.model) || cat.catalogDir.includes(variant.model.replace(/\s+/g, '_'))) {
+        let containsBaseSku = false;
+        try {
+          const catalogData = JSON.parse(fs.readFileSync(cat.catalogJsonPath, 'utf8'));
+          containsBaseSku = (catalogData.entries || []).some(entry => (entry.skus || []).some(skuData =>
+            cleanBaseSKU(skuData['Product #'] || skuData.sku) === variant.baseSku
+          ));
+        } catch (_) { /* unreadable catalogs are ignored by discovery */ }
+        if (containsBaseSku) {
           return {
             chassisDir: cat.catalogDir,
-            matchType: 'EXACT',
-            confidenceScore: 0.95,
+            matchType: 'EXACT_BASE_SKU',
+            confidenceScore: 1.0,
             requiresUserConfirmation: false,
-            detectedVariant: variant
+            detectedVariant: variant,
+            candidates: [cat.catalogDir]
           };
         }
       }
@@ -368,20 +377,33 @@ function autoDetectChassisDetailed(boqItems = []) {
         }
       }
 
-      // Then try family + gen match (e.g. ProLiant + Gen11 -> DL380_Gen11)
-      for (const cat of catalogs) {
+      // Family + generation alone is not a product identity. Return all matches
+      // and require a human/base-SKU choice instead of selecting the first one.
+      const familyGenMatches = catalogs.filter(cat => {
         const catPath = cat.catalogDir.toLowerCase();
         const famMatch = catPath.includes(variant.family.toLowerCase());
         const genMatch = catPath.includes(variant.gen.toLowerCase());
-        if (famMatch && genMatch) {
-          return {
-            chassisDir: cat.catalogDir,
-            matchType: 'FAMILY_GEN_MATCH',
-            confidenceScore: 0.95,
-            requiresUserConfirmation: false,
-            detectedVariant: variant
-          };
-        }
+        return famMatch && genMatch;
+      });
+      if (familyGenMatches.length === 1) {
+        return {
+          chassisDir: familyGenMatches[0].catalogDir,
+          matchType: 'UNIQUE_FAMILY_GEN_MATCH',
+          confidenceScore: 0.8,
+          requiresUserConfirmation: true,
+          detectedVariant: variant,
+          candidates: familyGenMatches.map(cat => cat.catalogDir)
+        };
+      }
+      if (familyGenMatches.length > 1) {
+        return {
+          chassisDir: '',
+          matchType: 'AMBIGUOUS_FAMILY_GEN_MATCH',
+          confidenceScore: 0.5,
+          requiresUserConfirmation: true,
+          detectedVariant: variant,
+          candidates: familyGenMatches.map(cat => cat.catalogDir)
+        };
       }
     }
 
@@ -393,9 +415,10 @@ function autoDetectChassisDetailed(boqItems = []) {
         return {
           chassisDir: cat.catalogDir,
           matchType: 'FUZZY',
-          confidenceScore: 0.85,
-          requiresUserConfirmation: false,
-          detectedVariant: variant
+          confidenceScore: 0.6,
+          requiresUserConfirmation: true,
+          detectedVariant: variant,
+          candidates: [cat.catalogDir]
         };
       }
     }

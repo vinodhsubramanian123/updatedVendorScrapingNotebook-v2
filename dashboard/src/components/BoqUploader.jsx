@@ -199,6 +199,10 @@ export default function BoqUploader({
     }
   };
 
+  const isCertified = Boolean(evalResults)
+    && !evalResults.requirementResolution?.requiresHumanClarification
+    && (evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false);
+
   return (
     <div className="space-y-6">
       <BoqInputZone
@@ -263,11 +267,11 @@ export default function BoqUploader({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className={`p-2.5 rounded-xl border ${
-                evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false
+                isCertified
                   ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                   : 'bg-amber-50 border-amber-200 text-amber-700'
               }`}>
-                {evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false ? (
+                {isCertified ? (
                   <ShieldCheck className="w-5 h-5" />
                 ) : (
                   <AlertTriangle className="w-5 h-5" />
@@ -276,9 +280,11 @@ export default function BoqUploader({
               <div>
                 <span className="badge badge-blue mb-1">BOQ Evaluation Outcome</span>
                 <h3 className="font-bold text-slate-900 text-base">
-                  {evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false
+                  {isCertified
                     ? 'Certified Buildable Configuration'
-                    : 'Physical Constraint Violations Flagged'}
+                    : evalResults.requirementResolution?.requiresHumanClarification
+                      ? 'Human Part/Category Confirmation Required'
+                      : 'Physical Constraint Violations Flagged'}
                 </h3>
               </div>
             </div>
@@ -304,6 +310,23 @@ export default function BoqUploader({
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold">Cloud Grounded via NotebookLM:</span> Live QuickSpecs notebook verified ({evalResults.notebookLmStatus.citationsCount || 0} citations).
+              </div>
+            </div>
+          )}
+
+          {evalResults.pcieTopology && (
+            <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-bold text-slate-900">PCIe topology — per node and cluster</span>
+                <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 border ${evalResults.pcieTopology.requiresNotebookVerification ? 'border-amber-300 bg-amber-100 text-amber-900' : 'border-emerald-300 bg-emerald-100 text-emerald-900'}`}>
+                  {evalResults.pcieTopology.requiresNotebookVerification ? 'Notebook verification required' : 'Catalog topology evidence'}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                <div><span className="text-slate-500">Cards/node</span><div className="font-mono font-bold">{evalResults.pcieTopology.perNodeDemand?.pcieCards ?? 0}</div></div>
+                <div><span className="text-slate-500">Mechanical/node</span><div className="font-mono font-bold">{evalResults.pcieTopology.totalMechanicalSlots ?? 0}</div></div>
+                <div><span className="text-slate-500">Active/node</span><div className="font-mono font-bold">{evalResults.pcieTopology.electricallyActiveSlots ?? 0}</div></div>
+                <div><span className="text-slate-500">Cluster active</span><div className="font-mono font-bold">{evalResults.pcieTopology.clusterTotals?.electricallyActiveSlotCapacity ?? 0}</div></div>
               </div>
             </div>
           )}

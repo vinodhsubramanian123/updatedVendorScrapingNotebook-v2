@@ -79,6 +79,15 @@ describe('evalNormalizer', () => {
       expect(result.hasHighPerfFans).toBe(true);
     });
 
+    it('hoists requirement resolution and PCIe topology for HITL/dashboard use', () => {
+      const requirementResolution = { requiresHumanClarification: true, learningEligible: false, resolutions: [{ expectedRole: 'Processor' }] };
+      const slotLayout = { totalMechanicalSlots: 6, electricallyActiveSlots: 5, requiresNotebookVerification: true };
+      const result = normalizeEvalResult({ data: { evalResults: { requirementResolution, evalSummary: { pcie: { slotLayout } } } } });
+
+      expect(result.requirementResolution).toEqual(requirementResolution);
+      expect(result.pcieTopology).toEqual(slotLayout);
+    });
+
     it('favors data over data.evalResults for properties like items, chassis', () => {
       const payload = {
         data: {

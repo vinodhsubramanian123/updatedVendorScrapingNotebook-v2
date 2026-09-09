@@ -21,6 +21,7 @@ const { getMandatorySkusForChassis, DEFAULT_MANDATORY_SKUS } = require('../catal
 const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('../conflict/conflict_graph.js');
 const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
 const { parseSkuLines } = require('./boq_parser.js');
+const { resolveRequirementIntent } = require('./requirement_intent_resolver.js');
 
 let _cachedChassisMap = null;
 function getCachedChassisMap() {
@@ -82,7 +83,7 @@ function emitProgress(step, total, label, status = 'in_progress', detail = '') {
   }
 }
 
-function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
+function readBoqLines(rawInput, filePath = '', targetSheet = null) {
   let lines = [];
   const targetPath = (filePath && typeof filePath === 'string')
     ? filePath
@@ -116,8 +117,16 @@ function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
     lines = String(rawInput || '').split(/\r?\n/);
   }
 
-  lines = lines.filter(l => l.trim().length > 0);
-  return parseSkuLines(lines).items;
+  return lines.filter(l => l.trim().length > 0);
+}
+
+function parseAndConsolidateBOQDetailed(rawInput, filePath = '', targetSheet = null) {
+  const rawLines = readBoqLines(rawInput, filePath, targetSheet);
+  return { ...parseSkuLines(rawLines), rawLines };
+}
+
+function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
+  return parseAndConsolidateBOQDetailed(rawInput, filePath, targetSheet).items;
 }
 
 /**
@@ -687,6 +696,23 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   emitProgress(5, 10, 'Networking & PCIe Constraints', 'in_progress', `Analyzing OCP NICs and PCIe Riser slot math.`);
   const network = evalNetworkingOcp(items, catalogData);
   const pcie = evalPcieRiserSlots(items, catalogData);
+  if (pcie.slotLayout) {
+    const perNodeDemand = pcie.requiredPcieCards / serverCount;
+    pcie.slotLayout.perNodeDemand = {
+      pcieCards: perNodeDemand,
+      gpuCards: pcie.gpuCount / serverCount,
+      remainingMechanicalSlots: Math.max(0, pcie.totalSlotsAvailable - perNodeDemand),
+      remainingActiveSlots: Math.max(0, pcie.activeSlotsAvailable - perNodeDemand)
+    };
+    pcie.slotLayout.clusterTotals = {
+      serverCount,
+      pcieCardDemand: pcie.requiredPcieCards,
+      gpuCardDemand: pcie.gpuCount,
+      mechanicalSlotCapacity: pcie.totalSlotsAvailable * serverCount,
+      electricallyActiveSlotCapacity: pcie.activeSlotsAvailable * serverCount,
+      x16SlotCapacity: pcie.x16LanesAvailable * serverCount
+    };
+  }
 
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
@@ -992,6 +1018,20 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
     const rankSummary = rankedSolutions.slice(0, 3).map(r => `Rank ${r.rank} (${r.tierTitle}): $${r.estimatedCapex || 0}`).join(' | ');
     queryText += `\nRanked Solution Options: ${rankSummary}.`;
   }
+  const requirementResolution = evalResults.requirementResolution || null;
+  const pcieLayout = evalResults.evalSummary?.pcie?.slotLayout || null;
+  if (requirementResolution) {
+    const categorySummary = requirementResolution.resolutions.map(resolution => ({
+      expectedRole: resolution.expectedRole,
+      status: resolution.status,
+      confidence: resolution.confidence,
+      candidateSkus: resolution.candidates.map(candidate => candidate.sku)
+    }));
+    queryText += `\nRequirement-category resolution (customer text excluded): ${JSON.stringify(categorySummary)}.`;
+  }
+  if (pcieLayout) {
+    queryText += `\nPCIe topology to verify: ${JSON.stringify(pcieLayout)}.`;
+  }
 
   return {
     chassis: chassisInfo.id || chassisInfo.model,
@@ -1001,15 +1041,39 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
       detectedTdp: evalResults.evalSummary?.maxCpuTdpWatts,
       memoryTotalGb: evalResults.evalSummary?.totalMemoryGb,
       issuesCount: issues.length,
-      skuManifest
+      skuManifest,
+      requestedRoles: requirementResolution?.intent?.requestedRoles || [],
+      requirementClarificationRequired: requirementResolution?.requiresHumanClarification || false,
+      pcieLayout
     }
   };
 }
 
 function evaluateBOQMultiAspect(filePathOrText, options = {}) {
-  const items = parseAndConsolidateBOQ(filePathOrText, options.filePath || '', options.targetSheet || null);
+  const parsed = parseAndConsolidateBOQDetailed(filePathOrText, options.filePath || '', options.targetSheet || null);
+  const requirementResolution = options.catalogData
+    ? resolveRequirementIntent({
+      items: parsed.items,
+      unresolvedRequirements: parsed.unresolvedRequirements,
+      rawLines: parsed.rawLines,
+      catalogData: options.catalogData,
+      productConfirmed: Boolean(options.productConfirmed || options.targetDir)
+    })
+    : {
+      status: 'NOT_RUN_NO_EXACT_CATALOG',
+      resolvedItems: parsed.items,
+      resolutions: [],
+      requiresHumanClarification: false,
+      learningEligible: false
+    };
+  const items = requirementResolution.resolvedItems;
   const result = evaluatePhysicalMath(items, options.catalogData, options.targetDir || '');
-  return { ...result, items };
+  if (requirementResolution.requiresHumanClarification) {
+    result.confidence.isHitlTriggered = true;
+    result.confidence.score = Math.min(result.confidence.score, 0.74);
+    result.confidence.confidenceReasons.push('[REQUIREMENT_AMBIGUITY] One or more requested components require human category/part confirmation.');
+  }
+  return { ...result, items, requirementResolution };
 }
 
 setPhysicalMathValidator((items, catalogData, targetDir, options = {}) => {
@@ -1025,6 +1089,7 @@ module.exports = {
   DEFAULT_MANDATORY_SKUS,
   CTO_BASE_SKUS,
   parseAndConsolidateBOQ,
+  parseAndConsolidateBOQDetailed,
   evaluatePhysicalMath,
   evaluateBOQMultiAspect,
   formatNotebookQueryPayload,

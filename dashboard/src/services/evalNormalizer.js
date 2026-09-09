@@ -100,7 +100,9 @@ function extractProvenanceAndTrace(data, inner) {
     totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
     stageBreakdown: inner.stageBreakdown ?? data.stageBreakdown ?? {},
     notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
-    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null
+    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null,
+    requirementResolution: inner.requirementResolution ?? data.requirementResolution ?? null,
+    pcieTopology: inner.evalSummary?.pcie?.slotLayout ?? data.pcieTopology ?? null
   };
 }
 

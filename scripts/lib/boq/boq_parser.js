@@ -251,6 +251,14 @@ function extractFreeFormSkuRows(line) {
   return results;
 }
 
+const REQUIREMENT_SIGNAL_PATTERN = /\b(?:processor|cpu|xeon|epyc|memory|ram|dimm|rdimm|gpu|accelerator|nvidia|drive|ssd|hdd|nvme|storage|controller|raid|network|ethernet|nic|ocp|fibre\s+channel|hba|riser|pcie|power\s+supply|psu|budget|server|chassis|dl\d{3}a?|alletra|synergy|aruba)\b/i;
+
+function extractSuspectedPartTokens(line) {
+  return (String(line || '').toUpperCase().match(/\b[A-Z][A-Z0-9]{3,8}(?:-[A-Z0-9]{2,4})?\b/g) || [])
+    .map(cleanBaseSKU)
+    .filter(token => /\d/.test(token) && !isValidHpeSKU(token));
+}
+
 /**
  * Main SKU parser: Iterates lines and aggregates extracted items.
  */
@@ -262,6 +270,7 @@ function parseSkuLines(lines) {
   let ocrNotice = null;
   const clusters = [];
   let currentCluster = null;
+  const unresolvedRequirements = [];
 
   for (const rawLine of lines) {
     const line = String(rawLine || '').trim();
@@ -332,6 +341,14 @@ function parseSkuLines(lines) {
       extractedRows = extractFreeFormSkuRows(line);
     }
 
+    if (extractedRows.length === 0 && REQUIREMENT_SIGNAL_PATTERN.test(line)) {
+      unresolvedRequirements.push({
+        line,
+        suspectedPartTokens: extractSuspectedPartTokens(line),
+        reason: 'NO_VALID_CATALOG_PART_PARSED'
+      });
+    }
+
     // Accumulate items into itemMap
     for (const item of extractedRows) {
       const totalQty = item.quantity * currentMultiplier;
@@ -371,10 +388,12 @@ function parseSkuLines(lines) {
     multiplier: currentMultiplier,
     clusters,
     ocrError,
-    ocrNotice
+    ocrNotice,
+    unresolvedRequirements
   };
 }
 
 module.exports = {
-  parseSkuLines
+  parseSkuLines,
+  extractSuspectedPartTokens
 };

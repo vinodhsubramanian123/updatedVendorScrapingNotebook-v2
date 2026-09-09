@@ -188,7 +188,7 @@ export default function App() {
           body: JSON.stringify({
             query: raw.data.notebookPayload,
             chassis: selectedChassisRef.current,
-            learningEligible: true,
+            learningEligible: raw.data.evalResults?.requirementResolution?.learningEligible === true,
             chassisDir: raw.data.chassisDir
           })
         })

@@ -14,7 +14,8 @@
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
-const { parseAndConsolidateBOQ, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
+const { parseAndConsolidateBOQDetailed, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
+const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { autoDetectChassisDetailed } = require('../lib/catalog/catalog_discovery.js');
 const { emitProgress } = require('../lib/system/progress.js');
@@ -41,7 +42,9 @@ function getDefaultNotebookId(chassisName = '') {
         const id = entry.notebookId;
         if (id && String(id).trim()) return String(id).trim();
       }
-      return cfg.defaultNotebookId || null;
+      // Product validation must never cross a product boundary. A generic
+      // default notebook may be used by explicitly generic workflows only.
+      return null;
     } catch (e) {
       const _logger = require('../lib/system/pipeline_logger.js');
       _logger.warn('ERROR', 'eval_boq.js', e);
@@ -143,13 +146,14 @@ function ingestAndConsolidateBoq(options) {
   const inputBase = path.basename(inputFile, path.extname(inputFile));
   const isExcel = inputFile.endsWith('.xlsx') || inputFile.endsWith('.xls');
   const rawContent = isExcel ? '' : fs.readFileSync(inputFile, 'utf-8');
-  const items = parseAndConsolidateBOQ(rawContent, inputFile, targetSheetName);
+  const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inputFile, targetSheetName);
+  let items = parsedBoq.items;
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
   let chassisDetection = null;
   if (!chassisDir) {
     chassisDetection = autoDetectChassisDetailed(items);
-    if (chassisDetection.confidenceScore < 0.75) {
+    if (chassisDetection.requiresUserConfirmation || chassisDetection.confidenceScore < 0.75) {
       chassisDetection.requiresUserConfirmation = true;
     } else {
       chassisDir = chassisDetection.chassisDir;
@@ -181,7 +185,10 @@ function ingestAndConsolidateBoq(options) {
   }
 
   const detectedChassisName = path.basename(chassisDir || '');
-  const notebookId = explicitNotebookId || getDefaultNotebookId(detectedChassisName);
+  const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
+  const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
+    ? explicitNotebookId
+    : configuredNotebookId;
 
   const defaultReportsDir = path.join(chassisDir, 'reports');
   if (!fs.existsSync(defaultReportsDir)) {
@@ -223,6 +230,16 @@ function ingestAndConsolidateBoq(options) {
     }
   }
 
+  const productConfirmed = !chassisDetection.requiresUserConfirmation && chassisDetection.confidenceScore >= 0.95;
+  const requirementResolution = resolveRequirementIntent({
+    items,
+    unresolvedRequirements: parsedBoq.unresolvedRequirements,
+    rawLines: parsedBoq.rawLines,
+    catalogData,
+    productConfirmed
+  });
+  items = requirementResolution.resolvedItems;
+
   return {
     items,
     chassisDir,
@@ -232,6 +249,7 @@ function ingestAndConsolidateBoq(options) {
     notebookId,
     outputPath,
     catalogData,
+    requirementResolution,
     stage1ParsingMs
   };
 }
@@ -239,9 +257,15 @@ function ingestAndConsolidateBoq(options) {
 // ============================================================
 // Stage 3: Modular Physical Pre-Checks & Conflict Graph
 // ============================================================
-function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE) {
+function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, requirementResolution = null) {
   const tAspectStart = Date.now();
   const evalResults = evaluatePhysicalMath(items, catalogData, chassisDir);
+  evalResults.requirementResolution = requirementResolution;
+  if (requirementResolution?.requiresHumanClarification) {
+    evalResults.confidence.isHitlTriggered = true;
+    evalResults.confidence.score = Math.min(evalResults.confidence.score, 0.74);
+    evalResults.confidence.confidenceReasons.push('[REQUIREMENT_AMBIGUITY] A part/category or attribute-only requirement needs human confirmation before solution learning.');
+  }
   const graph = evalResults.conflictGraph || {};
   const stage2AspectMathMs = Math.max(Date.now() - tAspectStart, 1);
 
@@ -745,6 +769,8 @@ function serializeAndExportResults(ctx) {
         notebookLmStatus: evalResults.notebookLmStatus || null,
         postFlowSync: evalResults.postFlowSync || null,
         needsActions: evalResults.evalSummary?.needsActions || [],
+        requirementResolution: evalResults.requirementResolution || null,
+        pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
         unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
         totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
         aspectChecks: evalResults.aspectChecks || [],
@@ -802,7 +828,7 @@ async function main() {
   const ingestCtx = ingestAndConsolidateBoq(options);
 
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
-    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE
+    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
   );
 
   const { ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({

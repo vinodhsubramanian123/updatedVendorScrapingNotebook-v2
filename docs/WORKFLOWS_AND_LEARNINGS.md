@@ -744,3 +744,13 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - Portal observations are written to `outputs/{Family}/{Gen}/{Model}/history/quarantined_deltas.json`. Stable semantic fingerprints merge repeat observations and retain first/last-seen timestamps plus an occurrence count.
 - Promotion requires the exact product generation, valid affected SKU, explicit scope, named reviewer, at least 20 characters of independent reasoning, affirmative verification, and a trusted evidence ID. A contradictory decision must list the rule IDs it supersedes.
 - Only promoted rules update deterministic rule artifacts and NotebookLM sync payloads. Each promotion or rejection is preserved in `knowledge_decisions.json`, including evidence and pre/post confidence. Corrupt governance ledgers stop the operation instead of being reset.
+
+---
+
+## 71. Requirement-Led Part Resolution and PCIe Topology Evidence (`INV-71`)
+
+- The BOQ parser retains malformed part-number lines and attribute-only requirements instead of silently discarding them. The resolver derives requested component roles from the complete input and compares those roles with categories already covered by exact-product catalog entries.
+- Candidate correction is category-first: description semantics override stale scraped category labels, numeric attributes and semantic overlap rank candidates, and SKU spelling similarity is only a weak final tie-breaker. Cross-category “nearest” matches are excluded.
+- A candidate is auto-applied only when the product boundary is confirmed and both confidence and candidate separation pass strict thresholds. All other cases enter the Ambiguity Inbox with ranked same-category options and remain ineligible for learning until evidence-backed review.
+- Attribute-only requests produce a construction plan containing missing roles, catalog-native choices, and budget intent. During the initial maturity phase an explicit base product is mandatory; incomplete or ambiguous plans cannot be presented as buildable solutions.
+- PCIe results expose catalog-parsed riser lane layouts, mechanical and electrically active capacity, x16 capacity, per-node demand, cluster totals, evidence confidence, and a NotebookLM-verification flag. Exact base SKU/catalog membership routes the product notebook; family/generation and fuzzy matches require confirmation.

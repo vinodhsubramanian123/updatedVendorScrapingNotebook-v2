@@ -72,6 +72,9 @@ function tallyPcieCardDemand(tally, desc, qty, role) {
 
 function tallyRiserCards(tally, desc, sku, qty, role) {
   if (role === 'PCIe Riser' || desc.includes('riser')) {
+    const parsedSlots = parseRiserSlotCount(desc);
+    const position = desc.includes('secondary') ? 'SECONDARY' : desc.includes('tertiary') ? 'TERTIARY' : 'PRIMARY';
+    tally.riserEvidence.push({ sku, description: desc, position, quantity: qty, slotsPerRiser: parsedSlots.slots, evidence: parsedSlots.evidence });
     if (desc.includes('primary riser') || desc.includes('main riser') || desc.includes('primary x16') || PRIMARY_RISER_SKUS.has(sku)) {
       tally.primaryRiserCount += qty;
     }
@@ -82,6 +85,15 @@ function tallyRiserCards(tally, desc, sku, qty, role) {
       tally.tertiaryRiserCount += qty;
     }
   }
+}
+
+function parseRiserSlotCount(description) {
+  const desc = String(description || '').toLowerCase();
+  const repeatedLanes = desc.match(/\bx(?:4|8|16)(?:\s*\/\s*x(?:4|8|16))+/i);
+  if (repeatedLanes) return { slots: repeatedLanes[0].split('/').length, evidence: 'CATALOG_LANE_LAYOUT' };
+  const multiplier = desc.match(/\b(\d+)\s*x\s*(?:4|8|16)\b/i) || desc.match(/\b(\d+)x(?:4|8|16)\b/i);
+  if (multiplier) return { slots: Number(multiplier[1]), evidence: 'CATALOG_LANE_MULTIPLIER' };
+  return { slots: desc.includes('tertiary') ? 2 : 3, evidence: 'LEGACY_POSITION_FALLBACK' };
 }
 
 function tallyPcieItems(items, catalogData) {
@@ -96,18 +108,24 @@ function tallyPcieItems(items, catalogData) {
     hasPrimaryCableKit: false,
     hasSecondaryCableKit: false,
     gpuPowerCableKitCount: 0,
-    hasGpuPowerCableKit: false
+    hasGpuPowerCableKit: false,
+    riserEvidence: []
   };
 
   for (const it of items) {
-    const desc = (it.description || '').toLowerCase();
+    let desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;
 
     let role = classifyComponentRole('', desc);
     const catalogItem = skuIndex.get(sku);
     if (catalogItem) {
-      role = classifyComponentRole(catalogItem.parentCategory, desc);
+      const catalogDescription = catalogItem.skuData?.Description || catalogItem.skuData?.description || desc;
+      desc = String(catalogDescription).toLowerCase();
+      const descriptionRole = classifyComponentRole('', desc);
+      role = descriptionRole !== 'Option Component'
+        ? descriptionRole
+        : (catalogItem.skuData?.['Component Role'] || classifyComponentRole(catalogItem.parentCategory, desc));
     }
 
     tallyPcieCablesAndGpus(tally, desc, sku, qty, role);
@@ -123,7 +141,8 @@ function calculatePcieSlots(t) {
   const activeSecondarySlots = t.secondaryRiserCount > 0 ? (t.hasSecondaryCableKit ? 3 : 2) : 0;
   const activeTertiarySlots = t.tertiaryRiserCount > 0 ? 2 : 0;
 
-  const totalPhysicalSlots = 3 + (t.primaryRiserCount * 3) + (t.secondaryRiserCount * 3) + (t.tertiaryRiserCount * 2);
+  const installedRiserSlots = t.riserEvidence.reduce((sum, riser) => sum + (riser.slotsPerRiser * riser.quantity), 0);
+  const totalPhysicalSlots = 3 + installedRiserSlots;
   const activeSlotsAvailable = activePrimarySlots + activeSecondarySlots + activeTertiarySlots;
 
   const isExceedingTotalSlots = t.requiredPcieCards > totalPhysicalSlots && totalPhysicalSlots > 0;
@@ -157,7 +176,8 @@ function calculatePcieSlots(t) {
     needsSecondaryRiser,
     needsGpuPowerCableKit,
     x16LanesAvailable,
-    laneBifurcationConstraint
+    laneBifurcationConstraint,
+    installedRiserSlots
   };
 }
 
@@ -186,10 +206,24 @@ function evalPcieRiserSlots(items, catalogData = null) {
     needsSecondaryCableKit: s.needsSecondaryCableKit,
     isExceedingActiveSlots: s.isExceedingActiveSlots,
     isExceedingTotalSlots: s.isExceedingTotalSlots,
-    needsSecondaryRiser: s.needsSecondaryRiser
+    needsSecondaryRiser: s.needsSecondaryRiser,
+    slotLayout: {
+      scope: 'PER_NODE',
+      platformBaseMechanicalSlots: 3,
+      installedRiserMechanicalSlots: s.installedRiserSlots,
+      totalMechanicalSlots: s.totalPhysicalSlots,
+      electricallyActiveSlots: s.activeSlotsAvailable,
+      x16CapableSlots: s.x16LanesAvailable,
+      inputDemandPcieCards: t.requiredPcieCards,
+      inputDemandGpuCards: t.gpuCount,
+      risers: t.riserEvidence,
+      evidenceConfidence: t.riserEvidence.length === 0 ? 0.6 : (t.riserEvidence.some(r => r.evidence === 'LEGACY_POSITION_FALLBACK') ? 0.7 : 0.95),
+      requiresNotebookVerification: t.riserEvidence.length === 0 || t.riserEvidence.some(r => r.evidence === 'LEGACY_POSITION_FALLBACK')
+    }
   };
 }
 
 module.exports = {
-  evalPcieRiserSlots
+  evalPcieRiserSlots,
+  parseRiserSlotCount
 };

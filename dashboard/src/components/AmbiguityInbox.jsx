@@ -32,6 +32,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
   const ctoAnomalies = evalResults.preprocessing?.variations?.[0]?.ctoAnomalies 
     || evalResults.ctoAnomalies 
     || [];
+  const partResolutions = evalResults.requirementResolution?.resolutions || [];
 
   // Trigger if score < 0.85, or errors exist, or chassis confirmation needed, or CTO quantity anomalies detected
   const isTriggered = score < 0.85 
@@ -145,6 +146,39 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
                   <p key={idx} className="text-[11px] text-rose-800 font-mono pl-5">
                     • SKU {anom.sku}: {anom.rawQuantity} total units across {anom.chassisCount} server chassis yields non-integer atomic quantity ({anom.atomicQuantity.toFixed(2)} per server).
                   </p>
+                ))}
+              </div>
+            )}
+
+            {partResolutions.length > 0 && (
+              <div className="pt-2 border-t border-amber-300/80 space-y-2">
+                <div className="font-bold text-amber-950 text-xs">Requirement-led part/category review:</div>
+                {partResolutions.map((resolution, idx) => (
+                  <div key={`${resolution.suspectedSku || 'requirement'}-${idx}`} className="rounded-lg border border-amber-200 bg-white p-2.5 space-y-1.5">
+                    <div className="flex flex-wrap items-center gap-2 text-[11px]">
+                      <span className="font-mono font-bold text-rose-800">{resolution.suspectedSku || 'No valid part number'}</span>
+                      <span className="text-slate-500">→ expected category</span>
+                      <span className="font-bold text-indigo-800">{resolution.expectedRole || 'Unresolved'}</span>
+                      <span className="ml-auto font-mono text-amber-900">{Math.round((resolution.confidence || 0) * 100)}% confidence</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {(resolution.candidates || []).map(candidate => (
+                        <button
+                          type="button"
+                          key={candidate.sku}
+                          onClick={() => {
+                            setAffectedSku(resolution.suspectedSku || 'ATTRIBUTE_REQUIREMENT');
+                            setRequiredDependencySku(candidate.sku);
+                            setRuleUpdate(`For ${chassisContext}, replace ${resolution.suspectedSku || 'the unresolved requirement'} with ${candidate.sku} (${candidate.description}) after confirming category ${resolution.expectedRole}.`);
+                          }}
+                          className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-800 hover:border-indigo-400 hover:bg-indigo-50"
+                          title={candidate.description}
+                        >
+                          {candidate.sku} · {Math.round(candidate.score * 100)}%
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             )}
