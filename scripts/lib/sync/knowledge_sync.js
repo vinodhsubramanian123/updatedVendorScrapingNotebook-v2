@@ -23,6 +23,18 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 const MASTER_REGISTRY_FILE = path.join(OUTPUTS_ROOT, 'history', 'master_knowledge_registry.json');
 
+/**
+ * Normalizes chassis names to canonical format (INV-36 compliance).
+ * - Replaces spaces with underscores ('DL380 Gen11' → 'DL380_Gen11')
+ * - Strips trailing form-factor suffixes ('DL380_Gen12_SFF' → 'DL380_Gen12')
+ */
+function normalizeChassisName(name) {
+  if (!name || name === 'GLOBAL') return name || 'GLOBAL';
+  let normalized = String(name).trim().replace(/\s+/g, '_');
+  normalized = normalized.replace(/_(8SFF|24SFF|8LFF|12LFF|EDSFF|SFF|LFF)$/i, '');
+  return normalized;
+}
+
 function getNotebookIdForChassis(cfg, chassisName) {
   if (cfg && cfg.notebooks && cfg.notebooks[chassisName]) {
     const entry = cfg.notebooks[chassisName];
@@ -80,7 +92,9 @@ function collectAllDeltas(outputsRoot = OUTPUTS_ROOT) {
         try {
           const content = JSON.parse(fs.readFileSync(full, 'utf-8'));
           const list = Array.isArray(content) ? content : (content.deltas || []);
-          const inferredChassis = path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir);
+          const inferredChassis = normalizeChassisName(
+            path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir)
+          );
           list.forEach(d => {
             const governanceStatus = String(d.governanceStatus || d.status || '').toUpperCase();
             if (/QUARANTIN|REJECT|CONTRADICT|PENDING/.test(governanceStatus)) return;
@@ -89,6 +103,8 @@ function collectAllDeltas(outputsRoot = OUTPUTS_ROOT) {
             if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
               d.chassis = inferredChassis;
             }
+            // Normalize chassis name if present (INV-36) — preserve undefined for universal scope classification
+            if (d.chassis) d.chassis = normalizeChassisName(d.chassis);
             const rawText = d.rawMessage || d.ruleUpdate || '';
             const key = `${d.chassis}|${d.affectedSku}|${d.requiredDependencySku || ''}|${rawText}`;
             
@@ -316,5 +332,6 @@ module.exports = {
   hasExplicitWideScopeEvidence,
   loadNotebookConfig,
   getNotebookIdForChassis,
-  collectAllDeltas
+  collectAllDeltas,
+  normalizeChassisName
 };
