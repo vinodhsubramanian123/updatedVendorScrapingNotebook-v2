@@ -48,14 +48,54 @@ While the React Dashboard provides an exceptional visual interface for reviewing
    - Ensures internal CTO components carry `#0D1` / `-F21` FIO tags (`INV-25`). Standalone BTO components outside containers fail CLIC validation (Rules 81354490 & 91001655).
    - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.
 6. **5-Tier Strategic Resolution Matrix Ranking**:
-   - **Rank 1 (Customer Intent Preserved)**: Closest possible build to customer request. Minimum changes needed to achieve 100% buildability. Trims only redundant parts (e.g. redundant extra fans when base chassis already includes 6 fans). Never cuts down customer requirements unless physically unbuildable, and never bundles unsolicited software or services (`INV-32`).
-   - **Rank 2 (Standardized CTO Baseline)**: Standard vendor factory default baseline.
-   - **Rank 3 (High-IOPS & Storage Performance)**: PCIe standup controllers, expanded drive backplanes, high-speed cache.
-   - **Rank 4 (Maximum Density & Expansion)**: Maximum socket/core expansion, future-proof memory channels.
+   - **Rank 1 (Customer Intent Preserved — RECOMMENDED)**:
+     - Closest possible build to customer request with minimum changes needed to achieve 100% buildability.
+     - **Parallel Sub-Paths (Rank 1A, 1B, 1C)**: When multiple valid buildable topologies solve a requirement (e.g. Path 1A: SAS Expander vs Path 1B: Dedicated 2nd Controller), they form parallel sub-paths within Rank 1. Rank 1A is the minimal disruption/lowest CapEx path.
+     - **The Zero-Rank Invariant**: An unbuildable configuration receives ZERO rank and is discarded. Only 100% certified buildable configurations enter the matrix.
+     - Never cuts down customer requirements unless physically impossible, and never bundles unsolicited software or startup services (`INV-32`).
+   - **Rank 2 (Standardized CTO / Balanced Performance)**: Balanced memory interleaving, factory accessories, high-performance fans.
+   - **Rank 3 (High-IOPS & Storage Performance / Cost-Optimized Baseline)**: Cleaned baseline removing redundant zero-purpose parts or selecting certified equivalent tiers.
+   - **Rank 4 (Maximum Density & 2N Reliability)**: Dual grid 2N power supplies, dual controllers, enterprise care.
    - **Rank 5 (Budget & CapEx Minimized)**: Cost-optimized buildable configuration adhering to essential specs at minimum spend.
 7. **Closed-Loop Feedback & KnowledgeDelta Learning**:
    - Real-world vendor portal rejections are ingested via `processPortalFeedback()` (`feedback_loop.js`).
-   - Persists deduplicated `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. Future evaluations instantly benefit from learned rules!
+   - Persists deduplicated `KnowledgeDelta` records: universal rules to `master_knowledge_registry.json`, chassis-specific rules to `catalog_deltas.json` and synchronized exclusively to that product's target Notebook ID.
+
+---
+
+### 💰 Financial Transparency & Per-Rank Budget Schema
+Every solution column presented to the user must display:
+- Part Number (`SKU`)
+- Description
+- Quantity
+- Unit List Price (USD)
+- Extended List Price (USD)
+- **Total CapEx Budget** clearly summed at the bottom.
+- If a price cannot be resolved from certified history, the total is flagged as `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33`. Silent $0 totals are forbidden.
+
+---
+
+### 🛡️ Clean Tool Segregation Contract
+When evaluating customer BOQs or answering configuration questions:
+- **Participating Tools**:
+  1. `scripts/evaluators/eval_boq.js` (Unified production evaluation engine)
+  2. `scripts/lib/aspects/*` (7 physical math engines running in parallel)
+  3. `gemini-notebook-mcp` (The ONLY cloud RAG tool used for QuickSpecs & catalog subgraph grounding)
+- **Strictly Excluded Developer Tools**:
+  - `jules` (GitHub PR code-review agent — CI/CD only, never customer BOQs)
+  - `data-agent-kit` (GCP/BigQuery tool — completely irrelevant to on-prem server BOQs)
+  - `notebooks` (Jupyter `.ipynb` cell editor — customer BOQs are Excel/CSV/JSON)
+
+---
+
+### 🧠 Dual-Brain Verification Badges & Honest Observability
+Outputs must always present explicit verification badges:
+- `[🧠 Deterministic Brain: 7-Aspect Physical Math PASSED]`
+- `[📚 Intent RAG Brain: Grounded in NotebookLM (Notebook ID: <id>)]`
+- `[🛡️ CLIC/OCA Pre-Flight: 100% Buildability Certified]`
+- **Unmapped Model Notice**: If a product is not in `scripts/config/notebooks.json`, display:
+  `[⚠️ Knowledge Mapping Notice: Product <Model> catalog unpromoted or unmapped. Running in Local Deterministic Engine + QuickSpecs fallback mode until scraped.]`
+- **Ambiguity Rule**: If a requirement cannot be mapped with high confidence, the agent MUST ask the user for clarification.
 
 ---
 

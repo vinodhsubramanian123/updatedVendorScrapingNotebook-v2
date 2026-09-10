@@ -28,3 +28,16 @@
 ## 5. Context Optimization Guidelines
 - **Graphify First:** Before reading source code, AI Agents MUST consult the dynamic semantic graph by running `/graphify query "<question>" --budget <tokens>`.
 - **Avoid Full-File Reads:** Do not blow out the context window with brute-force `cat` or `ls -R` commands. Use Graphify to target the specific community or node of interest.
+
+## 6. Multi-Model Collaboration & Machine-Agnostic Portability
+- **Division of Labor**:
+  - **Antigravity / Gemini 3.6 Flash**: Lead Execution Architect and pair programmer. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates.
+  - **OpenAI Codex / ChatGPT Plus Plugin / Claude**: Independent Verification & Red-Teaming Auditor. Reviews diffs, audits edge cases, benchmarks failure modes, challenges assumptions, and validates clean code standards.
+- **Portability Across Any Laptop**: The solution is 100% machine-agnostic. All paths derive dynamically from `process.cwd()` or `os.homedir()`. Zero hardcoded local machine directories. Git repository (`main`) is the single source of truth.
+
+## 7. Tool Segregation & Canonical Customer BOQ Flow (`INV-72`)
+- **Customer BOQ Flow**: When a customer inquiry, BOQ spreadsheet, quote, or tender arrives:
+  - **Participating Tools**: Use ONLY `scripts/evaluators/eval_boq.js`, the 7-aspect physical math checkers, and `gemini-notebook-mcp`.
+  - **Excluded Tools**: Never invoke `jules` (CI/CD only), `data-agent-kit` (GCP/BigQuery), or `notebooks` (Jupyter `.ipynb`).
+  - **Zero-Ad-Hoc Invariant**: Never write one-off scripts or ad-hoc classes. Always pipe into `scripts/evaluators/eval_boq.js`.
+  - **True Rank 1**: Customer intent preserved with minimum changes to achieve 100% buildability. Unbuildable = 0 rank. Parallel sub-paths (Rank 1A, 1B) represent alternative buildable topologies (e.g. SAS Expander vs 2nd controller).

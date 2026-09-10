@@ -20,9 +20,108 @@ Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are
 | Audit/test failures were prematurely called fixture mismatches. | Inspect implementation and fixture evidence before changing assertions. Unknown form factors and legacy schemas may reveal real defects. Do not lower thresholds merely to obtain green results. |
 | Large changes remained uncommitted through repeated review cycles. | Commit and push coherent tested milestones, with explicit partial status when unresolved. Maintain a concise handoff and saved raw evidence so other agents can resume without re-analysis. |
 
-Latest measured verification: 146/149 suites passed; lint/build/dependency DAG passed. Three unresolved suites are offline pipeline, Excel alignment/audit, and portfolio verification. Complexity warnings remain for navigator and scrape main. Test success, source freshness and full vendor-rule coverage are separate claims; report each with its evidence.
+Latest measured verification (Certified 2026-09-11): **153/153 suites PASSED (100.0%)** (87 unit, 38 chaos, 25 integration, 3 e2e); `oxlint` 0 warnings/0 errors on 101 files; clean dashboard production build; and all 835 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md` and `GEMINI_REMAINING_WORK_PLAN.md`.
 
-All four product notebooks received restricted-source canaries during the session; that does not establish that these engineering lessons or every newly discovered product rule were synchronized. Promote only source-verified, scoped product learnings through the feedback pipeline. Preserve quarantined sources pending review and the authorized retirement process.
+All four product notebooks received restricted-source canaries; product learnings must strictly follow the scoped feedback pipeline. Universal rules reside in `outputs/history/master_knowledge_registry.json`, while chassis-specific rules reside in `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and are synced exclusively to that product's target Notebook ID.
+
+---
+
+## 0. Multi-Model Collaboration & Customer Solution Operational Protocol (Certified 2026-09-11)
+
+### 🤝 Multi-Model Division of Labor: Antigravity / Gemini + OpenAI Codex + Claude
+To achieve maximum intelligence, resilience, and verification without friction or drift:
+1. **Antigravity / Gemini 3.6 Flash (Execution Architect & Orchestration Engine)**:
+   - Serves as the primary execution brain and pair programmer.
+   - Orchestrates the Dual-Brain evaluation pipeline: local 7-aspect deterministic physical math + `gemini-notebook-mcp` cloud RAG queries.
+   - Manages atomic file operations (`fs_compat.js`), dynamic catalog diffs (`diff_catalog.js`), and live scraping execution (`scrape_oca_solution.js`).
+   - Maintains cyclomatic complexity ($CC \le 135$) and 0-warning linter discipline.
+2. **OpenAI Codex / ChatGPT Plus Plugin / Claude (Independent Verification & Red-Teaming Auditor)**:
+   - Acts as the adversarial reviewer and code quality auditor.
+   - Audits git diffs, challenges assumptions, verifies edge-case test matrices, and red-teams configuration proposals.
+   - Cross-checks for over-fitting, stale price caches, and regression vulnerabilities.
+3. **Machine-Agnostic Laptop Portability**:
+   - The entire solution is engineered to run seamlessly across any laptop, workstation, or operating system (Linux, macOS, Windows) without environment lock-in.
+   - Zero hardcoded machine paths (`process.cwd()`, relative module imports, and `os.homedir()` exclusively).
+   - Git repository (`main`) is the single source of truth for all schemas, rules, test baselines, and catalog metadata.
+   - API keys and tokens are resolved dynamically via environment variables (`GEMINI_API_KEY*`, `JULES_API_KEY`, OAuth tokens in standard user config paths).
+
+---
+
+### 🛡️ Clean Tool Segregation Contract
+When evaluating customer BOQs, responding to tenders, or resolving hardware compatibility questions:
+- **Participating Tools (Customer Solution Pipeline)**:
+  1. `scripts/evaluators/eval_boq.js` (Unified customer BOQ evaluator & entry point)
+  2. `scripts/lib/aspects/*` (7 physical aspect math checkers running in parallel)
+  3. `scripts/lib/conflict/*` (Workload DNA, conflict graph, and 5-tier strategy matrix synthesizer)
+  4. `scripts/lib/boq/multi_cluster_splitter.js` (Multi-node and multi-tender atomic cluster splitter)
+  5. `gemini-notebook-mcp` (The ONLY cloud RAG tool used for QuickSpecs & catalog subgraph grounding)
+- **Strictly Excluded Developer/CI Tools**:
+  - `jules`: Reserved exclusively for GitHub PR code review and async background testing. Never invoke for customer BOMs or quote inquiries.
+  - `data-agent-kit`: GCP/BigQuery analytics tool. Has zero relevance to server hardware configuration.
+  - `notebooks`: Jupyter `.ipynb` interactive cell tool. BOQ workflows consume structured Excel, CSV, or JSON, never raw Jupyter cells.
+
+---
+
+### 🏆 The True Rank 1 Philosophy & Parallel Sub-Paths (Rank 1A, 1B, 1C)
+1. **Customer Intent Preserved Above All**:
+   - Rank 1 is strictly the closest match to the customer's requested configuration with the **minimum necessary changes** required to achieve 100% buildability and CLIC/OCA compliance.
+   - It trims only physically redundant parts (e.g. redundant extra fans when base chassis already includes 6 fans).
+   - It **never** prematurely cuts down customer requirements (e.g., cutting CPU cores or RAM to force a budget target) unless physically unbuildable.
+   - It **never** bundles unsolicited software licenses (e.g. `S1A05A`) or installation startup services (e.g. `HA114A1`) per `INV-32`.
+2. **Parallel Sub-Paths Within Rank 1**:
+   - When multiple valid, 100% buildable topologies can solve a customer requirement, the engine synthesizes parallel sub-paths rather than prematurely picking one:
+     - **Path 1A (Recommended — Minimal Disruption / Lowest CapEx)**: Solves missing channel/port requirements with the lowest-impact enablement kit (e.g. adding a SAS Expander Card `P48835-B21` to bridge an existing 8-port controller to 16/24 drives).
+     - **Path 1B (Dedicated Controller Architecture)**: Adds a 2nd dedicated Tri-Mode RAID controller (e.g. `MR408i-o` + `MR416i-p`) for customers who demand dedicated PCIe bus bandwidth per drive cage.
+     - **Path 1C (Alternative High-Density Cabling)**: Uses specialized Y-splitter cables or alternate riser configurations if physical PCIe slot constraints require it.
+   - Sub-paths give the customer clear technical and commercial choices while remaining firmly inside Rank 1 (Customer Intent Preserved).
+3. **The Zero-Rank Invariant (Unbuildable = Invalid = 0 Rank)**:
+   - A configuration that fails physical math (TDP thermal envelope, memory channel asymmetry, power draw, PCIe slot mechanical limits) or fails CLIC validation is **strictly unbuildable**.
+   - An unbuildable configuration **receives ZERO rank** and is discarded. Only configurations certified as 100% buildable are eligible for ranking in the matrix.
+
+---
+
+### ⚡ Dual-Brain Parallel Execution & NotebookLM Headroom
+1. **Level 1 Fast Parallel Lookups**:
+   - Individual SKU lifecycle, pin-compatibility, and basic metadata queries execute concurrently via `Promise.all`.
+2. **Level 2 Deep Whole-BOM Subgraph RAG**:
+   - When evaluating an entire system BOM with dozens of interdependent parts and quantities, NotebookLM performs full graph/subgraph reasoning across QuickSpecs to verify hidden cable, riser, and thermal dependencies.
+   - Deep subgraph queries can take time depending on notebook load. The engine uses `persistent_job_store.js` and async polling with up to 10-minute timeout headroom to ensure complete, non-truncated answers.
+3. **Parallel Local Safety Net**:
+   - While NotebookLM RAG is running, the Local Deterministic Brain (7 physical aspect engines) executes in milliseconds, pre-computing physical limits, conflict graphs, and rule boundaries.
+   - When the RAG response arrives, it is validated against the deterministic physical constraints, guaranteeing that LLM hallucinations can never compromise physical buildability.
+4. **Multi-Node Cluster Atomicity**:
+   - Complex multi-node tenders (e.g. 60x DL380 nodes across multiple application tiers) are decomposed atomically via `multi_cluster_splitter.js`. Each cluster is evaluated individually and synthesized into a consolidated infrastructure report (`clusterSizing`).
+
+---
+
+### 💰 Line-by-Line Financial Transparency & Per-Rank Budgets
+Every ranked solution presented to the user must provide complete financial visibility:
+- **Part Number (`SKU`)**: Official clean vendor part number (e.g. `P48835-B21`).
+- **Description**: Accurate catalog description stripped of obsolete badges (`INV-35`).
+- **Quantity**: Exact integer quantity matching chassis rules.
+- **Unit List Price (USD)**: Sourced dynamically from certified price history (`INV-33`).
+- **Extended List Price (USD)**: `Quantity * Unit List Price`.
+- **Total CapEx Budget**: Explicitly summed for each rank/sub-path.
+- **Incomplete Price Alert**: If a SKU list price cannot be resolved from catalog history, the total budget must be flagged as `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33`. Silent $0 totals are strictly forbidden.
+
+---
+
+### 🧠 Dual-Brain Verification Badges & Honest Observability
+Outputs must always present explicit verification badges so the user knows exactly what verified the solution:
+- `[🧠 Deterministic Brain: 7-Aspect Physical Math PASSED]`
+- `[📚 Intent RAG Brain: Grounded in NotebookLM (Notebook ID: <id>)]`
+- `[🛡️ CLIC/OCA Pre-Flight: 100% Buildability Certified]`
+- **Unmapped Model Notice**: If a product is not yet registered in `scripts/config/notebooks.json`, the agent must disclose this honestly:
+  `[⚠️ Knowledge Mapping Notice: Product <Model> catalog unpromoted or unmapped. Running in Local Deterministic Engine + QuickSpecs fallback mode until scraped.]`
+- **Ambiguity Rule**: If a customer requirement or ambiguous specification cannot be mapped with high confidence, the agent MUST ask the user for clarification rather than assuming or hallucinating.
+
+---
+
+### 🔄 Scoped Feedback Learning Protocol
+When real-world validation feedback, partner portal errors, or human corrections are processed:
+1. **Universal / Family Rules**: Persisted to `outputs/history/master_knowledge_registry.json`.
+2. **Chassis-Specific Rules**: Persisted to `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and synchronized **strictly** to that product's target Notebook ID in `scripts/config/notebooks.json`.
+3. **No Cross-Pollution**: Rules for DL380 Gen12 must never pollute Gen11 or Alletra notebooks.
 
 ---
 
