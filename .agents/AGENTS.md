@@ -425,7 +425,12 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Rule**: AI agents MUST NOT instruct users to authenticate sensitive Workspace scopes without an owned client ID. Zero-human-in-the-loop Google Sheets and Google Docs operations MUST use either:
   1. An operator-owned Desktop App OAuth client stored outside the repository, with the operator registered as a Test User and authenticated through Application Default Credentials; OR
   2. A dedicated service account whose key is stored outside the repository, with access limited to a designated Drive folder (`GOOGLE_DRIVE_FOLDER_ID`).
-- OAuth grants and refresh tokens can expire or be revoked. All flows must surface authentication failure and preserve local artifacts for retry.
+### INV-72: Customer Input Workflow Discipline & Scoped Learning Protocol
+- **Pattern**: When given a customer BOQ or configuration question, AI agents often attempt to write one-off scripts, scratch classes, or ad-hoc parsers, bypassing the battle-tested production pipeline.
+- **Rule**: Whenever an AI agent receives a customer BOQ spreadsheet, quote, tender excerpt, or configuration query, the agent **MUST ALWAYS route the request through the canonical evaluation pipeline** (`scripts/evaluators/eval_boq.js`, `scripts/lib/boq/boq_evaluator.js`, `scripts/lib/boq/multi_cluster_splitter.js`). Writing ad-hoc classes, scratch parsers, or temporary bypass scripts is STRICTLY PROHIBITED.
+- **Verification & Parallel Paths**: All evaluations must execute the 7 physical aspect checkers, cross-reference mapped NotebookLM instances (`scripts/config/notebooks.json`), validate 100% buildability against CLIC/OCA constraints, and synthesize 5-tier ranked solutions (Rank 1A, 1B, 1C + Ranks 2-5). Unbuildable solutions receive 0 rank.
+- **Scoped Learning**: Closed-loop feedback must be strictly scoped: universal/family rules are saved to `outputs/history/master_knowledge_registry.json`, while chassis-specific rules are saved to `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and synchronized only to that product's target Notebook ID.
+- **Ask When Ambiguous**: If an ambiguous requirement, missing chassis mapping, or unresolvable conflict arises, the agent **MUST actively ask the user for clarification** rather than making unverified assumptions. All outputs must display complete SKUs, unit prices, extended prices, total rank budgets, and Dual-Brain verification badges.
 
 ---
 
