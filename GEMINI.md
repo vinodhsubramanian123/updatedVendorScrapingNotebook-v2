@@ -41,3 +41,9 @@
   - **Excluded Tools**: Never invoke `jules` (CI/CD only), `data-agent-kit` (GCP/BigQuery), or `notebooks` (Jupyter `.ipynb`).
   - **Zero-Ad-Hoc Invariant**: Never write one-off scripts or ad-hoc classes. Always pipe into `scripts/evaluators/eval_boq.js`.
   - **True Rank 1**: Customer intent preserved with minimum changes to achieve 100% buildability. Unbuildable = 0 rank. Parallel sub-paths (Rank 1A, 1B) represent alternative buildable topologies (e.g. SAS Expander vs 2nd controller).
+
+## 8. Zero-Repetition Autonomous BOQ Execution Protocol (`INV-73`)
+- **Zero Human Repetition**: The human user does not need to repeat instructions or remind agents about schemas, budget tables, or badges.
+- **Scope Detection**: Automatically handle single config, all configs in Sheet X, or all configs across all sheets (`multi_cluster_splitter.js`).
+- **Up-Front Ambiguity Triage**: Before launching deep pipelines, if any critical ambiguity exists (unmapped model, ambiguous chassis, contradictory quantities), clarify immediately in the initial turn. Never guess or hallucinate; maintain $\ge 0.95$ confidence.
+- **Autonomous End-to-End Delivery**: Execute canonical flow autonomously: partition clusters $\rightarrow$ 7 aspects $\rightarrow$ NotebookLM grounding $\rightarrow$ 100% buildable 5-tier matrix $\rightarrow$ line-by-line financial breakdown $\rightarrow$ Dual-Brain badges $\rightarrow$ scoped knowledge delta sync.

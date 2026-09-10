@@ -125,6 +125,30 @@ When real-world validation feedback, partner portal errors, or human corrections
 
 ---
 
+### 🎯 Zero-Repetition Autonomous BOQ Execution Protocol (`INV-73`)
+The primary operational directive for handling customer inquiries is **zero human repetition and high-confidence autonomous execution**:
+1. **Zero Repetition**:
+   - The user never needs to remind agents about schemas, budget tables, verification badges, or tool segregation.
+   - The agent automatically applies all known goals and operational invariants end-to-end.
+2. **Flexible Scope Parsing**:
+   - **Target Config**: e.g. *"Provide solution for Config #2 in sheet 'Compute'"* $\rightarrow$ Isolates target cluster, runs canonical pipeline.
+   - **All Configs in Sheet X**: e.g. *"Evaluate all configs in sheet 'Database'"* $\rightarrow$ Dissects all clusters in sheet X via `multi_cluster_splitter.js` and evaluates each independently.
+   - **All Configs across All Sheets**: e.g. *"Evaluate all configs in the workbook"* $\rightarrow$ Filters non-BOM sheets (`isNonBomSheet`), discovers all clusters across all sheets, and processes the entire tender with cluster-level subtotals and 2-line separator gaps (`INV-28`, `INV-37`).
+3. **Up-Front Ambiguity Triage (Zero-Hallucination Gate)**:
+   - Before launching deep execution, the agent validates input sanity:
+     - Are target sheet(s) and cluster(s) clearly identified?
+     - Is the server generation/model known or identifiable from SKUs?
+     - Are there fatal contradictions (e.g. 24 drives requested on an 8-drive fixed backplane)?
+   - **Proactive Early Clarification**: If any critical ambiguity exists, the agent **MUST ask for clarification immediately in the initial turn** rather than guessing, hallucinating, or making ungrounded assumptions, maintaining a confidence score $\ge 0.95$.
+   - If unambiguous, proceed with 100% autonomous execution.
+4. **Autonomous End-to-End Delivery**:
+   - Executes canonical pipeline (`eval_boq.js`, 7-aspect checkers, `gemini-notebook-mcp`).
+   - Synthesizes 100% buildable 5-Tier Strategy solutions (Rank 1A/1B/1C through Rank 5; unbuildable = 0 rank).
+   - Emits complete line-by-line financial tables with total budgets and Dual-Brain verification badges.
+   - Synchronizes scoped closed-loop feedback rules without user prompting.
+
+---
+
 ## 1. 6-Stage BOQ Evaluation Workflow
 1. **Multimodal Parsing**: Multimodal OCR service (`ocr_service.js`) backed by `gemini-3.6-flash` processes images/PDFs into structured BOQ JSON with automated API key rotation and retry.
 2. **CTO Normalization**: Resolves fractional math for multi-node chassis configurations.

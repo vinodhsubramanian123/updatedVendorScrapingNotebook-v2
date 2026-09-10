@@ -99,6 +99,30 @@ Outputs must always present explicit verification badges:
 
 ---
 
+### 🎯 Zero-Repetition Autonomous BOQ Protocol (High Confidence & Zero Micromanagement)
+When the user supplies a customer BOQ, spreadsheet, quote, or tender text and requests a solution:
+1. **Zero-Repetition Directive**:
+   - The user does **NOT** have to repeat instructions, remind the agent of rules, or prompt for missing badges/budgets.
+   - The agent automatically recognizes the full lifecycle goals and delivers the complete, certified solution end-to-end.
+2. **Flexible User Dispatch Scope**:
+   - **Target Config**: e.g., *"Provide solution for Config #2 in sheet 'Compute Nodes'"* $\rightarrow$ Isolates Config #2 cluster, runs canonical pipeline.
+   - **All Configs in Sheet X**: e.g., *"Evaluate all configs in sheet 'Database Cluster'"* $\rightarrow$ Dissects all clusters in sheet X via `multi_cluster_splitter.js` and evaluates each independently.
+   - **All Configs across All Sheets**: e.g., *"Evaluate all configs in the workbook"* $\rightarrow$ Filters non-BOM sheets (`isNonBomSheet`), discovers all clusters across all sheets, and processes the entire tender with cluster-level subtotals and 2-line separator gaps (`INV-28`, `INV-37`).
+3. **Up-Front Ambiguity Triage (Zero-Hallucination Gate)**:
+   - **Initial Turn Check**: Before launching deep execution, the agent validates input sanity:
+     - Are target sheet(s) and cluster(s) clearly identified?
+     - Is the server generation/model known or identifiable from SKUs?
+     - Are there fatal contradictions (e.g. 24 drives requested on an 8-drive fixed backplane)?
+   - **Proactive Early Clarification**: If any critical ambiguity exists, the agent **MUST ask for clarification immediately in the initial turn** rather than guessing, hallucinating, or making ungrounded assumptions.
+   - If unambiguous, proceed with 100% autonomous execution.
+4. **Autonomous End-to-End Delivery**:
+   - Executes canonical pipeline (`eval_boq.js`, 7-aspect checkers, `gemini-notebook-mcp`).
+   - Synthesizes 100% buildable 5-Tier Strategy solutions (Rank 1A/1B/1C through Rank 5; unbuildable = 0 rank).
+   - Emits complete line-by-line financial tables with total budgets and Dual-Brain verification badges.
+   - Synchronizes scoped closed-loop feedback rules without user prompting.
+
+---
+
 ## 1. Overview & Workflow Lifecycle (Workflow 2)
 
 This skill provides an automated, agentic workflow representing **Workflow 2 (Pre-Flight Evaluation)** of the dual-workflow paradigm. It ingests raw customer BOQs, pre-cleans input data, runs deterministic 7-aspect physical math assertions, executes 5-level dependency conflict graph validation, profiles Workload DNA, dynamically routes to Gemini Notebook RAG via `notebooks.json`, and outputs the results to the dashboard and a dynamically generated **Corrected BOQ Excel workbook**.
