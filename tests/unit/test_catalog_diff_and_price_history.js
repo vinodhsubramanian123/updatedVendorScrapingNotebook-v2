@@ -4,11 +4,21 @@ const test = require('node:test');
 const assert = require('node:assert');
 const path = require('path');
 const { getSkuAuditHistory, normalizeTargetDate } = require('../../scripts/lib/catalog/sku_versioning.js');
-const { processCatalogDiff } = require('../../scripts/lib/catalog/diff_catalog.js');
+const { processCatalogDiff, sanitizePriceTrail } = require('../../scripts/lib/catalog/diff_catalog.js');
 const fs = require('fs');
 const os = require('os');
 
 test('Catalog Diff and Price History suite', async (t) => {
+  await t.test('isolated price corruption is removed without erasing legitimate changes', () => {
+    const cleaned = sanitizePriceTrail([
+      { date: '2026-08-12', price: 99, status: 'BASELINE' },
+      { date: '2026-08-12', price: 99, status: 'ADDED' },
+      { date: '2026-08-24', price: 3062023, status: 'PRICE_CHANGED' },
+      { date: '2026-09-09', price: 99, status: 'UNCHANGED' }
+    ]);
+    assert.deepEqual(cleaned.map(event => event.price), [99, 99]);
+    assert.equal(cleaned[0].status, 'ADDED');
+  });
 
   await t.test('INV-6: normalizeTargetDate formats to strictly YYYY-MM-DD', () => {
     assert.strictEqual(normalizeTargetDate('2026-08'), '2026-08-31');
@@ -31,7 +41,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           skus: [
             { 'Product #': 'SKU1', 'Unit Price (USD)': '100', 'Description': 'Old desc 1' }, // Normal SKU
             { 'Product #': 'SKU2', 'Unit Price (USD)': '0' },   // $0 CTO SKU
-            { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'Old desc 3', lifecycleStatus: 'Active' } // SKU to change attributes
+            { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'Old desc 3', lifecycleStatus: 'Active', Availability: 'Available', 'Lead Time': '10 days' } // SKU to change attributes
           ]
         }
       ]
@@ -57,7 +67,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           parentCategory: 'Servers',
           subCategory: 'Base',
           skus: [
-             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' }, // Attribute mutation
+             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026', Availability: 'Supply constrained', 'Lead Time': '30 days' }, // Attribute mutation
              { 'Product #': 'SKU4', 'Unit Price (USD)': '200' }, // Added new
           ]
         }
@@ -72,7 +82,7 @@ test('Catalog Diff and Price History suite', async (t) => {
           parentCategory: 'Servers',
           subCategory: 'Base',
           skus: [
-             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' },
+             { 'Product #': 'SKU3', 'Unit Price (USD)': '500', 'Description': 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026', Availability: 'Supply constrained', 'Lead Time': '30 days' },
              { 'Product #': 'SKU4', 'Unit Price (USD)': '200' },
           ]
         }
@@ -113,6 +123,10 @@ test('Catalog Diff and Price History suite', async (t) => {
       'lifecycle badge/status transition must be recorded once');
     assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Discontinued Date').length, 1,
       'vendor discontinuation date must be recorded once');
+    assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Availability').length, 1,
+      'availability transition must be recorded once');
+    assert.strictEqual(finalAttrHistory.filter(e => e.productNumber === 'SKU3' && e.field === 'Lead Time').length, 1,
+      'lead-time transition must be recorded once');
     assert.strictEqual(finalPriceHistory['SKU3'].find(e => e.date === '2026-08-02').status, 'ATTRIBUTE_CHANGED');
 
     // A subsequent scrape sees the prior tombstone but must not re-remove or
@@ -121,7 +135,7 @@ test('Catalog Diff and Price History suite', async (t) => {
       metadata: { scrapeDate: '2026-08-03', chassis: 'DL380 Gen12' },
       entries: [{
         parentCategory: 'Servers', subCategory: 'Base', skus: [
-          { 'Product #': 'SKU3', 'Unit Price (USD)': '500', Description: 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026' },
+          { 'Product #': 'SKU3', 'Unit Price (USD)': '500', Description: 'New desc 3', lifecycleStatus: 'EOL Warning (90-Day)', 'Discontinued Date': '09/30/2026', Availability: 'Supply constrained', 'Lead Time': '30 days' },
           { 'Product #': 'SKU4', 'Unit Price (USD)': '200' }
         ]
       }]

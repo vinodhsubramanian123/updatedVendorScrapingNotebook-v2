@@ -15,8 +15,16 @@
  * @returns {Promise<{ fullText: string, totalLen: number }>}
  */
 async function extractChunkedText(ws, sendCommand, chunkSize = 50000) {
+  // OCA is a reactive WebLogic UI. Reading document.body.innerText separately
+  // for every chunk allows a mid-extraction render (often "Loading...") to
+  // shrink or replace the DOM, producing a declared length of ~40K but a saved
+  // payload of only a few hundred characters. Freeze one immutable snapshot in
+  // the page execution context and chunk that value instead.
   const textLenRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: 'document.body.innerText.length',
+    expression: `(() => {
+      globalThis.__ocaBodyTextSnapshot = document.body ? document.body.innerText : '';
+      return globalThis.__ocaBodyTextSnapshot.length;
+    })()`,
     returnByValue: true
   });
   const totalLen = textLenRes.result?.value || 0;
@@ -24,10 +32,19 @@ async function extractChunkedText(ws, sendCommand, chunkSize = 50000) {
   let fullText = '';
   for (let i = 0; i < totalLen; i += chunkSize) {
     const chunk = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `document.body.innerText.substring(${i}, ${i + chunkSize})`,
+      expression: `String(globalThis.__ocaBodyTextSnapshot || '').substring(${i}, ${i + chunkSize})`,
       returnByValue: true
     });
     fullText += chunk.result?.value || '';
+  }
+
+  try {
+    await sendCommand(ws, 'Runtime.evaluate', {
+      expression: 'delete globalThis.__ocaBodyTextSnapshot',
+      returnByValue: true
+    });
+  } catch (_) {
+    // Snapshot cleanup is best-effort; the OCA tab is short-lived.
   }
 
   return { fullText, totalLen };
@@ -79,6 +96,19 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
   }
 }
 
+function deriveTextFromTables(tables) {
+  const lines = [];
+  let previous = null;
+  for (const table of tables || []) {
+    for (const row of table.rows || []) {
+      const line = (row || []).map(cell => String(cell || '').trim()).filter(Boolean).join('\t');
+      if (line && line !== previous) lines.push(line);
+      previous = line;
+    }
+  }
+  return lines.join('\n');
+}
+
 /**
  * Extract DOM section headers for landmark category matching.
  * @param {WebSocket} ws
@@ -108,4 +138,4 @@ async function extractSectionHeaders(ws, sendCommand) {
   }
 }
 
-module.exports = { extractChunkedText, extractTablesAsRows, extractSectionHeaders };
+module.exports = { deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders };

@@ -5,6 +5,7 @@ const assert = require('node:assert');
 const { cleanBaseSKU, isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
 const { generateLifecycleRecommendations } = require('../../scripts/lib/conflict/resolution_matrix.js');
 const { evalSupportServices } = require('../../scripts/lib/aspects/support_services.js');
+const { parseVendorDate, analyzeRetirementDate } = require('../../scripts/lib/catalog/lifecycle.js');
 
 test('Lifecycle Status Tag & Clean PID Separation (INV-21)', async (t) => {
   await t.test('should cleanly strip obsolete (OB) and direct ship (DS) badges from base SKUs', () => {
@@ -56,5 +57,38 @@ test('Lifecycle Aspect Evaluator & Matrix Recommendations (INV-20, INV-22)', asy
     const eolRec = recommendations.find(r => r.risk === 'EOL Warning (90-Day)');
     assert.ok(eolRec, 'Must have EOL recommendation');
     assert.strictEqual(eolRec.action, 'Plan upgrade within 90 days');
+  });
+
+  await t.test('should warn when an active catalog SKU is close to its scraped discontinuation date', () => {
+    const catalog = {
+      entries: [{
+        parentCategory: 'Memory',
+        subCategory: 'DIMMs',
+        skus: [{
+          'Product #': 'P43328-B21',
+          Description: 'HPE 64GB DIMM',
+          'Lifecycle Status': 'Active',
+          'Discontinued Date': '03/01/2027'
+        }]
+      }]
+    };
+    const items = [{ sku: 'P43328-B21', description: 'HPE 64GB DIMM' }];
+    const options = { now: new Date('2026-09-09T00:00:00Z'), warningDays: 180 };
+
+    const result = evalSupportServices(items, catalog, options);
+    assert.strictEqual(result.hasEolWarning, true);
+    assert.strictEqual(result.nearExpirySkus.length, 1);
+    assert.strictEqual(result.nearExpirySkus[0].daysRemaining, 173);
+
+    const recommendations = generateLifecycleRecommendations(items, catalog, options);
+    assert.strictEqual(recommendations[0].risk, 'Approaching Discontinuation');
+    assert.strictEqual(recommendations[0].discontinuedDate, '2027-03-01');
+  });
+
+  await t.test('should parse both OCA numeric date layouts and reject invalid dates', () => {
+    assert.strictEqual(parseVendorDate('09/30/2026').toISOString().slice(0, 10), '2026-09-30');
+    assert.strictEqual(parseVendorDate('2026-09-30').toISOString().slice(0, 10), '2026-09-30');
+    assert.strictEqual(parseVendorDate('02/30/2026'), null);
+    assert.strictEqual(analyzeRetirementDate('', {}).known, false);
   });
 });

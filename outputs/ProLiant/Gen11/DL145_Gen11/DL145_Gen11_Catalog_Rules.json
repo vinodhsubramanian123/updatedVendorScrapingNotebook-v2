@@ -4,24 +4,24 @@
     "model": "DL145_Gen11",
     "family": "ProLiant",
     "generation": "Gen11",
-    "scrapeDate": "2026-09-09",
-    "scrapeTimestamp": "2026-09-09T08:06:51.804Z",
-    "totalSubcategories": 19,
-    "totalUniqueSKUs": 269,
-    "totalTables": 41,
+    "scrapeDate": "2026-09-10",
+    "scrapeTimestamp": "2026-09-10T11:44:22.640Z",
+    "totalSubcategories": 37,
+    "totalUniqueSKUs": 357,
+    "totalTables": 48,
     "diffSummary": {
-      "added": 269,
+      "added": 124,
       "removed": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 233,
       "priceAndAttributeChanged": 0,
       "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-09-09.json",
+    "historySnapshot": "catalog_2026-09-10.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-09-09",
+      "scrapeDate": "2026-09-10",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -38,207 +38,315 @@
           "avgPrice": 2375
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 9,
+          "totalPrice": 942,
+          "minPrice": 1,
+          "maxPrice": 373,
           "subcategories": {
-            "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "Rack Options": {
+              "totalSKUs": 4,
+              "totalPrice": 658,
+              "avgPrice": 164.5
             },
-            "System Options": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Processor": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Intel Xeon 6th Gen Scalable Processors": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "Acoustics": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             },
-            "Intel Xeon Scalable Processors": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Cooling / Thermal": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Standard & Performance Heat Sinks": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "vSAN Tracking SKUs": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             },
-            "High Performance & Standard Fan Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "Security Hardware": {
+              "totalSKUs": 3,
+              "totalPrice": 282,
+              "avgPrice": 94
             }
           },
-          "avgPrice": 0
-        },
-        "Memory": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "DDR5 Registered Smart Memory": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Storage Controllers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Tri-Mode MegaRAID Storage Controllers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Cables & Enablement Kits": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Smart Storage Batteries": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "Power Cords & Jumper Cables": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Drive Enclosures / Drives": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Solid State Drives (NVMe/SAS/SATA)": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "SFF Drive Cages & Enablement": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "Hard Disk Drives (SAS/SATA)": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
+          "avgPrice": 104.66666666666667
         },
         "Software & Licenses": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 16,
+          "totalPrice": 110114,
+          "minPrice": 1,
+          "maxPrice": 99999,
           "subcategories": {
-            "Server Management & Operating System Licenses": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "PCIe Risers": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "PCIe Riser Kits": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
-        "Networking": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "PCIe Networking Adapters": {
+            "MS Windows Server Additional License": {
+              "totalSKUs": 1,
+              "totalPrice": 118,
+              "avgPrice": 118
+            },
+            "iLO Common Password": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "Compute Ops Management SKUs": {
+              "totalSKUs": 3,
+              "totalPrice": 102134,
+              "avgPrice": 34044.666666666664
+            },
+            "SUSE Add-ons": {
               "totalSKUs": 0,
               "totalPrice": 0,
               "avgPrice": 0
             },
-            "OCP3 Networking Adapters": {
+            "SUSE containers": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "SUSE SAP Operating Systems": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "OneView Management Software": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "Integrated Lights Out Software": {
+              "totalSKUs": 8,
+              "totalPrice": 3470,
+              "avgPrice": 433.75
+            },
+            "Proliant Software Media Kits": {
+              "totalSKUs": 2,
+              "totalPrice": 4142,
+              "avgPrice": 2071
+            },
+            "HPC Software Products": {
+              "totalSKUs": 1,
+              "totalPrice": 249,
+              "avgPrice": 249
+            },
+            "Partner Software - Operating System 8pks": {
               "totalSKUs": 0,
               "totalPrice": 0,
               "avgPrice": 0
             }
           },
-          "avgPrice": 0
+          "avgPrice": 6882.125
+        },
+        "Processor": {
+          "totalSKUs": 19,
+          "totalPrice": 108107,
+          "minPrice": 1160,
+          "maxPrice": 14189,
+          "subcategories": {
+            "Processors": {
+              "totalSKUs": 19,
+              "totalPrice": 108107,
+              "avgPrice": 5689.8421052631575
+            }
+          },
+          "avgPrice": 5689.8421052631575
+        },
+        "Cooling / Thermal": {
+          "totalSKUs": 2,
+          "totalPrice": 325,
+          "minPrice": 123,
+          "maxPrice": 202,
+          "subcategories": {
+            "Heatsink Kit": {
+              "totalSKUs": 1,
+              "totalPrice": 202,
+              "avgPrice": 202
+            },
+            "Power Cooling Options": {
+              "totalSKUs": 1,
+              "totalPrice": 123,
+              "avgPrice": 123
+            }
+          },
+          "avgPrice": 162.5
+        },
+        "Memory": {
+          "totalSKUs": 20,
+          "totalPrice": 628504,
+          "minPrice": 7439,
+          "maxPrice": 60190,
+          "subcategories": {
+            "Memory": {
+              "totalSKUs": 20,
+              "totalPrice": 628504,
+              "avgPrice": 31425.2
+            }
+          },
+          "avgPrice": 31425.2
+        },
+        "Storage Controllers": {
+          "totalSKUs": 14,
+          "totalPrice": 16165,
+          "minPrice": 1,
+          "maxPrice": 5999,
+          "subcategories": {
+            "SAS Controller": {
+              "totalSKUs": 5,
+              "totalPrice": 15873,
+              "avgPrice": 3174.6
+            },
+            "Storage Controller Cables": {
+              "totalSKUs": 3,
+              "totalPrice": 286,
+              "avgPrice": 95.33333333333333
+            },
+            "RAID Settings": {
+              "totalSKUs": 6,
+              "totalPrice": 6,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1154.642857142857
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 12,
+          "totalPrice": 37894,
+          "minPrice": 20,
+          "maxPrice": 14299,
+          "subcategories": {
+            "Smart Storage Battery": {
+              "totalSKUs": 3,
+              "totalPrice": 904,
+              "avgPrice": 301.3333333333333
+            },
+            "OS Boot Device": {
+              "totalSKUs": 4,
+              "totalPrice": 36477,
+              "avgPrice": 9119.25
+            },
+            "Power Cords": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "HPE Virtualization": {
+              "totalSKUs": 3,
+              "totalPrice": 293,
+              "avgPrice": 97.66666666666667
+            },
+            "Management Hardware": {
+              "totalSKUs": 2,
+              "totalPrice": 220,
+              "avgPrice": 110
+            }
+          },
+          "avgPrice": 3157.8333333333335
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 108,
+          "totalPrice": 7081438,
+          "minPrice": 225,
+          "maxPrice": 400156,
+          "subcategories": {
+            "Drive Cage": {
+              "totalSKUs": 4,
+              "totalPrice": 1375,
+              "avgPrice": 343.75
+            },
+            "SSD - EDSFF NVME Read Intensive": {
+              "totalSKUs": 104,
+              "totalPrice": 7080063,
+              "avgPrice": 68077.52884615384
+            }
+          },
+          "avgPrice": 65568.87037037036
+        },
+        "Factory Configuration Settings": {
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
+          "subcategories": {
+            "Factory Configuration Settings": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1
+        },
+        "PCIe Risers": {
+          "totalSKUs": 2,
+          "totalPrice": 575,
+          "minPrice": 255,
+          "maxPrice": 320,
+          "subcategories": {
+            "Riser Cards": {
+              "totalSKUs": 2,
+              "totalPrice": 575,
+              "avgPrice": 287.5
+            }
+          },
+          "avgPrice": 287.5
+        },
+        "Networking": {
+          "totalSKUs": 24,
+          "totalPrice": 35420,
+          "minPrice": 426,
+          "maxPrice": 5199,
+          "subcategories": {
+            "Ethernet PCIe": {
+              "totalSKUs": 8,
+              "totalPrice": 13262,
+              "avgPrice": 1657.75
+            },
+            "OCP Ethernet": {
+              "totalSKUs": 8,
+              "totalPrice": 10267,
+              "avgPrice": 1283.375
+            },
+            "Transceivers": {
+              "totalSKUs": 8,
+              "totalPrice": 11891,
+              "avgPrice": 1486.375
+            }
+          },
+          "avgPrice": 1475.8333333333333
+        },
+        "Graphics & GPU": {
+          "totalSKUs": 2,
+          "totalPrice": 68,
+          "minPrice": 24,
+          "maxPrice": 44,
+          "subcategories": {
+            "Graphics Accessories": {
+              "totalSKUs": 2,
+              "totalPrice": 68,
+              "avgPrice": 34
+            }
+          },
+          "avgPrice": 34
         },
         "Power Supplies": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 891,
+          "minPrice": 891,
+          "maxPrice": 891,
           "subcategories": {
-            "Flex Slot Power Supplies": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "Power Supplies": {
+              "totalSKUs": 1,
+              "totalPrice": 891,
+              "avgPrice": 891
             }
           },
-          "avgPrice": 0
+          "avgPrice": 891
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 269,
-      "unchangedSkusCount": 268,
+      "totalScrapedSkus": 357,
+      "unchangedSkusCount": 233,
       "modifiedSkusCount": 0,
-      "addedSkusCount": 1,
+      "addedSkusCount": 124,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 40200,
-      "estimatedProcessingTimeSavedMs": 53600
+      "estimatedTokensSaved": 34950,
+      "estimatedProcessingTimeSavedMs": 46600
     },
-    "chassisVariantCount": 7,
-    "rulesGeneratedAt": "2026-09-09T08:06:52.014Z"
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-09-10T11:44:22.976Z"
   },
   "chassisVariants": [
     {
@@ -252,86 +360,8 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ADDED",
-      "priceHistoryTrail": "2026-09-09: $2375.00"
-    },
-    {
-      "sku": "P52532-B21",
-      "description": "HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server",
-      "formFactor": "Large Form Factor (8-Bay LFF)",
-      "listPrice": 1750,
-      "listPriceFormatted": "$1750.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    {
-      "sku": "P52533-B21",
-      "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
-      "formFactor": "Large Form Factor (12-Bay LFF)",
-      "listPrice": 1900,
-      "listPriceFormatted": "$1900.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    {
-      "sku": "P52534-B21",
-      "description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
-      "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 1650,
-      "listPriceFormatted": "$1650.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    {
-      "sku": "P52535-B21",
-      "description": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
-      "formFactor": "Small Form Factor (24-Bay SFF)",
-      "listPrice": 2100,
-      "listPriceFormatted": "$2100.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    {
-      "sku": "P52536-B21",
-      "description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
-      "formFactor": "Unknown",
-      "listPrice": 2250,
-      "listPriceFormatted": "$2250.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    {
-      "sku": "P52537-B21",
-      "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
-      "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 2050,
-      "listPriceFormatted": "$2050.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
     }
   ],
   "chassisVariantMatrix": {
@@ -346,264 +376,446 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ADDED",
-      "priceHistoryTrail": "2026-09-09: $2375.00"
-    },
-    "P52532-B21": {
-      "sku": "P52532-B21",
-      "description": "HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server",
-      "formFactor": "Large Form Factor (8-Bay LFF)",
-      "listPrice": 1750,
-      "listPriceFormatted": "$1750.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    "P52533-B21": {
-      "sku": "P52533-B21",
-      "description": "HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server",
-      "formFactor": "Large Form Factor (12-Bay LFF)",
-      "listPrice": 1900,
-      "listPriceFormatted": "$1900.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    "P52534-B21": {
-      "sku": "P52534-B21",
-      "description": "HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server",
-      "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 1650,
-      "listPriceFormatted": "$1650.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    "P52535-B21": {
-      "sku": "P52535-B21",
-      "description": "HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server",
-      "formFactor": "Small Form Factor (24-Bay SFF)",
-      "listPrice": 2100,
-      "listPriceFormatted": "$2100.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    "P52536-B21": {
-      "sku": "P52536-B21",
-      "description": "HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server",
-      "formFactor": "Unknown",
-      "listPrice": 2250,
-      "listPriceFormatted": "$2250.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
-    },
-    "P52537-B21": {
-      "sku": "P52537-B21",
-      "description": "HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server",
-      "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 2050,
-      "listPriceFormatted": "$2050.00",
-      "optionType": "CTO",
-      "startDate": "—",
-      "discontinuedDate": "",
-      "constraint": "Chassis Standard (Max 1)",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-06.json"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
     }
   },
-  "subcategories": [],
+  "subcategories": [
+    {
+      "parentCategory": "Processor",
+      "name": "Processors",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "Memory",
+      "constraint": "max 6",
+      "minQty": 0,
+      "maxQty": 6
+    },
+    {
+      "parentCategory": "Factory Configuration Settings",
+      "name": "Factory Configuration Settings",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Ethernet PCIe",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "OCP Ethernet",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Transceivers",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16
+    }
+  ],
   "rules": [
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
-      "constraint": "min 1, max 1 — Active OCA Base Chassis",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
       "maxQty": 1,
-      "rule": "Base chassis captured from the active OCA configuration summary"
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Chassis Infrastructure & Rail Kits",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: optional"
+      "subCategory": "Rack Options",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Selection constraint for Rack Options: max 4"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server Additional License",
+      "constraint": "max 999",
+      "maxQty": 999,
       "rule": "\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together."
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "Selection constraint for System Options: optional"
+      "subCategory": "Acoustics",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Acoustics: max 1"
     },
     {
       "parentCategory": "Processor",
-      "subCategory": "Intel Xeon 6th Gen Scalable Processors",
-      "constraint": "min 1, max 2",
-      "maxQty": 2,
-      "rule": "Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2"
+      "subCategory": "Processors",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Processors: max 1"
     },
     {
       "parentCategory": "Cooling / Thermal",
-      "subCategory": "Standard & Performance Heat Sinks",
+      "subCategory": "Heatsink Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Heatsink Kit: max 1"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "max 6",
       "maxQty": 6,
-      "rule": "Selection constraint for Standard & Performance Heat Sinks: max 6"
+      "rule": "Selection constraint for Memory: max 6"
     },
     {
       "parentCategory": "Memory",
-      "subCategory": "DDR5 Registered Smart Memory",
-      "constraint": "max 32",
-      "maxQty": 32,
-      "rule": "Selection constraint for DDR5 Registered Smart Memory: max 32"
-    },
-    {
-      "parentCategory": "Memory",
-      "subCategory": "DDR5 Registered Smart Memory",
-      "constraint": "max 32",
-      "maxQty": 32,
+      "subCategory": "Memory",
+      "constraint": "max 6",
+      "maxQty": 6,
       "rule": "All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc."
     },
     {
       "parentCategory": "Memory",
-      "subCategory": "DDR5 Registered Smart Memory",
-      "constraint": "max 32",
-      "maxQty": 32,
+      "subCategory": "Memory",
+      "constraint": "max 6",
+      "maxQty": 6,
       "rule": "These products are hidden due to Supply constraints"
     },
     {
       "parentCategory": "Storage Controllers",
-      "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+      "subCategory": "SAS Controller",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for SAS Controller: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Smart Storage Battery",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Smart Storage Battery: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controller Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Storage Controller Cables: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "RAID Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Drive Cage",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Drive Cage: max 2"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
       "constraint": "max 4",
       "maxQty": 4,
-      "rule": "Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4"
+      "rule": "Selection constraint for SSD - EDSFF NVME Read Intensive: max 4"
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "max 24",
-      "maxQty": 24,
-      "rule": "Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24"
-    },
-    {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "SFF Drive Cages & Enablement",
-      "constraint": "max 24",
-      "maxQty": 24,
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "max 4",
+      "maxQty": 4,
       "rule": "If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode)."
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "max 24",
-      "maxQty": 24,
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "max 4",
+      "maxQty": 4,
       "rule": "Product is not yet available"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
+      "parentCategory": "Factory Configuration Settings",
+      "subCategory": "Factory Configuration Settings",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Factory Configuration Settings: max 2"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "SAS Controller",
+      "constraint": "max 2",
+      "maxQty": 2,
       "rule": "CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration"
     },
     {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "vSAN Tracking SKUs",
       "constraint": "no max",
       "maxQty": -1,
-      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
+      "rule": "Selection constraint for vSAN Tracking SKUs: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "iLO Common Password",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for iLO Common Password: max 1"
     },
     {
       "parentCategory": "PCIe Risers",
-      "subCategory": "PCIe Riser Kits",
+      "subCategory": "Riser Cards",
       "constraint": "max 3",
       "maxQty": 3,
-      "rule": "Selection constraint for PCIe Riser Kits: max 3"
+      "rule": "Selection constraint for Riser Cards: max 3"
     },
     {
       "parentCategory": "Networking",
-      "subCategory": "PCIe Networking Adapters",
-      "constraint": "max 8",
-      "maxQty": 8,
-      "rule": "Selection constraint for PCIe Networking Adapters: max 8"
+      "subCategory": "Ethernet PCIe",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Ethernet PCIe: max 1"
     },
     {
       "parentCategory": "Networking",
-      "subCategory": "OCP3 Networking Adapters",
-      "constraint": "max 8",
-      "maxQty": 8,
-      "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
+      "subCategory": "OCP Ethernet",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for OCP Ethernet: max 1"
     },
     {
       "parentCategory": "Networking",
-      "subCategory": "OCP3 Networking Adapters",
-      "constraint": "max 8",
-      "maxQty": 8,
+      "subCategory": "OCP Ethernet",
+      "constraint": "max 1",
+      "maxQty": 1,
       "rule": "Max quantity of product limited by space available."
     },
     {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Hard Disk Drives (SAS/SATA)",
-      "constraint": "max 24",
-      "maxQty": 24,
-      "rule": "Selection constraint for Hard Disk Drives (SAS/SATA): max 24"
+      "parentCategory": "Networking",
+      "subCategory": "Transceivers",
+      "constraint": "max 16",
+      "maxQty": 16,
+      "rule": "Selection constraint for Transceivers: max 16"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "OS Boot Device",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for OS Boot Device: max 2"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "Graphics Accessories",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Graphics Accessories: max 2"
     },
     {
       "parentCategory": "Cooling / Thermal",
-      "subCategory": "High Performance & Standard Fan Kits",
-      "constraint": "max 6",
-      "maxQty": 6,
-      "rule": "Selection constraint for High Performance & Standard Fan Kits: max 6"
+      "subCategory": "Power Cooling Options",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Selection constraint for Power Cooling Options: max 4"
     },
     {
       "parentCategory": "Power Supplies",
-      "subCategory": "Flex Slot Power Supplies",
-      "constraint": "min 1, max 2",
+      "subCategory": "Power Supplies",
+      "constraint": "max 2",
       "maxQty": 2,
-      "rule": "Selection constraint for Flex Slot Power Supplies: min 1, max 2"
+      "rule": "Selection constraint for Power Supplies: max 2"
     },
     {
-      "parentCategory": "Processor",
-      "subCategory": "Intel Xeon Scalable Processors",
-      "constraint": "min 1, max 2",
-      "maxQty": 2,
+      "parentCategory": "Networking",
+      "subCategory": "Transceivers",
+      "constraint": "max 16",
+      "maxQty": 16,
       "rule": "Mixing of Power Supplies is not allowed."
     },
     {
-      "parentCategory": "Power Supplies",
-      "subCategory": "Flex Slot Power Supplies",
-      "constraint": "min 1, max 2",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords",
+      "constraint": "max 2",
       "maxQty": 2,
+      "rule": "Selection constraint for Power Cords: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
       "rule": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down."
     },
     {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": "",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
       "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Security Hardware",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Security Hardware: no max"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Management Hardware",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Management Hardware: max 2"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Compute Ops Management SKUs",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE Add-ons",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE Add-ons: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE containers",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE containers: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE SAP Operating Systems",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE SAP Operating Systems: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "OneView Management Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for OneView Management Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Integrated Lights Out Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Integrated Lights Out Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Proliant Software Media Kits",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Proliant Software Media Kits: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "HPC Software Products",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPC Software Products: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Partner Software - Operating System 8pks",
+      "constraint": "max 5994",
+      "maxQty": 5994,
+      "rule": "Selection constraint for Partner Software - Operating System 8pks: max 5994"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Ambient Temperature",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Ambient Temperature: max 2"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPE Virtualization: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "VMWare Core Editions",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for VMWare Core Editions: no max"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "Graphics",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Graphics: max 2"
+    },
+    {
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Compute Ops Management SKUs",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Compute Ops Management SKUs",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Red Hat Operating Systems",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Red Hat Operating Systems: no max"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "NVIDIA GPU SW",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for NVIDIA GPU SW: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Linux Value Added Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Linux Value Added Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "AI-at-Scale",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for AI-at-Scale: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
     }
   ]
 }

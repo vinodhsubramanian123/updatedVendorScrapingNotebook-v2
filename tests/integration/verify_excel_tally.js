@@ -10,6 +10,8 @@ const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
 const { isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+const { isCanonicalCtoChassisCandidate } = require('../../scripts/catalogs/build_catalog.js');
 
 // ── Argument handling ─────────────────────────────────────────────────────────
 const xlsxPath = process.argv[2];
@@ -94,6 +96,10 @@ async function main() {
   const catalogData  = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
   const allSkusSheet = XLSX.utils.sheet_to_json(wb.Sheets['All SKUs']);
   const summarySheet = XLSX.utils.sheet_to_json(wb.Sheets['Category Summary']);
+
+  const currentCatalogRows = (catalogData.entries || []).flatMap(entry => (entry.skus || []).map(sku => ({ entry, sku })))
+    .filter(({ sku }) => !['REMOVED', 'DISCONTINUED'].includes(String(sku['Diff Status'] || '').toUpperCase()));
+  const currentHardwareRows = currentCatalogRows.filter(({ entry }) => entry.parentCategory !== 'Support Services');
 
   const jsonSkuCount = catalogData.metadata.totalUniqueSKUs;
   console.log(`  JSON  totalUniqueSKUs:     ${jsonSkuCount}`);
@@ -184,6 +190,65 @@ async function main() {
     `100% of SKUs (${validHpeSKUCount}/${allSkusSheet.length}) pass strict HPE SKU regex (-B21 / Service SKU, Rule #35)`
   );
 
+  // INV-49: Lossless commercial/lifecycle attributes and exact-product CTO identity.
+  const requiredAttributeColumns = ['Availability', 'Lead Time', 'Lead Time Source', 'Lifecycle Status', 'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)'];
+  const excelColumns = new Set(Object.keys(allSkusSheet[0] || {}));
+  requiredAttributeColumns.forEach(column => assert(excelColumns.has(column), `Lossless attribute column '${column}' is present`));
+
+  const physicalHardwareRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory !== 'Software & Licenses');
+  const activeSoftwareRows = currentHardwareRows.filter(({ entry, sku }) =>
+    entry.parentCategory === 'Software & Licenses' &&
+    !/obsolete|end of life/i.test(String(sku['Lifecycle Status'] || sku['CLIC Status'] || ''))
+  );
+  const hasPublishedNumericPrice = ({ sku }) => {
+    const raw = sku['Unit Price (USD)'] ?? sku.listPrice;
+    return raw !== undefined && raw !== null && String(raw).trim() !== '' &&
+      Number.isFinite(Number(String(raw).replace(/[$,]/g, ''))) && Number(String(raw).replace(/[$,]/g, '')) >= 0;
+  };
+  const pricedRows = physicalHardwareRows.filter(hasPublishedNumericPrice);
+  const pricedSoftwareRows = activeSoftwareRows.filter(hasPublishedNumericPrice);
+  const lifecycleRows = currentHardwareRows.filter(({ sku }) => String(sku['Lifecycle Status'] || sku['CLIC Status'] || sku.lifecycleStatus || '').trim());
+  const explicitAvailabilityRows = currentHardwareRows.filter(({ sku }) => {
+    const value = String(sku.Availability || '').trim();
+    return value && value !== 'Not published by OCA';
+  });
+  const startDateRows = currentHardwareRows.filter(({ sku }) => /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Start Date'] || '').trim()));
+  const discontinuedDateRows = currentHardwareRows.filter(({ sku }) => /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Discontinued Date'] || '').trim()));
+  const denominator = Math.max(1, currentHardwareRows.length);
+  assert(pricedRows.length / Math.max(1, physicalHardwareRows.length) >= 0.95,
+    `Current physical-hardware explicit OCA price-field coverage is >=95% (${pricedRows.length}/${physicalHardwareRows.length}; published $0 values preserved)`);
+  if (activeSoftwareRows.length > 0) {
+    assert(pricedSoftwareRows.length / activeSoftwareRows.length >= 0.75,
+      `Current non-obsolete software/license explicit OCA price-field coverage is >=75% (${pricedSoftwareRows.length}/${activeSoftwareRows.length}; published $0 values preserved)`);
+  }
+  assert(lifecycleRows.length === currentHardwareRows.length, `Lifecycle status coverage is 100% (${lifecycleRows.length}/${currentHardwareRows.length})`);
+  assert(explicitAvailabilityRows.length / denominator >= 0.50, `Explicit OCA availability coverage is >=50% (${explicitAvailabilityRows.length}/${currentHardwareRows.length}); unpublished rows remain explicitly unknown`);
+  assert(startDateRows.length / denominator >= 0.95, `Start-date coverage is >=95% (${startDateRows.length}/${currentHardwareRows.length})`);
+  assert(discontinuedDateRows.length / denominator >= 0.95, `Discontinued-date coverage is >=95% (${discontinuedDateRows.length}/${currentHardwareRows.length})`);
+
+  const chassisRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants');
+  assert(chassisRows.length > 0, 'At least one currently discoverable CTO base chassis is present');
+  assert(chassisRows.some(({ sku }) => String(sku['Lead Time'] || '').trim()), 'Selected CTO chassis carries the current OCA configuration delivery estimate');
+  assert(chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({
+    sku: sku['Product #'] || sku.sku,
+    text: sku.Description || sku.description,
+    isBto: String(sku['Option Type'] || '').toUpperCase() === 'BTO'
+  }, filePrefix)), `All ${chassisRows.length} active chassis rows match exact product identity and exclude TAA/GTA/BTO/special-solution variants`);
+
+  const discoveryPath = path.join(targetDir, 'raw_data', 'chassis_discovery.json');
+  assert(fs.existsSync(discoveryPath), 'Current OCA chassis discovery evidence exists');
+  const discovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8'));
+  const discoveryAgeMs = Date.now() - Date.parse(discovery.capturedAt || '');
+  assert(Number.isFinite(discoveryAgeMs) && discoveryAgeMs >= 0 && discoveryAgeMs <= 5 * 60 * 1000,
+    `OCA chassis discovery is contemporaneous with this scrape (${Math.round(discoveryAgeMs / 1000)}s old, maximum 300s)`);
+  const discoveredCtoSkus = new Set((discovery.candidates || [])
+    .filter(candidate => isCanonicalCtoChassisCandidate(candidate, filePrefix))
+    .map(candidate => String(candidate.sku || '').replace(/#GTA$/i, '').toUpperCase()));
+  const currentChassisSkus = new Set(chassisRows.map(({ sku }) => String(sku['Product #'] || sku.sku || '').toUpperCase()));
+  const missingDiscoveredVariants = [...discoveredCtoSkus].filter(sku => !currentChassisSkus.has(sku));
+  assert(discoveredCtoSkus.size > 0, 'OCA discovery contains at least one eligible exact-product CTO chassis');
+  assert(missingDiscoveredVariants.length === 0, `All ${discoveredCtoSkus.size} discovered CTO chassis variants are represented (missing: ${missingDiscoveredVariants.join(', ') || 'none'})`);
+
   // ── AUDIT 5: Category-Specific Sheet Tallies ──────────────────────────────
   if (!JSON_MODE) console.log('\n--- AUDIT 5: Category-Specific Sheet SKU Tallies ---');
   const coreSheetsList = ['Category Summary', 'All SKUs', 'Rules & Constraints', 'Metadata', 'Catalog Diff & History'];
@@ -231,12 +296,14 @@ async function main() {
       const priorSnapshotFile = snapshots[snapshots.length - 2];
       try {
         const priorJson = JSON.parse(fs.readFileSync(path.join(historyDir, priorSnapshotFile), 'utf-8'));
-        const priorCount = priorJson.metadata?.totalUniqueSKUs || 0;
+        const priorCount = (priorJson.entries || []).flatMap(entry =>
+          entry.parentCategory === 'Support Services' ? [] : (entry.skus || [])
+        ).filter(sku => !['REMOVED', 'DISCONTINUED'].includes(String(sku['Diff Status'] || '').toUpperCase())).length;
         if (priorCount >= 50) {
-          const dropRatio = allSkusSheet.length / priorCount;
+          const dropRatio = currentHardwareRows.length / priorCount;
           assert(
             dropRatio >= 0.70,
-            `INV-23 Anomaly Alert: SKU count dropped drastically from ${priorCount} to ${allSkusSheet.length} (${(dropRatio * 100).toFixed(1)}% of prior baseline). Promotion aborted to protect master Excel.`
+            `INV-23 active hardware retention is >=70%: ${priorCount} prior vs ${currentHardwareRows.length} current (${(dropRatio * 100).toFixed(1)}%)`
           );
         }
       } catch (err) {
@@ -249,7 +316,7 @@ async function main() {
 
   // Write structured audit result file
   const auditJsonPath = path.join(targetDir, 'audit_result.json');
-  fs.writeFileSync(auditJsonPath, JSON.stringify(auditResults, null, 2));
+  safeWriteJsonAtomic(auditJsonPath, auditResults);
 
   if (JSON_MODE) {
     process.stdout.write(JSON.stringify({ status: 'SUCCESS', data: auditResults }));

@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-09-09T10:09:20.731Z
+**Sync Timestamp**: 2026-09-10T11:45:08.337Z
 
-**Total Verified SKUs**: `624` (`269` Hardware + `355` Services)
+**Total Verified SKUs**: `624` (`357` Hardware + `267` Services)
 
 **Total Synced KnowledgeDeltas**: `4`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 269 | 269 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 355 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **624** | **269** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 357 | 124 | 0 | 233 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 267 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **624** | **124** | **0** | **233** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -55,7 +55,23 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
-*No attribute or specification changes recorded across catalog snapshots.*
+| Timestamp | SKU | Attribute | Old Value | New Value |
+|-----------|-----|-----------|-----------|-----------|
+| 2026-09-10 | `P46155-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `P77096-291` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `P77096-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `P77099-291` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `512485-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `BD505A` | Vendor Attributes | {"Extended Price (USD)":"469.00"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `512487-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `BD507A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `E6U59ABE` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `E6U64ABE` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `512486-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `BD506A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `Q5T84A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `Q5T85A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-10 | `Q2A48A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

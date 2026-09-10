@@ -368,6 +368,7 @@ module.exports = {
   triggerClicCheck,
   sleep,
   CDP_PORT,
+  deriveTextFromTables: domExtract.deriveTextFromTables,
   extractChunkedText: (ws, chunkSize) => domExtract.extractChunkedText(ws, sendCommand, chunkSize),
   extractTablesAsRows: (ws, scopeSelector) => domExtract.extractTablesAsRows(ws, sendCommand, scopeSelector),
   extractSectionHeaders: (ws) => domExtract.extractSectionHeaders(ws, sendCommand)

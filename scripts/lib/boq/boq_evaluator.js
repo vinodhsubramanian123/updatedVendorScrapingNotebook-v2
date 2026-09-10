@@ -718,11 +718,11 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData, 0, serverCount);
   const lifecycle = (options.skipLifecycle || options.skipGraphValidation)
-    ? { hasObsoleteRisk: false, hasEolWarning: false, obsoleteParts: [], eolParts: [] }
-    : evalSupportServices(items, catalogData);
+    ? { hasObsoleteRisk: false, hasEolWarning: false, obsoleteSkus: [], eolSkus: [], nearExpirySkus: [] }
+    : evalSupportServices(items, catalogData, options.lifecycle || {});
   const lifecycleRecommendations = (options.skipLifecycle || options.skipGraphValidation)
     ? []
-    : generateLifecycleRecommendations(items, catalogData);
+    : generateLifecycleRecommendations(items, catalogData, options.lifecycle || {});
 
   // Universal Zero-Hardcoding Generic Domain Template Evaluation (INV-56)
   let genericDomainAudit = null;

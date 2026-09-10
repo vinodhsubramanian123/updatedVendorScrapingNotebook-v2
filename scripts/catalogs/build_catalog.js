@@ -173,12 +173,55 @@ function getUniqueSkuCount(entries) {
   return set.size;
 }
 
-function isServiceEntry(e) {
+function isServiceCategoryEntry(e) {
   const pc = (e.parentCategory || '').toLowerCase();
-  if (pc.includes('service') || pc.includes('pointnext') || pc.includes('tech care') || pc.includes('support')) return true;
-  return (e.skus || []).some(s => {
-    return s.optionType === 'Service' || s['Option Type'] === 'Service' || isServiceSku(s.sku || s['Product #'] || '');
-  });
+  return pc.includes('service') || pc.includes('pointnext') || pc.includes('tech care') || pc.includes('support');
+}
+
+function isServiceSkuRow(sku) {
+  return sku?.optionType === 'Service' || sku?.['Option Type'] === 'Service' ||
+    isServiceSku(sku?.sku || sku?.['Product #'] || '');
+}
+
+function isClearlyPhysicalSkuRow(sku) {
+  const description = String(sku?.Description || sku?.description || '');
+  if (/\b(?:software|license|subscription|support|service|saas|e-ltu|care pack)\b/i.test(description)) return false;
+  return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure)\b/i.test(description);
+}
+
+function appendRetaxonomizedPhysicalEntries(target, entry, skus) {
+  const groups = new Map();
+  for (const sku of skus) {
+    const description = sku.Description || sku.description || '';
+    const role = classifyComponentRole('', description);
+    const parentCategory = ROLE_TO_PARENT_MAP[role] || 'Accessories & Infrastructure';
+    const subCategory = synthesizeSubcategoryName(parentCategory, description, entry.rules || []);
+    const key = `${parentCategory}\u001f${subCategory}`;
+    if (!groups.has(key)) groups.set(key, { parentCategory, subCategory, skus: [] });
+    groups.get(key).skus.push({ ...sku, 'Component Role': role });
+  }
+  for (const group of groups.values()) {
+    target.push({ ...entry, ...group, skuCount: group.skus.length });
+  }
+}
+
+function partitionCatalogEntries(entries) {
+  const hardwareEntries = [];
+  const servicesEntries = [];
+  for (const entry of entries || []) {
+    if (isServiceCategoryEntry(entry)) {
+      const physicalSkus = (entry.skus || []).filter(sku => !isServiceSkuRow(sku) && isClearlyPhysicalSkuRow(sku));
+      const serviceSkus = (entry.skus || []).filter(sku => !physicalSkus.includes(sku));
+      if (physicalSkus.length > 0) appendRetaxonomizedPhysicalEntries(hardwareEntries, entry, physicalSkus);
+      if (serviceSkus.length > 0) servicesEntries.push({ ...entry, skus: serviceSkus, skuCount: serviceSkus.length });
+      continue;
+    }
+    const hardwareSkus = (entry.skus || []).filter(sku => !isServiceSkuRow(sku));
+    const serviceSkus = (entry.skus || []).filter(isServiceSkuRow);
+    if (hardwareSkus.length > 0) hardwareEntries.push({ ...entry, skus: hardwareSkus, skuCount: hardwareSkus.length });
+    if (serviceSkus.length > 0) servicesEntries.push({ ...entry, skus: serviceSkus, skuCount: serviceSkus.length });
+  }
+  return { hardwareEntries, servicesEntries };
 }
 
 // ============================================================
@@ -329,13 +372,46 @@ function extractSubcategoriesAndParents(fullText, rawData, IS_VERBOSE) {
     });
   }
 
+  // Current OCA renders min/max labels in nested table cells, while body
+  // innerText may flatten the parentheses into unrelated lines. Recover those
+  // authoritative constraints directly from the captured table tree.
+  const seenSubcategories = new Set(subcatList.map(item => `${item.name.toLowerCase()}|${item.constraint.toLowerCase()}`));
+  for (const table of (rawData.tables || [])) {
+    for (let rowIndex = 0; rowIndex < (table.rows || []).length; rowIndex++) {
+      for (const cell of (table.rows[rowIndex] || [])) {
+        const constraintMatch = String(cell).match(/(?:^|\n)\s*([^\n()]{3,80}?)\s*\(((?:min\s+\d+\s*,\s*)?(?:max\s+\d+|required|no max|optional)(?:\s*,\s*min\s+\d+)?|min\s+\d+)\)/i);
+        if (!constraintMatch) continue;
+        const name = constraintMatch[1].trim();
+        const constraint = constraintMatch[2].trim();
+        if (name.includes('Product #') || /^\d/.test(name)) continue;
+        const key = `${name.toLowerCase()}|${constraint.toLowerCase()}`;
+        if (seenSubcategories.has(key)) continue;
+
+        const minMatch = constraint.match(/min\s+(\d+)/i);
+        const maxMatch = constraint.match(/max\s+(\d+)/i);
+        let minQty = minMatch ? parseInt(minMatch[1], 10) : 0;
+        let maxQty = maxMatch ? parseInt(maxMatch[1], 10) : 0;
+        if (/no max/i.test(constraint)) maxQty = -1;
+        if (/required/i.test(constraint)) { maxQty = -2; minQty = minQty || 1; }
+        if (/optional/i.test(constraint)) maxQty = -3;
+
+        const followingRows = (table.rows || []).slice(rowIndex + 1);
+        const firstSku = followingRows.flat().map(value => cleanBaseSKU(value)).find(isValidHpeSKU);
+        const textIndex = firstSku ? fullText.indexOf(firstSku) : fullText.indexOf(name);
+        subcatList.push({ name, constraint, minQty, maxQty, textIndex: Math.max(0, textIndex), source: 'OCA table constraint' });
+        seenSubcategories.add(key);
+      }
+    }
+  }
+  subcatList.sort((a, b) => a.textIndex - b.textIndex);
+
   console.log(`Found ${subcatList.length} subcategory headers in text.`);
   if (IS_VERBOSE) {
     subcatList.forEach((sc, i) => console.log(`  [${i+1}] "${sc.name}" (${sc.constraint}, minQty: ${sc.minQty}, maxQty: ${sc.maxQty}) @ pos ${sc.textIndex}`));
   }
 
   console.log('\n--- Step 2: Mapping Parent Categories ---');
-  const configPath = path.join(__dirname, 'config', 'categories.json');
+  const configPath = path.join(__dirname, '..', 'config', 'categories.json');
   let KNOWN_MAIN_CATEGORIES = [];
   if (fs.existsSync(configPath)) {
     try {
@@ -445,12 +521,21 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     let header = headers[hi];
     const cellIdx = hi + offset;
     if (header && cellIdx < row.length) {
-      if (header === 'List Price' || header === 'Price') {
+      const normalizedHeader = String(header).trim().toLowerCase();
+      if (normalizedHeader === 'list price' || normalizedHeader === 'price' || normalizedHeader === 'price (usd)') {
         header = 'Unit Price (USD)';
-      } else if (header === 'Product Description') {
+      } else if (normalizedHeader === 'product description') {
         header = 'Description';
-      } else if (header === 'Qty' || header === 'Quantity') {
+      } else if (normalizedHeader === 'qty' || normalizedHeader === 'quantity') {
         header = 'Current Qty';
+      } else if (/^start(?: date)?$/.test(normalizedHeader)) {
+        header = 'Start Date';
+      } else if (/^(?:discontinued|obsolete|end)(?: date)?$/.test(normalizedHeader)) {
+        header = 'Discontinued Date';
+      } else if (/^(?:availability|available|supply status)$/.test(normalizedHeader)) {
+        header = 'Availability';
+      } else if (/^(?:lead time|estimated delivery|delivery estimate|edt)$/.test(normalizedHeader)) {
+        header = 'Lead Time';
       }
       let val = row[cellIdx].replace(/\n/g, ' ').trim();
       if (header === 'Unit Price (USD)') {
@@ -461,8 +546,9 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   }
 
   let rawPN = obj['Product #'] || '';
-  if (!rawPN || !isValidHpeSKU(cleanBaseSKU(rawPN))) {
-    const foundCell = row.find(c => isValidHpeSKU(cleanBaseSKU(c.trim())));
+  const stripLifecycleBadge = value => String(value || '').replace(/\s*\[(?:OB|DS|90|EOL)\]\s*/ig, '').trim();
+  if (!rawPN || !isValidHpeSKU(cleanBaseSKU(stripLifecycleBadge(rawPN)))) {
+    const foundCell = row.find(c => isValidHpeSKU(cleanBaseSKU(stripLifecycleBadge(c))));
     if (foundCell) rawPN = foundCell;
   }
 
@@ -477,7 +563,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     else if (lifecycleBadge === 'EOL') lifecycleStatus = 'End of Life (EOL)';
   }
 
-  if (rawPN) rawPN = cleanBaseSKU(rawPN);
+  if (rawPN) rawPN = cleanBaseSKU(stripLifecycleBadge(rawPN));
   if (!rawPN || !isValidHpeSKU(rawPN)) return null;
 
   const pn = rawPN.toUpperCase();
@@ -485,8 +571,12 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   obj.sku = pn;
   obj['Option Type'] = classifyOptionType(pn);
   obj['CLIC Status'] = lifecycleStatus;
+  obj['Lifecycle Status'] = lifecycleStatus;
   obj.lifecycleStatus = lifecycleStatus;
   obj.lifecycleBadge = lifecycleBadge;
+  obj.Availability = String(obj.Availability || '').trim() || (lifecycleStatus === 'Active' ? 'Not published by OCA' : lifecycleStatus);
+  obj['Lead Time'] = String(obj['Lead Time'] || '').trim();
+  obj['Lead Time Source'] = obj['Lead Time'] ? 'OCA row attribute' : 'Not published by OCA';
 
   const dateMatches = row.filter(c => /^\d{2}\/\d{2}\/\d{4}$/.test(c.trim()));
   if (dateMatches.length >= 1 && !obj['Start Date']) obj['Start Date'] = dateMatches[0].trim();
@@ -507,6 +597,15 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     descText = `HPE ProLiant Server Option (${pn})`;
   }
   obj['Description'] = descText;
+
+  const canonicalKeys = new Set([
+    'Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Price (USD)', 'Price',
+    'Option Type', 'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date',
+    'Availability', 'Lead Time', 'Lead Time Source'
+  ]);
+  obj.vendorAttributes = Object.fromEntries(Object.entries(obj).filter(([key, value]) =>
+    !canonicalKeys.has(key) && !['sku', 'lifecycleStatus', 'lifecycleBadge'].includes(key) && String(value ?? '').trim()
+  ));
 
   const rawQty = String(obj['Current Qty'] || obj['Quantity'] || '0').replace(/\s+/g, '').trim();
   obj['Current Qty'] = /^\d+$/.test(rawQty) ? rawQty : '0';
@@ -680,6 +779,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
     let headerIdx  = -1;
     let headers    = [];
     let tableRules = [];
+    let tableAvailability = '';
 
     for (let ri = 0; ri < Math.min(4, table.rows.length); ri++) {
       const row = table.rows[ri];
@@ -692,6 +792,9 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
         break;
       } else {
         const text = row.join(' ').trim();
+        if (!tableAvailability && /^(?:available|not available|these products are hidden due to .+constraints)$/i.test(text)) {
+          tableAvailability = text;
+        }
         if (text && text !== 'Available' && text.length > 5 && text.length < 300) {
           tableRules.push(text);
         }
@@ -722,6 +825,9 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
       if (!parsed) continue;
 
       const { obj, pn, descText } = parsed;
+      if ((!obj.Availability || obj.Availability === 'Not published by OCA') && tableAvailability) {
+        obj.Availability = tableAvailability;
+      }
       const isPhantomFio = descText.toLowerCase() === 'factory integrated' ||
                            (descText.toLowerCase().includes('factory integrated') && (!obj['Unit Price (USD)'] || obj['Unit Price (USD)'] === '0.00' || obj['Unit Price (USD)'] === '0'));
 
@@ -843,15 +949,11 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
   }
   console.log(`Merged ${mergedSubtableCount} sub-tables into preceding parent subcategories (DOM index order).`);
 
-  const hardwareEntries = [];
-  const servicesEntries = [];
-  orderedEntries.forEach(e => {
-    if (isServiceEntry(e)) {
-      servicesEntries.push(e);
-    } else {
-      hardwareEntries.push(e);
-    }
-  });
+  // OCA occasionally places service-like SKUs in a table that also contains
+  // physical accessories. Classifying the entire table from one service SKU
+  // silently moved valid rails/cables/kits out of the hardware catalog. Split
+  // mixed tables at row granularity and preserve the original taxonomy.
+  const { hardwareEntries, servicesEntries } = partitionCatalogEntries(orderedEntries);
 
   const seenHwSkus = new Set();
   hardwareEntries.forEach(e => {
@@ -900,10 +1002,6 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
     if (!price || price <= 0) {
       price = Number(mapInfo?.listPrice || 0);
     }
-    if (!price || price <= 0) {
-      price = 1850.00;
-    }
-
     return {
       'Product #': effectiveSku,
       sku: effectiveSku,
@@ -911,10 +1009,14 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       'Component Role': 'Base Chassis',
       Description: rawDesc,
       'Current Qty': '1',
-      'Unit Price (USD)': price.toFixed(2),
+      'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
       listPrice: price,
       'CLIC Status': discovered?.status || 'Active',
+      'Lifecycle Status': discovered?.status || 'Active',
       lifecycleStatus: discovered?.status || 'Active',
+      Availability: discovered?.availability || 'Available in OCA product catalog',
+      'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '',
+      'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
       'Start Date': discovered?.startDate || mapInfo?.startDate || '',
       'Discontinued Date': discovered?.discontinuedDate || '',
       provenance: chassisDiscovery?.source || 'HPE OCA product catalog metadata'
@@ -927,7 +1029,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       if (skuIndex < 0) continue;
       const description = row.slice(skuIndex + 1).find(cell => /configure-to-order|cto server/i.test(String(cell || '')));
       if (description) {
-        const price = Number(mapInfo?.listPrice || 1850.00);
+        const price = Number(mapInfo?.listPrice || 0);
         return {
           'Product #': effectiveSku,
           sku: effectiveSku,
@@ -935,16 +1037,95 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
           'Component Role': 'Base Chassis',
           Description: String(description).replace(/^[A-Z0-9-]+\s*-\s*/, '').trim(),
           'Current Qty': '1',
-          'Unit Price (USD)': price.toFixed(2),
+          'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
           listPrice: price,
           'CLIC Status': 'Active',
+          'Lifecycle Status': 'Active',
           lifecycleStatus: 'Active',
+          Availability: 'Available in active OCA configuration',
+          'Lead Time': chassisDiscovery?.deliveryEstimate || '',
+          'Lead Time Source': chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
           provenance: `OCA active configuration for ${chassisLabel}`
         };
       }
     }
   }
   return null;
+}
+
+function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
+  const text = String(candidate?.description || candidate?.text || '').trim();
+  const sku = cleanBaseSKU(candidate?.sku || '');
+  if (!sku || !isValidHpeSKU(sku) || !text || candidate?.eligible === false) return false;
+  if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
+  const expected = parseProductMeta(chassisLabel).cleanName;
+  const observed = parseProductMeta(text).cleanName;
+  if (expected !== observed || !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text)) return false;
+  return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
+}
+
+async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {
+  const result = new Map();
+  const historyDir = path.join(targetDir, 'history');
+  if (!fs.existsSync(historyDir)) return result;
+  const expected = parseProductMeta(chassisLabel).cleanName;
+  const files = fs.readdirSync(historyDir).filter(f => /^catalog_.*\.json$/.test(f)).sort().reverse();
+  for (const file of files) {
+    try {
+      const catalog = JSON.parse(await fs.promises.readFile(path.join(historyDir, file), 'utf8'));
+      for (const entry of catalog.entries || []) {
+        const isChassis = String(entry.parentCategory || '').toLowerCase() === 'chassis' || String(entry.subCategory || '').toLowerCase() === 'variants';
+        if (!isChassis) continue;
+        for (const sku of entry.skus || []) {
+          const description = String(sku.Description || sku.description || '').replace(/^\[REMOVED SKU\]\s*/i, '');
+          const productNumber = cleanBaseSKU(sku['Product #'] || sku.sku || '');
+          if (productNumber && parseProductMeta(description).cleanName === expected && !result.has(productNumber)) {
+            result.set(productNumber, { ...sku, Description: description });
+          }
+        }
+      }
+    } catch (_) {}
+  }
+  return result;
+}
+
+async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassisDiscovery) {
+  const candidates = (chassisDiscovery?.candidates || []).filter(c => isCanonicalCtoChassisCandidate(c, chassisLabel));
+  if (candidates.length === 0) return [];
+  const historical = await loadHistoricalChassisEvidence(targetDir, chassisLabel);
+  const bySku = new Map();
+  for (const candidate of candidates) {
+    const productNumber = cleanBaseSKU(candidate.sku);
+    if (bySku.has(productNumber)) continue;
+    const previous = historical.get(productNumber) || {};
+    const description = String(candidate.description || candidate.text || previous.Description || '')
+      .replace(/^\s*[A-Z0-9-]+(?:#GTA)?\s*-\s*/i, '').trim();
+    const currentPrice = Number(candidate.listPriceUsd || 0);
+    const historicalPrice = Number(previous.listPrice || previous['Unit Price (USD)'] || previous['Price (USD)'] || 0);
+    const price = currentPrice > 0 ? currentPrice : historicalPrice;
+    const isSelectedVariant = cleanBaseSKU(chassisDiscovery.selectedSku || '') === productNumber;
+    const leadTime = candidate.leadTime || (isSelectedVariant ? chassisDiscovery.deliveryEstimate : '') || '';
+    bySku.set(productNumber, {
+      'Product #': productNumber,
+      sku: productNumber,
+      'Option Type': 'CTO',
+      'Component Role': 'Base Chassis',
+      Description: description || `${chassisLabel} Configure-to-order Server`,
+      'Current Qty': '1',
+      'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
+      listPrice: price,
+      'CLIC Status': candidate.status || 'Active',
+      'Lifecycle Status': candidate.status || 'Active',
+      lifecycleStatus: candidate.status || 'Active',
+      Availability: candidate.availability || 'Available in OCA product catalog',
+      'Lead Time': leadTime,
+      'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA selected configuration estimate') : 'Not published by OCA',
+      'Start Date': candidate.startDate || previous['Start Date'] || '',
+      'Discontinued Date': candidate.discontinuedDate || previous['Discontinued Date'] || '',
+      provenance: chassisDiscovery.source || 'HPE OCA product search'
+    });
+  }
+  return Array.from(bySku.values());
 }
 
 async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU = '', tables = [], chassisDiscovery = null, meta = null) {
@@ -954,6 +1135,24 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
   );
 
   if (hasChassisEntry) return;
+
+  const discoveredVariants = await extractDiscoveredChassisVariants(targetDir, chassisLabel, chassisDiscovery);
+  if (discoveredVariants.length > 0) {
+    hardwareEntries.unshift({
+      tableIndex: -1,
+      parentCategory: 'Chassis',
+      subCategory: 'Variants',
+      constraint: 'min 1, max 1 — Active OCA CTO chassis',
+      minQty: 1,
+      maxQty: 1,
+      rules: ['Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis'],
+      headers: ['Product #', 'Description', 'Unit Price (USD)', 'Start Date', 'Discontinued Date', 'Lead Time'],
+      skuCount: discoveredVariants.length,
+      skus: discoveredVariants
+    });
+    console.log(`  📦 ${discoveredVariants.length} active exact-product CTO chassis variant(s) injected from current OCA discovery.`);
+    return;
+  }
 
   let injectedFromHistory = false;
   const historyDir = path.join(targetDir, 'history');
@@ -1156,7 +1355,7 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
     const role = (r['Component Role'] || '').toLowerCase();
     const desc = (r['Description'] || '').toLowerCase();
     const isChassisCategory = cat === 'chassis' && (sub === 'variants' || sub === 'base chassis' || sub === 'chassis');
-    const isCtoServer = (desc.includes('cto server') || desc.includes('server cto') || desc.includes('cto rack') || desc.includes('cto chassis')) && desc.includes('gen12');
+    const isCtoServer = desc.includes('cto server') || desc.includes('server cto') || desc.includes('cto rack') || desc.includes('cto chassis');
     const isNonChassisAccessory = desc.includes('factory integrated') || desc.includes('heatsink') || desc.includes('processor') || desc.includes('fan kit') || desc.includes('cable') || desc.includes('riser') || desc.includes('cage') || desc.includes('cord') || desc.includes('power supply') || desc.includes('bezel') || desc.includes('rail');
     return (isChassisCategory || isCtoServer) && !isNonChassisAccessory && role === 'base chassis';
   });
@@ -1220,8 +1419,12 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
           for (const e of hChassisEntries) {
             for (const s of (e.skus || [])) {
               const pn = s.sku || s['Product #'] || '';
-              if (!pn || chassisVariantMatrix[pn]) continue;
               const desc = s.description || s.Description || s['Description'] || '';
+              if (!pn || chassisVariantMatrix[pn] || !isCanonicalCtoChassisCandidate({
+                sku: pn,
+                text: desc,
+                isBto: String(s['Option Type'] || s.optionType || '').toUpperCase() === 'BTO'
+              }, filePrefix)) continue;
               let formFactor = 'Unknown';
               for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
                 if (desc.includes(key)) { formFactor = label; break; }
@@ -1417,8 +1620,11 @@ module.exports = {
   matchSubcategoryForTable,
   resolveTableTaxonomyAndRole,
   synthesizeCatalogEntries,
+  partitionCatalogEntries,
   injectChassisVariantsFromHistory,
   extractBaseChassisEvidence,
+  isCanonicalCtoChassisCandidate,
+  extractDiscoveredChassisVariants,
   buildCatalogObject,
   reconcilePriceAndLifecycleHistory,
   buildChassisVariantMatrix,

@@ -1,1 +1,2332 @@
-[]
+[
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71964-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "OCA configuration estimate",
+    "newValue": "OCA selected configuration estimate"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P22020-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"89.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P52349-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"373.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72008-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"86.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78764-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Rack Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72006-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server Additional License",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P73006-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Acoustics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69259-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1,744.00\",\"Price Delta (USD)\":\"-901.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69262-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"7,371.00\",\"Price Delta (USD)\":\"+4,726.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69263-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"9,654.00\",\"Price Delta (USD)\":\"+7,009.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71859-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1,433.00\",\"Price Delta (USD)\":\"-1,212.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71862-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"2,157.00\",\"Price Delta (USD)\":\"-488.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71871-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"8,600.00\",\"Price Delta (USD)\":\"+5,955.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71874-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10,617.00\",\"Price Delta (USD)\":\"+7,972.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88840-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"14,189.00\",\"Price Delta (USD)\":\"+11,544.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88842-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"11,873.00\",\"Price Delta (USD)\":\"+9,228.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88850-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"2,280.00\",\"Price Delta (USD)\":\"-365.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69258-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1,160.00\",\"Price Delta (USD)\":\"-1,485.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69260-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"2,645.00\",\"Price Delta (USD)\":\"Selected\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69261-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"5,173.00\",\"Price Delta (USD)\":\"+2,528.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71865-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"2,958.00\",\"Price Delta (USD)\":\"+313.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71868-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"5,801.00\",\"Price Delta (USD)\":\"+3,156.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88844-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"8,991.00\",\"Price Delta (USD)\":\"+6,346.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88846-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"6,636.00\",\"Price Delta (USD)\":\"+3,991.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88848-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"3,262.00\",\"Price Delta (USD)\":\"+617.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88852-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Processor",
+    "subCategory": "Processors",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1,563.00\",\"Price Delta (USD)\":\"-1,082.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72580-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Heatsink Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50311-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"13,909.00\",\"Price per GB (USD)\":\"434.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50312-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"445.81\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64986-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"445.81\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50309-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"464.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64985-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"434.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64987-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"490.17\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64988-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"470.23\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P66676-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"490.17\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69982-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"1,880.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50309-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"464.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50311-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"434.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P50312-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"445.81\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64984-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"464.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64984-F21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"464.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64985-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"434.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64986-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"445.81\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64987-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"490.17\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P64988-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"470.23\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P66676-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"490.17\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69982-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"470.23\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P47777-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P47785-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "804398-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P58335-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P01366-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Battery",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P02377-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Battery",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P65038-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Smart Storage Battery",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72000-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72002-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P73003-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "339777-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "339778-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "339779-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "339780-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "339781-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "389692-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71981-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72004-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71977-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71985-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"380.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P57803-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.91\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P61191-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"13.34\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69237-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.99\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70669-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.74\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70672-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.64\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77265-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.81\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78787-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.48\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87719-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.35\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87721-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.13\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91084-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.43\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91086-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.93\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91088-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.82\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91090-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.30\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91092-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.34\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91094-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.21\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91096-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.58\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91098-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"11.36\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91100-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.67\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91102-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.75\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91229-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91233-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.03\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P61179-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.25\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P61183-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.87\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P63930-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.60\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P63934-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.41\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69234-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.28\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69239-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.74\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70397-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.98\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77053-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.65\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77055-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.86\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77059-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77061-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.03\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78914-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.13\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78923-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.99\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79122-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.73\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85128-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.42\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85731-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"11.65\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P57799-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.56\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P61187-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.74\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P61195-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.39\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P63938-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.29\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69241-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.57\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69243-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.58\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69245-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.89\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P69546-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.91\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70392-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.11\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70395-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.92\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70399-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.93\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70401-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.40\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70403-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.21\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P70674-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.82\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77050-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.87\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77057-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.60\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77262-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.87\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77267-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.69\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77269-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.41\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77271-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.47\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77273-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.12\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77275-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.61\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78784-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.12\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78789-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.78\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78791-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.52\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78793-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.33\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78917-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.85\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78919-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.77\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P78921-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.48\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79065-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.86\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79147-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.99\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79965-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.52\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85114-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.08\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85117-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.68\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85119-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.90\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85121-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.35\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85124-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.13\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85126-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.15\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85733-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.92\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85735-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.97\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85739-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.91\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85741-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.37\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85743-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.23\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P85745-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.89\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87715-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"12.08\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87717-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.68\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87723-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.15\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P91231-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.15\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79615-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.59\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79618-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.63\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79620-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.59\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P79623-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.15\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86016-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.73\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86018-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.34\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86020-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.91\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86024-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.94\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86026-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.11\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86028-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.92\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86030-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.20\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86032-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.20\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86746-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"3.43\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P86748-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"3.26\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88535-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"10.73\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88537-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.34\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88539-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.11\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88541-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.92\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P88543-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"4.20\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P73214-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Factory Configuration Settings",
+    "subCategory": "Factory Configuration Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P35876-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P63226-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "vSAN Tracking SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P08040-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO Common Password",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71989-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71991-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P08443-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26253-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26259-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26262-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P42044-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P51178-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P08458-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26264-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P51181-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"485.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P10115-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P42041-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26256-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P08449-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P10097-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P10106-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P26269-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "453151-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "453154-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "455883-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "455886-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "845398-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "JL486A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P48183-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OS Boot Device",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P81162-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OS Boot Device",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71992-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OS Boot Device",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P81160-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OS Boot Device",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71995-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P73002-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72581-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"492.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P54290-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1,782.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P43150-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P44975-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "Q0H80A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "A0K02A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "A0N33A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "875519-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Security Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72582-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Security Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"112.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P72583-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Security Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P71998-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Management Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P87008-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Management Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P46155-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P46155-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77096-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77096-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "P77099-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "512485-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "BD505A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"469.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "512487-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "BD507A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "E6U59ABE",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "E6U64ABE",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "512486-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "BD506A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "Q5T84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Proliant Software Media Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "Q5T85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Proliant Software Media Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-10",
+    "productNumber": "Q2A48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  }
+]

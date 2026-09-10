@@ -112,7 +112,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     const requestedIdentity = extractModelGeneration(query);
     const activeMatchesRequest = !activeIdentity || !activeIdentity.model || (activeIdentity.model === requestedIdentity.model &&
       (!requestedIdentity.generation || activeIdentity.generation === requestedIdentity.generation));
-    if (hasMenu && activeMatchesRequest) {
+    if (hasMenu && activeMatchesRequest && !options.forceDiscovery) {
       console.log(`⚡ [ACTIVE SESSION] Already inside target OCA configuration page! Ready for scraping.`);
       ws.close();
       return {
@@ -121,8 +121,8 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
         status: 'READY_AT_MENU_TAB'
       };
     }
-    if (hasMenu && !activeMatchesRequest) {
-      console.log(`🔄 Active OCA configuration is for another product; reopening OCA search for exact target "${query}".`);
+    if (hasMenu && (!activeMatchesRequest || options.forceDiscovery)) {
+      console.log(`🔄 Reopening OCA search to collect fresh exact-target discovery evidence for "${query}".`);
       ws.close();
       await closePageTarget(ocaTarget.id);
       await new Promise(r => setTimeout(r, 2000));
@@ -131,7 +131,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
 
     // 2. If at OCA Product Search / Catalog page: search chassis and configure
     console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
-    const navExpr = `
+    const navExpr = String.raw`
       (async function() {
         // Ensure "Product Catalog" search mode is selected if OCA landing shows scope menu
         const aiTrigger = document.querySelector('#dqe_ai_mode_trigger');
@@ -146,11 +146,16 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
         }
 
         // Find search input
-        const searchInput = document.querySelector('#searchProductInput') ||
-                            document.querySelector('#search-config') ||
-                            document.querySelector('textarea[name="search-config"]') ||
-                            document.querySelector('input[type="search"]') ||
-                            document.querySelector('input[placeholder*="Search"]');
+        let searchInput = null;
+        for (let readinessAttempt = 0; readinessAttempt < 60 && !searchInput; readinessAttempt++) {
+          searchInput = document.querySelector('#searchProductInput') ||
+                        document.querySelector('#search-config') ||
+                        document.querySelector('textarea[name="search-config"]') ||
+                        document.querySelector('input[type="search"]') ||
+                        document.querySelector('input[placeholder*="Search"]');
+          if (!searchInput) await new Promise(r => setTimeout(r, 500));
+        }
+        if (!searchInput) return { success: false, candidates: [], action: 'SEARCH_INPUT_NOT_READY' };
 
         async function runSearch(q) {
           searchInput.focus();
@@ -188,6 +193,11 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
             const button = card.querySelector('.dqe-customize-btn, button, input[type="button"]');
             if (productSelect && button) {
               const isRealCtoCard = card.classList.contains('cto-card') || /—\s*CTO/i.test(card.innerText || '');
+              const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
+              const deliveryLabel = cardText.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
+              const availability = /not yet available|unavailable|out of stock/i.test(cardText)
+                ? 'Unavailable'
+                : (/available|select product/i.test(cardText) ? 'Available in OCA product catalog' : 'Not published by OCA');
               const cardSel = '[data-cand-idx="' + cIdx + '"]';
               const options = Array.from(productSelect.options || []).filter(o => o.value && o.value !== '-1');
               for (let optIdx = 0; optIdx < options.length; optIdx++) {
@@ -202,6 +212,9 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
                   text,
                   sku: sku.toUpperCase(),
                   listPriceUsd: 0,
+                  availability,
+                  leadTime: deliveryLabel,
+                  deliveryLabel: /faster[^.]*deliver(?:y|ies)/i.test(cardText) ? cardText.match(/[^.]*faster[^.]*deliver(?:y|ies)[^.]*/i)?.[0]?.trim() || '' : '',
                   isBto: !isOptionCto,
                   isTaa: /(?:\btaa\b)/i.test(text),
                   isGta: /#gta\b/i.test(text) || /#GTA$/i.test(sku),
@@ -240,23 +253,40 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
           return result;
         }
 
+        async function waitForCandidates(timeoutMs = 20000) {
+          const deadline = Date.now() + timeoutMs;
+          let found = [];
+          while (Date.now() < deadline) {
+            found = extractCandidates();
+            if (found.length > 0) return found;
+            await new Promise(r => setTimeout(r, 1000));
+          }
+          return found;
+        }
+
         if (searchInput) {
           const searchTerm = ${JSON.stringify(query)}.replace(/\s*(?:tape|storage|module|server|chassis)\b/ig, '').trim() || ${JSON.stringify(query)};
           await runSearch(searchTerm);
         }
-        let candidates = extractCandidates();
+        let candidates = await waitForCandidates();
+        if (candidates.length === 0 && searchInput) {
+          // WebLogic occasionally accepts the keystrokes before its search
+          // controller is bound. Repeat the exact query once after readiness.
+          await runSearch(${JSON.stringify(query)});
+          candidates = await waitForCandidates();
+        }
         if (candidates.length === 0 && searchInput && /\b(?:gen\s*\d+|tape|module|server|storage)\b/i.test(${JSON.stringify(query)})) {
           const baseQuery = ${JSON.stringify(query)}.replace(/\s*(?:gen\s*\d+|tape|module|server|storage)\b/ig, '').trim();
           if (baseQuery && baseQuery !== ${JSON.stringify(query)}) {
             await runSearch(baseQuery);
-            candidates = extractCandidates();
+            candidates = await waitForCandidates();
           }
         }
         return { success: candidates.length > 0, candidates, action: 'CANDIDATES_EXTRACTED' };
       })()
     `;
 
-    const navResult = await sendCommand(ws, 'Runtime.evaluate', { expression: navExpr, awaitPromise: true, returnByValue: true });
+    const navResult = await sendCommand(ws, 'Runtime.evaluate', { expression: navExpr, awaitPromise: true, returnByValue: true }, 90000);
     const extracted = navResult?.result?.value || {};
     const candidates = Array.isArray(extracted.candidates) ? extracted.candidates : [];
     const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
@@ -311,7 +341,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     if (intermediate) {
       const intermediateWs = await connectWS(intermediate.webSocketDebuggerUrl);
       await sendCommand(intermediateWs, 'Runtime.evaluate', {
-        expression: `(() => {
+        expression: String.raw`(() => {
           const body = (document.body?.innerText || '').toLowerCase();
           const expectedSku = ${JSON.stringify(selected.sku.toLowerCase())};
           if (expectedSku && !body.includes(expectedSku)) return false;
@@ -329,6 +359,19 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     // Re-verify target page
     const updatedPages = await getPageTargets();
     const activeOca = updatedPages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
+    let deliveryEstimate = '';
+    if (activeOca) {
+      const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
+      const deliveryResult = await sendCommand(summaryWs, 'Runtime.evaluate', {
+        expression: String.raw`(() => {
+          const text = (document.body?.innerText || '').replace(/\s+/g, ' ');
+          return text.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
+        })()`,
+        returnByValue: true
+      });
+      deliveryEstimate = deliveryResult?.result?.value || '';
+      summaryWs.close();
+    }
 
     return {
       targetUrl: activeOca ? activeOca.url : ocaTarget.url,
@@ -340,6 +383,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
         selectedSku: selected.sku,
         source: 'HPE OCA Product Search via authenticated CDP session',
         capturedAt: new Date().toISOString(),
+        deliveryEstimate,
         candidates: eligibleCandidates,
         excludedCandidates: candidates.filter(candidate => !isExactProductCandidate(query, candidate))
       },

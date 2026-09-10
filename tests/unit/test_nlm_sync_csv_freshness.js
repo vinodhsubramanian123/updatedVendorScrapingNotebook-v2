@@ -6,7 +6,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
-const { assertPayloadProductIsolation, isGroundedCanary, refreshMasterCatalogCsv } = require('../../scripts/lib/sync/nlm_sync_client.js');
+const { assertPayloadProductIsolation, isDriveFreshnessReportClean, isGroundedCanary, refreshMasterCatalogCsv } = require('../../scripts/lib/sync/nlm_sync_client.js');
 
 test('canonical CSV is refreshed from the current audited workbook before cloud sync', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nlm-csv-freshness-'));
@@ -42,6 +42,11 @@ test('Notebook payload and canary must remain exact-product and exact-source gro
     'DL380a_Gen12',
     cfg
   ), true);
+  assert.equal(assertPayloadProductIsolation(
+    '# DL380_Gen12\n| `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE DL380 Gen11 Over Pack FIO Shipping Kit (Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | REINSTATED |',
+    'DL380_Gen12',
+    { notebooks: { DL380_Gen12: {}, DL380_Gen11: {} } }
+  ), true);
   assert.throws(
     () => assertPayloadProductIsolation(
       '# DL380a_Gen12\n1. [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12,DL380a_Gen12] P52341-B21 claimed rail compatibility (Class: RAIL; Evidence: CERTIFIED_OCA_CATALOG)',
@@ -52,4 +57,10 @@ test('Notebook payload and canary must remain exact-product and exact-source gro
   );
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['source-a'] }, 'source-a', 'DL380a_Gen12'), true);
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['wrong-source'] }, 'source-a', 'DL380a_Gen12'), false);
+});
+
+test('Drive freshness certification fails closed on a non-empty stale report', () => {
+  assert.equal(isDriveFreshnessReportClean('✓ All Drive sources are up to date.'), true);
+  assert.equal(isDriveFreshnessReportClean('[]'), true);
+  assert.equal(isDriveFreshnessReportClean('[{"id":"stale-source"}]'), false);
 });

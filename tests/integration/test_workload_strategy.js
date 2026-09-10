@@ -1,7 +1,11 @@
 'use strict';
 
 const { extractWorkloadDna } = require('../../scripts/lib/conflict/workload_dna.js');
-const { synthesizeStrategies } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
+const {
+  synthesizeStrategies,
+  parseLeadTimeDays,
+  calculateSupplyMetrics
+} = require('../../scripts/lib/conflict/strategy_synthesizer.js');
 const { queryLocalKnowledgeBase } = require('../../scripts/lib/rag/local_rag_search.js');
 
 let passed = 0;
@@ -80,6 +84,16 @@ const customStrategies = synthesizeStrategies(customDnaSkus, {}, { resolvedFixes
 assert(Array.isArray(customStrategies) && customStrategies.length === 5, 'Generates 5 distinct tiers under DNA fallback');
 assert(customStrategies[0].rank === 1 && customStrategies[1].rank === 2 && customStrategies[2].rank === 3, 'Maintains rank sequence 1 to 5');
 assert(customStrategies.every(s => typeof s.ragSecondOpinion === 'string' && s.ragSecondOpinion.length > 0), 'Every tier contains valid grounding text');
+
+// 5. Supply timing is a transparent tie-breaker, never a compatibility override.
+console.log('\n--- 5. Supply & Lead-Time Metadata ---');
+assert(parseLeadTimeDays('EDT 27 - 34 days') === 30.5, 'Parses an OCA EDT range without guessing');
+assert(parseLeadTimeDays('Not published by OCA') === null, 'Keeps unpublished lead time explicitly unknown');
+const supply = calculateSupplyMetrics([{ sku: 'FAST' }, { sku: 'UNKNOWN' }], sku => (
+  sku === 'FAST' ? { availability: 'Available', leadTimeDays: 12 } : { availability: 'Unknown', leadTimeDays: null }
+));
+assert(supply.estimatedAverageLeadTimeDays === 12 && supply.unknownLeadTimeCount === 1, 'Reports known and unknown lead-time coverage separately');
+assert(/Technical validity/.test(supply.rankingPolicy), 'Documents technical-validity-first lead-time ranking policy');
 
 console.log('\n================================================================');
 console.log(`📊 WORKLOAD & STRATEGY TEST SUMMARY: ${passed} passed, ${failed} failed`);

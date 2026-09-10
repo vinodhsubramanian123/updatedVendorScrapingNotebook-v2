@@ -7,7 +7,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 const { convertCSVToCatalogJSON } = require('./csv_to_catalog.js');
+const { getHistoricalSkuPrice } = require('../lib/catalog/sku_versioning.js');
+const { isCanonicalCtoChassisCandidate } = require('./build_catalog.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
@@ -80,7 +83,8 @@ function buildChassisVariantsEntry(prod) {
   const matchedSkus = [];
   const matchedRows = [];
 
-  // Match target group by exact model/shorthand first, then fallback to family+gen
+  // Match the exact product only. Family+generation fallback caused DL380
+  // variants to contaminate DL145 and is intentionally forbidden.
   let targetGroup = null;
   const normShorthand = (prod.chassisShorthand || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   for (const [groupKey, group] of Object.entries(byFamilyGen)) {
@@ -92,31 +96,16 @@ function buildChassisVariantsEntry(prod) {
     }
   }
 
-  if (!targetGroup) {
-    for (const [groupKey, group] of Object.entries(byFamilyGen)) {
-      const famMatch = (group.family || '').toLowerCase() === (prod.family || '').toLowerCase();
-      const genMatch = (group.gen || '').toLowerCase() === (prod.gen || '').toLowerCase();
-      if (famMatch && genMatch) {
-        targetGroup = group;
-        break;
-      }
-    }
-  }
-
-  // Fallback: search individual base SKUs with strict family & gen checks
-  const candidateSkus = targetGroup ? targetGroup.skus : (chassisMap.chassis_base_skus || {});
+  const candidateSkus = targetGroup ? targetGroup.skus : {};
 
   for (const [skuId, info] of Object.entries(candidateSkus)) {
-    const famMatch = (info.family || '').toLowerCase() === (prod.family || '').toLowerCase();
-    const genMatch = (info.gen || '').toLowerCase() === (prod.gen || '').toLowerCase();
-
-    // Reject BTO, TAA, GTA, or cross-generation
     const desc = info.description || '';
-    const isExcluded = /\bBTO\b|\bTAA\b|\bGTA\b|#GTA/i.test(desc) || /\bBTO\b|\bTAA\b|\bGTA\b|#GTA/i.test(skuId);
+    const isExactCto = isCanonicalCtoChassisCandidate({ sku: skuId, text: desc }, prod.chassisShorthand);
 
-    if (famMatch && genMatch && !isExcluded) {
-      const priceVal = info.listPrice || 1850.00;
-      const priceStr = `$${priceVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (isExactCto) {
+      const historical = getHistoricalSkuPrice(skuId, prod.fullOutputDir);
+      const priceVal = Number(historical?.priceUsd || 0);
+      const priceStr = priceVal > 0 ? `$${priceVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '';
 
       matchedSkus.push({
         'Product #': skuId,
@@ -125,7 +114,11 @@ function buildChassisVariantsEntry(prod) {
         'Price (USD)': priceVal.toFixed(2),
         'Current Qty': '1',
         'Option Type': 'CTO',
-        'Start Date': prod.date || '2026-08-01',
+        'Lifecycle Status': 'Active',
+        'Availability': 'Catalog identity only — verify in current OCA discovery',
+        'Lead Time': '',
+        'Lead Time Source': 'Not published by OCA',
+        'Start Date': info.startDate || '',
         'Discontinued Date': '',
         'Constraint Text': 'System Standard (Max 1)',
         'Subcategory Max Qty': '1',
@@ -142,34 +135,12 @@ function buildChassisVariantsEntry(prod) {
         info.description,
         priceStr,
         '1',
-        prod.date || '2026-08-01'
+        info.startDate || ''
       ]);
     }
   }
 
-  if (matchedSkus.length === 0) {
-    const defaultSku = `${prod.chassisShorthand}-CTO`;
-    const defaultDesc = `${prod.solutionName || prod.chassisShorthand.replace(/_/g, ' ')} CTO Base System Chassis`;
-    matchedSkus.push({
-      'Product #': defaultSku,
-      'Description': defaultDesc,
-      'Unit Price (USD)': '1850.00',
-      'Price (USD)': '1850.00',
-      'Current Qty': '1',
-      'Option Type': 'CTO',
-      'Start Date': prod.date || '2026-08-01',
-      'Discontinued Date': '',
-      'Constraint Text': 'System Standard (Max 1)',
-      'Subcategory Max Qty': '1',
-      'Component Role': 'Base Chassis',
-      sku: defaultSku,
-      description: defaultDesc,
-      listPrice: 1850.00,
-      listPriceFormatted: '$1,850.00',
-      qty: 1
-    });
-    matchedRows.push([defaultSku, defaultDesc, '$1,850.00', '1', prod.date || '2026-08-01']);
-  }
+  if (matchedSkus.length === 0) return null;
 
   return {
     parentCategory: 'Chassis',
@@ -182,52 +153,6 @@ function buildChassisVariantsEntry(prod) {
     skus: matchedSkus,
     skuCount: matchedSkus.length
   };
-}
-
-function sanitizeSkuAndDesc(rawSku, rawDesc) {
-  if (!rawSku) return null;
-  const { isValidHpeSKU, cleanBaseSKU } = require('../lib/catalog/sku.js');
-  let sku = cleanBaseSKU(rawSku);
-  let desc = (rawDesc || '').trim();
-
-  // Enforce strict HPE SKU validation + digit requirement
-  if (!isValidHpeSKU(sku) || !/\d/.test(sku)) {
-    return null;
-  }
-  sku = sku.toUpperCase();
-
-  // Clean description string of raw DOM context markup and newline artifacts
-  if (desc.includes('context":') || desc.includes('\n') || desc.includes('\\n') || desc.includes('\t')) {
-    desc = desc.replace(/context":\s*/gi, '');
-    desc = desc.replace(/\\n/g, '\n').replace(/\\t/g, ' ');
-    const firstLine = desc.split('\n')[0].trim();
-    desc = firstLine.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
-    desc = desc.replace(/^["\s]+|["\s]+$/g, '');
-  }
-
-  // If description is empty or truncated, extract brand title or default
-  if (!desc || desc.length < 5 || desc === sku || desc === 'HPE') {
-    if (sku.startsWith('P745') || sku.startsWith('P738') || sku.startsWith('P711')) {
-      desc = `Intel Xeon / AMD EPYC High Performance Processor for HPE (${sku})`;
-    } else if (sku.startsWith('P697') || sku.startsWith('P685')) {
-      desc = `HPE DDR5 Smart Memory Registered Kit (${sku})`;
-    } else if (sku.startsWith('P477') || sku.startsWith('P170') || sku.startsWith('P389')) {
-      desc = `HPE Flex Slot Hot-Plug Power Supply Kit (${sku})`;
-    } else if (sku.startsWith('H') || sku.startsWith('U') || sku.startsWith('HA')) {
-      desc = `HPE Tech Care & Pointnext Service Option (${sku})`;
-    } else {
-      desc = `HPE ProLiant Server Option (${sku})`;
-    }
-  }
-
-  return { sku, desc };
-}
-
-/**
- * Extracts component SKUs from raw report files if catalog file does not exist
- */
-function loadScrapedComponentEntries(prod) {
-  return [];
 }
 
 function syncAllProducts() {
@@ -256,96 +181,22 @@ function syncAllProducts() {
       }
     }
 
-    // Load scraped component entries if available
-    const componentEntries = loadScrapedComponentEntries(prod);
-
     if (!catalogData) {
-      console.log(`Initializing catalog JSON for ${prod.chassisShorthand}...`);
-      catalogData = {
-        metadata: {
-          chassis: prod.solutionName || prod.chassisShorthand.replace(/_/g, ' '),
-          family: prod.family,
-          gen: prod.gen,
-          scrapeDate: prod.date || new Date().toISOString(),
-          totalSubcategories: 1 + componentEntries.length,
-          totalUniqueSKUs: prod.totalSKUs || chassisEntry.skuCount,
-          totalTables: 1 + componentEntries.length,
-          diffSummary: {
-            added: prod.totalSKUs || chassisEntry.skuCount,
-            removed: 0,
-            priceChanged: 0,
-            unchanged: 0
-          },
-          source: 'OCA Portal Master Registry Sync'
-        },
-        subcategories: [
-          {
-            parentCategory: 'Chassis',
-            name: 'Variants',
-            constraint: 'Chassis Standard (Max 1)',
-            maxQty: 1
-          },
-          ...componentEntries.map(e => ({
-            parentCategory: e.parentCategory,
-            name: e.subCategory,
-            constraint: e.constraint || 'System Option',
-            maxQty: e.maxQty || 32
-          }))
-        ],
-        entries: [chassisEntry, ...componentEntries]
-      };
-    } else {
+      console.warn(`Skipping ${prod.chassisShorthand}: no certified scraped catalog exists. Registry sync never fabricates a placeholder catalog.`);
+      continue;
+    } else if (chassisEntry) {
       if (!catalogData.entries) catalogData.entries = [];
-
-      // Filter out old/duplicate chassis entries and old 'Base Chassis & Controllers'
-      const existingComponentEntries = catalogData.entries.filter(entry => {
-        const pLower = (entry.parentCategory || '').toLowerCase();
-        const sLower = (entry.subCategory || '').toLowerCase();
-        return !(pLower.includes('chassis') || sLower.includes('chassis') || pLower.includes('base') || sLower.includes('base'));
-      });
-
-      // Combine chassis entry + either newly parsed component entries or existing component entries
-      let mergedComponents = existingComponentEntries.length > 0 ? existingComponentEntries : componentEntries;
-
-      // Sanitize all component entries to purge stale corrupt SKUs, DOM target prefixes ('tP...'), or raw context HTML
-      mergedComponents.forEach(entry => {
-        if (entry.skus && Array.isArray(entry.skus)) {
-          entry.skus = entry.skus.filter(s => {
-            const rawSku = s['Product #'] || s.sku || '';
-            const rawDesc = s.Description || s.description || '';
-            const cleaned = sanitizeSkuAndDesc(rawSku, rawDesc);
-            if (!cleaned) return false;
-            s['Product #'] = cleaned.sku;
-            s.sku = cleaned.sku;
-            s.Description = cleaned.desc;
-            s.description = cleaned.desc;
-            return true;
-          });
-        }
-        if (entry.rows && Array.isArray(entry.rows)) {
-          entry.rows = entry.rows.map(row => {
-            const rawSku = row[0] || '';
-            const rawDesc = row[1] || '';
-            const cleaned = sanitizeSkuAndDesc(rawSku, rawDesc);
-            if (cleaned) {
-              row[0] = cleaned.sku;
-              row[1] = cleaned.desc;
-            }
-            return row;
-          }).filter(row => row && row[0]);
-        }
-        entry.skuCount = entry.skus?.length || 0;
-      });
-
-      catalogData.entries = [chassisEntry, ...mergedComponents.filter(e => e.skus && e.skus.length > 0)];
-
-      // Build updated subcategories list
-      catalogData.subcategories = catalogData.entries.map(e => ({
-        parentCategory: e.parentCategory,
-        name: e.subCategory,
-        constraint: e.constraint || 'System Option',
-        maxQty: e.maxQty || 32
-      }));
+      const hasCertifiedChassis = catalogData.entries.some(entry =>
+        String(entry.parentCategory || '').toLowerCase() === 'chassis' || String(entry.subCategory || '').toLowerCase() === 'variants'
+      );
+      if (!hasCertifiedChassis) {
+        console.log(`Adding exact-product chassis identity for ${prod.chassisShorthand}; current SKU/pricing still requires OCA certification.`);
+        catalogData.entries.unshift(chassisEntry);
+      } else {
+        console.log(`Preserving current OCA-certified chassis rows for ${prod.chassisShorthand}.`);
+      }
+    } else {
+      console.warn(`Preserving current ${prod.chassisShorthand} chassis rows: no exact-product certified registry mapping was found.`);
     }
 
     // Calculate actual unique SKU count across all entries
@@ -389,8 +240,7 @@ function syncAllProducts() {
       const generateXlsxScript = path.join(__dirname, 'generate_xlsx.js');
       const xlsxPath = path.join(prod.fullOutputDir, `${prod.chassisShorthand}_OCA_Catalog.xlsx`);
       if (fs.existsSync(generateXlsxScript)) {
-        const { execSync } = require('child_process');
-        execSync(`node "${generateXlsxScript}" "${xlsxPath}"`, { stdio: 'pipe' });
+        execFileSync(process.execPath, [generateXlsxScript, xlsxPath], { stdio: 'pipe' });
         console.log(`  📊 Rebuilt Master Excel Catalog: ${xlsxPath}`);
 
         try {

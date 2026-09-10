@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-09-09T10:09:26.303Z
+**Sync Timestamp**: 2026-09-10T11:37:21.116Z
 
-**Total Verified SKUs**: `1401` (`377` Hardware + `1024` Services)
+**Total Verified SKUs**: `1408` (`584` Hardware + `824` Services)
 
 **Total Synced KnowledgeDeltas**: `13`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 377 | 44 | 297 | 2 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 1024 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1401** | **44** | **297** | **2** | **0** | **ACTIVE** |
+| **Hardware Components** | 584 | 233 | 0 | 350 | 1 | **CERTIFIED** |
+| **Support Services & SLAs** | 824 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1408** | **233** | **0** | **350** | **1** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -89,14 +89,43 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
 |-----|-------------|--------|-------------------|------------------|----------|-----------|
-| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $1650.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P52535-B21` | HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $2100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $2250.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52534-B21` | HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server | **REINSTATED** | 2026-09-09 | $1650.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52535-B21` | HPE ProLiant DL380 Gen11 24SFF Configure-to-order Server | **REINSTATED** | 2026-09-09 | $2100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52536-B21` | HPE ProLiant DL380 Gen11 24EDSFF Configure-to-order Server | **REINSTATED** | 2026-09-09 | $2250.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P52537-B21` | HPE ProLiant DL380 Gen11 8SFF NVMe Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $2050.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P52532-B21` | HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $1750.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P52533-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $1900.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52532-B21` | HPE ProLiant DL380 Gen11 8LFF Configure-to-order Server | **REINSTATED** | 2026-09-09 | $1750.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P52533-B21` | HPE ProLiant DL380 Gen11 12LFF Configure-to-order Server | **REINSTATED** | 2026-09-09 | $1900.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `469774-409` | HPE Remove Standard Power Cords | **DISCONTINUED** | 2026-09-10 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P22020-B21` | HPE DL38X Gen10 Plus 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-28 | $89.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P48819-B21` | HPE ProLiant DL380 Gen11 System Insight Display Kit | **REINSTATED** | 2026-09-10 | $100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-28 | $164.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77110-B21` | Microsoft Windows Server 2025 1 User CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $72.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77111-B21` | Microsoft Windows Server 2025 1 Device CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $52.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77112-B21` | Microsoft Windows Server 2025 5 Users CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $322.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77113-B21` | Microsoft Windows Server 2025 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $226.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77114-B21` | Microsoft Windows Server 2025 10 Users CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $636.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77115-B21` | Microsoft Windows Server 2025 10 Devices CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $444.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77116-B21` | Microsoft Windows Server 2025 50 Users CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $3143.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77117-B21` | Microsoft Windows Server 2025 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $2184.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77118-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $280.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77119-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $201.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77120-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $1364.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77121-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $974.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77122-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $13566.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P77123-B21` | Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU | **DISCONTINUED** | 2026-09-10 | $9666.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46191-AA1` | Microsoft Windows Server 2022 1 User CAL Chinese Simplified LTU | **DISCONTINUED** | 2026-09-10 | $99999.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46191-B21` | Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46194-B21` | Microsoft Windows Server 2022 1 Device CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $44.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46215-AA1` | Microsoft Windows Server 2022 5 Users CAL Chinese Simplified LTU | **DISCONTINUED** | 2026-09-10 | $99999.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46215-AB1` | Microsoft Windows Server 2022 5 Users CAL Chinese Traditional LTU | **DISCONTINUED** | 2026-09-10 | $99999.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46215-B21` | Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $271.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46216-B21` | Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $216.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46217-B21` | Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $539.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46218-B21` | Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $429.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46219-B21` | Microsoft Windows Server 2022 50 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $2695.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46220-B21` | Microsoft Windows Server 2022 50 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $2145.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46221-B21` | Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $935.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P46222-B21` | Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | **DISCONTINUED** | 2026-09-10 | $880.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC120A` | HPE Pallet Size Customization Service | **REINSTATED** | 2026-08-28 | $7.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC121A` | Non Working Day Delivery SVC | **REINSTATED** | 2026-08-28 | $104.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC129A` | HPE Consolidation Logistic Service | **REINSTATED** | 2026-08-28 | $26.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
@@ -116,21 +145,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-08-28 | `P52341-B21` | Constraint |  | **Discontinued** |
-| 2026-08-28 | `P52341-B21` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
-| 2026-08-28 | `P52341-B21` | Max Qty |  | **0** |
-| 2026-08-28 | `P52341-B21` | Component Role |  | **Discontinued Hardware** |
-| 2026-08-28 | `P52341-B21` | HPE Recommended |  | **No** |
-| 2026-09-09 | `P49653-B21` | Discontinued Date | 12/31/2026 | **02/28/2027** |
-| 2026-09-09 | `P49610-B21` | Discontinued Date | 12/31/2026 | **03/31/2027** |
-| 2026-09-09 | `P67102-B21` | Discontinued Date | 07/31/2027 | **10/31/2026** |
-| 2026-09-09 | `P67102-B21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
-| 2026-09-09 | `P67102-B21` | Lifecycle Badge |  | **90** |
-| 2026-09-09 | `P02377-B21` | Discontinued Date | 11/30/2026 | **06/30/2027** |
-| 2026-09-09 | `P48809-B21` | Description | HPE ProLiant DL380 Gen11 4LFF SAS/SATA 12G LP Midplane Drive Cage Kit                       Mid Tray can be selected with 205W or below Processors only. | **HPE ProLiant DL380 Gen11 4LFF SAS/SATA 12G LP Midplane Drive Cage Kit** |
-| 2026-09-09 | `P80855-B21` | Discontinued Date | 04/30/2027 | **06/30/2029** |
-| 2026-09-09 | `P38995-B21` | Discontinued Date | 06/30/2028 | **06/30/2029** |
-| 2026-09-09 | `P38997-B21` | Discontinued Date | 06/30/2028 | **06/30/2029** |
+| 2026-09-10 | `672097-143` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-223` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-353` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-373` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-B33` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-D63` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `672097-KD3` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P39103-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P55209-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P03178-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P38995-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P38997-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P17023-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P36877-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-10 | `P48819-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

@@ -9,7 +9,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const {
   sendCommand, getOCATarget, connectWS, setupDialogAutoHandler,
-  expandSections, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
+  expandSections, deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
   sleep
 } = require('../lib/scraper/cdp.js');
 const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
@@ -74,7 +74,7 @@ async function main() {
     console.log(`🧭 Attempting smart auto-navigation via Partner Portal for "${navQuery}"...`);
     try {
       const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-      const navigation = await navigateToOCAChassis(navQuery);
+      const navigation = await navigateToOCAChassis(navQuery, { forceDiscovery: true });
       chassisDiscovery = navigation.chassisDiscovery || null;
       pageTarget = await getOCATarget();
     } catch (navErr) {
@@ -86,7 +86,7 @@ async function main() {
   // the same exact-product, non-BTO/non-TAA selection gate before extraction.
   if (targetChassisQuery && !chassisDiscovery) {
     const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-    const navigation = await navigateToOCAChassis(targetChassisQuery);
+    const navigation = await navigateToOCAChassis(targetChassisQuery, { forceDiscovery: true });
     chassisDiscovery = navigation.chassisDiscovery || null;
     pageTarget = await getOCATarget();
   }
@@ -375,13 +375,19 @@ async function main() {
     console.log('Extracting page text...');
     const extractedText = await extractChunkedText(ws, 50000);
     totalLen = extractedText.totalLen;
-    const fullText = extractedText.fullText;
+    let fullText = extractedText.fullText;
     console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
 
     // Shared table extraction as row arrays
     console.log('Extracting tables (row arrays)...');
     tables = await extractTablesAsRows(ws);
     console.log(`Extracted ${tables.length} tables.`);
+    const tableDerivedText = deriveTextFromTables(tables);
+    if (fullText.length < 2000 || fullText.length < tableDerivedText.length * 0.1) {
+      console.warn(`⚠️  Reactive body text collapsed (${fullText.length} chars); using ${tableDerivedText.length.toLocaleString()} chars reconstructed losslessly from extracted table rows.`);
+      fullText = tableDerivedText;
+      totalLen = fullText.length;
+    }
 
     // Shared section header extraction
     console.log('Extracting DOM section headers (landmarks)...');
@@ -515,6 +521,22 @@ async function main() {
       console.log(`   ✅ ${meta.cleanName}_Catalog_Rules.json seeded`);
     }
 
+    // A transient QuickSpecs download failure must never erase the last verified
+    // official source during atomic directory promotion. Preserve every PDF in
+    // the exact product workspace; a newly downloaded file with the same name
+    // will already be present in staging and therefore takes precedence.
+    const existingPdfs = fs.readdirSync(liveOutputDir, { withFileTypes: true })
+      .filter(entry => entry.isFile() && entry.name.toLowerCase().endsWith('.pdf'));
+    for (const pdf of existingPdfs) {
+      const stagingPdf = path.join(outputDir, pdf.name);
+      if (!fs.existsSync(stagingPdf)) {
+        fs.copyFileSync(path.join(liveOutputDir, pdf.name), stagingPdf);
+      }
+    }
+    if (existingPdfs.length > 0) {
+      console.log(`   ✅ ${existingPdfs.length} verified PDF source(s) seeded`);
+    }
+
     console.log(`   🔒 Live workspace is safe — all writes go to staging only until audit passes.\n`);
   } else {
     console.log(`\n🆕  No existing live workspace found — this is a fresh first-run for ${meta.cleanName}.`);
@@ -592,8 +614,13 @@ async function main() {
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
-  const livePdfPath    = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
-  const actualPdfPath  = livePdfPath && fs.existsSync(livePdfPath) ? livePdfPath : null;
+  const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
+  const preservedPdf = fs.existsSync(liveOutputDir)
+    ? fs.readdirSync(liveOutputDir).find(name => name.toLowerCase().endsWith('.pdf'))
+    : null;
+  const actualPdfPath = livePdfPath && fs.existsSync(livePdfPath)
+    ? livePdfPath
+    : (preservedPdf ? path.join(liveOutputDir, preservedPdf) : null);
 
   // GAP-2 FIX: Read live catalog JSON to get the actual HW + service SKU counts.
   // Previously, tablesCount (raw DOM tables = 124) was passed instead of the real SKU count (780).

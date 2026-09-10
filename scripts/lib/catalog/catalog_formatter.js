@@ -20,7 +20,8 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
     'Main Category', 'Sub-Category', 'Hierarchy Path', 'Component Role', 'Constraint Text',
     'Subcategory Min Qty', 'Subcategory Max Qty', 'Table Rule/Note', 'Product #', 'Option Type', 'Description', 'Current Qty',
     'Unit Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'Price per GB (USD)',
-    'HPE Recommended', 'Start Date', 'Discontinued Date',
+    'HPE Recommended', 'Availability', 'Lead Time', 'Lead Time Source', 'Lifecycle Status',
+    'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)',
     'Diff Status', 'Previous List Price (USD)', 'Price Change (USD)', 'Price Change (%)', 'Price History Trail'
   ].join('\t')];
 
@@ -52,13 +53,20 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
 
       const isRecommended = (entry.parentCategory === 'Chassis' || (sku['Option Type'] || sku.optionType) === 'CTO') ? 'Yes' : 'No';
 
+      const vendorAttributes = sku.vendorAttributes && typeof sku.vendorAttributes === 'object'
+        ? JSON.stringify(sku.vendorAttributes)
+        : String(sku['Vendor Attributes (JSON)'] || '');
+      const safeCell = value => String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
       rows.push([
         entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintStr, minQtyVal, maxQtyVal,
         (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
         priceVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
-        sku['Price per GB (USD)'] || '', sku['HPE Recommended'] || isRecommended, sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '',
+        sku['Price per GB (USD)'] || '', sku['HPE Recommended'] || isRecommended,
+        sku.Availability || sku['Supply Status'] || '', sku['Lead Time'] || sku.estimatedDelivery || '',
+        sku['Lead Time Source'] || '', sku['Lifecycle Status'] || sku['CLIC Status'] || sku.lifecycleStatus || '',
+        sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '', vendorAttributes,
         sku['Diff Status'] || 'UNCHANGED', sku['Previous List Price (USD)'] || 'N/A', sku['Price Change (USD)'] || '$0.00', sku['Price Change (%)'] || '0.00%', sku['Price History Trail'] || ''
-      ].join('\t'));
+      ].map(safeCell).join('\t'));
     }
   }
   return rows.join('\n');

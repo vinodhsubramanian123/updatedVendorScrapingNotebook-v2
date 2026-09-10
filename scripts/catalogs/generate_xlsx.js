@@ -88,7 +88,7 @@ const servicesData = parseTSV(path.join(scrapsDir, `${filePrefix}_Services_SKUs.
 // ── Build workbook ────────────────────────────────────────────────────────────
 const wb = XLSX.utils.book_new();
 
-// ── Column widths for 24-field SKU schema (19 base + 5 diff fields) ──────────
+// ── Column widths for lossless SKU schema (base, vendor attributes, diff) ────
 // GAP FIX #2: Added Subcategory Min Qty column between Constraint Text and Subcategory Max Qty
 const SKU_COL_WIDTHS = [
   { wch: 25 }, // Main Category
@@ -108,8 +108,13 @@ const SKU_COL_WIDTHS = [
   { wch: 18 }, // Extended Price (USD)
   { wch: 15 }, // Price per GB (USD)
   { wch: 14 }, // HPE Recommended
+  { wch: 24 }, // Availability
+  { wch: 18 }, // Lead Time
+  { wch: 24 }, // Lead Time Source
+  { wch: 20 }, // Lifecycle Status
   { wch: 12 }, // Start Date
   { wch: 16 }, // Discontinued Date
+  { wch: 60 }, // Vendor Attributes (JSON)
   { wch: 16 }, // Diff Status
   { wch: 22 }, // Previous List Price (USD)
   { wch: 18 }, // Price Change (USD)

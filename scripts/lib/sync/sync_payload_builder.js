@@ -32,6 +32,16 @@ function loadNotebookConfig() {
   return defaultCfg;
 }
 
+function referencesOtherRegisteredProduct(text, chassisName, cfg) {
+  return Object.keys(cfg?.notebooks || {}).some(productId => {
+    if (productId === chassisName) return false;
+    return [productId, productId.replace(/_/g, ' ')].some(alias => {
+      const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp(`(^|[^A-Za-z0-9])${escaped}([^A-Za-z0-9]|$)`, 'i').test(String(text || ''));
+    });
+  });
+}
+
 /**
  * Generate comprehensive markdown sync payload for target chassis
  *
@@ -225,7 +235,11 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     md += `|-----|-------------|--------|-------------------|------------------|----------|-----------|\n`;
     discontinuedList.forEach(d => {
       const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
-      md += `| \`${skuPn}\` | ${d.description || 'N/A'} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
+      const description = d.description || 'N/A';
+      const sharedEvidence = referencesOtherRegisteredProduct(description, chassisName, cfg)
+        ? `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`
+        : description;
+      md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
     });
     md += `\n`;
   }

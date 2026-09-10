@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-09T10:09:36.224Z
+**Sync Timestamp**: 2026-09-10T11:42:04.041Z
 
-**Total Verified SKUs**: `653` (`214` Hardware + `439` Services)
+**Total Verified SKUs**: `654` (`359` Hardware + `295` Services)
 
 **Total Synced KnowledgeDeltas**: `3`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 214 | 1 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 439 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **653** | **1** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 359 | 145 | 0 | 1 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 295 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **654** | **145** | **0** | **1** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -62,11 +62,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `AC123A` | HPE Special Request/ Equipment Logistic Service | **DISCONTINUED** | 2026-09-09 | $816.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-09-09 | $44.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-09-09 | $100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P76706-B21` | HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server | **DISCONTINUED** | 2026-09-09 | $21407.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P76706-B21` | HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server | **REINSTATED** | 2026-09-09 | $21407.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
-*No attribute or specification changes recorded across catalog snapshots.*
+| Timestamp | SKU | Attribute | Old Value | New Value |
+|-----------|-----|-----------|-----------|-----------|
+| 2026-09-09 | `P76706-B21` | Discontinued Date | 02/29/2028 | **2026-09-09** |
+| 2026-09-10 | `P76706-B21` | Lead Time Source | OCA configuration estimate | **OCA selected configuration estimate** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

@@ -152,13 +152,14 @@
     "daysActive": 28,
     "lastKnownPrice": "5584.00",
     "fullPriceTrail": "2026-08-12: $5584.00 → 2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-08-22: $5584.00 (↩ REINSTATED) → 2026-08-24: $1.00 (▼) → 2026-09-09: $5584.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "P73283-B21": {
     "productNumber": "P73283-B21",
@@ -170,13 +171,14 @@
     "daysActive": 28,
     "lastKnownPrice": "5980.00",
     "fullPriceTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-22: $5980.00 (↩ REINSTATED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "P73284-B21": {
     "productNumber": "P73284-B21",
@@ -188,13 +190,14 @@
     "daysActive": 28,
     "lastKnownPrice": "6350.00",
     "fullPriceTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-22: $6350.00 (↩ REINSTATED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "P73285-B21": {
     "productNumber": "P73285-B21",
@@ -206,13 +209,14 @@
     "daysActive": 28,
     "lastKnownPrice": "6890.00",
     "fullPriceTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-22: $6890.00 (↩ REINSTATED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "P73286-B21": {
     "productNumber": "P73286-B21",
@@ -224,13 +228,14 @@
     "daysActive": 28,
     "lastKnownPrice": "7120.00",
     "fullPriceTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-22: $7120.00 (↩ REINSTATED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "P73287-B21": {
     "productNumber": "P73287-B21",
@@ -2165,26 +2170,58 @@
   "469774-409": {
     "productNumber": "469774-409",
     "description": "HPE Remove Standard Power Cords",
-    "mainCategory": "Power Cords",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-10",
+    "daysActive": 29,
+    "lastKnownPrice": "1.00",
+    "fullPriceTrail": "2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-09-09: $1.00 → 2026-09-10: $1.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "12/31/2030",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
   },
   "P60283-B21": {
     "productNumber": "P60283-B21",
     "description": "HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit",
-    "mainCategory": "Power Cords",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-10",
+    "daysActive": 29,
+    "lastKnownPrice": "99.00",
+    "fullPriceTrail": "2026-08-12: $99.00 → 2026-08-13: $99.00 → 2026-08-14: $99.00 → 2026-08-16: $99.00 → 2026-08-19: $99.00 → 2026-08-22: $99.00 → 2026-09-09: $99.00 → 2026-09-10: $99.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "11/30/2028",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "P73325-B21": {
     "productNumber": "P73325-B21",
     "description": "HPE ProLiant Compute Localization FIO Kit",
-    "mainCategory": "Power Cords",
-    "subCategory": "(Sub-table)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
     "firstSeenDate": "2026-08-12",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-09-10",
+    "daysActive": 29,
+    "lastKnownPrice": "4.00",
+    "fullPriceTrail": "2026-08-12: $4.00 → 2026-08-13: $4.00 → 2026-08-14: $4.00 → 2026-08-16: $4.00 → 2026-08-19: $4.00 → 2026-08-22: $4.00 → 2026-09-09: $4.00 → 2026-09-10: $4.00 (✕ REMOVED)",
+    "status": "REINSTATED",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "02/28/2028",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "P52341-B21": {
     "productNumber": "P52341-B21",
@@ -4502,13 +4539,14 @@
     "daysActive": 28,
     "lastKnownPrice": "6737.00",
     "fullPriceTrail": "2026-08-12: $6737.00 → 2026-08-12: $6737.00 → 2026-08-13: $6737.00 → 2026-08-14: $6737.00 → 2026-08-24: $6737.00 → 2026-09-09: $6737.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "Q9R66A": {
     "productNumber": "Q9R66A",
@@ -4520,13 +4558,14 @@
     "daysActive": 28,
     "lastKnownPrice": "11229.00",
     "fullPriceTrail": "2026-08-12: $11229.00 → 2026-08-12: $11229.00 → 2026-08-13: $11229.00 → 2026-08-14: $11229.00 → 2026-08-24: $11229.00 → 2026-09-09: $11229.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "Q9R67A": {
     "productNumber": "Q9R67A",
@@ -4538,13 +4577,14 @@
     "daysActive": 28,
     "lastKnownPrice": "24680.00",
     "fullPriceTrail": "2026-08-12: $24680.00 → 2026-08-12: $24680.00 → 2026-08-13: $24680.00 → 2026-08-14: $24680.00 → 2026-08-24: $24680.00 → 2026-09-09: $24680.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "Q9R68A": {
     "productNumber": "Q9R68A",
@@ -4556,13 +4596,14 @@
     "daysActive": 28,
     "lastKnownPrice": "41134.00",
     "fullPriceTrail": "2026-08-12: $41134.00 → 2026-08-12: $41134.00 → 2026-08-13: $41134.00 → 2026-08-14: $41134.00 → 2026-08-24: $41134.00 → 2026-09-09: $41134.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-10"
   },
   "Q5T84A": {
     "productNumber": "Q5T84A",
@@ -6956,6 +6997,358 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-09-09",
+    "status": "ACTIVE"
+  },
+  "Q9V62A": {
+    "productNumber": "Q9V62A",
+    "description": "HPE Performance Cluster Manager Media Kit",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "N0U73A": {
+    "productNumber": "N0U73A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3-year Subscription 24x7 Support Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OEM Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "N0U75A": {
+    "productNumber": "N0U75A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5-year Subscription 24x7 Support Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OEM Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45916-291": {
+    "productNumber": "P45916-291",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45916-B21": {
+    "productNumber": "P45916-B21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46005-291": {
+    "productNumber": "P46005-291",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46005-B21": {
+    "productNumber": "P46005-B21",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46195-B21": {
+    "productNumber": "P46195-B21",
+    "description": "Microsoft Windows Server 2022 16-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46196-B21": {
+    "productNumber": "P46196-B21",
+    "description": "Microsoft Windows Server 2022 4-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-AA1": {
+    "productNumber": "P46199-AA1",
+    "description": "Microsoft Windows Server 2022 2-core Standard Additional License Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-AB1": {
+    "productNumber": "P46199-AB1",
+    "description": "Microsoft Windows Server 2022 2-core Standard Additional License Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-B21": {
+    "productNumber": "P46199-B21",
+    "description": "Microsoft Windows Server 2022 2-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46212-B21": {
+    "productNumber": "P46212-B21",
+    "description": "Microsoft Windows Server 2022 16-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46213-B21": {
+    "productNumber": "P46213-B21",
+    "description": "Microsoft Windows Server 2022 4-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46214-B21": {
+    "productNumber": "P46214-B21",
+    "description": "Microsoft Windows Server 2022 2-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77097-B21": {
+    "productNumber": "P77097-B21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-B21": {
+    "productNumber": "P11086-B21",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-051": {
+    "productNumber": "P11086-051",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-041": {
+    "productNumber": "P11086-041",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-061": {
+    "productNumber": "P11086-061",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-291": {
+    "productNumber": "P11086-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-071": {
+    "productNumber": "P11086-071",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11085-291": {
+    "productNumber": "P11085-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-B21": {
+    "productNumber": "P11083-B21",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-051": {
+    "productNumber": "P11083-051",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-041": {
+    "productNumber": "P11083-041",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-061": {
+    "productNumber": "P11083-061",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-291": {
+    "productNumber": "P11083-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-071": {
+    "productNumber": "P11083-071",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11084-291": {
+    "productNumber": "P11084-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-AA1": {
+    "productNumber": "P46123-AA1",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-AB1": {
+    "productNumber": "P46123-AB1",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-371": {
+    "productNumber": "P46123-371",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit English/Korean/Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-021": {
+    "productNumber": "P46123-021",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-A21": {
+    "productNumber": "P46123-A21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46128-B21": {
+    "productNumber": "P46128-B21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter w/Reassignment Reseller Option Kit en/fr/de/es SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46128-291": {
+    "productNumber": "P46128-291",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter with Reassignment Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-AA1": {
+    "productNumber": "P46171-AA1",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-AB1": {
+    "productNumber": "P46171-AB1",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-371": {
+    "productNumber": "P46171-371",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit English/Korean/Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-021": {
+    "productNumber": "P46171-021",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-A21": {
+    "productNumber": "P46171-A21",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "M6K30A": {
+    "productNumber": "M6K30A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3 Year Subscription 24x7 Support Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "M6K32A": {
+    "productNumber": "M6K32A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5 Year Subscription 24x7 Support Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-10",
     "status": "ACTIVE"
   }
 }

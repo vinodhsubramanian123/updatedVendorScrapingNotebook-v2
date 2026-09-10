@@ -1,27 +1,130 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Accessories & Infrastructure	Energy Star Configuration Presets	optional	0	Optional	1	Yes	1
-Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	1	2	34	Yes	1
-Cooling / Thermal	Standard & Performance Heat Sinks	max 6	0	6	6	Yes	2
-Memory	DDR5 Registered Smart Memory	max 32	0	32	8	Yes	7
-Memory	DDR4 Registered Smart Memory	max 32	0	32	1	Yes	1
-PCIe Risers	Secondary PCIe Risers	max 3	0	3	8	Yes	1
-Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	0	24	7	Yes	4
-PCIe Risers	Tertiary PCIe Risers	max 3	0	3	20	Yes	3
-Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	0	24	3	Yes	2
-PCIe Risers	Primary PCIe Risers	max 3	0	3	9	Yes	3
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	0	4	9	Yes	1
-Storage Controllers	Smart Array SAS Controllers	max 4	0	4	1	Yes	1
-Accessories & Infrastructure	System Options	optional	0	Optional	71	Yes	25
-Cables & Enablement Kits	Smart Storage Batteries		0	N/A	4	No	0
-Storage Controllers	Storage Controller Cable Kits	max 4	0	4	38	Yes	3
-Software & Licenses	Server Management & Operating System Licenses	no max	0	Unlimited	683	Yes	27
-Networking	PCIe Networking Adapters	max 8	0	8	39	Yes	4
-Networking	OCP3 Networking Adapters	max 8	0	8	18	Yes	3
-Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	0	24	21	Yes	2
-Cables & Enablement Kits	Power Cords & Jumper Cables		0	N/A	31	Yes	2
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	0	Optional	8	Yes	2
-Power Supplies	Flex Slot Power Supplies	min 1, max 2	1	2	1	Yes	1
-Processor	Intel Xeon Scalable Processors	min 1, max 2	1	2	3	Yes	1
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	3	Yes	3
-Cooling / Thermal	High Performance & Standard Fan Kits	max 6	0	6	5	Yes	1
-Chassis	Variants	Discontinued	0	Discontinued	6	Yes	1
+Unknown	Logical Size Settings	max 1	0	1	0	No	0
+Cables	Fibre Channel Cables and SFP	max 1	0	1	0	No	0
+AI-at-Scale	AI-at-Scale	no max	0	Unlimited	0	No	0
+Unknown	MS Windows Server	no max	0	Unlimited	0	No	0
+Unknown	Resale Option Kit	no max	0	Unlimited	0	No	0
+Unknown	SUSE Linux Enterprise Server	no max	0	Unlimited	0	No	0
+Unknown	Microsoft Windows CAL Packs	no max	0	Unlimited	0	No	0
+Unknown	VMware vCloud Products	no max	0	Unlimited	0	No	0
+Energy Star	Energy Star	max 1	0	1	0	No	0
+Processor	Processor	max 2	0	2	34	Yes	1
+Processor	Heatsink Kit	max 2	0	2	0	No	0
+Memory	Memory	max 32	0	32	9	Yes	7
+Memory	Memory Blank Kit	max 1	0	1	3	Yes	2
+Smart Chassis	Top Selling Smart Chassis Combinations	no max	0	Unlimited	0	No	0
+Smart Chassis	Drive Cage	max 9	0	9	0	No	0
+Smart Chassis	Riser Cards	required	1	Required	0	No	0
+Smart Chassis	Riser Accessories	max 6	0	6	0	No	0
+Smart Chassis	SAS Controller	max 5	0	5	0	No	0
+Ambient Temperature	Smart Chassis Configuration	required	1	Required	0	No	0
+Ambient Temperature	AmbientTemperature	required	1	Required	0	No	0
+Storage Devices	Smart Storage Battery	max 2	0	2	0	No	0
+Storage Devices	Internal Storage Controller Cables	max 3	0	3	0	No	0
+Storage Devices	RAID Settings	max 1	0	1	0	No	0
+Storage Devices	Optical Drive	max 1	0	1	0	No	0
+Storage Devices	Optical Drive Accessories	max 2	0	2	0	No	0
+Security Options	Security Hardware	max 3	0	3	0	No	0
+Factory Configuration Settings	Factory Configuration Settings	max 1	0	1	0	No	0
+Factory Configuration Settings	Trusted Supply Chain	max 1	0	1	0	No	0
+Factory Configuration Settings	Drive Configuration Settings	max 1	0	1	0	No	0
+Factory Configuration Settings	Complex Configuration	max 1	0	1	0	No	0
+Factory Configuration Settings	Identifier/Tracking SKUs	max 1	0	1	0	No	0
+Factory Configuration Settings	vSAN Tracking SKUs	max 1	0	1	0	No	0
+Factory Configuration Settings	iLO Common Password	max 1	0	1	0	No	0
+Networking	Ethernet PCIe	max 5	0	5	15	Yes	2
+Networking	InfiniBand PCIe	max 3	0	3	14	Yes	1
+Networking	Transceivers	max 16	0	16	18	Yes	1
+Networking	Fibre Channel HBA	max 3	0	3	6	Yes	1
+Networking	OCP Ethernet	max 2	0	2	11	Yes	1
+Networking	Upgrades	max 2	0	2	0	No	0
+Networking	Networking Accessories	max 1	0	1	1	Yes	1
+Accessories	Management Hardware	max 1	0	1	0	No	0
+Accessories	Memory Setting	max 1	0	1	0	No	0
+OS Boot Device	OS Boot Device	max 3	0	3	0	No	0
+Manufacturing Services	Manufacturing Services	max 3	0	3	0	No	0
+Rack Options	Rack Options	max 3	0	3	0	No	0
+Graphics Options	Graphics	max 5	0	5	0	No	0
+Graphics Options	Graphics Accessories	max 3	0	3	0	No	0
+Power Supplies	Power Supplies	max 2	0	2	1	Yes	1
+Power Supplies	Power Cooling Options	max 3	0	3	0	No	0
+Power Supplies	Power Cords	max 2	0	2	0	No	0
+HPC Software Products	HPC Software Products	no max	0	Unlimited	0	No	0
+HPC Software Products	High Availability Computing - Cluster Software	no max	0	Unlimited	0	No	0
+HPC Software Products	Partner Software - Interconnect Management Array	no max	0	Unlimited	0	No	0
+HPC Software Products	NVIDIA GPU SW	no max	0	Unlimited	0	No	0
+HPC Software Products	Partner Software - Operating System	no max	0	Unlimited	0	No	0
+HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	7	Yes	1
+HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	0	1	0	No	0
+OEM Software	OEM Software	no max	0	Unlimited	0	No	0
+ProLiant Media Kits and License	Proliant Software Media Kits	no max	0	Unlimited	0	No	0
+ProLiant Media Kits and License		no max	0	Unlimited	0	No	0
+ProLiant Media Kits and License	SUSE Add-ons	no max	0	Unlimited	0	No	0
+Server Management Software	iLO	no max	0	Unlimited	0	No	0
+Server Management Software	OneView Management Software	max 1	0	1	0	No	0
+Hybrid RAID	INTEL VROC Products	max 1	0	1	0	No	0
+Supported Operating System	Supported Operating System	no max	0	Unlimited	0	No	0
+Supported Operating System	Red Hat OpenShift Platform Container	no max	0	Unlimited	0	No	0
+Supported Operating System	SUSE containers	no max	0	Unlimited	0	No	0
+Virtualization	HPE Virtualization	no max	0	Unlimited	0	No	0
+Virtualization	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	0	No	0
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	5	Yes	1
+Accessories & Infrastructure	Energy Star	max 1	0	1	2	Yes	2
+Cooling / Thermal	Heatsink Kit	max 2	0	2	2	Yes	2
+Networking	Fibre Channel Cables and SFP	max 1	0	1	5	Yes	1
+Drive Enclosures / Drives	Drive Cage	max 9	0	9	16	Yes	5
+Accessories & Infrastructure	Compute Ops Management Enablement SKUs	max 1	0	1	4	Yes	3
+Cables & Enablement Kits	Resale Option Kit	no max	0	Unlimited	15	Yes	1
+PCIe Risers	Riser Cards	required	1	Required	10	Yes	2
+PCIe Risers	Riser Accessories	max 6	0	6	9	Yes	3
+Storage Controllers	SAS Controller	max 5	0	5	10	Yes	2
+Accessories & Infrastructure	AmbientTemperature	required	1	Required	6	Yes	1
+Cables & Enablement Kits	Smart Storage Battery	max 2	0	2	4	Yes	1
+Storage Controllers	Internal Storage Controller Cables	max 3	0	3	29	Yes	1
+Storage Controllers	RAID Settings	max 1	0	1	6	Yes	1
+Drive Enclosures / Drives	Optical Drive	max 1	0	1	3	Yes	2
+Cables & Enablement Kits	Optical Drive Accessories	max 2	0	2	1	Yes	1
+Accessories & Infrastructure	Security Hardware	max 3	0	3	4	Yes	2
+Cables & Enablement Kits	Factory Configuration Settings	max 1	0	1	1	Yes	1
+Accessories & Infrastructure	Trusted Supply Chain	max 1	0	1	1	Yes	1
+Drive Enclosures / Drives	Drive Configuration Settings	max 1	0	1	2	Yes	1
+Drive Enclosures / Drives	Complex Configuration	max 1	0	1	3	Yes	1
+Accessories & Infrastructure	Logical Size Settings	max 1	0	1	1	Yes	1
+Software & Licenses	Identifier/Tracking SKUs	max 1	0	1	1	Yes	1
+Accessories & Infrastructure	vSAN Tracking SKUs	max 1	0	1	1	Yes	1
+Software & Licenses	vSAN Tracking SKUs	max 1	0	1	1	Yes	1
+Software & Licenses	iLO Common Password	max 1	0	1	1	Yes	1
+Networking	Drive Configuration Settings	max 1	0	1	1	Yes	1
+Networking	Energy Star	max 1	0	1	1	Yes	1
+Cables & Enablement Kits	Energy Star	max 1	0	1	33	Yes	4
+Cables & Enablement Kits	Upgrades	max 2	0	2	6	Yes	1
+Cables & Enablement Kits	Management Hardware	max 1	0	1	2	Yes	2
+Memory	Memory Setting	max 1	0	1	2	Yes	2
+Cables & Enablement Kits	OS Boot Device	max 3	0	3	6	Yes	1
+Accessories & Infrastructure	Accessories & Infrastructure Options	max 3	0	3	2	Yes	1
+Accessories & Infrastructure	Rack Options	max 3	0	3	4	Yes	1
+Graphics & GPU	Graphics Accessories	max 3	0	3	3	Yes	1
+Power Supplies	Upgrades	max 2	1	2	4	Yes	2
+Cooling / Thermal	Power Cooling Options	max 3	0	3	5	Yes	1
+Cables & Enablement Kits	Power Cords	max 2	0	2	24	Yes	2
+Software & Licenses	HPC Software Products	no max	0	Unlimited	139	Yes	2
+Software & Licenses	OEM Software	no max	0	Unlimited	9	Yes	3
+Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	6	Yes	3
+Software & Licenses	SUSE Add-ons	no max	0	Unlimited	2	Yes	2
+Software & Licenses	iLO	no max	0	Unlimited	6	Yes	1
+Software & Licenses	OneView Management Software	max 1	0	1	31	Yes	3
+Software & Licenses	Supported Operating System	no max	0	Unlimited	161	Yes	6
+Software & Licenses	Red Hat OpenShift Platform Container	no max	0	Unlimited	43	Yes	3
+Software & Licenses	SUSE containers	no max	0	Unlimited	79	Yes	5
+Cables & Enablement Kits	Power Cords & Jumper Cables	Discontinued	0	Discontinued	1	Yes	1
+Support Services	Manufacturing Services	max 3	0	3	1	Yes	1
+Graphics & GPU	Graphics	max 5	0	5	5	Yes	1
+Software & Licenses	MS Windows Server	no max	0	Unlimited	3	Yes	1
+Graphics & GPU	NVIDIA GPU SW	no max	0	Unlimited	61	Yes	2
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	19	Yes	1
+Software & Licenses	Partner Software - Interconnect Management Array	no max	0	Unlimited	3	Yes	1
+Software & Licenses	Partner Software - Operating System	no max	0	Unlimited	30	Yes	1
+Software & Licenses	Server Management & Operating System Licenses	no max	0	Unlimited	26	Yes	1
+Storage Controllers	INTEL VROC Products	max 1	0	1	4	Yes	1
+Software & Licenses	HPE Virtualization	no max	0	Unlimited	3	Yes	1
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	36	Yes	1

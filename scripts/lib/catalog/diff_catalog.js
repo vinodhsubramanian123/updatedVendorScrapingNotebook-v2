@@ -62,6 +62,28 @@ function appendTrailEvent(trail, event) {
   // Otherwise keep existing (higher-priority) entry silently
 }
 
+function sanitizePriceTrail(trail) {
+  const byDate = new Map();
+  for (const rawEvent of Array.isArray(trail) ? trail : []) {
+    const event = { ...rawEvent, price: parsePrice(rawEvent?.price) };
+    const existing = byDate.get(event.date);
+    if (!existing || STATUS_PRIORITY.indexOf(event.status) >= STATUS_PRIORITY.indexOf(existing.status)) {
+      byDate.set(event.date, event);
+    }
+  }
+  const events = [...byDate.values()].sort((left, right) => String(left.date).localeCompare(String(right.date)));
+  return events.filter((event, index) => {
+    if (!(event.price > 0) || index === 0 || index === events.length - 1) return true;
+    const previous = [...events.slice(0, index)].reverse().find(item => item.price > 0);
+    const next = events.slice(index + 1).find(item => item.price > 0);
+    if (!previous || !next) return true;
+    const neighborsAgree = Math.max(previous.price, next.price) / Math.min(previous.price, next.price) <= 1.1;
+    const isolatedSpike = event.price / Math.max(previous.price, next.price) >= 10;
+    const isolatedCollapse = Math.min(previous.price, next.price) / event.price >= 10;
+    return !(neighborsAgree && (isolatedSpike || isolatedCollapse));
+  });
+}
+
 /**
  * Build a human-readable price trail string.
  * Uses last non-zero price for arrow direction to avoid $0→$0 noise.
@@ -106,7 +128,13 @@ function dedupeAttributeHistory(history) {
 function firstAttributeValue(item, keys) {
   for (const key of keys) {
     const value = item?.[key];
-    if (value !== undefined && value !== null && String(value).trim()) return String(value).trim();
+    if (value !== undefined && value !== null && String(value).trim()) {
+      if (typeof value === 'object') {
+        const sorted = Object.fromEntries(Object.entries(value).sort(([left], [right]) => left.localeCompare(right)));
+        return JSON.stringify(sorted);
+      }
+      return String(value).trim();
+    }
   }
   return '';
 }
@@ -127,7 +155,11 @@ const TRACKED_ATTRIBUTES = [
   { keys: ['Start Date'], label: 'Start Date' },
   { keys: ['Discontinued Date'], label: 'Discontinued Date' },
   { keys: ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus'], label: 'Lifecycle Status' },
-  { keys: ['Lifecycle Badge', 'lifecycleBadge'], label: 'Lifecycle Badge' }
+  { keys: ['Lifecycle Badge', 'lifecycleBadge'], label: 'Lifecycle Badge' },
+  { keys: ['Availability', 'Supply Status'], label: 'Availability' },
+  { keys: ['Lead Time', 'estimatedDelivery'], label: 'Lead Time' },
+  { keys: ['Lead Time Source'], label: 'Lead Time Source' },
+  { keys: ['vendorAttributes', 'Vendor Attributes'], label: 'Vendor Attributes' }
 ];
 
 function recordAttributeDeltas(sku, prevSku, context, attributeHistory) {
@@ -190,6 +222,9 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   if (fs.existsSync(priceHistoryPath)) {
     try {
       priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
+      for (const [productNumber, trail] of Object.entries(priceHistory)) {
+        priceHistory[productNumber] = sanitizePriceTrail(trail);
+      }
     } catch (err) {
       console.warn(`  ⚠️ Warning: Corrupted ${path.basename(priceHistoryPath)}: ${err.message}`);
     }
@@ -576,4 +611,4 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   return { enrichedCatalog: catalogData, diffSummary, prevSnapshotPath };
 }
 
-module.exports = { processCatalogDiff, parsePrice, appendTrailEvent, dedupeAttributeHistory };
+module.exports = { processCatalogDiff, parsePrice, appendTrailEvent, dedupeAttributeHistory, sanitizePriceTrail };

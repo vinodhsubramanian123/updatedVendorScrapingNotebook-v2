@@ -4,8 +4,9 @@
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 
-function generateLifecycleRecommendations(items, catalogData = null) {
+function generateLifecycleRecommendations(items, catalogData = null, options = {}) {
   const recommendations = [];
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
@@ -29,6 +30,8 @@ function generateLifecycleRecommendations(items, catalogData = null) {
     const catalogItem = skuIndex.get(cleanSku);
     const catalogStatus = String(catalogItem?.lifecycleStatus || '').toUpperCase();
     const alternativeSku = catalogItem?.skuData?.['Alternative SKU'] || '';
+    const discontinuedDate = catalogItem?.skuData?.['Discontinued Date'] || catalogItem?.skuData?.discontinuedDate || it.discontinuedDate || '';
+    const retirement = analyzeRetirementDate(discontinuedDate, options);
 
     if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
       recommendations.push({
@@ -45,6 +48,16 @@ function generateLifecycleRecommendations(items, catalogData = null) {
         risk: 'EOL Warning (90-Day)',
         action: 'Plan upgrade within 90 days',
         alternative: alternativeSku || 'Prepare transition to next-gen equivalent'
+      });
+    } else if (retirement.known && (retirement.isNear || retirement.isPast)) {
+      recommendations.push({
+        sku: cleanBaseSKU(it.sku),
+        originalDesc: it.description,
+        risk: retirement.isPast ? 'Discontinuation Date Passed' : 'Approaching Discontinuation',
+        action: retirement.isPast ? 'Do not use for a new design; select a supported successor' : 'Confirm supply and offer a supported successor option',
+        alternative: alternativeSku || 'Resolve the closest supported equivalent from the same product-generation catalog',
+        discontinuedDate: retirement.retirementDate,
+        daysRemaining: retirement.daysRemaining
       });
     }
   }

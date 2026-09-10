@@ -2,43 +2,73 @@
   "P22020-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 89,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 89,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P52349-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 373,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 373,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72008-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 86,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 86,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78764-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 110,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 110,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72006-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 118,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 118,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P73006-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72891-B21": [
@@ -86,1471 +116,2521 @@
   "P69259-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1744,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1744,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69262-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7371,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7371,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69263-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 9654,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 9654,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71859-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1433,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1433,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71862-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2157,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2157,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71871-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 8600,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 8600,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71874-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 10617,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 10617,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88840-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 14189,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 14189,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88842-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 11873,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 11873,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88850-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2280,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2280,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69258-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1160,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1160,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69260-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2645,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2645,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69261-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 5173,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 5173,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71865-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2958,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2958,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71868-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 5801,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 5801,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88844-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 8991,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 8991,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88846-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 6636,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 6636,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88848-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 3262,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 3262,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88852-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1563,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1563,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72580-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 202,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 202,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50311-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 13909,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 13909,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50312-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28532,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64986-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28532,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50309-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7439,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64985-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 13909,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 13909,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64987-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47056,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47056,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64988-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60190,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60190,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P66676-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47056,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47056,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69982-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60190,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60190,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50309-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7439,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50311-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 13909,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 13909,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P50312-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28532,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64984-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7439,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64984-F21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7439,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64985-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 13909,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 13909,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64986-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28532,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64987-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47056,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47056,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P64988-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60190,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60190,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P66676-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47056,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47056,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69982-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60190,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60190,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P47777-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 5999,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 5999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P47785-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 3499,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 3499,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "804398-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1775,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1775,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P58335-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 4599,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 4599,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P01366-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 110,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 110,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P02377-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 397,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 397,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P65038-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 397,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 397,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72000-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 57,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 57,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72002-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 69,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 69,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P73003-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 160,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 160,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "339777-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "339778-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "339779-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "339780-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "339781-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "389692-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71981-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 225,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 225,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72004-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 296,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 296,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71977-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 474,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 474,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71985-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 380,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 380,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P57803-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 68440,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 68440,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P61191-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 42682,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 42682,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69237-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 30682,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 30682,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70669-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 40759,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 40759,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70672-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 68106,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 68106,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77265-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 24988,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 24988,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78787-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 35088,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 35088,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87719-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17948,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17948,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87721-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 27397,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 27397,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91084-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 19893,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 19893,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91086-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28574,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28574,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91088-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 43643,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 43643,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91090-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17851,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17851,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91092-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 28196,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 28196,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91094-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47719,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47719,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91096-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 85736,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 85736,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91098-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 36346,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 36346,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91100-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 61895,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 61895,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91102-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 111990,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 111990,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91229-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37112,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37112,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91233-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 123319,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 123319,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P61179-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47029,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47029,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P61183-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 75784,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 75784,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P63930-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 29188,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 29188,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P63934-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 49219,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 49219,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69234-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 19743,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 19743,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69239-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 44109,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 44109,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70397-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 107137,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 107137,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77053-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 61754,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 61754,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77055-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 113376,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 113376,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77059-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 58819,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 58819,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77061-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 107983,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 107983,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78914-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17539,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17539,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78923-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 153423,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 153423,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79122-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 118713,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 118713,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85128-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 83307,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 83307,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85731-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37278,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37278,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P57799-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 36705,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 36705,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P61187-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 118842,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 118842,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P61195-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60093,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60093,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P63938-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 96543,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 96543,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69241-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 20109,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 20109,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69243-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 27452,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 27452,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69245-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 44109,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 44109,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P69546-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 75476,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 75476,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70392-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 34977,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 34977,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70395-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60793,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60793,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70399-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 34977,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 34977,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70401-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 53774,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 53774,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70403-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 117906,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 117906,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P70674-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 60093,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 60093,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77050-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 31576,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 31576,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77057-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 40700,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 40700,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77262-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17396,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17396,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77267-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 42790,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 42790,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77269-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 16153,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 16153,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77271-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 24851,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 24851,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77273-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 54664,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 54664,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77275-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 86159,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 86159,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78784-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 22771,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 22771,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78789-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37546,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37546,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78791-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 65439,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 65439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78793-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 127927,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 127927,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78917-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 30137,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 30137,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78919-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 51964,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 51964,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P78921-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 99535,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 99535,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79065-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 180169,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 180169,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79147-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 153423,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 153423,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79965-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 169476,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 169476,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85114-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 19329,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 19329,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85117-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 27764,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 27764,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85119-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 44163,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 44163,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85121-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17948,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17948,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85124-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 27397,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 27397,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85126-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47241,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47241,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85733-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 63483,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 63483,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85735-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 114862,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 114862,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85739-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 38063,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 38063,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85741-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 48943,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 48943,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85743-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 126482,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 126482,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P85745-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 181026,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 181026,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87715-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 19329,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 19329,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87717-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 27764,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 27764,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87723-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 47241,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 47241,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P91231-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 62558,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 62558,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79615-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 140919,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 140919,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79618-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 284757,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 284757,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79620-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 140919,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 140919,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P79623-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 255131,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 255131,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86016-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17161,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17161,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86018-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 23477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 23477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86020-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37804,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37804,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86024-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17161,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17161,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86026-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 23477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 23477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86028-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37804,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37804,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86030-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 64477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 64477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86032-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 128913,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 128913,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86746-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 210628,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 210628,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P86748-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 400156,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 400156,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88535-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 17161,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 17161,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88537-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 23477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 23477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88539-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 23477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 23477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88541-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 37804,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 37804,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P88543-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 64477,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 64477,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P73214-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P35876-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P63226-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P08040-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71989-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 255,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 255,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71991-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 320,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 320,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P08443-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1680,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1680,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26253-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1105,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1105,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26259-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 940,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 940,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26262-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1184,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1184,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P42044-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1500,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1500,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P51178-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 485,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 485,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P08458-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 3770,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 3770,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26264-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2598,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2598,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P51181-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 485,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 485,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P10115-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1231,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1231,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P42041-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1398,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1398,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26256-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 940,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 940,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P08449-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 830,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 830,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P10097-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1105,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1105,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P10106-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1680,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1680,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P26269-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2598,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2598,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "453151-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 427,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 427,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "453154-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 426,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 426,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "455883-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 842,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 842,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "455886-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1751,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1751,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "845398-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 2110,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2110,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "JL486A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 5199,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 5199,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P48183-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 7799,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 7799,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P81162-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 14299,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 14299,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71992-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 80,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 80,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P81160-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 14299,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 14299,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71995-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 24,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 24,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P73002-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 44,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 44,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72581-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 123,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 123,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P54290-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 891,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 891,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P43150-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 692,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 692,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P44975-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 444,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 444,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0H80A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 181,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 181,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "A0K02A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 34,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 34,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "A0N33A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 78,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 78,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "875519-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 89,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 89,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72582-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 112,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 112,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P72583-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 81,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 81,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71998-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 20,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P87008-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 200,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 200,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46191-AA1": [
@@ -1766,15 +2846,25 @@
   "P46155-291": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 99999,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46155-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 988,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 988,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77096-291": [
@@ -1782,13 +2872,23 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77096-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 1147,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77099-291": [
@@ -1796,89 +2896,1022 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "512485-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 399,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BD505A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 469,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 469,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "512487-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 399,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BD507A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 469,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 469,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "E6U59ABE": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 399,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "E6U64ABE": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 467,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 467,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "512486-B21": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 399,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BD506A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 469,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 469,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5T84A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 752,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 752,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5T85A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 3390,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 3390,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q2A48A": [
     {
       "date": "2026-09-09",
-      "price": 0,
+      "price": 249,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 249,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P71964-B21": [
     {
       "date": "2026-09-09",
       "price": 2375,
+      "status": "ADDED"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 2375,
+      "status": "ATTRIBUTE_CHANGED"
+    }
+  ],
+  "AF556A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF557A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF568A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF570A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF573A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF558A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF559A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF560A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF561A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF562A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF564A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF565A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF566A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF567A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF569A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF572A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AF591A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46195-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46196-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46199-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46199-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46199-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46212-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46213-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46214-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77104-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77105-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77106-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77106-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77106-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77107-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77108-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77109-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45916-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45916-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46005-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46005-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46173-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46174-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46174-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77095-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77095-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77097-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77097-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77098-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77098-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "M6K34A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "N0U73A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "N0U75A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "M6K30A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "M6K32A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "E5Y44A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "E5Y43A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "E5Y36A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P8B31A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P8B24A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P8B25A": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-051": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-041": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-061": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11086-071": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-051": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-041": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-061": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11083-071": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-051": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-041": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-061": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45879-071": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-051": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-041": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-061": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P45862-071": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77125-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77125-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77124-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77124-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11085-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P11084-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46172-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46172-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46172-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46172-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46172-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46123-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46123-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46123-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46123-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46123-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46128-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46128-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46171-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46171-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46171-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46171-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P46171-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77103-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77102-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77102-B21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77101-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-AA1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-AB1": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-291": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-021": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-A21": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P77100-371": [
+    {
+      "date": "2026-09-10",
+      "price": 0,
       "status": "ADDED"
     }
   ]

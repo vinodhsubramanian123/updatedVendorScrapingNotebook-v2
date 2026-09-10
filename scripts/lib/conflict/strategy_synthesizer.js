@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna } = require('./workload_dna.js');
 const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
@@ -54,6 +54,42 @@ function loadCatalogAndPrices(targetDir) {
   }
 
   return { loadedCatalog };
+}
+
+function parseLeadTimeDays(value) {
+  const text = String(value || '').toLowerCase();
+  const range = text.match(/(\d+)\s*(?:-|to)\s*(\d+)\s*days?/);
+  if (range) return (Number(range[1]) + Number(range[2])) / 2;
+  const single = text.match(/(\d+)\s*days?/);
+  return single ? Number(single[1]) : null;
+}
+
+function createSupplyAttributeResolver(catalog) {
+  const index = buildCatalogSkuIndex(catalog || {});
+  return sku => {
+    const data = index.get(cleanBaseSKU(sku))?.skuData || {};
+    const leadTime = data['Lead Time'] || data.estimatedDelivery || '';
+    return {
+      availability: data.Availability || data['Supply Status'] || 'Unknown',
+      leadTime,
+      leadTimeDays: parseLeadTimeDays(leadTime)
+    };
+  };
+}
+
+function calculateSupplyMetrics(parts, resolveSupply) {
+  const attributes = (parts || []).map(part => resolveSupply(part.sku));
+  const knownLeadTimes = attributes.map(a => a.leadTimeDays).filter(Number.isFinite);
+  const unavailableCount = attributes.filter(a => /unavailable|out of stock|not yet available/i.test(a.availability)).length;
+  return {
+    knownLeadTimeCount: knownLeadTimes.length,
+    unknownLeadTimeCount: attributes.length - knownLeadTimes.length,
+    unavailableCount,
+    estimatedAverageLeadTimeDays: knownLeadTimes.length
+      ? Number((knownLeadTimes.reduce((sum, days) => sum + days, 0) / knownLeadTimes.length).toFixed(1))
+      : null,
+    rankingPolicy: 'Technical validity and BOQ closeness first; lead time breaks otherwise-equal alternatives'
+  };
 }
 
 // -----------------------------------------------------------------------------
@@ -286,7 +322,7 @@ function buildRank3PcieStorageBranchParts(ctx) {
 // -----------------------------------------------------------------------------
 // Scoring and Normalization Helpers
 // -----------------------------------------------------------------------------
-function scoreAndSortCandidates(rawCandidates, items) {
+function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
   const requestedSkuSet = new Set(items.map(it => cleanBaseSKU(it.sku)).filter(Boolean));
 
   rawCandidates.forEach(cand => {
@@ -294,9 +330,18 @@ function scoreAndSortCandidates(rawCandidates, items) {
     const matchRatio = requestedSkuSet.size > 0 ? (matchedCount / requestedSkuSet.size) : 1.0;
     cand.intentMatchRatio = parseFloat(matchRatio.toFixed(2));
     cand.dynamicScore = parseFloat(((matchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
+    cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
   });
 
-  rawCandidates.sort((a, b) => b.dynamicScore - a.dynamicScore);
+  rawCandidates.sort((a, b) => {
+    if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
+    if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
+      return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
+    }
+    const leadA = a.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
+    const leadB = b.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
+    return leadA - leadB;
+  });
   return requestedSkuSet;
 }
 
@@ -610,6 +655,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const dna = extractWorkloadDna(items);
   const { loadedCatalog } = loadCatalogAndPrices(targetDir);
   const getPrice = createPriceResolver(targetDir);
+  const resolveSupply = createSupplyAttributeResolver(loadedCatalog);
 
   const baseCost = items.reduce((acc, it) => acc + (getPrice(it.sku) * (it.quantity || 1)), 0);
   const fixes = evalResults.missingDependencies || [];
@@ -915,7 +961,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     }
   ];
 
-  const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items);
+  const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply);
   const baselineCost = rawCandidates[0]?.estimatedCostUsd || rank1Cost;
 
   return normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, { ...options, priceResolver: getPrice });
@@ -924,6 +970,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 module.exports = {
   synthesize5TierRankedSolutions,
   synthesizeStrategies: synthesize5TierRankedSolutions,
+  parseLeadTimeDays,
+  calculateSupplyMetrics,
   setPhysicalMathValidator,
   getPhysicalMathValidator,
   _clearStrategyAddonsCache

@@ -36,7 +36,7 @@ function refreshMasterCatalogCsv(payloadPath, chassisName) {
 function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
   const text = String(payloadText || '');
   const isVerifiedSharedLine = line => {
-    const marker = line.match(/^\s*\d+\. \[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
+    const marker = line.match(/\[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
     if (!marker) return false;
     const targetListed = marker[1].split(',').some(product =>
       normalizeLearningText(product) === normalizeLearningText(chassisName)
@@ -66,6 +66,28 @@ function isGroundedCanary(parsed, sourceId, chassisName) {
   ].map(String));
   return answer.length > 20 && answer.toLowerCase().includes(String(chassisName).toLowerCase()) &&
     citedIds.has(String(sourceId)) && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(answer);
+}
+
+function isDriveFreshnessReportClean(output) {
+  const text = String(output || '').trim();
+  if (/all drive sources are up to date/i.test(text)) return true;
+  try {
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) && parsed.length === 0;
+  } catch (_) {
+    return false;
+  }
+}
+
+function buildTrustedSourceIds(existing = {}, newSourceId = null, driveSourceVerified = null) {
+  const quarantined = new Set((existing.quarantinedSourceIds || []).map(String));
+  return Array.from(new Set([
+    ...(existing.officialSourceIds || []),
+    ...(existing.certifiedCatalogSourceIds || []),
+    ...(existing.verifiedLearningSourceIds || []),
+    newSourceId,
+    driveSourceVerified
+  ].filter(sourceId => sourceId && !quarantined.has(String(sourceId)))));
 }
 
 /**
@@ -264,6 +286,14 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
               env: { ...process.env, PATH: extendedPath }
             });
           }
+          const staleOutput = execFileSync('nlm', ['source', 'stale', effectiveNotebookId, '--json'], {
+            encoding: 'utf-8',
+            timeout: 30000,
+            env: { ...process.env, PATH: extendedPath }
+          });
+          if (!isDriveFreshnessReportClean(staleOutput)) {
+            throw new Error(`NotebookLM still reports stale Drive sources after synchronization: ${String(staleOutput).trim()}`);
+          }
           const driveCanaryOutput = execFileSync('nlm', [
             'notebook', 'query', effectiveNotebookId,
             `Drive source canary: identify ${chassisName} and summarize one certified catalog change or verified rule.`,
@@ -399,13 +429,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           lastSyncDeltaCount: totalRulesCount,
           isolationLevel: 'CHASSIS_SPECIFIC',
           lastSyncedSourceName: result.newSourceName,
-          trustedSourceIds: Array.from(new Set([
-            ...(existing.officialSourceIds || []),
-            ...(existing.certifiedCatalogSourceIds || []),
-            ...(existing.verifiedLearningSourceIds || []),
-            result.newSourceId,
-            driveSourceVerified
-          ].filter(Boolean))),
+          trustedSourceIds: buildTrustedSourceIds(existing, result.newSourceId, driveSourceVerified),
           canonicalKnowledgeSourceIds: Array.from(new Set([
             result.newSourceId,
             driveSourceVerified
@@ -423,7 +447,14 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         };
         safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
       }
-    } catch (_) { /* ignore */ }
+    } catch (metadataErr) {
+      result = {
+        ...result,
+        success: false,
+        mode: 'CLOUD_VERIFIED_METADATA_FAILED',
+        message: `${result.message} Local NotebookLM trust metadata could not be persisted: ${metadataErr.message}`
+      };
+    }
   }
 
   return result;
@@ -431,7 +462,9 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
 
 module.exports = {
   assertPayloadProductIsolation,
+  buildTrustedSourceIds,
   isGroundedCanary,
+  isDriveFreshnessReportClean,
   refreshMasterCatalogCsv,
   syncToNotebookLM
 };

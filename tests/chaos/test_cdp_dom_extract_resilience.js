@@ -87,6 +87,32 @@ async function runTests() {
   const tables = await domExtract.extractTablesAsRows({}, mockSendCommandDOM);
   assert.strictEqual(tables.length, 3);
   assert.deepStrictEqual(tables[0].rows, tables[1].rows); // Ensure the rows are exactly matching
+  const reconstructedText = domExtract.deriveTextFromTables(tables);
+  assert.match(reconstructedText, /HPE\tServer/);
+  assert.match(reconstructedText, /Other\tData/);
+
+  // Test 4: Reactive DOM text must be frozen before chunking. The simulated
+  // live body changes after the first command, while the captured snapshot
+  // remains complete across all subsequent chunks.
+  console.log('  Testing immutable chunked text snapshot...');
+  const originalText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let frozenText = '';
+  const textCommands = [];
+  const mockSnapshotCommand = async (_ws, method, params) => {
+    assert.strictEqual(method, 'Runtime.evaluate');
+    textCommands.push(params.expression);
+    if (params.expression.includes('__ocaBodyTextSnapshot =')) {
+      frozenText = originalText;
+      return { result: { value: frozenText.length } };
+    }
+    const bounds = params.expression.match(/substring\((\d+), (\d+)\)/);
+    if (bounds) return { result: { value: frozenText.substring(Number(bounds[1]), Number(bounds[2])) } };
+    return { result: { value: true } };
+  };
+  const captured = await domExtract.extractChunkedText({}, mockSnapshotCommand, 10);
+  assert.strictEqual(captured.totalLen, originalText.length);
+  assert.strictEqual(captured.fullText, originalText);
+  assert(textCommands.at(-1).includes('delete globalThis.__ocaBodyTextSnapshot'));
 
   wsClient.close();
   wss.close();

@@ -1,26 +1,107 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
-Accessories & Infrastructure	System Options	optional	Configuration Rule	"HPE DL145 Gen11 Desk/Wall Mount Kit" and "HPE DL145 Gen11 Rack enable kit" cannot be selected together.
-Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
-Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
-Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR5 Registered Smart Memory: max 32
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4
-Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24
-Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).
-Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Product is not yet available
-Accessories & Infrastructure	System Options	optional	Configuration Rule	CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration
-Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
-PCIe Risers	PCIe Riser Kits	max 3	Configuration Rule	Selection constraint for PCIe Riser Kits: max 3
-Networking	PCIe Networking Adapters	max 8	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 8
-Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
-Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Max quantity of product limited by space available.
-Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Selection constraint for Hard Disk Drives (SAS/SATA): max 24
-Cooling / Thermal	High Performance & Standard Fan Kits	max 6	Configuration Rule	Selection constraint for High Performance & Standard Fan Kits: max 6
-Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selection constraint for Flex Slot Power Supplies: min 1, max 2
-Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Mixing of Power Supplies is not allowed.
-Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
-Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
+Unknown	MS Windows Server Additional License	max 999	Quantity Constraint	Quantity: max 999
+Unknown	MS Windows Server CALs	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	MS Windows Server Not Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	MS Windows Server Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	SUSE Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	SUSE SAP Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+OEM Software	OEM Software	max 999	Quantity Constraint	Quantity: max 999
+Unknown	Reseller Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+Rack Options	Rack Options	max 4	Quantity Constraint	Quantity: max 4
+Unknown	Acoustics	max 1	Quantity Constraint	Quantity: max 1
+Ambient Temperature	Ambient Temperature	max 2	Quantity Constraint	Quantity: max 2
+Processor	Processors	max 1	Quantity Constraint	Quantity: max 1
+Processor	Heatsink Kit	max 1	Quantity Constraint	Quantity: max 1
+Memory	Memory	max 6	Quantity Constraint	Quantity: max 6
+Storage Devices	SAS Controller	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	Smart Storage Battery	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Storage Controller Cables	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Drive Cage	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	SSD - EDSFF NVME Read Intensive	max 4	Quantity Constraint	Quantity: max 4
+Factory Configuration Settings	Factory Configuration Settings	max 2	Quantity Constraint	Quantity: max 2
+Factory Configuration Settings	vSAN Tracking SKUs	Unlimited	Quantity Constraint	Quantity: Unlimited
+Factory Configuration Settings	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Riser Cards	max 3	Quantity Constraint	Quantity: max 3
+Networking	Ethernet PCIe	max 1	Quantity Constraint	Quantity: max 1
+Networking	OCP Ethernet	max 1	Quantity Constraint	Quantity: max 1
+Networking	Transceivers	max 16	Quantity Constraint	Quantity: max 16
+Virtualization	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare Core Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
+OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
+Graphics Options	Graphics	max 2	Quantity Constraint	Quantity: max 2
+Graphics Options	Graphics Accessories	max 2	Quantity Constraint	Quantity: max 2
+Graphics Options	Power Cooling Options	max 4	Quantity Constraint	Quantity: max 4
+Graphics Options	Power Supplies	max 2	Quantity Constraint	Quantity: max 2
+Graphics Options	Power Cords	max 2	Quantity Constraint	Quantity: max 2
+Security Options	Security Hardware	Unlimited	Quantity Constraint	Quantity: Unlimited
+Accessories	Management Hardware	max 2	Quantity Constraint	Quantity: max 2
+HPE Compute Ops Management	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+HPE Compute Ops Management	Red Hat Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	OneView Management Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Integrated Lights Out Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Linux Value Added Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+AI-at-Scale	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Partner Software - Operating System 8pks	max 5994	Quantity Constraint	Quantity: max 5994
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Rack Options	max 4	Configuration Rule	Selection constraint for Rack Options: max 4
+Software & Licenses	MS Windows Server Additional License	max 999	Configuration Rule	"HPE DL145 Gen11 Desk/Wall Mount Kit" and "HPE DL145 Gen11 Rack enable kit" cannot be selected together.
+Accessories & Infrastructure	Acoustics	max 1	Configuration Rule	Selection constraint for Acoustics: max 1
+Processor	Processors	max 1	Configuration Rule	Selection constraint for Processors: max 1
+Cooling / Thermal	Heatsink Kit	max 1	Configuration Rule	Selection constraint for Heatsink Kit: max 1
+Memory	Memory	max 6	Configuration Rule	Selection constraint for Memory: max 6
+Memory	Memory	max 6	Configuration Rule	All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.
+Memory	Memory	max 6	Configuration Rule	These products are hidden due to Supply constraints
+Storage Controllers	SAS Controller	max 2	Configuration Rule	Selection constraint for SAS Controller: max 2
+Cables & Enablement Kits	Smart Storage Battery	max 1	Configuration Rule	Selection constraint for Smart Storage Battery: max 1
+Storage Controllers	Storage Controller Cables	max 1	Configuration Rule	Selection constraint for Storage Controller Cables: max 1
+Storage Controllers	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Drive Enclosures / Drives	Drive Cage	max 2	Configuration Rule	Selection constraint for Drive Cage: max 2
+Drive Enclosures / Drives	SSD - EDSFF NVME Read Intensive	max 4	Configuration Rule	Selection constraint for SSD - EDSFF NVME Read Intensive: max 4
+Drive Enclosures / Drives	SSD - EDSFF NVME Read Intensive	max 4	Configuration Rule	If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).
+Drive Enclosures / Drives	SSD - EDSFF NVME Read Intensive	max 4	Configuration Rule	Product is not yet available
+Factory Configuration Settings	Factory Configuration Settings	max 2	Configuration Rule	Selection constraint for Factory Configuration Settings: max 2
+Storage Controllers	SAS Controller	max 2	Configuration Rule	CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration
+Accessories & Infrastructure	vSAN Tracking SKUs	no max	Configuration Rule	Selection constraint for vSAN Tracking SKUs: no max
+Software & Licenses	iLO Common Password	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+PCIe Risers	Riser Cards	max 3	Configuration Rule	Selection constraint for Riser Cards: max 3
+Networking	Ethernet PCIe	max 1	Configuration Rule	Selection constraint for Ethernet PCIe: max 1
+Networking	OCP Ethernet	max 1	Configuration Rule	Selection constraint for OCP Ethernet: max 1
+Networking	OCP Ethernet	max 1	Configuration Rule	Max quantity of product limited by space available.
+Networking	Transceivers	max 16	Configuration Rule	Selection constraint for Transceivers: max 16
+Cables & Enablement Kits	OS Boot Device	max 2	Configuration Rule	Selection constraint for OS Boot Device: max 2
+Graphics & GPU	Graphics Accessories	max 2	Configuration Rule	Selection constraint for Graphics Accessories: max 2
+Cooling / Thermal	Power Cooling Options	max 4	Configuration Rule	Selection constraint for Power Cooling Options: max 4
+Power Supplies	Power Supplies	max 2	Configuration Rule	Selection constraint for Power Supplies: max 2
+Networking	Transceivers	max 16	Configuration Rule	Mixing of Power Supplies is not allowed.
+Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	Selection constraint for Power Cords: max 2
+Cables & Enablement Kits	HPE Virtualization	no max	Configuration Rule	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+Cables & Enablement Kits	HPE Virtualization	no max	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Accessories & Infrastructure	Security Hardware	no max	Configuration Rule	Selection constraint for Security Hardware: no max
+Cables & Enablement Kits	Management Hardware	max 2	Configuration Rule	Selection constraint for Management Hardware: max 2
+Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	SUSE Add-ons	no max	Configuration Rule	Selection constraint for SUSE Add-ons: no max
+Software & Licenses	SUSE containers	no max	Configuration Rule	Selection constraint for SUSE containers: no max
+Software & Licenses	SUSE SAP Operating Systems	no max	Configuration Rule	Selection constraint for SUSE SAP Operating Systems: no max
+Software & Licenses	OneView Management Software	no max	Configuration Rule	Selection constraint for OneView Management Software: no max
+Software & Licenses	Integrated Lights Out Software	no max	Configuration Rule	Selection constraint for Integrated Lights Out Software: no max
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Selection constraint for Proliant Software Media Kits: no max
+Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
+Software & Licenses	Partner Software - Operating System 8pks	max 5994	Configuration Rule	Selection constraint for Partner Software - Operating System 8pks: max 5994
+Support Services	Ambient Temperature	max 2	Configuration Rule	Selection constraint for Ambient Temperature: max 2
+Software & Licenses	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
+Software & Licenses	VMWare Core Editions	no max	Configuration Rule	Selection constraint for VMWare Core Editions: no max
+Graphics & GPU	Graphics	max 2	Configuration Rule	Selection constraint for Graphics: max 2
+HPE Compute Ops Management	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Support Services	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	Red Hat Operating Systems	no max	Configuration Rule	Selection constraint for Red Hat Operating Systems: no max
+Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
+Software & Licenses	Linux Value Added Software	no max	Configuration Rule	Selection constraint for Linux Value Added Software: no max
+Software & Licenses	AI-at-Scale	no max	Configuration Rule	Selection constraint for AI-at-Scale: no max
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max

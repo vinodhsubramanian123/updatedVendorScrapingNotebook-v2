@@ -1955,12 +1955,1165 @@
     "daysActive": 3,
     "lastKnownPrice": "21407.00",
     "fullPriceTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "02/29/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
+  },
+  "P45641-H23": {
+    "productNumber": "P45641-H23",
+    "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45642-H23": {
+    "productNumber": "P45642-H23",
+    "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Generic Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P66386-H21": {
+    "productNumber": "P66386-H21",
+    "description": "HPE Data Processing Unit InfiniBand NDR200/Ethernet 200Gb 2-port QSFP112 FHHL B3220 Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P79115-H21": {
+    "productNumber": "P79115-H21",
+    "description": "HPE InfiniBand XDR400/Ethernet 400GbE 2-port QSFP112 PCIe6 x16 HHHL CX8 Crypto Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "829335-B21": {
+    "productNumber": "829335-B21",
+    "description": "HPE 100Gb 1-port OP101 QSFP28 x16 PCIe Gen3 with Intel Omni-Path Architecture Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45641-B23": {
+    "productNumber": "P45641-B23",
+    "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45641-H24": {
+    "productNumber": "P45641-H24",
+    "description": "HPE InfiniBand NDR/Ethernet 400Gb 1-port OSFP PCIe5 x16 MCX75310AAS-NEAT Generic Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45642-B22": {
+    "productNumber": "P45642-B22",
+    "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45642-H22": {
+    "productNumber": "P45642-H22",
+    "description": "HPE InfiniBand NDR200/Ethernet 200Gb 1-port OSFP PCIe5 x16 MCX75310AAS-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P65333-B21": {
+    "productNumber": "P65333-B21",
+    "description": "HPE InfiniBand NDR200/Ethernet 200GbE 2-port QSFP112 PCIe5 x16 MCX755106AC-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P65333-H21": {
+    "productNumber": "P65333-H21",
+    "description": "HPE InfiniBand NDR200/Ethernet 200GbE 2-port QSFP112 PCIe5 x16 MCX755106AC-HEAT Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P66387-H21": {
+    "productNumber": "P66387-H21",
+    "description": "HPE Data Processing Unit InfiniBand NDR/Ethernet 400Gb 1-port QSFP112 HHHL B3140H Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P79114-H21": {
+    "productNumber": "P79114-H21",
+    "description": "HPE InfiniBand XDR/Ethernet 2x400GbE 1-port OSFP PCIe6 x16 HHHL CX8 Crypto Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P81264-H21": {
+    "productNumber": "P81264-H21",
+    "description": "HPE InfiniBand XDR PCIe Gen6 x16 Multi Host/Socket Direct Auxiliary Card with 250mm MCIO Cable Kit",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P08443-B21": {
+    "productNumber": "P08443-B21",
+    "description": "Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P25960-B21": {
+    "productNumber": "P25960-B21",
+    "description": "Mellanox MCX623106AS-CDAT Ethernet 100Gb 2-port QSFP56 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P26253-B21": {
+    "productNumber": "P26253-B21",
+    "description": "Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P26259-B21": {
+    "productNumber": "P26259-B21",
+    "description": "Broadcom BCM57412 Ethernet 10Gb 2-port SFP+ Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P26262-B21": {
+    "productNumber": "P26262-B21",
+    "description": "Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P42044-B21": {
+    "productNumber": "P42044-B21",
+    "description": "Mellanox MCX631102AS-ADAT Ethernet 10/25Gb 2-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P51178-B21": {
+    "productNumber": "P51178-B21",
+    "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P21112-B21": {
+    "productNumber": "P21112-B21",
+    "description": "Intel E810-CQDA2 Ethernet 100Gb 2-port QSFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P08458-B21": {
+    "productNumber": "P08458-B21",
+    "description": "Intel E810-XXVDA4 Ethernet 10/25Gb 4-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P26264-B21": {
+    "productNumber": "P26264-B21",
+    "description": "Broadcom BCM57504 Ethernet 10/25Gb 4-port SFP28 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P73111-B21": {
+    "productNumber": "P73111-B21",
+    "description": "Broadcom BCM57608 Ethernet 100Gb 2-port QSFP112 Adapter for HPE",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P74700-B21": {
+    "productNumber": "P74700-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P83526-B21": {
+    "productNumber": "P83526-B21",
+    "description": "HPE ProLiant Compute DL380a Gen12 GPU 16-pin Cable Kit",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "295633-B22": {
+    "productNumber": "295633-B22",
+    "description": "HPE C19 - C20 WW 250V 16Amp 2.5m Jumper Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "AF593A": {
+    "productNumber": "AF593A",
+    "description": "HPE C19 - Nema L6-20P NA/JP 250V 20Amp High Voltage 3.6m Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P78148-B21": {
+    "productNumber": "P78148-B21",
+    "description": "HPE C19 - NEMA L6-20P 250V 20Amp 3.6m FIO Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P78155-B21": {
+    "productNumber": "P78155-B21",
+    "description": "HPE C19 - C20 250V 16Amp 2.5m IN FIO Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P78164-B21": {
+    "productNumber": "P78164-B21",
+    "description": "HPE C19 - JIS C8303 110V 15Amp 3.6m FIO Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P78157-B21": {
+    "productNumber": "P78157-B21",
+    "description": "HPE C19 - GB1002 250V 16Amp 2.5m FIO Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P78384-B21": {
+    "productNumber": "P78384-B21",
+    "description": "HPE C19 - C20 250V 16Amp 2.5m FIO Power Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "J6X00A": {
+    "productNumber": "J6X00A",
+    "description": "HPE SAFDGRID-SAFDGRID 277V 15Amp DC 2.0m Jumper Cord",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "E5Y44A": {
+    "productNumber": "E5Y44A",
+    "description": "HPE OneView for ProLiant DL Server including 3yr 24x7 Support Bundle Track 1-server LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "E5Y43A": {
+    "productNumber": "E5Y43A",
+    "description": "HPE OneView for ProLiant DL Server including 3yr 24x7 Support FIO Bundle Physical 1-server LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "E5Y36A": {
+    "productNumber": "E5Y36A",
+    "description": "HPE OneView including 3yr 24x7 Support Track 1-server LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P8B31A": {
+    "productNumber": "P8B31A",
+    "description": "HPE OneView w/o iLO including 3yr 24x7 Support 1-server FIO LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P8B25A": {
+    "productNumber": "P8B25A",
+    "description": "HPE OneView w/o iLO including 3yr 24x7 Support Track 1-server LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D22A": {
+    "productNumber": "Q0D22A",
+    "description": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 24x7 Support Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D23A": {
+    "productNumber": "Q0D23A",
+    "description": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 9x5 Support Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D25A": {
+    "productNumber": "Q0D25A",
+    "description": "Red Hat High Availability 2 Sockets or 2 Guests 5yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D26A": {
+    "productNumber": "Q0D26A",
+    "description": "Red Hat High Availability 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D29A": {
+    "productNumber": "Q0D29A",
+    "description": "Red Hat Resilient Storage 2 Sockets or 2 Guests 5yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q0D30A": {
+    "productNumber": "Q0D30A",
+    "description": "Red Hat Resilient Storage 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W19A": {
+    "productNumber": "Q5W19A",
+    "description": "Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 9x5 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W20A": {
+    "productNumber": "Q5W20A",
+    "description": "Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 24x7 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W21A": {
+    "productNumber": "Q5W21A",
+    "description": "Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 9x5 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W22A": {
+    "productNumber": "Q5W22A",
+    "description": "Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 24x7 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W23A": {
+    "productNumber": "Q5W23A",
+    "description": "Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 9x5 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W24A": {
+    "productNumber": "Q5W24A",
+    "description": "Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 24x7 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W25A": {
+    "productNumber": "Q5W25A",
+    "description": "Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 9x5 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q5W26A": {
+    "productNumber": "Q5W26A",
+    "description": "Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 24x7 Support Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U15A": {
+    "productNumber": "Q8U15A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U16A": {
+    "productNumber": "Q8U16A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U17A": {
+    "productNumber": "Q8U17A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 9x5 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U18A": {
+    "productNumber": "Q8U18A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 9x5 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U19A": {
+    "productNumber": "Q8U19A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U20A": {
+    "productNumber": "Q8U20A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U21A": {
+    "productNumber": "Q8U21A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 9x5 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "Q8U22A": {
+    "productNumber": "Q8U22A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 9x5 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45916-291": {
+    "productNumber": "P45916-291",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45916-B21": {
+    "productNumber": "P45916-B21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46005-291": {
+    "productNumber": "P46005-291",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46005-B21": {
+    "productNumber": "P46005-B21",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46155-291": {
+    "productNumber": "P46155-291",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Pre-installed UEFI Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46155-B21": {
+    "productNumber": "P46155-B21",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Pre-installed UEFI en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46195-B21": {
+    "productNumber": "P46195-B21",
+    "description": "Microsoft Windows Server 2022 16-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46196-B21": {
+    "productNumber": "P46196-B21",
+    "description": "Microsoft Windows Server 2022 4-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-AA1": {
+    "productNumber": "P46199-AA1",
+    "description": "Microsoft Windows Server 2022 2-core Standard Additional License Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-AB1": {
+    "productNumber": "P46199-AB1",
+    "description": "Microsoft Windows Server 2022 2-core Standard Additional License Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46199-B21": {
+    "productNumber": "P46199-B21",
+    "description": "Microsoft Windows Server 2022 2-core Std Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46212-B21": {
+    "productNumber": "P46212-B21",
+    "description": "Microsoft Windows Server 2022 16-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46213-B21": {
+    "productNumber": "P46213-B21",
+    "description": "Microsoft Windows Server 2022 4-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46214-B21": {
+    "productNumber": "P46214-B21",
+    "description": "Microsoft Windows Server 2022 2-core DC Add Lic en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77095-291": {
+    "productNumber": "P77095-291",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77095-B21": {
+    "productNumber": "P77095-B21",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77096-291": {
+    "productNumber": "P77096-291",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77096-B21": {
+    "productNumber": "P77096-B21",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77097-291": {
+    "productNumber": "P77097-291",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77097-B21": {
+    "productNumber": "P77097-B21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77104-B21": {
+    "productNumber": "P77104-B21",
+    "description": "Microsoft Windows Server 2025 16-core Standard Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77105-B21": {
+    "productNumber": "P77105-B21",
+    "description": "Microsoft Windows Server 2025 4-core Standard Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77106-AA1": {
+    "productNumber": "P77106-AA1",
+    "description": "Microsoft Windows Server 2025 2-core Standard Additional License Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77106-AB1": {
+    "productNumber": "P77106-AB1",
+    "description": "Microsoft Windows Server 2025 2-core Standard Additional License Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77106-B21": {
+    "productNumber": "P77106-B21",
+    "description": "Microsoft Windows Server 2025 2-core Standard Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77107-B21": {
+    "productNumber": "P77107-B21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77108-B21": {
+    "productNumber": "P77108-B21",
+    "description": "Microsoft Windows Server 2025 4-core Datacenter Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77109-B21": {
+    "productNumber": "P77109-B21",
+    "description": "Microsoft Windows Server 2025 2-core Datacenter Additional License WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-B21": {
+    "productNumber": "P11086-B21",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-051": {
+    "productNumber": "P11086-051",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-041": {
+    "productNumber": "P11086-041",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-061": {
+    "productNumber": "P11086-061",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-291": {
+    "productNumber": "P11086-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11086-071": {
+    "productNumber": "P11086-071",
+    "description": "Microsoft Windows Server 2016 Downgrade Datacenter FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-B21": {
+    "productNumber": "P11083-B21",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-051": {
+    "productNumber": "P11083-051",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-041": {
+    "productNumber": "P11083-041",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-061": {
+    "productNumber": "P11083-061",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-291": {
+    "productNumber": "P11083-291",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P11083-071": {
+    "productNumber": "P11083-071",
+    "description": "Microsoft Windows Server 2016 Downgrade Standard FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-B21": {
+    "productNumber": "P45879-B21",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-051": {
+    "productNumber": "P45879-051",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-041": {
+    "productNumber": "P45879-041",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-061": {
+    "productNumber": "P45879-061",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-291": {
+    "productNumber": "P45879-291",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45879-071": {
+    "productNumber": "P45879-071",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-B21": {
+    "productNumber": "P45862-B21",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-051": {
+    "productNumber": "P45862-051",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-041": {
+    "productNumber": "P45862-041",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-061": {
+    "productNumber": "P45862-061",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-291": {
+    "productNumber": "P45862-291",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P45862-071": {
+    "productNumber": "P45862-071",
+    "description": "Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77125-291": {
+    "productNumber": "P77125-291",
+    "description": "Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77125-B21": {
+    "productNumber": "P77125-B21",
+    "description": "Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77124-291": {
+    "productNumber": "P77124-291",
+    "description": "Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77124-B21": {
+    "productNumber": "P77124-B21",
+    "description": "Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-AA1": {
+    "productNumber": "P46123-AA1",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-AB1": {
+    "productNumber": "P46123-AB1",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-371": {
+    "productNumber": "P46123-371",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit English/Korean/Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-021": {
+    "productNumber": "P46123-021",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46123-A21": {
+    "productNumber": "P46123-A21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter Reseller Option Kit en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46128-B21": {
+    "productNumber": "P46128-B21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter w/Reassignment Reseller Option Kit en/fr/de/es SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46128-291": {
+    "productNumber": "P46128-291",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter with Reassignment Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-AA1": {
+    "productNumber": "P46171-AA1",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-AB1": {
+    "productNumber": "P46171-AB1",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-371": {
+    "productNumber": "P46171-371",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit English/Korean/Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-021": {
+    "productNumber": "P46171-021",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P46171-A21": {
+    "productNumber": "P46171-A21",
+    "description": "Microsoft Windows Server 2022 16-core Standard Reseller Option Kit en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77102-291": {
+    "productNumber": "P77102-291",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77102-B21": {
+    "productNumber": "P77102-B21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit en/fr/de/es SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-AA1": {
+    "productNumber": "P77101-AA1",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-AB1": {
+    "productNumber": "P77101-AB1",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-291": {
+    "productNumber": "P77101-291",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-021": {
+    "productNumber": "P77101-021",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-A21": {
+    "productNumber": "P77101-A21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77101-371": {
+    "productNumber": "P77101-371",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/ko SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-AA1": {
+    "productNumber": "P77100-AA1",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Chinese Simplified SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-AB1": {
+    "productNumber": "P77100-AB1",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Chinese Traditional SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-291": {
+    "productNumber": "P77100-291",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-021": {
+    "productNumber": "P77100-021",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/cs/pl/ru/sv SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-A21": {
+    "productNumber": "P77100-A21",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
+  },
+  "P77100-371": {
+    "productNumber": "P77100-371",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit en/ko SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "firstSeenDate": "2026-09-10",
+    "status": "ACTIVE"
   }
 }

@@ -4,12 +4,14 @@
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 
-function evalSupportServices(items, catalogData = null) {
+function evalSupportServices(items, catalogData = null, options = {}) {
   let hasObsoleteRisk = false;
   let hasEolWarning = false;
   const obsoleteSkus = [];
   const eolSkus = [];
+  const nearExpirySkus = [];
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
@@ -32,6 +34,9 @@ function evalSupportServices(items, catalogData = null) {
     // Check matched catalog entry via O(1) indexed lookup
     const catalogItem = skuIndex.get(cleanSku);
     const catalogStatus = String(catalogItem?.lifecycleStatus || '').toUpperCase();
+    const catalogSku = catalogItem?.skuData || {};
+    const discontinuedDate = catalogSku['Discontinued Date'] || catalogSku.discontinuedDate || it.discontinuedDate || '';
+    const retirement = analyzeRetirementDate(discontinuedDate, options);
 
     if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
       hasObsoleteRisk = true;
@@ -53,9 +58,23 @@ function evalSupportServices(items, catalogData = null) {
         quantity: it.quantity || 1
       });
     }
+    if (retirement.known && (retirement.isNear || retirement.isPast)) {
+      hasEolWarning = true;
+      const warning = {
+        sku: it.sku,
+        cleanSku,
+        description: it.description || catalogSku.Description || catalogSku.description || '',
+        status: retirement.isPast ? 'DISCONTINUATION DATE PASSED' : 'APPROACHING DISCONTINUATION',
+        discontinuedDate: retirement.retirementDate,
+        daysRemaining: retirement.daysRemaining,
+        quantity: it.quantity || 1
+      };
+      nearExpirySkus.push(warning);
+      if (!eolSkus.some(entry => entry.cleanSku === cleanSku)) eolSkus.push(warning);
+    }
   }
 
-  return { hasObsoleteRisk, hasEolWarning, obsoleteSkus, eolSkus };
+  return { hasObsoleteRisk, hasEolWarning, obsoleteSkus, eolSkus, nearExpirySkus };
 }
 
 module.exports = {
