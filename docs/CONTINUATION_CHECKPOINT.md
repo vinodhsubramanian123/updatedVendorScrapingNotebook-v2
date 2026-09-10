@@ -44,10 +44,20 @@ This is the current engineering status following the completion and verification
 - Knowledge Graph: Rebuilt via `graphify update .` (5072 nodes, 7386 edges, 375 communities).
 
 ## Verified Skills Baseline (`.agents/skills/`)
-1. `boq-eval-skill`: Comprehensive 7-aspect physical math, dual entry points (Antigravity Agent vs Dashboard), dashboard gap mitigation, alternate parts discovery, and 5-tier strategy matrix ranking based on customer intent.
-2. `orchestrator-workflow-skill`: Macro 6-stage continuous learning lifecycle, updated with Invariants `INV-54` through `INV-66`.
+1. `boq-eval-skill`: Comprehensive 7-aspect physical math, dual entry points (Antigravity Agent vs Dashboard), dashboard gap mitigation, alternate parts discovery, parallel sub-paths (Rank 1A, 1B, 1C), zero-rank unbuildable invariant, financial transparency, tool segregation, and 5-tier strategy matrix ranking based on customer intent.
+2. `orchestrator-workflow-skill`: Macro 6-stage continuous learning lifecycle, updated with Invariants `INV-54` through `INV-72`.
 3. `oca-catalog-scraper`: 8 canonical product generations certified, immutable DOM text capture, WebLogic sub-choice trigger protocol.
 4. `oca-portal-navigator`: Hands-free CDP port 9222 auto-navigator, zero-bloat SSO cookie persistence.
 5. `nlm-skill`: Gemini Notebook CLI & MCP expert, 43 tools, auth recovery, fast-track prompting.
 6. `knowledge-sync-skill`: Bi-directional alignment, 3-tier fallback, customer BOQ isolation (`INV-24`).
 7. `frontend-design` & `design-taste-frontend`: Anti-slop aesthetics, Geist font, emerald/slate palette, 12px radiuses.
+
+## Operational Learnings & Multi-Model Collaboration Milestone (Commit `2555c3c`)
+- **Multi-Model Division of Labor**: Antigravity/Gemini (Execution Architect & Orchestration Engine) + OpenAI Codex / Claude (Independent Verification, Diff Auditor & Red-Teamer).
+- **Machine-Agnostic Laptop Portability**: Zero hardcoded local machine paths. Dynamic `process.cwd()` and `os.homedir()` resolution. Git (`main`) as the single source of truth across all developer environments.
+- **Customer BOQ Workflow Discipline (`INV-72`)**: Zero ad-hoc scripts. All customer inputs route through canonical `eval_boq.js` and 7-aspect physical engines.
+- **Clean Tool Segregation Contract**: Customer solution flows participate exclusively in `eval_boq.js`, 7-aspect math, and `gemini-notebook-mcp`. Developer/CI tools (`jules`, `data-agent-kit`, Jupyter `notebooks`) are strictly segregated.
+- **True Rank 1 Philosophy**: Customer intent preserved with minimum necessary changes for 100% buildability. Parallel sub-paths (Rank 1A, 1B, 1C) provide architectural choice (e.g. SAS Expander vs 2nd controller). Unbuildable = 0 rank.
+- **Financial Transparency**: Explicit line-by-line itemization (SKU, Description, Qty, Unit Price, Extended Price) and total CapEx budget. Incomplete prices surfaced honestly via `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33`.
+- **Dual-Brain Badges & Honest Observability**: Explicit badges indicating Deterministic vs RAG Brain verification, with honest disclosure of unmapped product models.
+- **Scoped Knowledge Learning**: Universal rules saved to `master_knowledge_registry.json`; chassis-specific rules saved to `catalog_deltas.json` and synchronized strictly to that product's target Notebook ID.
