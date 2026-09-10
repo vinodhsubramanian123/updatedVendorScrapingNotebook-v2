@@ -1305,11 +1305,19 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
     const description = sku.Description || sku.description || '';
     return parseProductMeta(description).cleanName === targetProduct;
   };
-  const { enrichedCatalog } = processCatalogDiff(catalogObj, historyDir, 'catalog', { previousSkuFilter });
+  const { enrichedCatalog } = processCatalogDiff(
+    catalogObj,
+    historyDir,
+    'catalog',
+    { previousSkuFilter, companionCatalog: servicesCatalogObj }
+  );
 
   const servicesHistoryDir = path.join(targetDir, 'services_history');
   const { enrichedCatalog: enrichedServicesCatalog } = processCatalogDiff(
-    servicesCatalogObj, servicesHistoryDir, 'services'
+    servicesCatalogObj,
+    servicesHistoryDir,
+    'services',
+    { companionCatalog: catalogObj }
   );
 
   let existingCatalogForDiff = null;

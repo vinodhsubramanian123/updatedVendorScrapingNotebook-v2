@@ -62,7 +62,15 @@ function appendTrailEvent(trail, event) {
   // Otherwise keep existing (higher-priority) entry silently
 }
 
-function sanitizePriceTrail(trail) {
+function isSuspectedDateParsePrice(price) {
+  if (!price || price <= 10000) return false;
+  const s = String(Math.round(price));
+  // Matches dates parsed as numbers: DDMMYYYY, DMMYYYY, or YYYYMMDD
+  return /^(0?[1-9]|[12][0-9]|3[01])(0?[1-9]|1[012])(20\d\d)$/.test(s) ||
+         /^(20\d\d)(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/.test(s);
+}
+
+function sanitizePriceTrail(trail, options = {}) {
   const byDate = new Map();
   for (const rawEvent of Array.isArray(trail) ? trail : []) {
     const event = { ...rawEvent, price: parsePrice(rawEvent?.price) };
@@ -72,36 +80,84 @@ function sanitizePriceTrail(trail) {
     }
   }
   const events = [...byDate.values()].sort((left, right) => String(left.date).localeCompare(String(right.date)));
-  return events.filter((event, index) => {
-    if (!(event.price > 0) || index === 0 || index === events.length - 1) return true;
-    const previous = [...events.slice(0, index)].reverse().find(item => item.price > 0);
-    const next = events.slice(index + 1).find(item => item.price > 0);
-    if (!previous || !next) return true;
-    const neighborsAgree = Math.max(previous.price, next.price) / Math.min(previous.price, next.price) <= 1.1;
-    const isolatedSpike = event.price / Math.max(previous.price, next.price) >= 10;
-    const isolatedCollapse = Math.min(previous.price, next.price) / event.price >= 10;
-    return !(neighborsAgree && (isolatedSpike || isolatedCollapse));
-  });
+
+  for (let index = 0; index < events.length; index++) {
+    const event = events[index];
+    if (!(event.price > 0)) continue;
+
+    const previous = [...events.slice(0, index)].reverse().find(item => item.price > 0 && !item.quarantined);
+    const next = events.slice(index + 1).find(item => item.price > 0 && !item.quarantined);
+    const suspectedDate = isSuspectedDateParsePrice(event.price);
+
+    if (previous && next) {
+      const neighborsAgree = Math.max(previous.price, next.price) / Math.min(previous.price, next.price) <= 1.2;
+      const isolatedSpike = event.price / Math.max(previous.price, next.price) >= 10;
+      const isolatedCollapse = Math.min(previous.price, next.price) / event.price >= 10;
+
+      if (neighborsAgree && (isolatedSpike || isolatedCollapse || suspectedDate)) {
+        event.quarantined = true;
+        event.validationState = suspectedDate
+          ? 'SUSPECTED_DATE_PARSE'
+          : (isolatedSpike ? 'ANOMALOUS_PRICE_SPIKE' : 'ANOMALOUS_PRICE_COLLAPSE');
+        event.effectivePrice = previous.price;
+        event.anomalyProvenance = {
+          observedPrice: event.price,
+          suspectedReason: suspectedDate
+            ? 'Date parsed as price integer'
+            : (isolatedSpike ? 'Isolated 10x spike between similar neighbors' : 'Isolated 10x collapse between similar neighbors'),
+          neighborBefore: { date: previous.date, price: previous.price },
+          neighborAfter: { date: next.date, price: next.price },
+          suggestedCorrection: previous.price,
+          ratio: isolatedSpike
+            ? parseFloat((event.price / Math.max(previous.price, next.price)).toFixed(2))
+            : (isolatedCollapse ? parseFloat((Math.min(previous.price, next.price) / event.price).toFixed(2)) : null)
+        };
+      } else if (!event.validationState) {
+        event.validationState = 'VALIDATED';
+      }
+    } else {
+      if (suspectedDate && event.price > 100000) {
+        event.quarantined = true;
+        event.validationState = 'SUSPECTED_DATE_PARSE';
+        event.anomalyProvenance = {
+          observedPrice: event.price,
+          suspectedReason: 'Date parsed as price integer'
+        };
+      } else if (!event.validationState) {
+        event.validationState = 'VALIDATED';
+      }
+    }
+  }
+
+  // Non-destructive: preserve all events unless explicitly requested otherwise
+  if (options.excludeQuarantined) {
+    return events.filter(e => !e.quarantined);
+  }
+  return events;
 }
 
 /**
  * Build a human-readable price trail string.
- * Uses last non-zero price for arrow direction to avoid $0→$0 noise.
+ * Uses last non-zero, non-quarantined price for arrow direction to avoid noise.
  */
 function buildTrailString(trail) {
   if (!trail || trail.length === 0) return '';
   let lastNonZeroPrice = null;
   return trail.map((h) => {
     let arrow = '';
-    if (h.status.includes('PRICE') && lastNonZeroPrice !== null && h.price > 0) {
+    if (h.status.includes('PRICE') && lastNonZeroPrice !== null && h.price > 0 && !h.quarantined) {
       arrow = h.price > lastNonZeroPrice ? ' (▲)' : ' (▼)';
     }
-    if (h.status === 'REMOVED') {
+    if (h.quarantined) {
+      arrow = ' (⚠ ANOMALY)';
+    } else if (h.status === 'REMOVED') {
       arrow = ' (✕ REMOVED)';
     } else if (h.status === 'REINSTATED') {
       arrow = ' (↩ REINSTATED)';
+    } else if (h.status === 'CATEGORY_MIGRATED') {
+      arrow = ' (⇋ MIGRATED)';
     }
-    if (h.price > 0) lastNonZeroPrice = h.price;
+    if (h.price > 0 && !h.quarantined) lastNonZeroPrice = h.price;
     const priceStr = h.price > 0 ? `$${h.price.toFixed(2)}` : '(no price)';
     return `${h.date}: ${priceStr}${arrow}`;
   }).join(' → ');
@@ -284,6 +340,7 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   const diffSummary = {
     added: 0,
     removed: 0,
+    categoryMigrated: 0,
     priceChanged: 0,
     attributeChanged: 0,
     priceAndAttributeChanged: 0,
@@ -291,6 +348,23 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
     reinstated: 0,
     discontinuedTotal: 0
   };
+
+  // Build companion SKU lookup map for hardware <-> services reconciliation
+  const companionSkuMap = new Map();
+  if (options.companionCatalog && Array.isArray(options.companionCatalog.entries)) {
+    for (const entry of options.companionCatalog.entries) {
+      for (const sku of entry.skus || []) {
+        const pn = sku['Product #'];
+        if (pn && !isRemovalTombstone(sku)) {
+          companionSkuMap.set(pn, {
+            ...sku,
+            parentCategory: entry.parentCategory || (historyLabel === 'services' ? 'Hardware' : 'Services'),
+            subCategory: entry.subCategory || ''
+          });
+        }
+      }
+    }
+  }
 
   // Load existing attribute history & discontinued SKU registry
   let attributeHistory = [];
@@ -448,6 +522,34 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   if (prevCatalog) {
     for (const [pn, prevSku] of prevSkuMap.entries()) {
       if (!currSkuMap.has(pn)) {
+        // Reconcile companion catalog (e.g. Hardware <-> Services section migration)
+        if (companionSkuMap.has(pn)) {
+          const compSku = companionSkuMap.get(pn);
+          const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
+          if (!priceHistory[pn]) priceHistory[pn] = [];
+          appendTrailEvent(priceHistory[pn], {
+            date: scrapeDate,
+            price: compPrice,
+            status: 'CATEGORY_MIGRATED',
+            targetCategory: compSku.parentCategory
+          });
+          diffSummary.categoryMigrated++;
+
+          recordAttributeDeltas({
+            'Product #': pn,
+            'Main Category': compSku.parentCategory,
+            'Sub-Category': compSku.subCategory
+          }, prevSku, {
+            scrapeDate,
+            productNumber: pn,
+            chassis: catalogData.metadata?.chassis || 'Chassis',
+            mainCategory: prevSku.parentCategory || '',
+            subCategory: prevSku.subCategory || ''
+          }, attributeHistory);
+
+          continue; // Migrated to companion catalog section; do not discontinue!
+        }
+
         const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
 
         // ── GAP FIX #1 & #2: Skip REMOVED event for $0-price SKUs with no real trail ──
@@ -464,6 +566,15 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
         diffSummary.removed++;
 
         const trailStr = buildTrailString(priceHistory[pn]);
+
+        const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || '';
+        const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
+        let removalReason = 'ABSENT_FROM_CATALOG';
+        if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {
+          removalReason = 'VENDOR_OBSOLETE';
+        } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
+          removalReason = 'SCHEDULED_END_DATE';
+        }
 
         // ── GAP FIX #4: Discontinued registry now includes firstSeenDate, daysActive, fullPriceTrail ──
         const existingEntry = discontinuedRegistry[pn];
@@ -488,12 +599,17 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
           lastKnownPrice: prevPrice.toFixed(2),
           fullPriceTrail: trailStr,
           status:         'DISCONTINUED',
-          previousLifecycleStatus: firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || 'Active',
-          vendorDiscontinuedDate: firstAttributeValue(prevSku, ['Discontinued Date']),
+          removalReason,
+          previousLifecycleStatus: prevLifecycle || 'Active',
+          vendorDiscontinuedDate,
           trackingState:  'STOPPED_AFTER_REMOVAL',
           retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
           businessRelevant,
-          reason:         'Removed from active HPE OCA portal catalog'
+          reason:         removalReason === 'VENDOR_OBSOLETE'
+            ? 'Vendor marked obsolete/EOL in portal'
+            : (removalReason === 'SCHEDULED_END_DATE'
+              ? `Vendor scheduled end of life reached (${vendorDiscontinuedDate})`
+              : 'Removed from active HPE OCA portal catalog')
         };
 
         const tombstoneSKU = {

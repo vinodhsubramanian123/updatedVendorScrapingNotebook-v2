@@ -245,8 +245,21 @@ function formatMonthLabel(isoDate) {
   return `${monthNames[mIdx]} ${year}`;
 }
 
+function isConfirmedFreeSku(sku, description) {
+  const s = String(sku || '').toUpperCase();
+  const d = String(description || '').toUpperCase();
+  // FIO enablement triggers, zero dollar configs, CE mark removal
+  if (s === 'P35876-B21') return true;
+  if (s.endsWith('-F21') || s.includes('#0D1')) return true;
+  if (d.includes('ENABLEMENT') && (d.includes('FIO') || d.includes('ZERO') || d.includes('CONFIG'))) return true;
+  if (d.includes('FACTORY INTEGRATED') && d.includes('KIT')) return true;
+  return false;
+}
+
 /**
- * Query historical unit price of a single SKU at a specific point in time.
+ * Resolve price details for a specific SKU on a specific target date.
+ * Supports date string (YYYY-MM-DD or Month YYYY) or 2-arg (targetSku, chassisDir).
+ *
  * @param {string} targetSku - Cleaned HPE SKU
  * @param {string} targetDate - Date or month (e.g. '2026-08-15', 'Aug 2026', '2026-10')
  * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
@@ -296,12 +309,20 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
       } catch (_) { /* ignore fallback read error */ }
     }
 
+    const isFree = isConfirmedFreeSku(cleanSku, audit.description);
+    const category = fallbackPrice > 0 ? 'CURRENT_CATALOG_PRICE' : (isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'NO_PRICE_RECORDED');
+    const confidence = fallbackPrice > 0 ? 'HIGH' : (isFree ? 'HIGH' : 'UNRESOLVED');
     return {
       sku: cleanSku,
       targetDate: normalizedDate,
       effectiveDate: normalizedDate,
       priceUsd: fallbackPrice,
-      status: fallbackPrice > 0 ? 'CURRENT_PRICE' : 'NO_PRICE_RECORDED',
+      currency: 'USD',
+      status: fallbackPrice > 0 ? 'CURRENT_PRICE' : (isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED'),
+      pricingCategory: category,
+      quoteConfidence: confidence,
+      isResolved: confidence !== 'UNRESOLVED',
+      sourceDirectory: dir,
       isDiscontinued: audit.currentStatus === 'DISCONTINUED',
       priceTrail: audit.priceTimeline
     };
@@ -322,7 +343,12 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
       targetDate: normalizedDate,
       effectiveDate: earliest.date,
       priceUsd: earliest.price || 0,
+      currency: 'USD',
       status: 'PRE_BASELINE_ESTIMATE',
+      pricingCategory: (earliest.price > 0) ? 'PRE_BASELINE_ESTIMATE' : 'UNRESOLVED_ZERO_PRICE',
+      quoteConfidence: (earliest.price > 0) ? 'MEDIUM' : 'UNRESOLVED',
+      isResolved: earliest.price > 0,
+      sourceDirectory: dir,
       changeFromBaselinePercent: 0,
       isDiscontinued: false,
       priceTrail: sorted
@@ -333,22 +359,37 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
   let effectivePrice = effectiveEvent.price || 0;
   let effectiveStatus = effectiveEvent.status || 'ACTIVE';
   let rejectedAnomaly = null;
+
+  // Handle quarantined anomalies from diff_catalog
+  if (effectiveEvent.quarantined) {
+    rejectedAnomaly = {
+      rejectedPriceUsd: effectiveEvent.price,
+      preservedPriceUsd: effectiveEvent.effectivePrice || 0,
+      eventDate: effectiveEvent.date,
+      validationState: effectiveEvent.validationState,
+      provenance: effectiveEvent.anomalyProvenance
+    };
+    effectivePrice = effectiveEvent.effectivePrice || 0;
+    effectiveStatus = effectiveEvent.validationState || 'ANOMALOUS_PORTAL_PRICE_REJECTED';
+  }
+
   if (effectivePrice === 0) {
     // Fall back to latest non-zero price recorded in trail on or before target date
-    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && (e.date || '') <= normalizedDate);
+    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && !e.quarantined && (e.date || '') <= normalizedDate);
     if (nonZeroEvents.length > 0) {
       effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
       effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
     }
   }
+
   // OCA may transiently emit $1 or malformed multi-million values while an
   // unbundled view is repainting. Preserve the immediately preceding credible
   // GPL when a single event jumps by more than 20x in either direction (INV-34).
   const priorNonZeroEvents = eventsOnOrBefore
     .slice(0, -1)
-    .filter(e => Number(e.price) > 0);
+    .filter(e => Number(e.price) > 0 && !e.quarantined);
   const priorPrice = Number(priorNonZeroEvents[priorNonZeroEvents.length - 1]?.price || 0);
-  if (priorPrice >= 20 && effectivePrice > 0) {
+  if (!rejectedAnomaly && priorPrice >= 20 && effectivePrice > 0) {
     const ratio = effectivePrice / priorPrice;
     if (ratio > 20 || ratio < 0.05) {
       rejectedAnomaly = {
@@ -361,6 +402,34 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
       effectiveStatus = 'ANOMALOUS_PORTAL_PRICE_REJECTED';
     }
   }
+
+  // Determine pricing category & quote confidence
+  let pricingCategory = 'OBSERVED_PORTAL_PRICE';
+  let quoteConfidence = 'HIGH';
+
+  if (effectivePrice > 0) {
+    if (effectiveStatus === 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO') {
+      pricingCategory = 'HISTORICAL_PRICE_FALLBACK';
+      quoteConfidence = 'MEDIUM';
+    } else if (effectiveStatus.includes('ANOMALOUS') || effectiveEvent.quarantined) {
+      pricingCategory = 'HISTORICAL_PRICE_FALLBACK';
+      quoteConfidence = 'MEDIUM';
+    } else {
+      pricingCategory = 'OBSERVED_PORTAL_PRICE';
+      quoteConfidence = 'HIGH';
+    }
+  } else {
+    // effectivePrice is 0
+    if (isConfirmedFreeSku(cleanSku, audit.description)) {
+      pricingCategory = 'CONFIRMED_ZERO_PRICE_TRIGGER';
+      quoteConfidence = 'HIGH';
+    } else {
+      pricingCategory = 'UNRESOLVED_ZERO_PRICE';
+      quoteConfidence = 'UNRESOLVED';
+      effectiveStatus = 'UNRESOLVED_ZERO_PRICE';
+    }
+  }
+  const isResolved = quoteConfidence !== 'UNRESOLVED';
   const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
 
   return {
@@ -368,7 +437,12 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     targetDate: normalizedDate,
     effectiveDate: effectiveEvent.date,
     priceUsd: effectivePrice,
+    currency: 'USD',
     status: effectiveStatus,
+    pricingCategory,
+    quoteConfidence,
+    isResolved,
+    sourceDirectory: dir,
     changeFromBaselinePercent: changePercent,
     isDiscontinued: effectiveEvent.status === 'REMOVED' || audit.currentStatus === 'DISCONTINUED',
     priceTrail: sorted,
@@ -399,6 +473,7 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   let totalCapExUsd = 0;
   const pricedItems = [];
   let discontinuedCount = 0;
+  const unresolvedSkus = [];
 
   for (const it of items) {
     const cleanSku = it.sku;
@@ -409,6 +484,7 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
 
     totalCapExUsd += extendedPrice;
     if (hist.isDiscontinued) discontinuedCount++;
+    if (!hist.isResolved) unresolvedSkus.push(cleanSku);
 
     pricedItems.push({
       sku: cleanSku,
@@ -418,15 +494,28 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
       extendedPriceUsd: extendedPrice,
       effectiveDate: hist.effectiveDate,
       status: hist.status,
+      pricingCategory: hist.pricingCategory,
+      quoteConfidence: hist.quoteConfidence,
+      currency: hist.currency || 'USD',
+      isResolved: hist.isResolved,
       isDiscontinued: hist.isDiscontinued,
       changeFromBaselinePercent: hist.changeFromBaselinePercent || 0
     });
   }
 
+  const isPricingComplete = unresolvedSkus.length === 0;
+
   return {
     targetDate: normalizedDate,
     monthLabel: formatMonthLabel(normalizedDate),
     totalCapExUsd: parseFloat(totalCapExUsd.toFixed(2)),
+    totalCapExFormatted: isPricingComplete
+      ? `$${totalCapExUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      : `$${totalCapExUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (INCOMPLETE — ${unresolvedSkus.length} SKU(s) unresolved)`,
+    currency: 'USD',
+    isPricingComplete,
+    unresolvedCount: unresolvedSkus.length,
+    unresolvedSkus,
     itemsCount: items.length,
     discontinuedItemsCount: discontinuedCount,
     items: pricedItems

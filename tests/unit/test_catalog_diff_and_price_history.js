@@ -9,15 +9,27 @@ const fs = require('fs');
 const os = require('os');
 
 test('Catalog Diff and Price History suite', async (t) => {
-  await t.test('isolated price corruption is removed without erasing legitimate changes', () => {
-    const cleaned = sanitizePriceTrail([
+  await t.test('isolated price corruption is quarantined with provenance without erasing raw evidence', () => {
+    const rawTrail = [
       { date: '2026-08-12', price: 99, status: 'BASELINE' },
       { date: '2026-08-12', price: 99, status: 'ADDED' },
       { date: '2026-08-24', price: 3062023, status: 'PRICE_CHANGED' },
       { date: '2026-09-09', price: 99, status: 'UNCHANGED' }
-    ]);
-    assert.deepEqual(cleaned.map(event => event.price), [99, 99]);
-    assert.equal(cleaned[0].status, 'ADDED');
+    ];
+    const cleaned = sanitizePriceTrail(rawTrail);
+    // Non-destructive: All 3 unique dates preserved in history
+    assert.strictEqual(cleaned.length, 3);
+    assert.strictEqual(cleaned[0].status, 'ADDED');
+    assert.strictEqual(cleaned[0].price, 99);
+    // Middle anomalous event is quarantined with provenance, NOT deleted
+    assert.strictEqual(cleaned[1].date, '2026-08-24');
+    assert.strictEqual(cleaned[1].price, 3062023);
+    assert.strictEqual(cleaned[1].quarantined, true);
+    assert.strictEqual(cleaned[1].effectivePrice, 99);
+    assert.ok(cleaned[1].anomalyProvenance);
+    // Filtered view via option preserves caller convenience if requested
+    const filtered = sanitizePriceTrail(rawTrail, { excludeQuarantined: true });
+    assert.deepEqual(filtered.map(event => event.price), [99, 99]);
   });
 
   await t.test('INV-6: normalizeTargetDate formats to strictly YYYY-MM-DD', () => {
