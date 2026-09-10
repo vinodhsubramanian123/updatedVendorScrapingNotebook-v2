@@ -7,6 +7,58 @@ description: Use this skill for validating customer BOQs, hardware lists, Excel 
 
 ---
 
+## 0. User Entry Points, Dashboard Synergy & Autonomous Agent Workflow
+
+### 🚀 Two Complementary Entry Points
+The solution supports two unified entry points tailored for different stages of the sales engineering workflow:
+
+| Metric / Capability | 🤖 Antigravity AI Agent (IDE / CLI / MCP) | 🖥️ React Web Dashboard (`localhost:5173`) |
+| :--- | :--- | :--- |
+| **Primary Persona** | Lead Solution Architect & Pair Programmer (Vinodh) | Presales Engineer & Visual Quote Reviewer |
+| **Input Flexibility** | Raw paths, multi-sheet workbooks, obfuscated pastes, PDFs (via OCR), direct conversational queries | Drag-and-drop `.xlsx`, `.xls`, or plain text paste |
+| **Async RAG Querying** | Direct MCP Server (`notebook_query`) or persistent job store with unlimited patience & smart FIFO key rotation | Dispatches async job via `/api/notebook-query-async`; polls status with visual progress |
+| **Multi-Cluster Tenders**| Solves Diophantine integer equations via `multi_cluster_splitter.js` for 60+ node tenders with 42U rack and power sizing | Evaluates selected chassis single-configuration at a time |
+| **Conversational Reasoning**| Full Dual-Brain dialog: reasons through trade-offs, part substitutions, supply chain lead times, and thermal boundaries | Fixed 5-tier card matrix visualization with confidence tooltips |
+| **Error Feedback Loop** | Autonomous CLIC validation, automated `KnowledgeDelta` extraction via `knowledge_extractor.js`, instant re-eval | "Report Portal Rejection" modal where user manually pastes portal error string |
+
+---
+
+### 🔍 Dashboard Entry Point Gaps & How the Agent Fills Them
+While the React Dashboard provides an exceptional visual interface for reviewing 5-tier matrices, comparing CapEx, and viewing topology, several operational gaps exist where the Antigravity Agent provides essential capability:
+1. **Durable Async RAG Waiting**: High-complexity RAG queries against large QuickSpecs PDFs can take 60–120 seconds. The dashboard's frontend poller relies on HTTP polling intervals that can experience browser tab throttles or transient network retries. The Antigravity Agent interacts directly with the persistent job store (`persistent_job_store.js`) and long-lived MCP server, waiting reliably for complete grounded answers without UI timeouts.
+2. **Multi-Server Mixed RFQs**: Large enterprise tenders frequently bundle multiple chassis (e.g. 20x DL380 database nodes + 10x DL360 application nodes + 2x StoreEver tape) in a single sheet. The dashboard requires selecting a single chassis target. The Agent runs `eval_multi_boq.js` and `multi_cluster_splitter.js` to automatically partition mixed tenders into homogeneous buildable clusters.
+3. **Complex Document Extraction**: When quotes arrive in non-standard tabular structures (e.g. scans, images, multi-line bundled cells with 13 SKUs in one row), the Agent leverages `performGeminiOcr` and regex sanitization to isolate atomic hardware rows cleanly before evaluation.
+4. **Dynamic Alternative Exploration**: If a customer part is restricted or obsolete, the Agent can conversationally explore certified equivalents (e.g. comparing Intel Xeon 8580 vs 8480+, or L40S vs L4 GPUs) and explain the exact pricing and power differences.
+
+---
+
+### 🔄 The 7 Atomic Steps of the BOQ Evaluation Journey
+1. **Intake, Ingestion & CTO Normalization**:
+   - Extracts base chassis and CTO multipliers (e.g. resolving a 5x server order into an atomic 1-unit profile).
+   - Identifies and excludes non-BOM documentation tabs (Cover pages, T&Cs, Readmes) using `isNonBomSheet` (`INV-63`).
+2. **Deterministic 7-Aspect Physical Pre-Flight Math**:
+   - Executes $O(1)$ indexed checks across: (1) Compute & Thermal TDP, (2) Memory Channel symmetry (1DPC/2DPC), (3) Storage Tri-Mode controllers & drive cages, (4) Networking & OCP slot constraints, (5) PCIe Riser card & slot capacity, (6) Power redundancy & -48VDC telco lug kits, (7) Support services & OS physical core multiplier licensing (`INV-28`).
+3. **Grounded Gemini NotebookLM Verification (Double Safety Net)**:
+   - Evaluates the query payload against the official vendor QuickSpecs PDF and 22-sheet master catalog in NotebookLM.
+   - **INV-24 Compliance**: Customer BOQ files are strictly isolated and NEVER uploaded to NotebookLM sources to prevent poisoning the RAG brain with human errors.
+4. **Alternate Parts & Form-Factor Bus Pivoting (Path B Principle)**:
+   - When components conflict (e.g. customer requests 2x OCP NICs but also selects an OCP storage controller `MR408i-o`), the engine pivots the storage controller to PCIe standup (`MR416i-p` `P47777-B21`), freeing OCP Slot 1 to preserve 100% of requested networking.
+   - Injects mandatory enablement kits dynamically: secondary CPU heatsinks (`P48818-B21`), internal SAS expanders (`P48835-B21`), GPU auxiliary power cables (`P48816-B21`), CE Mark Removal Kit (`P35876-B21`, `INV-30`), and Primary Cable Kit (`P56073-B21`, `INV-31`).
+5. **100% Partner Portal / CLIC Buildability Guarantee**:
+   - Ensures internal CTO components carry `#0D1` / `-F21` FIO tags (`INV-25`). Standalone BTO components outside containers fail CLIC validation (Rules 81354490 & 91001655).
+   - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.
+6. **5-Tier Strategic Resolution Matrix Ranking**:
+   - **Rank 1 (Customer Intent Preserved)**: Closest possible build to customer request. Minimum changes needed to achieve 100% buildability. Trims only redundant parts (e.g. redundant extra fans when base chassis already includes 6 fans). Never cuts down customer requirements unless physically unbuildable, and never bundles unsolicited software or services (`INV-32`).
+   - **Rank 2 (Standardized CTO Baseline)**: Standard vendor factory default baseline.
+   - **Rank 3 (High-IOPS & Storage Performance)**: PCIe standup controllers, expanded drive backplanes, high-speed cache.
+   - **Rank 4 (Maximum Density & Expansion)**: Maximum socket/core expansion, future-proof memory channels.
+   - **Rank 5 (Budget & CapEx Minimized)**: Cost-optimized buildable configuration adhering to essential specs at minimum spend.
+7. **Closed-Loop Feedback & KnowledgeDelta Learning**:
+   - Real-world vendor portal rejections are ingested via `processPortalFeedback()` (`feedback_loop.js`).
+   - Persists deduplicated `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`. Future evaluations instantly benefit from learned rules!
+
+---
+
 ## 1. Overview & Workflow Lifecycle (Workflow 2)
 
 This skill provides an automated, agentic workflow representing **Workflow 2 (Pre-Flight Evaluation)** of the dual-workflow paradigm. It ingests raw customer BOQs, pre-cleans input data, runs deterministic 7-aspect physical math assertions, executes 5-level dependency conflict graph validation, profiles Workload DNA, dynamically routes to Gemini Notebook RAG via `notebooks.json`, and outputs the results to the dashboard and a dynamically generated **Corrected BOQ Excel workbook**.

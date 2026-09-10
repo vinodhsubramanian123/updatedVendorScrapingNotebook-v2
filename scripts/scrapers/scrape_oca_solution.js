@@ -21,6 +21,197 @@ const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const JSON_MODE     = process.argv.includes('--json');
 
+function cleanupOrphanedStaging(tempDir, logger) {
+  if (!fs.existsSync(tempDir)) return;
+  const now = Date.now();
+  for (const entry of fs.readdirSync(tempDir)) {
+    const entryPath = path.join(tempDir, entry);
+    try {
+      const stat = fs.statSync(entryPath);
+      const ageHours = (now - stat.mtimeMs) / 3600000;
+      if (entry.startsWith('staging_') && ageHours > 0.25) {
+        const failedPath = path.join(tempDir, entry.replace('staging_', 'failed_stale_'));
+        fs.renameSync(entryPath, failedPath);
+        logger.warn('SCRAPE', `Orphaned staging dir (${(ageHours * 60).toFixed(0)}m old) preserved for diagnosis: ${path.basename(failedPath)}`);
+      } else if (entry.startsWith('failed_') && ageHours > 48) {
+        fs.rmSync(entryPath, { recursive: true, force: true });
+        logger.info('SCRAPE', `Purged old diagnostic dir (${ageHours.toFixed(1)}h old): ${entry}`);
+      }
+    } catch (e) {
+      logger.warn('SCRAPE', `Could not inspect temp dir entry ${entry}`, e);
+    }
+  }
+}
+
+/**
+ * Executes Step 8 (Staging Audit), Step 9 (Promotion & NotebookLM Sync), and Step 10 (Registry Sync).
+ */
+async function auditAndPromoteStaging({
+  outputDir,
+  liveOutputDir,
+  catalogXlsx,
+  catalogJson,
+  meta,
+  tables,
+  totalLen,
+  treeInfo,
+  pdfDestPath,
+  pipelineStart
+}) {
+  // STEP 8: Automated Post-Flight Audit Verification
+  console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
+  emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
+    stage: 'STAGING_AUDIT', percent: 90, category: meta.cleanName
+  });
+
+  try {
+    execFileSync(
+      process.execPath,
+      [path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js'), catalogXlsx],
+      { stdio: 'inherit', cwd: PROJECT_ROOT }
+    );
+
+    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
+    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+    if (!stagingCatalogContent.metadata || stagingCatalogContent.metadata.totalUniqueSKUs <= 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${stagingCatalogContent.metadata?.totalUniqueSKUs || 0} (must be > 0).`);
+    }
+    if (!Array.isArray(stagingCatalogContent.entries) || stagingCatalogContent.entries.length === 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
+    }
+
+    console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
+  } catch (e) {
+    const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
+    console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
+    console.error('\n🔒 LIVE WORKSPACE IS COMPLETELY INTACT — your previous good data is safe:');
+    const liveFiles = [
+      `${meta.cleanName}_Catalog.json`,
+      `${meta.cleanName}_Services.json`,
+      `${meta.cleanName}_Catalog_Rules.json`,
+      `${meta.cleanName}_OCA_Catalog.xlsx`,
+      'history/',
+      'intermittent_scraps/'
+    ];
+    liveFiles.forEach(f => {
+      const p = path.join(liveOutputDir, f);
+      if (fs.existsSync(p)) console.error(`   ✅ SAFE: ${p}`);
+    });
+    console.error(`\n⚠️  Failed staging preserved for inspection at:\n   ${failedStagingDir}`);
+    console.error(`   You can inspect raw_data/ and intermittent_scraps/ in that folder to diagnose the failure.`);
+    try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
+    process.exit(1);
+  }
+
+  // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
+  console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
+  emitProgress(9, 10, 'Live Workspace Promotion & NotebookLM Grounding', 'in_progress', 'Syncing knowledge payload to NotebookLM', {
+    stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName
+  });
+
+  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
+  promoteStagingDirectory(outputDir, liveOutputDir);
+
+  const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
+  const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
+  const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
+  const preservedPdf = fs.existsSync(liveOutputDir)
+    ? fs.readdirSync(liveOutputDir).find(name => name.toLowerCase().endsWith('.pdf'))
+    : null;
+  const actualPdfPath = livePdfPath && fs.existsSync(livePdfPath)
+    ? livePdfPath
+    : (preservedPdf ? path.join(liveOutputDir, preservedPdf) : null);
+
+  let hwSkuCount = tables.length;
+  let serviceSkuCount = 0;
+  let totalSkuCount = tables.length;
+  try {
+    const liveCatalogData = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf-8'));
+    hwSkuCount = liveCatalogData.metadata?.totalUniqueSKUs || tables.length;
+    const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
+    if (fs.existsSync(liveServicesJson)) {
+      const svcData = JSON.parse(fs.readFileSync(liveServicesJson, 'utf-8'));
+      serviceSkuCount = svcData.metadata?.totalUniqueSKUs || 0;
+    }
+    totalSkuCount = hwSkuCount + serviceSkuCount;
+  } catch (catalogReadErr) {
+    console.warn(`Warning: Could not read liveCatalogJson for SKU count: ${catalogReadErr.message}`);
+  }
+
+  updateScrapedRegistry({
+    timestamp:      new Date().toISOString(),
+    solutionName:   treeInfo.solutionName || 'OCA Solution',
+    family:         meta.family,
+    gen:            meta.gen,
+    chassisName:    meta.cleanName,
+    outputDir:      liveOutputDir,
+    jsonPath:       liveCatalogJson,
+    xlsxPath:       liveCatalogXlsx,
+    pdfPath:        actualPdfPath,
+    tablesCount:    totalSkuCount,
+    hwSkuCount,
+    serviceSkuCount,
+    textLength:     totalLen
+  });
+
+  // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
+  let postFlowSyncResult = null;
+  try {
+    const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
+    postFlowSyncResult = triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
+  } catch (syncErr) {
+    console.warn('Warning during triggerPostFlowSync:', syncErr.message);
+    postFlowSyncResult = { success: false, error: syncErr.message };
+  }
+
+  // STEP 10: Re-sync all registered catalogs across workspace & Action Ledger
+  console.log('\n--- STEP 10: Portfolio Registry & Action Ledger Sync ---');
+  emitProgress(10, 10, 'Portfolio Registry & Telemetry Ledger Sync', 'in_progress', 'Synchronizing chassis variants', {
+    stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
+  });
+
+  const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
+  if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
+    throw new Error(`Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
+  }
+
+  // Clean up staging folder
+  try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
+
+  if (!postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED') {
+    throw new Error(`Local catalog was promoted safely, but mandatory NotebookLM synchronization is pending: ${postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud failure'}`);
+  }
+
+  const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
+
+  emitProgress(10, 10, 'Scrape Pipeline & Knowledge Sync Complete', 'completed', `Completed in ${durationSec}s`, {
+    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName
+  });
+
+  if (JSON_MODE) {
+    emitResult('SUCCESS', {
+      solutionName: treeInfo.solutionName || 'OCA Solution',
+      family:       meta.family,
+      gen:          meta.gen,
+      chassisName:  meta.cleanName,
+      outputDir:    liveOutputDir,
+      jsonPath:     liveCatalogJson,
+      xlsxPath:     liveCatalogXlsx,
+      pdfPath:      actualPdfPath,
+      tablesCount:  totalSkuCount,
+      hwSkuCount,
+      serviceSkuCount,
+      durationSec
+    });
+  } else {
+    console.log('\n================================================================');
+    console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
+    console.log(`   ${liveOutputDir}`);
+    console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+    console.log('================================================================\n');
+  }
+}
+
 async function main() {
   const pipelineStart = Date.now();
   const logger = require('../lib/system/pipeline_logger.js');
@@ -30,30 +221,7 @@ async function main() {
   console.log('================================================================\n');
 
   // ── Startup: Proactive cleanup of orphaned staging and stale failed runs ──
-  const tempDir = path.join(OUTPUTS_ROOT, 'temp');
-  if (fs.existsSync(tempDir)) {
-    const now = Date.now();
-    for (const entry of fs.readdirSync(tempDir)) {
-      const entryPath = path.join(tempDir, entry);
-      try {
-        const stat = fs.statSync(entryPath);
-        const ageHours = (now - stat.mtimeMs) / 3600000;
-        // 1. Orphaned staging directories older than 15 mins → mark as failed for diagnostic inspection
-        if (entry.startsWith('staging_') && ageHours > 0.25) {
-          const failedPath = path.join(tempDir, entry.replace('staging_', 'failed_stale_'));
-          fs.renameSync(entryPath, failedPath);
-          logger.warn('SCRAPE', `Orphaned staging dir (${(ageHours * 60).toFixed(0)}m old) preserved for diagnosis: ${path.basename(failedPath)}`);
-        }
-        // 2. Old failed diagnostics older than 48 hours → purge to keep disk clean
-        else if (entry.startsWith('failed_') && ageHours > 48) {
-          fs.rmSync(entryPath, { recursive: true, force: true });
-          logger.info('SCRAPE', `Purged old diagnostic dir (${ageHours.toFixed(1)}h old): ${entry}`);
-        }
-      } catch (e) {
-        logger.warn('SCRAPE', `Could not inspect temp dir entry ${entry}`, e);
-      }
-    }
-  }
+  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
 
   const chassisArgIdx = process.argv.indexOf('--chassis');
   const queryArgIdx = process.argv.indexOf('--query');
@@ -383,10 +551,14 @@ async function main() {
     tables = await extractTablesAsRows(ws);
     console.log(`Extracted ${tables.length} tables.`);
     const tableDerivedText = deriveTextFromTables(tables);
+    let textExtractionMode = 'FULL_BODY_TEXT';
+    let outsideTableNotesCaptured = true;
     if (fullText.length < 2000 || fullText.length < tableDerivedText.length * 0.1) {
       console.warn(`⚠️  Reactive body text collapsed (${fullText.length} chars); using ${tableDerivedText.length.toLocaleString()} chars reconstructed losslessly from extracted table rows.`);
       fullText = tableDerivedText;
       totalLen = fullText.length;
+      textExtractionMode = 'TABLE_RECONSTRUCTED_FALLBACK';
+      outsideTableNotesCaptured = false;
     }
 
     // Shared section header extraction
@@ -444,6 +616,8 @@ async function main() {
       qsLink,
       scrollHeight: metrics.scrollHeight,
       textLength: totalLen,
+      textExtractionMode,
+      outsideTableNotesCaptured,
       fullText,
       sections,
       tables,
@@ -558,165 +732,19 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
-  // STEP 8: Automated Post-Flight Audit Verification
-  console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
-  emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
-    stage: 'STAGING_AUDIT', percent: 90, category: meta.cleanName
+  // STEPS 8, 9, 10: Staging Audit, Live Promotion, and Registry Sync
+  await auditAndPromoteStaging({
+    outputDir,
+    liveOutputDir,
+    catalogXlsx,
+    catalogJson,
+    meta,
+    tables,
+    totalLen,
+    treeInfo,
+    pdfDestPath,
+    pipelineStart
   });
-
-  try {
-    execFileSync(
-      process.execPath,
-      [path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js'), catalogXlsx],
-      { stdio: 'inherit', cwd: PROJECT_ROOT }
-    );
-
-    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
-    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
-    if (!stagingCatalogContent.metadata || stagingCatalogContent.metadata.totalUniqueSKUs <= 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${stagingCatalogContent.metadata?.totalUniqueSKUs || 0} (must be > 0).`);
-    }
-    if (!Array.isArray(stagingCatalogContent.entries) || stagingCatalogContent.entries.length === 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
-    }
-
-    console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
-  } catch (e) {
-    const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
-    console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
-    console.error('\n🔒 LIVE WORKSPACE IS COMPLETELY INTACT — your previous good data is safe:');
-    const liveFiles = [
-      `${meta.cleanName}_Catalog.json`,
-      `${meta.cleanName}_Services.json`,
-      `${meta.cleanName}_Catalog_Rules.json`,
-      `${meta.cleanName}_OCA_Catalog.xlsx`,
-      'history/',
-      'intermittent_scraps/'
-    ];
-    liveFiles.forEach(f => {
-      const p = path.join(liveOutputDir, f);
-      if (fs.existsSync(p)) console.error(`   ✅ SAFE: ${p}`);
-    });
-    console.error(`\n⚠️  Failed staging preserved for inspection at:\n   ${failedStagingDir}`);
-    console.error(`   You can inspect raw_data/ and intermittent_scraps/ in that folder to diagnose the failure.`);
-    try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
-    process.exit(1);
-  }
-
-  // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
-  console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
-  emitProgress(9, 10, 'Live Workspace Promotion & NotebookLM Grounding', 'in_progress', 'Syncing knowledge payload to NotebookLM', {
-    stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName
-  });
-
-  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
-  promoteStagingDirectory(outputDir, liveOutputDir);
-
-  const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
-  const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
-  const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
-  const preservedPdf = fs.existsSync(liveOutputDir)
-    ? fs.readdirSync(liveOutputDir).find(name => name.toLowerCase().endsWith('.pdf'))
-    : null;
-  const actualPdfPath = livePdfPath && fs.existsSync(livePdfPath)
-    ? livePdfPath
-    : (preservedPdf ? path.join(liveOutputDir, preservedPdf) : null);
-
-  // GAP-2 FIX: Read live catalog JSON to get the actual HW + service SKU counts.
-  // Previously, tablesCount (raw DOM tables = 124) was passed instead of the real SKU count (780).
-  let hwSkuCount = tables.length; // fallback if read fails
-  let serviceSkuCount = 0;
-  let totalSkuCount = tables.length;
-  try {
-    const liveCatalogData = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf-8'));
-    hwSkuCount = liveCatalogData.metadata?.totalUniqueSKUs || tables.length;
-    const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
-    if (fs.existsSync(liveServicesJson)) {
-      const svcData = JSON.parse(fs.readFileSync(liveServicesJson, 'utf-8'));
-      serviceSkuCount = svcData.metadata?.totalUniqueSKUs || 0;
-    }
-    totalSkuCount = hwSkuCount + serviceSkuCount;
-  } catch (catalogReadErr) {
-    console.warn(`Warning: Could not read liveCatalogJson for SKU count: ${catalogReadErr.message}`);
-  }
-
-  updateScrapedRegistry({
-    timestamp:      new Date().toISOString(),
-    solutionName:   treeInfo.solutionName || 'OCA Solution',
-    family:         meta.family,
-    gen:            meta.gen,
-    chassisName:    meta.cleanName,
-    outputDir:      liveOutputDir,
-    jsonPath:       liveCatalogJson,
-    xlsxPath:       liveCatalogXlsx,
-    pdfPath:        actualPdfPath,
-    // GAP-2 FIX: actual total SKU count, not raw DOM table count
-    tablesCount:    totalSkuCount,
-    hwSkuCount,
-    serviceSkuCount,
-    textLength:     totalLen
-  });
-
-  // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
-  let postFlowSyncResult = null;
-  try {
-    const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
-    postFlowSyncResult = triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
-  } catch (syncErr) {
-    console.warn('Warning during triggerPostFlowSync:', syncErr.message);
-    postFlowSyncResult = { success: false, error: syncErr.message };
-  }
-
-  // STEP 10: Re-sync all registered catalogs across workspace & Action Ledger
-  console.log('\n--- STEP 10: Portfolio Registry & Action Ledger Sync ---');
-  emitProgress(10, 10, 'Portfolio Registry & Telemetry Ledger Sync', 'in_progress', 'Synchronizing chassis variants', {
-    stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
-  });
-
-  // The product registry row was already updated above. Never rebuild every
-  // product here: that write-on-success behavior can alter unrelated catalogs
-  // and can also overwrite the freshly audited product from stale CSV inputs.
-  const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
-  if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
-    throw new Error(`Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
-  }
-
-  // Clean up staging folder
-  try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
-
-  if (!postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED') {
-    throw new Error(`Local catalog was promoted safely, but mandatory NotebookLM synchronization is pending: ${postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud failure'}`);
-  }
-
-  const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
-
-  // GAP-5 FIX: percent:100 only fires after BOTH sync operations complete successfully.
-  emitProgress(10, 10, 'Scrape Pipeline & Knowledge Sync Complete', 'completed', `Completed in ${durationSec}s`, {
-    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName
-  });
-
-  if (JSON_MODE) {
-    emitResult('SUCCESS', {
-      solutionName: treeInfo.solutionName || 'OCA Solution',
-      family:       meta.family,
-      gen:          meta.gen,
-      chassisName:  meta.cleanName,
-      outputDir:    liveOutputDir,
-      jsonPath:     liveCatalogJson,
-      xlsxPath:     liveCatalogXlsx,
-      pdfPath:      actualPdfPath,
-      tablesCount:  totalSkuCount,
-      hwSkuCount,
-      serviceSkuCount,
-      durationSec
-    });
-  } else {
-    console.log('\n================================================================');
-    console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
-    console.log(`   ${liveOutputDir}`);
-    console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
-    console.log('================================================================\n');
-  }
 
 }
 

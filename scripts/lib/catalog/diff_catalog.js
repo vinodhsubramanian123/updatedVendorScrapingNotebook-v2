@@ -246,49 +246,7 @@ function isBusinessRelevantDiscontinuedSku(options, existingEntry, context) {
     Number(existingEntry?.dealReferenceCount || 0) > 0 || Number(existingEntry?.ruleReferenceCount || 0) > 0;
 }
 
-/**
- * Perform diff calculation and history update.
- * @param {object} catalogData    - Structured catalog object from build_catalog.js
- * @param {string} historyDir     - Absolute path to history/ directory
- * @param {string} [historyLabel] - Optional label for snapshot prefix (default: 'catalog')
- *                                  Use 'services' when processing _Services.json
- * @returns {object} { enrichedCatalog, diffSummary, prevSnapshotPath }
- */
-function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', options = {}) {
-  fs.mkdirSync(historyDir, { recursive: true });
-
-  // GAP-6 FIX: Always normalize scrapeDate to YYYY-MM-DD for stable snapshot filenames.
-  // catalogData.metadata.scrapeDate may be a full ISO8601 string from old scrapes.
-  const scrapeDate          = formatDate(catalogData.metadata?.scrapeDate);
-  const snapshotPrefix      = historyLabel === 'services' ? 'services_catalog' : 'catalog';
-  // GAP-6 FIX: Snapshot filename always uses the normalized YYYY-MM-DD date, never a full ISO string.
-  const currentSnapshotPath = path.join(historyDir, `${snapshotPrefix}_${scrapeDate}.json`);
-  const priceHistoryPath    = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}price_history.json`);
-  const attributeHistoryPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}attribute_history.json`);
-  const discontinuedSkusPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}discontinued_skus.json`);
-
-  // ── GAP FIX #7: Warn on same-day re-run instead of silent overwrite ──────────
-  if (fs.existsSync(currentSnapshotPath)) {
-    console.warn(`  ⚠️  [SAME-DAY RERUN] Snapshot ${path.basename(currentSnapshotPath)} already exists.`);
-    console.warn(`      Previous run's snapshot will be replaced with this run's data.`);
-  }
-
-  // Load existing price history log
-  let priceHistory = {};
-  if (fs.existsSync(priceHistoryPath)) {
-    try {
-      priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
-      for (const [productNumber, trail] of Object.entries(priceHistory)) {
-        priceHistory[productNumber] = sanitizePriceTrail(trail);
-      }
-    } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(priceHistoryPath)}: ${err.message}`);
-    }
-  }
-
-  // GAP-6 FIX: Snapshot regex matches only strict YYYY-MM-DD format files.
-  // This filters out stale ISO-timestamp named snapshots (e.g. catalog_2026-08-22T09:27:12.174Z.json)
-  // that were created before the date normalization fix was applied.
+function resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, options) {
   const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}\.json$`);
   const snapshotFiles = fs.readdirSync(historyDir)
     .filter(f => snapshotRegex.test(f) && f !== `${snapshotPrefix}_${scrapeDate}.json`)
@@ -307,7 +265,6 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
     }
   }
 
-  // Build previous SKU lookup map
   const prevSkuMap = new Map();
   const disallowedPreviousSkus = new Set();
   if (prevCatalog && Array.isArray(prevCatalog.entries)) {
@@ -315,10 +272,6 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
       for (const sku of entry.skus || []) {
         const pn = sku['Product #'];
         if (pn) {
-          // A tombstone is historical evidence, not an active SKU. Excluding it
-          // prevents the same discontinued part from being "removed" again on
-          // every subsequent scrape while the registry remains available for
-          // deal validation and possible reinstatement.
           if (isRemovalTombstone(sku)) continue;
           if (options.previousSkuFilter && !options.previousSkuFilter({ entry, sku, productNumber: pn })) {
             disallowedPreviousSkus.add(pn);
@@ -336,20 +289,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
     }
   }
 
-  const currSkuMap = new Map();
-  const diffSummary = {
-    added: 0,
-    removed: 0,
-    categoryMigrated: 0,
-    priceChanged: 0,
-    attributeChanged: 0,
-    priceAndAttributeChanged: 0,
-    unchanged: 0,
-    reinstated: 0,
-    discontinuedTotal: 0
-  };
+  return { prevSnapshotPath, prevCatalog, prevSkuMap, disallowedPreviousSkus };
+}
 
-  // Build companion SKU lookup map for hardware <-> services reconciliation
+function buildCompanionSkuMap(options, historyLabel) {
   const companionSkuMap = new Map();
   if (options.companionCatalog && Array.isArray(options.companionCatalog.entries)) {
     for (const entry of options.companionCatalog.entries) {
@@ -365,35 +308,12 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
       }
     }
   }
+  return companionSkuMap;
+}
 
-  // Load existing attribute history & discontinued SKU registry
-  let attributeHistory = [];
-  if (fs.existsSync(attributeHistoryPath)) {
-    try {
-      attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
-      attributeHistory = dedupeAttributeHistory(attributeHistory);
-      if (disallowedPreviousSkus.size > 0) {
-        attributeHistory = attributeHistory.filter(item => !disallowedPreviousSkus.has(item.productNumber || item.sku));
-      }
-    } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(attributeHistoryPath)}: ${err.message}`);
-    }
-  }
+function diffCurrentCatalogEntries(catalogData, prevCatalog, prevSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary) {
+  const currSkuMap = new Map();
 
-  let discontinuedRegistry = {};
-  if (fs.existsSync(discontinuedSkusPath)) {
-    try {
-      discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8'));
-    } catch (err) {
-      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(discontinuedSkusPath)}: ${err.message}`);
-    }
-  }
-  for (const pn of disallowedPreviousSkus) {
-    delete priceHistory[pn];
-    delete discontinuedRegistry[pn];
-  }
-
-  // ── 1. Process current entries & compute diffs ────────────────────────────────
   for (const entry of catalogData.entries) {
     for (const sku of entry.skus || []) {
       const pn = sku['Product #'];
@@ -402,10 +322,8 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
 
       const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
 
-      // Price trail history initialization
       if (!priceHistory[pn]) priceHistory[pn] = [];
 
-      // ── GAP FIX #6: Reinstated SKU — append REINSTATED event to price trail ──
       if (discontinuedRegistry[pn] && discontinuedRegistry[pn].status === 'DISCONTINUED') {
         discontinuedRegistry[pn].status        = 'REINSTATED';
         discontinuedRegistry[pn].reinstatedDate = scrapeDate;
@@ -419,9 +337,6 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
       }
 
       if (!prevCatalog) {
-        // Baseline run — first time scrape.
-        // GAP-1 FIX: Emit BASELINE only — NOT both BASELINE and ADDED.
-        // Previously, some code paths emitted both on the same day.
         sku['Diff Status']               = 'BASELINE';
         sku['Previous List Price (USD)']  = 'N/A';
         sku['Price Change (USD)']         = '$0.00';
@@ -429,22 +344,17 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
         sku['Attribute Deltas']           = 'None';
 
         appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
-        // Note: diffSummary.added is NOT incremented for baseline — all baseline SKUs are counted as unchanged.
         diffSummary.unchanged++;
       } else if (!prevSkuMap.has(pn)) {
-        // ADDED SKU — genuinely new since last scrape
         sku['Diff Status']               = 'ADDED';
         sku['Previous List Price (USD)']  = 'N/A';
         sku['Price Change (USD)']         = currPrice > 0 ? `+$${currPrice.toFixed(2)}` : '$0.00';
         sku['Price Change (%)']           = currPrice > 0 ? '+100.00%' : '0.00%';
         sku['Attribute Deltas']           = 'New SKU introduced';
 
-        // GAP-1 FIX: appendTrailEvent with priority dedup will replace any same-date UNCHANGED
-        // entry with ADDED (higher priority), preventing ghost ADDED+UNCHANGED pairs.
         appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ADDED' });
         diffSummary.added++;
 
-        // ── GAP FIX #4: Record firstSeenDate on add ───────────────────────────
         if (!discontinuedRegistry[pn]) {
           discontinuedRegistry[pn] = {
             productNumber: pn,
@@ -456,12 +366,10 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
           };
         }
       } else {
-        // SKU present in both current and previous
         const prevSku   = prevSkuMap.get(pn);
         const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
         sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
 
-        // ── GAP FIX #3: Attribute history now includes subCategory & mainCategory ─
         const attributeDeltas = recordAttributeDeltas(sku, prevSku, {
           scrapeDate,
           productNumber: pn,
@@ -503,9 +411,6 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
           sku['Diff Status']        = 'UNCHANGED';
           sku['Price Change (USD)'] = '$0.00';
           sku['Price Change (%)']   = '0.00%';
-          // price_history.json is a delta ledger, not a scrape heartbeat log.
-          // Preserve one baseline if legacy history is absent, but do not append
-          // identical UNCHANGED events on every scrape.
           if (priceHistory[pn].length === 0) {
             appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
           }
@@ -513,164 +418,148 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
         }
       }
 
-      // ── GAP FIX #8: Build price trail string with accurate arrow direction ────
       sku['Price History Trail'] = buildTrailString(priceHistory[pn] || []);
     }
   }
 
-  // ── 2. Process REMOVED SKUs & Update Cumulative Discontinued Registry ─────────
-  if (prevCatalog) {
-    for (const [pn, prevSku] of prevSkuMap.entries()) {
-      if (!currSkuMap.has(pn)) {
-        // Reconcile companion catalog (e.g. Hardware <-> Services section migration)
-        if (companionSkuMap.has(pn)) {
-          const compSku = companionSkuMap.get(pn);
-          const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
-          if (!priceHistory[pn]) priceHistory[pn] = [];
-          appendTrailEvent(priceHistory[pn], {
-            date: scrapeDate,
-            price: compPrice,
-            status: 'CATEGORY_MIGRATED',
-            targetCategory: compSku.parentCategory
-          });
-          diffSummary.categoryMigrated++;
+  return currSkuMap;
+}
 
-          recordAttributeDeltas({
-            'Product #': pn,
-            'Main Category': compSku.parentCategory,
-            'Sub-Category': compSku.subCategory
-          }, prevSku, {
-            scrapeDate,
-            productNumber: pn,
-            chassis: catalogData.metadata?.chassis || 'Chassis',
-            mainCategory: prevSku.parentCategory || '',
-            subCategory: prevSku.subCategory || ''
-          }, attributeHistory);
+function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companionSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary, options) {
+  for (const [pn, prevSku] of prevSkuMap.entries()) {
+    if (currSkuMap.has(pn)) continue;
 
-          continue; // Migrated to companion catalog section; do not discontinue!
-        }
+    if (companionSkuMap.has(pn)) {
+      const compSku = companionSkuMap.get(pn);
+      const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
+      if (!priceHistory[pn]) priceHistory[pn] = [];
+      appendTrailEvent(priceHistory[pn], {
+        date: scrapeDate,
+        price: compPrice,
+        status: 'CATEGORY_MIGRATED',
+        targetCategory: compSku.parentCategory
+      });
+      diffSummary.categoryMigrated++;
 
-        const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
+      recordAttributeDeltas({
+        'Product #': pn,
+        'Main Category': compSku.parentCategory,
+        'Sub-Category': compSku.subCategory
+      }, prevSku, {
+        scrapeDate,
+        productNumber: pn,
+        chassis: catalogData.metadata?.chassis || 'Chassis',
+        mainCategory: prevSku.parentCategory || '',
+        subCategory: prevSku.subCategory || ''
+      }, attributeHistory);
 
-        // ── GAP FIX #1 & #2: Skip REMOVED event for $0-price SKUs with no real trail ──
-        // These are likely scrape artifacts or CTO placeholders that were never priced.
-        if (!priceHistory[pn]) priceHistory[pn] = [];
-
-        const hadNonZeroPrice = priceHistory[pn].some(h => h.price > 0);
-        if (!hadNonZeroPrice && prevPrice === 0) {
-          // This SKU was never priced — don't pollute the discontinued registry
-          continue;
-        }
-
-        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: prevPrice, status: 'REMOVED' });
-        diffSummary.removed++;
-
-        const trailStr = buildTrailString(priceHistory[pn]);
-
-        const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || '';
-        const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
-        let removalReason = 'ABSENT_FROM_CATALOG';
-        if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {
-          removalReason = 'VENDOR_OBSOLETE';
-        } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
-          removalReason = 'SCHEDULED_END_DATE';
-        }
-
-        // ── GAP FIX #4: Discontinued registry now includes firstSeenDate, daysActive, fullPriceTrail ──
-        const existingEntry = discontinuedRegistry[pn];
-        const businessRelevant = isBusinessRelevantDiscontinuedSku(options, existingEntry, {
-          productNumber: pn, sku: prevSku, catalogData
-        });
-        const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
-        let daysActive = 0;
-        if (firstSeenDate) {
-          const diffMs = new Date(scrapeDate) - new Date(firstSeenDate);
-          daysActive   = Math.round(diffMs / (1000 * 60 * 60 * 24));
-        }
-
-        discontinuedRegistry[pn] = {
-          productNumber:  pn,
-          description:    prevSku.Description || prevSku.description || '',
-          mainCategory:   prevSku.parentCategory || 'Deprecation Archive',
-          subCategory:    prevSku.subCategory    || 'Discontinued SKUs',
-          firstSeenDate,
-          discontinuedDate: scrapeDate,
-          daysActive,
-          lastKnownPrice: prevPrice.toFixed(2),
-          fullPriceTrail: trailStr,
-          status:         'DISCONTINUED',
-          removalReason,
-          previousLifecycleStatus: prevLifecycle || 'Active',
-          vendorDiscontinuedDate,
-          trackingState:  'STOPPED_AFTER_REMOVAL',
-          retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
-          businessRelevant,
-          reason:         removalReason === 'VENDOR_OBSOLETE'
-            ? 'Vendor marked obsolete/EOL in portal'
-            : (removalReason === 'SCHEDULED_END_DATE'
-              ? `Vendor scheduled end of life reached (${vendorDiscontinuedDate})`
-              : 'Removed from active HPE OCA portal catalog')
-        };
-
-        const tombstoneSKU = {
-          'Main Category':              prevSku.parentCategory || 'Deprecation Archive',
-          'Sub-Category':               prevSku.subCategory    || 'Discontinued SKUs',
-          'Hierarchy Path':             prevSku['Hierarchy Path'] || `HPE OCA > ${catalogData.metadata?.chassis || 'Chassis'} > Deprecation Archive > Discontinued SKUs`,
-          'Component Role':             prevSku['Component Role'] || 'Discontinued Hardware',
-          'Constraint Text':            prevSku['Constraint Text'] || 'Discontinued',
-          'Subcategory Max Qty':        '0',
-          'Table Rule/Note':            '[DISCONTINUED] SKU removed from latest HPE OCA portal catalog',
-          'Option Type':                prevSku['Option Type'] || prevSku.optionType || ((prevSku.parentCategory || '').toLowerCase().includes('chassis') ? 'CTO' : 'Standard'),
-          'Product #':                  pn,
-          'Description':                `[REMOVED SKU] ${prevSku.Description || prevSku.description || ''}`,
-          'Current Qty':                '0',
-          'Unit Price (USD)':           prevPrice.toFixed(2),
-          'Price Delta (USD)':          '-',
-          'Extended Price (USD)':       '0.00',
-          'Price per GB (USD)':         '-',
-          'HPE Recommended':            'No',
-          'Start Date':                 prevSku['Start Date'] || prevSku.Start || firstSeenDate,
-          'Discontinued Date':          scrapeDate,
-          'Days Active':                String(daysActive),
-          'Diff Status':                'REMOVED',
-          'Previous List Price (USD)':  prevPrice.toFixed(2),
-          'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
-          'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',
-          'Attribute Deltas':           'SKU Discontinued & Tombstoned',
-          'Price History Trail':        trailStr
-        };
-
-        // Find or create target entry in catalogData
-        let targetEntry = catalogData.entries.find(e => e.subCategory === tombstoneSKU['Sub-Category']);
-        if (!targetEntry) {
-          targetEntry = {
-            parentCategory: tombstoneSKU['Main Category'],
-            subCategory:    tombstoneSKU['Sub-Category'],
-            constraint:     'Discontinued',
-            maxQty:         0,
-            rules:          ['[DISCONTINUED] SKU present in previous scrape but removed from active catalog'],
-            headers:        ['Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Days Active'],
-            skuCount:       0,
-            skus:           []
-          };
-          catalogData.entries.push(targetEntry);
-        }
-        targetEntry.skus.push(tombstoneSKU);
-        targetEntry.skuCount = targetEntry.skus.length;
-      }
+      continue;
     }
+
+    const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)']);
+    if (!priceHistory[pn]) priceHistory[pn] = [];
+
+    const hadNonZeroPrice = priceHistory[pn].some(h => h.price > 0);
+    if (!hadNonZeroPrice && prevPrice === 0) {
+      continue;
+    }
+
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: prevPrice, status: 'REMOVED' });
+    diffSummary.removed++;
+
+    const trailStr = buildTrailString(priceHistory[pn]);
+    const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || '';
+    const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
+    let removalReason = 'ABSENT_FROM_CATALOG';
+    if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {
+      removalReason = 'VENDOR_OBSOLETE';
+    } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
+      removalReason = 'SCHEDULED_END_DATE';
+    }
+
+    const existingEntry = discontinuedRegistry[pn];
+    const businessRelevant = isBusinessRelevantDiscontinuedSku(options, existingEntry, {
+      productNumber: pn, sku: prevSku, catalogData
+    });
+    const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
+    let daysActive = 0;
+    if (firstSeenDate) {
+      const diffMs = new Date(scrapeDate) - new Date(firstSeenDate);
+      daysActive   = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    }
+
+    discontinuedRegistry[pn] = {
+      productNumber:  pn,
+      description:    prevSku.Description || prevSku.description || '',
+      mainCategory:   prevSku.parentCategory || 'Deprecation Archive',
+      subCategory:    prevSku.subCategory    || 'Discontinued SKUs',
+      firstSeenDate,
+      discontinuedDate: scrapeDate,
+      daysActive,
+      lastKnownPrice: prevPrice.toFixed(2),
+      fullPriceTrail: trailStr,
+      status:         'DISCONTINUED',
+      removalReason,
+      previousLifecycleStatus: prevLifecycle || 'Active',
+      vendorDiscontinuedDate,
+      trackingState:  'STOPPED_AFTER_REMOVAL',
+      retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
+      businessRelevant,
+      reason:         removalReason === 'VENDOR_OBSOLETE'
+        ? 'Vendor marked obsolete/EOL in portal'
+        : (removalReason === 'SCHEDULED_END_DATE'
+          ? `Vendor scheduled end of life reached (${vendorDiscontinuedDate})`
+          : 'Removed from active HPE OCA portal catalog')
+    };
+
+    const tombstoneSKU = {
+      'Main Category':              prevSku.parentCategory || 'Deprecation Archive',
+      'Sub-Category':               prevSku.subCategory    || 'Discontinued SKUs',
+      'Hierarchy Path':             prevSku['Hierarchy Path'] || `HPE OCA > ${catalogData.metadata?.chassis || 'Chassis'} > Deprecation Archive > Discontinued SKUs`,
+      'Component Role':             prevSku['Component Role'] || 'Discontinued Hardware',
+      'Constraint Text':            prevSku['Constraint Text'] || 'Discontinued',
+      'Subcategory Max Qty':        '0',
+      'Table Rule/Note':            '[DISCONTINUED] SKU removed from latest HPE OCA portal catalog',
+      'Option Type':                prevSku['Option Type'] || prevSku.optionType || ((prevSku.parentCategory || '').toLowerCase().includes('chassis') ? 'CTO' : 'Standard'),
+      'Product #':                  pn,
+      'Description':                `[REMOVED SKU] ${prevSku.Description || prevSku.description || ''}`,
+      'Current Qty':                '0',
+      'Unit Price (USD)':           prevPrice.toFixed(2),
+      'Price Delta (USD)':          '-',
+      'Extended Price (USD)':       '0.00',
+      'Price per GB (USD)':         '-',
+      'HPE Recommended':            'No',
+      'Start Date':                 prevSku['Start Date'] || prevSku.Start || firstSeenDate,
+      'Discontinued Date':          scrapeDate,
+      'Days Active':                String(daysActive),
+      'Diff Status':                'REMOVED',
+      'Previous List Price (USD)':  prevPrice.toFixed(2),
+      'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
+      'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',
+      'Attribute Deltas':           'SKU Discontinued & Tombstoned',
+      'Price History Trail':        trailStr
+    };
+
+    let targetEntry = catalogData.entries.find(e => e.subCategory === tombstoneSKU['Sub-Category']);
+    if (!targetEntry) {
+      targetEntry = {
+        parentCategory: tombstoneSKU['Main Category'],
+        subCategory:    tombstoneSKU['Sub-Category'],
+        constraint:     'Discontinued',
+        maxQty:         0,
+        rules:          ['[DISCONTINUED] SKU present in previous scrape but removed from active catalog'],
+        headers:        ['Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Days Active'],
+        skuCount:       0,
+        skus:           []
+      };
+      catalogData.entries.push(targetEntry);
+    }
+    targetEntry.skus.push(tombstoneSKU);
+    targetEntry.skuCount = targetEntry.skus.length;
   }
+}
 
-  diffSummary.discontinuedTotal = Object.values(discontinuedRegistry).filter(d => d.status === 'DISCONTINUED').length;
-
-  // Save historical snapshot, price history, attribute history, and discontinued SKU registry atomically
-  safeWriteJsonAtomic(currentSnapshotPath, catalogData);
-  safeWriteJsonAtomic(priceHistoryPath, priceHistory);
-  attributeHistory = dedupeAttributeHistory(attributeHistory);
-  safeWriteJsonAtomic(attributeHistoryPath, attributeHistory);
-  safeWriteJsonAtomic(discontinuedSkusPath, discontinuedRegistry);
-
-  // Compute Category & Subcategory Price Variance Analytics
+function computeCategoryPriceAnalytics(catalogData, scrapeDate) {
   const categoryAnalytics = {};
   for (const entry of catalogData.entries) {
     const cat = entry.parentCategory || 'Other';
@@ -694,7 +583,6 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
     }
   }
 
-  // Format averages and handle Infinity
   Object.keys(categoryAnalytics).forEach(cat => {
     const c = categoryAnalytics[cat];
     c.avgPrice = c.totalSKUs > 0 ? (c.totalPrice / c.totalSKUs) : 0;
@@ -705,10 +593,112 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
     });
   });
 
-  // Update metadata with diff summary & price analytics
+  return { scrapeDate, categoryBreakdown: categoryAnalytics };
+}
+
+/**
+ * Perform diff calculation and history update.
+ * @param {object} catalogData    - Structured catalog object from build_catalog.js
+ * @param {string} historyDir     - Absolute path to history/ directory
+ * @param {string} [historyLabel] - Optional label for snapshot prefix (default: 'catalog')
+ *                                  Use 'services' when processing _Services.json
+ * @returns {object} { enrichedCatalog, diffSummary, prevSnapshotPath }
+ */
+function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', options = {}) {
+  fs.mkdirSync(historyDir, { recursive: true });
+
+  const scrapeDate          = formatDate(catalogData.metadata?.scrapeDate);
+  const snapshotPrefix      = historyLabel === 'services' ? 'services_catalog' : 'catalog';
+  const currentSnapshotPath = path.join(historyDir, `${snapshotPrefix}_${scrapeDate}.json`);
+  const priceHistoryPath    = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}price_history.json`);
+  const attributeHistoryPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}attribute_history.json`);
+  const discontinuedSkusPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}discontinued_skus.json`);
+
+  if (fs.existsSync(currentSnapshotPath)) {
+    console.warn(`  ⚠️  [SAME-DAY RERUN] Snapshot ${path.basename(currentSnapshotPath)} already exists.`);
+    console.warn(`      Previous run's snapshot will be replaced with this run's data.`);
+  }
+
+  let priceHistory = {};
+  if (fs.existsSync(priceHistoryPath)) {
+    try {
+      priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
+      for (const [productNumber, trail] of Object.entries(priceHistory)) {
+        priceHistory[productNumber] = sanitizePriceTrail(trail);
+      }
+    } catch (err) {
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(priceHistoryPath)}: ${err.message}`);
+    }
+  }
+
+  const { prevSnapshotPath, prevCatalog, prevSkuMap, disallowedPreviousSkus } =
+    resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, options);
+
+  const diffSummary = {
+    added: 0,
+    removed: 0,
+    categoryMigrated: 0,
+    priceChanged: 0,
+    attributeChanged: 0,
+    priceAndAttributeChanged: 0,
+    unchanged: 0,
+    reinstated: 0,
+    discontinuedTotal: 0
+  };
+
+  const companionSkuMap = buildCompanionSkuMap(options, historyLabel);
+
+  let attributeHistory = [];
+  if (fs.existsSync(attributeHistoryPath)) {
+    try {
+      attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
+      attributeHistory = dedupeAttributeHistory(attributeHistory);
+      if (disallowedPreviousSkus.size > 0) {
+        attributeHistory = attributeHistory.filter(item => !disallowedPreviousSkus.has(item.productNumber || item.sku));
+      }
+    } catch (err) {
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(attributeHistoryPath)}: ${err.message}`);
+    }
+  }
+
+  let discontinuedRegistry = {};
+  if (fs.existsSync(discontinuedSkusPath)) {
+    try {
+      discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8'));
+    } catch (err) {
+      console.warn(`  ⚠️ Warning: Corrupted ${path.basename(discontinuedSkusPath)}: ${err.message}`);
+    }
+  }
+  for (const pn of disallowedPreviousSkus) {
+    delete priceHistory[pn];
+    delete discontinuedRegistry[pn];
+  }
+
+  // 1. Process current entries & compute diffs
+  const currSkuMap = diffCurrentCatalogEntries(
+    catalogData, prevCatalog, prevSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary
+  );
+
+  // 2. Process REMOVED SKUs & Update Cumulative Discontinued Registry
+  if (prevCatalog) {
+    diffRemovedCatalogEntries(
+      catalogData, prevSkuMap, currSkuMap, companionSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary, options
+    );
+  }
+
+  diffSummary.discontinuedTotal = Object.values(discontinuedRegistry).filter(d => d.status === 'DISCONTINUED').length;
+
+  // Save historical snapshot, price history, attribute history, and discontinued SKU registry atomically
+  safeWriteJsonAtomic(currentSnapshotPath, catalogData);
+  safeWriteJsonAtomic(priceHistoryPath, priceHistory);
+  attributeHistory = dedupeAttributeHistory(attributeHistory);
+  safeWriteJsonAtomic(attributeHistoryPath, attributeHistory);
+  safeWriteJsonAtomic(discontinuedSkusPath, discontinuedRegistry);
+
+  // Compute Category & Subcategory Price Variance Analytics
   catalogData.metadata.diffSummary       = diffSummary;
   catalogData.metadata.historySnapshot   = path.basename(currentSnapshotPath);
-  catalogData.metadata.priceAnalytics    = { scrapeDate, categoryBreakdown: categoryAnalytics };
+  catalogData.metadata.priceAnalytics    = computeCategoryPriceAnalytics(catalogData, scrapeDate);
 
   const label = historyLabel === 'services' ? 'Services Diff' : 'Hardware Catalog Diff';
   console.log(`\n--- ${label} Engine Summary ---`);

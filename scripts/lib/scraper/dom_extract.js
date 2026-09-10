@@ -14,20 +14,37 @@
  * @param {number} [chunkSize=50000]
  * @returns {Promise<{ fullText: string, totalLen: number }>}
  */
-async function extractChunkedText(ws, sendCommand, chunkSize = 50000) {
+async function extractChunkedText(ws, sendCommand, chunkSize = 50000, maxRetries = 3) {
   // OCA is a reactive WebLogic UI. Reading document.body.innerText separately
   // for every chunk allows a mid-extraction render (often "Loading...") to
   // shrink or replace the DOM, producing a declared length of ~40K but a saved
   // payload of only a few hundred characters. Freeze one immutable snapshot in
   // the page execution context and chunk that value instead.
-  const textLenRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      globalThis.__ocaBodyTextSnapshot = document.body ? document.body.innerText : '';
-      return globalThis.__ocaBodyTextSnapshot.length;
-    })()`,
-    returnByValue: true
-  });
-  const totalLen = textLenRes.result?.value || 0;
+  // Retry if page is caught in transient render/loading state.
+  let totalLen = 0;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const textLenRes = await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const isLoading = !!document.querySelector('.loading, .spinner, #loading_indicator, [class*="loading"]');
+        const text = document.body ? document.body.innerText : '';
+        globalThis.__ocaBodyTextSnapshot = text;
+        return { length: text.length, isLoading };
+      })()`,
+      returnByValue: true
+    });
+    const rawVal = textLenRes.result?.value;
+    const info = typeof rawVal === 'object' && rawVal !== null
+      ? rawVal
+      : { length: Number(rawVal) || 0, isLoading: false };
+    totalLen = Number(info.length) || 0;
+
+    if (totalLen > 0 && !info.isLoading) {
+      break;
+    }
+    if (attempt < maxRetries - 1) {
+      await new Promise(resolve => setTimeout(resolve, 600));
+    }
+  }
 
   let fullText = '';
   for (let i = 0; i < totalLen; i += chunkSize) {
@@ -98,12 +115,14 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
 
 function deriveTextFromTables(tables) {
   const lines = [];
-  let previous = null;
+  const seenLines = new Set();
   for (const table of tables || []) {
     for (const row of table.rows || []) {
       const line = (row || []).map(cell => String(cell || '').trim()).filter(Boolean).join('\t');
-      if (line && line !== previous) lines.push(line);
-      previous = line;
+      if (line && !seenLines.has(line)) {
+        seenLines.add(line);
+        lines.push(line);
+      }
     }
   }
   return lines.join('\n');

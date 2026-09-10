@@ -239,6 +239,19 @@ To maximize velocity and offload heavy validation without human friction:
 | **`INV-50`**| Ambiguity Inbox Escalation & Sign-off | Flags unverified/obsolete SKUs as `NEEDS_HUMAN_CLARIFICATION` for human sales engineer sign-off in the UI. |
 | **`INV-51`**| 4-Tier Vendor-Agnostic Taxonomy | Standardizes all catalogs and RAG sources under `{Vendor}/{Family}/{Gen}/{Model}/` for 100% clean vendor isolation. |
 | **`INV-52`**| Fuzzy Category & Upward Alignment | Aligns typos and description rows to target categories, matching exact or upward (never downward) with 100% buildable fixes. |
+| **`INV-54`**| DL380a Gen12 & DL145 Gen11 Domain Isolation | Dedicated chassis maps, rules, and hardware profiles for 8DW GPU and 1U edge platforms with zero cross-pollution. |
+| **`INV-55`**| Query Normalization & Regex Escaping | Safely normalizes query objects to string and escapes regex special characters in keyword searches. |
+| **`INV-56`**| Zero-Hardcoding Generic Domain Templates | Abstract capability flags and generic rules (`generic_domain_templates.js`) dynamically resolved to concrete catalog SKUs. |
+| **`INV-57`**| Tiered Test Matrix Architecture | 4 deterministic tiers (`unit`, `chaos`, `integration`, `e2e`) with fast default mode and structured failure ledger. |
+| **`INV-58`**| Monolithic CLI Pipeline Decomposition | Maintains CC $\le 10$ on orchestration entry points by isolating ingestion, diffs, and exports into stage modules. |
+| **`INV-59`**| Memoized O(1) Catalog SKU Index | Pre-builds and caches SKU lookup Map on `catalogData._skuIndex` to eliminate nested $O(N \times M \times K)$ scans. |
+| **`INV-60`**| Customer Tender Base SKU Accumulation | Accumulates repeated hardware SKU quantities (`fullBomMap.get(sku).quantity += qty`) rather than overwriting. |
+| **`INV-61`**| Generation-Aware Mandatory SKUs (SSOT) | SSOT in `catalog_rules.js` resolving heatsinks and riser cable kits dynamically by generation without cross-pollution. |
+| **`INV-62`**| Strict Delimited Lifecycle Parsing | Requires explicit token delimiters (`/^(?:90|EOL)\s+/i`, `[90]`, `(90)`) to prevent false-positive EOL flags on SKUs starting with "90". |
+| **`INV-63`**| Dynamic BOM Lead Sheet Filtering | Automatically detects and skips non-BOM documentation tabs (Cover page, Terms, Instructions, Readme). |
+| **`INV-64`**| Frontend Canonical Product Taxonomy | Standardizes all dashboard hooks and components on canonical model IDs (`DL380_Gen12`) with safe auto-fallback. |
+| **`INV-65`**| Modern CDP Download Behavior Protocol | Uses `Browser.setDownloadBehavior` with `allow` and resolved directories; forbids `allowAndName` to preserve filenames. |
+| **`INV-66`**| Browser Security Preservation Protocol | Never disables browser security controls; applies scoped permissions and validates completed files. |
 
 
 
