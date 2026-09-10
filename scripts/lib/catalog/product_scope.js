@@ -68,6 +68,13 @@ function isVerifiedSharedAccessoryRule(rule, target) {
   const scope = String(rule.scopeTaxonomy || rule.scope || 'CHASSIS_SPECIFIC').toUpperCase().replace(/_RULES$/, '');
   if (scope !== 'CHASSIS_SPECIFIC') return false;
   if (!SHARED_ACCESSORY_CLASSES.has(String(rule.accessoryClass || '').toUpperCase())) return false;
+
+  // Strict invariant: Isolated core components (CPU, memory, chassis, motherboards) can NEVER be shared accessories
+  const text = `${rule.ruleUpdate || ''} ${rule.affectedSku || ''} ${rule.humanReasoning || ''} ${rule.description || ''}`;
+  if (/\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(text)) {
+    return false;
+  }
+
   if (!TRUSTED_COMPATIBILITY_EVIDENCE.has(String(rule.compatibilityEvidenceType || '').toUpperCase())) return false;
   if (String(rule.verificationStatus || '').toUpperCase() !== 'VERIFIED') return false;
   if (!Array.isArray(rule.verificationSourceIds) || !rule.verificationSourceIds.some(id => String(id).trim())) return false;

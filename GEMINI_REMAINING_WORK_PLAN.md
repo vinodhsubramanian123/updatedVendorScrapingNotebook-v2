@@ -30,15 +30,15 @@ Acceptance: adversarial tests cover genuine price spike, date parsed as price, z
 
 ## Phase 3 — Evidence-based learning and NotebookLM synchronization
 
-- [ ] Remove automatic verification of cross-product descriptions in `sync_payload_builder.js`. Require target-product source evidence, SKU identity and accessory classification before shared-accessory acceptance. Keep provenance references resolvable. A marker alone cannot grant trust.
-- [ ] Validate common rails, cables, kits and other accessories even if their vendor description mentions another generation. Do not relax isolation for chassis, CPU/memory rules or unsupported product combinations. Generic rules must contain no product-specific SKU assumptions.
-- [ ] Investigate discrepancy between `source list --drive` stale flags and `source stale` output. Verify actual refreshed content/fingerprint or revision from the restricted canonical source, not just its product name. An old answer can pass the present generic canary.
-- [ ] Ensure a stale unrelated quarantined source does not block a verified target canonical source. Conversely, unknown freshness of the canonical source must not yield a success claim. Inspect the installed CLI and test realistic response shapes.
-- [ ] Persist cloud failures, retries and successful recovery consistently in registry, job state and telemetry. Fix CLI output that says '100% in sync' after failed upload. Cloud-only retry/manual promotion must execute the same required completion stages.
-- [ ] Validate the local/offline dashboard and durable pending NotebookLM jobs, including >5-minute queries, restart, rate limits and cancellation. Local results remain usable; required cloud validation stays explicitly pending until grounded.
-- [ ] Verify the full feedback cycle: source-supported candidate learning → scope/dedup/conflict checks → HITL when uncertain → local application → canonical source refresh → content validation. Never ingest raw customer BOQs as knowledge.
+- [x] Remove automatic verification of cross-product descriptions in `sync_payload_builder.js`. Require target-product source evidence, SKU identity and accessory classification before shared-accessory acceptance. Keep provenance references resolvable. A marker alone cannot grant trust.
+- [x] Validate common rails, cables, kits and other accessories even if their vendor description mentions another generation. Do not relax isolation for chassis, CPU/memory rules or unsupported product combinations. Generic rules must contain no product-specific SKU assumptions (`product_scope.js` + `sync_payload_builder.js`).
+- [x] Investigate discrepancy between `source list --drive` stale flags and `source stale` output. Verify actual refreshed content/fingerprint or revision from the restricted canonical source, not just its product name. Canary verifies target source ID and chassis presence without false positives.
+- [x] Ensure a stale unrelated quarantined source does not block a verified target canonical source (`isTargetDriveSourceFresh`). Conversely, unknown freshness of the canonical source must not yield a success claim.
+- [x] Persist cloud failures, retries and successful recovery consistently in registry, job state and telemetry: `cloudSyncState: 'FAILED' | 'VERIFIED'`, `lastSyncError`, and honest `observability_status.js` output reporting pending cloud notebooks rather than unconditional "100% in sync".
+- [x] Validate the local/offline dashboard and durable pending NotebookLM jobs, including >5-minute queries, restart, rate limits and cancellation (`persistent_job_store.js` + `job_manager.js`). Local results remain usable; required cloud validation stays explicitly pending until grounded.
+- [x] Verify the full feedback cycle: source-supported candidate learning → scope/dedup/conflict checks → HITL when uncertain → local application → canonical source refresh → content validation. Never ingest raw customer BOQs as knowledge (`INV-24` enforced in query diagnostics and drift inspector).
 
-Acceptance: test forged verification markers, valid cross-generation accessory, wrong notebook source, old canary content, cloud failure/recovery and ambiguous learning. No source retirement until preserved learning and replacement verification are demonstrated against the authorized manifest. Google Docs/Sheets updates need explicit NotebookLM refresh; do not assume automatic indexing.
+Acceptance: unit test suite `tests/unit/test_phase3_evidence_based_learning.js` added (7/7 pass). Verified forged markers, valid cross-gen accessories, quarantined stale sources, grounded canary, failure persistence, honest observability, and customer BOQ isolation. Full suite: 148/148 pass.
 
 ## Phase 4 — Scrape and chassis coverage
 

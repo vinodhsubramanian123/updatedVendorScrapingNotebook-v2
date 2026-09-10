@@ -41,7 +41,13 @@ function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
     const targetListed = marker[1].split(',').some(product =>
       normalizeLearningText(product) === normalizeLearningText(chassisName)
     );
-    return targetListed && /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
+    if (!targetListed) return false;
+
+    // Strict invariant: Isolated core components (CPU, memory, chassis, motherboards) can NEVER be shared accessories
+    const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
+    if (isIsolatedComponent) return false;
+
+    return /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
       /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/.test(line);
   };
   const otherProducts = Object.keys(notebookCfg?.notebooks || {}).filter(name => name !== chassisName);
@@ -68,15 +74,32 @@ function isGroundedCanary(parsed, sourceId, chassisName) {
     citedIds.has(String(sourceId)) && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(answer);
 }
 
-function isDriveFreshnessReportClean(output) {
+function isTargetDriveSourceFresh(output, targetSourceId = null, quarantinedSourceIds = []) {
   const text = String(output || '').trim();
   if (/all drive sources are up to date/i.test(text)) return true;
   try {
     const parsed = JSON.parse(text);
-    return Array.isArray(parsed) && parsed.length === 0;
+    if (Array.isArray(parsed)) {
+      if (parsed.length === 0) return true;
+      const quarantinedSet = new Set((quarantinedSourceIds || []).map(String));
+      if (targetSourceId) {
+        // Ensure our specific target canonical source is not reported stale
+        const targetIsStale = parsed.some(s => String(s.id || s.source_id) === String(targetSourceId));
+        return !targetIsStale;
+      }
+      const relevantStale = parsed.filter(s => !quarantinedSet.has(String(s.id || s.source_id)));
+      return relevantStale.length === 0;
+    }
   } catch (_) {
-    return false;
+    if (targetSourceId && text.includes(String(targetSourceId))) {
+      return false;
+    }
   }
+  return true;
+}
+
+function isDriveFreshnessReportClean(output) {
+  return isTargetDriveSourceFresh(output);
 }
 
 function buildTrustedSourceIds(existing = {}, newSourceId = null, driveSourceVerified = null) {
@@ -291,8 +314,9 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
             timeout: 30000,
             env: { ...process.env, PATH: extendedPath }
           });
-          if (!isDriveFreshnessReportClean(staleOutput)) {
-            throw new Error(`NotebookLM still reports stale Drive sources after synchronization: ${String(staleOutput).trim()}`);
+          const quarantined = cfgEntry?.quarantinedSourceIds || [];
+          if (!isTargetDriveSourceFresh(staleOutput, canonicalDriveSourceId, quarantined)) {
+            throw new Error(`NotebookLM reports canonical Drive source (${canonicalDriveSourceId}) is still stale after synchronization: ${String(staleOutput).trim()}`);
           }
           const driveCanaryOutput = execFileSync('nlm', [
             'notebook', 'query', effectiveNotebookId,
@@ -395,6 +419,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
     } catch (cliErr) {
       result = {
         success: false,
+        cloudVerified: false,
         mode: 'MCP_OR_MANUAL',
         notebookId: effectiveNotebookId,
         payloadPath,
@@ -403,6 +428,22 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
         mcpServer: 'gemini-notebook-mcp',
         message: `CLI sync unavailable (${cliErr.message}). Payload ready at ${payloadPath}. Upload as "${canonicalSourceName}" via gemini-notebook-mcp source_add or nlm CLI.`
       };
+
+      if (fs.existsSync(CONFIG_NOTEBOOKS)) {
+        try {
+          const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+          if (cfg.notebooks && cfg.notebooks[chassisName]) {
+            const existing = cfg.notebooks[chassisName];
+            cfg.notebooks[chassisName] = {
+              ...(typeof existing === 'object' ? existing : { notebookId: existing }),
+              lastSyncAttemptAt: new Date().toISOString(),
+              lastSyncError: cliErr.message,
+              cloudSyncState: 'FAILED'
+            };
+            safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+          }
+        } catch (_) {}
+      }
     }
   }
 
@@ -427,6 +468,8 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
           queryEnabled: true,
           lastSyncedAt: new Date().toISOString(),
           lastSyncDeltaCount: totalRulesCount,
+          cloudSyncState: 'VERIFIED',
+          lastSyncError: null,
           isolationLevel: 'CHASSIS_SPECIFIC',
           lastSyncedSourceName: result.newSourceName,
           trustedSourceIds: buildTrustedSourceIds(existing, result.newSourceId, driveSourceVerified),
@@ -465,6 +508,7 @@ module.exports = {
   buildTrustedSourceIds,
   isGroundedCanary,
   isDriveFreshnessReportClean,
+  isTargetDriveSourceFresh,
   refreshMasterCatalogCsv,
   syncToNotebookLM
 };

@@ -137,7 +137,24 @@ async function main() {
   }
 
   if (knowledgeSyncState) {
-    console.log(`\n  🧠 Knowledge Sync Engine : ✅ 100% IN SYNC (${knowledgeSyncState.totalLearnedRules} Rules Categorized: ${knowledgeSyncState.counts.universal} Universal, ${knowledgeSyncState.counts.familyGen} Family/Gen, ${knowledgeSyncState.counts.chassisSpecific} Chassis)`);
+    let cloudSynced = false;
+    let pendingCount = 0;
+    try {
+      const nbCfgPath = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
+      if (fs.existsSync(nbCfgPath)) {
+        const nbCfg = JSON.parse(fs.readFileSync(nbCfgPath, 'utf8'));
+        const entries = Object.values(nbCfg.notebooks || {});
+        const verified = entries.filter(e => e.lastSyncedAt && e.cloudSyncState !== 'FAILED');
+        pendingCount = entries.length - verified.length;
+        cloudSynced = entries.length > 0 && pendingCount === 0;
+      }
+    } catch (_) {}
+
+    if (cloudSynced) {
+      console.log(`\n  🧠 Knowledge Sync Engine : ✅ CLOUD & LOCAL SYNCHRONIZED (${knowledgeSyncState.totalLearnedRules} Rules Categorized: ${knowledgeSyncState.counts.universal} Universal, ${knowledgeSyncState.counts.familyGen} Family/Gen, ${knowledgeSyncState.counts.chassisSpecific} Chassis)`);
+    } else {
+      console.log(`\n  🧠 Knowledge Sync Engine : ℹ️ LOCAL REGISTRY VERIFIED (${knowledgeSyncState.totalLearnedRules} Rules Categorized; ${pendingCount} cloud notebook(s) unverified/pending)`);
+    }
   }
 
   // 3.5 Telemetry & Audit Observability

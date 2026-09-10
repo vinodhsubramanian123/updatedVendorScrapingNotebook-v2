@@ -42,15 +42,39 @@ function referencesOtherRegisteredProduct(text, chassisName, cfg) {
   });
 }
 
+function inferAccessoryClass(desc, cat = '') {
+  const d = String(desc || '').toLowerCase();
+  const c = String(cat || '').toLowerCase();
+  if (d.includes('rail') || c.includes('rail')) return 'RAIL';
+  if (d.includes('cable') || c.includes('cable')) return 'CABLE';
+  if (d.includes('power cord') || d.includes('power cable')) return 'POWER_CORD';
+  if (d.includes('transceiver') || c.includes('transceiver')) return 'TRANSCEIVER';
+  if (d.includes('enablement kit') || d.includes('fio kit') || d.includes('bracket') || c.includes('enablement')) return 'ENABLEMENT_KIT';
+  if (d.includes('management arm') || d.includes('cma')) return 'CABLE_MANAGEMENT_ARM';
+  return null;
+}
+
 /**
  * Generate comprehensive markdown sync payload for target chassis
  *
  * @param {string} chassisName
  * @param {boolean} autoUpload
- * @param {object} registry
+ * @param {object|null} registryOrOptions
+ * @param {object} maybeSyncOptions
  * @returns {{ payloadPath: string|null, markdownText: string, deltaCount: number, uploadResult: object|null }}
  */
-function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, registry = null, syncOptions = {}) {
+function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, registryOrOptions = null, maybeSyncOptions = {}) {
+  let registry = null;
+  let syncOptions = {};
+  if (registryOrOptions && typeof registryOrOptions === 'object') {
+    if ('confirmSourceRetirement' in registryOrOptions || 'autoUpload' in registryOrOptions || 'syncOptions' in registryOrOptions) {
+      syncOptions = registryOrOptions;
+    } else {
+      registry = registryOrOptions;
+      syncOptions = maybeSyncOptions || {};
+    }
+  }
+
   const BLOCKED_CHASSIS = new Set([
     'Unknown_Chassis', 'outputs', 'General', '', 'Chassis Dir', 'OCA Solution', '-------------', 'Output Path'
   ]);
@@ -236,9 +260,14 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     discontinuedList.forEach(d => {
       const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
       const description = d.description || 'N/A';
-      const sharedEvidence = referencesOtherRegisteredProduct(description, chassisName, cfg)
-        ? `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`
-        : description;
+      let sharedEvidence = description;
+      if (referencesOtherRegisteredProduct(description, chassisName, cfg)) {
+        const accessoryClass = inferAccessoryClass(description, d.mainCategory || d.subCategory);
+        const isIsolated = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board)\b/i.test(description);
+        if (accessoryClass && !isIsolated && skuPn !== 'N/A') {
+          sharedEvidence = `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Class: ${accessoryClass}; Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`;
+        }
+      }
       md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
     });
     md += `\n`;
