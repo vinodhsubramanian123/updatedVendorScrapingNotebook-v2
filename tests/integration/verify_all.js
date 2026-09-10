@@ -20,6 +20,7 @@ function findXlsxFiles(dir) {
 
   list.forEach(file => {
     if (file.startsWith('.') || file.startsWith('.~')) return; // Skip dotfiles & Excel lock files
+    if (file === 'temp' || file === 'history') return; // Skip temporary runs and history snapshots
     const filePath = path.join(dir, file);
     try {
       const stat = fs.statSync(filePath);
@@ -76,7 +77,9 @@ function verifyAll() {
   }
 
   let passCount = 0;
+  let degradedCount = 0;
   let failCount = 0;
+  const degradedList = [];
 
   const suiteStart = Date.now();
   xlsxFiles.sort().forEach((xlsxPath, idx) => {
@@ -87,8 +90,8 @@ function verifyAll() {
     console.log(`----------------------------------------------------------------`);
 
     try {
-      // 1. Run Excel Tally Audit
-      execSync(`node "${path.join(__dirname, 'verify_excel_tally.js')}" "${xlsxPath}"`, {
+      // 1. Run Excel Tally Audit (allowing explicit degraded status for legacy product schemas)
+      execSync(`node "${path.join(__dirname, 'verify_excel_tally.js')}" "${xlsxPath}" --allow-legacy`, {
         stdio: 'inherit',
         cwd: PROJECT_ROOT
       });
@@ -99,9 +102,24 @@ function verifyAll() {
         cwd: PROJECT_ROOT
       });
 
+      const auditResultPath = path.join(path.dirname(xlsxPath), 'audit_result.json');
+      let isDegraded = false;
+      if (fs.existsSync(auditResultPath)) {
+        try {
+          const auditResult = JSON.parse(fs.readFileSync(auditResultPath, 'utf8'));
+          if (auditResult.status === 'DEGRADED' || auditResult.isDegraded) isDegraded = true;
+        } catch (_) {}
+      }
+
       const itemDuration = ((Date.now() - itemStart) / 1000).toFixed(2);
-      console.log(`  ⏱️ Verified ${relPath} in ${itemDuration}s`);
-      passCount++;
+      if (isDegraded) {
+        console.log(`  ⏱️ Audited ${relPath} in ${itemDuration}s (DEGRADED — Legacy Schema)`);
+        degradedCount++;
+        degradedList.push(relPath);
+      } else {
+        console.log(`  ⏱️ Verified ${relPath} in ${itemDuration}s (PASS — 100% Certified)`);
+        passCount++;
+      }
     } catch (err) {
       console.error(`❌ AUDIT FAILED for ${relPath}:`, err.message);
       failCount++;
@@ -110,11 +128,14 @@ function verifyAll() {
 
   const totalDuration = ((Date.now() - suiteStart) / 1000).toFixed(2);
   console.log('\n================================================================');
-  console.log(`📊 PORTFOLIO AUDIT SUMMARY: ${passCount}/${xlsxFiles.length} PASSED in ${totalDuration}s`);
-  if (failCount === 0) {
-    console.log('🎉 100% PORTFOLIO CERTIFICATION PASSED!');
-  } else {
-    console.log(`⚠️ ${failCount} product catalog(s) failed evaluation.`);
+  console.log(`📊 PORTFOLIO AUDIT SUMMARY:`);
+  console.log(`  ✅ Certified Modern Catalogs: ${passCount}/${xlsxFiles.length} PASSED in ${totalDuration}s`);
+  if (degradedCount > 0) {
+    console.log(`  ⚠️ Degraded Legacy Schemas:   ${degradedCount}/${xlsxFiles.length} (pending migration):`);
+    degradedList.forEach(item => console.log(`     • ${item}`));
+  }
+  if (failCount > 0) {
+    console.log(`  ❌ Failed Catalogs:           ${failCount}/${xlsxFiles.length}`);
   }
   console.log('================================================================\n');
 

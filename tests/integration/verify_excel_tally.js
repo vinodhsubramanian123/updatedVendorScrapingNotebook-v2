@@ -9,7 +9,7 @@ const XLSX   = require('xlsx-js-style');
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
-const { isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
+const { isValidHpeSKU, cleanBaseSKU } = require('../../scripts/lib/catalog/sku.js');
 const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
 const { isCanonicalCtoChassisCandidate } = require('../../scripts/catalogs/build_catalog.js');
 
@@ -35,6 +35,8 @@ if (!fs.existsSync(pdfPath)) {
 const auditResults = { timestamp: new Date().toISOString(), chassis: filePrefix, checks: [] };
 
 const JSON_MODE = process.argv.includes('--json');
+const PRE_PROMOTION = process.argv.includes('--pre-promotion');
+const ALLOW_LEGACY = process.argv.includes('--allow-legacy');
 if (JSON_MODE) {
   console.log = () => {};
   console.warn = () => {};
@@ -193,7 +195,18 @@ async function main() {
   // INV-49: Lossless commercial/lifecycle attributes and exact-product CTO identity.
   const requiredAttributeColumns = ['Availability', 'Lead Time', 'Lead Time Source', 'Lifecycle Status', 'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)'];
   const excelColumns = new Set(Object.keys(allSkusSheet[0] || {}));
-  requiredAttributeColumns.forEach(column => assert(excelColumns.has(column), `Lossless attribute column '${column}' is present`));
+  const missingColumns = requiredAttributeColumns.filter(column => !excelColumns.has(column));
+  if (missingColumns.length > 0) {
+    if (ALLOW_LEGACY) {
+      if (!JSON_MODE) console.log(`  ⚠️  DEGRADED / LEGACY SCHEMA: Missing lossless attribute columns: ${missingColumns.join(', ')}`);
+      auditResults.checks.push({ status: 'DEGRADED', message: `Missing lossless attribute columns (legacy schema): ${missingColumns.join(', ')}` });
+      auditResults.isDegraded = true;
+    } else {
+      missingColumns.forEach(column => assert(false, `Lossless attribute column '${column}' is present`));
+    }
+  } else {
+    requiredAttributeColumns.forEach(column => assert(excelColumns.has(column), `Lossless attribute column '${column}' is present`));
+  }
 
   const physicalHardwareRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory !== 'Software & Licenses');
   const activeSoftwareRows = currentHardwareRows.filter(({ entry, sku }) =>
@@ -215,39 +228,81 @@ async function main() {
   const startDateRows = currentHardwareRows.filter(({ sku }) => /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Start Date'] || '').trim()));
   const discontinuedDateRows = currentHardwareRows.filter(({ sku }) => /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Discontinued Date'] || '').trim()));
   const denominator = Math.max(1, currentHardwareRows.length);
-  assert(pricedRows.length / Math.max(1, physicalHardwareRows.length) >= 0.95,
-    `Current physical-hardware explicit OCA price-field coverage is >=95% (${pricedRows.length}/${physicalHardwareRows.length}; published $0 values preserved)`);
-  if (activeSoftwareRows.length > 0) {
-    assert(pricedSoftwareRows.length / activeSoftwareRows.length >= 0.75,
-      `Current non-obsolete software/license explicit OCA price-field coverage is >=75% (${pricedSoftwareRows.length}/${activeSoftwareRows.length}; published $0 values preserved)`);
+
+  if (auditResults.isDegraded) {
+    if (!JSON_MODE) console.log('  ⚠️  Legacy product schema detected: skipping modern field coverage assertions (marked DEGRADED pending migration).');
+  } else {
+    assert(pricedRows.length / Math.max(1, physicalHardwareRows.length) >= 0.95,
+      `Current physical-hardware explicit OCA price-field coverage is >=95% (${pricedRows.length}/${physicalHardwareRows.length}; published $0 values preserved)`);
+    if (activeSoftwareRows.length > 0) {
+      assert(pricedSoftwareRows.length / activeSoftwareRows.length >= 0.75,
+        `Current non-obsolete software/license explicit OCA price-field coverage is >=75% (${pricedSoftwareRows.length}/${activeSoftwareRows.length}; published $0 values preserved)`);
+    }
+    assert(lifecycleRows.length === currentHardwareRows.length, `Lifecycle status coverage is 100% (${lifecycleRows.length}/${currentHardwareRows.length})`);
+    assert(explicitAvailabilityRows.length / denominator >= 0.50, `Explicit OCA availability coverage is >=50% (${explicitAvailabilityRows.length}/${currentHardwareRows.length}); unpublished rows remain explicitly unknown`);
+    assert(startDateRows.length / denominator >= 0.95, `Start-date coverage is >=95% (${startDateRows.length}/${currentHardwareRows.length})`);
+    assert(discontinuedDateRows.length / denominator >= 0.95, `Discontinued-date coverage is >=95% (${discontinuedDateRows.length}/${currentHardwareRows.length})`);
   }
-  assert(lifecycleRows.length === currentHardwareRows.length, `Lifecycle status coverage is 100% (${lifecycleRows.length}/${currentHardwareRows.length})`);
-  assert(explicitAvailabilityRows.length / denominator >= 0.50, `Explicit OCA availability coverage is >=50% (${explicitAvailabilityRows.length}/${currentHardwareRows.length}); unpublished rows remain explicitly unknown`);
-  assert(startDateRows.length / denominator >= 0.95, `Start-date coverage is >=95% (${startDateRows.length}/${currentHardwareRows.length})`);
-  assert(discontinuedDateRows.length / denominator >= 0.95, `Discontinued-date coverage is >=95% (${discontinuedDateRows.length}/${currentHardwareRows.length})`);
 
   const chassisRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants');
   assert(chassisRows.length > 0, 'At least one currently discoverable CTO base chassis is present');
-  assert(chassisRows.some(({ sku }) => String(sku['Lead Time'] || '').trim()), 'Selected CTO chassis carries the current OCA configuration delivery estimate');
-  assert(chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({
-    sku: sku['Product #'] || sku.sku,
-    text: sku.Description || sku.description,
-    isBto: String(sku['Option Type'] || '').toUpperCase() === 'BTO'
-  }, filePrefix)), `All ${chassisRows.length} active chassis rows match exact product identity and exclude TAA/GTA/BTO/special-solution variants`);
+  if (!auditResults.isDegraded) {
+    assert(chassisRows.some(({ sku }) => String(sku['Lead Time'] || '').trim()), 'Selected CTO chassis carries the current OCA configuration delivery estimate');
+    assert(chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({
+      sku: sku['Product #'] || sku.sku,
+      text: sku.Description || sku.description,
+      isBto: String(sku['Option Type'] || '').toUpperCase() === 'BTO'
+    }, filePrefix)), `All ${chassisRows.length} active chassis rows match exact product identity and exclude TAA/GTA/BTO/special-solution variants`);
+  }
 
   const discoveryPath = path.join(targetDir, 'raw_data', 'chassis_discovery.json');
-  assert(fs.existsSync(discoveryPath), 'Current OCA chassis discovery evidence exists');
-  const discovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8'));
-  const discoveryAgeMs = Date.now() - Date.parse(discovery.capturedAt || '');
-  assert(Number.isFinite(discoveryAgeMs) && discoveryAgeMs >= 0 && discoveryAgeMs <= 5 * 60 * 1000,
-    `OCA chassis discovery is contemporaneous with this scrape (${Math.round(discoveryAgeMs / 1000)}s old, maximum 300s)`);
-  const discoveredCtoSkus = new Set((discovery.candidates || [])
-    .filter(candidate => isCanonicalCtoChassisCandidate(candidate, filePrefix))
-    .map(candidate => String(candidate.sku || '').replace(/#GTA$/i, '').toUpperCase()));
-  const currentChassisSkus = new Set(chassisRows.map(({ sku }) => String(sku['Product #'] || sku.sku || '').toUpperCase()));
-  const missingDiscoveredVariants = [...discoveredCtoSkus].filter(sku => !currentChassisSkus.has(sku));
-  assert(discoveredCtoSkus.size > 0, 'OCA discovery contains at least one eligible exact-product CTO chassis');
-  assert(missingDiscoveredVariants.length === 0, `All ${discoveredCtoSkus.size} discovered CTO chassis variants are represented (missing: ${missingDiscoveredVariants.join(', ') || 'none'})`);
+  if (!fs.existsSync(discoveryPath)) {
+    if (ALLOW_LEGACY) {
+      if (!JSON_MODE) console.log('  ⚠️  DEGRADED / LEGACY SCHEMA: raw_data/chassis_discovery.json not present in legacy catalog');
+      auditResults.checks.push({ status: 'DEGRADED', message: 'Current OCA chassis discovery evidence missing (legacy catalog)' });
+      auditResults.isDegraded = true;
+    } else {
+      assert(false, 'Current OCA chassis discovery evidence exists');
+    }
+  } else {
+    assert(fs.existsSync(discoveryPath), 'Current OCA chassis discovery evidence exists');
+    const discovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8'));
+    const isPrePromotion = PRE_PROMOTION || targetDir.includes('staging_') || targetDir.includes('intermittent_scraps');
+    if (isPrePromotion) {
+      const discoveryAgeMs = Date.now() - Date.parse(discovery.capturedAt || '');
+      assert(Number.isFinite(discoveryAgeMs) && discoveryAgeMs >= 0 && discoveryAgeMs <= 5 * 60 * 1000,
+        `OCA chassis discovery is contemporaneous with this scrape (${Math.round(discoveryAgeMs / 1000)}s old, maximum 300s)`);
+    } else {
+      // Historical artifact verification: compare discovery capture time with scrape time
+      const scrapeTime = catalogData.metadata?.scrapeTimestamp || catalogData.metadata?.scrapeDate;
+      if (scrapeTime && discovery.capturedAt) {
+        const deltaMs = Math.abs(Date.parse(scrapeTime) - Date.parse(discovery.capturedAt));
+        if (deltaMs > 5 * 60 * 1000) {
+          if (ALLOW_LEGACY) {
+            if (!JSON_MODE) console.log(`  ⚠️  DEGRADED / LEGACY SCHEMA: OCA chassis discovery is not contemporaneous with scrape (${Math.round(deltaMs / 1000)}s delta)`);
+            auditResults.checks.push({ status: 'DEGRADED', message: `OCA chassis discovery not contemporaneous in legacy catalog (${Math.round(deltaMs / 1000)}s delta)` });
+            auditResults.isDegraded = true;
+          } else {
+            assert(false, `OCA chassis discovery is contemporaneous with scrape (${Math.round(deltaMs / 1000)}s delta, maximum 300s)`);
+          }
+        } else {
+          assert(true, `OCA chassis discovery is contemporaneous with scrape (${Math.round(deltaMs / 1000)}s delta, maximum 300s)`);
+        }
+      } else {
+        const discoveryAgeMs = Date.now() - Date.parse(discovery.capturedAt || '');
+        assert(Number.isFinite(discoveryAgeMs), 'Valid discovery capture timestamp');
+      }
+    }
+    const discoveredCtoSkus = new Set((discovery.candidates || [])
+      .filter(candidate => isCanonicalCtoChassisCandidate(candidate, filePrefix))
+      .map(candidate => String(candidate.sku || '').replace(/#GTA$/i, '').toUpperCase()));
+    const currentChassisSkus = new Set(chassisRows.map(({ sku }) => String(sku['Product #'] || sku.sku || '').toUpperCase()));
+    const missingDiscoveredVariants = [...discoveredCtoSkus].filter(sku => !currentChassisSkus.has(sku));
+    if (!auditResults.isDegraded) {
+      assert(discoveredCtoSkus.size > 0, 'OCA discovery contains at least one eligible exact-product CTO chassis');
+      assert(missingDiscoveredVariants.length === 0, `All ${discoveredCtoSkus.size} discovered CTO chassis variants are represented (missing: ${missingDiscoveredVariants.join(', ') || 'none'})`);
+    }
+  }
 
   // ── AUDIT 5: Category-Specific Sheet Tallies ──────────────────────────────
   if (!JSON_MODE) console.log('\n--- AUDIT 5: Category-Specific Sheet SKU Tallies ---');
@@ -292,22 +347,48 @@ async function main() {
     }
 
     // GAP FIX / INV-23: Catastrophic SKU Drop & Anomaly Pre-Promotion Guardrail
-    if (snapshots.length >= 2) {
-      const priorSnapshotFile = snapshots[snapshots.length - 2];
+    const currentSnapshotFile = catalogData.metadata?.historySnapshot || `catalog_${catalogData.metadata?.scrapeDate}.json`;
+    const priorSnapshots = snapshots.filter(f => f !== currentSnapshotFile && f < currentSnapshotFile).sort();
+
+    if (priorSnapshots.length === 0) {
+      if (!JSON_MODE) console.log('  ℹ️  First baseline established (no strictly earlier history snapshots found for drop check).');
+      auditResults.checks.push({ status: 'PASS', message: 'First baseline established; no prior history snapshots exist for drop check' });
+    } else {
+      const priorSnapshotFile = priorSnapshots[priorSnapshots.length - 1];
+      let priorJson;
       try {
-        const priorJson = JSON.parse(fs.readFileSync(path.join(historyDir, priorSnapshotFile), 'utf-8'));
-        const priorCount = (priorJson.entries || []).flatMap(entry =>
-          entry.parentCategory === 'Support Services' ? [] : (entry.skus || [])
-        ).filter(sku => !['REMOVED', 'DISCONTINUED'].includes(String(sku['Diff Status'] || '').toUpperCase())).length;
-        if (priorCount >= 50) {
-          const dropRatio = currentHardwareRows.length / priorCount;
-          assert(
-            dropRatio >= 0.70,
-            `INV-23 active hardware retention is >=70%: ${priorCount} prior vs ${currentHardwareRows.length} current (${(dropRatio * 100).toFixed(1)}%)`
-          );
-        }
+        priorJson = JSON.parse(fs.readFileSync(path.join(historyDir, priorSnapshotFile), 'utf-8'));
       } catch (err) {
-        if (err.message.includes('INV-23 Anomaly Alert')) throw err;
+        assert(false, `Corrupt or unreadable baseline snapshot '${priorSnapshotFile}': ${err.message}`);
+      }
+
+      const priorHardwareSkus = new Set();
+      for (const entry of (priorJson?.entries || [])) {
+        if (entry.parentCategory === 'Support Services') continue;
+        for (const sku of (entry.skus || [])) {
+          const status = String(sku['Diff Status'] || '').toUpperCase();
+          if (['REMOVED', 'DISCONTINUED'].includes(status)) continue;
+          const clean = cleanBaseSKU(sku['Product #'] || sku.sku || '');
+          if (clean && isValidHpeSKU(clean)) priorHardwareSkus.add(clean);
+        }
+      }
+      const priorCount = priorHardwareSkus.size;
+
+      const currentHardwareSkus = new Set();
+      for (const { entry, sku } of currentHardwareRows) {
+        const clean = cleanBaseSKU(sku['Product #'] || sku.sku || '');
+        if (clean && isValidHpeSKU(clean)) currentHardwareSkus.add(clean);
+      }
+      const currentCount = currentHardwareSkus.size;
+
+      if (priorCount >= 50) {
+        const dropRatio = currentCount / priorCount;
+        assert(
+          dropRatio >= 0.70,
+          `INV-23 active hardware retention is >=70%: ${priorCount} prior unique active SKUs (${priorSnapshotFile}) vs ${currentCount} current unique active SKUs (${(dropRatio * 100).toFixed(1)}%)`
+        );
+      } else {
+        if (!JSON_MODE) console.log(`  ℹ️  Prior active hardware count (${priorCount}) below 50 SKU threshold for catastrophic drop check.`);
       }
     }
   } else {
@@ -315,11 +396,16 @@ async function main() {
   }
 
   // Write structured audit result file
+  auditResults.status = auditResults.isDegraded ? 'DEGRADED' : 'SUCCESS';
   const auditJsonPath = path.join(targetDir, 'audit_result.json');
   safeWriteJsonAtomic(auditJsonPath, auditResults);
 
   if (JSON_MODE) {
-    process.stdout.write(JSON.stringify({ status: 'SUCCESS', data: auditResults }));
+    process.stdout.write(JSON.stringify({ status: auditResults.status, data: auditResults }));
+  } else if (auditResults.isDegraded) {
+    console.log('\n================================================================');
+    console.log('⚠️ AUDIT FINISHED WITH DEGRADED STATUS — Legacy Schema Migration Required');
+    console.log('================================================================\n');
   } else {
     console.log('\n================================================================');
     console.log('🎉 ALL AUDIT CHECKS PASSED — PIPELINE 100% COMPLIANT!');

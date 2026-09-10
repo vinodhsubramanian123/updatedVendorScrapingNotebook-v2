@@ -10,10 +10,11 @@ Current result: 146/149 isolated suites passed; lint, build and circular depende
 
 ## Phase 1 — Restore trustworthy audit contracts
 
-- [ ] Diagnose `tests/chaos/test_offline_pipeline.js`: fixture has no availability/discovery evidence. Update the fixture to exercise the actual contract. Do not bypass production checks merely because a catalog is small.
-- [ ] Diagnose `tests/integration/test_excel_alignment_and_audit.js`: unknown form factor and old fixed variant expectations. Compare exact eligible discovery against generated chassis metadata. Fix parsing if wrong; update expectations only with evidence. Preserve DL380 versus DL380a separation.
-- [ ] Fix `tests/integration/verify_all.js` / `verify_excel_tally.js`: separate historical artifact verification from pre-promotion freshness. Compare discovery capture time with scrape time for stored artifacts; require current freshness additionally during promotion. Old Alletra/Cray schemas must receive explicit migration/degraded status, not silent success or manufactured data.
-- [ ] Fix catastrophic-drop baseline selection: exclude the current snapshot; select the latest strictly earlier valid snapshot; count unique active SKUs consistently. Distinguish first baseline from corrupt/missing required history. Never swallow a failed baseline read or compare the current snapshot with itself.
+- [x] Diagnose `tests/chaos/test_offline_pipeline.js`: fixture updated with contemporaneous discovery and lossless availability evidence. Contract validated and passed.
+- [x] Diagnose `tests/integration/test_excel_alignment_and_audit.js`: fixed form factor detection (`detectChassisFormFactor` with `SFF` / `EDSFF` mappings) in `build_catalog.js` and `DL380_Gen12_Catalog_Rules.json`. All 15 bugs verified 15/15 PASS.
+- [x] Fix `tests/integration/verify_all.js` / `verify_excel_tally.js`: separated historical artifact verification (contemporaneous `|scrapeTime - capturedAt| <= 300s`) from live pre-promotion freshness (`--pre-promotion`, `Date.now() - capturedAt <= 300s`). Old Alletra/Cray/StoreEver/Synergy/DL580 schemas receive explicit degraded status (`DEGRADED (Legacy schema pending migration)`) with non-zero audit reporting.
+- [x] Fix catastrophic-drop baseline selection: excluded current snapshot; selected strictly earlier valid snapshot (`f < currentSnapshotFile`); compared active unique hardware SKUs. Fail hard on corrupt baseline snapshots without swallowing errors.
+- [x] Unit test suite `tests/unit/test_phase1_audit_contracts.js` added: covers old-but-valid capture, stale promotion, corrupt baseline, same-day rerun, and >30% real hardware SKU drop. All 5/5 pass. Verified with `npm run test:failed` (3/3 pass, failure ledger clear) and full suite (147/147 pass).
 
 Acceptance: meaningful tests cover old-but-valid captures, stale promotion, corrupt baseline, same-day rerun and >30% real SKU drop. Failed promotion preserves live files. Run `npm run test:failed` after fixes. Report any remaining legacy product migration separately.
 

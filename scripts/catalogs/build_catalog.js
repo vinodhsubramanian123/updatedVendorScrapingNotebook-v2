@@ -67,14 +67,34 @@ function lookupChassisMapBaseSku(chassisLabel, meta, targetSku = '') {
 // Constants & Taxonomy Maps
 // ============================================================
 const CHASSIS_FF_MAP = Object.freeze({
-  '8SFF': 'Small Form Factor (8-Bay SFF)',
   '24SFF': 'Small Form Factor (24-Bay SFF)',
+  '8SFF': 'Small Form Factor (8-Bay SFF)',
   '12LFF': 'Large Form Factor (12-Bay LFF)',
   '8LFF': 'Large Form Factor (8-Bay LFF)',
   '16EDSFF': 'eDesign SFF (16-Bay EDSFF)',
+  'EDSFF': 'eDesign SFF (16-Bay EDSFF)',
   'High Power': 'High Power / Telco',
-  'Telco': 'High Power / Telco'
+  'Telco': 'High Power / Telco',
+  'SFF': 'Small Form Factor (8-Bay SFF)',
+  'LFF': 'Large Form Factor (8-Bay LFF)'
 });
+
+function detectChassisFormFactor(desc) {
+  const text = String(desc || '');
+  if (/\b24\s*SFF\b/i.test(text) || text.includes('24SFF')) return 'Small Form Factor (24-Bay SFF)';
+  if (/\b12\s*LFF\b/i.test(text) || text.includes('12LFF')) return 'Large Form Factor (12-Bay LFF)';
+  if (/\b8\s*LFF\b/i.test(text) || text.includes('8LFF')) return 'Large Form Factor (8-Bay LFF)';
+  if (/\b16\s*EDSFF\b/i.test(text) || text.includes('16EDSFF') || /\bEDSFF\b/i.test(text)) return 'eDesign SFF (16-Bay EDSFF)';
+  if (/\b8\s*SFF\b/i.test(text) || text.includes('8SFF')) return 'Small Form Factor (8-Bay SFF)';
+  if (/\bHigh Power\b/i.test(text) || /\bTelco\b/i.test(text)) return 'High Power / Telco';
+  if (/\bSFF\b/i.test(text) || /\bSmall Form Factor\b/i.test(text)) return 'Small Form Factor (8-Bay SFF)';
+  if (/\bLFF\b/i.test(text) || /\bLarge Form Factor\b/i.test(text)) return 'Large Form Factor (8-Bay LFF)';
+
+  for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
+    if (text.includes(key)) return label;
+  }
+  return 'Unknown';
+}
 
 const SUBCAT_KEYWORD_PARENT_MAP = Object.freeze([
   { keywords: ['processor', 'xeon', 'epyc'], parent: 'Processor' },
@@ -1362,10 +1382,7 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
 
   const chassisVariants = chassisVariantRows.map(r => {
     const desc = r['Description'] || '';
-    let formFactor = 'Unknown';
-    for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
-      if (desc.includes(key)) { formFactor = label; break; }
-    }
+    const formFactor = detectChassisFormFactor(desc);
     return {
       sku: r['Product #'] || '',
       description: desc,
@@ -1425,10 +1442,7 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
                 text: desc,
                 isBto: String(s['Option Type'] || s.optionType || '').toUpperCase() === 'BTO'
               }, filePrefix)) continue;
-              let formFactor = 'Unknown';
-              for (const [key, label] of Object.entries(CHASSIS_FF_MAP)) {
-                if (desc.includes(key)) { formFactor = label; break; }
-              }
+              const formFactor = detectChassisFormFactor(desc);
               chassisVariantMatrix[pn] = {
                 sku: pn, description: desc, formFactor,
                 listPrice: parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
@@ -1628,5 +1642,6 @@ module.exports = {
   buildCatalogObject,
   reconcilePriceAndLifecycleHistory,
   buildChassisVariantMatrix,
+  detectChassisFormFactor,
   exportCatalogArtifacts
 };

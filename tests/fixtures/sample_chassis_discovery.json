@@ -1,0 +1,25 @@
+{
+  "query": "DL145 Gen11",
+  "selectedSku": "P71964-B21",
+  "source": "HPE OCA Product Search via authenticated CDP session",
+  "capturedAt": "2026-09-10T12:00:00.000Z",
+  "deliveryEstimate": "EDT 14 - 21 days",
+  "candidates": [
+    {
+      "type": "dropdown-option",
+      "optionValue": "P71964-B21",
+      "text": "P71964-B21 - HPE ProLiant DL145 Gen11 Configure-to-order Server",
+      "sku": "P71964-B21",
+      "listPriceUsd": 2375,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "EDT 14 - 21 days",
+      "startDate": "2025-06-01",
+      "discontinuedDate": "2029-12-31",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true,
+      "eligible": true
+    }
+  ]
+}

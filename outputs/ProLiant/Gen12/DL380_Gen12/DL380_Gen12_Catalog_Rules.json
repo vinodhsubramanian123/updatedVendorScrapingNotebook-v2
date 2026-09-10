@@ -448,7 +448,7 @@
     {
       "sku": "P73282-B21",
       "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
-      "formFactor": "Unknown",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
       "listPrice": 5584,
       "listPriceFormatted": "$5584.00",
       "optionType": "CTO",
@@ -504,7 +504,7 @@
     {
       "sku": "P73286-B21",
       "description": "HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server",
-      "formFactor": "Unknown",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
       "listPrice": 7120,
       "listPriceFormatted": "$7120.00",
       "optionType": "CTO",
@@ -533,7 +533,7 @@
     "P73282-B21": {
       "sku": "P73282-B21",
       "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
-      "formFactor": "Unknown",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
       "listPrice": 5584,
       "listPriceFormatted": "$5584.00",
       "optionType": "CTO",
@@ -589,7 +589,7 @@
     "P73286-B21": {
       "sku": "P73286-B21",
       "description": "HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server",
-      "formFactor": "Unknown",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
       "listPrice": 7120,
       "listPriceFormatted": "$7120.00",
       "optionType": "CTO",
