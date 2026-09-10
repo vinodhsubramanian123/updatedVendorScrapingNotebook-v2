@@ -2,6 +2,8 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
+**Current engineering handoff (2026-09-10):** Before continuing catalog, pricing or NotebookLM work, read the dated session lessons at the start of `docs/WORKFLOWS_AND_LEARNINGS.md`, `docs/CONTINUATION_CHECKPOINT.md`, and root `GEMINI_REMAINING_WORK_PLAN.md`. These distinguish observed evidence, implemented changes and unresolved defects. Older 100%-certification statements are historical; the latest recorded full matrix is 146/149. Update this status after new verification. Gemini is authorized to continue the handoff; coordinate one writer per worktree.
+
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
 - **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
   - **`jules`**: `create_session`, `send_reply_to_session`, `get_session_state`, `get_bash_outputs`, `list_sessions`, `query_cache`, `get_code_review_context`, `show_code_diff`.

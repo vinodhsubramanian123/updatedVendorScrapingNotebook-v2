@@ -1,5 +1,31 @@
 # Workflows, Pipelines & Full Learnings
 
+## Session lessons — 2026-09-10 (read before resuming)
+
+Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are process findings, not verified vendor compatibility rules. The current implementation still has defects: see [continuation evidence](CONTINUATION_CHECKPOINT.md) and [ordered remediation plan](../GEMINI_REMAINING_WORK_PLAN.md). Do not ingest this engineering retrospective into product NotebookLM sources or automatically turn its hypotheses into executable hardware rules.
+
+| Observed mistake or limitation | Durable lesson and current disposition |
+| --- | --- |
+| One service-like SKU caused an entire OCA table of physical accessories to enter Services. Physical kits also appeared under Manufacturing Services. | Classify rows with their semantics and provenance, then reconcile companions. Row partitioning and physical-kit recovery are implemented and tested; taxonomy correctness still needs broader review. |
+| A Gen11-named shipping accessory appeared in the actual Gen12 OCA table. | Product names in accessory descriptions are not sufficient grounds for rejection. Require target-product evidence for compatibility. Automatic shared-accessory verification labels in the current payload builder remain unsafe and must be replaced. |
+| Reactive body text shrank to roughly 553 characters despite dozens of populated tables. | Freeze a snapshot, validate content completeness and retry transient rendering. Table-text fallback is implemented but cannot prove non-table notes were captured or avoid all nested-wrapper duplication. |
+| Five discovered CTO bases were described as complete product coverage after extracting one selected configuration. | Base discovery and per-variant rules/layout verification are different coverage measures. Track both; one selected chassis cannot certify every variant. |
+| Zero-valued adapter prices were counted as successful pricing coverage. | Observed zero is evidence of portal output, not proof of a free option. Preserve raw value and effective historical value separately and flag unresolved quote prices. Current numeric-field coverage audit is insufficient for commercial certification. |
+| An isolated historical price spike was removed by a heuristic. | Preserve anomalies and provenance; quarantine suspected corruption for validation. Tenfold change with similar neighbors is not conclusive evidence. The destructive sanitization implementation needs replacement and history reconciliation. |
+| Hardware/service category movement produced apparent removal/discontinuation. | Compare the combined product SKU universe before lifecycle events. Absence, vendor discontinuation and category migration are distinct. Keep original vendor dates and history. This remains open. |
+| The anomaly audit sometimes reported identical current/prior counts because it selected the wrong snapshot. | Exclude current snapshot explicitly and compare unique active SKUs to a real earlier baseline. Corrupt baseline must be visible. This remains open. |
+| Historical audits failed because discovery was more than five minutes old when tests ran later. | Historical consistency compares capture to scrape time; promotion additionally checks freshness against current time. These modes need explicit contracts, not blanket bypasses. |
+| A named-product canary succeeded while source-list freshness indicators disagreed. | A citation and product name do not prove the latest revision was indexed. Dedicated stale checks were added, but content/fingerprint verification and contradictory CLI responses still need investigation. |
+| Cloud failures occurred after local promotion; some CLI messages still claimed complete synchronization. | Keep local promotion, cloud pending, cloud verification and metadata persistence separate. A retry must update all completion ledgers. Do not infer success from a generic closing banner. |
+| Audit/test failures were prematurely called fixture mismatches. | Inspect implementation and fixture evidence before changing assertions. Unknown form factors and legacy schemas may reveal real defects. Do not lower thresholds merely to obtain green results. |
+| Large changes remained uncommitted through repeated review cycles. | Commit and push coherent tested milestones, with explicit partial status when unresolved. Maintain a concise handoff and saved raw evidence so other agents can resume without re-analysis. |
+
+Latest measured verification: 146/149 suites passed; lint/build/dependency DAG passed. Three unresolved suites are offline pipeline, Excel alignment/audit, and portfolio verification. Complexity warnings remain for navigator and scrape main. Test success, source freshness and full vendor-rule coverage are separate claims; report each with its evidence.
+
+All four product notebooks received restricted-source canaries during the session; that does not establish that these engineering lessons or every newly discovered product rule were synchronized. Promote only source-verified, scoped product learnings through the feedback pipeline. Preserve quarantined sources pending review and the authorized retirement process.
+
+---
+
 ## 1. 6-Stage BOQ Evaluation Workflow
 1. **Multimodal Parsing**: Multimodal OCR service (`ocr_service.js`) backed by `gemini-3.6-flash` processes images/PDFs into structured BOQ JSON with automated API key rotation and retry.
 2. **CTO Normalization**: Resolves fractional math for multi-node chassis configurations.
