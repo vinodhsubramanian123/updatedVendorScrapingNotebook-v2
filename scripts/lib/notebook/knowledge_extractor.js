@@ -19,7 +19,7 @@ const path = require('path');
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
-const { validateKnowledgeDelta, saveQuarantinedDelta, SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
+const { validateKnowledgeDelta, saveQuarantinedDelta, SKU_BLACKLIST, buildKnowledgeFingerprint } = require('../feedback/quarantined_deltas.js');
 const logger = require('../system/pipeline_logger.js');
 
 const SKU_PATTERN = '([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11})';
@@ -277,13 +277,16 @@ function extractAndPersistLearnedDeltas(ragAnswer, chassisDir, context = {}) {
     }
 
     const deltaToSave = validation.sanitizedDelta;
-    // Avoid duplicate rules
-    const exists = existingDeltas.some(d =>
-      d.affectedSku === deltaToSave.affectedSku &&
-      d.requiredDependencySku === deltaToSave.requiredDependencySku &&
-      d.ruleType === deltaToSave.ruleType
+    const fingerprintToSave = deltaToSave.knowledgeFingerprint || buildKnowledgeFingerprint(deltaToSave);
+    const existingIdx = existingDeltas.findIndex(d => 
+      (d.knowledgeFingerprint || buildKnowledgeFingerprint(d)) === fingerprintToSave
     );
-    if (!exists) {
+    
+    if (existingIdx >= 0) {
+      existingDeltas[existingIdx].timestamp = deltaToSave.timestamp || new Date().toISOString();
+      const newScore = deltaToSave.confidenceScore || 0.70;
+      existingDeltas[existingIdx].confidenceScore = Math.min(0.99, Math.max(existingDeltas[existingIdx].confidenceScore || 0.70, newScore));
+    } else {
       existingDeltas.push(deltaToSave);
       addedCount++;
     }

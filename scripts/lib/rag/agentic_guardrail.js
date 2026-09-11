@@ -179,22 +179,30 @@ function buildToolRegistry(ctx) {
 function submitGuardrailCandidates(pendingDeltas, dependencies = {}) {
   const catalogs = dependencies.catalogs || listAllCatalogs();
   const submit = dependencies.processFeedback || processPortalFeedback;
-  const counts = { activatedDeltaCount: 0, quarantinedDeltaCount: 0, rejectedDeltaCount: 0 };
+  const counts = { activatedDeltaCount: 0, quarantinedDeltaCount: 0, rejectedDeltaCount: 0, rejectedCandidateReasons: [] };
 
   for (const delta of pendingDeltas || []) {
     try {
       const cat = catalogs.find(c => c.id === delta.chassisId);
       if (!cat?.catalogDir) {
         counts.rejectedDeltaCount++;
-        logger.warn('AGENTIC_GUARDRAIL', `Candidate rejected: no exact registered catalog for ${delta.chassisId}.`);
+        const reason = `No exact registered catalog for ${delta.chassisId}`;
+        counts.rejectedCandidateReasons.push({ sku: delta.affectedSku, reason });
+        logger.warn('AGENTIC_GUARDRAIL', `Candidate rejected: ${reason}.`);
         continue;
       }
       const governed = submit(delta.ruleUpdate || 'Agentic rule observation', cat.catalogDir, delta);
-      if (governed.governanceStatus === 'ACTIVE') counts.activatedDeltaCount++;
-      else if (governed.governanceStatus === 'REJECTED') counts.rejectedDeltaCount++;
-      else counts.quarantinedDeltaCount++;
+      if (governed.governanceStatus === 'ACTIVE') {
+        counts.activatedDeltaCount++;
+      } else if (governed.governanceStatus === 'REJECTED') {
+        counts.rejectedDeltaCount++;
+        counts.rejectedCandidateReasons.push({ sku: delta.affectedSku, reason: governed.rejectionReasons?.join('; ') || 'Rejected by governance' });
+      } else {
+        counts.quarantinedDeltaCount++;
+      }
     } catch (commitErr) {
       counts.rejectedDeltaCount++;
+      counts.rejectedCandidateReasons.push({ sku: delta.affectedSku, reason: commitErr.message });
       logger.warn('AGENTIC_GUARDRAIL', 'Failed to submit knowledge candidate', commitErr);
     }
   }
@@ -391,7 +399,7 @@ async function runAgenticGuardrail(items, chassisDir) {
   }
 
   // ── GAP-A4: Submit queued candidates to product-scoped governance ───────
-  const { activatedDeltaCount, quarantinedDeltaCount, rejectedDeltaCount } = submitGuardrailCandidates(ctx.pendingDeltas);
+  const { activatedDeltaCount, quarantinedDeltaCount, rejectedDeltaCount, rejectedCandidateReasons } = submitGuardrailCandidates(ctx.pendingDeltas);
 
   const durationMs = Date.now() - startTime;
   logger.info('AGENTIC_GUARDRAIL',
@@ -424,7 +432,8 @@ async function runAgenticGuardrail(items, chassisDir) {
     postConfidence: ctx.latestConfidence,
     activatedDeltaCount,
     quarantinedDeltaCount,
-    rejectedDeltaCount
+    rejectedDeltaCount,
+    rejectedCandidateReasons
   };
 
   // GAP-C3: Record Guardrail Telemetry

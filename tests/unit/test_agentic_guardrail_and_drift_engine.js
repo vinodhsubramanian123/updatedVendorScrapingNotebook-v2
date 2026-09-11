@@ -25,7 +25,14 @@ test('Agentic rule candidates require exact product scope and quarantine is not 
 
   assert.strictEqual(submitted.length, 1);
   assert.strictEqual(submitted[0].catalogDir, '/certified/DL380_Gen12');
-  assert.deepStrictEqual(counts, { activatedDeltaCount: 0, quarantinedDeltaCount: 1, rejectedDeltaCount: 1 });
+  assert.deepStrictEqual(counts, { 
+    activatedDeltaCount: 0, 
+    quarantinedDeltaCount: 1, 
+    rejectedDeltaCount: 1,
+    rejectedCandidateReasons: [
+      { sku: 'P47777-B21', reason: 'No exact registered catalog for UNKNOWN_PRODUCT' }
+    ]
+  });
 });
 
 test('Test extractKnowledgeFromRagAnswer()', async (t) => {

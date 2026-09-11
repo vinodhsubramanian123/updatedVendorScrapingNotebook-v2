@@ -507,6 +507,27 @@ function clearQuarantinedDeltas() {
   }
 }
 
+/**
+ * Log an autonomous rejection decision trace when a rule fails the 5-Gate validation.
+ */
+function logAutonomousRejection(delta, reasons, options = {}) {
+  const quarantineFile = options.filePath || currentQuarantineFile;
+  const qDir = path.dirname(quarantineFile);
+  if (!fs.existsSync(qDir)) {
+    fs.mkdirSync(qDir, { recursive: true });
+  }
+  const fingerprint = delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta);
+  appendDecision({
+    decisionId: `DECISION_${Date.now()}_${fingerprint.slice(0, 10)}_AUTO_REJECT`,
+    deltaId: delta.deltaId,
+    knowledgeFingerprint: fingerprint,
+    decision: 'AUTO_REJECTED',
+    decidedAt: new Date().toISOString(),
+    reviewer: 'SYSTEM_AUTONOMOUS_GATE',
+    reasoning: reasons.join('; ')
+  }, quarantineFile);
+}
+
 module.exports = {
   validateKnowledgeDelta,
   saveQuarantinedDelta,
@@ -520,5 +541,6 @@ module.exports = {
   TRUSTED_EVIDENCE_TYPES,
   TRUSTED_AUTOMATED_SOURCES,
   buildKnowledgeFingerprint,
+  logAutonomousRejection,
   QUARANTINE_FILE: currentQuarantineFile
 };

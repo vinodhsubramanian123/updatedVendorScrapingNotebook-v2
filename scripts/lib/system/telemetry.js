@@ -80,6 +80,7 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
 
   const activeTrace = getTraceId();
   const entryId = activeTrace !== 'NO_TRACE_CONTEXT' ? activeTrace : `EVAL-${Date.now()}`;
+  const mem = process.memoryUsage ? process.memoryUsage() : { rss: 0, heapUsed: 0, heapTotal: 0 };
 
   const entry = {
     id: entryId,
@@ -110,9 +111,9 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     traceId: evalResults.provenanceTrace?.traceId || entryId,
     provenanceTrace: evalResults.provenanceTrace || null,
     memoryUsage: {
-      rssMb: process.memoryUsage ? Math.round(process.memoryUsage().rss / (1024 * 1024)) : 0,
-      heapUsedMb: process.memoryUsage ? Math.round(process.memoryUsage().heapUsed / (1024 * 1024)) : 0,
-      heapTotalMb: process.memoryUsage ? Math.round(process.memoryUsage().heapTotal / (1024 * 1024)) : 0
+      rssMb: Math.round(mem.rss / (1024 * 1024)),
+      heapUsedMb: Math.round(mem.heapUsed / (1024 * 1024)),
+      heapTotalMb: Math.round(mem.heapTotal / (1024 * 1024))
     },
     durationMs
   };

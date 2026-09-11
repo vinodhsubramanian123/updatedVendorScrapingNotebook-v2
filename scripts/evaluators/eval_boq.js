@@ -455,6 +455,25 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     }
     evalResults.agenticExplanation = guardrailResult.text || null;
     stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
+
+    // Auto-Retry if rules were autonomously promoted
+    if (guardrailResult.activatedDeltaCount > 0) {
+      if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s)...`);
+      
+      const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+      // Re-run evaluation. evaluateBOQMultiAspect will reload the latest rules from disk.
+      const retryResults = evaluateBOQMultiAspect('', { filePath: inputFile, catalogData, targetDir: chassisDir });
+      
+      evalResults.errors = retryResults.errors;
+      evalResults.warnings = retryResults.warnings;
+      evalResults.missingDependencies = retryResults.missingDependencies;
+      evalResults.confidence = retryResults.confidence;
+      evalResults.mathDeductions = retryResults.mathDeductions;
+      evalResults.conflictGraph = retryResults.conflictGraph;
+      evalResults.aspectChecks = retryResults.aspectChecks;
+      
+      if (!JSON_MODE) console.log(`✅ Retry Complete. New Score: ${evalResults.confidence.score}`);
+    }
   }
 
   return { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs };

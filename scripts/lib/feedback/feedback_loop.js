@@ -19,6 +19,7 @@ const {
   promoteQuarantinedDelta,
   buildKnowledgeFingerprint
 } = require('./quarantined_deltas.js');
+const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 
 /**
  * Classify a portal error message into TEMPORARY_SUPPLY or PERMANENT_PHYSICAL_DEPENDENCY.
@@ -34,14 +35,19 @@ function classifyPortalError(errorMessage) {
     errorType = 'TEMPORARY_SUPPLY_CONSTRAINT';
   }
 
-  const matches = msg.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+  const extractGlobal = new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi');
+  const rawMatches = msg.match(extractGlobal) || [];
+  const matches = rawMatches.map(cleanBaseSKU).filter(isValidHpeSKU);
+
   let affectedSku = matches[0] || 'UNKNOWN_SKU';
   let requiredSku = null;
   const relation = msg.match(/\b(requires?|mandatory|must include|needs?)\b/i);
   if (relation) {
     const parts = msg.split(/\b(?:requires?|mandatory|must include|needs?)\b/i);
-    const before = (parts[0] || '').match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
-    const after = (parts.slice(1).join(' ') || '').match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || [];
+    const beforeRaw = (parts[0] || '').match(extractGlobal) || [];
+    const afterRaw = (parts.slice(1).join(' ') || '').match(extractGlobal) || [];
+    const before = beforeRaw.map(cleanBaseSKU).filter(isValidHpeSKU);
+    const after = afterRaw.map(cleanBaseSKU).filter(isValidHpeSKU);
     if (before.length > 0) {
       affectedSku = before.at(-1);
       requiredSku = after[0] || null;
@@ -109,6 +115,8 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
 
   const validation = validateKnowledgeDelta(delta, { catalogData, humanReview: options.humanReview });
   if (!validation.valid || validation.status === 'REJECTED') {
+    const { logAutonomousRejection } = require('./quarantined_deltas.js');
+    logAutonomousRejection({ ...delta, knowledgeFingerprint: delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta) }, validation.reasons, { filePath: path.join(historyDir, 'quarantined_deltas.json') });
     return { ...delta, governanceStatus: 'REJECTED', status: 'REJECTED', rejectionReasons: validation.reasons };
   }
 
@@ -149,7 +157,8 @@ function updateCatalogRulesFile(outputDir, delta) {
   const prefix = path.basename(outputDir);
   const rulesCsv = path.join(outputDir, 'intermittent_scraps', `${prefix}_Catalog_Rules.csv`);
   if (fs.existsSync(rulesCsv)) {
-    const newRow = `\n"Feedback Learned Rule","${delta.affectedSku}","${delta.ruleUpdate.replace(/"/g, '""')}","${delta.timestamp}"`;
+    const esc = str => String(str || '').replace(/"/g, '""');
+    const newRow = `\n"Feedback Learned Rule","${esc(delta.affectedSku)}","${esc(delta.ruleUpdate)}","${esc(delta.timestamp)}"`;
     fs.appendFileSync(rulesCsv, newRow, 'utf-8');
   }
 
