@@ -42,10 +42,19 @@ export default function BoqInputZone({
       </div>
 
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Upload BOQ file"
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={onDrop}
-        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            document.getElementById('boq-file-input')?.click();
+          }
+        }}
+        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${
           isDragging
             ? 'border-emerald-500 bg-emerald-50/50'
             : file
