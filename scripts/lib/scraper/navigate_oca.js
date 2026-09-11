@@ -24,8 +24,9 @@ function normalizeProductText(value) {
 
 function extractModelGeneration(value) {
   const normalized = normalizeProductText(value);
-  const model = normalized.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
-  const generation = normalized.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
+  const withSy = normalized.replace(/\bsynergy\b/g, 'sy');
+  const model = withSy.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
+  const generation = withSy.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
   return { model, generation };
 }
 
@@ -160,18 +161,13 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
         }
         searchInput.dispatchEvent(new Event('change', { bubbles: true }));
         
-        const searchBtn = document.querySelector('#dqe_search_icon_left') ||
-                          document.querySelector('#dqe_search_icon_right') ||
-                          document.querySelector('#searchButton') ||
-                          document.querySelector('button[aria-label*="Search"]');
-        if (searchBtn) searchBtn.click();
-        else {
-          searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true }));
-          if (window.jQuery) {
-            window.jQuery(searchInput).trigger(window.jQuery.Event('keydown', { which: 13, keyCode: 13 }));
-          }
+        if (window.jQuery) {
+          const kd = window.jQuery.Event('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+          window.jQuery(searchInput).trigger(kd);
+        } else {
+          searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
         }
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise(r => setTimeout(r, 6000));
       }
 
       function extractCandidates() {
@@ -300,8 +296,24 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
           if (window.jQuery) {
             window.jQuery(productSelect).trigger('change');
           }
-          await new Promise(r => setTimeout(r, 600));
+          await new Promise(r => setTimeout(r, 2500));
         }
+
+        // Auto-select enclosure & rack if required by product (e.g. Synergy compute module or chassis)
+        const encSelect = card.querySelector('select.dqe-enclosure');
+        if (encSelect && !encSelect.classList.contains('dqe-hidden') && encSelect.value === '-1') {
+          encSelect.value = 'standalone';
+          encSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          if (window.jQuery) window.jQuery(encSelect).trigger('change');
+        }
+
+        const rackSelect = card.querySelector('select.dqe-rack');
+        if (rackSelect && !rackSelect.classList.contains('dqe-hidden') && rackSelect.value === '-1') {
+          rackSelect.value = 'standalone';
+          rackSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          if (window.jQuery) window.jQuery(rackSelect).trigger('change');
+        }
+        await new Promise(r => setTimeout(r, 1000));
       }
 
       const button = card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn') ||
@@ -397,7 +409,8 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
       await new Promise(r => setTimeout(r, 3000));
       retries++;
       const currentPages = await getPageTargets();
-      const activeTarget = currentPages.find(t => t.url && t.url.includes('partner.hpe.com') && !t.url.includes('login') && !t.url.includes('sso'));
+      await pruneSeismicTabs(currentPages);
+      const activeTarget = currentPages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('partner.hpe.com') && !t.url.includes('login') && !t.url.includes('sso'));
       if (activeTarget) {
         console.log(`🎉 [AUTH_SUCCESS] Re-login detected! Resuming navigation to "${query}"...`);
         return navigateToOCAChassis(query, options);
@@ -449,7 +462,8 @@ async function waitForBrowserSession(query, options) {
     waitAttempts++;
     try {
       const freshPages = await getPageTargets();
-      const ocaOrPartner = freshPages.find(t => t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('partner.hpe.com')));
+      await pruneSeismicTabs(freshPages);
+      const ocaOrPartner = freshPages.find(t => !isSeismicTarget(t) && t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('partner.hpe.com')));
       if (ocaOrPartner) {
         console.log(`🎉 Session detected! Resuming auto-navigation...`);
         return navigateToOCAChassis(query, options);
@@ -461,6 +475,23 @@ async function waitForBrowserSession(query, options) {
     `🔒 Timeout waiting for Partner Portal SSO login on CDP port ${CDP_PORT}.\n` +
     `   Please log into https://partner.hpe.com in your browser window and re-run navigation.`
   );
+}
+
+function isSeismicTarget(t) {
+  const url = (t.url || '').toLowerCase();
+  const title = (t.title || '').toLowerCase();
+  return url.includes('seismic.com') || title.includes('seismic');
+}
+
+async function pruneSeismicTabs(pages) {
+  for (const t of pages || []) {
+    if (isSeismicTarget(t) && t.id) {
+      console.log(`🧹 [SEISMIC_PRUNE] Closing unwanted Seismic sales collateral tab: [${t.id}] ${t.url}`);
+      try {
+        await closePageTarget(t.id);
+      } catch (_) {}
+    }
+  }
 }
 
 /**
@@ -477,9 +508,10 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   console.log(`===============================================================\n`);
 
   const pages = await getPageTargets();
+  await pruneSeismicTabs(pages);
 
   // 1. Check if active OCA configuration page is already at Menu tab
-  const ocaTarget = pages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
+  const ocaTarget = pages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com'));
   if (ocaTarget) {
     console.log(`✅ Found active OCA tab: [${ocaTarget.id}] ${ocaTarget.title}`);
     const menuCheck = await checkActiveMenuTab(ocaTarget, query, options);
@@ -492,8 +524,14 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     return searchAndConfigureChassis(menuCheck.ws, query, ocaTarget);
   }
 
-  // 2. Check if Partner Portal (partner.hpe.com) is open
-  const partnerTarget = pages.find(t => t.url && (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso')));
+  // 2. Check if Partner Portal (partner.hpe.com) is open (strictly excluding Seismic)
+  const partnerTarget = pages.find(t => {
+    if (isSeismicTarget(t)) return false;
+    const url = (t.url || '').toLowerCase();
+    if (url.includes('partner.hpe.com')) return true;
+    if ((url.includes('login') || url.includes('sso') || url.includes('auth')) && url.includes('hpe.com')) return true;
+    return false;
+  });
   if (partnerTarget) {
     return handlePartnerPortalLaunch(partnerTarget, query, options);
   }

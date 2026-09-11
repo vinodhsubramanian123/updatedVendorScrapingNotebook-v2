@@ -60,4 +60,12 @@ node scripts/lib/scraper/navigate_oca.js "Alletra 9000" && node scripts/scrapers
 4. **Session Persistence**: Session cookies are automatically stored in Chrome's `.chrome_sso_profile`.
 5. **Subsequent Scrapes**: Once the human has generated the SSO session in that window, subsequent scraping runs can attach to that CDP port headlessly without touching the terminal again.
 6. **Strict In-Page Navigation Protocol**: NEVER use the browser `back()` button or navigate to raw direct URLs after entering OCA. Direct URL navigation drops the stateful WebLogic session. All navigation MUST execute via in-page DOM element clicks and jQuery triggers over CDP.
+7. **The Seismic & Save Button Trap Avoidance (`INV-74`)**:
+   - Never click "Save", "Quote", "Add Opportunity", or collateral links. These trigger Seismic (`hpe.seismic.com`) OAuth popups or mandatory Salesforce Opportunity prompts that freeze the DOM.
+   - All catalog data is in `Menu`, `Components`, `Where Used`, and `BOM`.
+8. **Slow AJAX & Deferred DOM Settling**:
+   - WebLogic OCA uses asynchronous deferred loading (`getServerData` / client-side XMLHttpRequests). Every dropdown change (e.g. setting enclosure & rack to `standalone`) or table expansion requires explicit DOM readiness polling (waiting for `.dqe-loading` or overlay spinners to disappear) rather than fixed premature timeouts.
+9. **Session Recovery & Tab 1 Refresh Protocol**:
+   - If OCA encounters an invalid modal state or session disconnect, switch to Tab 1 (`https://partner.hpe.com/group/prp`), refresh the page, and click the "One Config Advanced (OCA)" launch tile. This generates fresh SAML tokens and reopens a clean OCA session.
+
 

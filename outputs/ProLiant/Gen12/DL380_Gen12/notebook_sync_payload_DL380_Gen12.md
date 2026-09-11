@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-09-10T11:55:48.472Z
+**Sync Timestamp**: 2026-09-11T17:08:08.283Z
 
 **Total Verified SKUs**: `1022` (`472` Hardware + `550` Services)
 
-**Total Synced KnowledgeDeltas**: `36`
+**Total Synced KnowledgeDeltas**: `40`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -24,7 +24,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
-*No verified universal vendor rules are registered for this product.*
+1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: PORTAL_VALIDATION_ATTRIBUTION)*
+2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: CROSS_CHASSIS_SUPPORT_POLLUTION)*
+3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. *(Type: PORTAL_CACHE_STALENESS)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant Gen12)
 
@@ -56,126 +58,130 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21.
    - **Affected SKU**: `P74507-B21` | **Required Dependency**: `P48820-B21`
 
-7. **[DELTA-1787939298644] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+7. **[DELTA_DL380_MISSING_SUPPORT_CONTRACT] DL380_Gen12** (Taxonomy: `ProLiant/Gen12/DL380_Gen12` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer error: quoting software licenses (P8B31A OneView) while omitting hardware warranty (HU4B2A30C4V 3Y Tech Care Basic at ,509/unit). The BOQ evaluator must flag any DL380 Gen12 config that has 0 support units against N physical servers.
+   - **Affected SKU**: `HU4B2A30C4V` | **Required Dependency**: `P73282-B21`
+
+8. **[DELTA-1787939298644] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76453-B21.
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `N/A`
 
-8. **[DELTA-1786705957681] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+9. **[DELTA-1786705957681] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P73282-B21 is present, P73282-B21 is mandatory.
    - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P73282-B21`
 
-9. **[DELTA-1786705957757] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+10. **[DELTA-1786705957757] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P74573-B21 is present, P74573-B21 is mandatory.
    - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74573-B21`
 
-10. **[DELTA-1786705957802] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+11. **[DELTA-1786705957802] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P48820-B21 is present, P48820-B21 is mandatory.
    - **Affected SKU**: `P48820-B21` | **Required Dependency**: `P48820-B21`
 
-11. **[DELTA-1786705957846] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+12. **[DELTA-1786705957846] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P69728-B21 is present, P69728-B21 is mandatory.
    - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-B21`
 
-12. **[DELTA-1786705957894] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+13. **[DELTA-1786705957894] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P47777-B21 is present, P47777-B21 is mandatory.
    - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P47777-B21`
 
-13. **[DELTA-1786705957933] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+14. **[DELTA-1786705957933] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P01366-B21 is present, P01366-B21 is mandatory.
    - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P01366-B21`
 
-14. **[DELTA-1786705957977] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+15. **[DELTA-1786705957977] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P03178-B21 is present, P03178-B21 is mandatory.
    - **Affected SKU**: `P03178-B21` | **Required Dependency**: `P03178-B21`
 
-15. **[DELTA-1787939245188] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+16. **[DELTA-1787939245188] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Portal validation flagged restriction on P76450-B21.
    - **Affected SKU**: `P76449-B21` | **Required Dependency**: `P76450-B21`
 
-16. **[PREPROC-DELTA-1786781599909] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+17. **[PREPROC-DELTA-1786781599909] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
-17. **[DELTA-1786880389958] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+18. **[DELTA-1786880389958] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.
    - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21`
    - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
 
-18. **[DELTA-1786880394092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+19. **[DELTA-1786880394092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.
    - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21`
    - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
 
-19. **[DELTA-1787315096377] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+20. **[DELTA-1787315096377] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: If P69728-F21 is present, DDR5-6400 is mandatory.
    - **Affected SKU**: `P69728-F21` | **Required Dependency**: `DDR5-6400`
 
-20. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+21. **[DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P69728-B21` | **Required Dependency**: `P69728-F21`
 
-21. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+22. **[DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P75740-B21` | **Required Dependency**: `873763-B21`
 
-22. **[DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+23. **[DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P28586-B21` | **Required Dependency**: `P75740-B21`
 
-23. **[DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+24. **[DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P51083-B21` | **Required Dependency**: `P74573-B21`
 
-24. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+25. **[DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P47777-B21` | **Required Dependency**: `P01366-B21`
 
-25. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+26. **[DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P28586-B21` | **Required Dependency**: `P40430-B21`
 
-26. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+27. **[DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `P75740-B21`
 
-27. **[DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+28. **[DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P64707-B21` | **Required Dependency**: `P69728-F21`
 
-28. **[DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+29. **[DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P48818-B21` | **Required Dependency**: `P38995-B21`
 
-29. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+30. **[DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P75741-B21`
 
-30. **[DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+31. **[DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P47777-B21` | **Required Dependency**: `N/A`
 
-31. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+32. **[DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P01366-B21` | **Required Dependency**: `P48918-B21`
 
-32. **[DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+33. **[DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P10180-B21` | **Required Dependency**: `P72203-B21`
 
-33. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+34. **[DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P48820-B21`
 
-34. **[DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+35. **[DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P74573-B21` | **Required Dependency**: `P74792-B21`
 
-35. **[DELTA-1788462981839] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+36. **[DELTA-1788462981839] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21.
    - **Affected SKU**: `P10180-B21` | **Required Dependency**: `P51181-B21`
    - 💡 **Human Engineer Rationale**: *"Agentic Guardrail Loop derived from RAG/DB fact-check"*
 
-36. **[DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+37. **[DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `P48918-B21`
 
@@ -204,7 +210,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-09-09 | $7120.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **DISCONTINUED** | 2026-09-09 | $7450.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `469774-409` | HPE Remove Standard Power Cords | **DISCONTINUED** | 2026-09-10 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit (Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | **REINSTATED** | 2026-09-10 | $99.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit (Class: CABLE; Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | **REINSTATED** | 2026-09-10 | $99.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | **REINSTATED** | 2026-09-10 | $4.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P52341-B21` | [REMOVED SKU] HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | **REINSTATED** | 2026-08-24 | $164.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P70744-B21` | [REMOVED SKU] HPE ProLiant Compute DL3XX Gen12 2U Cable Management Arm for Rail Kit | **REINSTATED** | 2026-08-24 | $172.00 | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE |

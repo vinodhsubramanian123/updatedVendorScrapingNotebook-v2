@@ -1,0 +1,516 @@
+{
+  "metadata": {
+    "chassis": "SY480 Gen12",
+    "model": "SY480_Gen12",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "scrapeDate": "2026-09-11",
+    "scrapeTimestamp": "2026-09-11T16:10:32.450Z",
+    "totalSubcategories": 17,
+    "totalUniqueSKUs": 154,
+    "totalTables": 29,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 154,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-09-11.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-09-11",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 1,
+          "totalPrice": 4200,
+          "minPrice": 4200,
+          "maxPrice": 4200,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 1,
+              "totalPrice": 4200,
+              "avgPrice": 4200
+            }
+          },
+          "avgPrice": 4200
+        },
+        "OS Boot Device": {
+          "totalSKUs": 1,
+          "totalPrice": 332,
+          "minPrice": 332,
+          "maxPrice": 332,
+          "subcategories": {
+            "Riser": {
+              "totalSKUs": 1,
+              "totalPrice": 332,
+              "avgPrice": 332
+            }
+          },
+          "avgPrice": 332
+        },
+        "PCIe Risers": {
+          "totalSKUs": 4,
+          "totalPrice": 25851,
+          "minPrice": 2635,
+          "maxPrice": 11350,
+          "subcategories": {
+            "Riser": {
+              "totalSKUs": 4,
+              "totalPrice": 25851,
+              "avgPrice": 6462.75
+            }
+          },
+          "avgPrice": 6462.75
+        },
+        "Processor": {
+          "totalSKUs": 18,
+          "totalPrice": 172122,
+          "minPrice": 183,
+          "maxPrice": 23285,
+          "subcategories": {
+            "Intel Xeon 6th Gen Scalable Processors": {
+              "totalSKUs": 16,
+              "totalPrice": 171704,
+              "avgPrice": 10731.5
+            },
+            "PCIe Networking Adapters": {
+              "totalSKUs": 2,
+              "totalPrice": 418,
+              "avgPrice": 209
+            }
+          },
+          "avgPrice": 9562.333333333334
+        },
+        "Cooling / Thermal": {
+          "totalSKUs": 2,
+          "totalPrice": 798,
+          "minPrice": 399,
+          "maxPrice": 399,
+          "subcategories": {
+            "Standard & Performance Heat Sinks": {
+              "totalSKUs": 2,
+              "totalPrice": 798,
+              "avgPrice": 399
+            }
+          },
+          "avgPrice": 399
+        },
+        "Memory": {
+          "totalSKUs": 14,
+          "totalPrice": 580754,
+          "minPrice": 1,
+          "maxPrice": 133186,
+          "subcategories": {
+            "DDR5 Registered Smart Memory": {
+              "totalSKUs": 13,
+              "totalPrice": 580625,
+              "avgPrice": 44663.46153846154
+            },
+            "Memory Blank Kit": {
+              "totalSKUs": 1,
+              "totalPrice": 129,
+              "avgPrice": 129
+            }
+          },
+          "avgPrice": 41482.42857142857
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 2,
+          "totalPrice": 798,
+          "minPrice": 249,
+          "maxPrice": 549,
+          "subcategories": {
+            "Drive Cage": {
+              "totalSKUs": 2,
+              "totalPrice": 798,
+              "avgPrice": 399
+            }
+          },
+          "avgPrice": 399
+        },
+        "Accessories & Infrastructure": {
+          "totalSKUs": 6,
+          "totalPrice": 781,
+          "minPrice": 1,
+          "maxPrice": 315,
+          "subcategories": {
+            "Energy Star": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "System Options": {
+              "totalSKUs": 5,
+              "totalPrice": 780,
+              "avgPrice": 156
+            }
+          },
+          "avgPrice": 130.16666666666666
+        },
+        "Software & Licenses": {
+          "totalSKUs": 70,
+          "totalPrice": 1566947,
+          "minPrice": 1,
+          "maxPrice": 99999,
+          "subcategories": {
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 67,
+              "totalPrice": 1566357,
+              "avgPrice": 23378.462686567163
+            },
+            "System Options": {
+              "totalSKUs": 3,
+              "totalPrice": 590,
+              "avgPrice": 196.66666666666666
+            }
+          },
+          "avgPrice": 22384.957142857143
+        },
+        "Storage Controllers": {
+          "totalSKUs": 9,
+          "totalPrice": 6035,
+          "minPrice": 1,
+          "maxPrice": 5699,
+          "subcategories": {
+            "RAID Settings": {
+              "totalSKUs": 7,
+              "totalPrice": 7,
+              "avgPrice": 1
+            },
+            "OCP3 Networking Adapters": {
+              "totalSKUs": 1,
+              "totalPrice": 329,
+              "avgPrice": 329
+            },
+            "Tri-Mode MegaRAID Storage Controllers": {
+              "totalSKUs": 1,
+              "totalPrice": 5699,
+              "avgPrice": 5699
+            }
+          },
+          "avgPrice": 670.5555555555555
+        },
+        "Networking": {
+          "totalSKUs": 3,
+          "totalPrice": 5851,
+          "minPrice": 1,
+          "maxPrice": 2925,
+          "subcategories": {
+            "Mezzanine Cards": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "PCIe Networking Adapters": {
+              "totalSKUs": 2,
+              "totalPrice": 5850,
+              "avgPrice": 2925
+            }
+          },
+          "avgPrice": 1950.3333333333333
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 2,
+          "totalPrice": 687,
+          "minPrice": 265,
+          "maxPrice": 422,
+          "subcategories": {
+            "Cable": {
+              "totalSKUs": 1,
+              "totalPrice": 265,
+              "avgPrice": 265
+            },
+            "Upgrade": {
+              "totalSKUs": 1,
+              "totalPrice": 422,
+              "avgPrice": 422
+            }
+          },
+          "avgPrice": 343.5
+        }
+      }
+    },
+    "incrementalStats": {
+      "totalScrapedSkus": 154,
+      "unchangedSkusCount": 152,
+      "modifiedSkusCount": 2,
+      "addedSkusCount": 0,
+      "removedSkusCount": 30,
+      "estimatedTokensSaved": 22800,
+      "estimatedProcessingTimeSavedMs": 30400
+    },
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-09-11T16:10:32.740Z"
+  },
+  "chassisVariants": [
+    {
+      "sku": "P68217-B21",
+      "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+      "formFactor": "Unknown",
+      "listPrice": 4200,
+      "listPriceFormatted": "$4200.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-09-11: $4200.00"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "P68217-B21": {
+      "sku": "P68217-B21",
+      "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+      "formFactor": "Unknown",
+      "listPrice": 4200,
+      "listPriceFormatted": "$4200.00",
+      "optionType": "CTO",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-09-11: $4200.00"
+    }
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Memory",
+      "name": "Memory Blank Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Mezzanine Cards",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3
+    }
+  ],
+  "rules": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
+    },
+    {
+      "parentCategory": "OS Boot Device",
+      "subCategory": "Riser",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Riser: max 1"
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "Riser",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Available There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Intel Xeon 6th Gen Scalable Processors: required"
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Standard & Performance Heat Sinks",
+      "constraint": "max 6",
+      "maxQty": 6,
+      "rule": "The total qty of heat sink selected should match with the qty of processor selected."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "Selection constraint for DDR5 Registered Smart Memory: max 32"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "DDR5 Registered Smart Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "These products are hidden due to Supply constraints"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory Blank Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Memory Blank Kit: max 1"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Drive Cage",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Drive Cage: required"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Energy Star: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: max 1"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "DDR5 Registered Smart Memory",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for DDR5 Registered Smart Memory: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "RAID Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Mezzanine Cards",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Mezzanine Cards: max 3"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "OCP3 Networking Adapters",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 1"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cable",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Cable: max 1"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "PCIe Networking Adapters",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for PCIe Networking Adapters: max 2"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Available There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Upgrade",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Upgrade: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "System Options",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for System Options: no max"
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "PCIe Networking Adapters",
+      "constraint": "min 1, max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for PCIe Networking Adapters: min 1, max 2"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "System Options",
+      "constraint": "optional",
+      "maxQty": -3,
+      "rule": "Selection constraint for System Options: optional"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Intel VROC RAID Enablement",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "VMWare Core Editions",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "Intel Xeon Scalable Processors",
+      "constraint": "min 1, max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2"
+    },
+    {
+      "parentCategory": "Virtualization",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPE Virtualization: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPE Virtualization: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "OEM Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for OEM Software: no max"
+    }
+  ]
+}

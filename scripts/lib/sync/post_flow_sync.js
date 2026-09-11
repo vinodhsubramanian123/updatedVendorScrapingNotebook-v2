@@ -16,25 +16,41 @@ const TEST_PAYLOAD_PATTERNS = [
 ];
 
 /**
- * Remove stale test payload .md files from outputs/history/.
+ * Remove stale test payload .md files from outputs/ and subdirectories.
  * Called automatically at the end of each production sync.
  */
 function cleanTestPayloads() {
-  if (!fs.existsSync(HISTORY_DIR)) return;
+  const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
+  if (!fs.existsSync(OUTPUTS_DIR)) return;
   let cleaned = 0;
-  for (const fname of fs.readdirSync(HISTORY_DIR)) {
-    if (!fname.endsWith('.md')) continue;
-    if (TEST_PAYLOAD_PATTERNS.some(p => p.test(fname))) {
-      try {
-        fs.unlinkSync(path.join(HISTORY_DIR, fname));
-        cleaned++;
-      } catch (e) {
-        logger.warn('POST_FLOW_SYNC', `Could not remove test payload ${fname}: ${e.message}`);
+
+  function scanAndClean(dir) {
+    let entries = [];
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const ent of entries) {
+      const fullPath = path.join(dir, ent.name);
+      if (ent.isDirectory()) {
+        scanAndClean(fullPath);
+      } else if (ent.isFile() && ent.name.endsWith('.md')) {
+        if (TEST_PAYLOAD_PATTERNS.some(p => p.test(ent.name))) {
+          try {
+            fs.unlinkSync(fullPath);
+            cleaned++;
+          } catch (e) {
+            logger.warn('POST_FLOW_SYNC', `Could not remove test payload ${ent.name}: ${e.message}`);
+          }
+        }
       }
     }
   }
+
+  scanAndClean(OUTPUTS_DIR);
   if (cleaned > 0) {
-    logger.info('POST_FLOW_SYNC', `Cleaned ${cleaned} stale test payload file(s) from outputs/history/`);
+    logger.info('POST_FLOW_SYNC', `Cleaned ${cleaned} stale test payload file(s) from outputs/`);
   }
 }
 

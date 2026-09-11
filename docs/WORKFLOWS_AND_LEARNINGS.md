@@ -903,3 +903,32 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 - A candidate is auto-applied only when the product boundary is confirmed and both confidence and candidate separation pass strict thresholds. All other cases enter the Ambiguity Inbox with ranked same-category options and remain ineligible for learning until evidence-backed review.
 - Attribute-only requests produce a construction plan containing missing roles, catalog-native choices, and budget intent. During the initial maturity phase an explicit base product is mandatory; incomplete or ambiguous plans cannot be presented as buildable solutions.
 - PCIe results expose catalog-parsed riser lane layouts, mechanical and electrically active capacity, x16 capacity, per-node demand, cluster totals, evidence confidence, and a NotebookLM-verification flag. Exact base SKU/catalog membership routes the product notebook; family/generation and fuzzy matches require confirmation.
+
+---
+
+## 74. WebLogic OCA Navigation Traps, Seismic Redirects & Dynamic AJAX DOM Settling Protocol (`INV-74`)
+
+### 🚫 1. The Seismic Redirect & "Save" Button Traps (What NOT to Click)
+- **Why Seismic Login Pops Up**: In HPE Partner Portal and OCA, the portal provides marketing and proposal generation integrations with **Seismic** (`hpe.seismic.com` / Sales Enablement Portal). When an automated scraper blindly clicks links labeled "Sales Enablement", "Content", "Asset Library", "Collateral", or certain export/save buttons, OCA triggers an OAuth handshake or external popup redirecting to Seismic login.
+- **The "Save" / "Quote" Modal Trap**:
+  - Clicking the top-level **"Save"** or **"Quote"** buttons does NOT extract product options, prices, or rules.
+  - Instead, WebLogic invokes cloud solution persistence routines requiring an active CRM Salesforce Opportunity ID (`"Add Opportunity"`).
+  - If clicked without an attached opportunity, OCA blocks with modal dialogs (`Opportunity ID is required to save quote`) or opens modal overlays that hijack the active configuration DOM, freezing automated extractors.
+  - **Golden Directive**: Automated catalog extractors MUST NEVER click "Save", "Quote", "Add Opportunity", or external collateral links. All configuration data resides in the client-side WebLogic DOM tabs and tables.
+
+### 🎯 2. What ACTUALLY Works for Scraping Solution Intelligence
+- **Functional Navigation Tabs**:
+  - **`Menu` / `Components`**: Renders the full catalog option categories (`Processors`, `Memory`, `Drive Cage`, `Controllers`, `Networking`, `Fibre Channel`, `Operating Environment`, `Virtualization`, `Support Services`, `Deployment Services`, etc.).
+  - **`Where Used`**: Exposes parentage and multi-tier chassis containment trees.
+  - **`BOM`**: Displays the active solution Bill of Materials with quantities, prices, and CLIC validation status.
+- **Dynamic Sub-choice Expansion & Hidden Table Rendering**:
+  - Click toolbar toggles (`#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price`).
+  - Check all `showmore_*` inputs and dispatch jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`) to force the WebLogic client runtime to render all hidden sub-choice tables (e.g. `ProcessorSection_AdditionalProcessorsChoice`).
+- **Slow AJAX & Deferred DOM Settling Invariant**:
+  - WebLogic OCA uses asynchronous deferred loading (`getServerData` / client-side XMLHttpRequests).
+  - Every dropdown change (e.g. setting enclosure & rack to `standalone`) or table expansion requires explicit DOM readiness polling (waiting for `.dqe-loading` or overlay spinners to disappear) rather than fixed premature timeouts.
+- **Session Recovery & Tab 1 Refresh Protocol**:
+  - If OCA is logged out, encounters a session timeout, or enters an invalid modal state:
+  - **NEVER** attempt to fight or automate the Seismic / SSO popup.
+  - **ALWAYS** return to Tab 1 (the authenticated Partner Portal tab), refresh `https://partner.hpe.com/group/prp`, click the verified "One Config Advanced (OCA)" tile which launches a fresh, authenticated OCA WebLogic session with valid SSO session tokens, and seamlessly resume from the search/catalog entry point.
+

@@ -82,5 +82,24 @@
     "scopeTaxonomy": "FAMILY_GEN",
     "solutionType": "DL380 Gen12 CTO Server",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL380_MISSING_SUPPORT_CONTRACT",
+    "timestamp": "2026-09-11T16:53:32.259Z",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "ProLiant/Gen12/DL380_Gen12",
+    "affectedSku": "HU4B2A30C4V",
+    "requiredDependencySku": "P73282-B21",
+    "ruleType": "DEPENDENCY",
+    "ruleUpdate": "Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer error: quoting software licenses (P8B31A OneView) while omitting hardware warranty (HU4B2A30C4V 3Y Tech Care Basic at ,509/unit). The BOQ evaluator must flag any DL380 Gen12 config that has 0 support units against N physical servers.",
+    "rawMessage": "Customer quoted 15x OneView licenses but 0x hardware support for DL380 Gen12 servers. HU4B2A30C4V must be 1:1 with P73282-B21 chassis count.",
+    "status": "VERIFIED",
+    "verificationCount": 1,
+    "firstLearnedAt": "2026-09-11T16:53:32.259Z",
+    "lastVerifiedAt": "2026-09-11T16:53:32.259Z",
+    "provenanceSources": [
+      "synergyAnalysis.md",
+      "Learning 4: Missing Rack Server Support"
+    ]
   }
 ]

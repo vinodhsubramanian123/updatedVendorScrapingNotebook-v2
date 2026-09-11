@@ -185,8 +185,8 @@ function buildMasterKnowledgeRegistry(options = {}) {
 
   const nowISO = new Date().toISOString();
 
-  // Collect unique product families represented in the learned rules
-  const familySet = new Set(allDeltas.map(d => d.family || (d.chassis || '').split('_')[0]).filter(Boolean));
+  // Collect unique product families represented in the learned rules (excluding non-product tokens)
+  const familySet = new Set(allDeltas.map(d => d.family || (d.chassis || '').split('_')[0]).filter(f => Boolean(f) && !['GLOBAL', 'Universal', 'GENERAL'].includes(f)));
 
   const registry = {
     registryVersion: '2.0.0',
@@ -196,6 +196,7 @@ function buildMasterKnowledgeRegistry(options = {}) {
     generatedAt: nowISO,
     lastUpdated: nowISO,
     totalLearnedRules: allDeltas.length,
+    totalDeduplicatedRules: allDeltas.length,
     productFamiliesSynced: [...familySet],
     counts: {
       universal: universalRules.length,

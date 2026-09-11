@@ -17,6 +17,7 @@ outputs/history/*
 !outputs/history/rules/**
 !outputs/history/master_knowledge_registry.json
 !outputs/history/notebook_sync_payload_*.md
+!outputs/history/*charter.md
 
 # Track all certified multi-family product catalogs
 !outputs/Alletra/

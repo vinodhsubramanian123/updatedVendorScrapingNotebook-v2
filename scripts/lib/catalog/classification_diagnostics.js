@@ -84,6 +84,7 @@ class ClassificationDiagnostics {
     this.trace.executionDurationMs = Date.now() - this.startTime;
     this.trace.summary.validProductTables = this.trace.tableDecisions.length;
     this.trace.summary.totalUniqueSKUs = finalCatalog.metadata?.totalUniqueSKUs || 0;
+    this.trace.summary.totalExtractedSKUs = (finalCatalog.entries || []).reduce((acc, e) => acc + (e.skuCount || (e.skus || []).length), 0);
     this.trace.summary.totalRulesExtracted = (rulesObj.rules || []).length;
     this.trace.summary.chassisVariantsCount = (rulesObj.chassisVariants || []).length;
 

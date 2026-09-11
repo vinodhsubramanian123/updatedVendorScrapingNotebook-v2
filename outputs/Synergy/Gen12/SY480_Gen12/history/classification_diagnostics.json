@@ -1,0 +1,735 @@
+{
+  "version": "1.0.0",
+  "chassis": "SY480_Gen12",
+  "generatedAt": "2026-09-11T16:10:31.894Z",
+  "executionDurationMs": 884,
+  "summary": {
+    "totalRawTables": 77,
+    "validProductTables": 49,
+    "skippedTablesCount": 20,
+    "totalExtractedSKUs": 154,
+    "totalUniqueSKUs": 154,
+    "totalRulesExtracted": 31,
+    "chassisVariantsCount": 1
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 40,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 41,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 42,
+      "reason": "Solution hierarchy BOM summary table",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 43,
+      "reason": "BOM summary report table header",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 52,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 58,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 59,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 60,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 61,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 63,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 64,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 65,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 66,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 67,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 68,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 69,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 70,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 71,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 74,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 75,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    }
+  ],
+  "tableDecisions": [
+    {
+      "tableIndex": 0,
+      "subCategory": "Riser",
+      "parentCategory": "OS Boot Device",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Boot Device",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 1,
+      "subCategory": "Riser",
+      "parentCategory": "PCIe Risers",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "PCIe Riser",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 2,
+      "subCategory": "Intel Xeon 6th Gen Scalable Processors",
+      "parentCategory": "Processor",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Processor",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 16,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 3,
+      "subCategory": "Standard & Performance Heat Sinks",
+      "parentCategory": "Cooling / Thermal",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cooling / Thermal",
+      "constraint": "max 6",
+      "minQty": 0,
+      "maxQty": 6,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 4,
+      "subCategory": "DDR5 Registered Smart Memory",
+      "parentCategory": "Memory",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Memory",
+      "constraint": "max 32",
+      "minQty": 0,
+      "maxQty": 32,
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 5,
+      "subCategory": "DDR5 Registered Smart Memory",
+      "parentCategory": "Memory",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Memory",
+      "constraint": "max 32",
+      "minQty": 0,
+      "maxQty": 32,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 6,
+      "subCategory": "Memory Blank Kit",
+      "parentCategory": "Memory",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 7,
+      "subCategory": "Drive Cage",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Adapter",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 8,
+      "subCategory": "Energy Star",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 9,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 10,
+      "subCategory": "DDR5 Registered Smart Memory",
+      "parentCategory": "Memory",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Memory",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 11,
+      "subCategory": "RAID Settings",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 12,
+      "subCategory": "RAID Settings",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 13,
+      "subCategory": "RAID Settings",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 14,
+      "subCategory": "Intel VROC RAID Enablement",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 15,
+      "subCategory": "Mezzanine Cards",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Network Adapter",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 16,
+      "subCategory": "OCP3 Networking Adapters",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 17,
+      "subCategory": "Cable",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 18,
+      "subCategory": "PCIe Networking Adapters",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Fibre Channel HBA",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 19,
+      "subCategory": "Tri-Mode MegaRAID Storage Controllers",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 20,
+      "subCategory": "Upgrade",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 21,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 18,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 22,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 23,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 24,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 61,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 25,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 85,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 26,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 27,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 2,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 28,
+      "subCategory": "VMWare Core Editions",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 29,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 34,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 30,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 35,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 31,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 32,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 33,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 26,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 34,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 12,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 35,
+      "subCategory": "System Options",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 36,
+      "subCategory": "PCIe Networking Adapters",
+      "parentCategory": "Processor",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Processor",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 37,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 36,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 38,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 39,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 35,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 45,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 8,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 46,
+      "subCategory": "Intel Xeon Scalable Processors",
+      "parentCategory": "Processor",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 47,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Virtualization",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Option Component",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 53,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Base Chassis",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 26,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 54,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 55,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 57,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 14,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 62,
+      "subCategory": "OEM Software",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 72,
+      "subCategory": "OEM Software",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 1,
+    "OS Boot Device": 1,
+    "PCIe Risers": 4,
+    "Processor": 20,
+    "Cooling / Thermal": 2,
+    "Memory": 14,
+    "Drive Enclosures / Drives": 5,
+    "Accessories & Infrastructure": 7,
+    "Software & Licenses": 86,
+    "Storage Controllers": 9,
+    "Networking": 3,
+    "Cables & Enablement Kits": 2
+  },
+  "chassisVariantsMatrix": {
+    "P68217-B21": {
+      "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+      "formFactor": "Unknown",
+      "listPrice": 4200,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  }
+}

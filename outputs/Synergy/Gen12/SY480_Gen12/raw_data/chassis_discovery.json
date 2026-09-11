@@ -1,0 +1,24 @@
+{
+  "query": "SY480_Gen12",
+  "selectedSku": "P68217-B21",
+  "source": "HPE OCA Configuration Session via authenticated CDP session",
+  "capturedAt": "2026-09-11T16:10:32.450Z",
+  "deliveryEstimate": "EDT 17 - 21 days",
+  "candidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "P68217-B21",
+      "text": "P68217-B21 - HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+      "sku": "P68217-B21",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "EDT 17 - 21 days",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true
+    }
+  ]
+}

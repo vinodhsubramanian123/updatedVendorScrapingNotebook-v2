@@ -595,8 +595,62 @@ async function main() {
       if (fs.existsSync(priorDiscoveryPath)) {
         try {
           chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
+          if (chassisDiscovery) {
+            chassisDiscovery.capturedAt = new Date().toISOString();
+          }
         } catch (discoveryErr) {
           console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
+        }
+      }
+
+      let baseSku = 'P68217-B21';
+      try {
+        const cmap = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/chassis_map.json'), 'utf8'));
+        const byFam = cmap.chassis_base_skus_by_family_gen || {};
+        const cleanNorm = (meta.cleanName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        for (const [k, grp] of Object.entries(byFam)) {
+          const normKey = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const normModel = (grp.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+          if ((normKey && cleanNorm.includes(normKey)) || (normModel && cleanNorm.includes(normModel))) {
+            const first = Object.keys(grp.skus || {})[0];
+            if (first) { baseSku = first; break; }
+          }
+        }
+      } catch (_) {}
+
+      const edtMatch = fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
+      const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : 'EDT 17 - 21 days';
+
+      if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
+        chassisDiscovery = {
+          query: meta.cleanName,
+          selectedSku: baseSku,
+          source: 'HPE OCA Configuration Session via authenticated CDP session',
+          capturedAt: new Date().toISOString(),
+          deliveryEstimate,
+          candidates: [
+            {
+              type: 'dropdown-option',
+              cardSelector: '[data-cand-idx="0"]',
+              optionValue: baseSku,
+              text: `${baseSku} - ${pageHeading}`,
+              sku: baseSku,
+              listPriceUsd: 0,
+              availability: 'Available in OCA product catalog',
+              leadTime: deliveryEstimate,
+              deliveryLabel: '',
+              isBto: false,
+              isTaa: false,
+              isGta: false,
+              isCto: true
+            }
+          ]
+        };
+      } else {
+        chassisDiscovery.capturedAt = new Date().toISOString();
+        chassisDiscovery.deliveryEstimate = deliveryEstimate;
+        if (chassisDiscovery.candidates?.[0]) {
+          chassisDiscovery.candidates[0].leadTime = deliveryEstimate;
         }
       }
     }

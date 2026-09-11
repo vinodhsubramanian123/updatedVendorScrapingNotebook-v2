@@ -270,6 +270,15 @@
           "listPrice": 8500,
           "optionType": "CTO"
         },
+        "P51174-B21": {
+          "model": "Synergy 12000 Frame",
+          "formFactor": "Frame Chassis",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+          "listPrice": 8500,
+          "optionType": "CTO"
+        },
         "P06584-B21": {
           "model": "SY100Gb F32 Module",
           "formFactor": "Interconnect Module",
@@ -277,6 +286,22 @@
           "gen": "General",
           "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
           "listPrice": 5400,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Synergy_Gen12": {
+      "family": "Synergy",
+      "gen": "Gen12",
+      "modelFamily": "SY480 Gen12",
+      "skus": {
+        "P68217-B21": {
+          "model": "SY480 Gen12",
+          "formFactor": "Compute Module",
+          "family": "Synergy",
+          "gen": "Gen12",
+          "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+          "listPrice": 4200,
           "optionType": "CTO"
         }
       }
@@ -486,6 +511,24 @@
       "gen": "General",
       "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
       "listPrice": 8500,
+      "optionType": "CTO"
+    },
+    "P51174-B21": {
+      "model": "Synergy 12000 Frame",
+      "formFactor": "Frame Chassis",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
+      "listPrice": 8500,
+      "optionType": "CTO"
+    },
+    "P68217-B21": {
+      "model": "SY480 Gen12",
+      "formFactor": "Compute Module",
+      "family": "Synergy",
+      "gen": "Gen12",
+      "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
+      "listPrice": 4200,
       "optionType": "CTO"
     },
     "P06584-B21": {

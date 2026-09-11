@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-09-10T11:45:08.337Z
+**Sync Timestamp**: 2026-09-11T17:06:07.158Z
 
 **Total Verified SKUs**: `624` (`357` Hardware + `267` Services)
 
-**Total Synced KnowledgeDeltas**: `4`
+**Total Synced KnowledgeDeltas**: `7`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -24,7 +24,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
-*No verified universal vendor rules are registered for this product.*
+1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: PORTAL_VALIDATION_ATTRIBUTION)*
+2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: CROSS_CHASSIS_SUPPORT_POLLUTION)*
+3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. *(Type: PORTAL_CACHE_STALENESS)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant Gen11)
 

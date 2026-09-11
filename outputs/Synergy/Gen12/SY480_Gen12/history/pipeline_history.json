@@ -1,0 +1,401 @@
+[
+  {
+    "summary": {
+      "runId": "run_SY480_Gen12_1789143031893",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-09-11T16:10:31.886Z",
+      "endTime": "2026-09-11T16:10:32.774Z",
+      "durationMs": 888,
+      "durationSec": "0.89",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 154,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 154,
+      "validationStats": {
+        "totalEntries": 29,
+        "totalSKUs": 154,
+        "validSKUs": 154,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 22,
+        "priceErrors": 0,
+        "ruleCount": 29,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-11T16:10:31.894Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/Synergy/Gen12/SY480_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/Synergy/Gen12/SY480_Gen12/SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-09-11T16:10:32.568Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 17,
+          "totalUniqueSKUs": 154,
+          "incrementalStats": {
+            "totalScrapedSkus": 154,
+            "unchangedSkusCount": 152,
+            "modifiedSkusCount": 2,
+            "addedSkusCount": 0,
+            "removedSkusCount": 30,
+            "estimatedTokensSaved": 22800,
+            "estimatedProcessingTimeSavedMs": 30400
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T16:10:32.577Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 29,
+            "totalSKUs": 154,
+            "validSKUs": 154,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 22,
+            "priceErrors": 0,
+            "ruleCount": 29,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T16:10:32.773Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/Synergy/Gen12/SY480_Gen12/SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 154,
+      "classified": 154,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY480_Gen12_1789141153104",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-09-11T15:39:13.103Z",
+      "endTime": "2026-09-11T15:39:13.697Z",
+      "durationMs": 594,
+      "durationSec": "0.59",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 186,
+      "warningCount": 1,
+      "errorCount": 0,
+      "totalUniqueSKUs": 184,
+      "validationStats": {
+        "totalEntries": 33,
+        "totalSKUs": 186,
+        "validSKUs": 186,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 28,
+        "priceErrors": 0,
+        "ruleCount": 33,
+        "categoryCount": 10
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-11T15:39:13.105Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789141152940/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789141152940/SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:39:13.558Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 21,
+          "totalUniqueSKUs": 184,
+          "incrementalStats": {
+            "totalScrapedSkus": 186,
+            "unchangedSkusCount": 184,
+            "modifiedSkusCount": 2,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 27600,
+            "estimatedProcessingTimeSavedMs": 36800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:39:13.566Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 1,
+          "stats": {
+            "totalEntries": 33,
+            "totalSKUs": 186,
+            "validSKUs": 186,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 28,
+            "priceErrors": 0,
+            "ruleCount": 33,
+            "categoryCount": 10
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:39:13.697Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789141152940/SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-09-11T15:39:13.566Z",
+        "message": "Duplicate SKU [P68217-B21] has inconsistent list prices: $4200 in [Variants] vs $1 in [OEM Software]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 186,
+      "classified": 186,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY480_Gen12_1789140429919",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-09-11T15:27:09.918Z",
+      "endTime": "2026-09-11T15:27:10.481Z",
+      "durationMs": 563,
+      "durationSec": "0.56",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 186,
+      "warningCount": 2,
+      "errorCount": 0,
+      "totalUniqueSKUs": 184,
+      "validationStats": {
+        "totalEntries": 33,
+        "totalSKUs": 186,
+        "validSKUs": 186,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 29,
+        "priceErrors": 0,
+        "ruleCount": 33,
+        "categoryCount": 10
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-11T15:27:09.919Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789140429780/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789140429780/SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:27:10.346Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 21,
+          "totalUniqueSKUs": 184,
+          "incrementalStats": {
+            "totalScrapedSkus": 186,
+            "unchangedSkusCount": 184,
+            "modifiedSkusCount": 2,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 27600,
+            "estimatedProcessingTimeSavedMs": 36800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:27:10.355Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 2,
+          "stats": {
+            "totalEntries": 33,
+            "totalSKUs": 186,
+            "validSKUs": 186,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 29,
+            "priceErrors": 0,
+            "ruleCount": 33,
+            "categoryCount": 10
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:27:10.481Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789140429780/SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-09-11T15:27:10.355Z",
+        "message": "Base Chassis Variant SKU [P68217-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-09-11T15:27:10.355Z",
+        "message": "Duplicate SKU [P64724-B21] has inconsistent list prices: $2165 in [Mezzanine Cards] vs $1 in [OEM Software]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 186,
+      "classified": 186,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY480_Gen12_1789139736923",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-09-11T15:15:36.923Z",
+      "endTime": "2026-09-11T15:15:37.532Z",
+      "durationMs": 609,
+      "durationSec": "0.61",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 186,
+      "warningCount": 2,
+      "errorCount": 0,
+      "totalUniqueSKUs": 184,
+      "validationStats": {
+        "totalEntries": 33,
+        "totalSKUs": 186,
+        "validSKUs": 186,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 29,
+        "priceErrors": 0,
+        "ruleCount": 33,
+        "categoryCount": 10
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-11T15:15:36.923Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789139736797/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789139736797/SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:15:37.390Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 21,
+          "totalUniqueSKUs": 184,
+          "incrementalStats": {
+            "totalScrapedSkus": 0,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:15:37.399Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 2,
+          "stats": {
+            "totalEntries": 33,
+            "totalSKUs": 186,
+            "validSKUs": 186,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 29,
+            "priceErrors": 0,
+            "ruleCount": 33,
+            "categoryCount": 10
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-11T15:15:37.532Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "/home/vinodh/vendorNotebookSolution/outputs/temp/staging_SY480_Gen12_1789139736797/SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-09-11T15:15:37.398Z",
+        "message": "Base Chassis Variant SKU [P68340-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-09-11T15:15:37.399Z",
+        "message": "Duplicate SKU [P64724-B21] has inconsistent list prices: $2165 in [Mezzanine Cards] vs $1 in [OEM Software]."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 186,
+      "classified": 186,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

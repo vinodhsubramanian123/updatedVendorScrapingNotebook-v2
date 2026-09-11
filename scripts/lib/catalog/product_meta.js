@@ -7,7 +7,7 @@
  */
 
 const FAMILY_PATTERNS = [
-  { family: 'Synergy', pattern: /synergy/i },
+  { family: 'Synergy', pattern: /synergy|\bSY\d{3}\b/i },
   { family: 'Alletra', pattern: /alletra/i },
   { family: 'Nimble', pattern: /nimble/i },
   { family: 'StoreOnce', pattern: /storeonce/i },
@@ -40,7 +40,7 @@ function parseProductMeta(rawText, pageTitle = '') {
   const family = detectProductFamily(fullText);
 
   // 3. Model & Form Factor Detection
-  const modelMatch = fullText.match(/\b(DL\d{3}a?|ML\d{3}|RL\d{3}|SY\d{3}|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
+  const modelMatch = fullText.match(/\b(DL\d{3}a?|ML\d{3}|RL\d{3}|SY\d{3}|Synergy\s*\d+|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
   const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
   const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
   const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
@@ -49,8 +49,9 @@ function parseProductMeta(rawText, pageTitle = '') {
   if (modelMatch) {
     let model = modelMatch[0].replace(/\s+/g, '_');
     if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
-    const isRackServer = /^(?:DL|ML|RL)\d/i.test(model);
-    const ff  = !isRackServer && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
+    if (/^Synergy_(\d{3})$/i.test(model)) model = model.replace(/^Synergy_/i, 'SY');
+    const isRackOrBlade = /^(?:DL|ML|RL|SY)\d/i.test(model);
+    const ff  = !isRackOrBlade && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
     cleanName = `${model}${gen && gen !== 'General' ? '_' + gen : ''}${ff ? '_' + ff : ''}`;
   } else {
     cleanName = rawText

@@ -12,8 +12,12 @@ test('product NotebookLM trust sets exclude every quarantined source', () => {
     const entry = config.notebooks[product];
     const quarantined = new Set(entry.quarantinedSourceIds || []);
     assert.deepEqual(entry.trustedSourceIds.filter(id => quarantined.has(id)), [], product);
-    assert.deepEqual(entry.canonicalKnowledgeSourceIds, [entry.driveSourceId], product);
+    const expectedCanonical = [entry.driveSourceId, entry.runningKnowledgeSourceId].filter(Boolean);
+    assert.deepEqual(entry.canonicalKnowledgeSourceIds, expectedCanonical, product);
     assert(entry.trustedSourceIds.includes(entry.driveSourceId), product);
+    if (entry.runningKnowledgeSourceId) {
+      assert(entry.trustedSourceIds.includes(entry.runningKnowledgeSourceId), product);
+    }
     assert(entry.officialSourceIds.every(id => entry.trustedSourceIds.includes(id)), product);
   }
 });

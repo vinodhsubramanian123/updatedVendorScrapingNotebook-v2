@@ -165,6 +165,15 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const totalActiveHwSKUs = catalogData?.metadata?.totalUniqueSKUs || 0;
   const totalActiveSrvSKUs = servicesData?.metadata?.totalUniqueSKUs || 0;
 
+  if (!registry) {
+    const masterRegistryPath = path.join(OUTPUTS_ROOT, 'history', 'master_knowledge_registry.json');
+    if (fs.existsSync(masterRegistryPath)) {
+      try {
+        registry = JSON.parse(fs.readFileSync(masterRegistryPath, 'utf-8'));
+      } catch (_) {}
+    }
+  }
+
   const scopedRegistry = scopeRegistryForProduct(registry, chassisName, cfg);
   if (!scopedRegistry.target && !isTestChassis) {
     throw new Error(`SyncPayloadBuilderError: Product ${chassisName} is not registered with an exact vendor/family/generation identity.`);

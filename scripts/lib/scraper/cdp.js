@@ -82,8 +82,8 @@ function getOCATarget() {
           const targets = JSON.parse(data);
           const pages   = targets.filter(t => t.type === 'page');
 
-          // Primary match: active OCA configuration portal tab (must not be local dashboard)
-          const nonLocalPages = pages.filter(t => !t.url?.includes('localhost') && !t.url?.includes('127.0.0.1') && !t.url?.includes('antigravity'));
+          // Primary match: active OCA configuration portal tab (must not be local dashboard or Seismic sales redirect)
+          const nonLocalPages = pages.filter(t => !t.url?.includes('localhost') && !t.url?.includes('127.0.0.1') && !t.url?.includes('antigravity') && !t.url?.includes('seismic.com'));
           
           const ocaPage = nonLocalPages.find(
             t => (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
@@ -92,7 +92,7 @@ function getOCATarget() {
           if (ocaPage) return resolve(ocaPage);
 
           // Secondary diagnostic: check if HPE Partner Portal is open
-          const partnerPage = pages.find(t => t.url && t.url.includes('partner.hpe.com'));
+          const partnerPage = pages.find(t => t.url && t.url.includes('partner.hpe.com') && !t.url.includes('seismic.com'));
           const openTabList = pages.map(t => `   - [${t.id}] ${t.title || 'Untitled'} (${t.url})`).join('\n');
 
           let errHelp = `No active HPE OCA page (oca.ext.hpe.com) found on CDP port ${CDP_PORT}.\n`;
