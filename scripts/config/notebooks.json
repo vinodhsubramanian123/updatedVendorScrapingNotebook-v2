@@ -48,7 +48,10 @@
         "learnings": "b3e8e65e93fe08d15ef6de1b3f3484feedff93723fea9753d1ac59f9dcb72678",
         "changes": "1593e47a146073eb43c3fd6ff3d0280553a142a992ff05c4e332ae378411da34",
         "combined": "d745cdd1b9ee46ab552b7d9c2250674093cf7541341d3dda2cf4d06ec57fa26d"
-      }
+      },
+      "lastSyncAttemptAt": "2026-09-11T15:46:49.714Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY /app/outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Master_Catalog.csv /app/outputs/ProLiant/Gen12/DL380_Gen12/notebook_sync_payload_DL380_Gen12.md DL380_Gen12\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73654) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "DL380_Gen11": {
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
@@ -96,7 +99,10 @@
       "verifiedLearningSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:48.533Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w /app/outputs/ProLiant/Gen11/DL380_Gen11/DL380_Gen11_Master_Catalog.csv /app/outputs/ProLiant/Gen11/DL380_Gen11/notebook_sync_payload_DL380_Gen11.md DL380_Gen11\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73642) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "Alletra_Storage_System": {
       "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
@@ -141,7 +147,10 @@
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e164272a-35cd-49d5-9b3f-a2cf4a653180",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:44.890Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js --create Alletra_Storage_System Canonical Knowledge /app/outputs/Alletra/Storage/Alletra_Storage_System/Alletra_Storage_System_Master_Catalog.csv /app/outputs/Alletra/Storage/Alletra_Storage_System/notebook_sync_payload_Alletra_Storage_System.md Alletra_Storage_System\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73606) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "MSL3040_Tape": {
       "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
@@ -187,7 +196,10 @@
       "quarantinedSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d0b76b30-f540-4119-9f56-0283184fc9fe",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:51.950Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 1oXrW7nmSNra2CrYUjwYtvKi4WVvaj4a9SzrJqC6H45s /app/outputs/StoreEver/Tape/MSL3040_Tape/MSL3040_Tape_Master_Catalog.csv /app/outputs/StoreEver/Tape/MSL3040_Tape/notebook_sync_payload_MSL3040_Tape.md MSL3040_Tape\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73789) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "GX5000_General_RACK": {
       "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
@@ -214,7 +226,10 @@
       "quarantinedSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "87691129-c864-43d0-bd1d-9276cb18ff0b",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:45.315Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js --create GX5000_General_RACK Canonical Knowledge /app/outputs/Cray/General/GX5000_General_RACK/GX5000_General_RACK_Master_Catalog.csv /app/outputs/Cray/General/GX5000_General_RACK/notebook_sync_payload_GX5000_General_RACK.md GX5000_General_RACK\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73618) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "SY100Gb_F32_Module": {
       "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
@@ -246,7 +261,10 @@
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "197c1910-d257-46e9-ba13-784dfaaae008",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:52.377Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js --create SY100Gb_F32_Module Canonical Knowledge /app/outputs/Synergy/General/SY100Gb_F32_Module/SY100Gb_F32_Module_Master_Catalog.csv /app/outputs/Synergy/General/SY100Gb_F32_Module/notebook_sync_payload_SY100Gb_F32_Module.md SY100Gb_F32_Module\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73803) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "DL380a_Gen12": {
       "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
@@ -293,7 +311,10 @@
       "verifiedLearningSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "3c75e029-2864-4833-b7b1-f992f0d20232",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:50.689Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 1ileDbsJXAFo59rRG9hsTuTNrjOFTnCXSiGyTLFGXb54 /app/outputs/ProLiant/Gen12/DL380a_Gen12/DL380a_Gen12_Master_Catalog.csv /app/outputs/ProLiant/Gen12/DL380a_Gen12/notebook_sync_payload_DL380a_Gen12.md DL380a_Gen12\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73682) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "DL145_Gen11": {
       "notebookId": "7a48061a-331a-429b-8477-7e0473491714",
@@ -339,7 +360,10 @@
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "dbd6ab4a-9793-49f7-8756-9a35f5919c2e",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:46.925Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 17Ut1mkfILDvpI45dSjM1qeTQsufqh2sWOHdkUUv3mHU /app/outputs/ProLiant/Gen11/DL145_Gen11/DL145_Gen11_Master_Catalog.csv /app/outputs/ProLiant/Gen11/DL145_Gen11/notebook_sync_payload_DL145_Gen11.md DL145_Gen11\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73630) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "DL580_Gen12": {
       "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
@@ -385,7 +409,10 @@
       "quarantinedSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "5113e36d-0364-4b00-bc94-02521ab224e0",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-11T15:46:51.363Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/jules/.nvm/versions/node/v22.22.1/bin/node /app/scripts/lib/sync/google_sheets_writer.js 12xnxLL7nSLJhIO4bxvvhVBbcWuCVTUtO8HtPzeLWjmA /app/outputs/ProLiant/Gen12/DL580_Gen12/DL580_Gen12_Master_Catalog.csv /app/outputs/ProLiant/Gen12/DL580_Gen12/notebook_sync_payload_DL580_Gen12.md DL580_Gen12\nCould not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.\n(node:73715) MetadataLookupWarning: received unexpected error = All promises were rejected code = UNKNOWN\n(Use `node --trace-warnings ...` to show where the warning was created)\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     }
   },
   "runningKnowledgeDoc": {
