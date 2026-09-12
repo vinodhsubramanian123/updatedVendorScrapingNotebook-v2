@@ -1,4 +1,4 @@
-# Portfolio State of Health (Auto-Generated: 2026-08-30)
+# Portfolio State of Health (Auto-Generated: 2026-09-12)
 
 This document is dynamically generated from on-disk catalog metadata by `scripts/maintenance/generate_portfolio_status.js`.
 
@@ -8,16 +8,20 @@ This document is dynamically generated from on-disk catalog metadata by `scripts
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `HPE Alletra Storage System` | `outputs/Alletra/Storage/Alletra_Storage_System` | **3** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
 | `GX5000 General RACK` | `outputs/Cray/General/GX5000_General_RACK` | **2** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
-| `DL380 Gen11` | `outputs/ProLiant/Gen11/DL380_Gen11` | **504** | ✅ Present | ✅ 2.08 MB | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `DL380 Gen12` | `outputs/ProLiant/Gen12/DL380_Gen12` | **302** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `MSL3040 Tape` | `outputs/StoreEver/Tape/MSL3040_Tape` | **2** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
-| `SY100Gb F32 Module` | `outputs/Synergy/General/SY100Gb_F32_Module` | **3** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
+| `DL145 Gen11` | `outputs/ProLiant/Gen11/DL145_Gen11` | **357** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `DL380 Gen11` | `outputs/ProLiant/Gen11/DL380_Gen11` | **584** | ✅ Present | ✅ 2.08 MB | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `DL380 Gen12` | `outputs/ProLiant/Gen12/DL380_Gen12` | **472** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `DL380a Gen12` | `outputs/ProLiant/Gen12/DL380a_Gen12` | **359** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `DL580 Gen12` | `outputs/ProLiant/Gen12/DL580_Gen12` | **242** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `MSL3040 Tape` | `outputs/StoreEver/Tape/MSL3040_Tape` | **104** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `SY480 Gen12` | `outputs/Synergy/Gen12/SY480_Gen12` | **154** | ✅ Present | ✅ 2.58 MB | ✅ Active | ✅ 100% Certified (Full Scrape) |
+| `SY100Gb F32 Module` | `outputs/Synergy/General/SY100Gb_F32_Module` | **3** | ✅ Present | ✅ 0.52 MB | ✅ Active | ✅ Baseline Pass |
 
-**Total Verified Portfolio Intelligence**: **816 unique SKUs** across **6 product lines**.
+**Total Verified Portfolio Intelligence**: **2280 unique SKUs** across **10 product lines**.
 
 ### 🧠 Learned KnowledgeDeltas
 
-- Total Closed-Loop Knowledge Deltas on Disk: **28**
+- Total Closed-Loop Knowledge Deltas on Disk: **79**
 
 ### 🚀 Quick Commands
 

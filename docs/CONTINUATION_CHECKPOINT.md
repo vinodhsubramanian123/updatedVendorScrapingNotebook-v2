@@ -93,7 +93,7 @@ This is the current engineering status following the completion and verification
   - Re-ordered aspect checks to enforce `isGen11` isolation and prevent PSU SKUs (such as `P48818-B21`) from falsely satisfying heatsink requirements, achieving **15/15 Scenarios PASSED (100.0%)** in `test_boq_eval_benchmarks.js`.
 - **Expanded Test Matrix**:
   - Added 5 new unit test suites: `test_least_delta_combinator.js` (10/10 PASS), `test_decision_trace_ledger.js` (10/10 PASS), `test_deal_optimizer.js` (13/13 PASS), `test_quickspecs_oca_reconciliation.js` (8/8 PASS), `test_query_router.js` (7/7 PASS).
-  - Total unit test count elevated from 87 to **92 suites**, bringing total suite count to **155 suites (100.0% PASS)**.
-  - Zero lint errors/warnings (`oxlint`) across 103 frontend files. All 860 functions within the cyclomatic complexity gate ($CC \le 135$).
+  - Total isolated test matrix certified at **158/158 suites PASSED (100.0%)** (92 Unit, 38 Chaos, 25 Integration, 3 E2E) in 458.97s with zero failures in ledger.
+  - Zero lint errors/warnings (`oxlint`) across 103 frontend files. All 862 functions within the cyclomatic complexity gate ($CC \le 135$).
 
 

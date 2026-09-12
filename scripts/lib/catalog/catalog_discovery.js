@@ -170,6 +170,16 @@ resolve({ ok: false, pages: [], hasActiveOca: false });
   });
 }
 
+const IGNORED_DISCOVERY_DIRS = new Set(['temp', 'node_modules', '.git', 'test_payloads', 'test_portal_stress', 'test_reconciliation', 'test_tenders', 'split_clusters']);
+
+function isIgnoredDiscoveryPath(file, filePath) {
+  if (file.startsWith('.')) return true;
+  if (IGNORED_DISCOVERY_DIRS.has(file)) return true;
+  if (file.startsWith('failed_staging') || file.startsWith('staging_')) return true;
+  if (filePath && (filePath.includes(`${path.sep}temp${path.sep}`) || filePath.endsWith(`${path.sep}temp`))) return true;
+  return false;
+}
+
 /**
  * Recursively find all *_Catalog.json files under a directory.
  * @param {string} dir
@@ -181,8 +191,8 @@ function findCatalogJsonFiles(dir) {
 
   const list = fs.readdirSync(dir);
   list.forEach(file => {
-    if (file.startsWith('.')) return;
     const filePath = path.join(dir, file);
+    if (isIgnoredDiscoveryPath(file, filePath)) return;
     try {
       const stat = fs.statSync(filePath);
       if (stat && stat.isDirectory()) {
@@ -282,8 +292,8 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
 
   const list = fs.readdirSync(dir);
   list.forEach(file => {
-    if (file.startsWith('.')) return;
     const filePath = path.join(dir, file);
+    if (isIgnoredDiscoveryPath(file, filePath)) return;
     try {
       const stat = fs.statSync(filePath);
       if (stat && stat.isDirectory()) {

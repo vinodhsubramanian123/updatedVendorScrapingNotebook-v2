@@ -2,7 +2,7 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
-**Current engineering handoff (2026-09-12):** Phases 1 through 7 of `GEMINI_REMAINING_WORK_PLAN.md` and `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **155/155 suites PASSED (100.0%)** (92 unit, 38 chaos, 25 integration) with 0 lint warnings/errors on 103 files, clean dashboard build, and all 860 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
+**Current engineering handoff (2026-09-12):** Phases 1 through 7 of `GEMINI_REMAINING_WORK_PLAN.md` and `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **158/158 suites PASSED (100.0%)** (92 unit, 38 chaos, 25 integration, 3 e2e) with 0 lint warnings/errors on 103 files, clean dashboard build, and all 862 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
 
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
 - **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:

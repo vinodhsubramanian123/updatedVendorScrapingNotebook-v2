@@ -1,6 +1,4 @@
-```python
-# Generate a markdown document summarizing the comparison and save it
-md_content = """# Bill of Quantities (BOQ) Reconciliation & Verification Report
+# Bill of Quantities (BOQ) Reconciliation & Verification Report
 
 **Configuration Name:** `HPE_Hybrid_3xFrm_36xSY480G12_15xDL380G12_100GbE_64GFC`  
 **Solution UCID:** `5155640958-01`  

@@ -25,3 +25,11 @@ Every aspect checker returns an object conforming to:
   remediations: [ { sku: "P56950-B21", description: "HPE DL380 Gen12 Max Performance Fan Kit", qty: 1 } ]
 }
 ```
+
+## 4. Critical Domain Invariants Enforced
+- **Gen11 Heatsink Isolation (`INV-61`, `BENCH-08`)**: Strictly distinguishes Gen11 heatsinks (`P74792-B21`) from Gen12 heatsinks (`P48818-B21`), and disambiguates from Gen11 800W Flex Slot Platinum Power Supplies sharing the identical part number.
+- **Tri-Mode Expander Port Channel Math (`INV-26`, `BENCH-06`)**: Directly addresses 8-port controller limits; configurations with $>8$ drives mandate SAS Expander (`P48835-B21`) or Tri-Mode Switch Card (`P55806-B21`).
+- **GPU Auxiliary Power Envelope (`INV-27`, `BENCH-07`)**: Mandates GPU Aux Power Cable Kits (`P48816-B21`), Max Performance Fans (`P56950-B21`), and $\ge 1600$W PSUs for high-power accelerators (L40S, A100).
+- **EU Ecodesign ErP Lot 9 Compliance (`INV-30`, `BENCH-09`)**: Dual-socket servers ordering 94% Platinum PSUs auto-inject CE Mark Removal FIO Enablement Kit (`P35876-B21`) to pass factory CLIC validation.
+- **PCIe Riser 5th Slot Power Delivery (`INV-31`, `BENCH-10`)**: Populating $\ge 5$ physical PCIe expansion cards across risers requires dedicated Primary Cable Kit `P56073-B21` to power Slot 1.
+- **Physical Core Multiplier Licensing (`INV-28`, `BENCH-15`)**: Calculates total socket cores (`cpuCount * coresPerCpu`) to guarantee core pack compliance for Windows Server and VMware vSphere.
