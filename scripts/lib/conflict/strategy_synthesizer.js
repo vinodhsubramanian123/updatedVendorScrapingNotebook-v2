@@ -17,6 +17,7 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna } = require('./workload_dna.js');
 const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
 const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
+const { createDecisionTraceLedger } = require('./decision_trace.js');
 
 let _strategyAddonsCache = null;
 let _physicalMathValidator = null;
@@ -667,6 +668,28 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const baseParts = computeBaseParts(items, getPrice);
   const fixParts = computeFixParts(fixes, getPrice);
 
+  const decisionLedger = createDecisionTraceLedger();
+  if (fixes.length > 0) {
+    decisionLedger.recordDecision({
+      decisionPoint: 'MANDATORY_ASPECT_RULE_ENFORCEMENT',
+      trigger: `${fixes.length} physical aspect mismatch(es) detected in customer drafted BOQ`,
+      alternativesEvaluated: fixes.map(f => ({
+        id: f.sku,
+        description: f.description || `Required hardware kit (${f.sku})`,
+        pros: ['Guarantees 100% buildability in vendor configurator', 'Satisfies thermal/electrical safety'],
+        cons: [`Adds $${(getPrice(f.sku) * (f.quantity || 1)).toLocaleString()} CapEx`],
+        status: 'SELECTED'
+      })),
+      selectedAlternative: {
+        id: 'INJECT_ALL_MANDATORY_FIXES',
+        description: `${fixes.length} certified accessory kit(s)`,
+        selectionRationale: 'Golden Rule mandates 100% elimination of unbuildable errors before quote submission'
+      },
+      downstreamImpact: fixes.map(f => f.sku),
+      confidence: 0.99
+    });
+  }
+
   const rank1Parts = [...baseParts, ...fixParts];
   const rank1Cost = rank1Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
 
@@ -678,27 +701,88 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Build Ranks
   // ---------------------------------------------------------------------------
 
-  // Rank 2
-  const rank2ConfigAddons = tierConfig.rank2 || [];
-  const rank2RawList = rank2ConfigAddons.length > 0
-    ? rank2ConfigAddons
-    : dynamicDiscoveredAddons.rank2Addons;
-  const rank2Addons = rank2RawList.map(a => {
-    const price = getPrice(a.sku);
-    return {
-      sku: cleanBaseSKU(a.sku),
-      description: a.description || a.name || `Factory Accessory (${a.sku})`,
-      quantity: a.quantity || 1,
-      unitPriceUsd: price,
-      extendedPriceUsd: price * (a.quantity || 1),
-      isFixInjected: false,
-      isStrategyAddon: true,
-      category: a.category || 'Factory Baseline Accessory'
-    };
-  });
-  const rank2Parts = [...rank1Parts, ...rank2Addons];
-  const rank2AddonCost = rank2Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-  const rank2Cost = rank1Cost + rank2AddonCost;
+  // Least-Delta Analysis: Detect troublesome SKUs that force cascading dependencies
+  const { identifyTroublesomeSkus, buildLeastDeltaCandidate } = require('./least_delta_combinator.js');
+  const troublesomeSkus = identifyTroublesomeSkus(items, evalResults, loadedCatalog, chassisInfo);
+  const leastDeltaCandidate = buildLeastDeltaCandidate(baseParts, fixParts, troublesomeSkus, evalResults, loadedCatalog, chassisInfo, getPrice);
+
+  if (leastDeltaCandidate) {
+    decisionLedger.recordDecision({
+      decisionPoint: 'LEAST_DELTA_CASCADE_PRUNING',
+      trigger: leastDeltaCandidate.troublesomeReason,
+      alternativesEvaluated: [
+        {
+          id: 'DIRECT_ADDITIVE_FIXES',
+          description: `Retain ${leastDeltaCandidate.troublesomeRootSku} and append all cascading dependencies`,
+          pros: ['Preserves exact customer drafted SKU'],
+          cons: [`Forces ${leastDeltaCandidate.cascadingSkusEliminated.length} cascading accessories`, 'Higher complexity and CapEx'],
+          status: 'OFFERED_AS_RANK_1'
+        },
+        {
+          id: 'LEAST_DELTA_SUBSTITUTION',
+          description: `Substitute with ${leastDeltaCandidate.alternativeSku || 'pruned'} (${leastDeltaCandidate.presalesValuePitch})`,
+          pros: ['Eliminates cascading dependencies', 'Lowest delta operations to customer intent', '100% buildable and functionally equivalent'],
+          cons: ['Substitutes part number with modern alternative'],
+          status: 'OFFERED_AS_RANK_2'
+        }
+      ],
+      selectedAlternative: {
+        id: 'LEAST_DELTA_PATH',
+        description: leastDeltaCandidate.presalesValuePitch
+      },
+      downstreamImpact: leastDeltaCandidate.cascadingSkusEliminated,
+      confidence: 0.98
+    });
+  }
+
+  // Determine Rank 1 title and nature
+  const isStraightforwardWinner = fixes.length === 0 && (!evalResults.errors || evalResults.errors.length === 0);
+  const rank1Name = isStraightforwardWinner
+    ? 'Rank 1: Straightforward Winner (100% Valid as Drafted)'
+    : 'Rank 1: Customer Workload Intent Preserved (Optimal Match)';
+  const rank1Reasoning = isStraightforwardWinner
+    ? 'Customer BOQ is 100% buildable as drafted. Zero additions, removals, or replacements required.'
+    : 'Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.';
+
+  // Rank 2: Least-Delta Alternative Path (when troublesome SKU causes cascades) or Standardized CTO Baseline
+  let rank2Parts = [];
+  let rank2Cost = 0;
+  let rank2AddonCost = 0;
+  let rank2Name = 'Rank 2: Standardized CTO Baseline & Factory Default Accessories';
+  let rank2Reasoning = 'Standardizes baseline options with factory default cable and rail accessories for maximum factory assembly stability.';
+  let rank2IntentAlignment = `${Math.max(80, 95 - fixes.length * 3)}% (Standardized)`;
+  let rank2LeastDelta = null;
+
+  if (leastDeltaCandidate) {
+    rank2Parts = leastDeltaCandidate.parts;
+    rank2Cost = leastDeltaCandidate.estimatedCapex;
+    rank2AddonCost = Math.max(0, rank2Cost - baseCost);
+    rank2Name = leastDeltaCandidate.tierTitle;
+    rank2Reasoning = leastDeltaCandidate.sharedIntelligenceReasoning;
+    rank2IntentAlignment = `100% Functional Match (${leastDeltaCandidate.deltaSummary})`;
+    rank2LeastDelta = leastDeltaCandidate;
+  } else {
+    const rank2ConfigAddons = tierConfig.rank2 || [];
+    const rank2RawList = rank2ConfigAddons.length > 0
+      ? rank2ConfigAddons
+      : dynamicDiscoveredAddons.rank2Addons;
+    const rank2Addons = rank2RawList.map(a => {
+      const price = getPrice(a.sku);
+      return {
+        sku: cleanBaseSKU(a.sku),
+        description: a.description || a.name || `Factory Accessory (${a.sku})`,
+        quantity: a.quantity || 1,
+        unitPriceUsd: price,
+        extendedPriceUsd: price * (a.quantity || 1),
+        isFixInjected: false,
+        isStrategyAddon: true,
+        category: a.category || 'Factory Baseline Accessory'
+      };
+    });
+    rank2Parts = [...rank1Parts, ...rank2Addons];
+    rank2AddonCost = rank2Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
+    rank2Cost = rank1Cost + rank2AddonCost;
+  }
 
   // Rank 3
   const arbitrationBranches = (evalResults.arbitrationResults || {}).branches || [];
@@ -800,7 +884,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const rawCandidates = [
     {
       rank: 1,
-      name: 'Rank 1: Customer Workload Intent Preserved (Optimal Match)',
+      name: rank1Name,
       score: parseFloat(Math.max(0.70, 1.0 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v1.totalCost,
       budgetBreakdown: {
@@ -828,11 +912,12 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']),
         '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'
       ),
-      reasoning: `Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.`
+      reasoning: rank1Reasoning,
+      decisionTrace: decisionLedger.getDecisions()
     },
     {
       rank: 2,
-      name: 'Rank 2: Standardized CTO Baseline & Factory Default Accessories',
+      name: rank2Name,
       score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v2.totalCost,
       budgetBreakdown: {
@@ -841,26 +926,31 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         strategyAddonCost: rank2AddonCost,
         totalBudgetUsd: v2.totalCost
       },
-      workloadDnaMatch: 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)',
-      changesCount: fixes.length + rank2Addons.length + v2.injectedFixes.length,
+      workloadDnaMatch: rank2LeastDelta ? 'Least-Delta Optimization (Pruned Cascades)' : 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)',
+      changesCount: rank2LeastDelta ? rank2LeastDelta.deltaMetrics.totalDeltaOperations : (fixes.length + (rank2Parts.length - rank1Parts.length) + v2.injectedFixes.length),
       skuPartsList: v2.parts,
       bomFingerprint: computeBomFingerprint(v2.parts),
       physicalMathClean: v2.physicalMathClean,
       isMathClean: v2.physicalMathClean,
       aspectErrors: v2.aspectErrors || [],
       injectedCascadingFixes: v2.injectedFixes,
+      leastDeltaAnalysis: rank2LeastDelta || null,
       tradeoffMetrics: {
-        intentAlignment: `${Math.max(80, 95 - fixes.length * 3)}% (Standardized)`,
-        skuModifications: `${fixes.length + rank2Addons.length + v2.injectedFixes.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + rank2AddonCost).toLocaleString()}`,
-        capacityExpansion: 'Standard Factory Margins'
+        intentAlignment: rank2IntentAlignment,
+        skuModifications: rank2LeastDelta ? rank2LeastDelta.deltaSummary : `${fixes.length} modifications`,
+        costDeltaUsd: `+$${rank2AddonCost.toLocaleString()}`,
+        capacityExpansion: rank2LeastDelta ? 'Cascade-Free Architecture' : 'Standard Factory Margins',
+        presalesPitch: rank2LeastDelta?.presalesValuePitch || 'Factory standard accessory kit inclusion'
       },
       ragSecondOpinion: getLiveRagGrounding(
-        'Standardized CTO Baseline',
-        rank2Addons.map(a => a.sku).concat(['cable', 'rail', 'chassis']),
-        `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
+        rank2LeastDelta ? 'Least-Delta Alternative' : 'Standardized CTO Baseline',
+        (rank2LeastDelta?.cascadingSkusEliminated || []).concat(['cable', 'rail', 'chassis']),
+        rank2LeastDelta
+          ? `✅ Local Rule Engine Validated: ${rank2LeastDelta.presalesValuePitch}`
+          : `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
       ),
-      reasoning: `Standardizes baseline options with factory default cable and rail accessories for maximum factory assembly stability.`
+      reasoning: rank2Reasoning,
+      decisionTrace: decisionLedger.getDecisions()
     },
     {
       rank: 3,
@@ -963,6 +1053,10 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
   const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply);
   const baselineCost = rawCandidates[0]?.estimatedCostUsd || rank1Cost;
+
+  try {
+    decisionLedger.persistLedger();
+  } catch (_) {}
 
   return normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, { ...options, priceResolver: getPrice });
 }

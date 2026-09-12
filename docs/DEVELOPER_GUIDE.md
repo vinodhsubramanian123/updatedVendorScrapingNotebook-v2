@@ -49,10 +49,12 @@ npm run dev
 | `npm run dashboard` | Start Express backend, Vite frontend dev server, and feedback listener concurrently |
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
-| `npm test` | Run portfolio verification audit (`verify_all.js`) across 6 products |
+| `npm run lint:complexity` | Verify cyclomatic complexity gate ($CC \le 135$) across all functions |
+| `npm test` | Run complete isolated test matrix (155 suites across Unit, Chaos, Integration tiers) |
+| `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 8 canonical products |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |
 | `npm run status:sync` | Re-sync live portfolio state and generate `.agents/PORTFOLIO_STATUS.md` |
-| `npm run test:all` | Run complete regression matrix across 50+ test suites (100% PASS) |
+| `npm run test:benchmarks` | Run 15-scenario BOQ evaluation benchmarks (100% recall/precision) |
 | `npm run test:aspect_units` | Run 7 modular physical hardware aspect unit checkers |
 | `npm run test:preprocessor` | Run BOQ preprocessor, CTO normalizer, and boundary fuzzing suites |
 | `npm run test:guardrail_prompts` | Run guardrail system prompt factory and query sanitizer tests |
@@ -60,23 +62,6 @@ npm run dev
 | `npm run test:schemas` | Run Zod runtime schema validators for data contracts |
 | `npm run test:knowledge_extractor` | Run RAG closed-loop knowledge extraction and deduplication tests |
 | `npm run test:dl380_combinations` | Run 8 comprehensive DL380 Gen12 combination and workflow tests |
-| `npm run test:benchmarks` | Run 5-scenario BOQ evaluation benchmarks |
-| `npm run test:data_validator` | Run catalog schema and price validator unit tests |
-| `npm run test:error_envelope` | Run error envelope and wrapAsync unit tests |
-| `npm run test:drift_inspector` | Run knowledge drift inspector unit tests |
-| `npm run test:feedback_persister` | Run HITL feedback persistence and recovery unit tests |
-| `npm run test:query_sanitizer` | Run NLP query sanitizer and prompt injection guard tests |
-| `npm run test:eval_multi` | Run multi-configuration batch evaluator tests |
-| `npm run test:jules_task_manager` | Run Jules task manager and GitHub REST client tests |
-| `npm run test:circular` | Verify 0 circular dependencies across all 350+ repository modules |
-| `npm run test:complexity` | Verify McCabe cyclomatic complexity bounds across core domain files |
-| `npm run test:runner` | Run unit tests for the isolated test runner and failure ledger |
-| `npm run test:isolated -- <file>` | Run a single test file in isolation with full verbosity and diagnostics |
-| `npm run test:failed` | Re-test ONLY previously failing tests recorded in failure ledger |
-| `npm run eval:boq -- <file>` | Run CLI BOQ evaluator against a quote file |
-| `npm run scrape` | Execute live OCA portal scrape via CDP |
-| `npm run rebuild` | Rebuild all catalogs from raw_data |
-| `npm run sync:knowledge` | Sync knowledge payloads to NotebookLM |
 | `npm run update:graph` | Rebuild dynamic semantic dependency graph (`graphify`) |
 | `npm run jules:prs` | Inspect open pull requests on GitHub via native REST API |
 | `npm run jules:prune` | Prune merged remote feature branches from GitHub |
@@ -119,13 +104,17 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 | Suite | Command | Assertions / Coverage | Description |
 |---|---|---|---|
 | Aspect Math | `npm run test:aspect_units` | 34 | 7 physical hardware math checkers (compute, memory, storage, pcie, power, chassis, support) |
-| BOQ Benchmarks | `npm run test:benchmarks` | 5 scenarios | End-to-end BOQ evaluation with 100% recall/precision metrics |
-| Portfolio Audit | `npm test` | 6 product lines | Validates all catalog outputs on disk against 7 guardrails |
-| E2E Scenarios | `node tests/integration/test_end_to_end_scenarios.js` | Multi-scenario | Cross-product evaluation scenarios |
+| BOQ Benchmarks | `npm run test:benchmarks` | 15 scenarios | Comprehensive BOQ evaluation with 100% recall/precision across all real-world edge cases |
+| Full Test Matrix | `npm test` | 155 suites | Full automated regression across Unit (92), Chaos (38), and Integration (25) tiers (100% PASS) |
+| Portfolio Audit | `npm run test:portfolio` | 8 product lines | Validates all catalog outputs across 5 families on disk against 7 guardrails |
+| Least-Delta Combinator | `node tests/unit/test_least_delta_combinator.js` | 10 tests | Validates troublesome SKU identification, cascade pruning, and dynamic catalog alternatives |
+| Decision Trace Ledger | `node tests/unit/test_decision_trace_ledger.js` | 10 tests | Validates structured reasoning chain, persistence, and 4-brain attribution |
+| Value Engineering | `node tests/unit/test_deal_optimizer.js` | 13 tests | Validates advisory deal optimizations (CPU, NIC, PSU, warranty) |
+| QuickSpecs Reconciliation | `node tests/unit/test_quickspecs_oca_reconciliation.js` | 8 tests | Validates cross-check against live OCA and auto-generated expansion guidance |
+| Presales Query Router | `node tests/unit/test_query_router.js` | 7 tests | Validates 5-track intent classification and confidence scoring |
 | Conflict Graph | `node tests/integration/test_conflict_graph.js` | Per-rule DAG | Conflict graph DAG and resolution matrix validation |
 | Offline Mode | `node tests/chaos/test_offline_pipeline.js` | Full fallback | Verifies graceful degradation without external APIs |
-| Edge Cases | `node tests/chaos/test_edge_cases.js` | Boundary | Boundary condition and malformed BOM coverage |
-| Complete Matrix | `npm run test:all` | 50+ test suites | Full automated regression across all 4 testing tiers |
+| Edge Cases | `node tests/chaos/test_edge_cases.js` | Boundary | Boundary condition, high TDP, and malformed BOM coverage |
 
 ### Adversarial Red-Teaming
 Run `node scripts/evaluators/adversarial_agent.js` to execute an adversarial red-team pass. This stress-tests the evaluator with intentionally malformed or conflicting BOQs and logs results to `pipeline_telemetry.json`.
@@ -142,7 +131,28 @@ For detailed architecture documentation, see:
 
 ---
 
+## 7.1 Core Backend REST API Endpoints
+
+The Express backend (`dashboard/server.cjs`) modularly routes requests through `dashboard/routes/`:
+
+| Method | Endpoint | Handler | Description |
+|---|---|---|---|
+| `POST` | `/api/evaluate-boq` | `routes/evaluation.cjs` | Canonical BOQ evaluation against 7 physical aspects and strategy matrix |
+| `POST` | `/api/recompute-matrix` | `routes/evaluation.cjs` | Re-evaluates strategy matrix dynamically with RAG findings |
+| `GET` | `/api/decision-traces` | `routes/evaluation.cjs` | Retrieves persisted decision traces and reasoning chains |
+| `POST` | `/api/query/route` | `routes/evaluation.cjs` | Programmatically routes presales input across 5 canonical tracks |
+| `POST` | `/api/query/classify` | `routes/evaluation.cjs` | Classifies query intent with confidence scoring without executing pipeline |
+| `GET` | `/api/catalogs` | `routes/catalogs.cjs` | Lists all discovered catalog products and generation hierarchies |
+| `POST` | `/api/reconcile-quickspecs` | `routes/catalogs.cjs` | Reconciles QuickSpecs options against live OCA catalogs and emits guidance |
+| `GET` | `/api/reconcile-quickspecs/latest` | `routes/catalogs.cjs` | Retrieves latest reconciliation report and missing SKU counts |
+| `POST` | `/api/verify-vendor-bom` | `routes/evaluation.cjs` | Reconciles customer tender BOMs with vendor quotes (`verify_vendor_bom.js`) |
+| `GET` | `/api/notebook/quarantined-deltas` | `routes/notebook.cjs` | Lists quarantined feedback observations awaiting review |
+| `POST` | `/api/notebook/quarantined-deltas/:id/promote` | `routes/notebook.cjs` | Frictionless 1-click promotion of validated rules to catalog deltas and NLM |
+
+---
+
 ## 8. Debugging Playbook — Known Gotchas & Diagnostic Commands
+
 
 The following are the 7 invariants most likely to be accidentally broken by future changes. Use these commands to quickly verify the system is healthy after any modification to the scraping pipeline.
 

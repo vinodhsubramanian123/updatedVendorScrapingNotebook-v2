@@ -28,7 +28,7 @@ graph TD
 
     subgraph "Stage 3 & 4: BOQ Eval, Workload DNA & Conflict Graph"
         I["Customer BOQ / Quote"] --> J["boq-eval-skill"]
-        J --> K["scripts/lib/boq/boq_evaluator.js (6-Aspect Physical Math)"]
+        J --> K["scripts/lib/boq/boq_evaluator.js (7-Aspect Physical Math)"]
         K --> L["scripts/lib/conflict/conflict_graph.js (5-Level Conflict Graph & Workload DNA)"]
         L --> M["5-Tier Strategic Resolution Matrix (Rank 1: Intent Match)"]
         M --> N["Grounded Gemini Notebook RAG (nlm-skill)"]
@@ -252,6 +252,35 @@ To maximize velocity and offload heavy validation without human friction:
 | **`INV-64`**| Frontend Canonical Product Taxonomy | Standardizes all dashboard hooks and components on canonical model IDs (`DL380_Gen12`) with safe auto-fallback. |
 | **`INV-65`**| Modern CDP Download Behavior Protocol | Uses `Browser.setDownloadBehavior` with `allow` and resolved directories; forbids `allowAndName` to preserve filenames. |
 | **`INV-66`**| Browser Security Preservation Protocol | Never disables browser security controls; applies scoped permissions and validates completed files. |
+| **`INV-67`**| Non-Destructive Price Anomaly Quarantine | Quarantines price spikes non-destructively in `diff_catalog.js` without silent data erasure. |
+| **`INV-68`**| Evidence-Gated Shared Accessory Compatibility | Shared accessories require exact target-product source evidence before verification. |
+| **`INV-69`**| Delta-Only SKU Lifecycle & Business Retention | Diff engine records meaningful transitions rather than redundant UNCHANGED events. |
+| **`INV-70`**| Evidence-Gated HITL Resolution & Confidence | Observation quarantined; promotion requires named reviewer, reasoning, and trusted evidence. |
+| **`INV-71`**| Requirement-Led Part Resolution & PCIe Evidence | Resolves malformed part numbers from complete requirement context and categories. |
+| **`INV-72`**| Customer Input Workflow Discipline & Scoped Learning | Customer BOQs route strictly through canonical `eval_boq.js`; zero ad-hoc scripts. |
+| **`INV-73`**| Zero-Repetition Autonomous BOQ Protocol | AI agents deliver complete solutions end-to-end without requiring repeated user prompts. |
+| **`INV-74`**| Least-Delta Combinator & Troublesome SKU Pruning | Evaluates troublesome SKUs causing cascading bloat and synthesizes minimal-mutation variants (Rank 1L/1M). |
+| **`INV-75`**| Auditable Decision Trace Ledger Protocol | Captures structured timestamped reasoning steps with 4-brain source attribution in `decision_traces.json`. |
+| **`INV-76`**| Value Engineering & Deal Optimizer Protocol | Evaluates advisory CapEx/OpEx savings (CPU right-sizing, NIC bandwidth alignment, PSU efficiency tuning). |
+| **`INV-77`**| QuickSpecs vs Live OCA Reconciliation Protocol | Discrepancies between QuickSpecs and OCA emit `expansion_guidance.json` to guide dynamic sub-choice expansion. |
+| **`INV-78`**| Unified Presales Intent Query Routing Protocol | Inbound queries route through `route_query.js` into 5 canonical tracks with unified single-user governance. |
+
+---
+
+## 🧭 Sub-Skill Routing & Execution Directory
+
+| Execution Pathway | Specialized Skill | Primary Engine / Script |
+|---|---|---|
+| **Presales Intent Classification** | [`presales-query-router`](../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
+| **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/eval_boq.js` |
+| **Customer BOQ Evaluation** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` |
+| **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | `scripts/evaluators/verify_vendor_bom.js` |
+| **Catalog Pricing & Lifecycle Trends** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
+| **OCA Portal CDP Live Scraping** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
+| **CDP Hands-Free Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
+| **NotebookLM RAG Sync** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` |
+| **Gemini NotebookLM MCP Integration** | [`nlm-skill`](../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools |
+
 
 
 

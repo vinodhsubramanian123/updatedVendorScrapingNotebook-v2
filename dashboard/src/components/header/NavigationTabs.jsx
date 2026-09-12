@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  LayoutDashboard, Table, FileSpreadsheet, Activity, Terminal, MessageSquare, Settings
+  LayoutDashboard, Table, FileSpreadsheet, Activity, Terminal, MessageSquare, Settings, ShieldAlert
 } from 'lucide-react';
 
 const TABS = [
@@ -15,6 +15,7 @@ export default function NavigationTabs({
   activeTab,
   setActiveTab,
   onOpenFeedbackDrawer,
+  onOpenQuarantineDrawer,
   onOpenSettings
 }) {
   return (
@@ -28,7 +29,7 @@ export default function NavigationTabs({
               key={tab.id}
               data-tab={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                 isActive
                   ? 'bg-emerald-50 text-emerald-900 border border-emerald-200 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -42,16 +43,26 @@ export default function NavigationTabs({
       </nav>
 
       <div className="flex items-center gap-2 shrink-0">
-        <button aria-label="HITL Feedback & Learning"
+        <button
+          aria-label="Knowledge Quarantine Vault"
+          onClick={onOpenQuarantineDrawer}
+          className="p-1.5 rounded-lg text-slate-500 hover:text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer"
+          title="Knowledge Quarantine Vault (Inspect / Promote AI Rules)"
+        >
+          <ShieldAlert className="w-4 h-4" />
+        </button>
+        <button
+          aria-label="HITL Feedback & Learning"
           onClick={onOpenFeedbackDrawer}
-          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
           title="HITL Feedback & Learning"
         >
           <MessageSquare className="w-4 h-4" />
         </button>
-        <button aria-label="Settings"
+        <button
+          aria-label="Settings"
           onClick={onOpenSettings}
-          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
           title="Settings"
         >
           <Settings className="w-4 h-4" />

@@ -17,6 +17,7 @@ export default function Header({
   _onSearchLocal,
   onOpenRag,
   onOpenFeedbackDrawer,
+  onOpenQuarantineDrawer,
   onOpenSettings,
   _isTaskRunning,
   isCatalogLoading = false
@@ -173,6 +174,7 @@ export default function Header({
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenFeedbackDrawer={onOpenFeedbackDrawer}
+        onOpenQuarantineDrawer={onOpenQuarantineDrawer}
         onOpenSettings={onOpenSettings}
       />
     </header>

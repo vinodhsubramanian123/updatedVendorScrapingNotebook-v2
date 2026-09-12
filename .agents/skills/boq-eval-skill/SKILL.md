@@ -1,9 +1,11 @@
 ---
 name: boq-eval-skill
-description: Use this skill for validating customer BOQs, hardware lists, Excel quotes, or proposals against vendor-agnostic product specs (HPE, Cisco, Dell, Alletra, etc.) and running 7-aspect physical pre-checks.
+description: Use this skill for validating customer BOQs, hardware lists, Excel quotes (.xlsx/.xls/.csv), or proposal tables against vendor-agnostic product specs (HPE, Cisco, Dell, Alletra, etc.) and running 7-aspect physical pre-checks. For freeform Q&A, sizing without SKUs, or BOM comparison, see presales-query-router.
 ---
 
 # Pre-Flight BOQ Evaluation & Closed-Loop Feedback Skill (`boq-eval-skill`)
+
+> 🧭 **Intent Routing Notice**: If the user's input is a freeform conversational question without a file or table, or an unstructured RFP requirement without SKUs, consult [`presales-query-router`](../presales-query-router/SKILL.md) to select the optimal track. Use this skill when concrete part numbers (SKUs) or tabular tender documents are provided.
 
 ---
 
@@ -47,16 +49,22 @@ While the React Dashboard provides an exceptional visual interface for reviewing
 5. **100% Partner Portal / CLIC Buildability Guarantee**:
    - Ensures internal CTO components carry `#0D1` / `-F21` FIO tags (`INV-25`). Standalone BTO components outside containers fail CLIC validation (Rules 81354490 & 91001655).
    - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.
-6. **5-Tier Strategic Resolution Matrix Ranking**:
+6. **5-Tier Strategic Resolution Matrix Ranking & Least-Delta Optimization**:
    - **Rank 1 (Customer Intent Preserved — RECOMMENDED)**:
      - Closest possible build to customer request with minimum changes needed to achieve 100% buildability.
      - **Parallel Sub-Paths (Rank 1A, 1B, 1C)**: When multiple valid buildable topologies solve a requirement (e.g. Path 1A: SAS Expander vs Path 1B: Dedicated 2nd Controller), they form parallel sub-paths within Rank 1. Rank 1A is the minimal disruption/lowest CapEx path.
+     - **Rank 1L / Rank 1M (Least-Delta Functional Alternative — Cascade Pruned, `INV-74`)**:
+       - When a troublesome SKU causes massive cascading additions (e.g. 8-port controller with 16 drives requiring SAS expander, cables, and fans), the Least-Delta Combinator (`least_delta_combinator.js`) substitutes a direct functional alternative (e.g. 16-port Tri-Mode controller `P55415-B21`) and prunes the entire cascading dependency tree, delivering 100% buildability with the fewest net mutations.
      - **The Zero-Rank Invariant**: An unbuildable configuration receives ZERO rank and is discarded. Only 100% certified buildable configurations enter the matrix.
      - Never cuts down customer requirements unless physically impossible, and never bundles unsolicited software or startup services (`INV-32`).
    - **Rank 2 (Standardized CTO / Balanced Performance)**: Balanced memory interleaving, factory accessories, high-performance fans.
    - **Rank 3 (High-IOPS & Storage Performance / Cost-Optimized Baseline)**: Cleaned baseline removing redundant zero-purpose parts or selecting certified equivalent tiers.
    - **Rank 4 (Maximum Density & 2N Reliability)**: Dual grid 2N power supplies, dual controllers, enterprise care.
    - **Rank 5 (Budget & CapEx Minimized)**: Cost-optimized buildable configuration adhering to essential specs at minimum spend.
+   - **Auditable Decision Trace Ledger (`decision_trace.js`, `INV-75`)**:
+     - Every part addition, pruning, substitution, or aspect rule trigger records an immutable timestamped trace with 4-brain attribution (`DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, `HITL_FEEDBACK`) saved in `outputs/history/decision_traces.json`.
+   - **Value Engineering & Deal Optimizer (`deal_optimizer.js`, `INV-76`)**:
+     - Evaluates post-buildability CapEx/OpEx optimizations (CPU tier right-sizing, NIC bandwidth alignment, PSU efficiency tuning) and surfaces advisory savings in UI and markdown reports.
 7. **Closed-Loop Feedback & KnowledgeDelta Learning**:
    - Real-world vendor portal rejections are ingested via `processPortalFeedback()` (`feedback_loop.js`).
    - Persists deduplicated `KnowledgeDelta` records: universal rules to `master_knowledge_registry.json`, chassis-specific rules to `catalog_deltas.json` and synchronized exclusively to that product's target Notebook ID.

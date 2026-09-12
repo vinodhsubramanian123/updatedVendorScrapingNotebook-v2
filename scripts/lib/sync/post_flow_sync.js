@@ -69,7 +69,7 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     const registry = buildMasterKnowledgeRegistry();
     
     // 2. Generate updated sync payload for target chassis
-    const autoUpload = Boolean(options.autoUploadNLM);
+    const autoUpload = Boolean(options.autoUploadNLM || process.env.AUTO_UPLOAD_NLM === '1');
     const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
       confirmSourceRetirement: options.confirmSourceRetirement === true
     });

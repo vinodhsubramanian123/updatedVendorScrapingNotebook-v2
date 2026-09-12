@@ -42,11 +42,25 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     }
   }
 
+  const isGen11 = items.some(it => {
+    const d = (it.description || '').toLowerCase();
+    return d.includes('gen11') || cleanBaseSKU(it.sku) === 'P52560-B21';
+  });
+
   const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || 'P48820-B21';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';
-
   const hasHighPerfFans = items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku));
-  const hasHeatsinks = highPerfHeatsinkSku ? items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfHeatsinkSku)) : true;
+  const isHeatsinkItem = it => {
+    const sku = cleanBaseSKU(it.sku);
+    const d = (it.description || '').toLowerCase();
+    if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
+    if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
+    if (d.includes('heat sink') || d.includes('heatsink')) return true;
+    if (!isGen11 && (sku === 'P48818-B21' || sku === 'P48822-B21')) return true;
+    if (isGen11 && sku === 'P74792-B21') return true;
+    return false;
+  };
+  const hasHeatsinks = highPerfHeatsinkSku ? items.some(isHeatsinkItem) : true;
 
   // CLIC Rule 81354654: Fan kit contains all 6 fans; maximum 1 fan kit allowed per base chassis
   // Use Math.floor to avoid fractional ratios (e.g. 3 kits for 2 servers = 1.5) giving a false pass
@@ -63,6 +77,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     fanKitExceedsMax,
     highPerfFanSku,
     highPerfHeatsinkSku,
+    isGen11,
     // AMD EPYC 8004 single-socket edge detection (DL145 Gen11)
     isAmdEpyc8004: items.some(it => (it.description || '').toLowerCase().includes('epyc 8')),
     // DL380a 8DW GPU thermal envelope: high-TDP GPUs mandate high-perf cooling

@@ -295,7 +295,65 @@ router.post('/audit-catalog', (req, res) => {
   });
 });
 
+// ── Recompute Strategy Matrix with Grounded RAG ──────────────────────────────
+router.post('/recompute-matrix', (req, res) => {
+  const { evalData, ragResult, chassisDir } = req.body;
+  if (!evalData || !ragResult) {
+    return sendErrorResponse(res, 400, 'evalData and ragResult payloads are required', { source: 'EVALUATION_ROUTER' });
+  }
+  try {
+    const { recomputeStrategyMatrixWithRag } = require('../../scripts/evaluators/eval_boq.js');
+    let safeChassisDir = chassisDir;
+    if (safeChassisDir) {
+      try { safeChassisDir = assertSafePath(safeChassisDir); } catch (_) {}
+    }
+    const updatedData = recomputeStrategyMatrixWithRag(evalData, ragResult, safeChassisDir);
+    broadcastSSE({ type: 'EVAL_RESULT_UPDATED', data: updatedData });
+    res.json({ success: true, data: updatedData });
+  } catch (err) {
+    sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
+  }
+});
+
 // ── Telemetry ─────────────────────────────────────────────────────────────────
 router.get('/telemetry', (req, res) => res.json(telemetryLib.loadTelemetry()));
 
+// ── Decision Traces (GAP 7) ───────────────────────────────────────────────────
+router.get('/decision-traces', (req, res) => {
+  try {
+    const { loadHistoricalDecisionTraces } = require('../../scripts/lib/conflict/decision_trace.js');
+    const traces = loadHistoricalDecisionTraces(HISTORY_DIR);
+    res.json(traces);
+  } catch (err) {
+    sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
+  }
+});
+
+// ── Presales Intent Query Router ──────────────────────────────────────────────
+router.post('/query/route', async (req, res) => {
+  try {
+    const { classifyQueryIntent, executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
+    const { query, context } = req.body || {};
+    if (!query) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
+    const result = await executeRoutedQuery(query, context || {});
+    res.json(result);
+  } catch (err) {
+    sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
+  }
+});
+
+router.post('/query/classify', (req, res) => {
+  try {
+    const { classifyQueryIntent } = require('../../scripts/evaluators/route_query.js');
+    const { query, context } = req.body || {};
+    if (!query) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
+    const classification = classifyQueryIntent(query, context || {});
+    res.json(classification);
+  } catch (err) {
+    sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
+  }
+});
+
 module.exports = router;
+
+

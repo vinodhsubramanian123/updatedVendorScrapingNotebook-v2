@@ -144,9 +144,17 @@ function validateNetworkingRules(ctx) {
   const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
 
   if (isExceedingOcp) {
-    const reason = `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} OCP slot(s) across ${serverCount} server(s).`;
+    const reason = `Networking Math Failed (INV-39): ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} OCP slot(s) across ${serverCount} server(s). Pivot OCP Storage Controller to PCIe form factor (e.g. MR416i-p).`;
     errors.push(reason);
     mathDeductions.push(reason);
+    missingDependencies.push({
+      key: 'OCP_SLOT_EXCEEDED',
+      rule: 'OCP Physical Slot Limit Rule (INV-39)',
+      sku: 'MR416I-P-PIVOT',
+      description: 'Pivot OCP controller to PCIe form factor',
+      quantity: network.ocpAdapterCount - ocpSlotsClusterMax,
+      reasoning: reason
+    });
   }
 
   if (network.hasConflictingOcpCables) {
@@ -273,6 +281,20 @@ function validateThermalRules(ctx) {
     const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
     errors.push(reason);
     mathDeductions.push(reason);
+  }
+
+  const isHeatsinkMandated = (compute.isGen11 && compute.maxCpuTdpWatts >= 270) || (compute.maxCpuTdpWatts >= 300);
+  if (isHeatsinkMandated && !compute.hasHeatsinks && compute.highPerfHeatsinkSku) {
+    const reason = `High TDP Heatsink Math: ${compute.maxCpuTdpWatts}W processor requires Performance Heatsink (${compute.highPerfHeatsinkSku}).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'HIGH_PERF_HEATSINK',
+      rule: 'High TDP Performance Heatsink Rule',
+      sku: compute.highPerfHeatsinkSku,
+      description: mandatorySkus.HIGH_PERF_HEATSINK?.name || 'HPE ProLiant Performance Heat Sink Kit',
+      quantity: compute.cpuCount,
+      reasoning: reason
+    });
   }
 }
 
@@ -436,8 +458,16 @@ function validatePowerRules(ctx) {
 function validateSupportRules(ctx) {
   const { support, serverCount, warnings, missingDependencies } = ctx;
   if (support.needsAdditionalWindowsCores) {
-    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
+    const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores || support.totalCoveredWindowsCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
     warnings.push(reason);
+    missingDependencies.push({
+      key: 'WINDOWS_CORE_LICENSES',
+      rule: 'Microsoft Windows Server Core Licensing Minimums (INV-28)',
+      sku: 'P46200-B21',
+      description: 'Microsoft Windows Server Additional Core License Pack (16-core)',
+      quantity: Math.ceil(support.missingCoreLicenses / 16),
+      reasoning: reason
+    });
   }
 
   if (support.needsAdditionalVmwareCores) {
@@ -470,6 +500,14 @@ function validateSupportRules(ctx) {
     support.unsolicitedOptionalItems.forEach(item => {
       const adv = `Unsolicited Optional Service / Software (INV-32): SKU ${item.sku} (${item.description}) detected (${item.extendedPriceUsd || 0}). Optional startup service or add-on software was not explicitly requested by customer.`;
       warnings.push(adv);
+      missingDependencies.push({
+        key: 'UNSOLICITED_OPTIONAL_SERVICE',
+        rule: 'Unsolicited Service Exclusion Rule (INV-32)',
+        sku: item.sku,
+        description: item.description,
+        quantity: item.quantity || 1,
+        reasoning: adv
+      });
     });
   }
 }
@@ -1073,7 +1111,14 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
     result.confidence.score = Math.min(result.confidence.score, 0.74);
     result.confidence.confidenceReasons.push('[REQUIREMENT_AMBIGUITY] One or more requested components require human category/part confirmation.');
   }
-  return { ...result, items, requirementResolution };
+  const { analyzeDealValueEngineering } = require('./deal_optimizer.js');
+  let valueEngineering = null;
+  try {
+    valueEngineering = analyzeDealValueEngineering(items, result, options.catalogData, options.targetDir || '');
+  } catch (veErr) {
+    // Non-blocking value engineering analysis
+  }
+  return { ...result, items, requirementResolution, valueEngineering };
 }
 
 setPhysicalMathValidator((items, catalogData, targetDir, options = {}) => {

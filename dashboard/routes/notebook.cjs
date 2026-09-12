@@ -320,13 +320,58 @@ router.post('/simulate-error', (req, res) => {
   if (!outputDir || !fs.existsSync(outputDir) || !path.resolve(outputDir).startsWith(`${OUTPUTS_DIR}${path.sep}`)) {
     return sendErrorResponse(res, 404, `No exact product-generation catalog found for chassis '${chassis}'`, { source: 'NOTEBOOK_ROUTER' });
   }
-  const delta = processPortalFeedback(errorMessage, outputDir, { scopeTaxonomy: 'CHASSIS_SPECIFIC', solutionType: 'Portal Trial', runtimeBoqReference: boqPath || null });
+  const delta = processPortalFeedback(errorMessage, outputDir, {
+    scopeTaxonomy: 'CHASSIS_SPECIFIC',
+    solutionType: 'Portal Trial',
+    source: 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
+    sourceAgent: 'DASHBOARD_HITL_REVIEW',
+    runtimeBoqReference: boqPath || null
+  });
   if (delta.governanceStatus === 'REJECTED') {
     return res.status(422).json({ message: 'Portal observation rejected by validation; no knowledge was changed', delta });
   }
-  broadcastSSE({ type: 'LOG', text: `⚠️ [PORTAL_OBSERVATION] ${delta.deltaId} quarantined for evidence-backed review.`, stream: 'stdout' });
-  res.status(202).json({ message: 'Portal observation quarantined; active rules and NotebookLM were not changed', delta });
+  const promoted = delta.governanceStatus === 'ACTIVE' || delta.status === 'PROMOTED';
+  broadcastSSE({ type: 'LOG', text: promoted ? `💡 [PORTAL_OBSERVATION_ACTIVATED] ${delta.deltaId} learned and activated into live rules.` : `⚠️ [PORTAL_OBSERVATION] ${delta.deltaId} quarantined for review.`, stream: 'stdout' });
+  res.status(promoted ? 200 : 202).json({ success: true, promoted, message: promoted ? 'Portal error learned and activated into rules' : 'Portal observation quarantined', delta });
 });
+
+// ── Quarantined Deltas API ────────────────────────────────────────────────────
+function handleGetQuarantinedDeltas(req, res) {
+  const { getQuarantinedDeltas } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const deltas = getQuarantinedDeltas();
+  res.json({ totalCount: deltas.length, deltas });
+}
+
+function handlePromoteQuarantinedDelta(req, res) {
+  const { promoteQuarantinedDelta } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const approver = req.body?.approver || 'SINGLE_USER_LEAD_ARCHITECT';
+  const promoted = promoteQuarantinedDelta(req.params.id, approver, {
+    humanReview: req.body?.humanReview
+  });
+  if (!promoted) {
+    return sendErrorResponse(res, 422, `Failed to promote quarantined delta '${req.params.id}'`, { source: 'NOTEBOOK_ROUTER' });
+  }
+  broadcastSSE({ type: 'LOG', text: `💡 [KNOWLEDGE_PROMOTED] ${promoted.deltaId || req.params.id} activated into rules and catalog deltas.`, stream: 'stdout' });
+  res.json({ success: true, promoted });
+}
+
+function handleRejectQuarantinedDelta(req, res) {
+  const { rejectQuarantinedDelta } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const approver = req.body?.approver || 'SINGLE_USER_LEAD_ARCHITECT';
+  const reason = req.body?.reason || 'Discarded by lead architect';
+  const deleted = rejectQuarantinedDelta(req.params.id, reason, { reviewer: approver });
+  if (!deleted) {
+    return sendErrorResponse(res, 404, `Quarantined delta '${req.params.id}' not found`, { source: 'NOTEBOOK_ROUTER' });
+  }
+  res.json({ success: true, message: `Quarantined delta '${req.params.id}' deleted` });
+}
+
+router.get('/quarantined-deltas', handleGetQuarantinedDeltas);
+router.get('/notebook/quarantined-deltas', handleGetQuarantinedDeltas);
+router.post('/quarantined-deltas/:id/promote', handlePromoteQuarantinedDelta);
+router.post('/notebook/quarantined-deltas/:id/promote', handlePromoteQuarantinedDelta);
+router.delete('/quarantined-deltas/:id', handleRejectQuarantinedDelta);
+router.delete('/notebook/quarantined-deltas/:id', handleRejectQuarantinedDelta);
 
 // ── Notebook Config Registry ──────────────────────────────────────────────────
 router.get('/config/notebooks', (req, res) => {

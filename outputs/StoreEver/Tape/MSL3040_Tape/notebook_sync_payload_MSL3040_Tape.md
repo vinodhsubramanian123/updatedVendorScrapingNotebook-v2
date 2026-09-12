@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/StoreEver/Tape/MSL3040_Tape`
 
-**Sync Timestamp**: 2026-09-11T17:47:10.713Z
+**Sync Timestamp**: 2026-09-12T12:37:44.594Z
 
 **Total Verified SKUs**: `195` (`104` Hardware + `91` Services)
 

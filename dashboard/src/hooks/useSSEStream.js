@@ -55,7 +55,8 @@ export function useSSEStream({
           onLog?.(payload);
           break;
 
-        case 'EVAL_RESULT': {
+        case 'EVAL_RESULT':
+        case 'EVAL_RESULT_UPDATED': {
           // Normalise the raw payload before surfacing it to the app —
           // all domain flattening lives in the service layer now.
           const normalised = normalizeEvalResult(payload);

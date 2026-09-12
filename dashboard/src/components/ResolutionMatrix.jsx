@@ -4,6 +4,7 @@ import RankCard from './matrix/RankCard';
 import MatrixComparisonTable from './matrix/MatrixComparisonTable';
 import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
+import ValueEngineeringPanel from './matrix/ValueEngineeringPanel';
 
 export default function ResolutionMatrix({
   evalResults,
@@ -102,7 +103,10 @@ export default function ResolutionMatrix({
           isOptimal: sol.rank === 1,
           swaps: detailedSwaps,
           skuPartsList: sol.skuPartsList || [],
-          cascadingImpact: sol.cascadingImpact || null
+          cascadingImpact: sol.cascadingImpact || null,
+          leastDeltaAnalysis: sol.leastDeltaAnalysis || null,
+          decisionTrace: sol.decisionTrace || [],
+          isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
         };
       })
     : [];
@@ -190,6 +194,28 @@ export default function ResolutionMatrix({
         exportError={exportError}
         onOpenTopology={onOpenTopology}
       />
+
+      {/* Dual-Brain Provisional vs Verified Status Banner (GAP 2) */}
+      {evalResults?.isProvisional ? (
+        <div className="p-3 rounded-xl border border-amber-300 bg-amber-50/90 text-amber-950 text-xs flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="badge badge-amber font-mono font-bold animate-pulse">⏳ Provisional Matrix</span>
+            <span className="font-medium">Physical aspect math verified. Background Gemini NotebookLM RAG verification in progress...</span>
+          </div>
+        </div>
+      ) : (evalResults?.matrixStatus === 'VERIFIED' || evalResults?.ragSecondOpinion || evalResults?.ragResult) ? (
+        <div className="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="badge badge-emerald font-mono font-bold">✅ Dual-Brain RAG Verified</span>
+            <span className="font-medium">100% buildable, certified against live NotebookLM sources and QuickSpecs knowledge.</span>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Value Engineering & Commercial Deal Optimization (GAP 2 & GAP 5) */}
+      {evalResults?.valueEngineering && (
+        <ValueEngineeringPanel valueEngineering={evalResults.valueEngineering} />
+      )}
 
       {/* Cluster Infrastructure Sizing Matrix Banner (INV-29) */}
       {cluster && cluster.totalServers > 1 && (

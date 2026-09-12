@@ -346,3 +346,36 @@ graph TD
 
 - **0-Cycle DAG Guarantee**: Verified via `npm run test:circular` across all 350+ project files.
 - **Complexity Caps**: CC $\le 20$ for high-level evaluators (`evalSupportManufacturing`, `evalPcieRiserSlots`, `evalStorageTriMode`, `evalNetworkingOcp`) and $\le 15$ for helper methods, with declarative lookup arrays replacing monolithic nested branches.
+
+---
+
+## 11. Least-Delta Synthesis, Decision Ledger & Presales Routing (`INV-74` to `INV-78`)
+
+```mermaid
+flowchart TD
+    UserQuery["Customer Presales Input / BOQ / RFQ / Question"] --> Router["Presales Query Router<br/>(scripts/evaluators/route_query.js)"]
+    
+    Router -->|FREEFORM_QA| QAPath["Gemini / NotebookLM Grounded Q&A"]
+    Router -->|RFP_SIZING_TO_BOM| SizingPath["RFP Sizing Synthesizer<br/>(Cores, RAM, Storage Sizing to BOM)"]
+    Router -->|BOQ_EVALUATION| EvalPath["Canonical BOQ Evaluator<br/>(eval_boq.js & 7 Aspect Checkers)"]
+    Router -->|BOM_RECONCILIATION| ReconPath["BOM Reconciler<br/>(Partner Quote Discrepancy Matching)"]
+    Router -->|CATALOG_INTELLIGENCE| CatPath["Catalog Intelligence Explorer<br/>(Price Trends, Lifecycle Tracking)"]
+
+    EvalPath --> Combinator["Least-Delta Combinator<br/>(least_delta_combinator.js)"]
+    Combinator --> Troublesome{"Troublesome SKU with Cascading Bloat?"}
+    Troublesome -- "Yes" --> Prune["Evaluate Pruning or Sibling Alternative<br/>(findBestAlternativeInCatalog)"]
+    Prune --> LeastDeltaRank["Synthesize Rank 1L / 1M (Least-Delta Variants)"]
+    Troublesome -- "No" --> StandardRanks["Synthesize Standard Strategy Matrix (Ranks 1A-1C, 2-5)"]
+
+    LeastDeltaRank --> DecisionLedger["Decision Trace Ledger<br/>(outputs/history/decision_traces.json)"]
+    StandardRanks --> DecisionLedger
+    
+    DecisionLedger --> DealOpt["Value Engineering & Deal Optimizer<br/>(scripts/lib/boq/deal_optimizer.js)"]
+    DealOpt --> AdvisorySavings["Advisory CapEx / OpEx Savings<br/>(CPU Tier, NIC Bandwidth, PSU Efficiency)"]
+```
+
+1. **Deterministic Presales Intent Router**: Classifies all inputs into 5 distinct execution tracks with keyword and heuristic confidence scoring ($\ge 0.95$). Single-user environment consolidates reviewer/admin roles to eliminate unnecessary approval friction.
+2. **Least-Delta Combinator**: Automatically detects troublesome SKUs that cause massive enablement cascades or physical conflicts. Identifies viable sibling alternatives dynamically from live catalog indexes or computes a clean pruning option.
+3. **Auditable Decision Trace Ledger**: Records every mutation, addition, deletion, and rule trigger with source brain attribution (`DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, `HITL_FEEDBACK`) to ensure complete transparency.
+4. **Value Engineering & Deal Optimizer**: Advisory post-buildability optimizer evaluating potential cost savings (e.g. Xeon Gold 6530 right-sizing for balanced storage workloads, 25GbE right-sizing for standard enterprise tiers).
+

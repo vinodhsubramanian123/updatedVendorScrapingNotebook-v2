@@ -20,7 +20,7 @@ Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are
 | Audit/test failures were prematurely called fixture mismatches. | Inspect implementation and fixture evidence before changing assertions. Unknown form factors and legacy schemas may reveal real defects. Do not lower thresholds merely to obtain green results. |
 | Large changes remained uncommitted through repeated review cycles. | Commit and push coherent tested milestones, with explicit partial status when unresolved. Maintain a concise handoff and saved raw evidence so other agents can resume without re-analysis. |
 
-Latest measured verification (Certified 2026-09-11): **153/153 suites PASSED (100.0%)** (87 unit, 38 chaos, 25 integration, 3 e2e); `oxlint` 0 warnings/0 errors on 101 files; clean dashboard production build; and all 835 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md` and `GEMINI_REMAINING_WORK_PLAN.md`.
+Latest measured verification (Certified 2026-09-12): **155/155 suites PASSED (100.0%)** (92 unit, 38 chaos, 25 integration); `oxlint` 0 warnings/0 errors on 103 files; clean dashboard production build; and all 862 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`.
 
 All four product notebooks received restricted-source canaries; product learnings must strictly follow the scoped feedback pipeline. Universal rules reside in `outputs/history/master_knowledge_registry.json`, while chassis-specific rules reside in `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and are synced exclusively to that product's target Notebook ID.
 
@@ -906,7 +906,7 @@ When a BOQ evaluation results in low confidence or physical constraint violation
 
 ---
 
-## 74. WebLogic OCA Navigation Traps, Seismic Redirects & Dynamic AJAX DOM Settling Protocol (`INV-74`)
+## 74. WebLogic OCA Navigation Traps, Seismic Redirects & Dynamic AJAX DOM Settling Protocol (`INV-20` & `INV-42`)
 
 ### 🚫 1. The Seismic Redirect & "Save" Button Traps (What NOT to Click)
 - **Why Seismic Login Pops Up**: In HPE Partner Portal and OCA, the portal provides marketing and proposal generation integrations with **Seismic** (`hpe.seismic.com` / Sales Enablement Portal). When an automated scraper blindly clicks links labeled "Sales Enablement", "Content", "Asset Library", "Collateral", or certain export/save buttons, OCA triggers an OAuth handshake or external popup redirecting to Seismic login.
@@ -931,4 +931,84 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - If OCA is logged out, encounters a session timeout, or enters an invalid modal state:
   - **NEVER** attempt to fight or automate the Seismic / SSO popup.
   - **ALWAYS** return to Tab 1 (the authenticated Partner Portal tab), refresh `https://partner.hpe.com/group/prp`, click the verified "One Config Advanced (OCA)" tile which launches a fresh, authenticated OCA WebLogic session with valid SSO session tokens, and seamlessly resume from the search/catalog entry point.
+
+---
+
+## 75. Least-Delta Combinator & Troublesome SKU Cascade Pruning (`INV-74`)
+
+- **Root-Cause Troublesome SKU Detection**:
+  - In enterprise configurations, a customer SKU can force the rule engine to inject multiple cascading dependency kits (e.g. an 8-port controller with 16 drives requiring a SAS expander `P48835-B21`, extra internal cabling, and high-performance fans; or an OCP controller colliding with requested dual OCP NICs).
+  - Rather than blindly forcing all downstream additions, `scripts/lib/conflict/least_delta_combinator.js` detects the troublesome component and evaluates whether substituting it with a direct functional alternative (e.g. a direct 16-port Tri-Mode controller `P55415-B21`) allows pruning the entire cascading dependency tree.
+- **Dynamic Catalog Alternative Search (`findBestAlternativeInCatalog`)**:
+  - Indexes all live catalog SKUs dynamically via `buildCatalogSkuIndex(catalogData)` to discover viable replacement options sharing the same component role, interface, and form factor.
+  - Revalidates candidate parts via `revalidateCandidateParts()` in `strategy_synthesizer.js` to guarantee 100% buildability before generating the candidate.
+- **Rank 1L / Rank 1M Synthesis**:
+  - Synthesizes ranked variants (`Rank 1L: Least-Delta Alternative — Cascade Pruned`, `Rank 1M: Pruned Minimal Baseline`) that achieve 100% buildability with the absolute fewest additions and removals.
+  - Emits `deltaMetrics` (additions count, removals count, replacements count, net mutation count) and `sharedIntelligenceReasoning` explaining the architectural rationale to presales architects.
+
+---
+
+## 76. Auditable Decision Trace Ledger Protocol (`INV-75`)
+
+- **Structured Reasoning Chain**:
+  - Every modification, addition, substitution, or pruning executed by the engine records an immutable, timestamped step in `scripts/lib/conflict/decision_trace.js`.
+  - Captures: `step` (e.g. `STEP_ASPECT_MATH_REPAIR`, `STEP_LEAST_DELTA_CASCADE_PRUNE`, `STEP_VALUE_ENGINEERING`), `ruleId`, `sku`, `role`, `triggerReason`, `sourceBrain`, and human-readable explanation.
+- **Four-Brain Source Attribution**:
+  - Explicitly attributes decisions to `DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, or `HITL_FEEDBACK`.
+- **Persistence & Governance**:
+  - Automatically saved to `outputs/history/decision_traces.json` via `safeWriteJsonAtomic` and exposed to the React dashboard via `GET /api/decision-traces`.
+
+---
+
+## 77. Value Engineering & Deal Optimizer Protocol (`INV-76`)
+
+- **Post-Buildability Advisory Savings**:
+  - After certifying 100% physical buildability, the engine executes commercial deal optimization rules (`scripts/lib/boq/deal_optimizer.js`) to recommend CapEx/OpEx reductions that do not degrade workload SLAs.
+- **Pre-Configured Optimization Rules**:
+  - `VE-OPT-CPU-TIER-ALIGNMENT`: Identifies high-cost Platinum CPUs oversized for balanced storage/virtualization nodes, recommending Xeon Gold 6530 to save ~$1,800 per socket.
+  - `VE-OPT-NIC-TIER-ALIGNMENT`: Recommends 25GbE right-sizing where 100GbE exceeds standard enterprise uplink requirements, saving ~$650–$1,000 per adapter.
+  - `VE-OPT-PSU-EFFICIENCY`: Recommends right-sizing power supplies from oversized 1800W Titanium to 1600W Platinum for sub-800W workloads.
+  - `VE-OPT-WARRANTY-ALIGNMENT`: Standardizes support services to 3-year Tech Care without unsolicited deployment services (`INV-32`).
+- **Telemetry & Surfacing**:
+  - Recommendations are surfaced in the UI matrix drawer ([`ValueEngineeringPanel.jsx`](dashboard/src/components/matrix/ValueEngineeringPanel.jsx)), CLI markdown reports (Section 3.5), and tracked in telemetry via `valueEngineeringSavingsUsd`.
+
+---
+
+## 78. Dual-Way QuickSpecs vs Live OCA Reconciliation Protocol (`INV-77`)
+
+- **Discrepancy Detection & DOM Guidance**:
+  - `scripts/catalogs/reconcile_quickspecs_oca.js` cross-references extracted QuickSpecs options against scraped live OCA catalogs (`catalog.json`).
+  - Identifies options documented in QuickSpecs that failed to appear in OCA tables (indicating collapsed sub-choice menus or missing DOM expansion).
+  - Automatically emits `expansion_guidance.json` in `outputs/{Family}/{Gen}/{Model}/history/` to instruct the CDP scraper to trigger dynamic sub-choice expansion.
+- **REST APIs & Fallback Payloads**:
+  - Exposed via `POST /api/reconcile-quickspecs` and `GET /api/reconcile-quickspecs/latest`.
+  - Gracefully falls back to markdown sync payloads (`notebook_sync_payload_*.md`) when local PDF files are not present.
+
+---
+
+## 79. Unified Presales Intent Query Routing & Single-User Protocol (`INV-78`)
+
+- **5-Track Intent Classifier**:
+  - `scripts/evaluators/route_query.js` programmatically classifies customer presales queries into:
+    1. `FREEFORM_QA`: Conversational technical questions, QuickSpecs clarifications.
+    2. `RFP_SIZING_TO_BOM`: Unstructured sizing specs (cores, RAM, storage) translated to BOMs.
+    3. `BOQ_EVALUATION`: Tabular customer BOQs evaluated against 7-aspect physical math.
+    4. `BOM_RECONCILIATION`: 1-to-1 diffing between customer tender BOMs and vendor quote workbooks.
+    5. `CATALOG_INTELLIGENCE`: SKU pricing trends, lifecycle changes (Obsolete, Direct Ship, 90-Day Warning).
+- **Single-User Architecture**:
+  - In single-user mode (`SINGLE_USER_MODE = true`), all reviewer/admin roles are unified, eliminating multi-party approval bottlenecks while maintaining strict auditability.
+- **Exposed APIs**:
+  - `POST /api/query/route` and `POST /api/query/classify` in `dashboard/routes/evaluation.cjs`.
+
+---
+
+## 80. Gen11 Heatsink Isolation & Power Supply Disambiguation (Bench-08)
+
+- **The Gen11 PSU Collision Bug**:
+  - In DL380 Gen11, part number `P48818-B21` is an 800W Flex Slot Platinum Power Supply. In DL380 Gen12, `P48818-B21` is a High-Performance Heatsink.
+  - Previous aspect math checked for `P48818-B21` without verifying `isGen11` or checking category/description. In Gen11 BOQs that included an 800W PSU, `hasHeatsinks` returned true, masking the missing Gen11 heatsink `P74792-B21`.
+- **Architectural Fix in `compute_thermal.js`**:
+  - Enforced `isGen11` check first, explicitly excluded power supply SKUs and descriptions (`power supply`, `flex slot`, `platinum`), and strictly isolated Gen11 `P74792-B21` from Gen12 `P48818-B21`.
+  - Elevated `tests/integration/test_boq_eval_benchmarks.js` from 14/15 to **15/15 Scenarios PASSED (100.0%)** with 100% recall and 100% precision.
+
 

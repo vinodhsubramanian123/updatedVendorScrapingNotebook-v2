@@ -10,6 +10,7 @@ import ArtifactInspector from './components/ArtifactInspector';
 import TelemetryCard from './components/TelemetryCard';
 import AmbiguityInbox from './components/AmbiguityInbox';
 import UserFeedbackDrawer from './components/UserFeedbackDrawer';
+import QuarantineManagementDrawer from './components/QuarantineManagementDrawer';
 import FeedbackModal from './components/FeedbackModal';
 import SettingsDrawer from './components/SettingsDrawer';
 import PartnerReconciliationView from './components/PartnerReconciliationView';
@@ -96,13 +97,28 @@ export default function App() {
   const [ragElapsedTime, setRagElapsedTime] = useState(0);
   const [ragData, setRagData] = useState({ answer: null, latencyMs: null, source: null });
   const [isFeedbackDrawerOpen, setIsFeedbackDrawerOpen] = useState(false);
+  const [isQuarantineOpen, setIsQuarantineOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
 
   // ── RAG Poller for Matrix (useRagPoller hook — SMELL-S4 fix) ─────────────
   const { startPoll: startMatrixRagPoll } = useRagPoller({
     onResult: (answer, fullData) => {
-      setEvalResults(prev => ({ ...prev, ragAnswer: answer, ragData: fullData }));
+      setEvalResults(prev => {
+        const next = { ...prev, ragAnswer: answer, ragData: fullData };
+        if (prev?.items && prev.items.length > 0) {
+          fetch('/api/recompute-matrix', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              evalData: prev,
+              ragResult: fullData,
+              chassisDir: prev.chassisDir || selectedChassisRef.current
+            })
+          }).catch(err => console.warn('[App.jsx] Recompute matrix advisory:', err));
+        }
+        return next;
+      });
     },
     onTimeout: () => {
       setEvalResults(prev => ({ ...prev, ragAnswer: '⚠️ NotebookLM Query Timeout: RAG verification took too long.' }));
@@ -331,6 +347,7 @@ export default function App() {
         onSearchLocal={handleSearchLocal}
         onOpenRag={() => setIsRagOpen(true)}
         onOpenFeedbackDrawer={() => setIsFeedbackDrawerOpen(true)}
+        onOpenQuarantineDrawer={() => setIsQuarantineOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
         isTaskRunning={isTaskRunning}
         isCatalogLoading={isCatalogLoading}
@@ -490,6 +507,7 @@ export default function App() {
       <NotebookRagDrawer isOpen={isRagOpen} onClose={() => setIsRagOpen(false)} ragData={ragData} isQuerying={isQueryingRag} ragElapsedTime={ragElapsedTime} onQuerySubmit={handleSmartSearch} selectedChassis={selectedChassis} />
       <SettingsDrawer isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <UserFeedbackDrawer isOpen={isFeedbackDrawerOpen} onClose={() => setIsFeedbackDrawerOpen(false)} />
+      <QuarantineManagementDrawer isOpen={isQuarantineOpen} onClose={() => setIsQuarantineOpen(false)} />
       <FeedbackModal isOpen={!!selectedCardForFeedback} onClose={() => setSelectedCardForFeedback(null)} resolutionCard={selectedCardForFeedback} />
       <TraceabilityInspector isOpen={showTraceabilityInspector} onClose={() => setShowTraceabilityInspector(false)} traces={evalResults?.tracePayloads || []} />
     </div>

@@ -393,5 +393,41 @@ router.get('/history/exports', (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// ── QuickSpecs vs OCA Reconciliation Endpoints (GAP 4) ───────────────────────
+router.post('/reconcile-quickspecs', (req, res) => {
+  const { targetDir } = req.body || {};
+  const resolvedDir = targetDir
+    ? (path.isAbsolute(targetDir) ? targetDir : path.join(PROJECT_ROOT, targetDir))
+    : path.join(OUTPUTS_DIR, 'ProLiant', 'Gen11', 'DL380_Gen11');
+
+  try {
+    assertSafePath(resolvedDir, [OUTPUTS_DIR]);
+  } catch (err) {
+    return sendErrorResponse(res, 403, `Invalid or unsafe path: ${err.message}`);
+  }
+
+  try {
+    const { reconcileProductCatalog } = require(path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'reconcile_quickspecs_oca.js'));
+    const report = reconcileProductCatalog(resolvedDir);
+    return res.json({ success: true, report });
+  } catch (err) {
+    return sendErrorResponse(res, 500, `QuickSpecs reconciliation failed: ${err.message}`);
+  }
+});
+
+router.get('/reconcile-quickspecs/latest', (req, res) => {
+  const reportPath = path.join(OUTPUTS_DIR, 'history', 'quickspecs_oca_reconciliation.json');
+  if (!fs.existsSync(reportPath)) {
+    return res.status(404).json({ error: 'No reconciliation report found' });
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    return res.json(data);
+  } catch (err) {
+    return sendErrorResponse(res, 500, `Failed to read reconciliation report: ${err.message}`);
+  }
+});
+
 module.exports = router;
 module.exports.invalidateCatalogCache = invalidateCatalogCache;
+

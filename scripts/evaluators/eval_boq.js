@@ -338,6 +338,8 @@ async function executeGroundedRagValidation(ctx) {
     const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
     evalResults.status = 'LOCAL_COMPLETE';
     evalResults.cloudGroundingStatus = 'CLOUD_PENDING';
+    evalResults.isProvisional = true;
+    evalResults.matrixStatus = 'PROVISIONAL_PRE_RAG';
     evalResults.notebookLmStatus = {
       status: 'CLOUD_PENDING',
       jobId: null,
@@ -444,7 +446,14 @@ ${evalResults.errors.length === 0 ? '- ✅ No critical physical violations detec
 ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠️ Advisory: ${w}`).join('\n')}`;
 
   let stage4GuardrailMs = 0;
-  if (evalResults.confidence && evalResults.confidence.isHitlTriggered && !OFFLINE_MODE) {
+  const needsGuardrail = Boolean(
+    !OFFLINE_MODE && (
+      (evalResults.errors && evalResults.errors.length > 0) ||
+      (evalResults.confidence && (evalResults.confidence.isHitlTriggered || evalResults.confidence.score < 0.88)) ||
+      (evalResults.opinionDiscrepancies && evalResults.opinionDiscrepancies.length > 0)
+    )
+  );
+  if (needsGuardrail) {
     const tGuardrailStart = Date.now();
     if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
 
@@ -456,9 +465,13 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     evalResults.agenticExplanation = guardrailResult.text || null;
     stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
 
-    // Auto-Retry if rules were autonomously promoted
-    if (guardrailResult.activatedDeltaCount > 0) {
-      if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s)...`);
+    // Auto-Retry with Circuit Breaker (maxRetries = 1) if rules were autonomously promoted
+    const MAX_GUARDRAIL_RETRIES = 1;
+    let guardrailRetries = 0;
+    if (guardrailResult.activatedDeltaCount > 0 && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
+      guardrailRetries++;
+      evalResults.guardrailRetries = guardrailRetries;
+      if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
       
       const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
       // Re-run evaluation. evaluateBOQMultiAspect will reload the latest rules from disk.
@@ -585,6 +598,24 @@ function generateMarkdownReport(ctx) {
       reportContent += `|---|---|---|---|---|\n`;
       budgetOpt.recommendedUpgrades.forEach(upg => {
         reportContent += `| ${upg.upgrade} | \`${upg.sku}\` | ${upg.qty} | \$${upg.costUsd.toLocaleString()} | ${upg.benefit} |\n`;
+      });
+      reportContent += `\n`;
+    }
+  }
+
+  if (evalResults.valueEngineering) {
+    const ve = evalResults.valueEngineering;
+    reportContent += `---\n\n`;
+    reportContent += `## 💡 3.5 Value Engineering & Deal Optimization Analysis\n\n`;
+    reportContent += `- **Workload Classification**: \`${ve.workloadProfile?.profileName || 'General Enterprise'}\`\n`;
+    reportContent += `- **Workload Rationale**: ${ve.workloadProfile?.rationale || 'Standard enterprise profile'}\n`;
+    reportContent += `- **Total Identified Savings**: \`$${(ve.totalEstimatedSavingsUsd || 0).toLocaleString()} USD\`\n\n`;
+
+    if (ve.opportunities && ve.opportunities.length > 0) {
+      reportContent += `| Optimization Category | Opportunity Headline | Est. Savings (USD) | Presales Value Pitch |\n`;
+      reportContent += `|---|---|---|---|\n`;
+      ve.opportunities.forEach(opp => {
+        reportContent += `| **${opp.type}** | ${opp.headline} | \$${(opp.potentialSavingsUsd || 0).toLocaleString()} | ${opp.presalesPitch} |\n`;
       });
       reportContent += `\n`;
     }
@@ -892,6 +923,95 @@ if (require.main === module) {
   });
 }
 
+/**
+ * Recompute Strategy Matrix with Grounded Cloud RAG findings.
+ * Takes baseData (or raw eval results), the resolved RAG answer / citations,
+ * extracts any newly learned deltas, re-runs aspect math, and re-synthesizes the 5-Tier Strategy Matrix.
+ * @param {object} baseData
+ * @param {object} ragResult
+ * @param {string} [chassisDirOverride]
+ * @returns {object} Updated data object with verified matrix
+ */
+function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride = '') {
+  if (!baseData || !ragResult) return baseData;
+  const items = baseData.items || (baseData.evalResults && baseData.evalResults.items) || [];
+  const targetDir = chassisDirOverride || baseData.chassisDir || (baseData.evalResults && baseData.evalResults.targetDir) || '';
+  const chassisPrefix = path.basename(targetDir || '');
+  const catalogPath = path.join(targetDir, `${chassisPrefix}_Catalog.json`);
+  let catalogData = baseData.catalogData || null;
+  if (!catalogData && fs.existsSync(catalogPath)) {
+    try { catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8')); } catch (_) {}
+  }
+
+  // 1. Extract and persist learned deltas from verified cloud RAG answer
+  let learnedCount = 0;
+  if (ragResult.isCloudGrounded && (ragResult.citations || []).length > 0) {
+    try {
+      const learned = extractAndPersistLearnedDeltas(ragResult.answer || '', targetDir, {
+        chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || chassisPrefix,
+        source: ragResult.source,
+        groundingVerification: ragResult.groundingVerification,
+        citations: ragResult.citations || [],
+        catalogData
+      });
+      learnedCount = learned.count || 0;
+    } catch (_) {}
+  }
+
+  // 2. Re-run aspect math with newly active rules/deltas
+  const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+  const reEval = evaluateBOQMultiAspect(items, { filePath: baseData.inputFile, catalogData, targetDir });
+
+  // 3. Re-synthesize 5-Tier Strategy Matrix
+  const { synthesize5TierRankedSolutions } = require('../lib/conflict/conflict_graph.js');
+  const updatedGraph = reEval.conflictGraph || {};
+  const newRankedSolutions = synthesize5TierRankedSolutions(
+    items,
+    reEval,
+    updatedGraph,
+    updatedGraph.chassisInfo || { model: chassisPrefix },
+    targetDir
+  );
+
+  // 4. Update budget optimization
+  const budgetOpt = optimizeForBudget(items, reEval, baseData.targetBudgetUsd || 0, catalogData);
+
+  // 5. Update data payload
+  const updatedData = {
+    ...baseData,
+    isProvisional: false,
+    matrixStatus: 'VERIFIED_POST_RAG',
+    cloudGroundingStatus: ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK',
+    ragAnswer: ragResult.answer || baseData.ragAnswer,
+    ragResult,
+    notebookLmStatus: {
+      status: ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK',
+      source: ragResult.source,
+      sourcesUsed: ragResult.sourcesUsed || [],
+      citationsCount: (ragResult.citations || []).length,
+      isCloudGrounded: Boolean(ragResult.isCloudGrounded),
+      learnedDeltasCount: learnedCount
+    },
+    evalResults: {
+      ...(baseData.evalResults || {}),
+      ...reEval,
+      isProvisional: false,
+      matrixStatus: 'VERIFIED_POST_RAG',
+      cloudGroundingStatus: ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK',
+      ragAnswer: ragResult.answer,
+      ragResult
+    },
+    conflictGraph: {
+      ...(baseData.conflictGraph || {}),
+      ...updatedGraph,
+      rankedSolutions: newRankedSolutions
+    },
+    budgetOptimization: budgetOpt
+  };
+
+  return updatedData;
+}
+
 module.exports = {
   main,
   getDefaultNotebookId,
@@ -900,5 +1020,7 @@ module.exports = {
   executePhysicalPreChecks,
   executeGroundedRagValidation,
   generateMarkdownReport,
-  serializeAndExportResults
+  serializeAndExportResults,
+  recomputeStrategyMatrixWithRag
 };
+

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap, Brain, GitFork, ChevronDown, ChevronUp, XCircle } from 'lucide-react';
 import { getCategoryStyle } from '../../utils/categoryStyles';
 
 export default function RankCard({
@@ -14,6 +14,9 @@ export default function RankCard({
   onOpenVendorVerification,
   onOpenRejectionModal
 }) {
+  const [isLeastDeltaExpanded, setIsLeastDeltaExpanded] = useState(false);
+  const [isDecisionTraceExpanded, setIsDecisionTraceExpanded] = useState(false);
+
   return (
     <div
       className={`glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-lg ${
@@ -22,9 +25,16 @@ export default function RankCard({
     >
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
-          <span className={`badge ${tier.badgeClass}`}>
-            Rank {tier.rank} Solution
-          </span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className={`badge ${tier.badgeClass}`}>
+              Rank {tier.rank} Solution
+            </span>
+            {(tier.leastDeltaAnalysis || tier.isLeastDeltaPath) && (
+              <span className="badge badge-blue flex items-center gap-1 text-[10px] font-semibold">
+                <GitFork className="w-3 h-3 text-blue-600" /> Least-Delta Pruned
+              </span>
+            )}
+          </div>
           {tier.isOptimal && (
             <span className="badge badge-emerald flex items-center gap-1 font-bold shadow-sm animate-pulse">
               <Award className="w-3.5 h-3.5 text-emerald-600" /> Optimal Workload Match
@@ -180,6 +190,107 @@ export default function RankCard({
             <p className="text-amber-800 text-[11px] leading-relaxed line-clamp-3 hover:line-clamp-none transition-all">
               {tier.ragSecondOpinion}
             </p>
+          </div>
+        )}
+
+        {/* Least-Delta Cascade Pruning Analysis */}
+        {tier.leastDeltaAnalysis && (
+          <div className="mt-3 p-3 bg-blue-50/80 rounded-xl border border-blue-200 text-xs">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-blue-950 flex items-center gap-1">
+                <GitFork className="w-3.5 h-3.5 text-blue-600" />
+                Least-Delta Cascade Pruning:
+              </span>
+              <button
+                onClick={() => setIsLeastDeltaExpanded(!isLeastDeltaExpanded)}
+                className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
+              >
+                {isLeastDeltaExpanded ? 'Hide' : 'Details'}
+                {isLeastDeltaExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            </div>
+            <p className="text-blue-900 text-[11px] leading-relaxed mb-2 font-medium">
+              {tier.leastDeltaAnalysis.presalesValuePitch}
+            </p>
+            {isLeastDeltaExpanded && (
+              <div className="space-y-2 pt-2 border-t border-blue-200/60 text-[11px]">
+                <div className="flex items-center justify-between text-blue-900 bg-white/70 p-2 rounded-lg border border-blue-100">
+                  <span>Root Troublesome SKU:</span>
+                  <span className="font-mono font-bold text-rose-700">{tier.leastDeltaAnalysis.troublesomeRootSku}</span>
+                </div>
+                {tier.leastDeltaAnalysis.alternativeSku && (
+                  <div className="flex items-center justify-between text-blue-900 bg-white/70 p-2 rounded-lg border border-blue-100">
+                    <span>Functional Replacement:</span>
+                    <span className="font-mono font-bold text-emerald-700">{tier.leastDeltaAnalysis.alternativeSku}</span>
+                  </div>
+                )}
+                {tier.leastDeltaAnalysis.cascadingSkusEliminated?.length > 0 && (
+                  <div className="bg-white/70 p-2 rounded-lg border border-blue-100 text-blue-900">
+                    <span className="font-semibold block mb-1">Cascades Avoided:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {tier.leastDeltaAnalysis.cascadingSkusEliminated.map((c, cIdx) => (
+                        <span key={cIdx} className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 font-semibold">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="text-[10px] text-blue-700 font-medium">
+                  {tier.leastDeltaAnalysis.deltaSummary}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Decision Chain & Trade-Offs Ledger */}
+        {tier.decisionTrace && tier.decisionTrace.length > 0 && (
+          <div className="mt-3 p-3 bg-slate-100/90 rounded-xl border border-slate-200 text-xs">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-slate-800 flex items-center gap-1">
+                <Brain className="w-3.5 h-3.5 text-slate-600" />
+                Thinking & Decision Chain:
+              </span>
+              <button
+                onClick={() => setIsDecisionTraceExpanded(!isDecisionTraceExpanded)}
+                className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
+              >
+                <span>{tier.decisionTrace.length} Decision{tier.decisionTrace.length === 1 ? '' : 's'}</span>
+                {isDecisionTraceExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            </div>
+            {isDecisionTraceExpanded && (
+              <div className="space-y-2 pt-2 border-t border-slate-200/80 text-[11px]">
+                {tier.decisionTrace.map((dec, dIdx) => (
+                  <div key={dIdx} className="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-slate-800 text-[10px] uppercase">{dec.decisionPoint}</span>
+                      <span className="text-[9px] font-mono text-slate-400 font-semibold">{Math.round((dec.confidence || 1) * 100)}% Conf</span>
+                    </div>
+                    <p className="text-slate-600 text-[10px]">
+                      <strong>Trigger:</strong> {dec.trigger}
+                    </p>
+                    {dec.selectedAlternative && (
+                      <div className="text-[10px] text-emerald-800 bg-emerald-50/70 p-1 rounded border border-emerald-200/60">
+                        <strong>Chosen:</strong> {dec.selectedAlternative.id} — {dec.selectedAlternative.selectionRationale || dec.selectedAlternative.description}
+                      </div>
+                    )}
+                    {dec.alternativesEvaluated?.some(a => a.status === 'REJECTED') && (
+                      <div className="text-[10px] text-slate-500 space-y-0.5 pt-0.5">
+                        <strong className="text-slate-600 block">Rejected:</strong>
+                        {dec.alternativesEvaluated.filter(a => a.status === 'REJECTED').map((alt, aIdx) => (
+                          <div key={aIdx} className="flex items-start gap-1">
+                            <XCircle className="w-3 h-3 text-rose-500 shrink-0 mt-0.5" />
+                            <span><strong>{alt.id}:</strong> {alt.rejectionReason || alt.description}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

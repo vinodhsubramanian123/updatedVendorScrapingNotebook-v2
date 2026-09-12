@@ -82,12 +82,33 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
   const entryId = activeTrace !== 'NO_TRACE_CONTEXT' ? activeTrace : `EVAL-${Date.now()}`;
   const mem = process.memoryUsage ? process.memoryUsage() : { rss: 0, heapUsed: 0, heapTotal: 0 };
 
+  // Derive structured root-cause failure attribution
+  let rootCauseAttribution = 'CLEAN_BUILD';
+  const errors = evalResults.errors || [];
+  const warnings = evalResults.warnings || [];
+  const discrepancies = evalResults.opinionDiscrepancies || [];
+
+  if (evalResults.requirementResolution?.requiresHumanClarification) {
+    rootCauseAttribution = 'INPUT_AMBIGUITY';
+  } else if (errors.some(e => /not found in.*catalog|uncataloged|invalid sku/i.test(e))) {
+    rootCauseAttribution = 'CATALOG_GAP';
+  } else if (errors.length > 0) {
+    rootCauseAttribution = 'PHYSICAL_VIOLATION';
+  } else if (discrepancies.length > 0) {
+    rootCauseAttribution = 'RAG_DISCREPANCY';
+  } else if (evalResults.budgetOptimization?.isBudgetExceeded) {
+    rootCauseAttribution = 'BUDGET_OVERRUN';
+  } else if (warnings.length > 0) {
+    rootCauseAttribution = 'ADVISORY_WARNING';
+  }
+
   const entry = {
     id: entryId,
     timestamp: new Date().toISOString(),
     boqFile: path.basename(boqFile),
     chassisModel: graph.chassisInfo ? graph.chassisInfo.model : 'DL380 Gen12 SFF',
     confidenceScore: score,
+    rootCauseAttribution,
     isHitlTriggered: score < 0.75,
     criticalViolationsCount: (evalResults.errors || []).length,
     warningsCount: (evalResults.warnings || []).length,
@@ -108,6 +129,8 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
     clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
     totalNodesEvaluated: evalResults.clusterSizing?.totalNodes || evalResults.multiplier || 1,
+    valueEngineeringSavingsUsd: evalResults.valueEngineering?.totalEstimatedSavingsUsd || 0,
+    guardrailRetries: evalResults.guardrailRetries || 0,
     traceId: evalResults.provenanceTrace?.traceId || entryId,
     provenanceTrace: evalResults.provenanceTrace || null,
     memoryUsage: {

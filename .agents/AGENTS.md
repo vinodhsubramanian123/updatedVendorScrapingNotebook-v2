@@ -439,10 +439,30 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Up-Front Ambiguity Triage (Zero-Hallucination Gate)**: Before launching deep execution, the agent validates input sanity (target sheets, cluster isolation, product generation, hardware contradictions). If any critical ambiguity exists, the agent **MUST actively clarify immediately in the initial turn** rather than guessing, hallucinating, or making ungrounded assumptions, ensuring a high confidence score ($\ge 0.95$).
 - **Autonomous End-to-End Delivery**: Once unambiguous, the agent executes the complete pipeline: cluster partitioning (`multi_cluster_splitter.js`) $\rightarrow$ 7 physical aspects $\rightarrow$ deep NotebookLM RAG $\rightarrow$ 100% buildable 5-tier strategy matrix (Rank 1A/1B/1C through Rank 5; unbuildable = 0 rank) $\rightarrow$ line-by-line financial breakdown (Part Number, Description, Qty, Unit Price, Extended Price, Total Budget) $\rightarrow$ Dual-Brain verification badges $\rightarrow$ scoped knowledge delta sync without user prompting.
 
+### INV-74: Least-Delta Combinator & Troublesome SKU Pruning Protocol
+- **Pattern**: Certain customer BOQ line items require extensive downstream additions (e.g. storage controllers requiring multiple cages, expanders, and cables), or are discordant with the server architecture.
+- **Rule**: When a SKU triggers disproportionate enablement additions or cannot be fulfilled cleanly, the engine synthesizes a least-delta ranked variant (Rank 1L / Rank 1M) evaluating alternative valid replacements (`findBestAlternativeInCatalog`) or SKU pruning, minimizing net mutation while guaranteeing 100% buildability.
+
+### INV-75: Auditable Decision Trace Ledger Protocol
+- **Pattern**: Modifications, part additions, and pruning previously had scattered or ephemeral reasoning.
+- **Rule**: Every part addition, substitution, or removal across all rank tiers MUST record an immutable decision trace entry in `outputs/history/decision_traces.json` capturing the rule ID, target SKU, trigger reason, and attribution brain (`DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, `HITL_FEEDBACK`).
+
+### INV-76: Value Engineering & Deal Optimizer Protocol
+- **Pattern**: Standard configuration tools stop at basic buildability without identifying commercial deal optimization opportunities.
+- **Rule**: Following 100% buildability certification, the engine applies non-disruptive value engineering rules (CPU tier alignment, NIC bandwidth right-sizing, PSU efficiency matching, warranty alignment) to calculate potential CapEx/OpEx savings. Recommendations are surfaced in the UI, markdown reports, and telemetry.
+
+### INV-77: QuickSpecs vs Live OCA Reconciliation & Expansion Guidance Protocol
+- **Pattern**: Live OCA scrapes can omit sub-choice options if DOM toggle expansion is incomplete.
+- **Rule**: Scraped live OCA catalogs are periodically reconciled against vendor QuickSpecs PDFs/text payloads. Discrepancies automatically emit `expansion_guidance.json` in `outputs/{Family}/{Gen}/{Model}/history/` to instruct the CDP scraper to trigger dynamic sub-choice expansion.
+
+### INV-78: Unified Presales Intent Query Routing & Single-User Protocol
+- **Pattern**: Customer presales queries vary across freeform Q&A, sizing requests, BOQ reviews, and BOM reconciliations.
+- **Rule**: Inbound queries route through `route_query.js` into 5 canonical tracks (`FREEFORM_QA`, `RFP_SIZING_TO_BOM`, `BOQ_EVALUATION`, `BOM_RECONCILIATION`, `CATALOG_INTELLIGENCE`). In single-user environments, all user roles are unified to eliminate administrative approval friction while maintaining strict automated validation.
+
 ---
 
-
 ## History Directory Hygiene Rules
+
 
 
 The `outputs/{Family}/{Gen}/{Model}/history/` directory stores canonical diff artifacts. These files must remain clean:

@@ -2,7 +2,7 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
-**Current engineering handoff (2026-09-11):** Phases 1 through 5 of `GEMINI_REMAINING_WORK_PLAN.md` are completed, committed, and fully certified. The full isolated test matrix is **153/153 suites PASSED (100.0%)** (87 unit, 38 chaos, 25 integration, 3 e2e) with 0 lint warnings/errors on 101 files, clean dashboard build, and all 835 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md` and `GEMINI_REMAINING_WORK_PLAN.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
+**Current engineering handoff (2026-09-12):** Phases 1 through 7 of `GEMINI_REMAINING_WORK_PLAN.md` and `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **155/155 suites PASSED (100.0%)** (92 unit, 38 chaos, 25 integration) with 0 lint warnings/errors on 103 files, clean dashboard build, and all 860 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
 
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
 - **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
@@ -376,3 +376,26 @@ The system leverages Google Jules for background code review, test generation, a
     - AI agents **MUST NOT require the user to repeat instructions, remind them of schemas, or prompt for missing badges/budgets**. The agent automatically recognizes the full lifecycle goals and delivers the complete, certified solution end-to-end.
     - **Up-Front Ambiguity Triage (Zero-Hallucination Gate)**: Before launching deep execution, the agent validates input sanity (target sheets, cluster isolation, product generation, hardware contradictions). If any critical ambiguity exists, the agent **MUST actively clarify immediately in the initial turn** rather than guessing, hallucinating, or making ungrounded assumptions, ensuring a high confidence score ($\ge 0.95$).
     - **Autonomous End-to-End Delivery**: Once unambiguous, the agent executes the complete pipeline: cluster partitioning (`multi_cluster_splitter.js`) $\rightarrow$ 7 physical aspects $\rightarrow$ deep NotebookLM RAG $\rightarrow$ 100% buildable 5-tier strategy matrix (Rank 1A/1B/1C through Rank 5; unbuildable = 0 rank) $\rightarrow$ line-by-line financial breakdown (Part Number, Description, Qty, Unit Price, Extended Price, Total Budget) $\rightarrow$ Dual-Brain verification badges $\rightarrow$ scoped knowledge delta sync without user prompting.
+
+65. **Least-Delta Combinator & Troublesome SKU Pruning Protocol (`INV-74`)**:
+    - When a user SKU causes a massive cascading chain of complex enablement dependencies (e.g. storage controllers requiring multiple cages/cables/risers, discordant GPUs, out-of-family components) or is architecturally discordant, the engine MUST NOT only offer heavy buildouts.
+    - The combinator synthesizes a least-delta ranked variant (Rank 1L / Rank 1M) that evaluates pruning or replacing the troublesome SKU with a valid catalog alternative (`findBestAlternativeInCatalog` using `buildCatalogSkuIndex`), minimizing net BOM mutation while guaranteeing 100% physical buildability.
+
+66. **Auditable Decision Trace Ledger Protocol (`INV-75`)**:
+    - Every configuration modification, addition, replacement, or pruning performed by the engine across all rank tiers MUST record a structured, timestamped decision trace entry.
+    - Each trace record contains the rule ID, affected SKU, component role, trigger reason, source brain (`DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, `HITL_FEEDBACK`), and full human-readable justification.
+    - Traces are persisted to `outputs/history/decision_traces.json` and queryable via `GET /api/decision-traces` for transparent governance.
+
+67. **Value Engineering & Deal Optimizer Protocol (`INV-76`)**:
+    - After certifying 100% physical buildability, the engine executes advisory deal optimization rules (CPU tier right-sizing, NIC bandwidth alignment, PSU efficiency tuning, and warranty duration alignment) to calculate potential CapEx/OpEx savings without degrading workload SLAs or violating customer constraints.
+    - Value Engineering recommendations are surfaced in the UI matrix, CLI evaluation markdown reports (Section 3.5), and telemetry ledgers (`valueEngineeringSavingsUsd`).
+
+68. **QuickSpecs vs Live OCA Reconciliation & Expansion Guidance Protocol (`INV-77`)**:
+    - Scraped live OCA catalogs are periodically reconciled against vendor QuickSpecs PDFs/text payloads to detect DOM expansion gaps or pricing discrepancies.
+    - Any QuickSpecs options missing from OCA catalogs automatically emit structured guidance (`expansion_guidance.json`) in `outputs/{Family}/{Gen}/{Model}/history/` to instruct the CDP scraper to trigger dynamic sub-choice expansion (`INV-20`). Exposed via `POST /api/reconcile-quickspecs`.
+
+69. **Unified Presales Intent Query Routing & Single-User Protocol (`INV-78`)**:
+    - Inbound customer queries, sizing requirements, tender RFPs, BOQ spreadsheets, and catalog questions MUST route through the deterministic query router (`route_query.js`).
+    - The engine classifies input into 5 canonical tracks: `FREEFORM_QA`, `RFP_SIZING_TO_BOM`, `BOQ_EVALUATION`, `BOM_RECONCILIATION`, and `CATALOG_INTELLIGENCE`.
+    - In single-user environments, all administrative/reviewer roles are unified, eliminating multi-party approval bottlenecks while preserving rigorous automated governance.
+

@@ -46,8 +46,9 @@ function request(url, options = {}, body = null) {
       });
     });
     req.on('error', reject);
-    if (body) {
-      req.write(typeof body === 'string' ? body : JSON.stringify(body));
+    const payload = body || options.body;
+    if (payload) {
+      req.write(typeof payload === 'string' ? payload : JSON.stringify(payload));
     }
     req.end();
   });
@@ -103,6 +104,46 @@ async function main() {
       const res = await request('http://127.0.0.1:3457/api/telemetry', { method: 'GET' });
       assert.strictEqual(res.status, 200, 'Telemetry route should return 200 OK');
       assert.ok(typeof res.data === 'object', 'Telemetry data should be an object');
+    });
+
+    await runAsyncTest('Route Test - Decision Traces Route Check', async () => {
+      const res = await request('http://127.0.0.1:3457/api/decision-traces', { method: 'GET' });
+      assert.strictEqual(res.status, 200, 'Decision traces route should return 200 OK');
+      assert.ok(Array.isArray(res.data), 'Decision traces should be an array');
+    });
+
+    await runAsyncTest('Route Test - QuickSpecs Recon Path Guard Check', async () => {
+      const res = await request('http://127.0.0.1:3457/api/reconcile-quickspecs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { targetDir: '../../../../etc/passwd' });
+      assert.strictEqual(res.status, 403, 'Unsafe path should be rejected with 403');
+    });
+
+    await runAsyncTest('Route Test - Quarantined Deltas Route Check', async () => {
+      const res = await request('http://127.0.0.1:3457/api/quarantined-deltas', { method: 'GET' });
+      assert.strictEqual(res.status, 200, 'Quarantined deltas route should return 200 OK');
+      assert.ok(Array.isArray(res.data.deltas), 'Quarantined deltas should return an array');
+    });
+
+    await runAsyncTest('Route Test - Query Intent Classify Check', async () => {
+      const res = await request('http://127.0.0.1:3457/api/query/classify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: 'I need to size a server with 32 cores and 256GB RAM' })
+      });
+      assert.strictEqual(res.status, 200, 'Query classify should return 200 OK');
+      assert.strictEqual(res.data.intent, 'RFP_SIZING_TO_BOM');
+    });
+
+    await runAsyncTest('Route Test - Query Route Execution Check', async () => {
+      const res = await request('http://127.0.0.1:3457/api/query/route', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: 'Show me price trend for P73282-B21' })
+      });
+      assert.strictEqual(res.status, 200, 'Query route should return 200 OK');
+      assert.strictEqual(res.data.classification.intent, 'CATALOG_INTELLIGENCE');
     });
 
     await runAsyncTest('Route Test - SSE Event Streaming Connection', async () => {
