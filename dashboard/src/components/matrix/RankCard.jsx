@@ -111,6 +111,8 @@ export default function RankCard({
                 <button
                   onClick={() => onToggleExpand(tier.rank)}
                   className="text-[11px] font-semibold text-blue-600 hover:text-blue-800"
+                  aria-expanded={isExpanded}
+                  aria-controls={`bom-details-${tier.rank}`}
                 >
                   {isExpanded ? 'Collapse' : 'Expand'}
                 </button>
@@ -118,7 +120,7 @@ export default function RankCard({
             </div>
 
             {isExpanded && (
-              <div className="max-h-60 overflow-y-auto border border-slate-200 rounded-lg text-[11px]">
+              <div id={`bom-details-${tier.rank}`} className="max-h-60 overflow-y-auto border border-slate-200 rounded-lg text-[11px]">
                 <table className="w-full text-left">
                   <thead className="bg-slate-100 text-slate-700 font-semibold sticky top-0">
                     <tr>
@@ -204,6 +206,8 @@ export default function RankCard({
               <button
                 onClick={() => setIsLeastDeltaExpanded(!isLeastDeltaExpanded)}
                 className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
+                aria-expanded={isLeastDeltaExpanded}
+                aria-controls={`least-delta-details-${tier.rank}`}
               >
                 {isLeastDeltaExpanded ? 'Hide' : 'Details'}
                 {isLeastDeltaExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -213,7 +217,7 @@ export default function RankCard({
               {tier.leastDeltaAnalysis.presalesValuePitch}
             </p>
             {isLeastDeltaExpanded && (
-              <div className="space-y-2 pt-2 border-t border-blue-200/60 text-[11px]">
+              <div id={`least-delta-details-${tier.rank}`} className="space-y-2 pt-2 border-t border-blue-200/60 text-[11px]">
                 <div className="flex items-center justify-between text-blue-900 bg-white/70 p-2 rounded-lg border border-blue-100">
                   <span>Root Troublesome SKU:</span>
                   <span className="font-mono font-bold text-rose-700">{tier.leastDeltaAnalysis.troublesomeRootSku}</span>
@@ -255,13 +259,15 @@ export default function RankCard({
               <button
                 onClick={() => setIsDecisionTraceExpanded(!isDecisionTraceExpanded)}
                 className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
+                aria-expanded={isDecisionTraceExpanded}
+                aria-controls={`decision-trace-details-${tier.rank}`}
               >
                 <span>{tier.decisionTrace.length} Decision{tier.decisionTrace.length === 1 ? '' : 's'}</span>
                 {isDecisionTraceExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
             </div>
             {isDecisionTraceExpanded && (
-              <div className="space-y-2 pt-2 border-t border-slate-200/80 text-[11px]">
+              <div id={`decision-trace-details-${tier.rank}`} className="space-y-2 pt-2 border-t border-slate-200/80 text-[11px]">
                 {tier.decisionTrace.map((dec, dIdx) => (
                   <div key={dIdx} className="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
                     <div className="flex items-center justify-between">

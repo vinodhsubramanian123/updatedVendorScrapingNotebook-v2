@@ -1,3 +1,6 @@
 ## 2026-08-27 - [Disabled Button States]
 **Learning:** Found that custom buttons (`btn-primary` and `btn-secondary`) had no specific styling for their `disabled` state, causing them to appear active despite being unclickable. This degrades UX and accessibility, especially in forms or loading operations where visual feedback is crucial.
 **Action:** Always verify that custom buttons have an explicit `:disabled` pseudo-class (e.g., `opacity: 0.5; cursor: not-allowed;`) to ensure users instantly recognize when an action is unavailable.
+## 2025-03-10 - Add ARIA attributes to expandable sections
+**Learning:** Found that when utilizing collapsible/expandable sections for detailed metrics or components, the toggle buttons must explicitly announce their state to screen readers utilizing `aria-expanded` and link to their content containers via `aria-controls`. Without this, screen reader users are unaware that clicking the button will expand or collapse new content blocks below.
+**Action:** Always ensure any `<button>` element that visually expands or collapses sibling content contains `aria-expanded={isExpanded}` and `aria-controls="id-of-expanded-div"` where the target `div` has the matching `id`.
