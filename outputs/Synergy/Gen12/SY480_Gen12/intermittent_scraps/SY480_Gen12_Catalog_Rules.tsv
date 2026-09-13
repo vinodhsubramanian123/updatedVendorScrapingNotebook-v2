@@ -1,34 +1,6 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Unknown	SSD Drive	max 2	Quantity Constraint	Quantity: max 2
-Unknown	MS Windows Server Additional License	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Supported License Operating System Pack	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Non Preinstalled Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMWare VCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	HP CMU Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	Partner Software - Interconnect Management Array	max 999	Quantity Constraint	Quantity: max 999
-Software	Partner Software - Operating System 8pks	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Reseller Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Riser	max 1	Quantity Constraint	Quantity: max 1
-Processor	Processors	min 1, Required	Quantity Constraint	Quantity: min 1, Required
-Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
 Memory	Memory Blank Kit	max 1	Quantity Constraint	Quantity: max 1
-Memory	Drive Cage	min 1, Required	Quantity Constraint	Quantity: min 1, Required
-Factory Configuration Settings	Energy Star	max 1	Quantity Constraint	Quantity: max 1
-Factory Configuration Settings	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
-Factory Configuration Settings	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
 Networking	Mezzanine Cards	max 3	Quantity Constraint	Quantity: max 3
-Networking	Controllers	max 1	Quantity Constraint	Quantity: max 1
-Networking	Cable	max 1	Quantity Constraint	Quantity: max 1
-Networking	Fibre Channel	max 2	Quantity Constraint	Quantity: max 2
-Networking	SAS	max 1	Quantity Constraint	Quantity: max 1
-Networking	Upgrade	max 1	Quantity Constraint	Quantity: max 1
-Operating Environment	Red Hat Enterprise Linux Server	Unlimited	Quantity Constraint	Quantity: Unlimited
-Virtualization	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-Virtualization	VMWare Core Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPE Compute Ops Management	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPE Compute Ops Management	Linux Value Added Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPE Compute Ops Management	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPE Compute Ops Management	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 OS Boot Device	Riser	max 1	Configuration Rule	Selection constraint for Riser: max 1
 PCIe Risers	Riser	max 1	Configuration Rule	Available There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
@@ -52,11 +24,5 @@ Software & Licenses	Server Management & Operating System Licenses	no max	Configu
 Software & Licenses	System Options	no max	Configuration Rule	Selection constraint for System Options: no max
 Processor	PCIe Networking Adapters	min 1, max 2	Configuration Rule	Selection constraint for PCIe Networking Adapters: min 1, max 2
 Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
-Storage Controllers	Intel VROC RAID Enablement	no max	Configuration Rule	The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)
-Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
-Support Services	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
-Support Services	VMWare Core Editions	no max	Configuration Rule	Private Product is not valid for current customer account
-Processor	Intel Xeon Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon Scalable Processors: min 1, max 2
-Virtualization	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
-Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
-Support Services	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
+Software & Licenses	Red Hat Enterprise Linux Server	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	OEM Software	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog

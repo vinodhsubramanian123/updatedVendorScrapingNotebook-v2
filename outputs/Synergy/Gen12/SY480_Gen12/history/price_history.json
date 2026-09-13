@@ -3,259 +3,296 @@
     {
       "date": "2026-09-11",
       "price": 332,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P40513-B21": [
     {
       "date": "2026-09-11",
       "price": 2635,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69543-B21": [
     {
       "date": "2026-09-11",
       "price": 2736,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P80318-B21": [
     {
       "date": "2026-09-11",
       "price": 9130,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P80321-B21": [
     {
       "date": "2026-09-11",
       "price": 11350,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73834-B21": [
     {
       "date": "2026-09-11",
       "price": 22485,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74506-B21": [
     {
       "date": "2026-09-11",
       "price": 2457,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74570-B21": [
     {
       "date": "2026-09-11",
       "price": 8123,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74571-B21": [
     {
       "date": "2026-09-11",
       "price": 6830,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73829-B21": [
     {
       "date": "2026-09-11",
       "price": 13124,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73831-B21": [
     {
       "date": "2026-09-11",
       "price": 16595,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73832-B21": [
     {
       "date": "2026-09-11",
       "price": 16517,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73837-B21": [
     {
       "date": "2026-09-11",
       "price": 23285,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74503-B21": [
     {
       "date": "2026-09-11",
       "price": 1756,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74504-B21": [
     {
       "date": "2026-09-11",
       "price": 2293,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74507-B21": [
     {
       "date": "2026-09-11",
       "price": 3734,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74568-B21": [
     {
       "date": "2026-09-11",
       "price": 4242,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74573-B21": [
     {
       "date": "2026-09-11",
       "price": 10516,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74575-B21": [
     {
       "date": "2026-09-11",
       "price": 10247,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P74576-B21": [
     {
       "date": "2026-09-11",
       "price": 14682,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P81591-B21": [
     {
       "date": "2026-09-11",
       "price": 14818,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68225-B21": [
     {
       "date": "2026-09-11",
       "price": 399,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68226-B21": [
     {
       "date": "2026-09-11",
       "price": 399,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69728-F21": [
     {
       "date": "2026-09-11",
       "price": 28532,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69727-F21": [
     {
       "date": "2026-09-11",
       "price": 13909,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69729-F21": [
     {
       "date": "2026-09-11",
       "price": 47056,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69730-F21": [
     {
       "date": "2026-09-11",
       "price": 60190,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73447-F21": [
     {
       "date": "2026-09-11",
       "price": 133186,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69726-B21": [
     {
       "date": "2026-09-11",
       "price": 7439,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69726-F21": [
     {
       "date": "2026-09-11",
       "price": 7439,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69727-B21": [
     {
       "date": "2026-09-11",
       "price": 13909,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69728-B21": [
     {
       "date": "2026-09-11",
       "price": 28532,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69729-B21": [
     {
       "date": "2026-09-11",
       "price": 47056,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P69730-B21": [
     {
       "date": "2026-09-11",
       "price": 60190,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P73447-B21": [
     {
       "date": "2026-09-11",
       "price": 133186,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P07818-B21": [
     {
       "date": "2026-09-11",
       "price": 129,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68218-B21": [
     {
       "date": "2026-09-11",
       "price": 549,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68219-B21": [
@@ -283,196 +320,224 @@
     {
       "date": "2026-09-11",
       "price": 249,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68503-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P08040-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "875293-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "389692-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "339777-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "339778-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "339779-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "339781-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "339780-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P63226-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P64724-B21": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68223-B21": [
     {
       "date": "2026-09-11",
       "price": 329,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68224-B21": [
     {
       "date": "2026-09-11",
       "price": 265,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P76653-B21": [
     {
       "date": "2026-09-11",
       "price": 2925,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P68131-B21": [
     {
       "date": "2026-09-11",
       "price": 2925,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P47781-B21": [
     {
       "date": "2026-09-11",
       "price": 5699,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P02381-B21": [
     {
       "date": "2026-09-11",
       "price": 422,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46195-B21": [
     {
       "date": "2026-09-11",
       "price": 1087,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46196-B21": [
     {
       "date": "2026-09-11",
       "price": 263,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46199-AA1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46199-AB1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46199-B21": [
     {
       "date": "2026-09-11",
       "price": 136,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46212-B21": [
     {
       "date": "2026-09-11",
       "price": 4946,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46213-B21": [
     {
       "date": "2026-09-11",
       "price": 1238,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46214-B21": [
     {
       "date": "2026-09-11",
       "price": 619,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77104-B21": [
     {
       "date": "2026-09-11",
       "price": 1258,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77105-B21": [
     {
       "date": "2026-09-11",
       "price": 320,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77106-AA1": [
@@ -493,42 +558,48 @@
     {
       "date": "2026-09-11",
       "price": 164,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77107-B21": [
     {
       "date": "2026-09-11",
       "price": 5712,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77108-B21": [
     {
       "date": "2026-09-11",
       "price": 1434,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77109-B21": [
     {
       "date": "2026-09-11",
       "price": 721,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46155-291": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46155-B21": [
     {
       "date": "2026-09-11",
       "price": 988,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77096-291": [
@@ -542,211 +613,194 @@
     {
       "date": "2026-09-11",
       "price": 1147,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D22A": [
     {
       "date": "2026-09-11",
       "price": 10183,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q0D23A": [
     {
       "date": "2026-09-11",
       "price": 6264,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W20A": [
     {
       "date": "2026-09-11",
       "price": 4072,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W19A": [
     {
       "date": "2026-09-11",
       "price": 2505,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W22A": [
     {
       "date": "2026-09-11",
       "price": 6787,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W21A": [
     {
       "date": "2026-09-11",
       "price": 4175,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U19A": [
     {
       "date": "2026-09-11",
       "price": 6737,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U21A": [
     {
       "date": "2026-09-11",
       "price": 5483,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U20A": [
     {
       "date": "2026-09-11",
       "price": 11229,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U22A": [
     {
       "date": "2026-09-11",
       "price": 9139,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U15A": [
     {
       "date": "2026-09-11",
       "price": 24680,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U17A": [
     {
       "date": "2026-09-11",
       "price": 20325,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U16A": [
     {
       "date": "2026-09-11",
       "price": 41134,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q8U18A": [
     {
       "date": "2026-09-11",
       "price": 33874,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W24A": [
     {
       "date": "2026-09-11",
       "price": 14516,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W23A": [
     {
       "date": "2026-09-11",
       "price": 9072,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W26A": [
     {
       "date": "2026-09-11",
       "price": 24194,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q5W25A": [
     {
       "date": "2026-09-11",
       "price": 15119,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q0D26A": [
     {
       "date": "2026-09-11",
       "price": 7532,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q0D25A": [
     {
       "date": "2026-09-11",
       "price": 2085,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q0D30A": [
     {
       "date": "2026-09-11",
       "price": 15095,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "Q0D29A": [
     {
       "date": "2026-09-11",
       "price": 4395,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P11086-B21": [
     {
       "date": "2026-09-11",
       "price": 20,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11086-051": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11086-041": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11086-061": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11086-291": [
@@ -760,35 +814,40 @@
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11083-B21": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11083-051": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11083-041": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11083-061": [
     {
       "date": "2026-09-11",
       "price": 20,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P11083-291": [
@@ -802,91 +861,104 @@
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-B21": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-051": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-041": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-061": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-291": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45879-071": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-B21": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-051": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-041": [
     {
       "date": "2026-09-11",
       "price": 20,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-061": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-291": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P45862-071": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77125-291": [
@@ -900,7 +972,8 @@
     {
       "date": "2026-09-11",
       "price": 33,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77124-291": [
@@ -914,49 +987,56 @@
     {
       "date": "2026-09-11",
       "price": 33,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5T84A": [
     {
       "date": "2026-09-11",
       "price": 752,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5T85A": [
     {
       "date": "2026-09-11",
       "price": 3390,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "J1U56A": [
     {
       "date": "2026-09-11",
       "price": 55,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "QL803B": [
     {
       "date": "2026-09-11",
       "price": 225,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "BD476A": [
     {
       "date": "2026-09-11",
       "price": 300,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "BD477A": [
     {
       "date": "2026-09-11",
       "price": 65,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "TD378A": [
@@ -977,14 +1057,16 @@
     {
       "date": "2026-09-11",
       "price": 183,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "BD572A": [
     {
       "date": "2026-09-11",
       "price": 235,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "BC351A": [
@@ -1033,135 +1115,150 @@
     {
       "date": "2026-09-11",
       "price": 7803,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "N0U75A": [
     {
       "date": "2026-09-11",
       "price": 13005,
-      "status": "BASELINE",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P46172-AA1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46172-AB1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46172-371": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46172-021": [
     {
       "date": "2026-09-11",
       "price": 394,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46172-A21": [
     {
       "date": "2026-09-11",
       "price": 407,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46123-AA1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46123-AB1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46123-371": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46123-021": [
     {
       "date": "2026-09-11",
       "price": 5105,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46123-A21": [
     {
       "date": "2026-09-11",
       "price": 4946,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46128-B21": [
     {
       "date": "2026-09-11",
       "price": 7260,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46128-291": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46171-AA1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46171-AB1": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46171-371": [
     {
       "date": "2026-09-11",
       "price": 99999,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46171-021": [
     {
       "date": "2026-09-11",
       "price": 988,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P46171-A21": [
     {
       "date": "2026-09-11",
       "price": 988,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77102-291": [
@@ -1175,7 +1272,8 @@
     {
       "date": "2026-09-11",
       "price": 7733,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77101-AA1": [
@@ -1203,14 +1301,16 @@
     {
       "date": "2026-09-11",
       "price": 5712,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77101-A21": [
     {
       "date": "2026-09-11",
       "price": 5712,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77101-371": [
@@ -1245,14 +1345,16 @@
     {
       "date": "2026-09-11",
       "price": 1147,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77100-A21": [
     {
       "date": "2026-09-11",
       "price": 1147,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P77100-371": [
@@ -1266,49 +1368,121 @@
     {
       "date": "2026-09-11",
       "price": 4200,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "469776-715": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "HA453A1-001": [
     {
       "date": "2026-09-11",
       "price": 205,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "HA453A1-003": [
     {
       "date": "2026-09-11",
       "price": 315,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "ZU706A": [
     {
       "date": "2026-09-11",
       "price": 149,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "ZU721A": [
     {
       "date": "2026-09-11",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "ZU723A": [
     {
       "date": "2026-09-11",
       "price": 110,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED"
     }
-  ]
+  ],
+  "R7J57A": [],
+  "S3Q19A": [],
+  "S6K30B": [],
+  "S6L35B": [],
+  "S4R43A": [],
+  "S4R44A": [],
+  "S4R45A": [],
+  "S4R46A": [],
+  "S4R47A": [],
+  "S4R48A": [],
+  "S4R37A": [],
+  "S4R40A": [],
+  "S4R38A": [],
+  "S4R41A": [],
+  "S4R39A": [],
+  "S4R42A": [],
+  "S4R31A": [],
+  "S4R34A": [],
+  "S4R32A": [],
+  "S4R35A": [],
+  "S4R33A": [],
+  "S4R36A": [],
+  "R8V76A": [],
+  "R8V74A": [],
+  "R8V77A": [],
+  "R8V75A": [],
+  "R8V78A": [],
+  "R8V79A": [],
+  "R8V72A": [],
+  "R8V73A": [],
+  "S7N87A": [],
+  "S7P10A": [],
+  "S7P11A": [],
+  "S7N88A": [],
+  "S6L47A": [],
+  "S6L45A": [],
+  "S6L46A": [],
+  "S6L44A": [],
+  "S6L48A": [],
+  "S6L43A": [],
+  "S6L41A": [],
+  "S4T26A": [],
+  "S4T27A": [],
+  "S4T22A": [],
+  "S4T23A": [],
+  "S4T24A": [],
+  "S4T25A": [],
+  "R2A03A": [],
+  "R2A04A": [],
+  "R2A05A": [],
+  "R2A00A": [],
+  "R2A01A": [],
+  "R2A02A": [],
+  "R8V48A": [],
+  "R1P40A": [],
+  "R1P41A": [],
+  "R1P42A": [],
+  "R1P34A": [],
+  "R1P37A": [],
+  "R1P35A": [],
+  "R1P38A": [],
+  "R1P36A": [],
+  "R1P39A": [],
+  "R8V84A": [],
+  "R8V85A": [],
+  "S7P12A": [],
+  "S7P13A": [],
+  "S6L39A": [],
+  "S6L37A": [],
+  "S6L36A": [],
+  "S6L38A": []
 }

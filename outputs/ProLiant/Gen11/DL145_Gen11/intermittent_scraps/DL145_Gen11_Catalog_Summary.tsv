@@ -1,92 +1,44 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Unknown	MS Windows Server Additional License	max 999	0	999	0	No	0
-Unknown	MS Windows Server CALs	no max	0	Unlimited	0	No	0
-Unknown	MS Windows Server Not Preinstalled	no max	0	Unlimited	0	No	0
-Unknown	MS Windows Server Preinstalled	no max	0	Unlimited	0	No	0
-Unknown	SUSE Operating Systems	no max	0	Unlimited	0	No	0
-Unknown	SUSE SAP Operating Systems	no max	0	Unlimited	0	No	0
-OEM Software	OEM Software	max 999	0	999	0	No	0
-Unknown	Reseller Option Kit	no max	0	Unlimited	0	No	0
-Rack Options	Rack Options	max 4	0	4	0	No	0
-Unknown	Acoustics	max 1	0	1	0	No	0
-Ambient Temperature	Ambient Temperature	max 2	0	2	0	No	0
 Processor	Processors	max 1	0	1	19	Yes	1
-Processor	Heatsink Kit	max 1	0	1	0	No	0
 Memory	Memory	max 6	0	6	20	Yes	3
-Storage Devices	SAS Controller	max 2	0	2	0	No	0
-Storage Devices	Smart Storage Battery	max 1	0	1	0	No	0
-Storage Devices	Storage Controller Cables	max 1	0	1	0	No	0
-Storage Devices	RAID Settings	max 1	0	1	0	No	0
-Storage Devices	Drive Cage	max 2	0	2	0	No	0
-Storage Devices	SSD - EDSFF NVME Read Intensive	max 4	0	4	0	No	0
 Factory Configuration Settings	Factory Configuration Settings	max 2	0	2	1	Yes	1
-Factory Configuration Settings	vSAN Tracking SKUs	no max	0	Unlimited	0	No	0
-Factory Configuration Settings	iLO Common Password	max 1	0	1	0	No	0
-Factory Configuration Settings	Riser Cards	max 3	0	3	0	No	0
 Networking	Ethernet PCIe	max 1	0	1	8	Yes	1
 Networking	OCP Ethernet	max 1	0	1	8	Yes	2
-Networking	Transceivers	max 16	0	16	8	Yes	2
-Virtualization	HPE Virtualization	no max	0	Unlimited	0	No	0
-Virtualization	VMWare Core Editions	no max	0	Unlimited	0	No	0
-OS Boot Device	OS Boot Device	max 2	0	2	0	No	0
-Graphics Options	Graphics	max 2	0	2	0	No	0
-Graphics Options	Graphics Accessories	max 2	0	2	0	No	0
-Graphics Options	Power Cooling Options	max 4	0	4	0	No	0
-Graphics Options	Power Supplies	max 2	0	2	0	No	0
-Graphics Options	Power Cords	max 2	0	2	0	No	0
-Security Options	Security Hardware	no max	0	Unlimited	0	No	0
-Accessories	Management Hardware	max 2	0	2	0	No	0
-HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	8	Yes	1
-HPE Compute Ops Management	Red Hat Operating Systems	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	SUSE Add-ons	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	SUSE containers	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	OneView Management Software	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	NVIDIA GPU SW	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	Integrated Lights Out Software	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	Proliant Software Media Kits	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	Linux Value Added Software	no max	0	Unlimited	0	No	0
-AI-at-Scale	AI-at-Scale	no max	0	Unlimited	0	No	0
-HPC Software Products	HPC Software Products	no max	0	Unlimited	0	No	0
-HPC Software Products	High Availability Computing - Cluster Software	no max	0	Unlimited	0	No	0
-HPC Software Products	Partner Software - Operating System 8pks	max 5994	0	5994	0	No	0
+Networking	Transceivers	max 16	0	16	6	Yes	1
+HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	1	Yes	1
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
-Accessories & Infrastructure	Rack Options	max 4	0	4	4	Yes	1
-Software & Licenses	MS Windows Server Additional License	max 999	0	999	1	Yes	1
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 4	0	4	7	Yes	2
+Accessories & Infrastructure	System Options	optional	0	Optional	1	Yes	1
 Accessories & Infrastructure	Acoustics	max 1	0	1	1	Yes	1
 Cooling / Thermal	Heatsink Kit	max 1	0	1	1	Yes	1
-Storage Controllers	SAS Controller	max 2	0	2	5	Yes	2
-Cables & Enablement Kits	Smart Storage Battery	max 1	0	1	3	Yes	1
+Storage Controllers	SAS Controller	max 2	0	2	4	Yes	1
+Cables & Enablement Kits	Smart Storage Batteries	max 1	0	1	3	Yes	1
 Storage Controllers	Storage Controller Cables	max 1	0	1	3	Yes	1
 Storage Controllers	RAID Settings	max 1	0	1	6	Yes	1
 Drive Enclosures / Drives	Drive Cage	max 2	0	2	4	Yes	1
 Drive Enclosures / Drives	SSD - EDSFF NVME Read Intensive	max 4	0	4	104	Yes	3
+Cables & Enablement Kits	System Options		0	N/A	1	Yes	1
 Accessories & Infrastructure	vSAN Tracking SKUs	no max	0	Unlimited	1	Yes	1
 Software & Licenses	iLO Common Password	max 1	0	1	1	Yes	1
 PCIe Risers	Riser Cards	max 3	0	3	2	Yes	1
-Cables & Enablement Kits	OS Boot Device	max 2	0	2	4	Yes	1
+Software & Licenses	VMWare Core Editions	no max	0	Unlimited	12	Yes	1
+Cables & Enablement Kits	Solid State Drives (NVMe/SAS/SATA)	max 2	0	2	4	Yes	1
+Graphics & GPU	Graphics	max 2	0	2	3	Yes	1
 Graphics & GPU	Graphics Accessories	max 2	0	2	2	Yes	1
 Cooling / Thermal	Power Cooling Options	max 4	0	4	1	Yes	1
 Power Supplies	Power Supplies	max 2	1	2	1	Yes	1
-Cables & Enablement Kits	Power Cords	max 2	0	2	18	Yes	2
-Cables & Enablement Kits	HPE Virtualization	no max	0	Unlimited	3	Yes	2
-Accessories & Infrastructure	Security Hardware	no max	0	Unlimited	3	Yes	1
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	2	Yes	1
+Cables & Enablement Kits	Power Cords	max 2	0	2	18	Yes	1
+Cables & Enablement Kits	Flex Slot Power Supplies	no max	0	Unlimited	1	Yes	1
+Cables & Enablement Kits	Power Cords & Jumper Cables	no max	0	Unlimited	2	Yes	1
 Cables & Enablement Kits	Management Hardware	max 2	0	2	2	Yes	1
-Software & Licenses	Compute Ops Management SKUs	required	1	Required	37	Yes	5
-Software & Licenses	SUSE Add-ons	no max	0	Unlimited	2	Yes	2
-Software & Licenses	SUSE containers	no max	0	Unlimited	61	Yes	3
-Software & Licenses	SUSE SAP Operating Systems	no max	0	Unlimited	4	Yes	2
-Software & Licenses	OneView Management Software	no max	0	Unlimited	8	Yes	2
-Software & Licenses	Integrated Lights Out Software	no max	0	Unlimited	43	Yes	3
+Software & Licenses	Server Management & Operating System Licenses	required	1	Required	83	Yes	5
+Software & Licenses	SUSE Add-ons	no max	0	Unlimited	1	Yes	1
+Software & Licenses	SUSE containers	no max	0	Unlimited	20	Yes	1
+Software & Licenses	SUSE SAP Operating Systems	no max	0	Unlimited	2	Yes	1
+Software & Licenses	OneView Management Software	no max	0	Unlimited	6	Yes	1
+Software & Licenses	Integrated Lights Out Software	no max	0	Unlimited	40	Yes	2
 Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	2	Yes	1
-Software & Licenses	HPC Software Products	no max	0	Unlimited	2	Yes	2
-Software & Licenses	Partner Software - Operating System 8pks	max 5994	0	5994	49	Yes	3
-Support Services	Ambient Temperature	max 2	0	2	6	Yes	1
-Software & Licenses	HPE Virtualization	no max	0	Unlimited	3	Yes	1
-Software & Licenses	VMWare Core Editions	no max	0	Unlimited	34	Yes	1
-Graphics & GPU	Graphics	max 2	0	2	3	Yes	1
-Support Services	Compute Ops Management SKUs	required	1	Required	30	Yes	1
-Software & Licenses	Red Hat Operating Systems	no max	0	Unlimited	4	Yes	1
-Graphics & GPU	NVIDIA GPU SW	no max	0	Unlimited	60	Yes	1
 Software & Licenses	Linux Value Added Software	no max	0	Unlimited	6	Yes	1
-Software & Licenses	AI-at-Scale	no max	0	Unlimited	8	Yes	1
-Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	19	Yes	1
+Software & Licenses	HPC Software Products	no max	0	Unlimited	1	Yes	1
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	1	Yes	1

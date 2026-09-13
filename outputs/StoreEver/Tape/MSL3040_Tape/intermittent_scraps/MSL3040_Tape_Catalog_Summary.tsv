@@ -1,23 +1,12 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Unknown	Tape Drives	max 3	0	3	0	No	0
-Unknown	Encryption Kit	max 999	0	999	0	No	0
-Unknown	Power Supply	max 1	0	1	0	No	0
-Unknown	FibreChannel Cables	max 999	0	999	0	No	0
-Unknown	SAS Cables	max 999	0	999	0	No	0
-Unknown	Expansion Modules	max 15	0	15	0	No	0
-Unknown	Power Cord	no max	0	Unlimited	0	No	0
-Unknown	Storage Media	max 999	0	999	0	No	0
-Unknown	Software	no max	0	Unlimited	0	No	0
 Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	1	1	1	Yes	1
-Accessories & Infrastructure	Encryption Kit	max 999	0	999	2	Yes	2
+Accessories & Infrastructure	Encryption Kit	max 999	0	999	8	Yes	2
 Power Supplies	Power Supply	max 1	1	1	2	Yes	2
 Cables & Enablement Kits	FibreChannel Cables	max 999	0	999	20	Yes	2
 Drive Enclosures / Drives	SAS Cables	max 999	0	999	25	Yes	4
 Accessories & Infrastructure	Expansion Modules	max 15	0	15	1	Yes	1
-Accessories & Infrastructure	Storage Media	max 999	0	999	84	Yes	3
+Accessories & Infrastructure	Storage Media	max 999	0	999	64	Yes	1
 Storage Controllers	Storage Media	max 999	0	999	64	Yes	1
-Cables & Enablement Kits	Power Cord	no max	0	Unlimited	19	Yes	2
-Software & Licenses	Software	no max	0	Unlimited	36	Yes	4
-Storage Controllers	Tape Drives	max 3	0	3	8	Yes	1
-Support Services	Storage Media	max 999	0	999	2	Yes	1
-Chassis	Encryption Kit	max 999	1	999	20	Yes	1
+Cables & Enablement Kits	Power Cord	no max	0	Unlimited	18	Yes	1
+Software & Licenses	Software	no max	0	Unlimited	19	Yes	2
+Networking	Fibre Channel Host Bus Adapters	Discontinued	0	Discontinued	8	Yes	1

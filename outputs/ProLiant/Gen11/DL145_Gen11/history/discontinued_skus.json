@@ -3142,5 +3142,453 @@
     "subCategory": "Partner Software - Operating System 8pks",
     "firstSeenDate": "2026-09-10",
     "status": "ACTIVE"
+  },
+  "R8V76A": {
+    "productNumber": "R8V76A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V74A": {
+    "productNumber": "R8V74A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 9x5 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V77A": {
+    "productNumber": "R8V77A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V75A": {
+    "productNumber": "R8V75A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 9x5 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V78A": {
+    "productNumber": "R8V78A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 5-year 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V79A": {
+    "productNumber": "R8V79A",
+    "description": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 5-year 9x5 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V72A": {
+    "productNumber": "R8V72A",
+    "description": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 3yr 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V73A": {
+    "productNumber": "R8V73A",
+    "description": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 5yr 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N87A": {
+    "productNumber": "S7N87A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7P10A": {
+    "productNumber": "S7P10A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N88A": {
+    "productNumber": "S7N88A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7P11A": {
+    "productNumber": "S7P11A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S2L70C": {
+    "productNumber": "S2L70C",
+    "description": "NVIDIA L40S 48GB PCIe Accelerator",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6W30C": {
+    "productNumber": "S6W30C",
+    "description": "NVIDIA RTX PRO 4500 Blackwell Server Edition 32GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S0K89C": {
+    "productNumber": "S0K89C",
+    "description": "NVIDIA L4 24GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R1C65A": {
+    "productNumber": "R1C65A",
+    "description": "HPE C13-C14 IN 250V 10Amp 2m Black Jumper Cord",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S1A05A": {
+    "productNumber": "S1A05A",
+    "description": "HPE Compute Cloud Management Server FIO Enablement",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6K30B": {
+    "productNumber": "S6K30B",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L35B": {
+    "productNumber": "S6L35B",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L28B": {
+    "productNumber": "S6L28B",
+    "description": "Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V84A": {
+    "productNumber": "R8V84A",
+    "description": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 3yr 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V85A": {
+    "productNumber": "R8V85A",
+    "description": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 5yr 24x7 Flexible LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R49A": {
+    "productNumber": "S3R49A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R50A": {
+    "productNumber": "S3R50A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R51A": {
+    "productNumber": "S3R51A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R52A": {
+    "productNumber": "S3R52A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R53A": {
+    "productNumber": "S3R53A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S3R54A": {
+    "productNumber": "S3R54A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N85A": {
+    "productNumber": "S7N85A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N86A": {
+    "productNumber": "S7N86A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N89A": {
+    "productNumber": "S7N89A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N90A": {
+    "productNumber": "S7N90A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N91A": {
+    "productNumber": "S7N91A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N92A": {
+    "productNumber": "S7N92A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N93A": {
+    "productNumber": "S7N93A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7N94A": {
+    "productNumber": "S7N94A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7P12A": {
+    "productNumber": "S7P12A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S7P13A": {
+    "productNumber": "S7P13A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Sup Flex LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L47A": {
+    "productNumber": "S6L47A",
+    "description": "Microsoft Windows Server 2019 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L45A": {
+    "productNumber": "S6L45A",
+    "description": "Microsoft Windows Server 2019 Downgrade Datacenter Reseller Option Kit Japanese ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L46A": {
+    "productNumber": "S6L46A",
+    "description": "Microsoft Windows Server 2019 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L44A": {
+    "productNumber": "S6L44A",
+    "description": "Microsoft Windows Server 2019 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L48A": {
+    "productNumber": "S6L48A",
+    "description": "Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L43A": {
+    "productNumber": "S6L43A",
+    "description": "Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L41A": {
+    "productNumber": "S6L41A",
+    "description": "Microsoft Windows Server 2022 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T26A": {
+    "productNumber": "S4T26A",
+    "description": "Red Hat High Availability 2 Sockets Unlimited Guests 1-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T27A": {
+    "productNumber": "S4T27A",
+    "description": "Red Hat High Availability 2 Sockets Unlimited Guests 3-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T22A": {
+    "productNumber": "S4T22A",
+    "description": "Red Hat High Availability 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T23A": {
+    "productNumber": "S4T23A",
+    "description": "Red Hat High Availability 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T24A": {
+    "productNumber": "S4T24A",
+    "description": "Red Hat Resilient Storage 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S4T25A": {
+    "productNumber": "S4T25A",
+    "description": "Red Hat Resilient Storage 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "R8V48A": {
+    "productNumber": "R8V48A",
+    "description": "HPE Serviceguard for Linux x86 Flex Storage Add-On Media",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L39A": {
+    "productNumber": "S6L39A",
+    "description": "Microsoft Windows Server 2025 10-core Essentials Reseller Option Kit WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L37A": {
+    "productNumber": "S6L37A",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L36A": {
+    "productNumber": "S6L36A",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "S6L38A": {
+    "productNumber": "S6L38A",
+    "description": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
   }
 }

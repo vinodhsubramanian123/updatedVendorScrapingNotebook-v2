@@ -10,6 +10,7 @@
     "diffSummary": {
       "added": 0,
       "removed": 0,
+      "categoryMigrated": 0,
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,

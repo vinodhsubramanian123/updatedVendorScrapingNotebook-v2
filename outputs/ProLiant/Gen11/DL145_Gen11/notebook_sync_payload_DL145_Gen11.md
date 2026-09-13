@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-09-12T13:01:57.025Z
+**Sync Timestamp**: 2026-09-13T08:51:21.784Z
 
-**Total Verified SKUs**: `624` (`357` Hardware + `267` Services)
+**Total Verified SKUs**: `624` (`413` Hardware + `211` Services)
 
 **Total Synced KnowledgeDeltas**: `7`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 357 | 124 | 0 | 233 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 267 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **624** | **124** | **0** | **233** | **0** | **ACTIVE** |
+| **Hardware Components** | 413 | 56 | 0 | 39 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 211 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **624** | **56** | **0** | **39** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -59,21 +59,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-10 | `P46155-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `P77096-291` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `P77096-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `P77099-291` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `512485-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `BD505A` | Vendor Attributes | {"Extended Price (USD)":"469.00"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `512487-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `BD507A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `E6U59ABE` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `E6U64ABE` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `512486-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `BD506A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `Q5T84A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `Q5T85A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
-| 2026-09-10 | `Q2A48A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"Extended Price (USD)":"0"}** |
+| 2026-09-13 | `P77103-371` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77102-291` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77102-B21` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-AA1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-AB1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-291` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-021` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-A21` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77101-371` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-AA1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-AB1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-291` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-021` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-A21` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77100-371` | Component Role |  | **Operating System / License** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

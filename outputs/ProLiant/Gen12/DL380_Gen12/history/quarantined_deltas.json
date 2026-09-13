@@ -1,0 +1,1763 @@
+[
+  {
+    "deltaId": "DELTA-1789289085040-wrzka",
+    "traceId": null,
+    "timestamp": "2026-09-13T08:44:45.040Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P73282-B21 (Qty 1): HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P73282-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P73282-B21 (Qty 1): HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "b759f41678689985dedb3fabd884023ee08a5e1e639610546f4accc011d2475d",
+    "validatedAt": "2026-09-13T08:44:45.057Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_b759f41678689985",
+    "firstSeenAt": "2026-09-13T06:02:02.858Z",
+    "lastSeenAt": "2026-09-13T08:44:45.063Z",
+    "observationCount": 16,
+    "quarantinedAt": "2026-09-13T08:44:45.063Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789289085074-gdjrn",
+    "traceId": null,
+    "timestamp": "2026-09-13T08:44:45.074Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P74573-B21 (Qty 2): Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P74573-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P74573-B21 (Qty 2): Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "b5338277e433642a3883343a6feb99beece288a81fe6ed6d5fc48c834888be56",
+    "validatedAt": "2026-09-13T08:44:45.089Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_b5338277e433642a",
+    "firstSeenAt": "2026-09-13T06:02:02.872Z",
+    "lastSeenAt": "2026-09-13T08:44:45.091Z",
+    "observationCount": 15,
+    "quarantinedAt": "2026-09-13T08:44:45.091Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789289085102-35e6u",
+    "traceId": null,
+    "timestamp": "2026-09-13T08:44:45.102Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 12): HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P69728-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 12): HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "ee09b5d2b89a93f01571f4448e8dcdd36fc3bb55a11257f4ec24ab384e9d70f9",
+    "validatedAt": "2026-09-13T08:44:45.120Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_ee09b5d2b89a93f0",
+    "firstSeenAt": "2026-09-13T06:02:02.886Z",
+    "lastSeenAt": "2026-09-13T08:44:45.122Z",
+    "observationCount": 15,
+    "quarantinedAt": "2026-09-13T08:44:45.122Z",
+    "quarantineReasons": [
+      "SKU P69728-B21 not found in target catalog; held in quarantine for manual verification",
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789289085130-ukhh5",
+    "traceId": null,
+    "timestamp": "2026-09-13T08:44:45.130Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P47777-B21 (Qty 1): HPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P47777-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P47777-B21 (Qty 1): HPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "0134915ea4ea95c2c85b33c50b918c37c4414cca0d32a9a6e9ef9860a3ec3d11",
+    "validatedAt": "2026-09-13T08:44:45.149Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_0134915ea4ea95c2",
+    "firstSeenAt": "2026-09-13T06:02:02.900Z",
+    "lastSeenAt": "2026-09-13T08:44:45.151Z",
+    "observationCount": 15,
+    "quarantinedAt": "2026-09-13T08:44:45.151Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789289085165-cmi5h",
+    "traceId": null,
+    "timestamp": "2026-09-13T08:44:45.165Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P17023-B21 (Qty 2): HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P17023-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P17023-B21 (Qty 2): HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "9c8714ebe2206eebcbaf6f1db940246eae717fe0a81dee57cbd55df83cd3902f",
+    "validatedAt": "2026-09-13T08:44:45.179Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_9c8714ebe2206eeb",
+    "firstSeenAt": "2026-09-13T06:02:02.914Z",
+    "lastSeenAt": "2026-09-13T08:44:45.181Z",
+    "observationCount": 15,
+    "quarantinedAt": "2026-09-13T08:44:45.181Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205112-xp8x3",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.112Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P74503-B21 (Qty 1): Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P74503-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P74503-B21 (Qty 1): Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "90cb96e471e1f62f94528472da0c4cbd43a55fc3b39345364546e4226b4cd35a",
+    "validatedAt": "2026-09-13T06:33:25.124Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_90cb96e471e1f62f",
+    "firstSeenAt": "2026-09-13T06:33:25.124Z",
+    "lastSeenAt": "2026-09-13T06:33:25.124Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.124Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205126-ilh2g",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.126Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P69727-F21 (Qty 2): HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P69727-F21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P69727-F21 (Qty 2): HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "5d15f3aa51e42c0cb546ee0396fc1ef9b74d5c4f367ca6ef92b504a76b26dcac",
+    "validatedAt": "2026-09-13T06:33:25.147Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_5d15f3aa51e42c0c",
+    "firstSeenAt": "2026-09-13T06:33:25.147Z",
+    "lastSeenAt": "2026-09-13T06:33:25.147Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.147Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205149-iqjy7",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.149Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P51178-B21 (Qty 1): Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T Adapter for HPE",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P51178-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P51178-B21 (Qty 1): Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T Adapter for HPE",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "fc99bc50dabec5205ef1b5631f805f5b1b71e8bcabfaa8495371c9233b494a0d",
+    "validatedAt": "2026-09-13T06:33:25.160Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_fc99bc50dabec520",
+    "firstSeenAt": "2026-09-13T06:33:25.160Z",
+    "lastSeenAt": "2026-09-13T06:33:25.160Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.160Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205161-bm8nf",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.161Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P38995-B21 (Qty 1): HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P38995-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P38995-B21 (Qty 1): HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "2e3bd3382624225395f3b6ed48733bc926c0c4223a5f2711059329367be95b97",
+    "validatedAt": "2026-09-13T06:33:25.172Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_2e3bd33826242253",
+    "firstSeenAt": "2026-09-13T06:33:25.173Z",
+    "lastSeenAt": "2026-09-13T06:33:25.173Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.173Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205180-d34l6",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.180Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P78145-B21 (Qty 1): HPE C13 - C14 250V 10Amp 2m FIO Power Cord",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P78145-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P78145-B21 (Qty 1): HPE C13 - C14 250V 10Amp 2m FIO Power Cord",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "2651c9e2b2f2ddc859a5e37638716106a7b7fa7f4d9f28f278d9213b5c53cda3",
+    "validatedAt": "2026-09-13T06:33:25.192Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_2651c9e2b2f2ddc8",
+    "firstSeenAt": "2026-09-13T06:33:25.193Z",
+    "lastSeenAt": "2026-09-13T06:33:25.193Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.193Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205195-2756h",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.194Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU 873763-B21 (Qty 1): HPE ProLiant Compute DL380 No Drive Configuration FIO Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "873763-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU 873763-B21 (Qty 1): HPE ProLiant Compute DL380 No Drive Configuration FIO Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "55991075a632497524e79cb40ac9393a88a3898ad45c2169cd7c0a9e3fbd35b0",
+    "validatedAt": "2026-09-13T06:33:25.205Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_55991075a6324975",
+    "firstSeenAt": "2026-09-13T06:33:25.206Z",
+    "lastSeenAt": "2026-09-13T06:33:25.206Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.206Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205207-u1zta",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.207Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P35876-B21 (Qty 1): HPE CE Mark Removal FIO Enablement Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P35876-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P35876-B21 (Qty 1): HPE CE Mark Removal FIO Enablement Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "6b6447151b147f4217d405063532df798cbaf152ad4252bf2bdcb187d7bed94b",
+    "validatedAt": "2026-09-13T06:33:25.224Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_6b6447151b147f42",
+    "firstSeenAt": "2026-09-13T06:33:25.225Z",
+    "lastSeenAt": "2026-09-13T06:33:25.225Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.225Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205226-w0ytr",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.226Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P49145-B21 (Qty 1): HPE ProLiant DL380 2U Standard Heat Sink Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P49145-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P49145-B21 (Qty 1): HPE ProLiant DL380 2U Standard Heat Sink Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "0da74c8f2a765aa2f2702d4a3f42a90cb0f6f3a6285e104fce89a43e94b582e2",
+    "validatedAt": "2026-09-13T06:33:25.236Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_0da74c8f2a765aa2",
+    "firstSeenAt": "2026-09-13T06:33:25.237Z",
+    "lastSeenAt": "2026-09-13T06:33:25.237Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.237Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205239-7px0u",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.239Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P73325-B21 (Qty 1): HPE ProLiant Compute Localization FIO Kit",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P73325-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P73325-B21 (Qty 1): HPE ProLiant Compute Localization FIO Kit",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "c3f69e57d57aca9ce30a6f78ddf8cd4954d670333cc69d0de6a48b8556d0c612",
+    "validatedAt": "2026-09-13T06:33:25.248Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_c3f69e57d57aca9c",
+    "firstSeenAt": "2026-09-13T06:33:25.249Z",
+    "lastSeenAt": "2026-09-13T06:33:25.249Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.249Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205250-tucrt",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.250Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU P79558-B21 (Qty 1): HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P79558-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU P79558-B21 (Qty 1): HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "aacf180bbf1f7726f8b0a48b452dd99b9ba77a5b072926004d8a19a7bf45a3f1",
+    "validatedAt": "2026-09-13T06:33:25.262Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_aacf180bbf1f7726",
+    "firstSeenAt": "2026-09-13T06:33:25.262Z",
+    "lastSeenAt": "2026-09-13T06:33:25.262Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.262Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205264-0qxqy",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.264Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU R7A11AAE (Qty 1): HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "R7A11AAE",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU R7A11AAE (Qty 1): HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "202c4d54256977331a53b8682b0d1be6b24c9936d7d9aaddd2d0609ffe9610bc",
+    "validatedAt": "2026-09-13T06:33:25.274Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_202c4d5425697733",
+    "firstSeenAt": "2026-09-13T06:33:25.274Z",
+    "lastSeenAt": "2026-09-13T06:33:25.274Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.274Z",
+    "quarantineReasons": [
+      "SKU R7A11AAE not found in target catalog; held in quarantine for manual verification",
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205275-8afq7",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.275Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU HU4B2A3 (Qty 1): HPE 3Y Tech Care Basic Service",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "HU4B2A3",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU HU4B2A3 (Qty 1): HPE 3Y Tech Care Basic Service",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "9d315966aaad76be855429057bcb2134114afd9645d6cdcf4fb4abf95d87ee61",
+    "validatedAt": "2026-09-13T06:33:25.285Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_9d315966aaad76be",
+    "firstSeenAt": "2026-09-13T06:33:25.286Z",
+    "lastSeenAt": "2026-09-13T06:33:25.286Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.286Z",
+    "quarantineReasons": [
+      "SKU HU4B2A3 not found in target catalog; held in quarantine for manual verification",
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789281205287-817kr",
+    "traceId": null,
+    "timestamp": "2026-09-13T06:33:25.287Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Vendor Partner Portal auto-inserted SKU HU4B2A30C4V (Qty 1): HPE DL380 Gen12 Support",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "HU4B2A30C4V",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Vendor Partner Portal auto-inserted SKU HU4B2A30C4V (Qty 1): HPE DL380 Gen12 Support",
+    "humanReasoning": null,
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.7,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.7,
+    "knowledgeFingerprint": "29efac0ca93172df8cd87b7936f3206d67c0d56d492540647a9c39f7e1cd7952",
+    "validatedAt": "2026-09-13T06:33:25.296Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_29efac0ca93172df",
+    "firstSeenAt": "2026-09-13T06:33:25.297Z",
+    "lastSeenAt": "2026-09-13T06:33:25.297Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:33:25.297Z",
+    "quarantineReasons": [
+      "SKU HU4B2A30C4V not found in target catalog; held in quarantine for manual verification",
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P49145-B21_P74792-B21_1789281305833",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P49145-B21",
+    "requiredDependencySku": "P74792-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P49145-B21 requires auxiliary component P74792-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Heatsinks**: Processors with **TDP ≤ 185W** utilize Standard Heat Sink Kits (`P49145-B21`) [6, 10]. Processors with **TDP > 185W** mandate Performance Heat Sink Kits (`P74792-B21` / `P74794-B21`) [6, 10].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-13T06:35:05.834Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "2",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "3",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "5",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "6",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "12",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "15",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "16",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "19",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "22",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "24",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "26",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "27",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "28",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "29",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "30",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "31",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "32",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "33",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "34",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "35",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "36",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "37",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "38",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "39",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "50a2f80379d679b0d66aa4edd1dbc19d8ed3a653758227f41ae2d143143ef95c",
+    "validatedAt": "2026-09-13T06:35:05.845Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_50a2f80379d679b0",
+    "firstSeenAt": "2026-09-13T06:35:05.845Z",
+    "lastSeenAt": "2026-09-13T06:35:05.845Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:35:05.845Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_R7A11A_512485-B21_1789281305835",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "R7A11A",
+    "requiredDependencySku": "512485-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting R7A11A requires auxiliary component 512485-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Cloud Management SaaS Mandate**: Every Gen12 CTO order enforces a software management license, defaulting to **HPE Compute Ops Management Standard 3-Year Upfront SaaS** (`R7A11AAE`, \\$450.00 list price) [19, 20]. Legacy standalone iLO Advanced licenses (`512485-B21`) are discontinued and blocked",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-13T06:35:05.835Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "2",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "3",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "5",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "6",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "12",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "15",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "16",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "19",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "22",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "24",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "26",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "27",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "28",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "29",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "30",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "31",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "32",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "33",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "34",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "35",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "36",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "37",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "38",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "39",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "dfd9198176fdbefac4cd3bc1a04bb35f717abdfd66509390f7337ed85d773905",
+    "validatedAt": "2026-09-13T06:35:05.852Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_dfd9198176fdbefa",
+    "firstSeenAt": "2026-09-13T06:35:05.854Z",
+    "lastSeenAt": "2026-09-13T06:35:05.854Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:35:05.854Z",
+    "quarantineReasons": [
+      "SKU R7A11A not found in target catalog; held in quarantine for manual verification",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P73325-B21_R7A11A_1789281305836",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P73325-B21",
+    "requiredDependencySku": "R7A11A",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P73325-B21 requires auxiliary component R7A11A to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Config Rules**: Mandates `P73325-B21` (Localization FIO Kit) [16, 17, 20], `R7A11AAE` (Compute Ops Management SaaS) [16, 19, 20], and `P79558-B21` (25°C ambient temperature tracking kit) to clear portal validation gates [16-18].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-13T06:35:05.836Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "2",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "3",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "5",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "6",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "12",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "15",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "16",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "19",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "22",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "24",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "26",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "27",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "28",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "29",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "30",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "31",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "32",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "33",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "34",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "35",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "36",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "37",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "38",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "39",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "e1f15fe91dc8f1c358e00394c4f96757edd829267d00238f21ecaaf999429a09",
+    "validatedAt": "2026-09-13T06:35:05.863Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_e1f15fe91dc8f1c3",
+    "firstSeenAt": "2026-09-13T06:35:05.864Z",
+    "lastSeenAt": "2026-09-13T06:35:05.864Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:35:05.864Z",
+    "quarantineReasons": [
+      "Required SKU R7A11A not found in target catalog; held in quarantine for manual verification",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P74792-B21_P74794-B21_1789281305837",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P74792-B21",
+    "requiredDependencySku": "P74794-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P74792-B21 requires auxiliary component P74794-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Thermal Envelope**: Rated for single or dual processors with **TDP up to 185W** [6, 10]. Processors exceeding 185W TDP mandate Performance Heatsinks (`P74792-B21` / `P74794-B21`) [6, 10, 16].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-13T06:35:05.837Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "2",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "3",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "5",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "6",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "12",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "15",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "16",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "19",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "22",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "24",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "26",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "27",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "28",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "29",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "30",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "31",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "32",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "33",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "34",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "35",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "36",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "37",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "38",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "39",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "b046f3b5fc34058473f8bd44e5e8d862920a5e07d2f4e591bfddbcdbafacbcbe",
+    "validatedAt": "2026-09-13T06:35:05.874Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_b046f3b5fc340584",
+    "firstSeenAt": "2026-09-13T06:35:05.877Z",
+    "lastSeenAt": "2026-09-13T06:35:05.877Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:35:05.877Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P38995-B21_P35876-B21_1789281305839",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P38995-B21",
+    "requiredDependencySku": "P35876-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P38995-B21 requires auxiliary component P35876-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Electrical Requirements**: Requires **high-line AC voltage (200V–240V AC)** [13]. Like `P38995-B21`, non-EU orders require `P35876-B21` to bypass ErP Lot 9 regulatory gates [7, 32, 33].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-13T06:35:05.839Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "2",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "3",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "5",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "6",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "12",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "15",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "16",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "19",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "22",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "24",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "26",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "27",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "28",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "29",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "30",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "31",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "32",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "33",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "34",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "35",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "36",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "37",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "38",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      },
+      {
+        "index": "39",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "QuickSpecs Shape the Future of QuickSpecs - Your Input Matters HPE ProLiant DL380 Gen12  QuickSpecs The HPE ProLiant Compute DL380 Gen12 is a robust and versatile server designed to handle demanding workloads in today’s dynamic IT environments. Known for its exceptional performance, the DL380 is a 2U rack server that supports up to two Intel® Xeon® 6 processors, each with up to 144 cores per socket. It features a memory capacity of up to 8 TB, as well as high-speed PCIe Gen5 and flexible I/O for accelerator options such as GPUs. Its 2U form factor provides a balance of density and expandability, offering ample room for future growth with support for a wide range of storage options."
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "7f77de5f7c5ebe3e5888b6148d531efd4c82fa92a9f063135547aba7b8d38bdf",
+    "validatedAt": "2026-09-13T06:35:05.888Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_7f77de5f7c5ebe3e",
+    "firstSeenAt": "2026-09-13T06:35:05.891Z",
+    "lastSeenAt": "2026-09-13T06:35:05.891Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-13T06:35:05.891Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  }
+]

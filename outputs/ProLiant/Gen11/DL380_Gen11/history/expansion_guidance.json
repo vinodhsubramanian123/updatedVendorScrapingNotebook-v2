@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-09-13T07:18:39.842Z",
+  "targetDir": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen11/DL380_Gen11",
+  "missingQuickspecsSkusCount": 24,
+  "missingQuickspecsSkus": [
+    "L9R4LV",
+    "9T0RZI",
+    "JUTX4U",
+    "4555ZP",
+    "EGQA4E",
+    "AGVP5U",
+    "4E4DDF",
+    "SCMFT9",
+    "BN2OSO",
+    "OK9DES",
+    "FDS3TX",
+    "M1LDFQ",
+    "836ENW",
+    "496WZC",
+    "829CMW",
+    "TYR92R",
+    "1BXHMN",
+    "EP48UK",
+    "98H2EW",
+    "HQH099",
+    "77SKAC",
+    "33KJJZ",
+    "7PGSSS",
+    "33S4CS"
+  ],
+  "expansionRecommendations": [
+    "Ensure WebLogic DOM expansion triggers all showmore_* and #show_extra_columns toggles.",
+    "Verify whether missing SKUs are regional (e.g. EMEA / APJ only) or recently announced options."
+  ]
+}

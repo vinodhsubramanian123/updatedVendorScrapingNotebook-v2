@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-09-12T13:02:00.568Z
+**Sync Timestamp**: 2026-09-13T08:51:20.959Z
 
-**Total Verified SKUs**: `1408` (`584` Hardware + `824` Services)
+**Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
 **Total Synced KnowledgeDeltas**: `16`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 584 | 233 | 0 | 350 | 1 | **CERTIFIED** |
-| **Support Services & SLAs** | 824 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1408** | **233** | **0** | **350** | **1** | **ACTIVE** |
+| **Hardware Components** | 753 | 169 | 0 | 0 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 655 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1408** | **169** | **0** | **0** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 

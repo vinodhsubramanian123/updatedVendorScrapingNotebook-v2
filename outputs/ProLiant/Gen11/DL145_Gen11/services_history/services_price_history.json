@@ -74,6 +74,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V74AAE": [
@@ -88,6 +94,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V77AAE": [
@@ -102,6 +114,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V75AAE": [
@@ -116,6 +134,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V78AAE": [
@@ -130,6 +154,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S0F24AAE": [
@@ -144,6 +174,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V72AAE": [
@@ -158,6 +194,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V73AAE": [
@@ -172,6 +214,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N77AAE": [
@@ -186,6 +234,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7P10A": [
@@ -193,6 +247,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N78AAE": [
@@ -207,6 +267,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7P11A": [
@@ -214,6 +280,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S0F26AAE": [
@@ -305,6 +377,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Graphics & GPU"
     }
   ],
   "S6W30C": [
@@ -312,6 +390,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Graphics & GPU"
     }
   ],
   "S0K89C": [
@@ -319,6 +403,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Graphics & GPU"
     }
   ],
   "R1C65A": [
@@ -326,6 +416,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Cables & Enablement Kits"
     }
   ],
   "R7A10AAE": [
@@ -354,6 +450,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "HPE Compute Ops Management"
     }
   ],
   "S2E10AAE": [
@@ -389,6 +491,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L35B": [
@@ -396,6 +504,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46191-AA1": [
@@ -613,6 +727,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3Z84AAE": [
@@ -760,6 +880,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "R8V85A": [
@@ -767,6 +893,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R49A": [
@@ -774,6 +906,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R49AAE": [
@@ -788,6 +926,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R50AAE": [
@@ -802,6 +946,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R51AAE": [
@@ -816,6 +966,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R52AAE": [
@@ -830,6 +986,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R53AAE": [
@@ -844,6 +1006,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R54AAE": [
@@ -956,6 +1124,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N86A": [
@@ -963,6 +1137,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N89A": [
@@ -970,6 +1150,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N90A": [
@@ -977,6 +1163,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N91A": [
@@ -984,6 +1176,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N92A": [
@@ -991,6 +1189,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N93A": [
@@ -998,6 +1202,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N94A": [
@@ -1005,6 +1215,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N95AAE": [
@@ -1054,6 +1270,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7P13A": [
@@ -1061,6 +1283,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "M6K30AAE": [
@@ -1516,6 +1744,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L45A": [
@@ -1523,6 +1757,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L46A": [
@@ -1530,6 +1770,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L44A": [
@@ -1537,6 +1783,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L48A": [
@@ -1544,6 +1796,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L43A": [
@@ -1551,6 +1809,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L41A": [
@@ -1558,6 +1822,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T26A": [
@@ -1565,6 +1835,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T27A": [
@@ -1572,6 +1848,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T22A": [
@@ -1579,6 +1861,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T23A": [
@@ -1586,6 +1874,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T24A": [
@@ -1593,6 +1887,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S4T25A": [
@@ -1600,6 +1900,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R04AAE": [
@@ -1705,6 +2011,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S0W12AAE": [
@@ -1845,6 +2157,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L37A": [
@@ -1852,6 +2170,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L36A": [
@@ -1859,6 +2183,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L38A": [
@@ -1866,6 +2196,12 @@
       "date": "2026-09-10",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-13",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ]
 }

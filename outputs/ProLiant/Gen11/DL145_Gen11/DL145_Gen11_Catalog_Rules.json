@@ -4,24 +4,25 @@
     "model": "DL145_Gen11",
     "family": "ProLiant",
     "generation": "Gen11",
-    "scrapeDate": "2026-09-10",
-    "scrapeTimestamp": "2026-09-10T11:44:22.640Z",
-    "totalSubcategories": 37,
-    "totalUniqueSKUs": 357,
-    "totalTables": 48,
+    "scrapeDate": "2026-09-13",
+    "scrapeTimestamp": "2026-09-13T07:46:52.205Z",
+    "totalSubcategories": 42,
+    "totalUniqueSKUs": 413,
+    "totalTables": 54,
     "diffSummary": {
-      "added": 124,
+      "added": 56,
       "removed": 0,
+      "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 233,
+      "attributeChanged": 39,
       "priceAndAttributeChanged": 0,
-      "unchanged": 0,
+      "unchanged": 318,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-09-10.json",
+    "historySnapshot": "catalog_2026-09-13.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-09-10",
+      "scrapeDate": "2026-09-13",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -38,15 +39,20 @@
           "avgPrice": 2375
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 9,
-          "totalPrice": 942,
+          "totalSKUs": 10,
+          "totalPrice": 1060,
           "minPrice": 1,
           "maxPrice": 373,
           "subcategories": {
-            "Rack Options": {
-              "totalSKUs": 4,
-              "totalPrice": 658,
-              "avgPrice": 164.5
+            "Chassis Infrastructure & Rail Kits": {
+              "totalSKUs": 7,
+              "totalPrice": 940,
+              "avgPrice": 134.28571428571428
+            },
+            "System Options": {
+              "totalSKUs": 1,
+              "totalPrice": 118,
+              "avgPrice": 118
             },
             "Acoustics": {
               "totalSKUs": 1,
@@ -57,78 +63,9 @@
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
-            },
-            "Security Hardware": {
-              "totalSKUs": 3,
-              "totalPrice": 282,
-              "avgPrice": 94
             }
           },
-          "avgPrice": 104.66666666666667
-        },
-        "Software & Licenses": {
-          "totalSKUs": 16,
-          "totalPrice": 110114,
-          "minPrice": 1,
-          "maxPrice": 99999,
-          "subcategories": {
-            "MS Windows Server Additional License": {
-              "totalSKUs": 1,
-              "totalPrice": 118,
-              "avgPrice": 118
-            },
-            "iLO Common Password": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            },
-            "Compute Ops Management SKUs": {
-              "totalSKUs": 3,
-              "totalPrice": 102134,
-              "avgPrice": 34044.666666666664
-            },
-            "SUSE Add-ons": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "SUSE containers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "SUSE SAP Operating Systems": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "OneView Management Software": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "Integrated Lights Out Software": {
-              "totalSKUs": 8,
-              "totalPrice": 3470,
-              "avgPrice": 433.75
-            },
-            "Proliant Software Media Kits": {
-              "totalSKUs": 2,
-              "totalPrice": 4142,
-              "avgPrice": 2071
-            },
-            "HPC Software Products": {
-              "totalSKUs": 1,
-              "totalPrice": 249,
-              "avgPrice": 249
-            },
-            "Partner Software - Operating System 8pks": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 6882.125
+          "avgPrice": 106
         },
         "Processor": {
           "totalSKUs": 19,
@@ -178,15 +115,15 @@
           "avgPrice": 31425.2
         },
         "Storage Controllers": {
-          "totalSKUs": 14,
-          "totalPrice": 16165,
+          "totalSKUs": 13,
+          "totalPrice": 16164,
           "minPrice": 1,
           "maxPrice": 5999,
           "subcategories": {
             "SAS Controller": {
-              "totalSKUs": 5,
-              "totalPrice": 15873,
-              "avgPrice": 3174.6
+              "totalSKUs": 4,
+              "totalPrice": 15872,
+              "avgPrice": 3968
             },
             "Storage Controller Cables": {
               "totalSKUs": 3,
@@ -199,20 +136,25 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 1154.642857142857
+          "avgPrice": 1243.3846153846155
         },
         "Cables & Enablement Kits": {
-          "totalSKUs": 12,
-          "totalPrice": 37894,
-          "minPrice": 20,
+          "totalSKUs": 13,
+          "totalPrice": 37895,
+          "minPrice": 1,
           "maxPrice": 14299,
           "subcategories": {
-            "Smart Storage Battery": {
+            "Smart Storage Batteries": {
               "totalSKUs": 3,
               "totalPrice": 904,
               "avgPrice": 301.3333333333333
             },
-            "OS Boot Device": {
+            "System Options": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "Solid State Drives (NVMe/SAS/SATA)": {
               "totalSKUs": 4,
               "totalPrice": 36477,
               "avgPrice": 9119.25
@@ -222,10 +164,15 @@
               "totalPrice": 0,
               "avgPrice": 0
             },
-            "HPE Virtualization": {
-              "totalSKUs": 3,
-              "totalPrice": 293,
-              "avgPrice": 97.66666666666667
+            "Flex Slot Power Supplies": {
+              "totalSKUs": 1,
+              "totalPrice": 181,
+              "avgPrice": 181
+            },
+            "Power Cords & Jumper Cables": {
+              "totalSKUs": 2,
+              "totalPrice": 112,
+              "avgPrice": 56
             },
             "Management Hardware": {
               "totalSKUs": 2,
@@ -233,7 +180,7 @@
               "avgPrice": 110
             }
           },
-          "avgPrice": 3157.8333333333335
+          "avgPrice": 2915
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 108,
@@ -268,6 +215,75 @@
           },
           "avgPrice": 1
         },
+        "Software & Licenses": {
+          "totalSKUs": 15,
+          "totalPrice": 109996,
+          "minPrice": 1,
+          "maxPrice": 99999,
+          "subcategories": {
+            "iLO Common Password": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "VMWare Core Editions": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 3,
+              "totalPrice": 102134,
+              "avgPrice": 34044.666666666664
+            },
+            "SUSE Add-ons": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "SUSE containers": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "SUSE SAP Operating Systems": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "OneView Management Software": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "Integrated Lights Out Software": {
+              "totalSKUs": 8,
+              "totalPrice": 3470,
+              "avgPrice": 433.75
+            },
+            "Proliant Software Media Kits": {
+              "totalSKUs": 2,
+              "totalPrice": 4142,
+              "avgPrice": 2071
+            },
+            "Linux Value Added Software": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
+            "HPC Software Products": {
+              "totalSKUs": 1,
+              "totalPrice": 249,
+              "avgPrice": 249
+            },
+            "High Availability Computing - Cluster Software": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            }
+          },
+          "avgPrice": 7333.066666666667
+        },
         "PCIe Risers": {
           "totalSKUs": 2,
           "totalPrice": 575,
@@ -283,8 +299,8 @@
           "avgPrice": 287.5
         },
         "Networking": {
-          "totalSKUs": 24,
-          "totalPrice": 35420,
+          "totalSKUs": 22,
+          "totalPrice": 34284,
           "minPrice": 426,
           "maxPrice": 5199,
           "subcategories": {
@@ -299,12 +315,12 @@
               "avgPrice": 1283.375
             },
             "Transceivers": {
-              "totalSKUs": 8,
-              "totalPrice": 11891,
-              "avgPrice": 1486.375
+              "totalSKUs": 6,
+              "totalPrice": 10755,
+              "avgPrice": 1792.5
             }
           },
-          "avgPrice": 1475.8333333333333
+          "avgPrice": 1558.3636363636363
         },
         "Graphics & GPU": {
           "totalSKUs": 2,
@@ -312,6 +328,11 @@
           "minPrice": 24,
           "maxPrice": 44,
           "subcategories": {
+            "Graphics": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            },
             "Graphics Accessories": {
               "totalSKUs": 2,
               "totalPrice": 68,
@@ -321,32 +342,51 @@
           "avgPrice": 34
         },
         "Power Supplies": {
-          "totalSKUs": 1,
-          "totalPrice": 891,
-          "minPrice": 891,
+          "totalSKUs": 3,
+          "totalPrice": 2027,
+          "minPrice": 444,
           "maxPrice": 891,
           "subcategories": {
             "Power Supplies": {
               "totalSKUs": 1,
               "totalPrice": 891,
               "avgPrice": 891
+            },
+            "-48VDC Power Supplies & Cable Kits": {
+              "totalSKUs": 2,
+              "totalPrice": 1136,
+              "avgPrice": 568
             }
           },
-          "avgPrice": 891
+          "avgPrice": 675.6666666666666
+        },
+        "HPE Compute Ops Management": {
+          "totalSKUs": 0,
+          "totalPrice": 0,
+          "minPrice": 0,
+          "maxPrice": 0,
+          "subcategories": {
+            "Compute Ops Management SKUs": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            }
+          },
+          "avgPrice": 0
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 357,
-      "unchangedSkusCount": 233,
+      "totalScrapedSkus": 413,
+      "unchangedSkusCount": 413,
       "modifiedSkusCount": 0,
-      "addedSkusCount": 124,
+      "addedSkusCount": 0,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 34950,
-      "estimatedProcessingTimeSavedMs": 46600
+      "estimatedTokensSaved": 61950,
+      "estimatedProcessingTimeSavedMs": 82600
     },
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-09-10T11:44:22.976Z"
+    "rulesGeneratedAt": "2026-09-13T07:46:52.551Z"
   },
   "chassisVariants": [
     {
@@ -360,7 +400,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
     }
   ],
@@ -376,7 +416,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
     }
   },
@@ -422,6 +462,13 @@
       "constraint": "max 16",
       "minQty": 0,
       "maxQty": 16
+    },
+    {
+      "parentCategory": "HPE Compute Ops Management",
+      "name": "Compute Ops Management SKUs",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2
     }
   ],
   "rules": [
@@ -434,16 +481,16 @@
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Rack Options",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
       "constraint": "max 4",
       "maxQty": 4,
-      "rule": "Selection constraint for Rack Options: max 4"
+      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 4"
     },
     {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server Additional License",
-      "constraint": "max 999",
-      "maxQty": 999,
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "System Options",
+      "constraint": "optional",
+      "maxQty": -3,
       "rule": "\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together."
     },
     {
@@ -497,10 +544,10 @@
     },
     {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Smart Storage Battery",
+      "subCategory": "Smart Storage Batteries",
       "constraint": "max 1",
       "maxQty": 1,
-      "rule": "Selection constraint for Smart Storage Battery: max 1"
+      "rule": "Selection constraint for Smart Storage Batteries: max 1"
     },
     {
       "parentCategory": "Storage Controllers",
@@ -552,10 +599,10 @@
       "rule": "Selection constraint for Factory Configuration Settings: max 2"
     },
     {
-      "parentCategory": "Storage Controllers",
-      "subCategory": "SAS Controller",
-      "constraint": "max 2",
-      "maxQty": 2,
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "System Options",
+      "constraint": "",
+      "maxQty": "",
       "rule": "CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration"
     },
     {
@@ -608,11 +655,25 @@
       "rule": "Selection constraint for Transceivers: max 16"
     },
     {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "VMWare Core Editions",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for VMWare Core Editions: no max"
+    },
+    {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "OS Boot Device",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
       "constraint": "max 2",
       "maxQty": 2,
-      "rule": "Selection constraint for OS Boot Device: max 2"
+      "rule": "Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "Graphics",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Graphics: max 2"
     },
     {
       "parentCategory": "Graphics & GPU",
@@ -636,10 +697,10 @@
       "rule": "Selection constraint for Power Supplies: max 2"
     },
     {
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "max 16",
-      "maxQty": 16,
+      "parentCategory": "Power Supplies",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "min 1, max 2",
+      "maxQty": 2,
       "rule": "Mixing of Power Supplies is not allowed."
     },
     {
@@ -651,24 +712,24 @@
     },
     {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Flex Slot Power Supplies",
       "constraint": "no max",
       "maxQty": -1,
       "rule": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down."
     },
     {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Power Cords & Jumper Cables",
       "constraint": "no max",
       "maxQty": -1,
       "rule": "BTO products are not allowed in CTO Base Model."
     },
     {
       "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Security Hardware",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
       "constraint": "no max",
       "maxQty": -1,
-      "rule": "Selection constraint for Security Hardware: no max"
+      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: no max"
     },
     {
       "parentCategory": "Cables & Enablement Kits",
@@ -678,11 +739,18 @@
       "rule": "Selection constraint for Management Hardware: max 2"
     },
     {
-      "parentCategory": "Software & Licenses",
+      "parentCategory": "HPE Compute Ops Management",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
       "maxQty": -2,
       "rule": "Selection constraint for Compute Ops Management SKUs: required"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: required"
     },
     {
       "parentCategory": "Software & Licenses",
@@ -721,10 +789,24 @@
     },
     {
       "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Integrated Lights Out Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
       "subCategory": "Proliant Software Media Kits",
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Selection constraint for Proliant Software Media Kits: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Linux Value Added Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Linux Value Added Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
@@ -735,7 +817,14 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "Partner Software - Operating System 8pks",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 5994",
       "maxQty": 5994,
       "rule": "Selection constraint for Partner Software - Operating System 8pks: max 5994"
@@ -749,38 +838,17 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
       "maxQty": -1,
-      "rule": "Selection constraint for HPE Virtualization: no max"
-    },
-    {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "VMWare Core Editions",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for VMWare Core Editions: no max"
-    },
-    {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "Graphics",
-      "constraint": "max 2",
-      "maxQty": 2,
-      "rule": "Selection constraint for Graphics: max 2"
-    },
-    {
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management SKUs",
-      "constraint": "required",
-      "maxQty": -2,
-      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
     },
     {
       "parentCategory": "Support Services",
-      "subCategory": "Compute Ops Management SKUs",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "required",
       "maxQty": -2,
-      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+      "rule": "Selection constraint for Server Management & Operating System Licenses: required"
     },
     {
       "parentCategory": "Software & Licenses",
@@ -798,13 +866,6 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "Linux Value Added Software",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for Linux Value Added Software: no max"
-    },
-    {
-      "parentCategory": "Software & Licenses",
       "subCategory": "AI-at-Scale",
       "constraint": "no max",
       "maxQty": -1,
@@ -812,10 +873,10 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
+      "subCategory": "Partner Software - Operating System 8pks",
+      "constraint": "max 5994",
+      "maxQty": 5994,
+      "rule": "Selection constraint for Partner Software - Operating System 8pks: max 5994"
     }
   ]
 }

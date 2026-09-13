@@ -1,24 +1,24 @@
 {
   "version": "1.0.0",
   "chassis": "DL145_Gen11",
-  "generatedAt": "2026-09-10T11:44:21.778Z",
-  "executionDurationMs": 1297,
+  "generatedAt": "2026-09-13T07:46:51.441Z",
+  "executionDurationMs": 1172,
   "summary": {
     "totalRawTables": 62,
     "validProductTables": 61,
     "skippedTablesCount": 0,
-    "totalExtractedSKUs": 0,
-    "totalUniqueSKUs": 357,
-    "totalRulesExtracted": 56,
+    "totalExtractedSKUs": 413,
+    "totalUniqueSKUs": 413,
+    "totalRulesExtracted": 58,
     "chassisVariantsCount": 1
   },
   "skippedTables": [],
   "tableDecisions": [
     {
       "tableIndex": 0,
-      "subCategory": "Rack Options",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
       "parentCategory": "Accessories & Infrastructure",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "Chassis Infrastructure",
       "constraint": "max 4",
       "minQty": 0,
@@ -28,13 +28,13 @@
     },
     {
       "tableIndex": 1,
-      "subCategory": "MS Windows Server Additional License",
-      "parentCategory": "Software & Licenses",
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Operating System / License",
-      "constraint": "max 999",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
       "minQty": 0,
-      "maxQty": 999,
+      "maxQty": -3,
       "skuCount": 1,
       "rulesCount": 1
     },
@@ -136,7 +136,7 @@
     },
     {
       "tableIndex": 10,
-      "subCategory": "Smart Storage Battery",
+      "subCategory": "Smart Storage Batteries",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
@@ -232,13 +232,13 @@
     },
     {
       "tableIndex": 18,
-      "subCategory": "SAS Controller",
-      "parentCategory": "Storage Controllers",
-      "matchedVia": "direct_taxonomy_keyword",
+      "subCategory": "System Options",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
-      "constraint": "max 2",
+      "constraint": "N/A",
       "minQty": 0,
-      "maxQty": 2,
+      "maxQty": "",
       "skuCount": 1,
       "rulesCount": 1
     },
@@ -328,7 +328,7 @@
     },
     {
       "tableIndex": 26,
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
@@ -352,7 +352,7 @@
     },
     {
       "tableIndex": 28,
-      "subCategory": "OS Boot Device",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
@@ -412,13 +412,13 @@
     },
     {
       "tableIndex": 33,
-      "subCategory": "Transceivers",
-      "parentCategory": "Networking",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Power Supplies",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Transceiver",
-      "constraint": "max 16",
-      "minQty": 0,
-      "maxQty": 16,
+      "detectedRole": "Power Supply",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
       "skuCount": 2,
       "rulesCount": 1
     },
@@ -436,7 +436,7 @@
     },
     {
       "tableIndex": 35,
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Flex Slot Power Supplies",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
@@ -448,7 +448,7 @@
     },
     {
       "tableIndex": 36,
-      "subCategory": "HPE Virtualization",
+      "subCategory": "Power Cords & Jumper Cables",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
@@ -460,7 +460,7 @@
     },
     {
       "tableIndex": 37,
-      "subCategory": "Security Hardware",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
       "detectedRole": "Chassis Infrastructure",
@@ -496,7 +496,7 @@
     },
     {
       "tableIndex": 40,
-      "subCategory": "Compute Ops Management SKUs",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
@@ -508,7 +508,7 @@
     },
     {
       "tableIndex": 41,
-      "subCategory": "Compute Ops Management SKUs",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
       "detectedRole": "Service & Support",
@@ -520,7 +520,7 @@
     },
     {
       "tableIndex": 42,
-      "subCategory": "Compute Ops Management SKUs",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
@@ -532,7 +532,7 @@
     },
     {
       "tableIndex": 43,
-      "subCategory": "Compute Ops Management SKUs",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
@@ -724,7 +724,7 @@
     },
     {
       "tableIndex": 59,
-      "subCategory": "HPC Software Products",
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Operating System / License",
@@ -749,26 +749,27 @@
   ],
   "categoryDistribution": {
     "Chassis": 1,
-    "Accessories & Infrastructure": 9,
-    "Software & Licenses": 125,
+    "Accessories & Infrastructure": 10,
     "Processor": 19,
     "Cooling / Thermal": 2,
     "Memory": 20,
-    "Storage Controllers": 14,
-    "Cables & Enablement Kits": 29,
+    "Storage Controllers": 13,
+    "Cables & Enablement Kits": 31,
     "Drive Enclosures / Drives": 108,
     "Factory Configuration Settings": 1,
+    "Software & Licenses": 175,
     "PCIe Risers": 2,
-    "Networking": 24,
-    "Graphics & GPU": 2,
-    "Power Supplies": 1
+    "Networking": 22,
+    "Graphics & GPU": 5,
+    "Power Supplies": 3,
+    "HPE Compute Ops Management": 1
   },
   "chassisVariantsMatrix": {
     "P71964-B21": {
       "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
       "formFactor": "Unknown",
       "listPrice": 2375,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     }
   },
   "dataAnomalies": {

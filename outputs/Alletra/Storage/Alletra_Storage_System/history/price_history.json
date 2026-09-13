@@ -3,231 +3,276 @@
     {
       "date": "2026-08-12",
       "price": 12500,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-13",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-14",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-15",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-19",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-20",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-21",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-22",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-27",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-28",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-29",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-31",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-03",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-05",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-06",
       "price": 12500,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R0Q36A": [
     {
       "date": "2026-08-12",
       "price": 18900,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-13",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-14",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-15",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-19",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-20",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-21",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-22",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-27",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-28",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-29",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-31",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-03",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-05",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-06",
       "price": 18900,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R0Q37A": [
     {
       "date": "2026-08-12",
       "price": 15200,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-13",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-14",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-15",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-19",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-20",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-21",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-22",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-27",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-28",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-29",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-08-31",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-03",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-05",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     },
     {
       "date": "2026-09-06",
       "price": 15200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     }
   ]
 }

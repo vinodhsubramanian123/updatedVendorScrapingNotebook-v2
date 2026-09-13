@@ -1,1 +1,4592 @@
-[]
+[
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V76A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 9x5 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V74A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V77A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 9x5 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V75A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 5-year 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V78A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 5-year 9x5 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "01/04/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V79A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 3yr 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V72A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 5yr 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V73A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Description",
+    "oldValue": "NVIDIA L40S 48GB PCIe Accelerator",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Start Date",
+    "oldValue": "11/06/2023",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S2L70C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Description",
+    "oldValue": "NVIDIA RTX PRO 4500 Blackwell Server Edition 32GB PCIe Accelerator for HPE",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Start Date",
+    "oldValue": "03/16/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6W30C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Description",
+    "oldValue": "NVIDIA L4 24GB PCIe Accelerator for HPE",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Start Date",
+    "oldValue": "04/03/2023",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S0K89C",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Description",
+    "oldValue": "HPE C13-C14 IN 250V 10Amp 2m Black Jumper Cord",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C65A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Description",
+    "oldValue": "HPE Compute Cloud Management Server FIO Enablement",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Start Date",
+    "oldValue": "04/01/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L28B",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 3yr 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V84A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP 1-2 Sockets Unlimited VM w/Live Patching 5yr 24x7 Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R49A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R50A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R51A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R52A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R53A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "05/06/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3R54A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Datacenter Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets Unlimited Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets Unlimited Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat Resilient Storage 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Description",
+    "oldValue": "Red Hat Resilient Storage 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Description",
+    "oldValue": "HPE Serviceguard for Linux x86 Flex Storage Add-On Media",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "04/01/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 10-core Essentials Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  }
+]

@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "date": "2026-09-11",
+    "productNumber": "469776-715",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-09-11",
+    "productNumber": "HA453A1-001",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-09-11",
+    "productNumber": "HA453A1-003",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-09-11",
+    "productNumber": "ZU706A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-09-11",
+    "productNumber": "ZU721A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  },
+  {
+    "date": "2026-09-11",
+    "productNumber": "ZU723A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Standard"
+  }
+]

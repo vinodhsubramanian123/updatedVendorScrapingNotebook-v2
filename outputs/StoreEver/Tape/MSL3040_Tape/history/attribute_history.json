@@ -1,1 +1,5752 @@
-[]
+[
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2R41A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Availability",
+    "oldValue": "Available in OCA product catalog",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2R41A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AM495A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE StoreEver 1/8 G2 Tape Autoloader and MSL Tape Library Encryption Kit",
+    "newValue": "2,500.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AM495A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AM495A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AM495A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q64A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supply",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 Upgrade Power Supply Kit",
+    "newValue": "780.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q64A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supply",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q64A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supply",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q64A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supply",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ838A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
+    "newValue": "208.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ838A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ838A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ838A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ838A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ836A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
+    "newValue": "115.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ836A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ836A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ836A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ836A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ839A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
+    "newValue": "253.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ839A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ839A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ839A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ839A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK732A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable",
+    "newValue": "115.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK732A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK732A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK732A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK732A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK737A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable",
+    "newValue": "415.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK737A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK737A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK737A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK737A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ837A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+    "newValue": "162.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ837A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ837A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ837A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AJ837A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK735A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
+    "newValue": "195.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK735A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK735A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK735A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK735A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK733A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable",
+    "newValue": "130.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK733A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK733A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK733A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK733A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK736A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable",
+    "newValue": "239.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK736A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK736A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK736A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK736A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK734A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Description",
+    "oldValue": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable",
+    "newValue": "147.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK734A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK734A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK734A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "QK734A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "FibreChannel Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716191-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE 2.0m External Mini SAS High Density to Mini SAS Cable",
+    "newValue": "221.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716191-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716191-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716191-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716191-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716193-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE 4.0m External Mini SAS High Density to Mini SAS Cable",
+    "newValue": "324.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716193-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716193-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716193-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716193-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R10A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 4m Cable",
+    "newValue": "501.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R10A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "05/31/2027"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R10A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R10A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R10A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE470A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE SAS Min-Min 1x-2M Cable Assembly Kit",
+    "newValue": "78.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE470A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "05/31/2022"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE470A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE470A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE470A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE465A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE SAS Min-Min 1x-4m Cable Assembly Kit",
+    "newValue": "110.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE465A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "01/31/2022"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE465A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE465A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AE465A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE StoreEver 2m External Mini-SAS to 4x1 Mini-SAS Cable",
+    "newValue": "264.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2025"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE StoreEver 4m External Mini-SAS to 4x1 Mini-SAS Cable",
+    "newValue": "410.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2025"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AN976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R09A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 2m Cable",
+    "newValue": "358.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R09A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "05/31/2027"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R09A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R09A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "K2R09A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716197-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE External 2.0m (6ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+    "newValue": "Description"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716197-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "HPE Recommended"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716197-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716197-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716197-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716199-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE External 4.0m (13ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+    "newValue": "287.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716199-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716199-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716199-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "716199-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35176-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 2m Fanout Cable",
+    "newValue": "206.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35176-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35176-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35176-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35176-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35175-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Description",
+    "oldValue": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 4m Fanout Cable",
+    "newValue": "369.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35175-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35175-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35175-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "P35175-B21",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Expansion Modules",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 Scalable Library Expansion Module",
+    "newValue": "7,275.00"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Expansion Modules",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Expansion Modules",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Expansion Modules",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-3 Ultrium 800 GB Re-writable Data Cartridge",
+    "newValue": "61.35"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-3 Ultrium 800 GB WORM Data Cartridge",
+    "newValue": "HPE ProLiant Server Option (C7973W)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-3 Ultrium 800GB RW Labeled Data Cartridge 20 Pack",
+    "newValue": "HPE ProLiant Server Option (C7973AL)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-4 Ultrium 1.6TB Non-custom Label Data Cartridge 20 Pack",
+    "newValue": "695.91"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-4 Ultrium 1.6TB RW Custom Label Data Cartridge 20 Pack",
+    "newValue": "1,182.63"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-4 Ultrium Read/Write Bar Code Label Pack",
+    "newValue": "197.87"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-4 Ultrium WORM Bar Code Label Pack",
+    "newValue": "199.05"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 RW Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "929.43"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium 3TB RW 20 Data Cartridges",
+    "newValue": "HPE ProLiant Server Option (C7975AA)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium 3TB RW Data Cartridge",
+    "newValue": "46.46"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium 3TB WORM Data Cartridge",
+    "newValue": "53.12"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium Non-custom Labeled Data Cartridge 20 Pack",
+    "newValue": "929.43"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium RW Bar Code Label Pack",
+    "newValue": "92.99"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-5 Ultrium WORM Bar Code Label Pack",
+    "newValue": "199.05"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB BaFe RW Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "1,146.39"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB BaFe RW Data Cartridge",
+    "newValue": "57.32"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB BaFe RW Non Custom Labeled Data Cartridges 20 Pack",
+    "newValue": "1,293.13"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB BaFe WORM Data Cartridge",
+    "newValue": "86.76"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB MP RFID RW Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "HPE ProLiant Server Option (C7976AF)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB RW 20 Data Cartridges",
+    "newValue": "HPE ProLiant Server Option (C7976AA)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges Library Pack without Cases",
+    "newValue": "1,530.46"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "1,530.47"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB RW Data Cartridge",
+    "newValue": "76.53"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB RW Non Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "1,530.47"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB WORM Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "2,176.50"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium 6.25TB WORM Data Cartridge",
+    "newValue": "108.82"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-6 Ultrium RW Bar Code Label Pack",
+    "newValue": "92.99"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium 15TB Eco Case Data Cartridge 20 Pack",
+    "newValue": "2,205.96"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium 15TB RW Data Cartridge",
+    "newValue": "110.30"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium Non Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "2,205.96"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium RFID RW Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "HPE ProLiant Server Option (C7977AF)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium RW Bar Code Label Pack",
+    "newValue": "92.99"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium RW Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "2,205.96"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium RW No Case Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "2,205.96"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled Library Pack without Cases",
+    "newValue": "1,617.88"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled with Cases",
+    "newValue": "1,617.88"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Non Custom Labeled with Cases",
+    "newValue": "1,617.88"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium Type M RW Bar Code Label Pack",
+    "newValue": "199.05"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium WORM Custom Labeled Data Cartridge 20 Pack",
+    "newValue": "3,044.17"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-7 Ultrium WORM Data Cartridge",
+    "newValue": "152.20"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB RW 20 Data Cartridges Library Pack without Cases",
+    "newValue": "2,348.24"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges with Cases",
+    "newValue": "2,348.24"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
+    "newValue": "2,348.24"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB RW Data Cartridge",
+    "newValue": "117.43"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB RW Non Custom Labeled Library Pack 20 Data Cartridges with Cases",
+    "newValue": "2,348.24"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB WORM Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "3,240.72"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium 30TB WORM Data Cartridge",
+    "newValue": "162.07"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-8 Ultrium RW Bar Code Label Pack",
+    "newValue": "92.99"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB RW 20 Data Cartridges Library Pack without Cases",
+    "newValue": "2,911.01"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB RW Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "2,911.01"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
+    "newValue": "2,911.01"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB RW Data Cartridge",
+    "newValue": "145.56"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB RW Non Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "2,911.01"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB WORM Custom Labeled 20 Data Cartridges with Cases",
+    "newValue": "3,976.02"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium 45TB WORM Data Cartridge",
+    "newValue": "198.80"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO-9 Ultrium RW Bar Code Label Pack",
+    "newValue": "92.99"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO2 Ultrium 400GB RW Data Tape",
+    "newValue": "HPE ProLiant Server Option (C7972A)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO4 Ultrium 1.6TB Read/Write Data Cartridge",
+    "newValue": "58.24"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE LTO4 Ultrium 1.6TB WORM Data Tape Cartridge",
+    "newValue": "41.63"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE Ultrium 3 RW Bar Code Label Pack",
+    "newValue": "HPE ProLiant Server Option (Q2007A)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE Ultrium 3 WORM Bar Code Label Pack",
+    "newValue": "HPE ProLiant Server Option (Q2008A)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE Ultrium 400GB Non-custom Label 20 Pack",
+    "newValue": "HPE ProLiant Server Option (C7972AN)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE Ultrium 800GB Non-custom Label 20 Pack",
+    "newValue": "HPE ProLiant Server Option (C7973AN)"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Description",
+    "oldValue": "HPE Ultrium Universal Cleaning Cartridge",
+    "newValue": "77.62"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q63A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SAS Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2009A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2010A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7975AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2011A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2012A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976B",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976BW",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AA",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7976W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2013A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AF",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2014A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078ML",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078MN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2016A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7977W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2078W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2015A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AH",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AC",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079WL",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2079W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2017A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7974W",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2007A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q2008A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7972AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7973AN",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C7978A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Media",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  }
+]

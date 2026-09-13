@@ -3,14 +3,16 @@
     {
       "date": "2026-08-10",
       "price": 18000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P48821-B21": [
     {
       "date": "2026-08-10",
       "price": 14500,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P57100-B21": [

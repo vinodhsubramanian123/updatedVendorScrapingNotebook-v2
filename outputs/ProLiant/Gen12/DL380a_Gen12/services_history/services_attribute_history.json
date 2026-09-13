@@ -1,1 +1,6662 @@
-[]
+[
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Description",
+    "oldValue": "HPE InfiniBand NDR/Ethernet 400Gb 1-port QSFP112 PCIe5 x16 MCX715105AS-WEAT Adapter",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Start Date",
+    "oldValue": "04/07/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S5R60A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Description",
+    "oldValue": "HPE Slingshot SA210S Ethernet 200Gb 1-port PCIe NIC",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Start Date",
+    "oldValue": "04/05/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R4K46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Description",
+    "oldValue": "HPE Slingshot SA410S 400GbE 1-port QSFP PCIe5 HHHL NIC",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Start Date",
+    "oldValue": "03/31/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2029",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R9Y95A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1720E 64Gb 2p FC SecureHBA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2029",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1620E 32Gb 2p FC SecureHBA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "02/24/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2029",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4S01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1610Q 32Gb 1-port Fibre Channel Host Bus Adapter",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "10/07/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E08A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "10/07/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2E09A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1700Q 64Gb 1-port Fibre Channel Host Bus Adapter",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "02/06/2023",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Description",
+    "oldValue": "HPE SN1700Q 64Gb 2-port Fibre Channel Host Bus Adapter",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Start Date",
+    "oldValue": "02/06/2023",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Description",
+    "oldValue": "NVIDIA 2-way NVLink Bridge for H200 NVL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Start Date",
+    "oldValue": "02/03/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A90C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Description",
+    "oldValue": "NVIDIA 4-way NVLink Bridge for H200 NVL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Start Date",
+    "oldValue": "02/03/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4A91C",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Description",
+    "oldValue": "HPE C19-C20 IN 250V 16Amp 2.5m Black Jumper Cord",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1C66A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Description",
+    "oldValue": "HPE Cray XD670 SDG-400 - SDG-300 300V 1m Power Cord",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Start Date",
+    "oldValue": "11/04/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4X23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Description",
+    "oldValue": "HPE Serviceguard for Linux x86 Flex Storage Add-On Media",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Start Date",
+    "oldValue": "10/04/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "04/01/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R8V48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Compute Node 1yr Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Compute Node 3yr Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Compute Node 5yr Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 1yr Subscription 24x7 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 1yr Subscription 9x5 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 3yr Subscription 24x7 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 3yr Subscription 9x5 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 5yr Subscription 24x7 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux for HPC Head Node 5yr Subscription 9x5 Support Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Start Date",
+    "oldValue": "12/03/2018",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R1P39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Description",
+    "oldValue": "HPE Compute Cloud Management Server FIO Enablement",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Start Date",
+    "oldValue": "04/01/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S1A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets Unlimited Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T26A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets Unlimited Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T27A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T22A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat High Availability 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T23A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Resilient Storage 2 Sockets or 2 Guests 1-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T24A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Resilient Storage 2 Sockets or 2 Guests 3-year Subscription LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "11/07/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4T25A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets Unlimited Guests 1yr Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A03A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets Unlimited Guests 3-year Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A04A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets Unlimited Guests 5-year Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A05A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets or 2 Guests 1yr Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A00A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets or 2 Guests 3-year Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A01A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "Red Hat Satellite 2 Sockets or 2 Guests 5-year Subscription Flexible LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Start Date",
+    "oldValue": "02/04/2019",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R2A02A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Description",
+    "oldValue": "Intel Virtual RAID on CPU Premium FIO Software for HPE",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Start Date",
+    "oldValue": "04/06/2021",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "R7J57A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Description",
+    "oldValue": "Intel Virtual RAID on CPU RAID 1 FIO Software for HPE",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Start Date",
+    "oldValue": "04/01/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S3Q19A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N87A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N88A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 3yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P10A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets Unlimited VM 5yr Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P11A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P12A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Sup Flex LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7P13A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6K30B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L35B",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Datacenter Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2019 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2022 Downgrade Standard Reseller Option Kit Japanese ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\",\"Price Delta (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 10-core Essentials Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Description",
+    "oldValue": "Microsoft Windows Server 2025 16-core Standard Reseller Option Kit WW ESD LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Start Date",
+    "oldValue": "09/02/2025",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S6L38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N85A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N86A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N89A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N90A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N91A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N92A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 24x7 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N93A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Description",
+    "oldValue": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 9x5 LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Start Date",
+    "oldValue": "03/02/2026",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S7N94A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 1-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R31A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 3-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R32A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 5-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R33A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 1-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R34A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 3-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R35A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Virtual Datacenter 2 Sockets 5-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 1-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R37A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 3-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R38A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 5-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R39A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 1-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R40A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 3-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R41A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets or 2 Guests 5-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R42A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 1 Guest 1-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 1 Guest 1-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 1-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R45A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 1-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R46A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 3-year Subscription 24x7 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R47A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Description",
+    "oldValue": "Red Hat Enterprise Linux Server 2 Sockets 4 Guests 3-year Subscription 9x5 Support LTU",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Option Type",
+    "oldValue": "Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "10/07/2024",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "11/03/2027",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "S4R48A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": ""
+  }
+]

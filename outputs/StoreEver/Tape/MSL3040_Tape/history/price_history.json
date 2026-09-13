@@ -3,630 +3,720 @@
     {
       "date": "2026-09-09",
       "price": 4500,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "AM495A": [
     {
       "date": "2026-09-09",
-      "price": 2500,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2500
     }
   ],
   "Q6Q64A": [
     {
       "date": "2026-09-09",
-      "price": 780,
-      "status": "ADDED"
+      "price": 12042017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 780
     }
   ],
   "AJ838A": [
     {
       "date": "2026-09-09",
-      "price": 208,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 208
     }
   ],
   "AJ836A": [
     {
       "date": "2026-09-09",
-      "price": 115,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 115
     }
   ],
   "AJ839A": [
     {
       "date": "2026-09-09",
-      "price": 253,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 253
     }
   ],
   "QK732A": [
     {
       "date": "2026-09-09",
-      "price": 115,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 115
     }
   ],
   "QK737A": [
     {
       "date": "2026-09-09",
-      "price": 415,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 415
     }
   ],
   "AJ837A": [
     {
       "date": "2026-09-09",
-      "price": 162,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 162
     }
   ],
   "QK735A": [
     {
       "date": "2026-09-09",
-      "price": 195,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 195
     }
   ],
   "QK733A": [
     {
       "date": "2026-09-09",
-      "price": 130,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 130
     }
   ],
   "QK736A": [
     {
       "date": "2026-09-09",
-      "price": 239,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 239
     }
   ],
   "QK734A": [
     {
       "date": "2026-09-09",
-      "price": 147,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 147
     }
   ],
   "716191-B21": [
     {
       "date": "2026-09-09",
-      "price": 221,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 221
     }
   ],
   "716193-B21": [
     {
       "date": "2026-09-09",
-      "price": 324,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 324
     }
   ],
   "K2R10A": [
     {
       "date": "2026-09-09",
-      "price": 501,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 501
     }
   ],
   "AE470A": [
     {
       "date": "2026-09-09",
-      "price": 78,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 78
     }
   ],
   "AE465A": [
     {
       "date": "2026-09-09",
-      "price": 110,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 110
     }
   ],
   "AN975A": [
     {
       "date": "2026-09-09",
-      "price": 264,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 264
     }
   ],
   "AN976A": [
     {
       "date": "2026-09-09",
-      "price": 410,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 410
     }
   ],
   "K2R09A": [
     {
       "date": "2026-09-09",
-      "price": 358,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 358
     }
   ],
   "716197-B21": [
     {
       "date": "2026-09-09",
-      "price": 177,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 177
     }
   ],
   "716199-B21": [
     {
       "date": "2026-09-09",
-      "price": 287,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 287
     }
   ],
   "P35176-B21": [
     {
       "date": "2026-09-09",
-      "price": 206,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 206
     }
   ],
   "P35175-B21": [
     {
       "date": "2026-09-09",
-      "price": 369,
-      "status": "ADDED"
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 369
     }
   ],
   "Q6Q63A": [
     {
       "date": "2026-09-09",
-      "price": 7275,
-      "status": "ADDED"
+      "price": 12042017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 7275
     }
   ],
   "C7973A": [
     {
       "date": "2026-09-09",
-      "price": 61.35,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 61.35
     }
   ],
   "C7973W": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7973AL": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10312018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7974AN": [
     {
       "date": "2026-09-09",
-      "price": 695.91,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 695.91
     }
   ],
   "C7974AL": [
     {
       "date": "2026-09-09",
-      "price": 1182.63,
-      "status": "ADDED"
+      "price": 10312018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1182.63
     }
   ],
   "Q2009A": [
     {
       "date": "2026-09-09",
-      "price": 197.87,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 197.87
     }
   ],
   "Q2010A": [
     {
       "date": "2026-09-09",
-      "price": 199.05,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 199.05
     }
   ],
   "C7975AL": [
     {
       "date": "2026-09-09",
-      "price": 929.43,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 929.43
     }
   ],
   "C7975AA": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 12032018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7975A": [
     {
       "date": "2026-09-09",
-      "price": 46.46,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 46.46
     }
   ],
   "C7975W": [
     {
       "date": "2026-09-09",
-      "price": 53.12,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 53.12
     }
   ],
   "C7975AN": [
     {
       "date": "2026-09-09",
-      "price": 929.43,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 929.43
     }
   ],
   "Q2011A": [
     {
       "date": "2026-09-09",
-      "price": 92.99,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 92.99
     }
   ],
   "Q2012A": [
     {
       "date": "2026-09-09",
-      "price": 199.05,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 199.05
     }
   ],
   "C7976BL": [
     {
       "date": "2026-09-09",
-      "price": 1146.39,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1146.39
     }
   ],
   "C7976B": [
     {
       "date": "2026-09-09",
-      "price": 57.32,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 57.32
     }
   ],
   "C7976BN": [
     {
       "date": "2026-09-09",
-      "price": 1293.13,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1293.13
     }
   ],
   "C7976BW": [
     {
       "date": "2026-09-09",
-      "price": 86.76,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 86.76
     }
   ],
   "C7976AF": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7976AA": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 12032018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7976AC": [
     {
       "date": "2026-09-09",
-      "price": 1530.46,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1530.46
     }
   ],
   "C7976AL": [
     {
       "date": "2026-09-09",
-      "price": 1530.47,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1530.47
     }
   ],
   "C7976A": [
     {
       "date": "2026-09-09",
-      "price": 76.53,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 76.53
     }
   ],
   "C7976AN": [
     {
       "date": "2026-09-09",
-      "price": 1530.47,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1530.47
     }
   ],
   "C7976WL": [
     {
       "date": "2026-09-09",
-      "price": 2176.5,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2176.5
     }
   ],
   "C7976W": [
     {
       "date": "2026-09-09",
-      "price": 108.82,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 108.82
     }
   ],
   "Q2013A": [
     {
       "date": "2026-09-09",
-      "price": 92.99,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 92.99
     }
   ],
   "C7977AH": [
     {
       "date": "2026-09-09",
-      "price": 2205.96,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2205.96
     }
   ],
   "C7977A": [
     {
       "date": "2026-09-09",
-      "price": 110.3,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 110.3
     }
   ],
   "C7977AN": [
     {
       "date": "2026-09-09",
-      "price": 2205.96,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2205.96
     }
   ],
   "C7977AF": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q2014A": [
     {
       "date": "2026-09-09",
-      "price": 92.99,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 92.99
     }
   ],
   "C7977AL": [
     {
       "date": "2026-09-09",
-      "price": 2205.96,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2205.96
     }
   ],
   "C7977AC": [
     {
       "date": "2026-09-09",
-      "price": 2205.96,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2205.96
     }
   ],
   "Q2078MC": [
     {
       "date": "2026-09-09",
-      "price": 1617.88,
-      "status": "ADDED"
+      "price": 2052018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1617.88
     }
   ],
   "Q2078ML": [
     {
       "date": "2026-09-09",
-      "price": 1617.88,
-      "status": "ADDED"
+      "price": 2052018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1617.88
     }
   ],
   "Q2078MN": [
     {
       "date": "2026-09-09",
-      "price": 1617.88,
-      "status": "ADDED"
+      "price": 2052018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1617.88
     }
   ],
   "Q2016A": [
     {
       "date": "2026-09-09",
-      "price": 199.05,
-      "status": "ADDED"
+      "price": 2052018,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 199.05
     }
   ],
   "C7977WL": [
     {
       "date": "2026-09-09",
-      "price": 3044.17,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 3044.17
     }
   ],
   "C7977W": [
     {
       "date": "2026-09-09",
-      "price": 152.2,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 152.2
     }
   ],
   "Q2078AH": [
     {
       "date": "2026-09-09",
-      "price": 2348.24,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2348.24
     }
   ],
   "Q2078AL": [
     {
       "date": "2026-09-09",
-      "price": 2348.24,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2348.24
     }
   ],
   "Q2078AC": [
     {
       "date": "2026-09-09",
-      "price": 2348.24,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2348.24
     }
   ],
   "Q2078A": [
     {
       "date": "2026-09-09",
-      "price": 117.43,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 117.43
     }
   ],
   "Q2078AN": [
     {
       "date": "2026-09-09",
-      "price": 2348.24,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2348.24
     }
   ],
   "Q2078WL": [
     {
       "date": "2026-09-09",
-      "price": 3240.72,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 3240.72
     }
   ],
   "Q2078W": [
     {
       "date": "2026-09-09",
-      "price": 162.07,
-      "status": "ADDED"
+      "price": 8142019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 162.07
     }
   ],
   "Q2015A": [
     {
       "date": "2026-09-09",
-      "price": 92.99,
-      "status": "ADDED"
+      "price": 12042017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 92.99
     }
   ],
   "Q2079AH": [
     {
       "date": "2026-09-09",
-      "price": 2911.01,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2911.01
     }
   ],
   "Q2079AL": [
     {
       "date": "2026-09-09",
-      "price": 2911.01,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2911.01
     }
   ],
   "Q2079AC": [
     {
       "date": "2026-09-09",
-      "price": 2911.01,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2911.01
     }
   ],
   "Q2079A": [
     {
       "date": "2026-09-09",
-      "price": 145.56,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 145.56
     }
   ],
   "Q2079AN": [
     {
       "date": "2026-09-09",
-      "price": 2911.01,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 2911.01
     }
   ],
   "Q2079WL": [
     {
       "date": "2026-09-09",
-      "price": 3976.02,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 3976.02
     }
   ],
   "Q2079W": [
     {
       "date": "2026-09-09",
-      "price": 198.8,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 198.8
     }
   ],
   "Q2017A": [
     {
       "date": "2026-09-09",
-      "price": 92.99,
-      "status": "ADDED"
+      "price": 9072021,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 92.99
     }
   ],
   "C7972A": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7974A": [
     {
       "date": "2026-09-09",
-      "price": 58.24,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 58.24
     }
   ],
   "C7974W": [
     {
       "date": "2026-09-09",
-      "price": 41.63,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 41.63
     }
   ],
   "Q2007A": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q2008A": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7972AN": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7973AN": [
     {
       "date": "2026-09-09",
-      "price": 0,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "C7978A": [
     {
       "date": "2026-09-09",
-      "price": 77.62,
-      "status": "ADDED"
+      "price": 10232017,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 77.62
     }
   ],
   "AG467A": [
@@ -725,6 +815,266 @@
       "date": "2026-09-09",
       "price": 100,
       "status": "ADDED"
+    }
+  ],
+  "C0H28A": [
+    {
+      "date": "2026-09-09",
+      "price": 5300,
+      "status": "REMOVED"
+    }
+  ],
+  "C0H27A": [
+    {
+      "date": "2026-09-09",
+      "price": 5100,
+      "status": "REMOVED"
+    }
+  ],
+  "N7P36A": [
+    {
+      "date": "2026-09-09",
+      "price": 9362,
+      "status": "REMOVED"
+    }
+  ],
+  "N7P37A": [
+    {
+      "date": "2026-09-09",
+      "price": 9010,
+      "status": "REMOVED"
+    }
+  ],
+  "Q6Q67A": [
+    {
+      "date": "2026-09-09",
+      "price": 21600,
+      "status": "REMOVED"
+    }
+  ],
+  "Q6Q68A": [
+    {
+      "date": "2026-09-09",
+      "price": 16800,
+      "status": "REMOVED"
+    }
+  ],
+  "R6Q74A": [
+    {
+      "date": "2026-09-09",
+      "price": 33000,
+      "status": "REMOVED"
+    }
+  ],
+  "R6Q75A": [
+    {
+      "date": "2026-09-09",
+      "price": 24000,
+      "status": "REMOVED"
+    }
+  ],
+  "AF570A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF568A": [
+    {
+      "date": "2026-09-09",
+      "price": 71,
+      "status": "REMOVED"
+    }
+  ],
+  "AF557A": [
+    {
+      "date": "2026-09-09",
+      "price": 156,
+      "status": "REMOVED"
+    }
+  ],
+  "AF556A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF569A": [
+    {
+      "date": "2026-09-09",
+      "price": 65,
+      "status": "REMOVED"
+    }
+  ],
+  "142257-002": [
+    {
+      "date": "2026-09-09",
+      "price": 34,
+      "status": "REMOVED"
+    }
+  ],
+  "AF571A": [],
+  "AF561A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF566A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF558A": [
+    {
+      "date": "2026-09-09",
+      "price": 65,
+      "status": "REMOVED"
+    }
+  ],
+  "AF562A": [
+    {
+      "date": "2026-09-09",
+      "price": 194,
+      "status": "REMOVED"
+    }
+  ],
+  "SG579A": [
+    {
+      "date": "2026-09-09",
+      "price": 142,
+      "status": "REMOVED"
+    }
+  ],
+  "AF572A": [
+    {
+      "date": "2026-09-09",
+      "price": 60,
+      "status": "REMOVED"
+    }
+  ],
+  "AF560A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF559A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF567A": [
+    {
+      "date": "2026-09-09",
+      "price": 65,
+      "status": "REMOVED"
+    }
+  ],
+  "AF565A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "AF564A": [
+    {
+      "date": "2026-09-09",
+      "price": 55,
+      "status": "REMOVED"
+    }
+  ],
+  "TC406A": [
+    {
+      "date": "2026-09-09",
+      "price": 2500,
+      "status": "REMOVED"
+    }
+  ],
+  "Q8K96A": [
+    {
+      "date": "2026-09-09",
+      "price": 3000,
+      "status": "REMOVED"
+    }
+  ],
+  "Q8K97A": [
+    {
+      "date": "2026-09-09",
+      "price": 3000,
+      "status": "REMOVED"
+    }
+  ],
+  "Q8K98A": [
+    {
+      "date": "2026-09-09",
+      "price": 6000,
+      "status": "REMOVED"
+    }
+  ],
+  "Q8L00A": [
+    {
+      "date": "2026-09-09",
+      "price": 6000,
+      "status": "REMOVED"
+    }
+  ],
+  "Q8K99A": [
+    {
+      "date": "2026-09-09",
+      "price": 2000,
+      "status": "REMOVED"
+    }
+  ],
+  "469776-715": [
+    {
+      "date": "2026-09-09",
+      "price": 1,
+      "status": "REMOVED"
+    }
+  ],
+  "HA453A1-001": [
+    {
+      "date": "2026-09-09",
+      "price": 205,
+      "status": "REMOVED"
+    }
+  ],
+  "HA453A1-003": [
+    {
+      "date": "2026-09-09",
+      "price": 315,
+      "status": "REMOVED"
+    }
+  ],
+  "HA453A1-023": [
+    {
+      "date": "2026-09-09",
+      "price": 384,
+      "status": "REMOVED"
+    }
+  ],
+  "ZU706A": [
+    {
+      "date": "2026-09-09",
+      "price": 149,
+      "status": "REMOVED"
+    }
+  ],
+  "ZU723A": [
+    {
+      "date": "2026-09-09",
+      "price": 110,
+      "status": "REMOVED"
     }
   ]
 }

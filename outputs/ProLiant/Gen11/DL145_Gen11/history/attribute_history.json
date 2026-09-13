@@ -2328,5 +2328,395 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
     "newValue": "{\"Extended Price (USD)\":\"0\"}"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P11085-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P11084-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46172-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46172-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46172-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46172-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46172-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46123-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46123-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46123-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46123-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46123-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46128-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46128-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46171-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46171-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46171-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46171-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P46171-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77103-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77102-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77102-B21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77101-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-AA1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-AB1",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-291",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-021",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-A21",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-09-13",
+    "productNumber": "P77100-371",
+    "chassis": "DL145 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
   }
 ]

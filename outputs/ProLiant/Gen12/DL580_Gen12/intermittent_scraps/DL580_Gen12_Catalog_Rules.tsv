@@ -27,6 +27,12 @@ Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rul
 Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: min 1, max 2
 Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Mixing of Power cords is not allowed
 Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
-Networking	Fibre Channel Host Bus Adapters	max 8	Configuration Rule	Selection constraint for Fibre Channel Host Bus Adapters: max 8
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Supports C19/ C19-C20 Power Cords only.
-Accessories & Infrastructure	System Options	optional	Configuration Rule	Private Product is not valid for current customer account
+Networking	Fibre Channel Host Bus Adapters	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Networking	Fibre Channel HBA	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	SUSE Linux Enterprise Server	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Accessories & Infrastructure	Compute Ops Management Enablement SKUs	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	High Availability Computing - Cluster Software	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	iLO	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Storage Controllers	Energy Star	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Software & Licenses	MS Windows Server	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog

@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_DL145_Gen11_1789285611439",
+      "sessionName": "DL145_Gen11",
+      "startTime": "2026-09-13T07:46:51.412Z",
+      "endTime": "2026-09-13T07:46:52.608Z",
+      "durationMs": 1196,
+      "durationSec": "1.20",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 413,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 413,
+      "validationStats": {
+        "totalEntries": 54,
+        "totalSKUs": 413,
+        "validSKUs": 413,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 182,
+        "priceErrors": 0,
+        "ruleCount": 54,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-13T07:46:51.440Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen11/DL145_Gen11/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen11/DL145_Gen11/DL145_Gen11_Catalog.json",
+          "chassisLabel": "DL145 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:46:52.427Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 42,
+          "totalUniqueSKUs": 413,
+          "incrementalStats": {
+            "totalScrapedSkus": 413,
+            "unchangedSkusCount": 413,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 61950,
+            "estimatedProcessingTimeSavedMs": 82600
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:46:52.437Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 54,
+            "totalSKUs": 413,
+            "validSKUs": 413,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 182,
+            "priceErrors": 0,
+            "ruleCount": 54,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:46:52.607Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen11/DL145_Gen11/DL145_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 413,
+      "classified": 413,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL145_Gen11_1789284287733",
+      "sessionName": "DL145_Gen11",
+      "startTime": "2026-09-13T07:24:47.733Z",
+      "endTime": "2026-09-13T07:24:48.673Z",
+      "durationMs": 940,
+      "durationSec": "0.94",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 413,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 413,
+      "validationStats": {
+        "totalEntries": 53,
+        "totalSKUs": 413,
+        "validSKUs": 413,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 182,
+        "priceErrors": 0,
+        "ruleCount": 53,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-13T07:24:47.734Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen11/DL145_Gen11/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen11/DL145_Gen11/DL145_Gen11_Catalog.json",
+          "chassisLabel": "DL145 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:24:48.520Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 43,
+          "totalUniqueSKUs": 413,
+          "incrementalStats": {
+            "totalScrapedSkus": 413,
+            "unchangedSkusCount": 357,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 56,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 53550,
+            "estimatedProcessingTimeSavedMs": 71400
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:24:48.530Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 53,
+            "totalSKUs": 413,
+            "validSKUs": 413,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 182,
+            "priceErrors": 0,
+            "ruleCount": 53,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-13T07:24:48.673Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen11/DL145_Gen11/DL145_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 413,
+      "classified": 413,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL145_Gen11_1789040661776",
       "sessionName": "DL145_Gen11",
       "startTime": "2026-09-10T11:44:21.776Z",
