@@ -22,7 +22,7 @@ function isExcludedPcieRole(role) {
 
 const PRIMARY_CABLE_KIT_SKUS = new Set(['P56073-B21']);
 const SECONDARY_CABLE_KIT_SKUS = new Set(['P56074-B21']);
-const GPU_POWER_CABLE_KIT_SKUS = new Set(['P48816-B21', 'P76450-B21']);
+const GPU_POWER_CABLE_KIT_SKUS = new Set(['P48816-B21', 'P76450-B21', 'P74700-B21']);
 const PRIMARY_RISER_SKUS = new Set(['P48803-B21']);
 const SECONDARY_RISER_SKUS = new Set(['P51083-B21', 'P48802-B21']);
 const TERTIARY_RISER_SKUS = new Set(['P48804-B21']);
@@ -34,18 +34,22 @@ function tallyPcieCablesAndGpus(tally, desc, sku, qty, role) {
   if ((desc.includes('secondary') && (desc.includes('cable kit') || desc.includes('sec cbl') || desc.includes('riser cable'))) || SECONDARY_CABLE_KIT_SKUS.has(sku)) {
     tally.hasSecondaryCableKit = true;
   }
-  if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || GPU_POWER_CABLE_KIT_SKUS.has(sku)) {
+  if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || desc.includes('gpu 16-pin') || GPU_POWER_CABLE_KIT_SKUS.has(sku)) {
     tally.hasGpuPowerCableKit = true;
-    tally.gpuPowerCableKitCount += qty;
+    // On DL380a Gen12, P74700-B21 cables 2 GPUs per kit
+    const multiplier = (sku === 'P74700-B21' || desc.includes('gpu 16-pin')) ? 2 : 1;
+    tally.gpuPowerCableKitCount += (qty * multiplier);
   }
   if (isGpuComponent(role, desc)) {
     tally.gpuCount += qty;
   }
 }
 
-function tallyPcieCardDemand(tally, desc, qty, role) {
+function tallyPcieCardDemand(tally, desc, qty, role, isDl380a = false) {
   if (isExcludedPcieRole(role)) return;
   if (desc.includes('fio configuration')) return;
+  // DL380a front-bay accelerators sit on front switchboards / captive risers, not rear PCIe risers
+  if (isDl380a && isGpuComponent(role, desc)) return;
 
   const isPcieCandidate = role === 'GPU / Accelerator' || role === 'Network Adapter' || 
                           role === 'Storage Controller' || role === 'Fibre Channel HBA' || 
@@ -112,6 +116,11 @@ function tallyPcieItems(items, catalogData) {
     riserEvidence: []
   };
 
+  const isDl380a = items.some(it => {
+    const d = (it.description || '').toLowerCase();
+    return d.includes('dl380a') || cleanBaseSKU(it.sku) === 'P76706-B21';
+  });
+
   for (const it of items) {
     let desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
@@ -129,7 +138,7 @@ function tallyPcieItems(items, catalogData) {
     }
 
     tallyPcieCablesAndGpus(tally, desc, sku, qty, role);
-    tallyPcieCardDemand(tally, desc, qty, role);
+    tallyPcieCardDemand(tally, desc, qty, role, isDl380a);
     tallyRiserCards(tally, desc, sku, qty, role);
   }
 

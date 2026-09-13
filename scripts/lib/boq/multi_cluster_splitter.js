@@ -571,3 +571,38 @@ module.exports = {
   analyzeAndPartitionClusters,
   splitAndWriteClusterWorkbooks
 };
+
+// ── CLI Runner ─────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/lib/boq/multi_cluster_splitter.js <tender_file.xlsx> [output_dir] [--json]');
+    process.exit(0);
+  }
+  const filePath = path.resolve(args[0]);
+  const outDir = args[1] && !args[1].startsWith('--') ? path.resolve(args[1]) : path.join(path.dirname(filePath), 'split_clusters');
+  const jsonOut = args.includes('--json');
+
+  try {
+    const rawItems = extractRawItemsFromWorkbook(filePath);
+    const partition = analyzeAndPartitionClusters(rawItems, path.basename(filePath));
+    const result = splitAndWriteClusterWorkbooks(filePath, outDir);
+
+    if (jsonOut) {
+      console.log(JSON.stringify(result, null, 2));
+    } else {
+      console.log('\n===============================================================');
+      console.log(`🧩 MULTI-CLUSTER TENDER SPLITTER: ${path.basename(filePath)}`);
+      console.log(`🏢 Total Chassis Count : ${result.totalChassis} nodes`);
+      console.log(`📦 Discovered Clusters : ${result.clusterCount}`);
+      console.log('---------------------------------------------------------------');
+      result.workbooks.forEach((wb, i) => {
+        console.log(`Cluster ${i + 1} [${wb.clusterName}]: ${wb.multiplier}x nodes (${wb.itemCount} SKUs/node) -> ${wb.filePath}`);
+      });
+      console.log('===============================================================\n');
+    }
+  } catch (err) {
+    console.error(`Multi-cluster splitting failed: ${err.message}`);
+    process.exit(1);
+  }
+}

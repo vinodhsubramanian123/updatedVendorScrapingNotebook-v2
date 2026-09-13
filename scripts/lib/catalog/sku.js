@@ -121,8 +121,10 @@ function classifyOptionType(skuStr) {
 function isServiceSku(skuStr) {
   if (!skuStr) return false;
   const clean = cleanBaseSKU(skuStr).trim();
-  // Service SKUs typically start with H, U, R, S or end with AAE (software E-LTU)
-  return /^[HURS][A-Z0-9]{4,11}$/i.test(clean) || /^[A-Z0-9]{5,8}AAE$/i.test(clean);
+  // Service SKUs typically start with H (Care Packs: HA114A1, HU4B2A3, H7J34A3),
+  // U (legacy Care Packs: U4391E), or end with AAE (software E-LTU: R7A11AAE, E5Y35AAE).
+  // Standard 6-char hardware SKUs like S3U30C (H200 GPU), S2L70C (L40S GPU), R2E09A (FC HBA) are physical hardware.
+  return /^[HU][A-Z0-9]{4,11}$/i.test(clean) || /^[A-Z0-9]{5,8}AAE$/i.test(clean);
 }
 
 /**

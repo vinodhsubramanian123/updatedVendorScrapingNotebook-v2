@@ -321,9 +321,33 @@ function filterCatalogsByChassisFirewall(catalogPaths, chassisName) {
   if (!chassisName) return catalogPaths;
   const normChassis = baseProductId(chassisName).toLowerCase().replace(/[^a-z0-9]/g, '');
 
+  const isDl380a = normChassis.includes('380a');
+  const isDl380NonA = normChassis.includes('380') && !isDl380a;
+  const hasGen11 = normChassis.includes('gen11');
+  const hasGen12 = normChassis.includes('gen12');
+
   return catalogPaths.filter(cDir => {
-    const normFolder = baseProductId(path.basename(cDir)).toLowerCase().replace(/[^a-z0-9]/g, '');
-    return normChassis === normFolder;
+    const folderBase = baseProductId(path.basename(cDir));
+    const normFolder = folderBase.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Direct match
+    if (normChassis === normFolder) return true;
+
+    // Generation isolation firewall (INV-48)
+    if (hasGen11 && !normFolder.includes('gen11')) return false;
+    if (hasGen12 && !normFolder.includes('gen12')) return false;
+
+    // Strict DL380a vs DL380 isolation
+    if (isDl380a) {
+      return normFolder.includes('380a');
+    }
+    if (isDl380NonA) {
+      if (normFolder.includes('380a')) return false; // Never match DL380a when standard DL380 is requested
+      return normFolder.includes('380');
+    }
+
+    // Normalized prefix match (e.g. "dl145" matches "dl145gen11")
+    return normFolder.startsWith(normChassis) || normChassis.startsWith(normFolder);
   });
 }
 

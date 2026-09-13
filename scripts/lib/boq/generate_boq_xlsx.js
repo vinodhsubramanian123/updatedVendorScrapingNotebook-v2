@@ -208,8 +208,25 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
     border: borderThin
   });
 
-  // Ensure clusters is an array
-  const clusterList = Array.isArray(clusters) ? clusters : [{ name: 'Default_Cluster', multiplier: 1, items: clusters || [] }];
+  // Ensure clusters is an array and robustly handle evalResults objects
+  let clusterList = [];
+  if (Array.isArray(clusters)) {
+    clusterList = clusters;
+  } else if (clusters && typeof clusters === 'object') {
+    if (Array.isArray(clusters.clusters) && clusters.clusters.length > 0) {
+      clusterList = clusters.clusters;
+    } else {
+      const rankedSolution = clusters.conflictGraph?.rankedSolutions?.find(s => s.rank === 1);
+      const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || clusters.parsedItems || clusters.items || [];
+      clusterList = [{
+        name: clusters.chassis || 'Server_Cluster',
+        multiplier: clusters.multiplier || 1,
+        items: Array.isArray(items) ? items : []
+      }];
+    }
+  } else {
+    clusterList = [{ name: 'Default_Cluster', multiplier: 1, items: [] }];
+  }
   let grandTotal = 0;
   let totalServerNodes = 0;
 
@@ -313,3 +330,51 @@ module.exports = {
   generateProfessionalBOQ,
   generatePartnerPortalUploadBOM
 };
+
+// ── CLI Runner ─────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/lib/boq/generate_boq_xlsx.js <input_file> [output_path.xlsx] [--tier <rank>] [--partner-portal]');
+    console.log('  <input_file>        Evaluation JSON or BOQ file (.csv, .xlsx)');
+    console.log('  [output_path.xlsx]  Target output path (default: outputs/temp/<name>_evaluated.xlsx)');
+    console.log('  --tier <rank>       Strategy Rank tier to export (1-5, default: 1)');
+    console.log('  --partner-portal    Generate 7-column Partner Portal Upload format');
+    process.exit(0);
+  }
+
+  const inputFile = path.resolve(args[0]);
+  const isPartnerPortal = args.includes('--partner-portal');
+  const tierIdx = args.indexOf('--tier');
+  const rankTier = tierIdx !== -1 && args[tierIdx + 1] ? parseInt(args[tierIdx + 1], 10) : 1;
+
+  let outPath = null;
+  if (args[1] && !args[1].startsWith('--')) {
+    outPath = path.resolve(args[1]);
+  } else {
+    const baseName = path.basename(inputFile, path.extname(inputFile));
+    const modeName = isPartnerPortal ? 'partner_portal_upload' : `rank${rankTier}_executive`;
+    outPath = path.resolve(path.join(__dirname, '..', '..', '..', 'outputs', 'temp', `${baseName}_${modeName}.xlsx`));
+  }
+
+  try {
+    let evalResults = null;
+    if (inputFile.endsWith('.json')) {
+      evalResults = JSON.parse(fs.readFileSync(inputFile, 'utf-8'));
+    } else {
+      const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
+      evalResults = evaluateBOQMultiAspect(inputFile);
+    }
+
+    if (isPartnerPortal) {
+      generatePartnerPortalUploadBOM(evalResults, outPath);
+      console.log(`\n✅ Generated Partner Portal Upload Workbook: ${outPath}`);
+    } else {
+      generateProfessionalBOQ(evalResults, outPath, evalResults.chassis || 'DL380_Gen12', rankTier);
+      console.log(`\n✅ Generated Executive BOQ Workbook (Rank ${rankTier}): ${outPath}`);
+    }
+  } catch (err) {
+    console.error(`Workbook generation error: ${err.message}`);
+    process.exit(1);
+  }
+}

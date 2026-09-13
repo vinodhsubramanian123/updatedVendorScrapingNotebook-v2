@@ -79,24 +79,36 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
   const tableResult = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const root = ${scopeExpr} || document;
-      const tables = root.querySelectorAll('table');
+      let tables = Array.from(root.querySelectorAll('table'));
+      try {
+        const iframes = root.querySelectorAll('iframe');
+        iframes.forEach(f => {
+          try {
+            if (f.contentDocument) {
+              tables = tables.concat(Array.from(f.contentDocument.querySelectorAll('table')));
+            }
+          } catch (_) {}
+        });
+      } catch (_) {}
+
       const result = [];
       tables.forEach((table, idx) => {
         const rows = [];
         table.querySelectorAll('tr').forEach(tr => {
           const cells = [];
           const badgeSpan = tr.querySelector('.td_prod');
-          const badge = badgeSpan ? (badgeSpan.innerText || '').trim() : '';
+          const badge = badgeSpan ? (badgeSpan.innerText || badgeSpan.textContent || '').trim() : '';
           tr.querySelectorAll('td, th').forEach(cell => {
             const pidSpan = cell.querySelector('._pid, .item_prod span._pid');
             if (pidSpan) {
-              const pid = (pidSpan.innerText || '').trim();
+              const pid = (pidSpan.innerText || pidSpan.textContent || '').trim();
               cells.push(badge ? (pid + ' [' + badge + ']') : pid);
             } else {
-              cells.push((cell.innerText || '').trim());
+              const cellText = (cell.innerText || cell.textContent || '').trim();
+              cells.push(cellText);
             }
           });
-          if (cells.length > 0) rows.push(cells);
+          if (cells.length > 0 && cells.some(c => c.length > 0)) rows.push(cells);
         });
         if (rows.length > 0) result.push({ tableIndex: idx, rowCount: rows.length, rows });
       });

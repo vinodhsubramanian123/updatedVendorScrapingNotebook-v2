@@ -91,7 +91,13 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
       });
     }
 
-    const entry = grouped.get(key);
+    const lifecycleStatus = getVal(row, 'Lifecycle Status') || getVal(row, 'CLIC Status') || 'Active';
+    const availability = getVal(row, 'Availability') || 'Available';
+    const leadTime = getVal(row, 'Lead Time') || '';
+    const leadTimeSource = getVal(row, 'Lead Time Source') || 'Not published by OCA';
+    const vendorAttrs = getVal(row, 'Vendor Attributes (JSON)') || '{}';
+    const role = getVal(row, 'Component Role') || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
+
     entry.skus.push({
       'Product #': sku,
       'Description': desc,
@@ -99,10 +105,18 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
       'Price (USD)': unitPrice.toFixed(2),
       'Current Qty': String(currentQty),
       'Option Type': optionType,
+      'Lifecycle Status': lifecycleStatus,
+      'CLIC Status': lifecycleStatus,
+      'lifecycleStatus': lifecycleStatus,
+      'Availability': availability,
+      'Lead Time': leadTime,
+      'Lead Time Source': leadTimeSource,
       'Start Date': startDate,
       'Discontinued Date': discontinuedDate,
+      'Vendor Attributes (JSON)': vendorAttrs,
       'Constraint Text': constraint,
       'Subcategory Max Qty': maxQtyRaw,
+      'Component Role': role,
       // Alias keys for legacy backward compatibility:
       sku,
       description: desc,
@@ -139,7 +153,8 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
   const catalogJSON = {
     metadata: {
       chassis: chassisLabel,
-      scrapeDate: new Date().toISOString(),
+      scrapeDate: new Date().toISOString().split('T')[0],
+      scrapeTimestamp: new Date().toISOString(),
       totalSubcategories: subcategoriesMap.size,
       totalUniqueSKUs: uniqueSKUs.size,
       totalTables: entries.length,

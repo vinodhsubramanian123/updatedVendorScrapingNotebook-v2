@@ -143,7 +143,10 @@
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e164272a-35cd-49d5-9b3f-a2cf4a653180",
-      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
+      "lastSyncAttemptAt": "2026-09-13T08:30:20.035Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/vinodh/.nvm/versions/node/v22.12.0/bin/node /home/vinodh/vendorNotebookSolution/scripts/lib/sync/google_sheets_writer.js --create Alletra_Storage_System Canonical Knowledge /home/vinodh/vendorNotebookSolution/outputs/Alletra/Storage/Alletra_Storage_System/Alletra_Storage_System_Master_Catalog.csv /home/vinodh/vendorNotebookSolution/outputs/Alletra/Storage/Alletra_Storage_System/notebook_sync_payload_Alletra_Storage_System.md Alletra_Storage_System\ninvalid_grant\n. Old source remains active.",
+      "cloudSyncState": "FAILED"
     },
     "MSL3040_Tape": {
       "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",

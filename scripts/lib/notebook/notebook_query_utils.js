@@ -113,11 +113,35 @@ function getNotebookConfigEntry(notebookId, context = {}) {
       if (exact) return { key: exact[0], entry: exact[1] };
     }
 
-    const normalizedContext = String(context.chassis || context.model || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const contextText = String(context.chassis || context.model || context.query || context.text || '').toLowerCase();
+    const normalizedContext = contextText.replace(/[^a-z0-9]/g, '');
+
+    // 1. Direct key match or alias match via product_scope
+    const { resolveProductIdentity } = require('../catalog/product_scope.js');
+    const resolvedProduct = resolveProductIdentity(context.chassis || context.model || contextText, cfg);
+    if (resolvedProduct && cfg.notebooks[resolvedProduct.productId]) {
+      return { key: resolvedProduct.productId, entry: cfg.notebooks[resolvedProduct.productId] };
+    }
+
+    // 2. Strict DL380a vs DL380 separation
+    const isDl380a = /\bdl\s*380\s*a\b/i.test(contextText) || normalizedContext.includes('380a') || normalizedContext.includes('dl380a');
+    if (isDl380a && cfg.notebooks['DL380a_Gen12']) {
+      return { key: 'DL380a_Gen12', entry: cfg.notebooks['DL380a_Gen12'] };
+    }
+
+    // 3. Normalized key containment with strict firewall
     const matches = entries
       .map(([key, entry]) => ({ key, entry, normalizedKey: key.toLowerCase().replace(/[^a-z0-9]/g, '') }))
-      .filter(item => item.normalizedKey && normalizedContext.includes(item.normalizedKey))
+      .filter(item => {
+        if (isDl380a) return item.normalizedKey.includes('380a');
+        if (normalizedContext.includes('380') && !isDl380a && item.normalizedKey.includes('380a')) {
+          return false; // Prevent DL380 from matching DL380a
+        }
+        return (item.normalizedKey && normalizedContext.includes(item.normalizedKey)) ||
+               (normalizedContext.length >= 5 && item.normalizedKey.startsWith(normalizedContext));
+      })
       .sort((a, b) => b.normalizedKey.length - a.normalizedKey.length);
+
     return matches[0] || null;
   } catch (_) {
     return null;

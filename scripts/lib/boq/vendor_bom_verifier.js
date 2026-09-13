@@ -188,6 +188,115 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
   return auditReport;
 }
 
+// ── CLI Runner ─────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--json]');
+    console.log('       node scripts/lib/boq/vendor_bom_verifier.js <vendor_quote.xlsx> [customer_boq.xlsx] [catalog_dir] [--json]');
+    process.exit(0);
+  }
+
+  let customerFile = null;
+  let vendorFile = null;
+  let catalogDir = null;
+  let jsonOutput = false;
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--customer' && args[i + 1]) {
+      customerFile = args[++i];
+    } else if (args[i] === '--vendor' && args[i + 1]) {
+      vendorFile = args[++i];
+    } else if (args[i] === '--catalog' && args[i + 1]) {
+      catalogDir = args[++i];
+    } else if (args[i] === '--json') {
+      jsonOutput = true;
+    } else if (!vendorFile && !args[i].startsWith('--')) {
+      vendorFile = args[i];
+    } else if (!customerFile && !args[i].startsWith('--')) {
+      customerFile = args[i];
+    } else if (!catalogDir && !args[i].startsWith('--')) {
+      catalogDir = args[i];
+    }
+  }
+
+  if (!vendorFile) {
+    console.error('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--json]');
+    process.exit(1);
+  }
+
+  const resolvedCatalogDir = catalogDir
+    ? path.resolve(catalogDir)
+    : path.resolve(__dirname, '..', '..', '..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+
+  let proposedSolution = null;
+  if (customerFile && fs.existsSync(customerFile)) {
+    if (customerFile.endsWith('.json')) {
+      try {
+        const rawJson = JSON.parse(fs.readFileSync(customerFile, 'utf-8'));
+        proposedSolution = rawJson.matrix?.rank1 || rawJson.rank1 || rawJson;
+      } catch (err) {
+        console.error(`Error parsing customer JSON: ${err.message}`);
+        process.exit(1);
+      }
+    } else {
+      const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
+      const evalRes = evaluateBOQMultiAspect(customerFile);
+      proposedSolution = evalRes.matrix?.rank1 || {
+        rank: 1,
+        name: 'Rank 1: Baseline Intent Preserved',
+        skuList: evalRes.parsedItems || []
+      };
+    }
+  } else {
+    // If no customer file provided, create an empty proposed solution baseline
+    proposedSolution = { rank: 1, name: 'Baseline Evaluation', skuList: [] };
+  }
+
+  try {
+    const report = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, resolvedCatalogDir);
+
+    if (jsonOutput) {
+      console.log(JSON.stringify(report, null, 2));
+    } else {
+      console.log('\n===============================================================');
+      console.log(`📊 VENDOR BOM RECONCILIATION REPORT: ${report.chassisModel}`);
+      console.log('===============================================================');
+      console.log(`- 100% Match: ${report.is100PercentMatch ? '✅ YES' : '❌ NO'}`);
+      console.log(`- Total Vendor SKUs: ${report.totalVendorSkus}`);
+      console.log(`- Total Proposed SKUs: ${report.totalProposedSkus}`);
+      console.log(`- Uncataloged SKUs: ${report.discrepancies.uncatalogedSkus.length}`);
+      console.log(`- Added by Vendor: ${report.discrepancies.addedByVendor.length}`);
+      console.log(`- Dropped by Vendor: ${report.discrepancies.removedByVendor.length}`);
+      console.log(`- Price Deltas: ${report.discrepancies.priceDeltas.length}`);
+
+      if (report.discrepancies.uncatalogedSkus.length > 0) {
+        console.log('\n⚠️ UNCATALOGED SKUs (Require CDP Scraping):');
+        report.discrepancies.uncatalogedSkus.forEach(s => console.log(`  - [${s.sku}] (Qty ${s.quantity}): ${s.description}`));
+      }
+
+      if (report.discrepancies.addedByVendor.length > 0) {
+        console.log('\n➕ ADDED BY VENDOR (Auto-inserted into quote):');
+        report.discrepancies.addedByVendor.forEach(s => console.log(`  - [${s.sku}] (Qty ${s.quantity}): ${s.description}`));
+      }
+
+      if (report.discrepancies.removedByVendor.length > 0) {
+        console.log('\n➖ REMOVED BY VENDOR (Dropped from customer request):');
+        report.discrepancies.removedByVendor.forEach(s => console.log(`  - [${s.sku}] (Qty ${s.quantity}): ${s.description}`));
+      }
+
+      if (report.discrepancies.priceDeltas.length > 0) {
+        console.log('\n💲 PRICE DELTAS:');
+        report.discrepancies.priceDeltas.forEach(d => console.log(`  - [${d.sku}]: Proposed $${d.proposedPriceUsd} vs Vendor $${d.vendorPriceUsd} (${d.percentChange})`));
+      }
+      console.log('===============================================================\n');
+    }
+  } catch (err) {
+    console.error(`Reconciliation failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 module.exports = {
   verifyVendorBOM
 };

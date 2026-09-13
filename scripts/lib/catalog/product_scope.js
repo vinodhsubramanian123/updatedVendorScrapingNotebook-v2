@@ -20,11 +20,56 @@ function baseProductId(value) {
   return path.basename(String(value || '')).replace(FORM_FACTOR_SUFFIX, '');
 }
 
+const PRODUCT_ALIASES = {
+  'dl380a': 'DL380a_Gen12',
+  'dl380agen12': 'DL380a_Gen12',
+  'dl145': 'DL145_Gen11',
+  'dl145gen11': 'DL145_Gen11',
+  'dl580': 'DL580_Gen12',
+  'dl580gen12': 'DL580_Gen12',
+  'sy480': 'SY480_Gen12',
+  'sy480gen12': 'SY480_Gen12',
+  'msl3040': 'MSL3040_Tape',
+  'msl3040tape': 'MSL3040_Tape',
+  'gx5000': 'GX5000_General_RACK',
+  'gx5000generalrack': 'GX5000_General_RACK',
+  'alletra': 'Alletra_Storage_System',
+  'alletrastoragesystem': 'Alletra_Storage_System',
+  'sy100gbf32': 'SY100Gb_F32_Module',
+  'sy100gbf32module': 'SY100Gb_F32_Module'
+};
+
 function resolveProductIdentity(identifier, config = {}) {
   const notebooks = config.notebooks || {};
   const requested = baseProductId(identifier);
   const requestedNorm = normalize(requested);
-  const match = Object.entries(notebooks).find(([key]) => normalize(baseProductId(key)) === requestedNorm);
+
+  // 1. Direct normalized match
+  let match = Object.entries(notebooks).find(([key]) => normalize(baseProductId(key)) === requestedNorm);
+
+  // 2. Product alias fallback
+  if (!match && PRODUCT_ALIASES[requestedNorm] && notebooks[PRODUCT_ALIASES[requestedNorm]]) {
+    const aliasedKey = PRODUCT_ALIASES[requestedNorm];
+    match = [aliasedKey, notebooks[aliasedKey]];
+  }
+
+  // 3. Normalized prefix/variant match with strict product boundary firewall
+  if (!match) {
+    const isDl380a = requestedNorm.includes('380a');
+    const isDl380NonA = requestedNorm.includes('380') && !isDl380a;
+
+    const candidates = Object.entries(notebooks).filter(([key]) => {
+      const normKey = normalize(baseProductId(key));
+      if (isDl380a) return normKey.includes('380a');
+      if (isDl380NonA) return normKey.includes('380') && !normKey.includes('380a');
+      return normKey.startsWith(requestedNorm) || requestedNorm.startsWith(normKey);
+    });
+
+    if (candidates.length === 1) {
+      match = candidates[0];
+    }
+  }
+
   if (!match) return null;
   const [productId, rawEntry] = match;
   const entry = typeof rawEntry === 'object' && rawEntry !== null ? rawEntry : {};

@@ -260,7 +260,7 @@ function validatePCIeRules(ctx) {
 
 function validateThermalRules(ctx) {
   const { compute, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
-  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) {
+  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
     const reason = pcie.gpuCount > 0 
       ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (P48820-B21) for adequate cooling envelope.`
       : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
@@ -392,14 +392,16 @@ function validatePowerRules(ctx) {
   }
 
   if (pcie.needsGpuPowerCableKit) {
-    const reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
+    const reason = power.isDl380aGpuChassis
+      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${Math.ceil(pcie.gpuCount / 2)} GPU 16-pin FIO Cable Kits (P74700-B21, 1 kit per 2 GPUs). Found ${Math.floor(pcie.gpuPowerCableKitCount / 2)}.`
+      : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'GPU_AUX_POWER_CABLE_KIT',
       rule: 'GPU Accelerator Auxiliary Power Rule',
-      sku: 'P48816-B21',
-      description: 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
-      quantity: (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
+      sku: power.isDl380aGpuChassis ? 'P74700-B21' : 'P48816-B21',
+      description: power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
+      quantity: power.isDl380aGpuChassis ? Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / 2) * serverCount : (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
       reasoning: reason
     });
   }
@@ -622,10 +624,13 @@ function validateMemoryRules(ctx) {
     });
   }
 
-  if (memory.memoryCount > 0 && !memory.isBalancedChannel) {
-    const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`;
+  if (memory.memoryCount > 0 && !memory.isSupportedPopulation) {
+    const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is an unsupported asymmetric count.`;
     warnings.push(reason);
     mathDeductions.push(reason);
+  } else if (memory.memoryCount > 0 && !memory.isBalancedChannel) {
+    const reason = `Memory Interleaving Advisory: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs (${memory.dimmsPerCpu} DIMMs/socket) is a supported minimal population. Populating all ${memory.channelsPerCpu} channels per socket achieves maximum interleaving bandwidth.`;
+    warnings.push(reason);
   }
 }
 
@@ -830,11 +835,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       name: 'Thermal & Compute Math',
       iconType: 'Cpu',
       defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
-      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
       detail: compute.fanKitExceedsMax
         ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
-        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || pcie.gpuCount > 0) && !compute.hasHighPerfFans)
+        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
         ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
+        : compute.isDl380aAccelerator
+        ? `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with DL380a factory-integrated high-performance accelerator cooling architecture.`
         : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with valid fan kit count.`
     },
     {
@@ -842,11 +849,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       name: 'Memory & Channel Balance',
       iconType: 'Memory',
       defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
-      status: (memory.memoryCount > 0 && !memory.isBalancedChannel) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
+      status: (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
       detail: memory.hasBtoMemoryInCto
         ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
-        : (memory.memoryCount > 0 && !memory.isBalancedChannel)
-        ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced.`
+        : (memory.memoryCount > 0 && !memory.isSupportedPopulation)
+        ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced or is an unsupported asymmetric count.`
+        : !memory.isBalancedChannel
+        ? `Verified ${memory.memoryCount} DIMMs in supported entry population (${memory.memoryCount / serverCount} DIMMs/node, ${memory.totalMemoryGb / serverCount}GB RAM). Note: Maximum memory interleaving bandwidth is achieved with ${memory.channelsPerCpu} DIMMs per socket.`
         : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
     },
     {
@@ -875,7 +884,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
         ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.`
         : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2
         ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.'
-        : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${activePcieSlotsClusterMax} active cabled slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node).`
+        : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${activePcieSlotsClusterMax} active cabled slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node)${pcie.gpuCount > 0 && power.isDl380aGpuChassis ? ` plus ${pcie.gpuCount} front-bay accelerator(s) seated on high-speed switchboards` : ''}.`
     },
     {
       id: 5,
@@ -924,12 +933,46 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const formFactorRU = chassisInfo.formFactor === '1U' ? 1 : 
                        chassisInfo.formFactor === '4U' ? 4 : 2;
 
+  const architecturalRationale = [];
+  if (power.isDl380aGpuChassis) {
+    if (pcie.gpuCount > 0) {
+      architecturalRationale.push({
+        topic: 'DL380a Gen12 GPU Density & NVLink Bridge Physical Clearance Rule',
+        rationale: 'The DL380a Gen12 platform supports up to 8 double-wide (8DW) GPUs under P75008-B21 (with dual PCIe Gen5 switchboards P74714-B21) or 10DW under P75005-B21 (captive risers). For NVIDIA H200 NVL (S3U30C), physical NVLink bridges (S4A90C / S4A91C) are mandatory for 900 GB/s inter-GPU memory pooling. Per HPE QuickSpecs, the dense 10DW captive riser mode does NOT support NVLink bridges ("10DW configuration does not support GPU NVL bridges"). Therefore, 8DW Mode is the absolute maximum buildable configuration for H200 NVL on this chassis.'
+      });
+      architecturalRationale.push({
+        topic: 'DL380a Front-Bay Accelerator Cabling & Cooling',
+        rationale: 'Front-bay accelerators on DL380a Gen12 connect directly to the switchboards using P74700-B21 (GPU 16-pin FIO Cable Kits, 1 kit per 2 GPUs) and do not consume rear PCIe riser slots, keeping rear slots open for networking and HBAs. High-performance counter-rotating cooling fans are factory-integrated into the P76706-B21 chassis.'
+      });
+    }
+  }
+  if (storage.hasNoDriveKit) {
+    architecturalRationale.push({
+      topic: 'No Local Drive Configuration FIO Kit (873763-B21)',
+      rationale: 'HPE ProLiant Compute DL380 No Drive Configuration FIO Kit (873763-B21, $14 list) satisfies CLIC Rule 81392308 for diskless compute nodes, clearing mandatory front drive cage and RAID controller requirements.'
+    });
+  }
+  if (power.hasCeRemovalKit) {
+    architecturalRationale.push({
+      topic: 'EU Ecodesign ErP Lot 9 Regulatory Clearance (P35876-B21)',
+      rationale: 'HPE CE Mark Removal FIO Enablement Kit (P35876-B21, $1 list) clears EU Lot 9 software prompt for 94% Platinum PSUs on dual-socket configurations without altering requested PSU hardware.'
+    });
+  }
+  if (memory.memoryCount > 0 && !memory.isBalancedChannel && memory.isSupportedPopulation) {
+    architecturalRationale.push({
+      topic: 'Memory Population & Interleaving Bandwidth',
+      rationale: `Configured with ${memory.dimmsPerCpu} DIMMs per socket (${memory.totalMemoryGb / serverCount}GB RAM), which is a valid, certified entry memory population in HPE QuickSpecs. For workloads requiring maximum memory bandwidth, populating all ${memory.channelsPerCpu} channels per socket (1DPC) provides 100% full-channel interleaving.`
+    });
+  }
+
   const evalSummary = {
     cpuCount: compute.cpuCount,
     maxCpuTdpWatts: compute.maxCpuTdpWatts,
     memoryCount: memory.memoryCount,
     totalMemoryGb: memory.totalMemoryGb,
     isBalancedChannel: memory.isBalancedChannel,
+    isSupportedPopulation: memory.isSupportedPopulation,
+    dimmsPerCpu: memory.dimmsPerCpu,
     driveCount: storage.driveCount,
     hasStorageController: storage.hasStorageController,
     hasSmartBattery: storage.hasSmartBattery,
@@ -942,6 +985,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     networkPortsCount: network.networkPortsCount,
     requiredPcieCards: pcie.requiredPcieCards,
     totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
+    architecturalRationale,
     hasSupportService: support.hasSupportService,
     lifecycleRisks: lifecycle,
     lifecycleRecommendations,
@@ -1028,6 +1072,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     missingDependencies,
     mathDeductions,
     evalSummary,
+    architecturalRationale: evalSummary.architecturalRationale,
     clusterSizing: evalSummary.clusterSizing,
     aspectChecks,
     genericDomainAudit,

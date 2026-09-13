@@ -360,3 +360,73 @@ module.exports = {
   buildLeastDeltaCandidate,
   findBestAlternativeInCatalog
 };
+
+// ── CLI Runner ─────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const fs = require('fs');
+  const path = require('path');
+  const args = process.argv.slice(2);
+
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/lib/conflict/least_delta_combinator.js <boq_file.xlsx|csv|json> [--chassis <name>] [--json]');
+    process.exit(0);
+  }
+
+  const filePath = path.resolve(args[0]);
+  const chIdx = args.indexOf('--chassis');
+  const chassisName = chIdx !== -1 && args[chIdx + 1] ? args[chIdx + 1] : 'DL380_Gen12';
+  const jsonOut = args.includes('--json');
+
+  try {
+    let items = [];
+    if (filePath.endsWith('.json')) {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      items = Array.isArray(data) ? data : (data.items || data.parsedItems || []);
+    } else if (filePath.endsWith('.xlsx') || filePath.endsWith('.xls')) {
+      const xlsx = require('xlsx-js-style');
+      const wb = xlsx.readFile(filePath);
+      const { parseSkuLines } = require('../boq/boq_parser.js');
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const csv = xlsx.utils.sheet_to_csv(sheet);
+      items = parseSkuLines(csv.split(/\r?\n/)).items;
+    } else {
+      const { parseSkuLines } = require('../boq/boq_parser.js');
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      items = parseSkuLines(fileContent.split(/\r?\n/)).items;
+    }
+
+    const { getChassisCatalog } = require('../catalog/catalog_discovery.js');
+    const chassisInfo = getChassisCatalog ? getChassisCatalog(chassisName, {}) : null;
+    const catalogData = chassisInfo?.catalogData || null;
+
+    const troublesome = identifyTroublesomeSkus(items, catalogData, { chassis: chassisName });
+    const candidate = buildLeastDeltaCandidate(items, catalogData, { chassis: chassisName });
+
+    if (jsonOut) {
+      console.log(JSON.stringify({ troublesome, candidate }, null, 2));
+    } else {
+      console.log('\n===============================================================');
+      console.log(`🔍 LEAST-DELTA COMBINATOR & TROUBLESOME SKU ANALYSIS: ${path.basename(filePath)}`);
+      console.log(`🎯 Chassis Variant : ${chassisName}`);
+      console.log('---------------------------------------------------------------');
+      console.log(`⚠️ Troublesome SKUs Identified: ${troublesome.length}`);
+      troublesome.forEach((t, i) => {
+        console.log(`  ${i + 1}. SKU [${t.sku}] (${t.roleType}): ${t.reason}`);
+        console.log(`     Cascading additions: ${t.cascadingSkus.join(', ') || 'None'}`);
+      });
+      console.log('---------------------------------------------------------------');
+      if (candidate) {
+        console.log(`💡 Strategy Tier: ${candidate.tierTitle}`);
+        console.log(`📋 Delta Summary: ${candidate.deltaSummary}`);
+        console.log(`💰 Estimated CapEx: $${candidate.estimatedCapex?.toLocaleString() || 0}`);
+        console.log(`📝 Presales Value Pitch: ${candidate.presalesValuePitch}`);
+      } else {
+        console.log('ℹ️ No least-delta pruning needed (BOM has clean 1:1 dependencies).');
+      }
+      console.log('===============================================================\n');
+    }
+  } catch (err) {
+    console.error(`Least-Delta analysis error: ${err.message}`);
+    process.exit(1);
+  }
+}

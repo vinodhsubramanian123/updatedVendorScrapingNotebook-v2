@@ -61,11 +61,16 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
 
   if (cpuCount === 0) cpuCount = 2;
 
+  const dimmsPerCpu = cpuCount > 0 ? (memoryCount / cpuCount) : 0;
+  // Supported per-socket DIMM populations per Intel Xeon / AMD EPYC QuickSpecs: 1, 2, 4, 6, 8, 12, 16
+  const isSupportedPopulation = memoryCount > 0 && (memoryCount % cpuCount === 0) && [1, 2, 4, 6, 8, 12, 16].includes(dimmsPerCpu);
   const isBalancedChannel = memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
   return {
     memoryCount,
     totalMemoryGb,
     channelsPerCpu: chWidth,
+    dimmsPerCpu,
+    isSupportedPopulation,
     isBalancedChannel,
     btoMemoryViolations,
     hasBtoMemoryInCto: btoMemoryViolations.length > 0,

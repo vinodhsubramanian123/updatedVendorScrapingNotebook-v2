@@ -120,10 +120,11 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
-    if (desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
-    if (desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
-    if (desc.includes('dl380') && desc.includes('gen12')) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
-    if (desc.includes('dl380') && desc.includes('gen11')) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
+    if (/\bdl\s*380\s*a\b/i.test(desc) || desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
+    if (/\bdl\s*145\b/i.test(desc) || desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
+    if (/\bdl\s*580\b/i.test(desc) || desc.includes('dl580')) return { ...chassisMap['DL580_Gen12'], id: 'DL580_Gen12' };
+    if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen12') || desc.includes('gen 12'))) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
+    if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen11') || desc.includes('gen 11'))) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
     if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
     if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };
     if (desc.includes('cray') || desc.includes('gx5000')) return { ...chassisMap['GX5000_General_RACK'], id: 'GX5000_General_RACK' };

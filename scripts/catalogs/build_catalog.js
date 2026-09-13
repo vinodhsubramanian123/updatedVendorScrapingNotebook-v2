@@ -206,7 +206,7 @@ function isServiceSkuRow(sku) {
 function isClearlyPhysicalSkuRow(sku) {
   const description = String(sku?.Description || sku?.description || '');
   if (/\b(?:software|license|subscription|support|service|saas|e-ltu|care pack)\b/i.test(description)) return false;
-  return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure)\b/i.test(description);
+  return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure|accelerator|gpu|graphics|hba)\b/i.test(description);
 }
 
 function appendRetaxonomizedPhysicalEntries(target, entry, skus) {
@@ -236,6 +236,19 @@ function partitionCatalogEntries(entries) {
       if (serviceSkus.length > 0) servicesEntries.push({ ...entry, skus: serviceSkus, skuCount: serviceSkus.length });
       continue;
     }
+
+    const pc = (entry.parentCategory || '').toLowerCase();
+    if (pc.includes('software') || pc.includes('license')) {
+      const physicalSkus = (entry.skus || []).filter(sku => !isServiceSkuRow(sku) && isClearlyPhysicalSkuRow(sku));
+      const remainingSkus = (entry.skus || []).filter(sku => !physicalSkus.includes(sku));
+      if (physicalSkus.length > 0) appendRetaxonomizedPhysicalEntries(hardwareEntries, entry, physicalSkus);
+      const hardwareSkus = remainingSkus.filter(sku => !isServiceSkuRow(sku));
+      const serviceSkus = remainingSkus.filter(isServiceSkuRow);
+      if (hardwareSkus.length > 0) hardwareEntries.push({ ...entry, skus: hardwareSkus, skuCount: hardwareSkus.length });
+      if (serviceSkus.length > 0) servicesEntries.push({ ...entry, skus: serviceSkus, skuCount: serviceSkus.length });
+      continue;
+    }
+
     const hardwareSkus = (entry.skus || []).filter(sku => !isServiceSkuRow(sku));
     const serviceSkus = (entry.skus || []).filter(isServiceSkuRow);
     if (hardwareSkus.length > 0) hardwareEntries.push({ ...entry, skus: hardwareSkus, skuCount: hardwareSkus.length });

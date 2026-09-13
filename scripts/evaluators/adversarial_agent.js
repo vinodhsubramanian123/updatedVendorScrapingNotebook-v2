@@ -118,6 +118,15 @@ async function runAdversarialAgent(targetChassis = null) {
 
 async function main() {
   const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/evaluators/adversarial_agent.js [--chassis <name>] [--iterations <n>] [--loop] [--interval <sec>]');
+    console.log('Options:');
+    console.log('  --chassis <name>     Target chassis model (e.g. DL380_Gen12, DL380_Gen11)');
+    console.log('  --iterations <n>     Run n adversarial test iterations (default: 1)');
+    console.log('  --loop               Run continuously in a loop');
+    console.log('  --interval <sec>     Interval between iterations in loop mode (default: 60s)');
+    process.exit(0);
+  }
   const isLoop = args.includes('--loop');
   const intervalIdx = args.indexOf('--interval');
   const intervalSec = intervalIdx !== -1 && args[intervalIdx + 1] ? parseInt(args[intervalIdx + 1], 10) : 60;

@@ -126,3 +126,57 @@ function extractWorkloadDna(items = []) {
 module.exports = {
   extractWorkloadDna
 };
+
+// ── CLI Runner ─────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const fs = require('fs');
+  const path = require('path');
+  const args = process.argv.slice(2);
+
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node scripts/lib/conflict/workload_dna.js <boq_file.xlsx|csv|json> [--json]');
+    process.exit(0);
+  }
+
+  const filePath = path.resolve(args[0]);
+  const jsonOut = args.includes('--json');
+
+  try {
+    let items = [];
+    if (filePath.endsWith('.json')) {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      items = Array.isArray(data) ? data : (data.items || data.parsedItems || []);
+    } else if (filePath.endsWith('.xlsx') || filePath.endsWith('.xls')) {
+      const xlsx = require('xlsx-js-style');
+      const wb = xlsx.readFile(filePath);
+      const { parseSkuLines } = require('../boq/boq_parser.js');
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const csv = xlsx.utils.sheet_to_csv(sheet);
+      items = parseSkuLines(csv.split(/\r?\n/)).items;
+    } else {
+      const { parseSkuLines } = require('../boq/boq_parser.js');
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      items = parseSkuLines(fileContent.split(/\r?\n/)).items;
+    }
+
+    const dna = extractWorkloadDna(items);
+
+    if (jsonOut) {
+      console.log(JSON.stringify(dna, null, 2));
+    } else {
+      console.log('\n===============================================================');
+      console.log(`🧬 WORKLOAD DNA & APPLICATION PROFILING: ${path.basename(filePath)}`);
+      console.log('---------------------------------------------------------------');
+      console.log(`🎯 Primary Workload     : ${dna.primaryWorkload}`);
+      console.log(`📝 Workload Profile    : ${dna.workloadDescription}`);
+      console.log(`⚡ Total CPU Cores     : ${dna.totalCores} cores (Max Freq: ${dna.maxFreqGhz || 'N/A'} GHz)`);
+      console.log(`💾 Total System RAM    : ${dna.totalMemoryGb} GB (${dna.gbPerCore} GB/Core)`);
+      console.log(`🎮 GPU Acceleration    : ${dna.hasGpu ? `${dna.totalGpuCount}x ${dna.gpuModel}` : 'None'}`);
+      console.log(`💽 Storage Profile     : ${dna.driveCount} drives (${dna.storageType}, ${dna.storageWorkload})`);
+      console.log('===============================================================\n');
+    }
+  } catch (err) {
+    console.error(`Workload DNA extraction error: ${err.message}`);
+    process.exit(1);
+  }
+}

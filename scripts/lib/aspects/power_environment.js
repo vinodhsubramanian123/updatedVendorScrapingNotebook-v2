@@ -84,7 +84,7 @@ function tallyChassisFormFactor(tally, it, desc, sku, role) {
   if (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('dl380a')) {
     tally.isDl380aGpuChassis = true;
     if (!desc.includes('fio configuration') && (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('configure-to-order') || desc.includes('cto server'))) {
-      tally.dl380aServerCount += (it.quantity || 1);
+      tally.dl380aServerCount += (it.quantity || it.qty || 1);
     }
   }
   const gpuModeCapacity = parseDl380aGpuModeCapacity(desc);
@@ -92,7 +92,7 @@ function tallyChassisFormFactor(tally, it, desc, sku, role) {
     tally.hasDl380aDoubleWideGpu = true;
     tally.dl380aGpuModeCapacity = Math.max(tally.dl380aGpuModeCapacity, gpuModeCapacity);
   } else if (role === 'GPU / Accelerator' || desc.includes('gpu accelerator')) {
-    tally.actualGpuCount += (it.quantity || 1);
+    tally.actualGpuCount += (it.quantity || it.qty || 1);
   }
   if (DL145_CHASSIS_SKUS.has(sku) || desc.includes('dl145')) {
     tally.isDl145EdgeChassis = true;
@@ -101,7 +101,7 @@ function tallyChassisFormFactor(tally, it, desc, sku, role) {
 
 function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
   if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
-    tally.psuCount += (it.quantity || 1);
+    tally.psuCount += (it.quantity || it.qty || 1);
     const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
     if (psuWMatch) {
       const w = parseInt(psuWMatch[1], 10);
@@ -118,7 +118,7 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
       tally.hasTitaniumPsu = true;
     }
     if (desc.includes('2650w') && desc.includes('titanium')) {
-      tally.synergyTitanium2650wCount += (it.quantity || 1);
+      tally.synergyTitanium2650wCount += (it.quantity || it.qty || 1);
     }
   }
   if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {

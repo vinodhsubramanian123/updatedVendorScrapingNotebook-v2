@@ -40,14 +40,23 @@ function parseProductMeta(rawText, pageTitle = '') {
   const family = detectProductFamily(fullText);
 
   // 3. Model & Form Factor Detection
-  const modelMatch = fullText.match(/\b(DL\d{3}a?|ML\d{3}|RL\d{3}|SY\d{3}|Synergy\s*\d+|GX\d{4}|MicroServer|MSL\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
+  const modelMatch = fullText.match(/\b(DL\s*\d{3}\s*a?|ML\s*\d{3}|RL\s*\d{3}|SY\s*\d{3}|Synergy\s*\d+|GX\s*\d{4}|MicroServer|MSL\s*\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
   const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
   const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
   const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
 
   let cleanName = '';
   if (modelMatch) {
-    let model = modelMatch[0].replace(/\s+/g, '_');
+    let model = modelMatch[0].trim();
+    if (/^DL\s*(\d{3})\s*(a?)$/i.test(model)) {
+      const m = model.match(/^DL\s*(\d{3})\s*(a?)$/i);
+      model = `DL${m[1]}${m[2] ? m[2].toLowerCase() : ''}`;
+    } else if (/^(?:ML|RL|SY)\s*(\d{3})$/i.test(model)) {
+      const m = model.match(/^([A-Z]{2})\s*(\d{3})$/i);
+      model = `${m[1].toUpperCase()}${m[2]}`;
+    } else {
+      model = model.replace(/\s+/g, '_');
+    }
     if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
     if (/^Synergy_(\d{3})$/i.test(model)) model = model.replace(/^Synergy_/i, 'SY');
     const isRackOrBlade = /^(?:DL|ML|RL|SY)\d/i.test(model);
@@ -168,7 +177,7 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   // 1. Processors
   { name: 'Energy Star Configuration Presets', match: t => t.includes('energy star') },
   { name: 'Intel Xeon 6th Gen Scalable Processors', match: t => t.includes('xeon 6') || t.includes('6710e') || t.includes('6730p') || t.includes('6780e') || t.includes('6700') || t.includes('processor for hpe') },
-  { name: 'Intel Xeon Scalable Processors', match: t => t.includes('xeon') || t.includes('platinum') || t.includes('gold') || t.includes('silver') || t.includes('bronze') },
+  { name: 'Intel Xeon Scalable Processors', match: t => !t.includes('power supply') && !t.includes('flex slot') && !t.includes('psu') && !t.includes('transceiver') && (t.includes('xeon') || ((t.includes('platinum') || t.includes('gold') || t.includes('silver') || t.includes('bronze')) && (t.includes('processor') || t.includes('cpu') || t.includes('scalable')))) },
   { name: 'AMD EPYC Scalable Processors', match: t => t.includes('epyc') || t.includes('9004') || t.includes('9005') || t.includes('9754') },
 
   // 2. Thermal & Cooling
@@ -192,6 +201,9 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'Secondary PCIe Risers', match: t => t.includes('secondary riser') || t.includes('sec riser') },
   { name: 'Tertiary PCIe Risers', match: t => t.includes('tertiary riser') || t.includes('tertiary') || t.includes('tert riser') },
   { name: 'PCIe Riser Kits', match: t => t.includes('riser') },
+
+  // 5b. Graphics & GPU Accelerators
+  { name: 'GPU Accelerators', match: t => t.includes('accelerator') || t.includes('nvidia') || t.includes('h200') || t.includes('l40s') || t.includes('l4') || t.includes('rtx') || t.includes('gpu') },
 
   // 6. Cables & Enablement
   { name: 'Storage Controller Cable Kits', match: t => t.includes('box 1/2') || t.includes('box 1') || t.includes('box 2') || t.includes('cage cable') || t.includes('controller cable') },
