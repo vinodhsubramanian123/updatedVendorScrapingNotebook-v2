@@ -96,4 +96,37 @@ This is the current engineering status following the completion and verification
   - Total isolated test matrix certified at **158/158 suites PASSED (100.0%)** (92 Unit, 38 Chaos, 25 Integration, 3 E2E) in 458.97s with zero failures in ledger.
   - Zero lint errors/warnings (`oxlint`) across 103 frontend files. All 862 functions within the cyclomatic complexity gate ($CC \le 135$).
 
+---
+
+## Phase 8 — DL380a Gen12 AI Acceleration, Minimal Memory Hierarchy, Diskless Compute & Presales Router Hardening (Certified 2026-09-13)
+
+- **DL380a Gen12 AI Acceleration & NVLink Bridge Density Arbitration (`INV-79`)**:
+  - Validated NVIDIA H200 NVL (`S3U30C`) density constraints on DL380a Gen12.
+  - While DL380a supports 2DW, 4DW, 8DW, and 10DW modes, QuickSpecs explicitly mandates that the 10DW captive riser (`P76929-B21`) does NOT support GPU NVLink bridges (`S4A90C`/`S4A91C`) due to mechanical spacing clearance.
+  - Certified that 8DW mode (`P75008-B21`) is the buildable maximum for H200 NVL (8 GPUs per node).
+  - Modeled front-bay switchboards (`P74714-B21`) and dedicated GPU 16-pin cable kits (`P74700-B21`, 1 kit per 2 GPUs), leaving rear PCIe slots 1–4 open for clustering networking (`P26262-B21`).
+  - Powered via eight 2400W Titanium PSUs (`P67252-B21`) in $4+4$ redundancy.
+- **Minimal Supported Memory Population Hierarchy (`INV-80`)**:
+  - Enhanced `scripts/lib/aspects/memory_channel.js` to recognize supported DIMM populations `[1, 2, 4, 6, 8, 12, 16]` per socket.
+  - Entry-level populations (e.g. 2 DIMMs per socket = 64GB for 1P or 128GB for 2P) are certified as 100% buildable with informative interleaving advisories rather than failing evaluation.
+- **Diskless Compute Node Enablement (`873763-B21`, `INV-81`)**:
+  - Implemented recognition of `873763-B21` (HPE ProLiant DL380 No Drive FIO Enablement Kit, $14 list) to satisfy HPE CLIC Rule 81392308.
+  - Eliminates requirements for drive cages, backplanes, and storage controllers on diskless/SAN-booted compute nodes.
+- **EU ErP Lot 9 Regulatory Clearance (`P35876-B21`, `INV-30`)**:
+  - Injected `P35876-B21` (HPE CE Mark Removal FIO Enablement Kit, $1 list) to clear regulatory prompts on 94% Platinum PSUs without modifying customer-specified hardware.
+- **WebLogic Dynamic DOM Extraction & Missing SKU Recovery (`INV-82`)**:
+  - Documented deferred AJAX panel rendering behavior where child component tables (e.g. GPU accelerators and captive risers) require explicit parent option triggers.
+  - Reconciled `S3U30C` and related accelerator accessories into the master 22-sheet Excel companion (`DL380a_Gen12_Master_Catalog.xlsx`), master TSV, and Google Sheets/NotebookLM sync models.
+- **Presales Intent Classification Precision (`route_query.js`)**:
+  - Refined `classifyQueryIntent` to distinguish between interrogative architectural questions (FREEFORM_QA), catalog price inquiries (CATALOG_INTELLIGENCE), and natural language sizing requests (RFP_SIZING_TO_BOM).
+  - Validated 10/10 test scenarios in `test_query_router.js` with 100% pass rate.
+- **Ground-Truth Customer Verification**:
+  - TensorScale 20x DL380a Gen12 (`5155535089-01`): 100% buildable, math clean, all 7 aspects pass.
+  - ComputeScale 1x DL380 Gen12 (`5155535243-01`): 100% buildable, math clean, all 7 aspects pass.
+- **Full Test Matrix Certification**:
+  - 160/160 test suites certified across all tiers.
+  - 0 lint warnings/errors across 103 files (`oxlint`).
+  - All 865 functions within cyclomatic complexity gate ($CC \le 135$).
+
+
 

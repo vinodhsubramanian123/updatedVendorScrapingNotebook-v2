@@ -40,13 +40,26 @@ vendorNotebookSolution/
 │   ├── AGENTS.md                          ← project rules, state of health & technical invariants
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & data contracts
 │   └── skills/
-│       ├── design-taste-frontend/         ← Anti-slop UI aesthetics (Geist, Emerald Green, shapes)
-│       ├── orchestrator-workflow-skill/   ← macro 6-stage continuous learning lifecycle
-│       ├── oca-catalog-scraper/           ← step-by-step scraping skill
-│       ├── oca-portal-navigator/          ← hands-free partner portal & oca navigator skill
-│       ├── boq-eval-skill/                ← BOQ validation & pre-flight skill
-│       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration
-│       └── knowledge-sync-skill/          ← delta sync & knowledge registry skill
+│       ├── orchestrator-workflow-skill/   ← macro 7-phase continuous learning lifecycle & execution map
+│       ├── presales-query-router/         ← 5-track presales intent classifier & dispatcher
+│       ├── boq-eval-skill/                ← 7-aspect physical math & pre-flight BOQ validation
+│       ├── multi-cluster-tender-skill/    ← multi-node tender decomposition & 42U rack/power sizing
+│       ├── rfp-sizing-synthesizer/        ← natural language sizing requirements to starting BOM
+│       ├── workload-dna-skill/            ← enterprise app workload matching & slot arbitration
+│       ├── least-delta-combinator-skill/  ← troublesome SKU pruning & minimal-mutation alternatives (Rank 1L)
+│       ├── value-engineering-skill/       ← post-buildability CapEx/OpEx deal optimizer
+│       ├── bom-reconciliation-skill/      ← customer tender vs vendor partner quote cross-verification
+│       ├── adversarial-validation-skill/  ← enterprise chaos red-teaming & 10 failure mode sanity checks
+│       ├── ocr-quote-ingestion-skill/     ← multimodal Gemini Vision OCR for scanned PDF/image quotes
+│       ├── catalog-intelligence-skill/    ← price trails, lifecycle status changes (OB, DS, 90, EOL)
+│       ├── workbook-generator-skill/      ← standardized 7-column upload sheets & executive workbooks
+│       ├── execution-trace-skill/         ← auditable execution trace ledger & delta report
+│       ├── output-validation-skill/       ← pre-presentation 14-point acceptance criteria gate
+│       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration & Strict SKU Gate
+│       ├── knowledge-sync-skill/          ← bi-directional delta sync & master knowledge registry
+│       ├── oca-catalog-scraper/           ← live WebLogic OCA portal CDP scraper
+│       ├── oca-portal-navigator/          ← hands-free partner portal SSO & menu navigator
+│       └── design-taste-frontend/         ← anti-slop UI aesthetics (Geist, Emerald Green, shapes)
 ├── scripts/                               ← Node.js CLI tools & subsystems
 │   ├── scrapers/                          ← OCA portal CDP scrapers & PDF extractors
 │   ├── evaluators/                        ← BOQ evaluators, multi-config splitters & adversarial agents
