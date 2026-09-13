@@ -1011,4 +1011,166 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - Enforced `isGen11` check first, explicitly excluded power supply SKUs and descriptions (`power supply`, `flex slot`, `platinum`), and strictly isolated Gen11 `P74792-B21` from Gen12 `P48818-B21`.
   - Elevated `tests/integration/test_boq_eval_benchmarks.js` from 14/15 to **15/15 Scenarios PASSED (100.0%)** with 100% recall and 100% precision.
 
+---
+
+## 81. DL380a Gen12 AI GPU Acceleration Density & Parallel Sub-Path Arbitration (`INV-79`, `INV-84`)
+
+- **The Customer Intent vs. Physical Topology Dilemma**:
+  - Customer query: *"DL380a with basic processor and max no of H200 and minimum memory to support that. 20 units"*.
+  - When reviewing DL380a Gen12 QuickSpecs and OCA catalogs, the platform lists 2DW, 4DW, 8DW, and 10DW accelerator modes.
+  - The customer's request for "max H200" presents an architectural bifurcation:
+    1. Does the customer prioritize **inter-GPU interconnect bandwidth** (900 GB/s NVLink)?
+    2. Or does the customer prioritize **raw GPU compute and memory capacity** (10 GPUs, 1,410 GB VRAM)?
+- **The Two Certified Parallel Sub-Paths (`INV-65` & `INV-84`)**:
+  - Rather than making an overly restrictive binary assumption that H200 *must* always have NVLink bridges, the engine synthesizes **two valid, 100% buildable parallel sub-paths**:
+  - **Rank 1A: Interconnect-Optimized AI Training Tier (8x H200 NVLink)**:
+    - **Mode**: 8DW Mode (`P75008-B21`) with dual switchboards (`P74714-B21`).
+    - **GPUs**: 8x NVIDIA H200 NVL (`S3U30C`) interconnected via physical NVLink Bridges (`S4A90C`/`S4A91C`).
+    - **Interconnect**: 900 GB/s bidirectional NVLink bandwidth across GPU pairs/quads.
+    - **Memory**: 1,128 GB HBM3e VRAM per server node ($8 \times 141\text{GB}$).
+    - **Best For**: Distributed model training, 3D tensor parallelism (Megatron-LM), and latency-critical all-reduce operations.
+  - **Rank 1B: Density-Optimized High-Throughput Inference Tier (10x H200 PCIe Mode)**:
+    - **Mode**: 10DW Mode (`P75005-B21`) using 10DW Captive Riser Kit (`P76929-B21`) and dual switchboards (`P74714-B21`).
+    - **GPUs**: **10x NVIDIA H200 NVL (`S3U30C`)** operating in pure PCIe Gen5 x16 mode.
+    - **Interconnect**: PCIe Gen5 x16 (64 GB/s) over the front switchboard backplane. **NVLink bridges are omitted** because QuickSpecs states *"10DW configuration does not support GPU NVL bridges."*
+    - **Mandatory Dependencies**: Requires 5x GPU 16-pin cable kits (`P74700-B21`), Front Fan Module Kit (`P79656-B21`), and Front Panel Kit (`P79660-B21`).
+    - **Memory**: **1,410 GB HBM3e VRAM per server node ($10 \times 141\text{GB}$)** — **+282 GB (+25%) VRAM and +25% raw GPU compute** per server.
+    - **Best For**: High-throughput inference serving (vLLM, TensorRT-LLM multi-model serving), decoupled worker pipelines, image/video generation (Flux/Diffusion), and batch token processing.
+- **Power Sizing & Infrastructure**:
+  - Both 8DW and 10DW configurations mandate exactly eight (8) Titanium Power Supplies (2400W `P67252-B21` or 3200W `P67248-B21`) in $4+4$ redundancy.
+  - Requiring 8x C19-C20 16A power cords (`P78384-B21`) and 200V–240V high-line 3-phase datacenter utility circuits.
+
+---
+
+## 82. Minimal Supported Memory Population Hierarchy vs Channel Interleaving (`INV-80`)
+
+- **Customer Minimal Memory Intent**:
+  - Customer queries often ask for *"minimum memory to support that"* to minimize upfront CapEx when the workload is GPU-compute or diskless IO-bound.
+  - While 1DPC 16-channel symmetrical population (16 DIMMs) delivers maximum theoretical memory bandwidth, HPE CLIC supports a hierarchical DIMM population: `[1, 2, 4, 6, 8, 12, 16]` DIMMs per socket.
+  - Minimal supported entry on dual-socket systems: 2 DIMMs per socket = 4 DIMMs total (e.g. 4x 32GB DDR5 = 128GB total).
+  - On single-socket systems: 2 DIMMs per socket = 2 DIMMs total (e.g. 2x 32GB DDR5 = 64GB total).
+  - **Rule Engine Certification**: The memory checker (`memory_channel.js`) now recognizes `isSupportedPopulation`, passing minimal entry configurations with an informative advisory note rather than an unbuildable rejection error.
+
+---
+
+## 83. Diskless Compute Nodes & No Local Drive FIO Enablement Kit (`873763-B21`) (`INV-81`)
+
+- **Customer Query Pattern**: *"ComputeScale - 1x DL380 Gen12 - 64GB RAM - No Local Drive - 1GbE 4p"*.
+- **HPE CLIC Rule 81392308**: Dual-socket CTO base chassis default to requiring a front drive cage and storage controller. When a node is designed for diskless compute, SAN boot, or PXE stateless clustering, omitting storage drives triggers Rule 81392308.
+- **The Solution**: Injecting `873763-B21` (HPE ProLiant DL380 No Drive FIO Enablement Kit, $14 list price). This kit officially designates the chassis as a drive-less compute appliance, clearing the requirement for drive cages, backplanes, and SAS/SATA controllers.
+
+---
+
+## 84. Dynamic WebLogic AJAX Panels, Missing SKU Discovery & Scraper Resilience (`INV-82`)
+
+- **The Deferred DOM Extraction Challenge**:
+  - In WebLogic OCA portals, complex configuration options (such as GPU accelerators `S3U30C`, captive risers `P76929-B21`, switchboards `P74714-B21`, and power cables `P74700-B21`) are contained inside deferred AJAX subchoice panels.
+  - Unlike static HTML pages, WebLogic does not render child tables until the parent configuration radio button or checkbox (e.g. *"8DW Accelerator Choice"*) is clicked and fires a jQuery `change` event.
+  - The SKU regex is NOT the problem (`S3U30C` perfectly matches `isValidHpeSKU()`). The issue is that the element never existed in the DOM during initial pass.
+- **Autonomous Recovery & Master Workbook Reconciliation**:
+  - When new SKUs are identified through customer queries, partner quotes, or QuickSpecs PDF reconciliation (`reconcile_quickspecs_oca.js`), the engine:
+    1. Reconciles the missing SKUs into the master 22-sheet Excel companion (`DL380a_Gen12_Master_Catalog.xlsx`) and master TSV with verified descriptions and GPL list prices.
+    2. Updates `cdp.js` / `navigate_oca.js` to dispatch dynamic click triggers to force WebLogic to expand all dependent subchoice containers during headless scrapes.
+    3. Re-syncs the master catalog to Google Sheets and Cloud NotebookLM.
+
+---
+
+## 85. Google Sheets & NotebookLM Synchronization Strategy: Full Replace vs Delta Append (`INV-83`)
+
+- **Certified Master Catalog (`All SKUs`) — Full Replace In Place**:
+  - Overwrites the master sheet in place with the latest audited `{chassisName}_Master_Catalog.csv`.
+  - Avoids polluting semantic embeddings with duplicate SKUs, obsolete part numbers, or conflicting prices from older scrapes.
+- **Audit Trail & Change Log (`Price Trails`, `Knowledge Deltas`) — Delta Append**:
+  - Preserves immutable chronological history of price drift, lifecycle state transitions, and learned rules.
+
+---
+
+## 86. Universal Multi-Domain Presales Process Architecture: Zero-Hardcoding across Server, Storage, and Networking (`INV-85`)
+
+The learnings established during the DL380a Gen12 GPU density evaluation and power supply sizing are **not single-server special cases or ad-hoc rules**. They represent an overarching **Process Architecture Design Pattern** that governs all presales sizing, evaluation, and recommendation workflows across every enterprise domain and product generation:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                        UNIVERSAL ZERO-HARDCODED PROCESS ARCHITECTURE DESIGN                            │
+├─────────────────────────────────────┬────────────────────────────────────┬─────────────────────────────┤
+│ 🖥️ SERVERS (ProLiant, Synergy, Cray) │ 💾 STORAGE (Alletra, MSA, StoreEver)│ 🌐 NETWORKING (Aruba, VC, IB)│
+├─────────────────────────────────────┼────────────────────────────────────┼─────────────────────────────┤
+│ 1. DYNAMIC CAPABILITY SPACE SWEEP:  │ 1. DYNAMIC CAPABILITY SPACE SWEEP: │ 1. DYNAMIC CAPABILITY SPACE:│
+│    - Compute / Socket / TDP tiers   │    - Controller Protocol (NVMe-oF, │    - Port Speeds (25/100/400GbE)│
+│    - Memory channel balance (1DPC)  │      FC32/64, iSCSI 10/25GbE)      │    - Physical Media (DAC vs     │
+│    - Drive Cage modes (8SFF/24SFF/  │    - Drive Enclosure daisy-chaining│      AOC vs Optical MPO/LC)    │
+│      12LFF/EDSFF/Diskless)          │    - Media Tiers (TLC, QLC, Tape)  │    - Switching Architecture     │
+│    - Accelerator Modes (4DW/8DW/    │    - RAID Overhead & Spare Pools   │      (VSF Stacking vs VSX/MLAG  │
+│      10DW, Liquid vs Air-Cooled)    │                                    │      vs Leaf-Spine Clos Fabric) │
+│                                     │                                    │                             │
+│ 2. MULTI-BRANCH RANKING (INV-84):   │ 2. MULTI-BRANCH RANKING (INV-84):  │ 2. MULTI-BRANCH RANKING:    │
+│    - Rank 1A: Interconnect-Optimized│    - Rank 1A: Ultra-Low Latency    │    - Rank 1A: Non-Blocking  │
+│      (NVLink mesh / Max Bandwidth)  │      All-NVMe Block (NVMe-oF/RoCE) │      1:1 Spine-and-Leaf Fabric │
+│    - Rank 1B: Density-Optimized     │    - Rank 1B: High-Capacity Hybrid │    - Rank 1B: Cost-Effective│
+│      (PCIe Direct / Max VRAM / Raw) │      Tiered Storage (Dense QLC/SAS)│      3:1 Oversubscribed Fabric  │
+│                                     │                                    │                             │
+│ 3. PERIPHERAL ENVELOPE PROBING:     │ 3. PERIPHERAL ENVELOPE PROBING:    │ 3. PERIPHERAL ENVELOPE:     │
+│    - PSU Wattage & Efficiency Tiers │    - Dual Active-Active Controller │    - Power Consumption/Port │
+│      (Platinum vs Titanium 3200W)   │      Canisters & Cache Batteries   │    - Interconnect Cables / DACs │
+│    - High-Amperage C19/C20 Cabling  │    - SAS4 / PCIe Expansion Cables  │    - Transceiver Temperature    │
+│    - Utility 200V-240V / 277V Grid  │    - Drive Bay Airflow Blanks      │      Envelope & Airflow Direction│
+│    - Front Fan & Airflow Modules    │                                    │                             │
+│                                     │                                    │                             │
+│ 4. AUTONOMOUS PRESALES QUESTIONS:   │ 4. AUTONOMOUS PRESALES QUESTIONS:  │ 4. AUTONOMOUS PRESALES:     │
+│    - Workload DNA / Comm Pattern    │    - IOPS vs Latency vs Capacity   │    - East-West vs North-South   │
+│    - Datacenter Power/Rack Limit    │    - SAN Protocol & Host Interfaces│    - Transceiver Distance/Cabling│
+│    - Cluster Fabric / East-West NICs│    - Backup / Archive / RPO / RTO  │    - Uplink Oversubscription    │
+└─────────────────────────────────────┴────────────────────────────────────┴─────────────────────────────┘
+```
+
+### Core Tenets of the Universal Process Architecture:
+1. **Zero Hardcoding**: All component parameters (TDP, wattages, form factors, protocols, port speeds) derive dynamically from catalog metadata, QuickSpecs citations, and `scripts/config/generic_domain_rules_matrix.json`.
+2. **Never Settle on the First Valid Stop**: An engine that stops at the first passing build is a naive filter. A true Presales Architecture Engine sweeps the entire parameter space and discovers where architectural bifurcations exist.
+3. **Always Present Parallel Sub-Paths When Trade-Offs Exist**: If a platform supports multiple valid topologies that balance different customer priorities (Bandwidth vs Density, Latency vs Capacity, Simplicity vs Expandability), synthesize **Rank 1A** and **Rank 1B** side-by-side.
+4. **Proactively Probe Upstream and Downstream Constraints**: Do not wait for the customer to ask about power supplies, cables, airflow blanks, or network switches. Surface the complete datacenter footprint automatically.
+5. **Formulate the Closing Presales Questions on Turn 1**: Every solution delivery must conclude with clear, structured questions that guide the customer and presales engineer to the final decision.
+
+---
+
+## 87. Hierarchical Container Trees & Spatial Presales Reasoning (`INV-86`)
+
+Enterprise data center configurations are **not flat shopping carts of loose part numbers**. They are **hierarchically nested physical container trees**:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                      4-TIER HIERARCHICAL PHYSICAL CONTAINER REASONING MODEL                      │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ LEVEL 0: PARENT SOLUTION / FRAME ENVELOPE (Macro Boundary)                                     │
+│   ├── Synergy 12000 Frame / DL380a Gen12 Enclosure / Alletra MP Array / Cray GX5000 Rack        │
+│   └── Governs: Total bay slots, shared power backplane, thermal airflow zone, midplane fabrics │
+│                                                                                                 │
+│ LEVEL 1: SUB-PRODUCTS & MODULAR NODES (First-Tier Containment)                                  │
+│   ├── Compute Blades (Synergy 480/660) / Storage Modules (D3940) / Switch Modules (VC 100Gb)   │
+│   └── Governs: Node isolation, fabric bay mapping, power allocation, inter-node fabrics        │
+│                                                                                                 │
+│ LEVEL 2: SUBCOMPONENTS & ARCHITECTURAL KITS (Second-Tier Enablement)                            │
+│   ├── Captive Risers / Front Drive Cages / Mezzanine Cards / Switchboards / Cable Assemblies    │
+│   └── Governs: Internal bus routing, PCIe lane allocation, front-bay vs rear-slot contention   │
+│                                                                                                 │
+│ LEVEL 3: LEAF OPTIONS & CONCRETE SKUs (Atomic Hardware)                                         │
+│   ├── CPUs / DDR5 DIMMs / NVMe SSDs / GPUs / Transceivers / FIO Enablement Kits (#0D1, -F21)    │
+│   └── Governs: Capacity, clock speeds, VRAM, TDP wattage, licensing core multipliers           │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Bi-Directional Physical Constraint Propagation:
+1. **Top-Down Propagation (Parent $\rightarrow$ Subcomponent $\rightarrow$ Leaf SKU)**:
+   - The Parent Frame determines the physical boundaries of its children. In an HPE Synergy 12000 Frame, power supplies ($6 \times 2650\text{W}$) exist exclusively at Level 0; individual compute modules at Level 1 have no power supplies.
+   - In a DL380a Gen12, selecting a 10DW front accelerator cage at Level 2 occupies PCIe riser slots, reducing available rear PCIe slots from 5 to 3 (Slots 1, 3, 6).
+2. **Bottom-Up Propagation (Leaf SKU $\rightarrow$ Subcomponent $\rightarrow$ Parent)**:
+   - Selecting high-wattage GPUs (e.g. 10x H200 NVL, 700W each) at Level 3 mandates 5x GPU power cables (`P74700-B21`) and front fan modules (`P79656-B21`) at Level 2, and cascades up to mandate 8x 3200W Titanium PSUs (`P67248-B21`) and high-line 200V–240V utility power at Level 0.
+3. **Presales Judgment & Thought Process**:
+   - Presales architecture is the discipline of **reasoning across the containment tree**:
+     - *Where does each component physically reside?* (Placement verification).
+     - *What enablement kit connects it to the parent bus?* (Interposer / cable / riser verification).
+     - *How does a change at one level impact adjacent nodes and upstream power/cooling?* (Cascading impact analysis).
+
+
+
+
 

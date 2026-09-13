@@ -399,3 +399,39 @@ The system leverages Google Jules for background code review, test generation, a
     - The engine classifies input into 5 canonical tracks: `FREEFORM_QA`, `RFP_SIZING_TO_BOM`, `BOQ_EVALUATION`, `BOM_RECONCILIATION`, and `CATALOG_INTELLIGENCE`.
     - In single-user environments, all administrative/reviewer roles are unified, eliminating multi-party approval bottlenecks while preserving rigorous automated governance.
 
+70. **DL380a Gen12 GPU Accelerator Domain Isolation & Riser Architecture (`INV-79`)**:
+    - DL380a Gen12 utilizes a front-bay accelerator topology powered by dual switchboards (`P74714-B21`) and dedicated 16-pin cable kits (`P74700-B21`) rather than conventional rear PCIe risers.
+    - Rear PCIe slot allocation is dynamically decoupled from front accelerator bays; 10DW mode reduces available rear slots from 5 to 3 (Slots 1, 3, 6) because Slots 2 and 4 are occupied by the captive riser pass-through feeds.
+
+71. **Minimal Supported Memory Population Hierarchy vs Channel Interleaving (`INV-80`)**:
+    - Dual-socket enterprise platforms require 16 DIMMs for theoretical 1DPC 16-channel interleaving saturation, but physically support a hierarchical population: `[1, 2, 4, 6, 8, 12, 16]` DIMMs per CPU.
+    - Sizing engines MUST recognize minimal entry configurations (e.g. 4x 32GB DDR5 on dual-socket systems) as 100% buildable, passing with an informative interleaving advisory rather than a fatal validation error.
+
+72. **Diskless Compute Nodes & No Local Drive FIO Enablement Kit (`873763-B21`) (`INV-81`)**:
+    - When a server is provisioned for diskless SAN-boot, PXE clustering, or stateless AI compute, omitting local drives triggers factory configuration rules (HPE CLIC Rule 81392308).
+    - Sizing and evaluation engines MUST inject `873763-B21` (HPE No Drive Configuration FIO Kit) to officially designate the server as diskless, clearing controller and drive cage requirements.
+
+73. **Dynamic WebLogic AJAX Panels, Missing SKU Discovery & Scraper Resilience (`INV-82`)**:
+    - WebLogic OCA configuration options (accelerators, captive risers, switchboards, auxiliary power cables) are frequently hidden inside deferred AJAX subchoice panels that do not render until parent choice triggers fire.
+    - Missing SKUs discovered through customer RFPs or QuickSpecs reconciliation MUST be dynamically backfilled into master 22-sheet workbooks and TSVs, and `cdp.js` MUST dispatch jQuery change events to expand all dependent subchoice containers during live scrapes.
+
+74. **Google Sheets & NotebookLM Synchronization Strategy: Full Replace vs Delta Append (`INV-83`)**:
+    - Master catalog grounding sheets (`All SKUs`) must use Full Replace In Place to prevent polluting semantic vector embeddings with duplicate, obsolete, or outdated price entries.
+    - Telemetry change logs (`Price Trails`, `Knowledge Deltas`) must use Delta Append to preserve immutable chronological audit trails.
+
+75. **Parallel Sub-Path Architectural Branching & Multi-Mode Sizing Protocol (`INV-84`)**:
+    - When physical platform capabilities support multiple valid topologies (e.g. 8DW Interconnect-Optimized vs 10DW Density-Optimized for accelerators), the engine MUST NOT prematurely converge on a single configuration.
+    - The engine MUST synthesize parallel buildable sub-paths (**Rank 1A** and **Rank 1B**) and present a side-by-side trade-off matrix (Interconnect vs Density, Power headroom, Rear I/O expansion, and List Price).
+
+76. **Universal Multi-Domain Presales Process Architecture & Zero-Hardcoded Multi-Mode Discovery Protocol (`INV-85`)**:
+    - **Universal Applicability Across Compute, Storage, and Networking**: The dynamic capability space discovery, architectural branching (Rank 1A vs Rank 1B), peripheral envelope probing, and proactive presales qualifying protocol are domain-agnostic and generation-agnostic. They apply universally across all server families (ProLiant, Synergy, Cray, Superdome), storage architectures (Alletra, MSA, StoreEver), and networking fabrics (Aruba CX, Virtual Connect, Mellanox/Broadcom).
+    - **Zero-Hardcoded Process Architecture**: The engine MUST NOT rely on hardcoded chassis strings or part numbers to discover options. All capability limits, operating modes, form factor trade-offs, and accessory dependencies are discovered dynamically via catalog metadata, data dictionary schemas (`.agents/DATA_DICTIONARY.md`), and `scripts/config/generic_domain_rules_matrix.json`.
+    - **Mandatory 4-Dimension Presales Qualifying Engine**: For any customer inquiry or sizing request, the engine autonomously formulates the 4 proactive presales qualifying dimensions (Workload DNA, Facility & Electrical Envelope, Fabric & Interconnect Topology, Data Tiering & Lifecycle) on the first turn without requiring human nudges.
+
+77. **Hierarchical Container Trees & Spatial Presales Reasoning Protocol (`INV-86`)**:
+    - **4-Tier Physical Containment Tree**: Infrastructure configurations are structured as strict 4-tier containment trees: Level 0 Parent Frame/Enclosure $\rightarrow$ Level 1 Sub-Product Modules (Compute/Storage/Fabric nodes) $\rightarrow$ Level 2 Subcomponents & Enablement Architecture (Risers, cages, switchboards, cable assemblies) $\rightarrow$ Level 3 Leaf SKUs & Options (CPUs, DIMMs, Drives, PSUs, FIO tags).
+    - **Bi-Directional Constraint Propagation**: Sizing and evaluation engines MUST propagate physical constraints both top-down (Frame limits on child module counts, riser impacts on rear slot availability) and bottom-up (Leaf SKU TDP/wattage aggregating to frame power supply and high-line electrical circuits).
+    - **Spatial Placement Verification**: Sizing and BOM reconciliation MUST verify that every component is physically placed in the correct container tier (e.g. FIO `#0D1` / `-F21` internal options nested inside the CTO compute blade container per `INV-25`; external fabric switches or transceivers placed in their respective frame bays or top-of-rack groupings).
+
+
+

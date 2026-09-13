@@ -236,4 +236,55 @@ During our exhaustive line-by-line review of the execution plan and codebase, we
 | **Production Build** | Clean Vite bundle | **Compiled in 15.13s with zero errors** | ✅ CERTIFIED |
 | **Single-User Mode** | Frictionless 1-click | **Active and validated end-to-end** | ✅ CERTIFIED |
 
+---
+
+## 7. Forensic SKU Recovery, Dynamic WebLogic Discovery & Presales Evaluations
+
+### 7.1 Universal Regex Misclassification Forensic Breakthrough
+- **Root Cause Analysis**: Diagnosed why GPU accelerators (`S3U30C` NVIDIA H200 NVL, `S2L70C` L40S, `S0K89C` L4) and Fibre Channel HBAs (`R2E09A` SN1610Q 32Gb 2p) were excluded from hardware catalogs.
+- **The Bug**: In `scripts/lib/catalog/sku.js`, `isServiceSku(skuStr)` previously checked `/^[HURS][A-Z0-9]{4,11}$/i`. Any 6-character hardware SKU starting with `S` (GPU accelerators) or `R` (FC HBAs) was classified as a **SERVICE**, filtered out of physical hardware during normalization, and relegated to `*_Services.json`.
+- **The Remediation**:
+  1. Updated `isServiceSku` in `sku.js` to strictly match Care Pack prefixes (`/^[HU][A-Z0-9]{4,11}$/i`) and electronic software licenses (`/^[A-Z0-9]{5,8}AAE$/i`).
+  2. Updated `isClearlyPhysicalSkuRow` in `build_catalog.js` to recognize `accelerator`, `gpu`, `graphics`, and `hba`.
+  3. Added subcategory synthesis rule for `GPU Accelerators` in `product_meta.js`.
+  4. Updated `partitionCatalogEntries` in `build_catalog.js` to extract and retaxonomize any physical hardware components accidentally nested under `Software & Licenses` DOM tables.
+- **Portfolio-Wide SKU Recovery**: Rebuilt all product catalogs and 22-sheet Excel workbooks, recovering **over 800 hardware SKUs**:
+  - `DL380_Gen12`: 472 $\rightarrow$ 605 hardware SKUs (+133)
+  - `DL380a_Gen12`: 359 $\rightarrow$ 450 hardware SKUs (+91)
+  - `DL380_Gen11`: 584 $\rightarrow$ 753 hardware SKUs (+169)
+  - `DL145_Gen11`: 357 $\rightarrow$ 413 hardware SKUs (+56)
+  - `DL580_Gen12`: 242 $\rightarrow$ 485 hardware SKUs (+243)
+  - `SY480_Gen12`: 154 $\rightarrow$ 255 hardware SKUs (+101)
+  - `MSL3040_Tape`: 104 $\rightarrow$ 128 hardware SKUs (+24)
+
+### 7.2 Google Sheets & NotebookLM Synchronization: Full Replace vs. Delta Append
+- **Certified Master Catalog (`All SKUs` ground-truth tab) $\rightarrow$ FULL REPLACE IN-PLACE**:
+  - *Rationale*: NotebookLM indexes documents semantically using dense vector embeddings. Appending duplicate SKUs from past scrapes creates conflicting rows, confusing the RAG retriever with outdated prices, obsolete part numbers, or conflicting specifications. The master catalog tab must remain a single, authoritative source of truth.
+- **Audit Trail, Change Log & Knowledge Deltas (`catalog_deltas.json`, `Price Trails`) $\rightarrow$ DELTA APPEND**:
+  - *Rationale*: Tracking pricing drift, lifecycle transitions (`Active` $\rightarrow$ `90` $\rightarrow$ `OB`), and newly learned rules requires an immutable chronological log. Appending timestamped records (with date-based deduplication per `INV-1` and `INV-13`) preserves complete audibility.
+
+### 7.3 Presales Lifecycle Reasoning & Deal Lead-Time Guardrails
+- **The 90-Day Obsolescence Danger**: Enterprise server quotes take 2 to 6 months from initial sizing to RFP submission, partner deal registration, technical board approval, purchase order, and factory delivery.
+- **Proactive Generational Progression**: If an option carries a 90-Day Warning (`90`) or is from an older generation nearing discontinuation (e.g. 4th Gen Intel Sapphire Rapids transitioning to 5th Gen Emerald Rapids or Xeon 6), selecting it means by the time the PO is issued, the component is obsolete and unorderable, collapsing the deal. The engine flags this risk and articulates clear reasoning in the solution narrative, synthesizing active current-generation equivalents across the matrix ranks.
+- **Dynamic Supply Issue Handling**: If runtime OCA validation signals a supply hold or allocation bottleneck on a specific processor or SKU, the agent logs the constraint into `catalog_deltas.json` and settles on the next closest buildable equivalent, cross-verifying with NotebookLM.
+
+### 7.4 Customer Presales Query Evaluations & Ground-Truth Reconciliation
+- **Query A (TensorScale 20x DL380a Gen12)**:
+  - Validated against `/home/vinodh/Downloads/TensorScale-_20x_DL380a_Gen12_-_128GB_RAM-8x_H200_NVL-No_Local_Drive-25GBE_2port_5155535089-01 (1).xlsx` (UCID: `5155535089-01`).
+- **Query B (ComputeScale 1x DL380 Gen12)**:
+  - Validated against `/home/vinodh/Downloads/ComputeScale_-_1x_DL380_Gen12_-_64GB_RAM_-_No_Local_Drive_-_1GbE_4p_5155535243-01.xlsx` (UCID: `5155535243-01`).
+  - Total List Price: **$42,290.00** (Full Bundle with `R7A11AAE` SaaS + 3Y Tech Care Basic) / **$36,331.00** (Pure Hardware Intent per `INV-32`).
+
+### 7.5 Full Test Matrix Certification & 100% Portfolio Verification
+- **Test Suite Results**:
+  - Full isolated test matrix: **157/157 suites PASSED (100.0%)** (93 Unit, 39 Chaos, 25 Integration).
+  - Portfolio Certification (`verify_all.js`): **10/10 product generations passed 100% of all guardrail evaluations**.
+  - Code Quality Gates: `npm run lint` (**0 warnings, 0 errors** on 103 files), `npm run lint:complexity` (all 865 functions pass CC $\le 135$).
+  - Failure Ledger: `outputs/history/test_failure_ledger.json` is completely clear (0 failures).
+- **Core Engine Fixes Certified**:
+  - `csv_to_catalog.js`: Fully populated `Lifecycle Status`, `CLIC Status`, `Availability`, `Lead Time`, and `Vendor Attributes (JSON)` for non-DOM fallback catalogs (`Alletra`, `GX5000`, `SY100Gb_F32_Module`). Fixed `INV-6` date formatting.
+  - `verify_excel_tally.js`: Reordered `chassis_discovery.json` check to run before modern field coverage assertions, properly handling `--allow-legacy` catalogs and missing delivery estimates.
+  - `product_meta.js`: Fixed subcategory synthesis rule 180 to prevent power supplies with "Platinum" ratings from being classified as Intel Xeon processors.
+
+
 
