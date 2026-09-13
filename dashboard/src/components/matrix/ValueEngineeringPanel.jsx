@@ -46,6 +46,8 @@ export default function ValueEngineeringPanel({ valueEngineering }) {
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors flex items-center gap-1 text-xs font-semibold"
+          aria-expanded={isExpanded}
+          aria-controls="value-engineering-details"
         >
           {isExpanded ? (
             <>
@@ -62,7 +64,7 @@ export default function ValueEngineeringPanel({ valueEngineering }) {
       </div>
 
       {isExpanded && (
-        <div className="mt-4 pt-3 border-t border-emerald-100/80 space-y-3">
+        <div id="value-engineering-details" className="mt-4 pt-3 border-t border-emerald-100/80 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {opportunities.map((opp, idx) => {
               const oppId = (opp.id || opp.type || '').toUpperCase();
