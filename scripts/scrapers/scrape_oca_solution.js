@@ -228,25 +228,41 @@ async function main() {
   const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
     ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
     : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
+  const isRecoverMode = process.argv.includes('--recover') || process.argv.includes('--fresh');
 
   const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
   await ensureChromeBrowserRunning(9222);
 
   let pageTarget;
   let chassisDiscovery = null;
-  try {
+  const navQuery = targetChassisQuery || 'DL380 Gen12';
+
+  if (isRecoverMode) {
+    console.log(`🔄 [INV-89] Recovery mode requested via CLI. Re-establishing fresh OCA session via Partner Portal...`);
+    const { recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
+    const navigation = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+    chassisDiscovery = navigation.chassisDiscovery || null;
     pageTarget = await getOCATarget();
-  } catch (err) {
-    console.log(`⚠️ Active OCA tab not found: ${err.message}`);
-    const navQuery = targetChassisQuery || 'DL380 Gen12';
-    console.log(`🧭 Attempting smart auto-navigation via Partner Portal for "${navQuery}"...`);
+  } else {
     try {
-      const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-      const navigation = await navigateToOCAChassis(navQuery, { forceDiscovery: true });
-      chassisDiscovery = navigation.chassisDiscovery || null;
       pageTarget = await getOCATarget();
-    } catch (navErr) {
-      throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
+    } catch (err) {
+      console.log(`⚠️ Active OCA tab not found: ${err.message}`);
+      console.log(`🧭 Attempting smart auto-navigation via Partner Portal for "${navQuery}"...`);
+      try {
+        const { navigateToOCAChassis, recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
+        let navigation;
+        try {
+          navigation = await navigateToOCAChassis(navQuery, { forceDiscovery: true });
+        } catch (firstNavErr) {
+          console.warn(`⚠️ Initial auto-navigation failed (${firstNavErr.message}). Attempting Tab 1 Self-Healing Recovery...`);
+          navigation = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+        }
+        chassisDiscovery = navigation.chassisDiscovery || null;
+        pageTarget = await getOCATarget();
+      } catch (navErr) {
+        throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
+      }
     }
   }
 
@@ -265,7 +281,17 @@ async function main() {
   });
 
   console.log(`Connecting via CDP: ${pageTarget.id} (${pageTarget.title})...`);
-  const ws = await connectWS(pageTarget.webSocketDebuggerUrl);
+  let ws;
+  try {
+    ws = await connectWS(pageTarget.webSocketDebuggerUrl);
+  } catch (wsErr) {
+    console.warn(`⚠️ [RECOVERY] Failed to connect to OCA target WebSocket (${wsErr.message}). Initiating Tab 1 Self-Healing Recovery...`);
+    const { recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
+    const recovery = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+    chassisDiscovery = recovery.chassisDiscovery || chassisDiscovery;
+    pageTarget = await getOCATarget();
+    ws = await connectWS(pageTarget.webSocketDebuggerUrl);
+  }
 
   let outputDir = '';
   let meta = {};

@@ -142,8 +142,8 @@ HU4B2A3,1,HPE 3Y Tech Care Basic Hardware Only Support
 | **CHASSIS** | ✅ Mandatory | `P55446-B21` | Exactly 1 base CTO chassis |
 | **PROCESSOR** | ✅ Mandatory | `P73289-B21` | 1 or 2 (matching socket count) |
 | **MEMORY** | ✅ Mandatory | `P64707-B21` | Must be symmetrical (multiple of channel count) |
-| **STORAGE_CONTROLLER** | ✅ Mandatory | `P47777-B21` | OCP or PCIe standup |
-| **DRIVES** | ⚠️ If storage requested | `P36999-B21` | Match RAID level and capacity requirements |
+| **STORAGE_CONTROLLER** | ⚠️ Conditional | `P47777-B21` | OCP or PCIe standup; omitted if node is diskless (`873763-B21`) or boot-only (`NS204i-u`) per `INV-81` & `INV-87` |
+| **DRIVES** | ⚠️ If storage requested | `P36999-B21` | Match RAID level and capacity requirements; omit for diskless nodes (`INV-81`) |
 | **NETWORKING** | ✅ Mandatory | `P10115-B21` | At least 1 NIC |
 | **POWER** | ✅ Mandatory | `P38997-B21` | 1+1 redundant default |
 | **SUPPORT** | ⚠️ Default 3yr basic | `HU4B2A3` | Never inject installation/startup services (`INV-32`) |

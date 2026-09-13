@@ -47,3 +47,15 @@
 - **Scope Detection**: Automatically handle single config, all configs in Sheet X, or all configs across all sheets (`multi_cluster_splitter.js`).
 - **Up-Front Ambiguity Triage**: Before launching deep pipelines, if any critical ambiguity exists (unmapped model, ambiguous chassis, contradictory quantities), clarify immediately in the initial turn. Never guess or hallucinate; maintain $\ge 0.95$ confidence.
 - **Autonomous End-to-End Delivery**: Execute canonical flow autonomously: partition clusters $\rightarrow$ 7 aspects $\rightarrow$ NotebookLM grounding $\rightarrow$ 100% buildable 5-tier matrix $\rightarrow$ line-by-line financial breakdown $\rightarrow$ Dual-Brain badges $\rightarrow$ scoped knowledge delta sync.
+
+## 9. Zero-Touch Browser Auto-Launch & Tab 1 Stale-Session Self-Healing Recovery (`INV-89`)
+- **Automated Chrome Launch & Persistent SSO**: Never prompt the user to manually launch Chrome with flags or enter credentials. `browser_launcher.js` automatically probes port 9222 and launches Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`. `navigate_oca.js` automates clicking `#oktaSignInBtn` and submitting `#onepass-submit-btn` with stored credentials.
+- **Quick Links OCA Launch**: Inside the authenticated Partner Portal page, the navigator clicks "One Config Advanced" from the Quick links section (`#quick-links-807 a` / `eServiceId=187402`), opening OCA in a fresh browser tab with SAML session tokens.
+- **Fatal In-Place OCA Reload Prohibition**: WebLogic OCA is an enterprise Java application where session state is bound to server memory and short-lived SAML assertions. In-place browser reloads (`location.reload()`) in an OCA tab destroy server-side state, leading to unrecoverable 403 Forbidden errors, blank screens, or broken login loops.
+- **Tab 1 Recovery Lifecycle**: Whenever an OCA session times out, freezes silently, or encounters an exception box:
+  1. Immediately close the broken/stale OCA tab via CDP (`/json/close/{targetId}`).
+  2. Switch focus back to Tab 1 (the parent Partner Portal tab: `partner.hpe.com/group/prp`).
+  3. Auto-sign in if the portal session dropped to a login screen.
+  4. Reload Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML session tokens and re-bind Quick Links.
+  5. Click "One Config Advanced" from Quick links anew to spawn a pristine OCA tab.
+  6. Re-navigate into the target chassis Menu tab and resume scraping/configuration without human intervention.

@@ -54,9 +54,11 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role) {
   // DL380a drive cage tracking (Rule 81016788)
   if (DL380A_4SFF_CAGE_SKUS.has(sku) || (desc.includes('4sff') && desc.includes('dl380a'))) {
     tally.has4SffCage = true;
+    tally.hasDriveCage = true;
   }
   if (DL380A_4EDSFF_CAGE_SKUS.has(sku) || (desc.includes('4edsff') && desc.includes('dl380a'))) {
     tally.has4EdsffCage = true;
+    tally.hasDriveCage = true;
   }
 }
 
@@ -221,6 +223,19 @@ function validateStoreEverStorage(t) {
   };
 }
 
+function validateStorageCablingAndBackplane(t) {
+  const controllerDirectCapacity = t.hasStorageController ? (t.has16PortController ? 16 : 8) : 0;
+  const isServerChassis = !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount;
+  return {
+    controllerDirectCapacity,
+    needsSasExpander: t.hasStorageController && t.driveCount > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
+    hasIncompatibleYCable: t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage),
+    needsCapacitorCable: t.hasSmartBattery && !t.hasOcpCable,
+    needsDriveCageForController: isServerChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage,
+    hasControllerNoDriveConflict: isServerChassis && t.hasStorageController && t.hasNoDriveKit
+  };
+}
+
 function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   const batterySku = cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY?.sku || 'P01366-B21');
   const noDriveSku = cleanBaseSKU(mandatorySkus.NO_DRIVE_FIO_KIT?.sku || '873763-B21');
@@ -234,12 +249,7 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   // Alletra & StoreEver sub-aspect validations
   const alletra = validateAlletraStorage(t);
   const storeEver = validateStoreEverStorage(t);
-
-  // Storage Expander & Cable rules
-  const controllerDirectCapacity = t.hasStorageController ? (t.has16PortController ? 16 : 8) : 0;
-  const needsSasExpander = t.hasStorageController && t.driveCount > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch;
-  const hasIncompatibleYCable = t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage);
-  const needsCapacitorCable = t.hasSmartBattery && !t.hasOcpCable;
+  const cabling = validateStorageCablingAndBackplane(t);
 
   return {
     driveCount: t.driveCount,
@@ -251,14 +261,16 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     hasDriveCage: t.hasDriveCage,
     hasPremiumCage: t.hasPremiumCage,
     hasYCable: t.hasYCable,
-    hasIncompatibleYCable,
+    hasIncompatibleYCable: cabling.hasIncompatibleYCable,
     hasOcpCable: t.hasOcpCable,
     hasSasExpander: t.hasSasExpander,
     hasTriModeSwitch: t.hasTriModeSwitch,
-    needsSasExpander,
+    needsSasExpander: cabling.needsSasExpander,
+    needsDriveCageForController: cabling.needsDriveCageForController,
+    hasControllerNoDriveConflict: cabling.hasControllerNoDriveConflict,
     needsSmartStorageBattery: t.hasStorageController && !t.hasSmartBattery,
-    needsCapacitorCable,
-    controllerDirectCapacity,
+    needsCapacitorCable: cabling.needsCapacitorCable,
+    controllerDirectCapacity: cabling.controllerDirectCapacity,
     conflictingCableItems: t.conflictingCableItems,
     isAlletraArray: t.isAlletraArray,
     controllerNodeCount: t.controllerNodeCount,

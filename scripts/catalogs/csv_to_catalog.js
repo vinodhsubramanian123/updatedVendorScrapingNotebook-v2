@@ -98,6 +98,7 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
     const vendorAttrs = getVal(row, 'Vendor Attributes (JSON)') || '{}';
     const role = getVal(row, 'Component Role') || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
 
+    const entry = grouped.get(key);
     entry.skus.push({
       'Product #': sku,
       'Description': desc,

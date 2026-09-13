@@ -38,7 +38,7 @@ test('updateScrapedRegistry', async (t) => {
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
     assert.match(writtenContent, /# Master Scraped HPE Product Catalogs Registry/);
-    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\(outputs\/test\/catalog\.xlsx\) \| \[catalog\.json\]\(outputs\/test\/catalog\.json\) \| \[PDF\]\(outputs\/test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
   });
 
   await t.test('appends to existing file if entry is not present', (t2) => {
@@ -58,7 +58,7 @@ test('updateScrapedRegistry', async (t) => {
     updateScrapedRegistry(info);
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
-    assert.match(writtenContent, /\| 2023-10-27 \| OCA Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*15\*\* \| \[catalog\.xlsx\]\(outputs\/test\/catalog\.xlsx\) \| \[catalog\.json\]\(outputs\/test\/catalog\.json\) \| Advisory \(No QS Link\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| OCA Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*15\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| Advisory \(No QS Link\) \| `outputs\/test\/` \|/);
   });
 
   await t.test('updates existing row if outputDir matches', (t2) => {
@@ -75,6 +75,6 @@ test('updateScrapedRegistry', async (t) => {
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
     assert.doesNotMatch(writtenContent, /Old Solution/);
-    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\(outputs\/test\/catalog\.xlsx\) \| \[catalog\.json\]\(outputs\/test\/catalog\.json\) \| \[PDF\]\(outputs\/test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
   });
 });

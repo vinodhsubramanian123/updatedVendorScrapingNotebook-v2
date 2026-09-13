@@ -58,7 +58,7 @@ When disparate subsystem components collide for shared physical slots, the resou
 
 ### 3. AI / Accelerator Server GPU Density & NVLink Bridge Arbitration (DL380a Gen12) (`INV-84`)
 - **Problem**: Customer requests "max number of GPUs" or "max number of H200s" on the DL380a Gen12 chassis. The general chassis platform datasheet lists up to 10 double-wide (10DW) slots, but NVIDIA H200 NVL can be deployed with or without physical NVLink bridges.
-- **Arbitration Action (True Rank 1 Parallel Sub-Paths `INV-65`)**:
+- **Arbitration Action (True Rank 1 Parallel Sub-Paths `INV-84`)**:
   - Rather than making a rigid assumption that H200 *must* always have NVLink bridges, the engine synthesizes **two valid, 100% buildable parallel sub-paths**:
   - **Rank 1A (Interconnect-Optimized AI Training Tier — 8x H200 with NVLink)**:
     - **Architecture**: 8x NVIDIA H200 NVL (`S3U30C`) seated on dual switchboards (`P74714-B21`) under **8DW Mode (`P75008-B21`)**.

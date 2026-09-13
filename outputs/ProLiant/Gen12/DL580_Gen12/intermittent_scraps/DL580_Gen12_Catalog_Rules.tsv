@@ -1,38 +1,112 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
-Accessories & Infrastructure	Energy Star Configuration Presets	optional	Configuration Rule	Selection constraint for Energy Star Configuration Presets: optional
-Processor	Intel Xeon 6th Gen Scalable Processors	min 1, max 2	Configuration Rule	Selection constraint for Intel Xeon 6th Gen Scalable Processors: min 1, max 2
-Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 6
-Accessories & Infrastructure	System Options	optional	Configuration Rule	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Selection constraint for DDR5 Registered Smart Memory: max 32
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
-Memory	DDR5 Registered Smart Memory	max 32	Configuration Rule	Mixing of memory DIMMs of different capacities is not allowed.
-Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	Selection constraint for SFF Drive Cages & Enablement: max 24
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 4
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 4	Configuration Rule	There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
-Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
-Accessories & Infrastructure	System Options	optional	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Drive Enclosures / Drives	Drive Blank & FIO Enablement Kits	max 24	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
-PCIe Risers	PCIe Riser Kits	max 3	Configuration Rule	Selection constraint for PCIe Riser Kits: max 3
-Networking	PCIe Networking Adapters	max 8	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 8
-Networking	OCP3 Networking Adapters	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
-Networking	PCIe Networking Adapters	max 8	Configuration Rule	These products are hidden due to Supply constraints
-Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 24	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 24
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	optional	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: optional
-Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.
-Power Supplies	Flex Slot Power Supplies	min 1, max 2	Configuration Rule	Selection constraint for Flex Slot Power Supplies: min 1, max 2
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Mixing of Power Supplies is not allowed.
-Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: min 1, max 2
-Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	Mixing of Power cords is not allowed
-Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	BTO products are not allowed in CTO Base Model.
-Networking	Fibre Channel Host Bus Adapters	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Networking	Fibre Channel HBA	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	SUSE Linux Enterprise Server	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Accessories & Infrastructure	Compute Ops Management Enablement SKUs	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	High Availability Computing - Cluster Software	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	iLO	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Storage Controllers	Energy Star	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Software & Licenses	MS Windows Server	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Energy Star	Energy Star	max 1	Quantity Constraint	Quantity: max 1
+Processor	Processor	max 4	Quantity Constraint	Quantity: max 4
+Unknown	Heatsink Kit	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
+Unknown	Drive Cage	max 5	Quantity Constraint	Quantity: max 5
+Unknown	SAS Controller	max 4	Quantity Constraint	Quantity: max 4
+Unknown	Smart Storage Battery	max 3	Quantity Constraint	Quantity: max 3
+Cables	Internal Storage Controller Cables	max 1	Quantity Constraint	Quantity: max 1
+Unknown	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
+Unknown	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Identifier/Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Riser Cards	max 6	Quantity Constraint	Quantity: max 6
+Accessories	Accessories	max 2	Quantity Constraint	Quantity: max 2
+Unknown	Ethernet PCIe	max 4	Quantity Constraint	Quantity: max 4
+Unknown	InfiniBand PCIe	max 4	Quantity Constraint	Quantity: max 4
+Cables	Ethernet Cables and QSFP/SFP	max 14	Quantity Constraint	Quantity: max 14
+Unknown	Fibre Channel HBA	max 4	Quantity Constraint	Quantity: max 4
+Unknown	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
+Unknown	Upgrades	max 4	Quantity Constraint	Quantity: max 4
+Transceivers	Transceivers	max 14	Quantity Constraint	Quantity: max 14
+OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
+Management Hardware	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Security Hardware	max 1	Quantity Constraint	Quantity: max 1
+Manufacturing Services	Manufacturing Services	max 2	Quantity Constraint	Quantity: max 2
+Unknown		Unlimited	Quantity Constraint	Quantity: Unlimited
+Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Supplies	max 4	Quantity Constraint	Quantity: max 4
+Accessories	Accessories	max 4	Quantity Constraint	Quantity: max 4
+Power Cords	Power Cords	max 4	Quantity Constraint	Quantity: max 4
+Cooling Options	Power Cooling Options	max 6	Quantity Constraint	Quantity: max 6
+AI-at-Scale	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software	Partner Software - Interconnect Management Array	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software	Partner Software - Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Compute Ops Management Enablement SKUs	max 1	Quantity Constraint	Quantity: max 1
+OEM Software	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	iLO	Unlimited	Quantity Constraint	Quantity: Unlimited
+Software	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
+Unknown	INTEL VROC Products	max 1	Quantity Constraint	Quantity: max 1
+Supported Operating System	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	SUSE Linux Enterprise Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	Microsoft Windows CAL Packs	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	Red Hat Enterprise Linux Server-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	VMware vCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
+Processor	Processor	max 4	Configuration Rule	Selection constraint for Processor: max 4
+Cables & Enablement Kits	Standard & Performance Heat Sinks	max 1	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 1
+Cables & Enablement Kits	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.
+Memory	Memory	max 32	Configuration Rule	Selection constraint for Memory: max 32
+Memory	Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Memory	Memory	max 32	Configuration Rule	Mixing of memory DIMMs of different capacities is not allowed.
+Drive Enclosures / Drives	Drive Cage	max 5	Configuration Rule	Selection constraint for Drive Cage: max 5
+Storage Controllers	SAS Controller	max 4	Configuration Rule	Selection constraint for SAS Controller: max 4
+Storage Controllers	Internal Storage Controller Cables	max 1	Configuration Rule	Selection constraint for Internal Storage Controller Cables: max 1
+Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 1	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 1
+Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 3	Configuration Rule	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.
+Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 3	Configuration Rule	There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
+Storage Controllers	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection constraint for Optical Drive: max 1
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Accessories & Infrastructure	Drive Blank & FIO Enablement Kits	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Software & Licenses	iLO Common Password	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+Accessories & Infrastructure	Trusted Supply Chain	max 1	Configuration Rule	Selection constraint for Trusted Supply Chain: max 1
+Software & Licenses	iLO	no max	Configuration Rule	Selection constraint for iLO: no max
+PCIe Risers	PCIe Riser Kits	max 1	Configuration Rule	Selection constraint for PCIe Riser Kits: max 1
+Cables & Enablement Kits	PCIe Riser Kits	max 1	Configuration Rule	Selection constraint for PCIe Riser Kits: max 1
+Networking	Ethernet Cables and QSFP/SFP	max 14	Configuration Rule	Selection constraint for Ethernet Cables and QSFP/SFP: max 14
+Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Networking	Fibre Channel Host Bus Adapters	max 1	Configuration Rule	Selection constraint for Fibre Channel Host Bus Adapters: max 1
+Networking	Fibre Channel HBA	max 4	Configuration Rule	These products are hidden due to Supply constraints
+Cables & Enablement Kits	OCP3 Networking Adapters	max 1	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 1
+Networking	Ethernet Cables and QSFP/SFP	max 14	Configuration Rule	These products are hidden due to Supply constraints
+Cables & Enablement Kits	Solid State Drives (NVMe/SAS/SATA)	max 2	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2
+Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 1	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 1
+Cables & Enablement Kits	Power Cords	max 4	Configuration Rule	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	required	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: required
+Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	Selection constraint for Flex Slot Power Supplies: max 1
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Mixing of Power Supplies is not allowed.
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 1
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Selection constraint for Power Cords & Jumper Cables: max 1
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Supports C19/ C19-C20 Power Cords only.
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Mixing of Power cords is not allowed
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Networking	OCP3 Networking Adapters	max 1	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 1
+Software & Licenses	SUSE Linux Enterprise Server	no max	Configuration Rule	Selection constraint for SUSE Linux Enterprise Server: no max
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max
+Accessories & Infrastructure	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
+Software & Licenses	MS Windows Server	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
+Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	Selection constraint for Microsoft Windows CAL Packs: no max
+Support Services	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Software & Licenses	Partner Software - Interconnect Management Array	no max	Configuration Rule	Selection constraint for Partner Software - Interconnect Management Array: no max
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
+Graphics & GPU	GPU Accelerators	max 1	Configuration Rule	Selection constraint for GPU Accelerators: max 1
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
+Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	Selection constraint for Red Hat OpenShift Platform Container: no max
+Support Services	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account

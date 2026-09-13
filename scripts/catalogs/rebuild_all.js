@@ -43,10 +43,12 @@ function rebuildAll() {
     const dir       = path.dirname(jsonPath);
     const rawPath   = path.join(dir, 'raw_data', 'oca_raw_data_full.json');
     const fileBase  = path.basename(jsonPath, '_Catalog.json');
-    const csvPath   = path.join(dir, `${fileBase}_Catalog_SKUs.csv`);
+    const masterCsv = path.join(dir, `${fileBase}_Master_Catalog.csv`);
+    const skuCsv    = path.join(dir, `${fileBase}_Catalog_SKUs.csv`);
+    const csvPath   = fs.existsSync(masterCsv) ? masterCsv : (fs.existsSync(skuCsv) ? skuCsv : null);
     const xlsxPath  = path.join(dir, `${fileBase}_OCA_Catalog.xlsx`);
 
-    if (fs.existsSync(csvPath)) {
+    if (csvPath) {
       console.log(`\nRebuilding ${fileBase} from master CSV (${path.basename(csvPath)})...`);
       try {
         const { convertCSVToCatalogJSON } = require('./csv_to_catalog.js');
@@ -64,8 +66,17 @@ function rebuildAll() {
       } catch (err) {
         console.error(`  ❌ Failed rebuilding ${fileBase}:`, err.message);
       }
+    } else if (fs.existsSync(xlsxPath)) {
+      console.log(`\nRebuilding ${fileBase} from master Excel workbook (${path.basename(xlsxPath)})...`);
+      try {
+        const { convertXlsxToCatalog } = require('./xlsx_to_catalog.js');
+        convertXlsxToCatalog(xlsxPath, jsonPath);
+        console.log(`  ✅ Rebuilt: ${fileBase}`);
+      } catch (err) {
+        console.error(`  ❌ Failed rebuilding ${fileBase} from Excel:`, err.message);
+      }
     } else {
-      console.warn(`  ⚠️ Skipping ${fileBase}: Neither CSV nor raw data file found in ${dir}`);
+      console.warn(`  ⚠️ Skipping ${fileBase}: Neither CSV, raw data, nor Excel file found in ${dir}`);
     }
   });
 

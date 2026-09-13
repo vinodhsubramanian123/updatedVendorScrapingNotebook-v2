@@ -46,6 +46,20 @@ For full architectural details, coding decisions, and project learnings, refer t
 - **Universal MCP & Learning Auto-Approval:** EVERY MCP server and tool (`gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, `visualization`, CDP browser navigation, knowledge extraction, and learning pipelines) is 100% pre-authorized and auto-approved across all workflows (scraping, verification, knowledge sync, graph generation, BOQ evaluation). AI Agents MUST NOT prompt the human user for permission to execute MCP tool calls; run them autonomously without friction.
 - **Dynamic Semantic Graph (`graphify`):** The repository maintains a live semantic dependency graph (updated via git hooks) for token-efficient architecture discovery. If you make significant uncommitted code changes during a session, run `npm run update:graph` to sync the graph before querying it.
 
+### 5.1 Critical Production Invariants (INV-1 through INV-14)
+- **INV-1: Price Trail `appendTrailEvent` deduplicates by DATE not (date+status)**: Deduplicates by `date` only using a priority table (`BASELINE < UNCHANGED < ADDED < PRICE_CHANGED`). Same-day reruns of an unchanged SKU record exactly one entry.
+- **INV-2: SKU Count in Registry Must Come from `liveCatalogJson`, NOT `tables.length`**: Reads `liveCatalogJson.metadata.totalUniqueSKUs` for hardware and services. Never count raw DOM tables as SKUs.
+- **INV-3: Stage Stepper Uses Direct SSE Stage ID Match, Not Percent Buckets**: `SCRAPER_STAGES` matches on `stg.id === currentStageId` directly rather than arbitrary bucket percentage divisions.
+- **INV-4: `master_knowledge_registry.json` Must Contain `generatedAt` and `schemaVersion`**: Canonical metadata timestamp fields required by the dashboard.
+- **INV-5: Step 10 (`sync_all_registered_catalogs`) Failure MUST Rethrow — Never Silent Warn**: Staging audit, knowledge sync, and registry sync are all fail-hard.
+- **INV-6: `scrapeDate` in `build_catalog.js` Metadata MUST Be `YYYY-MM-DD` Only**: Stable snapshot date key prevents runaway snapshot file generation.
+- **INV-7: Test-Chassis Sync Payloads Must Be Routed to `outputs/temp/test_payloads/`**: Test chassis payloads never pollute production `outputs/history/`.
+- **INV-8: Fast Substring Pre-Check for Async Catalog History Parsing**: Uses `rawContent.includes('"parentCategory":"Chassis"')` before full JSON parsing.
+- **INV-9: Memoized SKU Price Cache with Lifecycle Reset**: `getHistoricalSkuPrice` caches catalog SKU maps in `catalogPriceCache` for $O(1)$ amortized lookups across multi-item BOM audits.
+- **INV-10: Jules Task Manager Autonomous Background Delegation & Closed-Loop PR Protocol**: Multi-agent task handoff delegates boundary test generation and PR reviews asynchronously.
+- **INV-13: Closed-Loop Knowledge Delta Deduplication**: Deduplicates incoming rules against `catalog_deltas.json` and `master_knowledge_registry.json` matching on `(chassis, affectedSku, requiredDependencySku, rawMessage/ruleUpdate)`.
+- **INV-14: Whole-Solution BOM Manifest Context in Grounded RAG Queries**: `formatNotebookQueryPayload` in `boq_evaluator.js` must always bundle the entire solution BOM manifest (comma-separated SKU quantities), detected physical issues, proposed fixes, and 5-tier strategy summaries. Never dispatch isolated, single-SKU queries to NotebookLM/RAG for whole-solution validation; always preserve full topological context.
+
 ## 6. Google Jules Autonomous Multi-Agent & PR Communication Protocol (MANDATORY)
 The system leverages Google Jules for background code review, test generation, and boundary stress-testing via `@google/jules-sdk` and `scripts/services/jules_task_manager.js`. To ensure zero friction and avoid requiring the human user to act as a middleman, AI agents MUST strictly follow this closed-loop protocol:
 
@@ -432,6 +446,33 @@ The system leverages Google Jules for background code review, test generation, a
     - **4-Tier Physical Containment Tree**: Infrastructure configurations are structured as strict 4-tier containment trees: Level 0 Parent Frame/Enclosure $\rightarrow$ Level 1 Sub-Product Modules (Compute/Storage/Fabric nodes) $\rightarrow$ Level 2 Subcomponents & Enablement Architecture (Risers, cages, switchboards, cable assemblies) $\rightarrow$ Level 3 Leaf SKUs & Options (CPUs, DIMMs, Drives, PSUs, FIO tags).
     - **Bi-Directional Constraint Propagation**: Sizing and evaluation engines MUST propagate physical constraints both top-down (Frame limits on child module counts, riser impacts on rear slot availability) and bottom-up (Leaf SKU TDP/wattage aggregating to frame power supply and high-line electrical circuits).
     - **Spatial Placement Verification**: Sizing and BOM reconciliation MUST verify that every component is physically placed in the correct container tier (e.g. FIO `#0D1` / `-F21` internal options nested inside the CTO compute blade container per `INV-25`; external fabric switches or transceivers placed in their respective frame bays or top-of-rack groupings).
+78. **Internal Storage Controller Backplane Cabling & Thermal Escalation Protocol (`INV-87`)**:
+    - **Physical Backplane & Enclosure Dependency**: In HPE OCA / CLIC, an internal storage controller (`MR416i-p`, `MR416i-o`, `MR408i-o`, `SR932i-p`, etc.) CANNOT physically exist in a factory CTO container without a physical drive backplane/cage to connect into.
+    - **No Drive Kit Invalidation**: Configuring an internal storage controller into a chassis that previously had `873763-B21` (No Drive Configuration FIO Kit) is an unbuildable conflict. The engine MUST:
+      1. Prune `873763-B21` (No Drive FIO kit).
+      2. Inject the primary 8SFF Tri-Mode Drive Cage Kit (`P75741-B21` for Gen12 / `P48813-B21` for Gen11) into Box 2.
+      3. Inject the dedicated Controller Cable Kit (`P76456-B21` for Gen12 Box 2 / `P48918-B21` controller enablement).
+      4. Escalate cooling to the High-Performance Fan Kit (`P48820-B21`) because U.3 Tri-Mode drive backplanes alter airflow impedance, mandating 6x high-performance cooling fans.
+      5. Inject the Flash-Backed Write Cache Battery (`P01366-B21`) and Enablement Cable (`P48918-B21`) for controllers with cache.
+    - **Rear Boot Isolation**: Dedicated OS boot devices (`NS204i-u v2` `P78279-B21`) install in the dedicated rear mount (`P74755-B21` for Gen12 / `P54442-B21` for Gen11) above the power supplies. They do not satisfy the front drive cage cabling requirement of internal storage controllers, and MUST be paired with their respective rear mount enablement kits.
 
+79. **Holistic Solution Coexistence & Dual-Brain Dynamic Grounding Protocol (INV-88)**:
+    - **Holistic Re-Synthesis on Solution Mutations**: Whenever an existing solution is expanded, modified, or customized (e.g. adding controllers, accelerators, or boot devices to a stateless base), AI agents and evaluation engines MUST NOT evaluate the added component in isolation. The engine MUST execute a holistic re-synthesis of the entire coexisting bill of materials across all 7 physical aspects simultaneously to ensure zero unbuildable contradictions or hidden dependencies.
+    - **Dual-Brain Architecture (Static Pre-Processing + Dynamic RAG Grounding)**:
+      1. *Static Fast-Path Pre-Processing*: High-speed deterministic rules catch baseline slot, cage, and thermal boundaries instantly, eliminating obvious invalid builds in milliseconds.
+      2. *Dynamic NotebookLM Grounding & Reasoning*: The engine queries the cloud NotebookLM RAG brain with the complete coexisting BOM context. It waits for the authoritative QuickSpecs/OCA answer, extracts vendor reasoning, and verifies that no hidden factory integration rule is violated.
+    - **Closed-Loop Knowledge Delta Sync**: Any newly surfaced physical rules or factory prerequisites are automatically extracted via `knowledge_extractor.js`, persisted in `master_knowledge_registry.json` and `catalog_deltas.json`, and synced across notebooks so the engine continuously improves.
+
+80. **Zero-Touch Browser Auto-Launch, Saved-Credential SSO & Stale-Session Tab 1 Self-Healing Recovery Protocol (`INV-89`)**:
+    - **100% Hands-Free Port 9222 Automation**: AI agents and scraper pipelines MUST NOT prompt the human user to manually launch Chrome or log into HPE Partner Portal. `browser_launcher.js` automatically checks port 9222 and launches Google Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`.
+    - **Automated Saved-Credential SSO**: `navigate_oca.js` clicks `#oktaSignInBtn` and dispatches clicks to `#onepass-submit-btn` in the pre-filled credential modal, waiting patiently for redirect to settle on `https://partner.hpe.com/group/prp` ("Home - HPE Partner Portal").
+    - **Fatal In-Place OCA Reload Avoidance**: WebLogic OCA session state is held in server memory tied to temporary SAML assertions. In-place browser reloads (`location.reload()`) in an active OCA tab break session continuity, producing unrecoverable 403 Forbidden errors, blank white pages, or broken login loops.
+    - **Tab 1 Stale-Session Self-Healing Recovery Loop**: When an OCA session times out, freezes silently (infinite loading spinners without explicit timeout dialogs), encounters DOM detachments, or throws unhandled WebLogic exceptions:
+      1. Close/abandon the stale OCA tab via CDP (`/json/close/{targetId}`).
+      2. Switch CDP focus back to Tab 1 (`https://partner.hpe.com/group/prp`).
+      3. If the portal session expired, execute `performAutomatedSignIn()`.
+      4. Reload Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML session tokens and re-bind Quick Links.
+      5. Click "One Config Advanced" in Quick links (`#quick-links-807 a` / `eServiceId=187402`) to spawn a pristine OCA tab.
+      6. Detect the new tab, navigate to the target chassis Menu tab via `searchAndConfigureChassis()`, and resume operations seamlessly without human intervention.
 
 

@@ -391,4 +391,12 @@ When evaluating or auto-remediating BOQs across any product family:
     - Automatically triggers background knowledge synchronization on live scrape completion, BOQ evaluation, vendor quote reconciliation, and HITL feedback submissions.
 12. **Dual-Brain RAG Headroom & 24-Hour TTL Cache Invalidation (`INV-41`)**:
     - Default RAG query timeout is set to 120s, Guardrail timeout is set to 180s (3 minutes) with a 3-query budget cap, and disk cache enforces a 24-hour TTL with automatic startup and lookup eviction.
+13. **Internal Storage Controller Backplane Cabling & Thermal Escalation Protocol (INV-87)**:
+    - An internal storage controller (`MR416i-p`, `MR416i-o`, `MR408i-o`) cannot physically exist in a factory CTO chassis without an internal drive cage backplane to cable into.
+    - Adding an internal controller automatically invalidates and prunes `873763-B21` (No Drive Kit), injects the primary 8SFF Tri-Mode Drive Cage (`P75741-B21` Gen12 / `P48813-B21` Gen11), injects Box 2 Controller Cable Kit (`P76456-B21`), escalates to High-Performance Fan Kit (`P48820-B21`), and injects 96W Smart Storage Battery (`P01366-B21`) and Enablement Cable (`P48918-B21`).
+    - Dedicated rear boot devices (`NS204i-u v2` `P78279-B21`) require the rear enablement bracket (`P74755-B21` Gen12 / `P54442-B21` Gen11) and do not satisfy front storage backplane cabling.
+14. **Holistic Solution Coexistence & Dual-Brain Dynamic Grounding Protocol (INV-88)**:
+    - **Holistic Re-Synthesis**: Whenever an existing solution is expanded or modified, the engine MUST re-evaluate the entire coexisting BOM across all 7 physical aspects simultaneously to ensure zero unbuildable contradictions or hidden dependencies.
+    - **Static Pre-Processing + Dynamic RAG Grounding**: High-speed deterministic rules catch baseline slot, cage, and thermal boundaries instantly; dynamic NotebookLM queries verify end-to-end vendor QuickSpecs reasoning with full patience.
+    - **Closed-Loop Knowledge Delta Sync**: Any newly surfaced physical rules or factory prerequisites are automatically extracted via `knowledge_extractor.js`, persisted in `master_knowledge_registry.json`, and synced across notebooks so the engine continuously improves.
 

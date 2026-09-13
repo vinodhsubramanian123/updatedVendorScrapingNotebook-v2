@@ -47,6 +47,7 @@ P69728-F21\tHPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered
 P47777-B21\tHPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller\t1
 P01366-B21\tHPE 96W Smart Storage Battery\t1
 P48918-B21\tHPE ProLiant Storage Controller Enablement Cable Kit\t1
+P75741-B21\tHPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit\t1
 P63829-B21\tHPE 1.92TB NVMe Gen4 High Speed Read Intensive SFF SSD\t2
 P03178-B21\tHPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit\t2
 P78145-B21\tHPE C13 - C14 WW 250V 10A Gray 2.0m Jumper Cord\t2
@@ -55,7 +56,7 @@ H7J34A3\tHPE 3Y Tech Care Essential Support Service\t1
 `;
 
 const posItems = parseAndConsolidateBOQ(positiveBoqText);
-assert(posItems.length === 13, 'Parsed 13 valid consolidated hardware & service SKUs');
+assert(posItems.length === 14, 'Parsed 14 valid consolidated hardware & service SKUs');
 
 const posEval = evaluatePhysicalMath(posItems);
 assert(posEval.confidence.score === 1.0, `Positive build scored 1.0 / 1.00 confidence (Actual: ${posEval.confidence.score})`);

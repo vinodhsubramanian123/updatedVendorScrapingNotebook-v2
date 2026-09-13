@@ -61,20 +61,22 @@ sequenceDiagram
 
 ---
 
-## 4. Current State & Certified Products (Last Audited: 2026-08-30)
+## 4. Current State & Certified Products (Last Audited: 2026-09-12)
 
 | Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
 |---------|--------|---------------|-------------|--------|-------|-----------------|
-| HPE ProLiant DL380 Gen12 | ProLiant | `DL380_Gen12` | 302 HW / 667 Svc (969 total) | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
-| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 478 HW / 1109 Svc (1587 total) | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
-| HPE ProLiant DL380a Gen12 | ProLiant | `DL380a_Gen12` | 359 HW / 295 Svc (654 total) | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
-| HPE ProLiant DL145 Gen11 | ProLiant | `DL145_Gen11` | 357 HW / 267 Svc (624 total) | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
-| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380 Gen12 | ProLiant | `DL380_Gen12` | 472 HW / 667 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 584 HW / 1109 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL380a Gen12 | ProLiant | `DL380a_Gen12` | 359 HW / 295 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL145 Gen11 | ProLiant | `DL145_Gen11` | 357 HW / 267 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL580 Gen12 | ProLiant | `DL580_Gen12` | 242 HW / 626 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE Synergy 480 Gen12 | Synergy | `SY480_Gen12` | 154 HW / 403 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE StoreEver MSL3040 Tape Library | StoreEver | `MSL3040_Tape` | 104 HW / 91 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Cray Supercomputing GX5000 Rack | Cray | `GX5000_General_RACK` | 2 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 
-**Total Portfolio Intelligence**: **8 Canonical Product Generations Certified** across 5 families.
+**Total Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **158/158 Suites PASSED (100.0%)**.
 
 ---
 
@@ -119,13 +121,28 @@ sequenceDiagram
    - Staging audits (`verify_excel_tally.js`, `test_pipeline_evals.js`) enforce category cardinality thresholds for flagship dual-socket systems (e.g. DL380 requires >= 40 processor SKUs) to fail hard if an incomplete DOM expansion is encountered.
    - **AI Accelerator Server Archetype Gate**: For specialized GPU servers (`DL380a`), staging audits strictly assert that `Graphics & GPU` / `GPU Accelerators` category exists with $\ge 1$ hardware SKU, ensuring dynamic GPU sub-panels are never bypassed during extraction.
 
+4. **Stale-Session Self-Healing Recovery Protocol (`INV-89`)**:
+   - **Why OCA Reload Breaks Flow**: WebLogic OCA is an enterprise Java state machine tied to short-lived SAML assertions. In-place browser reloads (`location.reload()`) in an OCA tab destroy the server-side state, invalidate form tokens, and yield unrecoverable 403 Forbidden or blank screens.
+   - **Autonomous Tab 1 Recovery via `oca-portal-navigator`**: When a scraping run encounters a WebSocket drop, CDP timeout, WebLogic silent hang (infinite spinner without timeout alert), or DOM detachment, the pipeline MUST NOT crash or prompt the human user.
+   - **Recovery Sequence**:
+     1. Automatically close the stale/frozen OCA tab (`/json/close/{targetId}`).
+     2. Return to Tab 1 (`https://partner.hpe.com/group/prp`).
+     3. Auto-sign in if portal session expired (`#oktaSignInBtn` $\rightarrow$ `#onepass-submit-btn`).
+     4. Refresh Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML tool links.
+     5. Click "One Config Advanced" under Quick links (`#quick-links-807 a`).
+     6. Connect to the fresh OCA tab, navigate to the target chassis Menu tab via `scripts/lib/scraper/navigate_oca.js`, and resume extraction.
+   - For full navigation details and DOM selectors, refer to [`.agents/skills/oca-portal-navigator/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/oca-portal-navigator/SKILL.md).
+
 ---
 
 ## 7. Execution Commands
 
 ```bash
 # E2E Server/Solution Scrape (DL380 Gen11 / Gen12 / Synergy / Cray)
-node scripts/scrapers/scrape_oca_solution.js --chassis DL380_Gen11
+node scripts/scrapers/scrape_oca_solution.js --chassis DL380_Gen12
+
+# Standalone Navigation / Recovery to Menu Tab
+node scripts/lib/scraper/navigate_oca.js "DL380 Gen12" --recover
 
 # Rebuild all scraped catalogs & regenerate workbooks
 npm run rebuild
@@ -133,3 +150,4 @@ npm run rebuild
 # Full Portfolio Certification Audit
 npm test
 ```
+

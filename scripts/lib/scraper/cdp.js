@@ -85,9 +85,15 @@ function getOCATarget() {
           // Primary match: active OCA configuration portal tab (must not be local dashboard or Seismic sales redirect)
           const nonLocalPages = pages.filter(t => !t.url?.includes('localhost') && !t.url?.includes('127.0.0.1') && !t.url?.includes('antigravity') && !t.url?.includes('seismic.com'));
           
+          const isStaleOrLoggedOut = (t) => {
+            const url = (t.url || '').toLowerCase();
+            return url.includes('ocainternallogin') || url.includes('/logout') || url.includes('login_error');
+          };
           const ocaPage = nonLocalPages.find(
-            t => (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
+            t => !isStaleOrLoggedOut(t) && (
+                 (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
                  (t.title && (t.title.includes('External OCA') || t.title.includes('Online Config') || (t.title.includes('OCA') && !t.title.includes('Engine'))))
+            )
           );
           if (ocaPage) return resolve(ocaPage);
 
@@ -385,6 +391,32 @@ async function triggerClicCheck(ws, level = 'root') {
 /** Async sleep helper */
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+/**
+ * Dynamic DOM predicate poller over CDP WebSocket.
+ * Replaces fixed blind sleeps by repeatedly evaluating a JavaScript expression
+ * in the browser context until it returns truthy, or timeout expires.
+ * @param {WebSocket} ws Connected CDP WebSocket
+ * @param {string} expression JS expression that evaluates to truthy when condition is met
+ * @param {number} [maxTimeoutMs=15000] Maximum duration to poll
+ * @param {number} [intervalMs=500] Interval between checks
+ * @returns {Promise<any>} Resolves with the truthy result value, or false on timeout
+ */
+async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, intervalMs = 500) {
+  const start = Date.now();
+  while (Date.now() - start < maxTimeoutMs) {
+    try {
+      const evalRes = await sendCommand(ws, 'Runtime.evaluate', {
+        expression,
+        returnByValue: true
+      }, Math.min(intervalMs * 2, 5000));
+      const val = evalRes?.result?.value;
+      if (val) return val;
+    } catch (_) {}
+    await sleep(intervalMs);
+  }
+  return false;
+}
+
 module.exports = {
   sendCommand,
   getOCATarget,
@@ -396,6 +428,7 @@ module.exports = {
   assertExpansionThreshold,
   triggerClicCheck,
   sleep,
+  waitForDOMPredicate,
   CDP_PORT,
   deriveTextFromTables: domExtract.deriveTextFromTables,
   extractChunkedText: (ws, chunkSize) => domExtract.extractChunkedText(ws, sendCommand, chunkSize),

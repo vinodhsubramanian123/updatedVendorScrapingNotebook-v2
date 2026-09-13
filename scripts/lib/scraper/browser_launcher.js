@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const { spawn, execSync } = require('child_process');
+const { spawn } = require('child_process');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const PROFILE_DIR = path.join(PROJECT_ROOT, '.chrome_sso_profile');
@@ -22,15 +22,53 @@ const PROFILE_DIR = path.join(PROJECT_ROOT, '.chrome_sso_profile');
  */
 function isCdpAlive(port = 9222) {
   return new Promise((resolve) => {
-    const req = http.get(`http://localhost:${port}/json/version`, (res) => {
-      resolve(res.statusCode === 200);
-    });
-    req.on('error', () => resolve(false));
-    req.setTimeout(1000, () => {
-      req.destroy();
-      resolve(false);
-    });
+    let settled = false;
+    const done = (val) => {
+      if (!settled) {
+        settled = true;
+        resolve(val);
+      }
+    };
+    try {
+      const req = http.get(`http://localhost:${port}/json/version`, (res) => {
+        done(res.statusCode === 200);
+      });
+      if (req && typeof req.on === 'function') {
+        req.on('error', () => done(false));
+      }
+      if (req && typeof req.setTimeout === 'function') {
+        req.setTimeout(1000, () => {
+          if (typeof req.destroy === 'function') req.destroy();
+          done(false);
+        });
+      }
+    } catch (_) {
+      done(false);
+    }
   });
+}
+
+/**
+ * Pure in-memory cross-platform executable resolution in PATH without shell binaries (INV-16).
+ * @param {string} bin 
+ * @returns {boolean}
+ */
+function isBinaryInPath(bin) {
+  const pathEnv = process.env.PATH || '';
+  const pathDirs = pathEnv.split(path.delimiter);
+  const extensions = process.platform === 'win32' ? ['.exe', '.cmd', '.bat', ''] : [''];
+  for (const dir of pathDirs) {
+    if (!dir) continue;
+    for (const ext of extensions) {
+      const fullPath = path.join(dir, `${bin}${ext}`);
+      try {
+        if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+          return true;
+        }
+      } catch (_) {}
+    }
+  }
+  return false;
 }
 
 /**
@@ -51,13 +89,8 @@ function findChromeExecutable() {
   for (const bin of candidates) {
     if (bin.includes('/') || bin.includes('\\')) {
       if (fs.existsSync(bin)) return bin;
-    } else {
-      try {
-        const isWindows = process.platform === 'win32';
-        const checkCmd = isWindows ? `where ${bin}` : `which ${bin}`;
-        execSync(checkCmd, { stdio: 'ignore' });
-        return bin;
-      } catch (_) {}
+    } else if (isBinaryInPath(bin)) {
+      return bin;
     }
   }
   return 'google-chrome'; // Default fallback
@@ -69,7 +102,7 @@ function findChromeExecutable() {
  * @param {string} initialUrl - Initial URL to load (default Partner Portal)
  * @returns {Promise<{ ok: boolean, wasLaunched: boolean, port: number }>}
  */
-async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://partner.hpe.com') {
+async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://partner.hpe.com/web/prp') {
   const alreadyRunning = await isCdpAlive(port);
   if (alreadyRunning) {
     return { ok: true, wasLaunched: false, port };

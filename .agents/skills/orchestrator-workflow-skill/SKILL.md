@@ -51,13 +51,16 @@ graph TD
 
 ## 🔁 The 6-Stage Continuous Learning Lifecycle
 
-### 1. Ingestion (Live Scraping)
-- **Actor**: [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md)
-- **Action**: Scrapes the live HPE OCA vendor portal via Chrome DevTools Protocol (`scripts/lib/scraper/cdp.js`) over port 9222.
+### 1. Ingestion (Live Scraping & Self-Healing Navigation)
+- **Actors**: [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) & [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md)
+- **Action**: 
+  - Navigates hands-free from HPE Partner Portal SSO (`https://partner.hpe.com`) to target chassis configuration Menu tabs via Chrome DevTools Protocol (`scripts/lib/scraper/cdp.js`, `scripts/lib/scraper/navigate_oca.js`) on port 9222.
+  - **Tab 1 Stale-Session Self-Healing Recovery Protocol (INV-89)**: In the event of WebLogic session expiry, silent freezes, or CDP disconnects, never reloads OCA in-place (which breaks Java session state). Recovers autonomously by recycling to Tab 1 (Partner Portal), reloading to generate fresh SAML tokens, clicking One Config Advanced anew, and re-establishing clean menu state.
+  - Scrapes the live HPE OCA vendor portal extracting full component option matrices, lifecycle tags (OB, DS, 90, EOL), and pricing.
 - **Output**: Generates classified JSON catalogs, standalone rules files (`*_Catalog_Rules.json`), and multi-sheet Excel workbooks (`*_OCA_Catalog.xlsx`).
 
 ### 2. Decoupled Knowledge Sync & Dual Safety Net
-- **Actor**: [`diff_catalog.js`](scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md)
+- **Actor**: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md)
 - **Action**: 
   - Compares newly scraped JSON against historical snapshots to log SKU additions, removals, and cumulative price trails.
   - Emits standalone `*_Catalog_Rules.json` for fast dual safety net loading.
@@ -65,7 +68,7 @@ graph TD
   - **Decoupled Workflow**: Knowledge Sync (pushing to NotebookLM via CLI or MCP) now runs as an independent background task (`/api/sync-knowledge`) to ensure core scraping speed is unaffected.
 
 ### 3. BOQ Ingestion, 8-Stage Atomicity & Conflict Graph
-- **Actor**: [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
+- **Actor**: [`boq-eval-skill`](../boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
 - **Action**:
   - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
   - Ingests customer BOQs, multi-sheet proposals, or obfuscated SKU text.
@@ -76,7 +79,7 @@ graph TD
   - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
 
 ### 4. Grounded Gemini Notebook Validation (RAG) & Dashboard Command Center
-- **Actor**: [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
+- **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
 - **Action**: 
   - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
   - The React Dashboard provides a full Command-and-Control hub for triggering Knowledge Sync, exporting corrected BOQs, logging portal rejection KnowledgeDeltas, and managing the async RAG status polling (`GET /api/notebook-query-status/:jobId`).
@@ -88,7 +91,7 @@ graph TD
   - If a BOQ evaluation drops below 75% confidence, the **Ambiguity Inbox** prompts the user to Auto-Query NotebookLM via the MCP bridge to acquire missing configuration rules.
 
 ### 6. Closed-Loop Feedback & Telemetry Learning
-- **Actor**: [`feedback_loop.js`](scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
+- **Actor**: [`feedback_loop.js`](../../../scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
 - **Action**:
   - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
   - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
@@ -100,12 +103,12 @@ graph TD
 
 | Workflow Phase | Responsible Skill / Tool | Description & Links |
 |---|---|---|
-| **SSO & Portal Navigation** | [`oca-portal-navigator`](.agents/skills/oca-portal-navigator/SKILL.md) | Hands-free SSO passing, tool navigation, chassis search, base price extraction. |
-| **Live Scraping & Extraction** | [`oca-catalog-scraper`](.agents/skills/oca-catalog-scraper/SKILL.md) | Live CDP DOM extraction, dynamic expansion (`INV-20`), clean SKU sanitization (`INV-21`). |
-| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](.agents/skills/knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync, registry updates, historical price trails (`INV-1`). |
-| **BOQ Evaluation & Matrices** | [`boq-eval-skill`](.agents/skills/boq-eval-skill/SKILL.md) | 7-aspect physical math, Workload DNA, 5-tier strategy matrix, Diophantine clustering (`INV-42`). |
-| **Dual-Brain RAG & Grounding** | [`nlm-skill`](.agents/skills/nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification with explicit Provenance Badges (`[CLOUD_NLM_VERIFIED]`). |
-| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](.agents/skills/jules-autonomous-protocol/SKILL.md) | Autonomous PR review, 60s pre-scheduled heartbeat loop, chaos stress testing (`INV-10..19, INV-43`). |
+| **SSO & Portal Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | Hands-free SSO passing, tool navigation, chassis search, base price extraction. |
+| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | Live CDP DOM extraction, dynamic expansion (`INV-20`), clean SKU sanitization (`INV-21`). |
+| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync, registry updates, historical price trails (`INV-1`). |
+| **BOQ Evaluation & Matrices** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math, Workload DNA, 5-tier strategy matrix, Diophantine clustering (`INV-42`). |
+| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification with explicit Provenance Badges (`[CLOUD_NLM_VERIFIED]`). |
+| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review, 60s pre-scheduled heartbeat loop, chaos stress testing (`INV-10..19, INV-43`). |
 | **Dynamic Semantic Graph** | `graphify` | AST extraction, `/graphify query`, path analysis, and zero-hallucination architectural navigation. |
 
 ---

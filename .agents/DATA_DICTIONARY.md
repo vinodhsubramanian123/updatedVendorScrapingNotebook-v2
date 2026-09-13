@@ -487,5 +487,42 @@ Emitted in `outputs/{Family}/{Gen}/{Model}/history/expansion_guidance.json` via 
 }
 ```
 
+---
+
+## 13. Partner Quote vs Proposed Solution Reconciliation Schema (`reconciliationAuditReport`)
+
+Returned by `scripts/lib/boq/vendor_bom_verifier.js` and exposed via `POST /api/verify-vendor-bom`.
+
+```json
+{
+  "chassisModel": "DL380_Gen12",
+  "proposedRank": 1,
+  "totalVendorSkus": 14,
+  "totalProposedSkus": 12,
+  "is100PercentMatch": false,
+  "requiresFreshScrape": false,
+  "learnedDeltaCount": 0,
+  "quarantinedObservationCount": 1,
+  "quarantinedObservationIds": ["QUAR-DL380-001"],
+  "observationErrors": [],
+  "discrepancies": {
+    "addedByVendor": [
+      {
+        "sku": "P48918-B21",
+        "quantity": 1,
+        "description": "HPE ProLiant DL380 Gen11 8SFF x1 OCP to Smart Array Controller Cable Kit",
+        "reason": "Vendor Partner Portal auto-inserted SKU not present in proposed build."
+      }
+    ],
+    "removedByVendor": [],
+    "uncatalogedSkus": [],
+    "priceDeltas": [],
+    "quantityMismatches": []
+  },
+  "verificationTimestamp": "2026-09-13T10:00:00.000Z"
+}
+```
+
+
 
 

@@ -5,23 +5,32 @@ This document provides the complete, authoritative mapping of the entire `vendor
 ```
 vendorNotebookSolution/
 ├── .agents/                               ← Agent rules, schemas, and specialized workflow skills
-│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-78)
+│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-88)
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & pipeline contracts
 │   ├── PORTFOLIO_STATUS.md                ← Live portfolio intelligence state of health (10 canonical products)
-│   └── skills/                            ← 15 Specialized workflow skills
+│   └── skills/                            ← 22 Specialized workflow skills
+│       ├── adversarial-validation-skill/  ← Enterprise chaos red-teaming & 10 failure mode checks
 │       ├── bom-reconciliation-skill/      ← Customer tender vs partner quote reconciler
-│       ├── boq-eval-skill/                ← BOQ validation, pre-flight & Least-Delta Rank 1L/1M
+│       ├── boq-eval-skill/                ← 7-aspect physical math & pre-flight BOQ validation
 │       ├── catalog-intelligence-skill/    ← Pricing trends & lifecycle state tracking
 │       ├── design-taste-frontend/         ← Anti-slop UI design system
+│       ├── execution-trace-skill/         ← Auditable execution trace ledger & delta report
 │       ├── frontend-design/               ← Frontend motion & interactive standards
 │       ├── jules-autonomous-protocol/     ← Google Jules multi-agent protocol & task manager
 │       ├── knowledge-sync-skill/          ← Bi-directional RAG knowledge sync skill
-│       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration
+│       ├── least-delta-combinator-skill/  ← Troublesome SKU pruning & minimal-mutation (Rank 1L/1M)
+│       ├── multi-cluster-tender-skill/    ← Multi-node tender decomposition & 42U rack/power sizing
+│       ├── nlm-skill/                     ← Gemini NotebookLM RAG integration & Strict SKU Gate
 │       ├── oca-catalog-scraper/           ← CDP remote scraping skill
 │       ├── oca-portal-navigator/          ← Partner portal auto-navigator
+│       ├── ocr-quote-ingestion-skill/     ← Multimodal Gemini Vision OCR for quotes
 │       ├── orchestrator-workflow-skill/   ← Macro continuous learning lifecycle
+│       ├── output-validation-skill/       ← Pre-presentation 14-point acceptance criteria gate
 │       ├── presales-query-router/         ← 5-track presales intent query classifier
-│       └── rfp-sizing-synthesizer/        ← Unstructured sizing specs to starting BOM
+│       ├── rfp-sizing-synthesizer/        ← Unstructured sizing specs to starting BOM
+│       ├── value-engineering-skill/       ← Post-buildability CapEx/OpEx deal optimizer
+│       ├── workbook-generator-skill/      ← Standardized 7-column upload sheets & workbooks
+│       └── workload-dna-skill/            ← Enterprise app workload matching & slot arbitration
 │
 ├── scripts/                               ← Primary operational scripts & CLI tools
 │   ├── scrapers/                          ← 10-stage solution & storage CDP scrapers

@@ -85,7 +85,7 @@ console.log('✅ Generated Professional BOQ Workbook:', outPath);
 
 When the workbook is generated, the agent MUST provide:
 1. **Direct Clickable File Link**:
-   `[Download Certified BOQ Workbook (Excel)](file:///home/vinodh/vendorNotebookSolution/outputs/temp/HPE_DL380_Gen12_Certified_BOQ.xlsx)`
+   Provide a direct markdown link to the generated workbook path, for example: [`DL380_Gen12_OCA_Catalog.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_OCA_Catalog.xlsx)
 2. **Summary of Generated Sheets**:
    - `Summary & Rationale` (Executive strategy & RAG verification)
    - `Certified Hardware BOM` (Cleaned part numbers with `#0D1` tags and formula prices)

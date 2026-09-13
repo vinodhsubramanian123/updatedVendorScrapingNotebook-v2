@@ -64,6 +64,13 @@ function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
       });
     }
     
+    const lifecycleStatus = row['Lifecycle Status'] || row['CLIC Status'] || 'Active';
+    const availability = row['Availability'] || 'Available';
+    const leadTime = row['Lead Time'] || '';
+    const leadTimeSource = row['Lead Time Source'] || 'Not published by OCA';
+    const vendorAttrs = row['Vendor Attributes (JSON)'] || '{}';
+    const role = row['Component Role'] || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
+
     const entry = grouped.get(key);
     entry.skus.push({
       'Product #': sku,
@@ -72,10 +79,18 @@ function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
       'Price (USD)': unitPrice.toFixed(2),
       'Current Qty': String(currentQty),
       'Option Type': optionType,
+      'Lifecycle Status': lifecycleStatus,
+      'CLIC Status': lifecycleStatus,
+      'lifecycleStatus': lifecycleStatus,
+      'Availability': availability,
+      'Lead Time': leadTime,
+      'Lead Time Source': leadTimeSource,
       'Start Date': startDate,
       'Discontinued Date': discontinuedDate,
+      'Vendor Attributes (JSON)': vendorAttrs,
       'Constraint Text': constraint,
       'Subcategory Max Qty': maxQtyRaw,
+      'Component Role': role,
       sku,
       description: desc,
       listPrice: unitPrice,
@@ -110,7 +125,8 @@ function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
   const catalogJSON = {
     metadata: {
       chassis: chassisLabel,
-      scrapeDate: new Date().toISOString(),
+      scrapeDate: new Date().toISOString().split('T')[0],
+      scrapeTimestamp: new Date().toISOString(),
       totalSubcategories: subcategoriesMap.size,
       totalUniqueSKUs: uniqueSKUs.size,
       totalTables: entries.length,
@@ -126,7 +142,16 @@ function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
     entries: entries
   };
   
-  fs.writeFileSync(jsonOutputPath, JSON.stringify(catalogJSON, null, 2), 'utf-8');
+  const targetDir = path.dirname(jsonOutputPath);
+  const historyDir = path.join(targetDir, 'history');
+  const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+  try {
+    const { processCatalogDiff } = require('../lib/catalog/diff_catalog.js');
+    processCatalogDiff(catalogJSON, historyDir);
+    safeWriteJsonAtomic(jsonOutputPath, catalogJSON, { validateSchema: true });
+  } catch (err) {
+    safeWriteJsonAtomic(jsonOutputPath, catalogJSON);
+  }
   console.log(`✅ Rebuilt ${jsonOutputPath} with ${uniqueSKUs.size} SKUs from XLSX.`);
 }
 

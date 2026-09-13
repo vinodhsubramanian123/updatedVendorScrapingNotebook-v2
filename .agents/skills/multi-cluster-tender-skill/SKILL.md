@@ -106,13 +106,13 @@ When completing a multi-cluster tender evaluation, the agent MUST present:
    🤖 AI ACCELERATOR FACILITY & POWER ENVELOPE SIZING (20x DL380a NODES)
    ====================================================================
    • Total Server Count        : 20 Nodes (160x NVIDIA H200 NVL GPUs)
-   • Total Rack Space Required : 40 RU (20x 2U Chassis)
-   • Physical Rack Footprint   : 1x 42U Rack (Physical) / 2-4 Racks (Power-Distributed)
+   • Total Rack Space Required : 80 RU (20x 4U Chassis)
+   • Physical Rack Footprint   : 2x 42U Racks (Physical) / 4-8 Racks (Power-Distributed)
    • Per-Node Power Capacity   : 19.2 kW (8x 2400W Titanium PSUs in 4+4 Redundancy)
    • Facility Peak Power Draw  : 384 kW Nameplate / ~120 kW Steady-State Training
    • Thermal & PDU Mandate     : High-density 3-phase 415V/480V PDUs (IEC 60309)
    • Interconnect & Cabling    : 80x GPU 16-pin power kits (P74700-B21), 40x Switchboards (P74714-B21)
-   • Rail Kit Coverage         : 20x HPE Easy Install Rail Kits (P52341-B21)
+   • Rail Kit Coverage         : 20x HPE ProLiant Compute DL380a Gen12 Ball Bearing Rail Kits (P69770-B21)
    ====================================================================
    ```
 3. **Discrete 7-Aspect Certification for EACH Cluster**:

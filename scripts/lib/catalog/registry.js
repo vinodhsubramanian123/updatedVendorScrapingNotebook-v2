@@ -33,10 +33,10 @@ function updateScrapedRegistry(info) {
 
   const dateStr  = (info.timestamp || new Date().toISOString()).substring(0, 10);
 
-  // Convert all paths to clean repository-relative paths
-  const relXlsx = toForwardSlash(path.relative(PROJECT_ROOT, info.xlsxPath));
-  const relJson = toForwardSlash(path.relative(PROJECT_ROOT, info.jsonPath));
-  const relPdf  = info.pdfPath ? toForwardSlash(path.relative(PROJECT_ROOT, info.pdfPath)) : null;
+  // Convert all paths to clean outputs-relative paths for SCRAPED_CATALOGS.md
+  const relXlsx = toForwardSlash(path.relative(OUTPUTS_ROOT, info.xlsxPath));
+  const relJson = toForwardSlash(path.relative(OUTPUTS_ROOT, info.jsonPath));
+  const relPdf  = info.pdfPath ? toForwardSlash(path.relative(OUTPUTS_ROOT, info.pdfPath)) : null;
   const pdfStr  = relPdf ? `[PDF](${relPdf})` : 'Advisory (No QS Link)';
 
   const normOutputDir = toForwardSlash(info.outputDir);

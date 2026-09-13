@@ -970,7 +970,7 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - `VE-OPT-PSU-EFFICIENCY`: Recommends right-sizing power supplies from oversized 1800W Titanium to 1600W Platinum for sub-800W workloads.
   - `VE-OPT-WARRANTY-ALIGNMENT`: Standardizes support services to 3-year Tech Care without unsolicited deployment services (`INV-32`).
 - **Telemetry & Surfacing**:
-  - Recommendations are surfaced in the UI matrix drawer ([`ValueEngineeringPanel.jsx`](dashboard/src/components/matrix/ValueEngineeringPanel.jsx)), CLI markdown reports (Section 3.5), and tracked in telemetry via `valueEngineeringSavingsUsd`.
+  - Recommendations are surfaced in the UI matrix drawer ([`ValueEngineeringPanel.jsx`](../dashboard/src/components/matrix/ValueEngineeringPanel.jsx)), CLI markdown reports (Section 3.5), and tracked in telemetry via `valueEngineeringSavingsUsd`.
 
 ---
 
@@ -1169,6 +1169,101 @@ Enterprise data center configurations are **not flat shopping carts of loose par
      - *Where does each component physically reside?* (Placement verification).
      - *What enablement kit connects it to the parent bus?* (Interposer / cable / riser verification).
      - *How does a change at one level impact adjacent nodes and upstream power/cooling?* (Cascading impact analysis).
+
+---
+
+## 88. Internal Storage Controller Backplane Cabling & Thermal Escalation Protocol (`INV-87`)
+
+In enterprise server architecture (HPE ProLiant Gen11/Gen12, Synergy, Alletra), an internal RAID or Tri-Mode storage controller (`MR416i-p`, `MR416i-o`, `MR408i-o`, `SR932i-p`) is not an isolated compute card; it is a **chassis storage pipeline endpoint**:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                      STORAGE CONTROLLER TO BACKPLANE PHYSICAL CABLING PIPELINE                  │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ [Tri-Mode Controller]                                                                           │
+│   │                                                                                             │
+│   ├── Dedicated Controller Cable Kit (e.g. P48918-B21 / P76450-B21)                             │
+│   │                                                                                             │
+│   └──> [Physical Drive Cage / Backplane] (e.g. P75741-B21 8SFF Cage / P74710-B21 4SFF Cage)    │
+│          │                                                                                      │
+│          └──> [Physical Drives / SSDs / NVMe Media]                                             │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Mandatory Physical Rules & Dual-Brain Handling:
+1. **Backplane & Enclosure Dependency**:
+   - In HPE OCA / CLIC, selecting an internal storage controller without a corresponding drive cage/backplane causes a fatal container validation error.
+   - Sizing and evaluation engines MUST ensure that if an internal controller is requested, a compatible drive cage is present. For DL380 Gen12, standard 8SFF cage `P75741-B21`; for DL380a Gen12, 4SFF U.3 cage `P74710-B21` or 4EDSFF cage `P74712-B21`.
+2. **Dedicated Enablement Cabling**:
+   - The controller must be physically connected to the drive backplane via internal mini-SAS HD or SlimSAS/MCIO cables. Sizing engines inject the appropriate controller cable kit (e.g. `P48918-B21`) automatically.
+3. **Thermal Escalation**:
+   - Adding internal controllers and drive backplanes increases chassis airflow impedance and heat dissipation, mandating High-Performance Fan Kits (`P48820-B21`) and High-Performance Heatsinks.
+4. **Sub-Path Branching (Rank 1A vs Rank 1B)**:
+   - **Rank 1A (Full Local Storage Pipeline)**: Injects the drive cage, controller cabling kit, and performance cooling to achieve 100% buildable local storage.
+   - **Rank 1B (Diskless SAN-Boot / Pure NS204i-u)**: If the customer's workload DNA indicates SAN/PXE compute or dedicated OS boot only, the engine synthesizes Rank 1B by pruning the redundant internal RAID controller and drive cage, injecting `873763-B21` (No Local Drive FIO Kit) to save significant CapEx.
+
+---
+
+## 89. Dynamic Discovery & Sub-Choice Expansion Architecture (`INV-88`)
+
+WebLogic OCA portals utilize complex asynchronous deferred rendering where critical enterprise configuration options (rear boot devices, captive risers, switchboards, auxiliary power cables) are tucked into dynamic sub-choice panels that do not load into the DOM on initial page render:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                      DYNAMIC SUB-CHOICE DOM EXPANSION & EVENT DISPATCH ARCHITECTURE              │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. Toolbar Toggles: Click #show_extra_columns, #show_dates, #show_obsolete_date, #show_price    │
+│ 2. Sub-Choice Discovery: Query all inputs matching input[id^="showmore_"]                       │
+│ 3. Synthetic Event Dispatch: jQuery(el).prop('checked', true).trigger('change')                 │
+│ 4. Deferred DOM Settling: Await disappearance of .dqe-loading spinners & XMLHttpRequests         │
+│ 5. Extraction & Backfill: Scrape deferred tables & backfill 22-sheet workbooks & TSVs           │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Operational Invariants:
+1. **Zero Premature Convergence**: Never assume an option does not exist simply because it is not present in top-level table rows. Always force subchoice DOM expansion.
+2. **Dynamic Ingestion & Provenance**: When options such as `NS204i-u Gen12 NVMe Boot Device` or captive accelerator switchboards are discovered, `cdp.js` extracts them cleanly with lifecycle tags separated, updating catalog indexes and provenance logs.
+3. **Continuous Grounding**: Extracted sub-choice intelligence is immediately synchronized to Google Sheets and Gemini NotebookLM RAG sources under the Full Replace (master SKUs) and Delta Append (audit trails) protocol (`INV-83`).
+
+---
+
+## 90. Zero-Touch Browser Auto-Launch & Tab 1 Stale-Session Self-Healing Recovery (`INV-89`)
+
+WebLogic OCA relies on server-side session memory tied to temporary SAML tokens issued during the HPE Partner Portal redirect. In-place browser reloads (`location.reload()`) in an active OCA tab break session continuity, producing unrecoverable 403 Forbidden errors, blank white pages, or broken login loops. Furthermore, legacy WebLogic frequently suffers from silent freezes (infinite AJAX spinners without explicit timeout dialogs) or DOM detachments.
+
+### The 12-Step Hands-Free Navigation & 6-Step Tab 1 Self-Healing Flow:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│               ZERO-TOUCH LAUNCH, SAVED-CREDENTIAL SSO & TAB 1 SELF-HEALING ARCHITECTURE         │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. Port 9222 Auto-Check: browser_launcher.js detects or launches Chrome with .chrome_sso_profile│
+│ 2. Automated Okta Sign-In: Auto-clicks #oktaSignInBtn on partner.hpe.com/web/prp                │
+│ 3. Saved Credential Submit: Clicks #onepass-submit-btn in modal (auto-populated by Chrome)      │
+│ 4. Portal Settle: Lands on partner.hpe.com/group/prp ("Home - HPE Partner Portal")              │
+│ 5. Quick Links Launch: Clicks #quick-links-807 a ("One Config Advanced" eServiceId=187402)      │
+│ 6. Fresh Tab & SAML: Spawns https://oca.ext.hpe.com/oca/OCAInternalLogin in clean tab          │
+│ 7. Exact CTO Selection: Runs isExactProductCandidate on search results, selecting CTO base       │
+│ 8. Menu Tab Arrival: Customizes chassis and confirms arrival at #extended_overview_menu         │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                 STALE-SESSION TAB 1 RECOVERY LOOP                               │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  IF Timeout / Silent Freeze / Unhandled Exception Detected:                                     │
+│    Step A: Close stale OCA tab via CDP (/json/close/{targetId})                                 │
+│    Step B: Switch CDP focus back to Tab 1 (partner.hpe.com/group/prp)                           │
+│    Step C: If session expired -> re-execute performAutomatedSignIn()                            │
+│    Step D: Reload Tab 1 via Page.reload -> regenerates fresh SAML tool links                     │
+│    Step E: Click "One Config Advanced" in Quick links -> spawns pristine tab                   │
+│    Step F: Navigate to chassis Menu tab and resume extraction seamlessly                        │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Operational Directives:
+1. **Never Reload OCA In-Place**: Direct refresh breaks the WebLogic flow. All session recovery must return to Tab 1.
+2. **Zero Human Prompts**: The human user is never asked to launch Chrome, sign in, or click buttons. Saved credentials and Quick Links handle the entire lifecycle autonomously.
+3. **Seamless Scraper Handshake**: Scraper pipelines automatically catch CDP disconnects and silent freezes, invoke `recoverAndLaunchFreshOCA()`, and resume catalog extraction from a clean baseline.
+
+
 
 
 

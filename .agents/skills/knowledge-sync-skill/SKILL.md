@@ -86,7 +86,7 @@ node scripts/lib/sync/knowledge_sync.js --json
 | **Default Fallback** | Universal | All | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
 
 > [!NOTE]
-> **Strict Product Firewall (`INV-48` & `INV-72`)**: `DL380a_Gen12` is a distinct AI GPU architecture with its own dedicated notebook (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Inquiries, catalogs, or knowledge sync operations for "DL380a" or "DL 380a" MUST NEVER route to standard `DL380_Gen12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
+> **Strict Product Firewall (`INV-79` & `INV-72`)**: `DL380a_Gen12` is a distinct AI GPU architecture with its own dedicated notebook (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Inquiries, catalogs, or knowledge sync operations for "DL380a" or "DL 380a" MUST NEVER route to standard `DL380_Gen12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
 
 ---
 

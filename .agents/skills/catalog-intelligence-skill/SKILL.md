@@ -49,7 +49,7 @@ This skill guides the agent in querying, analyzing, and explaining catalog updat
   3. Provide transparent comparative rationale (cores, frequency, wattage, list price delta).
 - **Runtime Supply Issues & Dynamic Validation**: If OCA runtime validation indicates supply holds or component constraints, record the dynamic constraint into `catalog_deltas.json` and provide the next buildable alternative tier.
 
-### 4. Dynamic WebLogic AJAX Panels & Deferred SKU Resolution (`INV-20`, `INV-74`)
+### 4. Dynamic WebLogic AJAX Panels & Deferred SKU Resolution (`INV-20`, `INV-82`)
 - **The Deferred DOM Phenomenon**:
   - In WebLogic OCA portals, complex configuration choices (such as GPU accelerators, high-count drive cages, and captive risers) are NOT rendered in the initial page HTML.
   - WebLogic relies on server-side event dispatchers: selecting a top-level parent radio button or checkbox (e.g. *"8DW Accelerator Choice"* or *"Show More Options"*) triggers an AJAX postback that dynamically renders dependent subchoice tables (e.g., `S3U30C` NVIDIA H200 NVL, `P74700-B21` GPU power cables, `P75008-B21` 8DW enablement kit, and `P74714-B21` switchboards).

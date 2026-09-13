@@ -259,7 +259,22 @@ function validatePCIeRules(ctx) {
 }
 
 function validateThermalRules(ctx) {
-  const { compute, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
+  const { items, compute, pcie, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
+  const hasTriModeCage = storage?.hasDriveCage || storage?.needsDriveCageForController || items?.some(it => ['P75741-B21', 'P48814-B21'].includes(ctx.cleanBaseSKU(it.sku)));
+  const needsFansForStorage = hasTriModeCage && storage?.hasStorageController && !compute.hasHighPerfFans;
+  if (needsFansForStorage && !missingDependencies.some(d => d.key === 'HIGH_PERF_FAN_KIT')) {
+    const reason = `INV-87: Tri-Mode Drive Cage with Storage Controller alters chassis airflow impedance, mandating High-Performance Fan Kit (P48820-B21).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'HIGH_PERF_FAN_KIT',
+      rule: 'INV-87: Storage Thermal Escalation Rule',
+      sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
+      description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
   if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
     const reason = pcie.gpuCount > 0 
       ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (P48820-B21) for adequate cooling envelope.`
@@ -299,8 +314,8 @@ function validateThermalRules(ctx) {
 }
 
 function validateStorageRules(ctx) {
-  const { storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
-  if (storage.driveCount === 0 && !storage.hasNoDriveKit) {
+  const { items, storage, power, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController && !storage.hasDriveCage) {
     const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
     warnings.push(reason);
     mathDeductions.push(reason);
@@ -309,6 +324,60 @@ function validateStorageRules(ctx) {
       rule: 'Drive-less Chassis Configuration Rule',
       sku: mandatorySkus.NO_DRIVE_FIO_KIT.sku,
       description: mandatorySkus.NO_DRIVE_FIO_KIT.name,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  if (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict) {
+    const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a') || (it.sku || '').includes('P76706'));
+    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12') || (it.sku || '').includes('P73282'));
+    const cageSku = isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21');
+    const cageDesc = isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit');
+    const cableSku = isGen12 ? 'P76456-B21' : 'P48918-B21';
+    const cableDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit';
+    const cageLabel = isDl380a ? '4SFF Drive Cage' : '8SFF Drive Cage';
+    const reason = `INV-87: Storage Controller requires physical drive cage and backplane cabling. Internal RAID controller cannot cable into chassis with No Drive Kit. Adding ${cageLabel} (${cageSku}) and Box 2 Cable Kit (${cableSku}).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'DRIVE_CAGE_KIT',
+      rule: 'INV-87: Storage Controller Backplane Cabling Rule',
+      sku: cageSku,
+      description: cageDesc,
+      quantity: serverCount,
+      reasoning: reason
+    });
+    missingDependencies.push({
+      key: 'CONTROLLER_DRIVE_CABLE_KIT',
+      rule: 'INV-87: Storage Controller Box 2 Cabling Rule',
+      sku: cableSku,
+      description: cableDesc,
+      quantity: serverCount,
+      reasoning: reason
+    });
+  }
+
+  const hasNs204BootDevice = items.some(it => {
+    const s = ctx.cleanBaseSKU(it.sku);
+    const d = (it.description || '').toLowerCase();
+    return s === 'P78279-B21' || s === 'P12965-B21' || d.includes('ns204i');
+  });
+  const hasNs204Enablement = items.some(it => {
+    const s = ctx.cleanBaseSKU(it.sku);
+    const d = (it.description || '').toLowerCase();
+    return s === 'P74755-B21' || s === 'P54442-B21' || (d.includes('ns204') && (d.includes('enablement') || d.includes('rear mount')));
+  });
+  if (hasNs204BootDevice && !hasNs204Enablement) {
+    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12') || (it.sku || '').includes('P73282'));
+    const enablementSku = isGen12 ? 'P74755-B21' : 'P54442-B21';
+    const enablementDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit' : 'HPE ProLiant DL380 Gen11 NS204i-u Rear Mount Enablement Kit';
+    const reason = `INV-87: NS204i-u Boot Storage Device requires physical Rear Mount Enablement Kit (${enablementSku}).`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'NS204_ENABLEMENT_KIT',
+      rule: 'INV-87: NS204 Rear Boot Enablement Rule',
+      sku: enablementSku,
+      description: enablementDesc,
       quantity: serverCount,
       reasoning: reason
     });
@@ -334,8 +403,9 @@ function validateStorageRules(ctx) {
     });
   }
 
-  if (storage.needsCapacitorCable) {
-    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery requires Storage Controller Enablement Cable Kit (P48918-B21) to connect power to the controller.`;
+  const hasEnablementCable = storage.hasOcpCable || items.some(it => ctx.cleanBaseSKU(it.sku) === 'P48918-B21');
+  if ((storage.needsCapacitorCable || storage.hasStorageController) && !hasEnablementCable) {
+    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery and Controller require Storage Controller Enablement Cable Kit (P48918-B21) to connect power and sideband telemetry.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'STORAGE_CONTROLLER_ENABLEMENT_CABLE',

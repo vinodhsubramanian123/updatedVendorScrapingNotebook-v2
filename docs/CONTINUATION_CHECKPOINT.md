@@ -123,10 +123,32 @@ This is the current engineering status following the completion and verification
 - **Ground-Truth Customer Verification**:
   - TensorScale 20x DL380a Gen12 (`5155535089-01`): 100% buildable, math clean, all 7 aspects pass.
   - ComputeScale 1x DL380 Gen12 (`5155535243-01`): 100% buildable, math clean, all 7 aspects pass.
+## Phase 9 — Zero-Touch Browser Auto-Launch, Tab 1 Stale-Session Recovery & Hybrid Multi-Frame Tender Certification (Certified 2026-09-13)
+
+- **Zero-Touch Browser Auto-Launch & Persistent SSO (`browser_launcher.js`, `INV-89`)**:
+  - Eliminates manual Chrome launching with debugging flags or manual port management.
+  - Automatically probes port 9222 and spawns system Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`.
+  - Seamlessly handles automated Okta `#oktaSignInBtn` detection and pre-filled `#onepass-submit-btn` credential modal submissions.
+- **Quick Links OCA Launch & SAML Token Spawning**:
+  - Within authenticated Partner Portal (`partner.hpe.com/group/prp`), locates "One Config Advanced" under Quick links (`#quick-links-807 a` / `eServiceId=187402`).
+  - Spawns fresh OCA session in a new tab with validated SAML assertion tokens, switching CDP target smoothly.
+- **Tab 1 Stale-Session Self-Healing Recovery Protocol (`recoverAndLaunchFreshOCA`, `INV-89`)**:
+  - WebLogic OCA state is held in server memory; in-place browser reloads destroy session state resulting in 403 Forbidden or blank pages.
+  - Recovery sequence: (1) Closes broken/stale OCA tab via CDP, (2) Switches focus back to Tab 1 (Partner Portal), (3) Re-authenticates if session timed out, (4) Reloads Tab 1 via `Page.reload` to regenerate fresh SAML tokens, (5) Re-clicks "One Config Advanced" from Quick links, and (6) Resumes extraction on fresh Menu tab.
+- **Ground-Truth Hybrid Multi-Frame Tender Resolution (`HPE 15 3.1.xlsx`)**:
+  - Evaluated 107-row hybrid enterprise tender: 15x DL380 Gen12 8SFF servers (`P73282-B21`) + 36x Synergy 480 Gen12 compute modules (`P68217-B21`) across 3x Synergy 12000 CTO frames (`P51174-B21`).
+  - Audited customer errors:
+    - Sized startup services (`HA124A1`): Pruned `#V0F` remote, sized `#5ZM` (First Frame) to 1, and `#5ZQ` (Addl Frame) to 2.
+    - Component support under-sizing (`HU4B2A3`): Corrected Composer 2 (`#Z1Q`), VC 100Gb (`#Z1R`), and Brocade 64G (`HU4B2A30BU5`) from 3 to 6 (2 per frame).
+    - Injected missing DL380 Gen12 3Y Tech Care Basic support (`HU4B2A30C4V`, Qty 15).
+    - Calculated 3-frame VC 100Gb stacking ring topology (9x 100G DACs `845406-B21`).
+  - Reconciled 100% line-by-line parity against user benchmark `5155640958-01` ($5,551,771.00 USD grand list).
 - **Full Test Matrix Certification**:
-  - 160/160 test suites certified across all tiers.
+  - Certified **157/157 suites PASSED (100.0%)** (93 Unit, 39 Chaos, 25 Integration).
   - 0 lint warnings/errors across 103 files (`oxlint`).
-  - All 865 functions within cyclomatic complexity gate ($CC \le 135$).
+  - All 872 functions within cyclomatic complexity gate ($CC \le 135$).
+  - Clean dashboard production build (`vite build` in 12.48s).
+  - Semantic knowledge graph refreshed via `graphify update .` (5051 nodes, 7622 edges, 339 communities).
 
 
 

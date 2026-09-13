@@ -25,9 +25,20 @@ let activeConnections = [];
 http.get = function(url, cb) {
   if (typeof url === 'string' && url.includes('9222/json')) {
     const res = new (require('events').EventEmitter)();
+    res.statusCode = 200;
+    res.resume = function() {};
     const req = new (require('events').EventEmitter)();
+    req.setTimeout = function() { return req; };
+    req.destroy = function() {};
     
     originalSetTimeout(() => {
+      if (url.includes('/json/close/')) {
+        const parts = url.split('/json/close/');
+        const targetId = decodeURIComponent(parts[1] || '');
+        if (targetId) {
+          mockTargets = mockTargets.filter(t => t.id !== targetId);
+        }
+      }
       if (cb) cb(res);
       res.emit('data', JSON.stringify(mockTargets));
       res.emit('end');
@@ -69,9 +80,9 @@ async function runTests() {
     mockTargets = [
       {
         type: 'page',
-        id: 'login-page',
-        url: 'https://partner.hpe.com/login',
-        title: 'Login',
+        id: 'new-tab-page',
+        url: 'chrome://newtab/',
+        title: 'New Tab',
         webSocketDebuggerUrl: 'ws://localhost:18999'
       }
     ];
@@ -132,7 +143,7 @@ async function runTests() {
       ws.on('message', msg => {
         const req = JSON.parse(msg);
         if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && req.params.expression.includes('ocaLink')) {
+          if (req.params.expression && (req.params.expression.includes('ocaLink') || req.params.expression.includes('One Config Advanced'))) {
             launchCalled = true;
             // Simulate that launching opens OCA page
             mockTargets.unshift({
@@ -142,7 +153,7 @@ async function runTests() {
               title: 'OCA Menu',
               webSocketDebuggerUrl: 'ws://localhost:18999'
             });
-            ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true } } } }));
           } else {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
           }
@@ -198,6 +209,61 @@ async function runTests() {
     } finally {
       if (flackyWss) flackyWss.close();
     }
+
+    // --- Test 4: Stale / Logged-out / OCAInternalLogin Tab Auto-Closure & Tab 1 Recovery ---
+    console.log('\n  --- Test 4: Testing automatic closure of logged-out OCAInternalLogin tab ---');
+    let freshTabSpawned = false;
+
+    mockTargets = [
+      {
+        type: 'page',
+        id: 'stale-logged-out-oca',
+        url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin',
+        title: 'External OCA | Hewlett Packard Enterprise',
+        webSocketDebuggerUrl: 'ws://localhost:18999'
+      },
+      {
+        type: 'page',
+        id: 'partner-home-page',
+        url: 'https://partner.hpe.com/home',
+        title: 'Partner Home',
+        webSocketDebuggerUrl: 'ws://localhost:18999'
+      }
+    ];
+
+    wss.removeAllListeners('connection');
+    wss.on('connection', ws => {
+      activeConnections.push(ws);
+      ws.on('message', msg => {
+        const req = JSON.parse(msg);
+        if (req.method === 'Page.reload') {
+          ws.send(JSON.stringify({ id: req.id, result: {} }));
+        } else if (req.method === 'Runtime.evaluate') {
+          if (req.params.expression && (req.params.expression.includes('ocaLink') || req.params.expression.includes('One Config Advanced'))) {
+            freshTabSpawned = true;
+            mockTargets.unshift({
+              type: 'page',
+              id: 'fresh-recovered-oca',
+              url: 'https://oca.ext.hpe.com/dqe',
+              title: 'OCA Menu',
+              webSocketDebuggerUrl: 'ws://localhost:18999'
+            });
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true } } } }));
+          } else {
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
+          }
+        }
+      });
+      ws.on('close', () => {
+        activeConnections = activeConnections.filter(c => c !== ws);
+      });
+    });
+
+    const res4 = await navigateToOCAChassis('DL380 Gen12', {});
+    assert.strictEqual(res4.status, 'READY_AT_MENU_TAB');
+    assert.strictEqual(mockTargets.some(t => t.id === 'stale-logged-out-oca'), false, 'Logged out tab should have been closed via CDP /json/close');
+    assert.strictEqual(freshTabSpawned, true, 'Fresh session should have been triggered from Tab 1 Quick Links');
+    console.log('✅ Test 4 Passed: Successfully closed logged out tab and recovered fresh session from Tab 1.');
 
   } finally {
     if (wss) {

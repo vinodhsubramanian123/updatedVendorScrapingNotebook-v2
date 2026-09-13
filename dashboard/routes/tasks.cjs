@@ -26,11 +26,20 @@ const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 router.post('/scrape', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER', context: { task: getActiveTask()?.type } });
 
-  const { mode } = req.body; // 'solution' or 'storage'
+  const { mode, chassis, query, recover } = req.body || {};
   const scriptName = mode === 'storage' ? 'scrape_oca_storage_solution.js' : 'scrape_oca_solution.js';
   const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'scrapers', scriptName);
 
-  const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
+  const args = [scriptPath];
+  const targetChassis = chassis || query;
+  if (targetChassis) {
+    args.push('--chassis', String(targetChassis).trim());
+  }
+  if (recover) {
+    args.push('--recover');
+  }
+
+  const proc = spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   startTask(`SCRAPE_${(mode || 'solution').toUpperCase()}`, proc, res, OUTPUTS_DIR);
 });
 
@@ -49,23 +58,24 @@ router.post('/rebuild', (req, res) => {
 router.post('/navigate-oca', (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER' });
 
+  const { chassis, query, recover } = req.body || {};
   const scriptPath = path.join(PROJECT_ROOT, 'scripts', 'lib', 'scraper', 'navigate_oca.js');
-  const proc = spawn('node', [scriptPath], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
+  const targetChassis = chassis || query || 'DL380 Gen12';
+  const args = [scriptPath, String(targetChassis).trim()];
+  if (recover) {
+    args.push('--recover');
+  }
+
+  const proc = spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
   startTask('NAVIGATE_OCA', proc, res, OUTPUTS_DIR);
 });
 
 // ── Launch Browser (Zero-Touch CDP) ──────────────────────────────────────────
-router.post('/launch-browser', (req, res) => {
+router.post('/launch-browser', async (req, res) => {
   try {
-    const profileDir = path.join(PROJECT_ROOT, '.chrome_sso_profile');
-    if (!fs.existsSync(profileDir)) fs.mkdirSync(profileDir, { recursive: true });
-    const proc = spawn('google-chrome', [
-      '--remote-debugging-port=9222',
-      `--user-data-dir=${profileDir}`,
-      'https://partner.hpe.com'
-    ], { detached: true, stdio: 'ignore' });
-    proc.unref();
-    res.json({ status: 'SUCCESS', message: 'Browser launched on port 9222' });
+    const { ensureChromeBrowserRunning } = require('../../scripts/lib/scraper/browser_launcher.js');
+    await ensureChromeBrowserRunning(9222, 'https://partner.hpe.com');
+    res.json({ status: 'SUCCESS', message: 'Browser session active and verified on port 9222' });
   } catch (err) {
     sendErrorResponse(res, 500, `Failed to launch browser: ${err.message}`, { source: 'TASKS_ROUTER' });
   }

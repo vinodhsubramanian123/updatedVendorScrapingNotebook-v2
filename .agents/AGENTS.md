@@ -129,7 +129,7 @@ vendorNotebookSolution/
 5. **Dynamic Pathing**: Never hardcode file paths or chassis IDs in scripts. Derive them from CLI arguments or metadata.
 6. **Clean SKU Regex**: All SKUs must pass `isValidHpeSKU()` filtering. `Current Qty` must pass `/^\d+$/`.
 7. **5-Tier Strategy Matrix**: Always synthesize Rank 1 (Intent Preserved) through Rank 5 (Budget Minimized) without duplicate ranks or hallucinated SKUs.
-8. **Hybrid Zero-Touch Scraping Workflow**: Agents MUST NOT attempt to bypass or automate the HPE SSO login sequence. The scraper relies on a Zero-Touch `/api/launch-browser` API that spins up Chrome with a persistent `--user-data-dir`. The human user MUST manually log in and click the OCA link in that specific browser window. Once loaded, the scraper attaches to CDP port 9222 headlessly.
+8. **Zero-Touch Automated Scraping & Tab 1 Self-Healing Recovery Workflow (`INV-89`)**: The scraping engine operates 100% hands-free on CDP port 9222. `browser_launcher.js` automatically verifies port 9222 and launches Google Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`. `navigate_oca.js` detects the login page, triggers `#oktaSignInBtn`, and clicks `#onepass-submit-btn` using saved credentials. Once inside the Partner Portal home page, it clicks "One Config Advanced" from the Quick links section (`#quick-links-807 a`), which opens OCA in a new tab with fresh SAML tokens. Whenever a WebLogic session times out, encounters an exception dialog, or freezes silently, the engine MUST NEVER reload the OCA page in-place (which breaks WebLogic state). Instead, it automatically closes the broken OCA tab, switches to the parent Partner Portal tab, reloads Tab 1 to refresh session tokens, and re-clicks "One Config Advanced" from Quick links to resume extraction without human intervention.
 
 ---
 
@@ -207,6 +207,10 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 ### INV-13: Closed-Loop Knowledge Delta Deduplication
 - **Pattern**: `scripts/lib/feedback/feedback_loop.js` and `scripts/lib/notebook/knowledge_extractor.js` must deduplicate incoming rules against existing `catalog_deltas.json` and `master_knowledge_registry.json`.
 - **Rule**: Never blindly push duplicate rules. Match on `(chassis, affectedSku, requiredDependencySku, rawMessage/ruleUpdate)` and update timestamps/scores in place.
+
+### INV-14: Whole-Solution BOM Manifest Context in Grounded RAG Queries
+- **Pattern**: `formatNotebookQueryPayload` in `boq_evaluator.js` must always bundle the entire solution BOM manifest (comma-separated SKU quantities), detected physical issues, proposed fixes, and 5-tier strategy summaries.
+- **Rule**: Never dispatch isolated, single-SKU queries to NotebookLM/RAG for whole-solution validation. Always preserve full topological context.
 
 ### INV-15: Proactive Multi-Agent Scheduling & Final Authority Governance
 - **Pattern**: Whenever an Antigravity AI Agent delegates work to Google Jules or has an active Jules session in flight, the agent **MUST NOT go idle or wait for the human user to prompt or relay messages**.
@@ -439,6 +443,27 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   1. An operator-owned Desktop App OAuth client stored outside the repository, with the operator registered as a Test User and authenticated through Application Default Credentials; OR
   2. A dedicated service account whose key is stored outside the repository, with access limited to a designated Drive folder (`GOOGLE_DRIVE_FOLDER_ID`).
 
+### INV-68: Evidence-Gated Shared Accessory Compatibility Protocol
+- **Pattern**: Product isolation filters MUST reject foreign chassis/base rows without discarding ordinary accessory rows merely because the prior snapshot also contained another chassis.
+- **Rule**: Rails, cable-management arms, storage enablement kits, cables, power cords, and transceivers may be reused across products or generations only through an exact-product, evidence-backed `KnowledgeDelta`; shared presence elsewhere is not proof of compatibility.
+- **Scope**: A reusable record MUST use `CHASSIS_SPECIFIC` scope and include `sharedAccessoryVerified: true`, an approved `accessoryClass`, exact `compatibleProductIds`, `verificationStatus: VERIFIED`, trusted `compatibilityEvidenceType`, and non-empty `verificationSourceIds`.
+- **Isolation**: Local registry projection and NotebookLM payload isolation MUST apply the same gate. If an accessory disappears from a target product's fresh OCA scrape, preserve its discontinued and price history; never reactivate it from another product's catalog.
+
+### INV-69: Delta-Only SKU Lifecycle & Business Retention Protocol
+- **Pattern**: Catalog diffs MUST capture SKU addition/removal/reinstatement, price changes, lifecycle badge/status transitions, start dates, and vendor discontinuation dates. Stable scrapes MUST NOT append redundant `UNCHANGED` price-history events.
+- **Rule**: A SKU removed from the active OCA catalog receives exactly one `REMOVED` event and a compact tombstone marked `trackingState: STOPPED_AFTER_REMOVAL`; subsequent snapshots MUST NOT move its original discontinuation date or repeatedly remove it.
+- **Retention**: Compact lifecycle evidence remains available for historical deal validation, obsolete-part rejection, replacement reasoning, and reinstatement detection. Extended retention may be marked `BUSINESS_RELEVANT` when deal or verified-rule references exist. Excel, Google Sheet, local audit, and NotebookLM representations MUST expose consistent lifecycle and retention state. Reappearance in the exact target-product catalog changes the state to `REINSTATED` and resumes tracking.
+
+### INV-70: Evidence-Gated Human Resolution & Anti-Hallucination Protocol
+- **Pattern**: Portal messages, NotebookLM answers, generic feedback, and any record merely labeled `HUMAN_HITL` are observations, not active rules. They MUST default to product-scoped quarantine and MUST NOT update catalog rules, the master registry, confidence, or NotebookLM sources.
+- **Rule**: Promotion requires an exact product-generation target, valid SKU syntax, explicit scope, a named reviewer, independent reasoning, an affirmative verification decision, and at least one traceable trusted evidence record. Contradictions additionally require the reviewer to identify the superseded rule IDs.
+- **Fingerprinting**: Knowledge records use a stable semantic SHA-256 fingerprint. Repeated observations increment occurrence metadata and merge reasons instead of creating stale duplicates. Promotion and rejection write immutable decision-ledger entries; corrupt governance files fail closed. Confidence may increase only after successful evidence-backed validation.
+
+### INV-71: Requirement-Led Part Resolution & PCIe Topology Evidence Protocol
+- **Pattern**: A malformed, unknown, or description-mismatched part number MUST be resolved from the complete requirement context and the missing component role. SKU edit distance is a tie-breaker only after the candidate matches the inferred category; a close SKU from another category is forbidden.
+- **Rule**: Automatic replacement requires an exact confirmed product generation, catalog membership, category certainty, score `>= 0.90`, and a top-candidate margin `>= 0.08`. Otherwise the original item remains unchanged and the Ambiguity Inbox records `NEEDS_HUMAN_CLARIFICATION`; unconfirmed decisions are not learning-eligible.
+- **PCIe Topology**: PCIe capacity results MUST expose per-node and cluster demand/capacity, mechanical versus electrically active slots, x16 capacity, riser position, parsed catalog lane evidence, confidence, and whether exact-product NotebookLM verification is required.
+
 ### INV-72: Customer Input Workflow Discipline & Scoped Learning Protocol
 - **Pattern**: When given a customer BOQ or configuration question, AI agents often attempt to write one-off scripts, scratch classes, or ad-hoc parsers, bypassing the battle-tested production pipeline.
 - **Rule**: Whenever an AI agent receives a customer BOQ spreadsheet, quote, tender excerpt, or configuration query, the agent **MUST ALWAYS route the request through the canonical evaluation pipeline** (`scripts/evaluators/eval_boq.js`, `scripts/lib/boq/boq_evaluator.js`, `scripts/lib/boq/multi_cluster_splitter.js`). Writing ad-hoc classes, scratch parsers, or temporary bypass scripts is STRICTLY PROHIBITED.
@@ -471,6 +496,57 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 ### INV-78: Unified Presales Intent Query Routing & Single-User Protocol
 - **Pattern**: Customer presales queries vary across freeform Q&A, sizing requests, BOQ reviews, and BOM reconciliations.
 - **Rule**: Inbound queries route through `route_query.js` into 5 canonical tracks (`FREEFORM_QA`, `RFP_SIZING_TO_BOM`, `BOQ_EVALUATION`, `BOM_RECONCILIATION`, `CATALOG_INTELLIGENCE`). In single-user environments, all user roles are unified to eliminate administrative approval friction while maintaining strict automated validation.
+
+
+### INV-79: DL380a Gen12 GPU Accelerator Domain Isolation & Riser Architecture
+- **Pattern**: Standard DL380 rules or components must not bleed into DL380a GPU server configurations.
+- **Rule**: DL380a Gen12 is a dedicated AI accelerator server supporting up to 8DW/16SW GPUs with captive GPU risers. Quotes/BOQs specifying DL380a must evaluate strictly against outputs/ProLiant/Gen12/DL380a_Gen12 and dedicated NotebookLM notebook b233ec88-4682-4164-a801-3ee6ca649dc1. Never route to standard DL380_Gen12.
+
+### INV-80: Minimal Supported Memory Population Hierarchy vs Channel Interleaving
+- **Pattern**: Dual-socket platforms support hierarchical memory configurations: [1, 2, 4, 6, 8, 12, 16] DIMMs per CPU.
+- **Rule**: Sizing engines MUST recognize minimal entry configurations (e.g. 4x 32GB DDR5 on dual-socket systems) as 100% buildable, passing with an informative interleaving advisory rather than a fatal validation error.
+
+### INV-81: Diskless Compute Nodes & No Local Drive FIO Enablement Kit (873763-B21)
+- **Pattern**: Omitting local drives on stateless SAN/PXE compute nodes triggers factory configuration rules (HPE CLIC Rule 81392308).
+- **Rule**: Sizing and evaluation engines MUST inject 873763-B21 (HPE No Drive Configuration FIO Kit) when no local drives and no storage controllers are configured, designating the server as diskless and clearing drive cage requirements.
+
+### INV-82: Dynamic WebLogic AJAX Panels, Missing SKU Discovery & Scraper Resilience
+- **Pattern**: OCA subchoice options (accelerators, captive risers, cables) hide in deferred AJAX panels.
+- **Rule**: Missing SKUs discovered through customer RFPs or QuickSpecs reconciliation MUST be dynamically backfilled into master workbooks, and cdp.js MUST dispatch jQuery change events to expand all dependent subchoice containers during live scrapes.
+
+### INV-83: Google Sheets & NotebookLM Synchronization Strategy: Full Replace vs Delta Append
+- **Pattern**: Appending duplicate catalog rows pollutes RAG embeddings.
+- **Rule**: Master catalog grounding sheets (All SKUs) must use Full Replace In Place to prevent polluting semantic vector embeddings with outdated price entries. Telemetry change logs (Price Trails, Knowledge Deltas) must use Delta Append.
+
+### INV-84: Parallel Sub-Path Architectural Branching & Multi-Mode Sizing Protocol
+- **Pattern**: Physical platform capabilities often support multiple valid topologies (e.g. 8DW Interconnect-Optimized vs 10DW Density-Optimized).
+- **Rule**: The engine MUST NOT prematurely converge on a single configuration. It MUST synthesize parallel buildable sub-paths (Rank 1A and Rank 1B) and present a side-by-side trade-off matrix.
+
+### INV-85: Universal Multi-Domain Presales Process Architecture & Zero-Hardcoded Multi-Mode Discovery Protocol
+- **Pattern**: Domain-specific hardcoding limits scalability across compute, storage, and networking.
+- **Rule**: Process architecture applies universally across all server families (ProLiant, Synergy, Cray, Superdome), storage architectures (Alletra, MSA, StoreEver), and networking fabrics. Formulates the 4 proactive presales qualifying dimensions (Workload DNA, Facility & Electrical, Fabric/Interconnect, Data/Lifecycle) on Turn 1.
+
+### INV-86: Hierarchical Container Trees & Spatial Presales Reasoning Protocol
+- **Pattern**: Complex enterprise infrastructure must follow structured physical containment.
+- **Rule**: Configurations are structured as 4-tier containment trees: Level 0 Enclosure -> Level 1 Modules -> Level 2 Enablement/Risers/Cages -> Level 3 Leaf SKUs. Sizing engines propagate physical constraints bi-directionally and verify spatial placement.
+
+### INV-87: Internal Storage Controller Backplane Cabling & Thermal Escalation Protocol
+- **Pattern**: Internal storage controllers cannot exist in factory CTO containers without a physical drive backplane to cable into.
+- **Rule**: Configuring an internal storage controller (MR416i-p, MR408i-o, SR932i-p) into a chassis with 873763-B21 (No Drive Kit) is an unbuildable conflict. The engine MUST: (1) Prune 873763-B21, (2) Inject primary 8SFF Tri-Mode Drive Cage Kit (P75741-B21 Gen12 / P48813-B21 Gen11), (3) Inject Box 2 Controller Cable Kit (P76456-B21 Gen12 / P48918-B21), (4) Escalate cooling to High-Performance Fan Kit (P48820-B21), and (5) Inject 96W Battery (P01366-B21) and Enablement Cable (P48918-B21). Rear boot devices (NS204i-u v2 P78279-B21) require rear mount kit (P74755-B21) and do not satisfy front drive cage cabling.
+
+### INV-88: Holistic Solution Coexistence & Dual-Brain Dynamic Grounding Protocol
+- **Pattern**: Evaluating component additions in isolation causes delta myopia and unbuildable factory orders.
+- **Rule**: Whenever an existing solution is expanded, modified, or customized, the engine MUST re-evaluate the entire coexisting BOM across all 7 physical aspects simultaneously. Combines high-speed static pre-checks with patient NotebookLM RAG grounding, parsing learned vendor rules into master_knowledge_registry.json for continuous closed-loop self-improvement.
+
+### INV-89: Zero-Touch Browser Auto-Launch, Saved-Credential SSO & Stale-Session Tab 1 Self-Healing Recovery Protocol
+- **Pattern**: WebLogic OCA is an enterprise Java state machine tied to short-lived SAML tokens. In-place browser reloads (`location.reload()`) in an active OCA tab break session continuity and yield unrecoverable blank pages, 403 Forbidden, or broken login loops. WebLogic frequently encounters silent freezes (infinite loading spinners without explicit timeout dialogs) or DOM detachments.
+- **Rule**: AI agents and scraper pipelines MUST NOT prompt the human user to manually launch Chrome or log into HPE Partner Portal. `browser_launcher.js` automatically checks port 9222 and launches Google Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`. `navigate_oca.js` clicks `#oktaSignInBtn` and dispatches clicks to `#onepass-submit-btn` with auto-saved credentials. When a session times out, freezes, or fails:
+  1. Close the stale OCA tab via CDP (`/json/close/{targetId}`).
+  2. Switch focus back to Tab 1 (`https://partner.hpe.com/group/prp`).
+  3. Re-authenticate via `performAutomatedSignIn()` if the portal expired.
+  4. Reload Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML tokens and re-bind Quick Links.
+  5. Click "One Config Advanced" in Quick links (`#quick-links-807 a` / `eServiceId=187402`) to spawn a pristine OCA tab.
+  6. Re-navigate the fresh tab to the target chassis Menu tab and resume operations seamlessly without human intervention.
 
 ---
 

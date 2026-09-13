@@ -5,8 +5,8 @@
     "family": "ProLiant",
     "generation": "Gen12",
     "scrapeDate": "2026-09-13",
-    "scrapeTimestamp": "2026-09-13T07:24:49.596Z",
-    "totalSubcategories": 9,
+    "scrapeTimestamp": "2026-09-13T11:29:41.709Z",
+    "totalSubcategories": 10,
     "totalUniqueSKUs": 383,
     "totalTables": 22
   },
@@ -4218,12 +4218,12 @@
     },
     {
       "parentCategory": "Graphics & GPU",
-      "subCategory": "Server Management & Operating System Licenses",
+      "subCategory": "GPU Accelerators",
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
       "rules": [
-        "Selection constraint for Server Management & Operating System Licenses: max 1"
+        "Selection constraint for GPU Accelerators: max 1"
       ],
       "headers": [
         "Product #",
@@ -4324,12 +4324,12 @@
     },
     {
       "parentCategory": "Graphics & GPU",
-      "subCategory": "Server Management & Operating System Licenses",
+      "subCategory": "GPU Accelerators",
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
       "rules": [
-        "Selection constraint for Server Management & Operating System Licenses: max 1"
+        "Selection constraint for GPU Accelerators: max 1"
       ],
       "headers": [
         "Product #",

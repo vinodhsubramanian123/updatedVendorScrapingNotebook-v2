@@ -83,7 +83,7 @@ function parseProductMeta(rawText, pageTitle = '') {
 
 // Declarative fallback component mapping table
 const DEFAULT_ROLE_MAPPINGS = [
-  { role: 'Base Chassis', keywords: ['chassis cto', 'cto server', 'base chassis', 'configure-to-order', 'base system', 'compute module', 'frame cto', 'cto chassis', 'cto rack'] },
+  { role: 'Base Chassis', keywords: ['chassis cto', 'cto server', 'base chassis', 'configure-to-order server', 'configure-to-order compute module', 'configure-to-order chassis', 'base system', 'compute module', 'frame cto', 'cto chassis', 'cto rack'] },
   { role: 'Processor', keywords: ['processor', 'xeon', 'epyc'] },
   { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5', 'ddr4', 'dimm blank'] },
   { role: 'Transceiver', keywords: ['transceiver', 'sfp28 sr', 'optical transceiver', 'qsfp28', 'sfp56', 'qsfp56'] },
@@ -105,7 +105,7 @@ const DEFAULT_ROLE_MAPPINGS = [
 
 const INFRASTRUCTURE_KEYWORDS = ['rail', 'cable management', 'cma', 'insight display', 'bezel kit', 'blank kit'];
 const INFRASTRUCTURE_EXCLUSION_KEYWORDS = ['processor', 'memory', 'power', 'controller', 'adapter'];
-const BASE_CHASSIS_KEYWORDS = ['cto server', 'base chassis', 'configure-to-order', 'compute module', 'cto rack'];
+const BASE_CHASSIS_KEYWORDS = ['cto server', 'base chassis', 'configure-to-order server', 'configure-to-order compute module', 'configure-to-order chassis', 'compute module', 'cto rack', 'cto chassis'];
 
 function isChassisInfrastructure(desc) {
   if (INFRASTRUCTURE_KEYWORDS.some(k => desc.includes(k))) return true;
@@ -114,6 +114,7 @@ function isChassisInfrastructure(desc) {
 }
 
 function isBaseChassis(desc) {
+  if (/\b(?:kit|cable|cooling|baffle|heatsink|heat sink)\b/i.test(desc)) return false;
   if (BASE_CHASSIS_KEYWORDS.some(k => desc.includes(k))) return true;
   if (desc.includes('base') && desc.includes('chassis')) return true;
   if (desc.includes('server') && desc.includes('cto')) return true;

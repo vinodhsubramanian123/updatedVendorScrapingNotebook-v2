@@ -379,3 +379,50 @@ flowchart TD
 3. **Auditable Decision Trace Ledger**: Records every mutation, addition, deletion, and rule trigger with source brain attribution (`DETERMINISTIC_PHYSICAL_MATH`, `RAG_AGENTIC_GUARDRAIL`, `VALUE_ENGINEERING`, `HITL_FEEDBACK`) to ensure complete transparency.
 4. **Value Engineering & Deal Optimizer**: Advisory post-buildability optimizer evaluating potential cost savings (e.g. Xeon Gold 6530 right-sizing for balanced storage workloads, 25GbE right-sizing for standard enterprise tiers).
 
+---
+
+## 12. Universal Multi-Domain Presales Architecture, Container Trees & Backplane Protocols (`INV-79` to `INV-89`)
+
+```mermaid
+flowchart TD
+    InboundReq["Customer RFQ / Sizing Request"] --> PresalesArch["Universal Multi-Domain Presales Engine (INV-85)"]
+    
+    subgraph "Presales Dynamic Discovery & Sizing (INV-80, INV-81, INV-84, INV-85)"
+        PresalesArch --> Qualify["4-Dimension Qualification (Workload, Facility, Fabric, Tiering)"]
+        Qualify --> Modes["Branching Multi-Mode Sizing (Rank 1A vs Rank 1B)"]
+        Modes --> DisklessCheck{"Diskless SAN/PXE Compute Node? (INV-81)"}
+        DisklessCheck -- "Yes" --> InjectNoDrive["Inject 873763-B21 (No Local Drive FIO Kit)"]
+        DisklessCheck -- "No" --> DriveCables["Storage Backplane & Controller Cabling (INV-87)"]
+        Modes --> MemCheck["Hierarchical Memory Population Check (INV-80)"]
+    end
+
+    subgraph "Hierarchical Container Tree & Spatial Placement (INV-86)"
+        InjectNoDrive --> Tree["4-Tier Physical Containment Tree"]
+        DriveCables --> Tree
+        MemCheck --> Tree
+        Tree --> L0["Level 0: Parent Frame / Enclosure"]
+        Tree --> L1["Level 1: Sub-Product Modules (Compute / Storage / Fabric Blades)"]
+        Tree --> L2["Level 2: Subcomponents & Enablement (Risers, Cages, Switchboards)"]
+        Tree --> L3["Level 3: Leaf SKUs (CPUs, DIMMs, Drives, PSUs, FIO Tags)"]
+    end
+
+    subgraph "Isolation & Sync Protocol (INV-79, INV-82, INV-83, INV-88, INV-89)"
+        Tree --> Firewall["Product Family Firewalling & Strict Scoping (INV-79)"]
+        Firewall --> DynamicExpand["Dynamic Sub-Choice & AJAX Expansion (INV-82, INV-88)"]
+        DynamicExpand --> SyncStrat["Full Replace (Master SKUs) vs Delta Append (Audit Trails) (INV-83)"]
+        SyncStrat --> SelfHealing["Tab 1 Stale-Session Self-Healing Recovery (INV-89)"]
+    end
+```
+
+1. **Product Line Firewalls (`INV-79`)**: Strict boundaries isolate DL380a Gen12 (4U GPU accelerator node) from DL380 Gen12 (2U compute), Alletra Storage, StoreEver Tape, and Synergy blades. Zero cross-bleeding of form factors, drive cages, or power envelopes.
+2. **Hierarchical Memory Sizing (`INV-80`)**: Validates entry configurations against valid DIMM population steps (`[1, 2, 4, 6, 8, 12, 16]` DIMMs/CPU) without raising fatal errors on partially populated channels, emitting interleaving advisories instead.
+3. **Diskless Compute Kit Injection (`INV-81`)**: Automatically injects `873763-B21` (No Local Drive FIO Kit) to satisfy factory rules for stateless compute and SAN-boot nodes.
+4. **Sub-Path Branching (`INV-84`)**: Simultaneously synthesizes **Rank 1A** (Interconnect-Optimized) and **Rank 1B** (Density-Optimized) when hardware platforms support multiple valid physical topologies.
+5. **Universal Multi-Domain Process Architecture (`INV-85`)**: A domain-agnostic presales methodology covering Compute, Storage, and Networking fabrics with a mandatory 4-dimension qualification engine.
+6. **4-Tier Container Trees (`INV-86`)**: Formal spatial hierarchy from Level 0 Frame to Level 3 Leaf SKUs with bi-directional constraint propagation.
+7. **Storage Backplane Cabling & Thermal Escalation (`INV-87`)**: Internal storage controllers require physical drive cages/backplanes and escalate thermal envelopes (fans/heatsinks/cables).
+8. **Dynamic Discovery & Sub-Choice Expansion (`INV-88`)**: Zero-hardcoding DOM expansion via jQuery triggers for all deferred AJAX subchoice panels.
+9. **Zero-Touch Auto-Launch & Tab 1 Stale-Session Self-Healing Recovery (`INV-89`)**: Automated Chrome launch on port 9222 with `.chrome_sso_profile` and Okta auto-sign-in. Eliminates in-place OCA page reloads (`location.reload()`) which destroy WebLogic session state. Recovers from silent freezes and timeouts by closing the stale OCA tab, returning to Tab 1 (`partner.hpe.com/group/prp`), reloading the portal page to refresh SAML links, clicking "One Config Advanced" in Quick links, and navigating the fresh session seamlessly.
+
+
+
