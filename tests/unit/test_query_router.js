@@ -62,3 +62,31 @@ test('QueryRouter — Executes CATALOG_INTELLIGENCE query for specific SKU', asy
   assert.strictEqual(res.result.targetSku, 'P73282-B21');
   assert.ok(res.result.message.includes('P73282-B21'));
 });
+
+test('QueryRouter — Executes RFP_SIZING_TO_BOM and constructs candidate BOM', async () => {
+  const query = 'Need a DL380 Gen12 server with 32 cores, 256GB RAM, 10TB storage';
+  const res = await executeRoutedQuery(query, { chassisName: 'DL380_Gen12' });
+
+  assert.strictEqual(res.classification.intent, 'RFP_SIZING_TO_BOM');
+  assert.ok(res.result.candidateBOM);
+  assert.ok(Array.isArray(res.result.candidateBOM));
+  assert.ok(res.result.status);
+});
+
+test('QueryRouter — Executes BOM_RECONCILIATION with single audit file', async () => {
+  const filePath = path.resolve(__dirname, '..', 'fixtures', 'test_boq_dl380_gen12.csv');
+  const res = await executeRoutedQuery('Reconcile this quote', { filePath, chassisName: 'DL380_Gen12' });
+
+  assert.strictEqual(res.classification.intent, 'BOM_RECONCILIATION');
+  assert.ok(res.result.auditReport);
+  assert.strictEqual(typeof res.result.auditReport.is100PercentMatch, 'boolean');
+});
+
+test('QueryRouter — Executes FREEFORM_QA for DL 380a and isolates from DL380', async () => {
+  const res = await executeRoutedQuery('What are the processor options for DL 380a?');
+  assert.strictEqual(res.classification.intent, 'FREEFORM_QA');
+  assert.strictEqual(res.result.chassis, 'DL380a_Gen12');
+  assert.ok(res.result.answer.includes('DL380a_Gen12'));
+  assert.ok(!res.result.answer.includes('(DL380_Gen12)'));
+});
+

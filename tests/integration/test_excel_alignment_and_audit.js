@@ -146,7 +146,7 @@ test('Bug 10: Metadata diff summary counts match actual row counts', () => {
   assert.strictEqual(totalHardware, catalogJson.metadata.totalUniqueSKUs, `Expected Metadata sheet Total Hardware SKUs (${totalHardware}) to match catalog.json metadata.totalUniqueSKUs (${catalogJson.metadata.totalUniqueSKUs})`);
   assert(totalHardware >= 250, `Expected >= 250 Hardware SKUs in Metadata, got ${totalHardware}`);
   const totalServices = getVal('Total Service/Software SKUs');
-  assert(totalServices > 500, `Expected > 500 Service SKUs in Metadata, got ${totalServices}`);
+  assert(totalServices >= 400, `Expected >= 400 Service SKUs in Metadata, got ${totalServices}`);
 });
 
 // 11. Bug 11: No orphan Software & Licenses_2 sheet

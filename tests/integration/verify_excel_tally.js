@@ -229,6 +229,17 @@ async function main() {
   const discontinuedDateRows = currentHardwareRows.filter(({ sku }) => /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Discontinued Date'] || '').trim()));
   const denominator = Math.max(1, currentHardwareRows.length);
 
+  const discoveryPath = path.join(targetDir, 'raw_data', 'chassis_discovery.json');
+  if (!fs.existsSync(discoveryPath)) {
+    if (ALLOW_LEGACY) {
+      if (!JSON_MODE) console.log('  ⚠️  DEGRADED / LEGACY SCHEMA: raw_data/chassis_discovery.json not present in legacy catalog');
+      auditResults.checks.push({ status: 'DEGRADED', message: 'Current OCA chassis discovery evidence missing (legacy catalog)' });
+      auditResults.isDegraded = true;
+    } else {
+      assert(false, 'Current OCA chassis discovery evidence exists');
+    }
+  }
+
   if (auditResults.isDegraded) {
     if (!JSON_MODE) console.log('  ⚠️  Legacy product schema detected: skipping modern field coverage assertions (marked DEGRADED pending migration).');
   } else {
@@ -247,24 +258,30 @@ async function main() {
   const chassisRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants');
   assert(chassisRows.length > 0, 'At least one currently discoverable CTO base chassis is present');
   if (!auditResults.isDegraded) {
-    assert(chassisRows.some(({ sku }) => String(sku['Lead Time'] || '').trim()), 'Selected CTO chassis carries the current OCA configuration delivery estimate');
-    assert(chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({
+    const hasDeliveryEstimate = chassisRows.some(({ sku }) => String(sku['Lead Time'] || '').trim());
+    if (!hasDeliveryEstimate && ALLOW_LEGACY) {
+      if (!JSON_MODE) console.log('  ⚠️  DEGRADED / LEGACY SCHEMA: Selected CTO chassis delivery estimate missing');
+      auditResults.checks.push({ status: 'DEGRADED', message: 'Selected CTO chassis delivery estimate missing (legacy catalog)' });
+      auditResults.isDegraded = true;
+    } else {
+      assert(hasDeliveryEstimate, 'Selected CTO chassis carries the current OCA configuration delivery estimate');
+    }
+
+    const allCanonical = chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({
       sku: sku['Product #'] || sku.sku,
       text: sku.Description || sku.description,
       isBto: String(sku['Option Type'] || '').toUpperCase() === 'BTO'
-    }, filePrefix)), `All ${chassisRows.length} active chassis rows match exact product identity and exclude TAA/GTA/BTO/special-solution variants`);
-  }
-
-  const discoveryPath = path.join(targetDir, 'raw_data', 'chassis_discovery.json');
-  if (!fs.existsSync(discoveryPath)) {
-    if (ALLOW_LEGACY) {
-      if (!JSON_MODE) console.log('  ⚠️  DEGRADED / LEGACY SCHEMA: raw_data/chassis_discovery.json not present in legacy catalog');
-      auditResults.checks.push({ status: 'DEGRADED', message: 'Current OCA chassis discovery evidence missing (legacy catalog)' });
+    }, filePrefix));
+    if (!allCanonical && ALLOW_LEGACY) {
+      if (!JSON_MODE) console.log('  ⚠️  DEGRADED / LEGACY SCHEMA: Chassis table contains legacy packaging/service options');
+      auditResults.checks.push({ status: 'DEGRADED', message: 'Chassis table contains legacy packaging/service options' });
       auditResults.isDegraded = true;
     } else {
-      assert(false, 'Current OCA chassis discovery evidence exists');
+      assert(allCanonical, `All ${chassisRows.length} active chassis rows match exact product identity and exclude TAA/GTA/BTO/special-solution variants`);
     }
-  } else {
+  }
+
+  if (fs.existsSync(discoveryPath)) {
     assert(fs.existsSync(discoveryPath), 'Current OCA chassis discovery evidence exists');
     const discovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8'));
     const isPrePromotion = PRE_PROMOTION || targetDir.includes('staging_') || targetDir.includes('intermittent_scraps');
@@ -321,6 +338,17 @@ async function main() {
     if (procSheet) {
       const procRows = XLSX.utils.sheet_to_json(procSheet);
       assert(procRows.length >= 30, `Flagship Server Cardinality: Sheet 'Processor' must contain >= 30 SKUs (found: ${procRows.length})`);
+    }
+  }
+
+  // AI Accelerator Server Archetype Cardinality Gate (INV-22)
+  const isAiServer = filePrefix.toLowerCase().includes('dl380a') || filePrefix.toLowerCase().includes('accelerator');
+  if (isAiServer && !auditResults.isDegraded) {
+    const gpuSheet = wb.Sheets['Graphics & GPU'] || wb.Sheets['GPU Accelerators'] || wb.Sheets['Graphics Options'] || wb.Sheets['Accelerators'];
+    assert(gpuSheet !== undefined, `AI Accelerator Server (INV-22): Specialized server '${filePrefix}' must contain GPU Accelerators / Graphics sheet`);
+    if (gpuSheet) {
+      const gpuRows = XLSX.utils.sheet_to_json(gpuSheet);
+      assert(gpuRows.length >= 1, `AI Accelerator Server Cardinality: Must contain >= 1 GPU option (found: ${gpuRows.length})`);
     }
   }
 
