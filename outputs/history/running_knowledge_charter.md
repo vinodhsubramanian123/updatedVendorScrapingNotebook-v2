@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-13T08:51:38.698Z  
-**Total Deduplicated Learned Rules:** 165  
+**Last Synchronized:** 2026-09-13T10:24:02.313Z
+**Total Deduplicated Learned Rules:** 68
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -162,7 +162,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **165**.
+Total verified rules indexed in this build: **68**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -234,103 +234,6 @@ Total verified rules indexed in this build: **165**.
 | 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
 | 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P73282-B21` | `P74503-B21` | 2. Certified Bare-Minimum Bill of Materials (BOM) This BOM contains the absolute minimal hardware, licensing, and 3-Year | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_TOPOLOGY` | `873763-B21` | `P01366-B21` | 1. Storage Bypass: No Drive FIO Kit ( 873763-B21 ) — $14.00 Physical Logic: The DL380 Gen12 SFF NC chassis ships with co | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P35876-B21` | `P38995-B21` | 2. EU ErP Lot 9 Compliance: CE Mark Removal Kit ( P35876-B21 ) — $1.00 Physical Logic: Under European Union ErP Lot 9 po | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `MEMORY_CHANNEL` | `P79558-B21` | `P48820-B21` | 3. Thermal Tracking: 25C Max Ambient Temp tracking ( P79558-B21 ) — $1.00 Physical Logic: Gen12 "Smart Chassis" rules ma | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P73325-B21` | `—` | 4. Localization Gate: Localization FIO Kit ( P73325-B21 ) — $4.00 Physical Logic: The OCA portal throws an unbuildable h | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_TOPOLOGY` | `S1A05A` | `512485-B21` | 5. Cloud Management Gate: 3-Year Upfront Standard SaaS ( R7A11AAE ) — $450.00 Physical Logic: The partner portal enforce | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_SERVICES` | `HU4B2A3` | `HU4B2A30C4V` | 4. Support Contract Realignment (Basic Care Split) To ensure smooth partner-led deal registrations and regional quoting  | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P49145-B21` | `873763-B21` | -B21 ) are prohibited. [ ] TDP Redline: The single processor TDP remains at or below 240W to utilize standard standard h | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P73282-B21` | `P74503-B21` | 2. Expanded Local Boot & RAID Expansion BOM (v3.0) This cabled configuration expands the minimal stateless host to inclu | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `879543-B21` | `—` | Catalog Functionality Solution Design Catalog Vendor Solution — Unified Blueprint v6 (Catalog-only) Part 01 — Executive  | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `STORAGE_TOPOLOGY` | `879543-B21` | `—` | 10.3 Artifacts (written under the run) comparison.items.json Roboto Mono — one row per requested pair (compact result fo | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `PHYSICAL_ARCHITECTURE` | `879543-B21` | `—` | 10.4 Left/Right input examples (what UI sends) // Example request the UI sends when user hits "Compare" in the table { " | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `STORAGE_TOPOLOGY` | `879543-B21` | `—` | 10.5 Logs & diagnostics [CC] request left="part:HPE:879543-B21" right="part:Dell:HBA330" compReq=true tol=0.10 [CC] guar | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `PCIE_ACCELERATOR` | `879543-B21` | `—` | 14.3 Substitute curation & suggestion Curated links From vendor statements (“Replaced by 879543-B21”) → create substitut | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `PCIE_ACCELERATOR` | `879543-B21` | `870549-B21` | - saveJson: "harvest/prices.jsonl" Appendix E — JSON Artifact Examples // E.1 raw.tables.jsonl (one line) { "page": 7, " | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `MEMORY_CHANNEL` | `R8W51A` | `—` | Catalog Tab Functionality Catalog Vendor Solution v6 & v7 Unified Blueprint Executive Summary The Catalog Vendor Solutio | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `MEMORY_CHANNEL` | `P07623-B21` | `R8W51A` | - harvest: preferNetwork: true tableSelectorRef: "grid.root" columns: sku: "td:nth-child(1)" title: "td:nth-child(2)" pr | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `R8W51A` | `P07623-B21` | 0.5 Balanced hybrid (default) α/β are configurable in tunables.json Roboto Mono or via UI sliders. The system now uses D | 1x |
-| 🏛️ FAMILY | `GLOBAL` | `MEMORY_CHANNEL` | `P07623-B21` | `R8W51A` | 6.1 Output Example { "leftSku": "P07623-B21", "rightSku": "R8W51A", "label": "Qty Mismatch", "qtyL": 2, "qtyR": 4, "simi | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `P07623-B21` | `R8W51A` | 0.97 UI renders sparkline charts and a “Perf Timeline”. 9️⃣ Key Performance Indicators (KPIs) The system actively tracks | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `R8W51A` | `P07623-B21` | 0.9 – 1.0 Auto Apply Execute instantly; log confirmation Confidence = weighted blend of model probability, historical ac | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `MEMORY_CHANNEL` | `P07623-B21` | `—` | - promote 13️⃣ Playbook Validation Schema enforced via Zod before execution: const PlaybookSchema = z.object({ meta: z.o | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `P07623-B21` | `—` | - step: crud operation: "update" entity: "part" data: vendor: "HPE" sku: "P07623-B21" changes: { price: 320 } Executed m | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `POWER_ENVIRONMENT` | `P07623-B21` | `—` | 0.7–0.9 Ask user confirmation Log Only <0.7 No action; store for analysis Clarification UX AI: “Detected Smart Array P84 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_SERVICES` | `P74461-B21` | `P76706-B21` | 1.2 Base CTO Chassis Selection: The iLO 6 vs. iLO 7 P-Core Mandate HPE offers two primary Configure-To-Order (CTO) base  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_SERVICES` | `P74507-B21` | `—` | 2.1 "Xeon Gold" Equivalence & Sizing In the Intel® Xeon® 6 generation, the traditional multi-tier nomenclature (Bronze,  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PCIE_ACCELERATOR` | `P76706-B21` | `P79656-B21` | 2.2 Thermal & Fan Subsystem Constraints Baseline Cooling Infrastructure: Base CTO chassis P76706-B21 ships standard with | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_TOPOLOGY` | `P74685-B21` | `P74710-B21` | 4. Front Cage Mechanical & Riser Architecture: The 2DW vs. 4DW Framework Understanding the mechanical framing of the DL3 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_TOPOLOGY` | `P75002-B21` | `P75008-B21` | Rule 81016813: The base chassis requires at least Minimum 1 and Maximum 1 GPU Mode SKU per server. The Mode SKU: P75002- | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_TOPOLOGY` | `P74685-B21` | `P75002-B21` | 4.2 The Front Riser Dependency: P74685-B21 Part Number: P74685-B21 (HPE ProLiant DL380a Gen12 2DW Captive Riser FIO Kit) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_ENVIRONMENT` | `P74700-B21` | `P83526-B21` | 5.3 The Configurator Trap & The Optimization The FIO Trap ( P74700-B21 ): In OCA, because P74700-B21 is an FIO-only kit  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_ENVIRONMENT` | `P67252-B21` | `P76706-B21` | 6.1 The 5-PSU Mandatory Threshold The DL380a Gen12 power backplane features 6 power supply bays. +---------------------- | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_TOPOLOGY` | `P74710-B21` | `P74702-B21` | 7.1 Front Storage Cages & Mandatory Data Cabling Default Cage: The base chassis requires a primary storage cage, default | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_TOPOLOGY` | `P76706-B21` | `P50216-B21` | 7.2 The "Zero Physical Drives" Advisory Warning Configurator Behavior: When zero physical SSDs are in the order, CLIC/OC | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PCIE_ACCELERATOR` | `P74694-B21` | `—` | 8.1 The OCPA Cable Kit ( P74694-B21 ) Trap The Phenomenon: When building a CTO server, OCA automatically populates P7469 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_ENVIRONMENT` | `S3U30C` | `S2L70C` | 10. Accelerator Technical Comparison: NVIDIA H200 NVL vs. NVIDIA L40S Architectural Attribute NVIDIA H200 NVL ( S3U30C ) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_ENVIRONMENT` | `P76706-B21` | `P75002-B21` | 11. End-to-End Bill of Materials (BOM) Comparison Matrix The table below reflects the final, verified, conflict-free Bil | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PCIE_ACCELERATOR` | `P76706-B21` | `P75002-B21` | Rule 81016813 Unbuildable Error Base chassis P76706-B21 ordered without a GPU Mode SKU. Add P75002-B21 (HPE DL380a Gen12 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_ENVIRONMENT` | `P74685-B21` | `P75002-B21` | Rule 81016845 Unbuildable Error Selecting P74685-B21 (2DW Captive Riser) requires P75002-B21 . Add P75002-B21 as a line  | 1x |
-| 📦 CHASSIS | `Alletra_Storage_System` | `PHYSICAL_ARCHITECTURE` | `581817-B21` | `—` | - **Rule:** If Virtual Rack `ZU715A` is configured, `581817-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `Alletra_Storage_System` | `PHYSICAL_ARCHITECTURE` | `S1R06A` | `R9F76A` | - **Rule:** If `S1R06A` is present, `R9F76A` count must equal the calculated formula. | 1x |
-| 📦 CHASSIS | `Alletra_Storage_System` | `PHYSICAL_ARCHITECTURE` | `R7C82A` | `S2S64A` | - **Hard Block:** Every host-facing HBA (`R7C82A` 10/25GbE or `S2S64A` 32Gb FC) mandates a **Minimum of 2 and Maximum of | 1x |
-| 📦 CHASSIS | `Alletra_Storage_System` | `PHYSICAL_ARCHITECTURE` | `R7C82A` | `Q2P65A` | - **Rule:** If `R7C82A` is present, `Q2P65A` must be between 2 and 4 per HBA. | 1x |
-| 📦 CHASSIS | `Alletra_Storage_System` | `SOFTWARE_LICENSING` | `S3Q02A` | `—` | - **Term & Capacity Lock:** ArcusOS LTUs (`S3Q02A`) and Software SaaS (`S3Q02AAE`) must match in term (3, 4, or 5 years) | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `MEMORY_CHANNEL` | `P50311-B21` | `P50312-B21` | - **Rule:** Standalone BTO memory `P50311-B21` (32GB) or `P50312-B21` (64GB) inside CTO chassis `P71964-B21` triggers Ru | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P71964-B21` | `P50311-F21` | - **Rule:** If `P71964-B21` is present, `P50311-F21` is mandatory for factory integration. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P71991-B21` | `P71989-B21` | - Selecting Slot 1 FHFL Riser (`P71991-B21`) strictly requires Slot 2 FHFL Riser (`P71989-B21`). | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P71991-B21` | `P71989-B21` | - **Rule:** If `P71991-B21` is present, `P71989-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `STORAGE_TOPOLOGY` | `P71985-B21` | `P71981-B21` | - Selecting 4EDSFF Drive Cage (`P71985-B21`) or 6EDSFF Cable Kit (`P71981-B21`) strictly mandates Quantity: 4 of 2U Perf | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P71985-B21` | `P72581-B21` | - **Rule:** If `P71985-B21` is present, `P72581-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P48183-B21` | `P81160-B21` | - Selecting NS204i-u boot device (`P48183-B21` / `P81160-B21`) strictly mandates NS204i-u Enablement Kit (`P71992-B21`). | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P48183-B21` | `P71992-B21` | - **Rule:** If `P48183-B21` is present, `P71992-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P58335-B21` | `P72002-B21` | - Selecting MR408i-o storage controller (`P58335-B21`) strictly requires 4EDSFF controller cable kit (`P72002-B21`) and  | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `P58335-B21` | `P72002-B21` | - **Rule:** If `P58335-B21` is present, `P72002-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PCIE_ACCELERATOR` | `S2L70C` | `S6W30C` | - Double-wide GPUs (NVIDIA L40S `S2L70C` or RTX Pro 4500 `S6W30C`) strictly require 1U Heatsink Kit (`P72580-B21`), GPU  | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `S2L70C` | `P72580-B21` | - **Rule:** If `S2L70C` is present, `P72580-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `SUPPORT_SERVICES` | `P73015-B21` | `P73027-B21` | - **Extended Temperature Operation:** Standard operating envelope is 5°C-35°C (`P73015-B21`). Rugged edge operation up t | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `SUPPORT_SERVICES` | `HU4B3A3` | `HU4B3A3011M` | - **Care Pack Split:** Parent contract `HU4B3A3` ($0.00 wrapper line at Qty: 1) and child hardware service `HU4B3A3011M` | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PHYSICAL_ARCHITECTURE` | `HU4B3A3` | `HU4B3A3011M` | - **Rule:** If `HU4B3A3` is present, `HU4B3A3011M` is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `MEMORY_CHANNEL` | `P50311-B21` | `P50312-B21` | - **DDR5-4800 vs. DDR5-5600 Gating:** QuickSpecs and platform memory controllers enforce that DDR5-4800 memory kits (`P5 | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `MEMORY_CHANNEL` | `P64707-B21` | `—` | - **Rule:** If 5th Gen Intel Xeon is present, `P64707-B21` is mandatory. Mixing DDR5-4800 and DDR5-5600 memory in the sa | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `MEMORY_CHANNEL` | `P64707-B21` | `P52534-B21` | - **CTO FIO Translation:** Standalone BTO memory `P64707-B21` inside CTO chassis (`P52534-B21`) requires translation to  | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_ARCHITECTURE` | `P48918-B21` | `P01366-B21` | - **Resolution of Title Ambiguity:** `P48918-B21` is titled "HPE ProLiant DL360 Gen11 Storage Controller Enablement Cabl | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_ARCHITECTURE` | `P47777-B21` | `P58335-B21` | - **Rule:** If `P47777-B21` or `P58335-B21` is present with battery `P01366-B21`, `P48918-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `STORAGE_TOPOLOGY` | `P48835-B21` | `P55806-B21` | - **Direct-Attach Drive Capacity Limits (INV-26):** 8-port controllers directly attach up to 8 drives. Configurations ex | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `POWER_ENVIRONMENT` | `P44712-B21` | `P03178-B21` | - **EU ErP Lot 9 Gate (INV-30):** High TDP configurations default to EU Lot 9 compliance, mandating 96% Titanium power s | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `POWER_ENVIRONMENT` | `P38997-B21` | `P38995-B21` | - **Regulatory Bypass for Non-EU:** When ordering 94% Platinum power supplies (`P38997-B21` 1600W / `P38995-B21` 800W) f | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `POWER_ENVIRONMENT` | `P38997-B21` | `P35876-B21` | - **Rule:** If Platinum PSU `P38997-B21` is configured, `P35876-B21` is mandatory for non-EU compliance. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `THERMAL_COOLING` | `P48818-B21` | `—` | - **Heatsink Redline:** High-Performance Heatsink `P48818-B21` is mandated for any CPU with TDP > 150W. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `THERMAL_COOLING` | `P48820-B21` | `—` | - **Fan Kit Redline:** High-Performance Fan Kit `P48820-B21` is mandated when: | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_ARCHITECTURE` | `P48820-B21` | `—` | - **Rule:** If CPU TDP > 205W, `P48820-B21` is mandatory. | 1x |
-| 🌐 UNIVERSAL | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P64707-B21` | `P73300-B21` | SECTION 2: GEN11 VS. GEN12 COMPONENT ARCHITECTURE CONSTRAINTS Mixing components across server generations is a primary c | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P73282-B21` | `P73283-B21` | SECTION 3: SYSTEM COGNIZANCE & BASELINE CONFIGURATIONS HPE ProLiant Compute DL380 Gen12 servers are offered in five dist | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_TOPOLOGY` | `P49145-B21` | `P74792-B21` | 2.0 GHz 350W $58,094.00 Special Order (45+ Days) Heatsink Thermal Selection Boundaries Standard Heatsink Kit ( P49145-B2 | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `PHYSICAL_ARCHITECTURE` | `P69726-B21` | `—` | -B21 suffix, such as P69726-B21 ) are physically blocked . You must select the exact factory-integrated FIO (Factory-Int | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P38995-B21` | `P03178-B21` | SECTION 6: POWER REDUNDANCY & LOT 9 REGULATORY BYPASSES HPE ProLiant Gen12 servers support standard hot-plug Flex Slot p | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `873763-B21` | `P47777-B21` | SECTION 7: STORAGE CABLE TOPOLOGY, RAID CONSTRAINTS, & OS BOOT The Core Conflict: 873763-B21 (No Drive) vs. MR416i-p Con | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_SERVICES` | `HU4B2A3` | `HU4B2A30C4V` | SECTION 8: SUPPORT SERVICES & CONTRACT REALIGNMENT To ensure partner portal pre-checks pass cleanly and local support SL | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_TOPOLOGY` | `S1A05A` | `512485-B21` | SECTION 9: BASELINE CLOUD MANAGEMENT LICENSING MANDATE The HPE ProLiant Gen12 platform enforces a software-defined valid | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_ENVIRONMENT` | `P49145-B21` | `P74792-B21` | -B21 suffix) are not populated. [ ] 8-Channel Symmetrical Interleaving: Registered memory modules are populated in balan | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `POWER_ENVIRONMENT` | `P67252-B21` | `P44712-B21` | - **Resolution of Catalog Table Ambiguity:** Raw catalog table notes stating "max 2" apply only to single electrical sub | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `PHYSICAL_ARCHITECTURE` | `P80445-B21` | `—` | - `P80445-B21` (HPE DL580 Gen12 4P Mezzanine Enablement Kit) is required for 4-socket configurations to link CPU mezzani | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `PHYSICAL_ARCHITECTURE` | `P80445-B21` | `P80383-B21` | - **Rule:** If `P80445-B21` is present, `P80383-B21` is blocked. | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `MEMORY_CHANNEL` | `P69728-F21` | `P69729-F21` | - **Rule:** RDIMM mixing across capacities is prohibited (`P69728-F21` 64GB, `P69729-F21` 96GB, `P69730-F21` 128GB, `P73 | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `POWER_ENVIRONMENT` | `P80426-B21` | `—` | - `P80426-B21` (DL580 Gen12 MR416 Controller Data Retention Power Cable Kit) is mandatory when configuring MR416i contro | 1x |
-| 📦 CHASSIS | `DL580_Gen12` | `PHYSICAL_ARCHITECTURE` | `P47777-B21` | `P80426-B21` | - **Rule:** If `P47777-B21` is present on DL580 Gen12, `P80426-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `MSL3040_Tape` | `STORAGE_TOPOLOGY` | `R6Q75A` | `Q6Q68A` | - **Rule:** If SAS tape drive `R6Q75A` or `Q6Q68A` is selected, host SAS cabling is mandatory. | 1x |
-| 📦 CHASSIS | `MSL3040_Tape` | `POWER_ENVIRONMENT` | `Q6Q64A` | `Q2R41A` | - **Power Supply Kit `Q6Q64A`:** Base module `Q2R41A` includes 1 standard power supply. Redundant operation or configura | 1x |
-| 📦 CHASSIS | `MSL3040_Tape` | `POWER_ENVIRONMENT` | `Q6Q64A` | `—` | - **Rule:** If redundant power is requested or drive count > 2, `Q6Q64A` is mandatory. | 1x |
-| 📦 CHASSIS | `SY100Gb_F32_Module` | `THERMAL_COOLING` | `P51174-B21` | `P51175-B21` | - **High-Capacity Fan Mandate:** Installing Synergy Gen11 or Gen12 compute modules inside Synergy Frame `P51174-B21` str | 1x |
-| 📦 CHASSIS | `SY100Gb_F32_Module` | `PHYSICAL_ARCHITECTURE` | `P51174-B21` | `P51175-B21` | - **Rule:** If `P51174-B21` is present with Gen11/Gen12 compute, `P51175-B21` at Quantity: 10 is mandatory. | 1x |
-| 📦 CHASSIS | `SY100Gb_F32_Module` | `POWER_ENVIRONMENT` | `P44712-B21` | `—` | - Mandatory when ordering 1800W-2200W Flex Slot Titanium Hot Plug Power Supplies (`P44712-B21`). | 1x |
-| 📦 CHASSIS | `SY100Gb_F32_Module` | `PHYSICAL_ARCHITECTURE` | `P44712-B21` | `P44074-B21` | - **Rule:** If `P44712-B21` is present, `P44074-B21` is mandatory. | 1x |
-| 📦 CHASSIS | `SY100Gb_F32_Module` | `PHYSICAL_ARCHITECTURE` | `867796-B21` | `—` | - **Rule:** If VC 100Gb F32 Module `867796-B21` is placed in Bay 1/4, compute nodes must populate Mezzanine 1 with a com | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*
