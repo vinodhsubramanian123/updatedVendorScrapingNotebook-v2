@@ -267,19 +267,56 @@ To maximize velocity and offload heavy validation without human friction:
 
 ---
 
-## 🧭 Sub-Skill Routing & Execution Directory
+## 🧭 Sub-Skill Routing & Execution Directory (7-Phase Architecture)
 
-| Execution Pathway | Specialized Skill | Primary Engine / Script |
-|---|---|---|
-| **Presales Intent Classification** | [`presales-query-router`](../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
-| **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/eval_boq.js` |
-| **Customer BOQ Evaluation** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` |
-| **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | `scripts/evaluators/verify_vendor_bom.js` |
-| **Catalog Pricing & Lifecycle Trends** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
-| **OCA Portal CDP Live Scraping** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
-| **CDP Hands-Free Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
-| **NotebookLM RAG Sync** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` |
-| **Gemini NotebookLM MCP Integration** | [`nlm-skill`](../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools |
+| Phase | Execution Pathway | Specialized Skill | Primary Engine / Script | When to Invoke |
+|:---|:---|:---|:---|:---|
+| **0** | **Scanned PDF / Image Intake** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` | Image files (.png, .jpg), scanned PDF quotes, portal screenshots |
+| **0** | **Multi-Node Tender Decomposition** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` | Tenders with >1 server, multi-sheet RFQs, 42U rack & power sizing |
+| **0** | **OCA Portal Live Scraper** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` | Live extraction of WebLogic OCA catalogs via CDP port 9222 |
+| **0** | **Hands-Free Portal Navigator** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` | Passing through Partner Portal SSO, search & menu navigation |
+| **1** | **Presales Intent Classification** | [`presales-query-router`](../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` | Classifying inbound queries into the 5 canonical tracks |
+| **1** | **Workload DNA & App Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` | Sizing for SAP HANA, VMware VCF, VDI, SQL, AI inference, HPC |
+| **1** | **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` | Unstructured core/RAM/storage capacity wishes -> 100% buildable BOM |
+| **1** | **Catalog Pricing & Trends** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` | Historical price trails, lifecycle status changes (OB, DS, 90, EOL) |
+| **2** | **Customer BOQ Evaluation** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` | Evaluating physical buildability across all 7 hardware dimensions |
+| **2** | **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | `scripts/lib/boq/vendor_bom_verifier.js` | Cross-verifying customer requirements vs partner portal quotes |
+| **3** | **Least-Delta Cascade Pruning** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/least_delta_combinator.js` | Pruning cascading additions caused by troublesome SKUs (Rank 1L/1M) |
+| **3** | **Deal Value Engineering** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | `scripts/lib/boq/deal_optimizer.js` | Evaluating post-buildability CapEx/OpEx savings (CPU, NIC, PSU) |
+| **4** | **NotebookLM RAG Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools | Fact-checking QuickSpecs PDFs & master catalogs via Cloud RAG |
+| **4** | **Knowledge Registry Delta Sync**| [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` | Bi-directional sync of verified KnowledgeDeltas across generations |
+| **5** | **Adversarial Chaos Red-Team** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` | 10 Enterprise failure mode sanity checks (mandatory pre-presentation) |
+| **5** | **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation checklist | Validating completeness, prices, badges, and structural soundness |
+| **6** | **Professional Excel Generator** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` | Standardized 7-column upload sheets & executive multi-sheet workbooks |
+| **6** | **Execution Trace & Gate Audit** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | `outputs/temp/execution_trace_*.json` | Capturing step-by-step trace timestamps, durations, and delta report |
+
+---
+
+## 📋 Stage-Level Checkpoint & Verification Matrix
+
+Every stage of the continuous learning lifecycle enforces explicit, deterministic pass/fail gates:
+
+| Stage | Name | Verification Checkpoint Gate | Pass Condition | Failure Recovery Action |
+|:---|:---|:---|:---|:---|
+| **1** | **Ingestion / CDP Scrape** | DOM Expansion & Cardinality Gate (`INV-20`, `INV-22`) | Hardware SKUs $\ge 30$ processor options for 2P servers; all `showmore_*` clicked | Re-run CDP scraper with full table expansion |
+| **2** | **Knowledge Sync & Diffs** | Price Trail & Schema Gate (`INV-1`, `INV-4`) | Single event per date; `generatedAt` & `schemaVersion: "1.0"` present | Regenerate registry with atomic serialization |
+| **3** | **BOQ Ingestion & Math** | 7-Aspect Physical Pre-Flight Gate | All 7 physical checkers pass; $O(1)$ indexed lookup clean | Identify aspect failure, trigger Conflict Graph |
+| **4** | **5-Tier Resolution** | Strategy Matrix & Buildability Gate (`INV-25`) | Rank 1 through 5 synthesized; unbuildable = 0 rank; FIO `#0D1` tagged | Run Least-Delta combinator (`INV-74`) or pivot Path B |
+| **5** | **RAG & Adversarial** | Strict SKU Citation & Chaos Gate | Cloud NLM cites exact SKU; 0 violations in adversarial sanity pass | Run adversarial fixer; escalate to human if ambiguous |
+| **6** | **HITL Closed-Loop** | Delta Deduplication & Scoped Sync (`INV-13`, `INV-24`) | KnowledgeDelta deduplicated; non-poisoned sources; customer isolated | Route to `quarantined_deltas.json` awaiting human sign-off |
+
+---
+
+## 🕵️ Agent Execution Trace & Delta Protocol
+
+When using the Antigravity Agent Harness to test customer queries and BOQs end-to-end:
+1. **Trace Initialization**: Assign a unique `run_id` (e.g., `RUN-20260913-113000`).
+2. **Step-by-Step Logging**: Capture input payload, resolved SKUs, execution duration, and checkpoint gate status for each step.
+3. **Artifact Generation**: Emit `outputs/temp/execution_trace_{timestamp}.json` conforming to `execution-trace-skill`.
+4. **Markdown Delta Presentation**: Present results using the standardized 3-part comparison:
+   - **Customer Request Summary**: Workload targets, requested SKUs, capacity goals, stated budget.
+   - **Engine Certified Build**: Selected Rank 1 topology, exact part numbers, quantities, list prices, and Dual-Brain badges.
+   - **Delta & Reconciliation Analysis**: Injected enablement kits, replaced obsolete/incompatible parts, and CapEx savings achieved.
 
 
 

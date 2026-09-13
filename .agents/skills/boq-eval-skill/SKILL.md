@@ -38,6 +38,7 @@ While the React Dashboard provides an exceptional visual interface for reviewing
 1. **Intake, Ingestion & CTO Normalization**:
    - Extracts base chassis and CTO multipliers (e.g. resolving a 5x server order into an atomic 1-unit profile).
    - Identifies and excludes non-BOM documentation tabs (Cover pages, T&Cs, Readmes) using `isNonBomSheet` (`INV-63`).
+   - **Strict Model Separation (`DL380a_Gen12` vs `DL380_Gen12`)**: `DL380a_Gen12` is a dedicated AI accelerator server supporting up to 8DW/16SW GPUs (`P75008-B21`/`P75002-B21` GPU Mode choices, `S3U30C` H200 GPUs, captive GPU risers). Quotes/BOQs specifying "DL380a" or GPU server SKUs MUST evaluate strictly against `outputs/ProLiant/Gen12/DL380a_Gen12` and dedicated NotebookLM notebook `DL380a` (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Never route to standard `DL380_Gen12`.
 2. **Deterministic 7-Aspect Physical Pre-Flight Math**:
    - Executes $O(1)$ indexed checks across: (1) Compute & Thermal TDP, (2) Memory Channel symmetry (1DPC/2DPC), (3) Storage Tri-Mode controllers & drive cages, (4) Networking & OCP slot constraints, (5) PCIe Riser card & slot capacity, (6) Power redundancy & -48VDC telco lug kits, (7) Support services & OS physical core multiplier licensing (`INV-28`).
 3. **Grounded Gemini NotebookLM Verification (Double Safety Net)**:
@@ -57,6 +58,11 @@ While the React Dashboard provides an exceptional visual interface for reviewing
        - When a troublesome SKU causes massive cascading additions (e.g. 8-port controller with 16 drives requiring SAS expander, cables, and fans), the Least-Delta Combinator (`least_delta_combinator.js`) substitutes a direct functional alternative (e.g. 16-port Tri-Mode controller `P55415-B21`) and prunes the entire cascading dependency tree, delivering 100% buildability with the fewest net mutations.
      - **The Zero-Rank Invariant**: An unbuildable configuration receives ZERO rank and is discarded. Only 100% certified buildable configurations enter the matrix.
      - Never cuts down customer requirements unless physically impossible, and never bundles unsolicited software or startup services (`INV-32`).
+     - **Lifecycle Status Checks & Obsolescence Risk Reasoning**:
+       - Checks every component SKU lifecycle status (`Active`, `90-Day Warning` [90], `Obsolete` [OB], `Discontinued` [DS], `EOL`).
+       - **The 90-Day Obsolescence Danger**: Enterprise server quotes take months from drafting to deal registration, budget approval, PO issuance, and factory manufacturing. If a component (e.g. an older 4th Gen processor or legacy PCIe card) has $\le 90$ days of support before discontinuation, selecting it creates critical deal risk: the part will likely become obsolete before the order is fulfilled.
+       - **Proactive Generational Progression**: The engine flags this risk and articulates clear reasoning in the solution narrative, synthesizing active current-generation equivalents (e.g. 5th Gen Emerald Rapids or 6th Gen Xeon 6) across the matrix ranks.
+       - **Dynamic Supply Issue Handling**: If runtime OCA validation signals a supply hold or allocation bottleneck on a specific processor or SKU, the agent logs the constraint into `catalog_deltas.json` and settles on the next closest buildable equivalent, cross-verifying with NotebookLM.
    - **Rank 2 (Standardized CTO / Balanced Performance)**: Balanced memory interleaving, factory accessories, high-performance fans.
    - **Rank 3 (High-IOPS & Storage Performance / Cost-Optimized Baseline)**: Cleaned baseline removing redundant zero-purpose parts or selecting certified equivalent tiers.
    - **Rank 4 (Maximum Density & 2N Reliability)**: Dual grid 2N power supplies, dual controllers, enterprise care.
@@ -126,8 +132,28 @@ When the user supplies a customer BOQ, spreadsheet, quote, or tender text and re
 4. **Autonomous End-to-End Delivery**:
    - Executes canonical pipeline (`eval_boq.js`, 7-aspect checkers, `gemini-notebook-mcp`).
    - Synthesizes 100% buildable 5-Tier Strategy solutions (Rank 1A/1B/1C through Rank 5; unbuildable = 0 rank).
+   - If cascading dependency bloat is detected, delegates to [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) to prune the cascade and generate Rank 1L/1M minimal-mutation alternatives (`INV-74`).
    - Emits complete line-by-line financial tables with total budgets and Dual-Brain verification badges.
    - Synchronizes scoped closed-loop feedback rules without user prompting.
+5. **Mandatory Adversarial Self-Validation (Zero-Compromise Quality Gate)**:
+   - Before presenting ANY BOQ evaluation output or corrected BOM to the customer, the agent MUST run [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) against known enterprise edge-case failure modes:
+     - Missing secondary CPU heatsink (`P48818-B21` / `P74792-B21`) when 2 processors are populated.
+     - Tri-Mode RAID controller direct-attach limits (mandating SAS expander `P48835-B21` for >8 drives).
+     - Diskless / No Local Drive configurations: Chassis ordered without drives mandates `873763-B21` (HPE ProLiant Compute DL380 No Drive Configuration FIO Kit) to satisfy CLIC Rule 81392308.
+     - GPU Auxiliary Power Cabling: Standard 2U servers mandate `P48816-B21` / `P76450-B21` (1 per GPU); DL380a Gen12 mandates `P74700-B21` (GPU 16-pin FIO Cable Kit, 1 kit per 2 GPUs) and 8DW FIO Configuration (`P75008-B21`).
+     - GPU NVLink Bridge Clearance: DL380a Gen12 10DW mode (`P75005-B21`) does NOT support NVLink bridges; H200 NVL (`S3U30C`) is strictly capped at 8 GPUs per node under 8DW mode. Front-bay GPUs do not occupy rear PCIe risers.
+     - Memory Population Hierarchy: Supported minimal populations (1, 2, 4, 6, 8, 16 DIMMs per socket) are valid in CLIC and pass evaluation with performance advisories; 8 DIMMs per socket achieves 100% full-channel interleaving bandwidth.
+     - ErP Lot 9 EU Ecodesign Titanium PSU requirements vs CE Mark Removal Kit (`P35876-B21`) injection.
+     - PCIe riser power cable kits (`P56073-B21`) when Slot 1 is populated.
+   - If ANY adversarial failure is detected, the agent MUST remediate it into the build before certifying Rank 1.
+6. **Strict RAG SKU Verification & Human Consultation on Uncertainty**:
+   - Every RAG citation from Cloud NLM or Local RAG MUST explicitly reference the verified target SKU.
+   - If RAG output is inconclusive, if contradictory rules exist between QuickSpecs and portal catalogs, or if a required SKU appears absent from recent scrapes:
+     - **NEVER guess or hallucinate.**
+     - **Prompt the Human Operator immediately**: State the exact ambiguity, present the available candidate SKUs, and request human validation.
+     - **Closed-Loop Persistence**: Feed the human decision directly into `scripts/lib/feedback/feedback_loop.js` so the resolution is saved as a verified `KnowledgeDelta` and confidence scores improve for future evaluations.
+7. **Deliverable Generation (Excel Workbooks)**:
+   - When the user requests exportable spreadsheet files, invoke [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) to emit standardized 7-column Partner Portal upload sheets (`INV-32`, `INV-37`) and professional multi-sheet executive evaluation workbooks.
 
 ---
 

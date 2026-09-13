@@ -63,14 +63,68 @@ graph TD
 ## 💻 CLI Reconciliation Tools & Commands
 
 ```bash
-# Cross-verify vendor BOM against evaluated Rank 1 baseline
+# Reconcile two BOMs (customer request vs vendor quote) — primary entry point
+node scripts/lib/boq/vendor_bom_verifier.js --customer customer_boq.xlsx --vendor vendor_quote.xlsx --catalog outputs/ProLiant/Gen12/DL380_Gen12
+
+# Programmatic reconciliation via Node.js
 node -e "
-  const { verifyVendorBOM } = require('./scripts/lib/boq/bom_verifier.js');
+  const { verifyVendorBOM } = require('./scripts/lib/boq/vendor_bom_verifier.js');
   const quote = JSON.parse(require('fs').readFileSync('quote_items.json', 'utf-8'));
   const baseline = JSON.parse(require('fs').readFileSync('rank1_items.json', 'utf-8'));
-  console.log(verifyVendorBOM(quote, baseline, 'outputs/ProLiant/Gen12/DL380_Gen12'));
+  console.log(JSON.stringify(verifyVendorBOM(quote, baseline, 'outputs/ProLiant/Gen12/DL380_Gen12'), null, 2));
 "
 
-# Generate standardized 7-column Partner Upload workbook
+# Generate standardized 7-column Partner Upload workbook from reconciliation output
 node scripts/catalogs/generate_tender_partner_bom.js
 ```
+
+> **Note**: The actual verifier module is [`vendor_bom_verifier.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq/vendor_bom_verifier.js) located in `scripts/lib/boq/`, not `scripts/evaluators/verify_vendor_bom.js`.
+
+---
+
+## 📊 Reconciliation Output Schema
+
+The verifier produces a structured JSON with these 4 audit dimensions:
+
+```json
+{
+  "reconciliation": {
+    "directMatches": [
+      { "sku": "P73289-B21", "description": "Xeon Platinum 8580", "customerQty": 2, "vendorQty": 2, "status": "MATCH" }
+    ],
+    "missingItems": [
+      { "sku": "P10115-B21", "description": "25GbE OCP3 NIC", "customerQty": 1, "risk": "CRITICAL — primary network adapter omitted" }
+    ],
+    "unsolicitedExtras": [
+      { "sku": "HA114A1", "description": "Installation and Startup Service", "vendorQty": 1, "unitPrice": 1500.00, "capExImpact": 1500.00, "flag": "UNSOLICITED_EXTRA_COST" }
+    ],
+    "substitutions": [
+      { "customerSku": "P73289-B21", "vendorSku": "P73299-B21", "type": "SUPPLY_CHAIN", "rationale": "Xeon 8580 → Gold 6548Y downgrade without customer consent" }
+    ],
+    "summary": {
+      "totalDirectMatches": 12,
+      "totalMissing": 1,
+      "totalExtras": 2,
+      "totalSubstitutions": 1,
+      "customerCapEx": 45230.00,
+      "vendorCapEx": 47890.00,
+      "netCapExDelta": 2660.00,
+      "savingsFromStrippingExtras": 2150.00
+    }
+  }
+}
+```
+
+---
+
+## 🔗 Execution Trace Integration
+
+When BOM reconciliation runs through the agent harness, it records these steps in the execution trace (per `execution-trace-skill`):
+
+| Step | Name | Verification Gates |
+|------|------|-------------------|
+| 1 | Dual Document Ingestion | ✅ Both BOMs loaded · ✅ ≥5 items each · ✅ SKU format valid |
+| 2 | Line-by-Line SKU Alignment | ✅ All 4 dimensions populated |
+| 3 | Financial & Compliance Audit | ✅ Prices cross-referenced · ✅ FIO tags checked · ✅ Extras flagged |
+| 4 | Report Assembly | ✅ Net CapEx delta calculated · ✅ 7-column schema compliance |
+

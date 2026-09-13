@@ -74,13 +74,19 @@ node scripts/lib/sync/knowledge_sync.js --json
 
 | Product Identifier | Product Family | Generation | Target Cloud Notebook ID | Notebook Title |
 | :--- | :--- | :--- | :--- | :--- |
-| `DL380_Gen12_SFF` | ProLiant | Gen12 | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Dl 380 Spec Gen 12* |
+| `DL380_Gen12` / `DL380_Gen12_SFF` | ProLiant | Gen12 | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Dl 380 Spec Gen 12* |
 | `DL380_Gen11` | ProLiant | Gen11 | `d37fa851-90cb-45b7-a8e1-78488a0bc6e6` | *DL380 Gen 11* |
+| `DL380a_Gen12` | ProLiant | Gen12 | `b233ec88-4682-4164-a801-3ee6ca649dc1` | *DL380a* (Dedicated AI GPU Server) |
+| `DL145_Gen11` | ProLiant | Gen11 | `7a48061a-331a-429b-8477-7e0473491714` | *Dl145* (Edge Compute) |
+| `DL580_Gen12` | ProLiant | Gen12 | `3f5344ce-da79-4f6d-a131-f303d1e43dc3` | *DL580 Gen 12* (4-Socket Mission Critical) |
+| `SY480_Gen12` / `SY100Gb_F32_Module` | Synergy | Gen12/Gen | `49a3c69e-115f-4332-9454-c5d4f2941327` | *Synergy 12000 Frame* |
 | `Alletra_Storage_System` | Alletra | Storage | `a67629ba-3434-42ab-b465-bd6d71852198` | *HPE Alletra Storage MP QuickSpecs* |
-| `SY100Gb_F32_Module` | Synergy | General | `49a3c69e-115f-4332-9454-c5d4f2941327` | *Synergy 12000 Frame* |
-| `MSL3040_Tape` | StoreEver | Tape | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
-| `GX5000_General_RACK` | Cray | General | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
+| `MSL3040_Tape` | StoreEver | Tape | `644020e5-42f9-4c4b-95cc-fcf82122685c` | *HPE StoreEver MSL3040 Tape Library* |
+| `GX5000_General_RACK` | Cray | General | `86c93203-6b76-439a-b7ab-33ad782e3178` | *GX5000 Supercomputing Rack* |
 | **Default Fallback** | Universal | All | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
+
+> [!NOTE]
+> **Strict Product Firewall (`INV-48` & `INV-72`)**: `DL380a_Gen12` is a distinct AI GPU architecture with its own dedicated notebook (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Inquiries, catalogs, or knowledge sync operations for "DL380a" or "DL 380a" MUST NEVER route to standard `DL380_Gen12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
 
 ---
 
@@ -111,6 +117,21 @@ Before certifying any product line, agents MUST verify that the local master 22-
 
 ---
 
+## 7b. Google Sheets & Drive Source Synchronization: Full Replace vs. Delta Append
+
+When synchronizing catalog intelligence with Google Drive / Google Sheets linked to NotebookLM:
+
+1. **Certified Master Catalog Tab (`All SKUs`) — FULL REPLACE IN-PLACE**:
+   - **Protocol**: The entire sheet/tab must be overwritten with the latest audited `{chassisName}_Master_Catalog.csv`.
+   - **Why Full Replace**: NotebookLM creates semantic embeddings across table rows. If rows are appended repeatedly across scrapes, duplicate SKUs with contradictory prices, obsolete statuses, or mismatched options accumulate. This degrades RAG precision, causing NotebookLM to retrieve multiple colliding prices or cite retired parts. Overwriting ensures each SKU has exactly ONE canonical, verified ground-truth record.
+   - **Mechanism**: Use Drive sync / Google Sheets API to update the sheet in-place without altering the file URL or Drive File ID. Then trigger `source_sync_drive` or `nlm source sync` to refresh NotebookLM's index.
+
+2. **Audit Trail & Delta Ledger (`Change Log` / `Price Trails` / `Knowledge Deltas`) — DELTA APPEND**:
+   - **Protocol**: Timestamped events (`BASELINE`, `PRICE_CHANGED`, `ATTRIBUTE_CHANGED`, `DISCONTINUED`, `RULE_LEARNED`) must be appended chronologically.
+   - **Why Delta Append**: Historical drift tracking, pricing trend lines, and lifecycle transitions (`Active` $\rightarrow$ `90-Day Warning` $\rightarrow$ `Obsolete`) require an immutable chronological log. Appending with composite date deduplication (`INV-1` & `INV-13`) preserves full auditability for human architects and presales engineers.
+
+---
+
 ## 8. Continuous Lifecycle Milestone Auto-Sync (`INV-40`)
 
 The sync engine (`scripts/lib/sync/post_flow_sync.js`) automatically synchronizes verified learnings between the local rule engine and Gemini NotebookLM without requiring human intervention:
@@ -119,4 +140,61 @@ The sync engine (`scripts/lib/sync/post_flow_sync.js`) automatically synchronize
 2. **BOQ Evaluation Completion**: Emits structured `KnowledgeDelta` records into `catalog_deltas.json` and updates `master_knowledge_registry.json`.
 3. **Partner Quote Reconciliation (`/api/verify-vendor-bom`)**: Automatically triggers `triggerPostFlowSync` when vendor BOM differences or new CLIC rules are discovered.
 4. **HITL Feedback Submission (`/api/feedback-submit`)**: Re-synchronizes verified engineer approvals to cloud sources.
+
+---
+
+## 9. Global vs. Product-Specific Learning Synchronization Architecture (`INV-83`, `INV-85`, `INV-86`)
+
+To prevent cross-product knowledge contamination while ensuring universal lessons benefit all systems, the synchronization architecture strictly enforces dual-track scoping:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                        DUAL-TRACK KNOWLEDGE & LEARNING SYNCHRONIZATION ARCHITECTURE                     │
+├──────────────────────────────────────────────────┬─────────────────────────────────────────────────────┤
+│ 🌐 TRACK A: GLOBAL / UNIVERSAL LEARNINGS         │ 🎯 TRACK B: PRODUCT-GEN SPECIFIC LEARNINGS          │
+├──────────────────────────────────────────────────┼─────────────────────────────────────────────────────┤
+│ 1. Storage Location:                             │ 1. Storage Location:                                │
+│    - outputs/history/master_knowledge_registry.json│    - outputs/{Family}/{Gen}/{Model}/catalog_deltas.json│
+│    - outputs/history/running_knowledge_charter.md │    - outputs/{Family}/{Gen}/{Model}/notebook_sync_      │
+│    - outputs/history/master_universal_knowledge_ │      payload_{chassis}.md                           │
+│      charter.md                                  │                                                     │
+│                                                  │                                                     │
+│ 2. Cloud Destination:                            │ 2. Cloud Destination:                               │
+│    - Shared Google Doc (ID: 1TNdR_1A-IH7UQo8g...)│    - Dedicated Google Sheet per product generation  │
+│    - Mounted as runningKnowledgeDocId across ALL │      (driveSheetId in scripts/config/notebooks.json)│
+│      10 product notebooks in NotebookLM          │    - Dedicated Notebook ID per product generation    │
+│                                                  │      (e.g., DL380a: b233ec88-4682-4164...)          │
+│                                                  │                                                     │
+│ 3. Update Mechanism:                             │ 3. Update Mechanism:                                │
+│    - Non-destructive deduplication (INV-13)      │    - Master Catalog Tab ('All SKUs'): FULL REPLACE  │
+│    - Incremental append of new cross-cutting     │      IN PLACE (INV-83) to prevent embedding clashes │
+│      rules via running_knowledge_sync.js         │    - Change Log ('Price Trails' / 'Deltas'):        │
+│                                                  │      DELTA APPEND (INV-1, INV-69) for audit trail    │
+│                                                  │                                                     │
+│ 4. Scope Taxonomies:                             │ 4. Scope Taxonomies:                                │
+│    - UNIVERSAL_VENDOR (e.g. TAA/GTA, -48VDC lugs,│    - CHASSIS_SPECIFIC (e.g. DL380a 10DW captive  │
+│      FIO container rules INV-25)                 │      riser, DL380 drive-less FIO kit 873763-B21)    │
+│    - Process Architecture Design (INV-85, INV-86)│    - FAMILY_GEN (e.g. ProLiant Gen12 DDR5-6400)    │
+└──────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
+```
+
+### Verification & Audit Commands:
+```bash
+# 1. Rebuild and synchronize all registered catalogs and master Excel workbooks
+node scripts/catalogs/sync_all_registered_catalogs.js
+
+# 2. Compile, deduplicate, and generate master running knowledge charters
+node scripts/services/running_knowledge_sync.js
+
+# 3. Audit post-flow sync and inspect knowledge drift across all 10 product generations
+node -e "
+const { triggerPostFlowSync } = require('./scripts/lib/sync/post_flow_sync.js');
+const products = ['DL380_Gen12', 'DL380_Gen11', 'DL380a_Gen12', 'DL145_Gen11', 'DL580_Gen12', 'SY480_Gen12', 'MSL3040_Tape', 'GX5000_General_RACK', 'SY100Gb_F32_Module', 'Alletra_Storage_System'];
+for (const p of products) {
+  const res = triggerPostFlowSync(p, 'AUDIT');
+  console.log(p, 'Drift:', res.driftStatus, 'Unsynced:', res.unSyncedDeltasCount);
+}
+"
+```
+
 

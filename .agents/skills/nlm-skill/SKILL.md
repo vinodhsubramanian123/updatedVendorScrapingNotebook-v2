@@ -940,3 +940,33 @@ For detailed information, see:
 - **[references/troubleshooting.md](references/troubleshooting.md)**: Detailed error handling
 - **[references/workflows.md](references/workflows.md)**: End-to-end task sequences
 - **[references/remote-mcp.md](references/remote-mcp.md)**: Remote HTTP deployment boundaries, security, account isolation, and file-transfer limitations
+
+---
+
+## 🏢 HPE Presales RAG Quality Gate & HITL Escalation Protocol
+
+When using Gemini NotebookLM for HPE server architecture, QuickSpecs grounding, and BOQ validation, agents MUST enforce this strict quality gate:
+
+### 1. Strict SKU Quality Threshold
+- **Verification Criterion**: A RAG response can ONLY receive the `[🧠 Verified via Cloud NLM]` badge if it explicitly mentions the exact HPE part number (e.g., `P73282-B21`, `P48820-B21`) OR cites the exact physical rule/table from the official QuickSpecs source.
+- **Inconclusive Marking**: If the NLM answer is generic, discusses general architecture without validating the target SKU, or omits part numbers, it MUST be marked `[RAG_INCONCLUSIVE]` and never awarded a false verified badge.
+
+### 2. HITL Escalation on Doubt, Conflict, or Missing Scrapes
+- **Anti-Hallucination Mandate**: If an answer is inconclusive, if NotebookLM sources conflict with local catalog data, if the prompt question may have been phrased ambiguously, or if an option appears missing from recent portal scrapes:
+  - **The Agent MUST NOT GUESS or hallucinate.**
+  - **The Agent MUST escalate to the Human Operator**: State the exact doubt, present the conflicting evidence or candidates, and request human confirmation.
+- **Closed-Loop Feedback Learning**:
+  - Once the human confirms or clarifies the correct rule/SKU:
+  - Invoke `processPortalFeedback` (`scripts/lib/feedback/feedback_loop.js`) or `promoteQuarantinedDelta` to record the verified fact as a `KnowledgeDelta`.
+  - This delta is persisted into `catalog_deltas.json` and synced to the `master_knowledge_registry.json`, guaranteeing that confidence scores improve for future evaluations.
+
+### 3. 3-Tier Fallback Chain
+```
+[Tier 1: Cloud NotebookLM RAG] (QuickSpecs PDFs + Master Scraped Catalogs)
+        │
+        ▼ (on timeout / budget cap / unverified auth)
+[Tier 2: Local RAG Dual-Layer Search] (Local catalog JSONs + Master Knowledge Registry)
+        │
+        ▼ (on ambiguity / missing SKU / conflict)
+[Tier 3: Deterministic Rule Engine + HITL Escalation] (7 Physical Aspect Checkers + Human Confirmation)
+```

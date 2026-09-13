@@ -41,7 +41,38 @@ This skill guides the agent in querying, analyzing, and explaining catalog updat
 - Discontinued parts are archived into `outputs/{Family}/{Gen}/{Model}/history/discontinued_skus.json`.
 - The catalog diff engine (`diff_catalog.js`) reconciles hardware and services before declaring a SKU removed (`CATEGORY_MIGRATED`).
 
+### 3. Presales Lifecycle Reasoning & Deal Lead-Time Guardrails
+- **The 90-Day Obsolescence Trap**: Enterprise server deals take 60 to 180 days from RFP specification and approval to purchase order, fulfillment, and deployment.
+- **Proactive Generational Upgrade**: If an option carries a 90-Day Warning (`90`) or is from an older generation nearing discontinuation (e.g. 4th Gen Intel Sapphire Rapids transitioning to 5th Gen Emerald Rapids or Xeon 6), selecting the older part poses severe deal risk. The agent MUST:
+  1. Flag the impending obsolescence in the configuration analysis.
+  2. Synthesize an active current-generation equivalent (e.g. Xeon 6500 series / Gen 5) in a recommended rank.
+  3. Provide transparent comparative rationale (cores, frequency, wattage, list price delta).
+- **Runtime Supply Issues & Dynamic Validation**: If OCA runtime validation indicates supply holds or component constraints, record the dynamic constraint into `catalog_deltas.json` and provide the next buildable alternative tier.
+
+### 4. Dynamic WebLogic AJAX Panels & Deferred SKU Resolution (`INV-20`, `INV-74`)
+- **The Deferred DOM Phenomenon**:
+  - In WebLogic OCA portals, complex configuration choices (such as GPU accelerators, high-count drive cages, and captive risers) are NOT rendered in the initial page HTML.
+  - WebLogic relies on server-side event dispatchers: selecting a top-level parent radio button or checkbox (e.g. *"8DW Accelerator Choice"* or *"Show More Options"*) triggers an AJAX postback that dynamically renders dependent subchoice tables (e.g., `S3U30C` NVIDIA H200 NVL, `P74700-B21` GPU power cables, `P75008-B21` 8DW enablement kit, and `P74714-B21` switchboards).
+- **SKU Regex vs. DOM Absence**:
+  - When an expected SKU fails to appear in a newly scraped catalog, verify whether it passed `isValidHpeSKU()`.
+  - For example, `S3U30C` matches `/^[A-Z0-9]{3,8}-[A-Z0-9]{3,4}$/` or `/^[A-Z0-9]{6}$/` and is a 100% valid HPE part number. Its absence from initial scrape logs is an extraction trigger issue (un-rendered AJAX panel), NOT a regex rejection.
+- **Remediation & Master Workbook Reconciliation**:
+  - When dynamic options are discovered via customer tenders, partner quotes, or QuickSpecs citations, the agent MUST:
+    1. Reconcile the SKU, description, category, and list price into the master 22-sheet Excel companion (`DL380a_Gen12_Master_Catalog.xlsx`) and master TSV.
+    2. Add the dynamic trigger pattern to `cdp.js` / `navigate_oca.js` to ensure subsequent headless scrapes fire the necessary parent choice triggers (`jQuery(el).prop('checked', true).trigger('change')`).
+    3. Update the target product generation's Google Sheet and Cloud NotebookLM RAG source.
+
 ---
+
+## 📊 Google Sheets & NotebookLM Update Architecture: Replace vs. Delta
+
+When synchronizing catalog data with Google Sheets for Gemini NotebookLM RAG ingestion:
+
+| Scenario | Recommended Strategy | Technical Rationale |
+| :--- | :--- | :--- |
+| **Certified Master Catalog** (`All SKUs` ground truth) | **REPLACE IN PLACE** (Full Overwrite) | NotebookLM indexes document embeddings semantically. Appending duplicate SKUs from past scrapes creates conflicting rows, confusing the RAG retriever with outdated prices, obsolete part numbers, or conflicting specifications. The master catalog tab must remain a single, authoritative source of truth. |
+| **Audit Trail & Change Log** (`Price Trails`, `catalog_deltas.json`) | **DELTA APPEND** (Timestamped Ledger) | Tracking pricing drift, lifecycle transitions (`Active` $\rightarrow$ `90` $\rightarrow$ `OB`), and newly learned rules requires an unbroken historical timeline. Appending timestamped records (with date-based deduplication per `INV-1` and `INV-13`) preserves complete audibility. |
+
 
 ## 🔄 Multi-Generation Component Mapping (Gen11 $\longleftrightarrow$ Gen12)
 

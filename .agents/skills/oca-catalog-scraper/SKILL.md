@@ -107,13 +107,17 @@ sequenceDiagram
 
 ## 6. WebLogic DOM Extraction & Lifecycle Intelligence Protocol (INV-20 to INV-22)
 
-1. **Sub-Choice Group Expansion (`INV-20`)**:
+1. **Sub-Choice Group Expansion & Dynamic AJAX Panel Triggers (`INV-20`)**:
    - `expandSections` in `cdp.js` automatically toggles `#show_extra_columns`, `#show_dates`, `#show_obsolete_date`, `#show_cost`, `#show_price` and checks all `input[id*="showmore"]` inputs, dispatching jQuery `change` events (`jQuery(i).prop('checked', true).trigger('change')`) to trigger full WebLogic client rendering of sub-choices (e.g., `AdditionalProcessorsChoice`).
-2. **Lifecycle Status Tag & Clean PID Separation (`INV-21`)**:
+   - **Dynamic AJAX Choice Radio Triggers**: Conditional sub-panels in WebLogic OCA (e.g. `GPU Accelerator` options like `S3U30C` NVIDIA H200 on DL380a, second CPU enablement, tri-mode controller modes) only render via AJAX after selecting an enabling Choice Option (e.g. `GPU Mode` `P75008-B21` 8DW / `P75002-B21` 4DW). Step 4 probes and triggers unselected choice radios to force the WebLogic client runtime to render all dependent sub-choice tables.
+   - **Accordion Header & Filter Reset**: Automatically expands all accordion containers (`.accordion_header`, `.ui-accordion-header`, `.section_header.collapsed`) and unchecks `#view_recommended_only` filter to expose all valid options.
+2. **DOM Text Extraction & `textContent` Fallback (`INV-21`)**:
    - WebLogic OCA DOM places status tags (`OB`, `DS`, `90`) inside `<td class="item_prod">` as `<span class="td_prod">OB</span>` alongside `<span class="_pid">P49631-B21</span>`.
+   - **`innerText` vs `textContent` DOM Specification Guard**: Standard browser DOM implementations return empty string `""` for `element.innerText` when an element or its parent is styled with `display: none` or inside an unselected tab. `dom_extract.js` uses `(pidSpan.innerText || pidSpan.textContent || '').trim()` and cell fallback to ensure SKUs inside collapsed containers are fully extracted.
    - `dom_extract.js` and `build_catalog.js` extract both clean SKUs and separate lifecycle statuses (`Obsolete (OB)`, `Direct Ship (DS)`, `EOL Warning (90-Day)`, `Active`), start effective dates, and discontinued/obsolete dates into catalog JSON and Excel columns.
-3. **Category Cardinality Assertion (`INV-22`)**:
+3. **Category Cardinality Assertion & AI Server Archetypes (`INV-22`)**:
    - Staging audits (`verify_excel_tally.js`, `test_pipeline_evals.js`) enforce category cardinality thresholds for flagship dual-socket systems (e.g. DL380 requires >= 40 processor SKUs) to fail hard if an incomplete DOM expansion is encountered.
+   - **AI Accelerator Server Archetype Gate**: For specialized GPU servers (`DL380a`), staging audits strictly assert that `Graphics & GPU` / `GPU Accelerators` category exists with $\ge 1$ hardware SKU, ensuring dynamic GPU sub-panels are never bypassed during extraction.
 
 ---
 
