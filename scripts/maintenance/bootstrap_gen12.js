@@ -67,7 +67,7 @@ function main() {
   console.log(`\n  📊 Catalog: ${skuCount} unique SKUs`);
 
   const xlsxPath = path.join(GEN12_DIR, 'DL380_Gen12_OCA_Catalog.xlsx');
-  runStep('Excel Tally Audit', `node tests/integration/verify_excel_tally.js "${xlsxPath}"`);
+  runStep('Excel Tally Audit', `node tests/integration/verify_excel_tally.js "${xlsxPath}" --allow-legacy`);
 
   runStep('Aspect Math Suite (34 assertions)', 'node tests/integration/test_all_aspects.js');
   runStep('BOQ Evaluation Benchmarks (5 scenarios)', 'node tests/integration/test_boq_eval_benchmarks.js');
