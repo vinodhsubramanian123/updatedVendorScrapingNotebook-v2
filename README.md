@@ -38,6 +38,9 @@ Before reading code or executing commands, **query the semantic graph via `/grap
 - **[GEMINI.md](GEMINI.md)**: Guidelines for Gemini LLM prompting, MCP context window management, API rate limit resilience, and NotebookLM RAG fallback.
 - **[.agents/DATA_DICTIONARY.md](.agents/DATA_DICTIONARY.md)**: Canonical schema definitions for catalog JSONs, evaluation results, and telemetry ledgers.
 
+### Cross-Machine Migration (Agentic Restoration)
+If the human user provides you with an `antigravity_migration_bundle.zip`, you must autonomously restore their environment. Read the `ANTIGRAVITY_RESTORE_INSTRUCTIONS.md` inside the bundle and restore the `.env`, Google ADC (`gcloud`), global MCP config (`gemini_config`), and live brain state (`history`). Ensure `npx playwright install` and `npm install -g graphify` are executed if dependencies are missing.
+
 ## 🚀 Quick Start
 
 1. Start the real-time telemetry dashboard:
