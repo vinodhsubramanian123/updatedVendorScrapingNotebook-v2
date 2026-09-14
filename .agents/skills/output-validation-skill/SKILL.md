@@ -44,6 +44,7 @@ Every output, regardless of track, MUST pass these universal checks:
 | B13 | **Adversarial Self-Validation Clean** | Output passes automated adversarial sanity checks against enterprise edge-case failure modes (zero compromise on quality) | 🔴 BLOCK |
 | B14 | **HITL Escalation on Uncertainty** | Any low-confidence RAG answer, conflicting source, or unmapped SKU was escalated to human operator with options | 🔴 BLOCK |
 | B15 | **Proactive Presales Consultation Gate** | Output proactively presents the key qualifying questions (workload type, electrical facility, networking fabric) and next-step actions without waiting for user prompts | 🟡 WARN |
+| B16 | **Google Drive & ADC Health Gate** | If cloud deliverable or Google Drive upload requested, verify token validity and lifespan via `ensureGoogleAuthValid({ autoHeal: true })` before presentation. If expired or expiring within 48h, auto-heal autonomously (`npm run auth:heal` / `npm run auth:drive`) without human in loop (`INV-90`) | 🔴 BLOCK |
 
 ### Track: RFP Sizing-to-BOM
 

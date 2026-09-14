@@ -44,20 +44,22 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
 
   const isGen11 = items.some(it => {
     const d = (it.description || '').toLowerCase();
-    return d.includes('gen11') || cleanBaseSKU(it.sku) === 'P52560-B21';
+    if (d.includes('gen11')) return true;
+    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
+    return (catItem?.skuData?.Description || '').toLowerCase().includes('gen11');
   });
 
-  const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || 'P48820-B21';
+  const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';
-  const hasHighPerfFans = items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku));
+  const hasHighPerfFans = fanKitCount > 0 || (highPerfFanSku ? items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)) : false);
   const isHeatsinkItem = it => {
     const sku = cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
     if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
     if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
-    if (d.includes('heat sink') || d.includes('heatsink')) return true;
-    if (!isGen11 && (sku === 'P48818-B21' || sku === 'P48822-B21')) return true;
-    if (isGen11 && sku === 'P74792-B21') return true;
+    if (d.includes('heat sink') || d.includes('heatsink') || classifyComponentRole('', d) === 'Heatsink') return true;
+    const catItem = skuIndex.get(sku);
+    if (catItem && (catItem.skuData?.['Component Role'] === 'Heatsink' || (catItem.skuData?.Description || '').toLowerCase().includes('heatsink'))) return true;
     return false;
   };
   const hasHeatsinks = highPerfHeatsinkSku ? items.some(isHeatsinkItem) : true;
@@ -66,6 +68,13 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   // Use Math.floor to avoid fractional ratios (e.g. 3 kits for 2 servers = 1.5) giving a false pass
   const fanKitsPerServer = serverCount > 0 ? Math.floor(fanKitCount / serverCount) : fanKitCount;
   const fanKitExceedsMax = fanKitsPerServer > 1;
+
+  const isDl380aAccelerator = items.some(it => {
+    const d = (it.description || '').toLowerCase();
+    if (d.includes('dl380a')) return true;
+    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
+    return (catItem?.skuData?.Description || '').toLowerCase().includes('dl380a');
+  });
 
   return {
     cpuCount,
@@ -81,10 +90,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     // AMD EPYC 8004 single-socket edge detection (DL145 Gen11)
     isAmdEpyc8004: items.some(it => (it.description || '').toLowerCase().includes('epyc 8')),
     // DL380a 8DW GPU thermal envelope: high-TDP GPUs mandate high-perf cooling
-    isDl380aAccelerator: items.some(it => {
-      const d = (it.description || '').toLowerCase();
-      return d.includes('dl380a') || cleanBaseSKU(it.sku) === 'P76706-B21';
-    }),
+    isDl380aAccelerator,
     // High TDP (> 185W) mandates High-Performance Fan Kit + Heatsink
     needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)
   };

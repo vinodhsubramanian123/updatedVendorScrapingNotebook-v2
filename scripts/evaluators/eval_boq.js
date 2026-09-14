@@ -15,6 +15,8 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 const { parseAndConsolidateBOQDetailed, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
+const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../lib/boq/generate_boq_xlsx.js');
+const { validateSolutionWithEphemeralSource } = require('../lib/sync/nlm_solution_source_validator.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { autoDetectChassisDetailed } = require('../lib/catalog/catalog_discovery.js');
@@ -117,6 +119,8 @@ Examples:
   }
 
   const SYNC_RAG = args.includes('--sync-rag') || process.env.SYNC_RAG === '1';
+  const SHEET_VALIDATION = args.includes('--sheet-validation') || args.includes('--source-validation');
+  const UPLOAD_DRIVE = args.includes('--upload-drive') || process.env.AUTO_UPLOAD_DRIVE === 'true';
 
   return {
     inputFile,
@@ -124,6 +128,8 @@ Examples:
     OFFLINE_MODE,
     DEFER_RAG,
     SYNC_RAG,
+    SHEET_VALIDATION,
+    UPLOAD_DRIVE,
     explicitNotebookId,
     chassisDir,
     targetSheetName,
@@ -195,7 +201,8 @@ function ingestAndConsolidateBoq(options) {
     fs.mkdirSync(defaultReportsDir, { recursive: true });
   }
 
-  let outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${inputBase}.md`);
+  const fileSuffix = targetSheetName ? `${inputBase}_${targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
+  let outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${fileSuffix}.md`);
 
   if (simulatePortalError) {
     const feedbackDir = explicitOutputDir || chassisDir;
@@ -363,6 +370,7 @@ async function executeGroundedRagValidation(ctx) {
     timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10)
   });
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
+  const ragDurationFormatted = ragResult.timeTaken || `${Math.floor(stage3RAGMs / 60000)}m ${Math.floor((stage3RAGMs % 60000) / 1000)}s (${stage3RAGMs}ms)`;
 
   evalResults.status = 'LOCAL_COMPLETE';
   evalResults.cloudGroundingStatus = ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : ((ragResult.source || '').includes('LOCAL') ? 'LOCAL_FALLBACK' : 'CLOUD_FAILED');
@@ -375,8 +383,14 @@ async function executeGroundedRagValidation(ctx) {
     groundingTier: ragResult.groundingTier || (ragResult.isCloudGrounded ? 'TIER_1_LIVE_CLOUD_GROUNDED' : 'TIER_2_UNCITED_ADVISORY'),
     isFallback: (ragResult.source || '').includes('FALLBACK') || (ragResult.source || '').includes('LOCAL'),
     isCloudGrounded: Boolean(ragResult.isCloudGrounded && (ragResult.citations || []).length > 0 && ragResult.groundingVerification !== 'REJECTED_FORBIDDEN_SOURCE'),
-    cached: ragResult.cached || false
+    cached: ragResult.cached || false,
+    latencyMs: ragResult.latencyMs || stage3RAGMs,
+    timeTaken: ragDurationFormatted
   };
+
+  if (!JSON_MODE) {
+    console.log(`⏱️ NotebookLM Synthesis Duration: ${ragDurationFormatted} (Source: ${ragResult.source})`);
+  }
 
   if (ragResult.warning) {
     evalResults.warnings.push(ragResult.warning);
@@ -432,7 +446,8 @@ async function executeGroundedRagValidation(ctx) {
 
   let ragAnswer = `### Pre-Flight Grounded Physical Validation Matrix (${ragResult.source})
 
-> ℹ️ **Knowledge Source**: \`${ragResult.source}\` ${ragResult.sourcesUsed && ragResult.sourcesUsed.length > 0 ? `(Active Cloud Sources: ${ragResult.sourcesUsed.join(', ')})` : ''}
+> ℹ️ **Knowledge Source**: \`${ragResult.source}\` ${ragResult.sourcesUsed && ragResult.sourcesUsed.length > 0 ? `(Active Cloud Sources: ${ragResult.sourcesUsed.join(', ')})` : ''}  
+> ⏱️ **Synthesis Time Taken**: \`${ragDurationFormatted}\`
 
 ${ragResult.answer}
 
@@ -630,7 +645,7 @@ function generateMarkdownReport(ctx) {
   return reportContent;
 }
 
-function serializeAndExportResults(ctx) {
+async function serializeAndExportResults(ctx) {
   const {
     outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
     graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
@@ -643,6 +658,26 @@ function serializeAndExportResults(ctx) {
 
   const reportContent = generateMarkdownReport(ctx);
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
+
+  // Multi-Rank Solution Deliverable Export (INV-32, User Specification)
+  const inputBase = path.basename(inputFile, path.extname(inputFile));
+  const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
+  const multiRankWorkbookPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`);
+  const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
+
+  try {
+    generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, chassisPrefix || (graph.chassisInfo ? graph.chassisInfo.model : 'DL380_Gen12'), {
+      clusterSizing: evalResults.clusterSizing
+    });
+    generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
+      clusterSizing: evalResults.clusterSizing
+    });
+    evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
+    evalResults.multiRankCsvPath = multiRankCsvPath;
+  } catch (sheetErr) {
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', `Multi-Rank workbook export note: ${sheetErr.message}`);
+  }
 
   try {
     const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION');
@@ -855,6 +890,9 @@ function serializeAndExportResults(ctx) {
         budgetOptimization: budgetOpt,
         ragAnswer: ragAnswer || null,
         notebookPayload: queryPayload,
+        multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
+        multiRankCsvPath: evalResults.multiRankCsvPath || null,
+        ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
         durationMs: Date.now() - startTime
       }
     };
@@ -863,7 +901,67 @@ function serializeAndExportResults(ctx) {
   } else {
     console.log(`\n===============================================================`);
     console.log(`✅ EVALUATION COMPLETE! Report saved to: ${outputPath}`);
+    if (evalResults.multiRankWorkbookPath) {
+      console.log(`📊 Multi-Rank Solution Deliverable: file://${evalResults.multiRankWorkbookPath}`);
+      console.log(`📄 Token-Dense Solution CSV: file://${evalResults.multiRankCsvPath}`);
+      if (ctx.UPLOAD_DRIVE) {
+        try {
+          const { uploadFileToGoogleSheet, ensureGoogleAuthValid } = require('../services/google_sheets_service.js');
+          const authCheck = await ensureGoogleAuthValid({ autoHeal: true, verbose: false });
+          if (!authCheck.authenticated) {
+            console.log(`\n⚠️ Google Drive upload requires authentication.`);
+            console.log(`👉 Run "npm run auth:drive" or "npm run auth:check" to authenticate without human in the loop.\n`);
+          } else {
+            const driveResult = await uploadFileToGoogleSheet(evalResults.multiRankWorkbookPath);
+            console.log(`☁️ Google Drive Live Deliverable: ${driveResult.spreadsheetUrl}`);
+            console.log(`📄 Spreadsheet ID: ${driveResult.spreadsheetId}\n`);
+          }
+        } catch (err) {
+          console.log(`\n⚠️ Google Drive upload note: ${err.message}`);
+        }
+      }
+    }
     console.log(`===============================================================\n`);
+  }
+}
+
+function applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult) {
+  if (!evalResults.learnedDeltasCount || options.DEFER_RAG || !ragResult) return;
+  emitProgress(8, 10, 'Re-evaluating with Learned Deltas', 'in_progress', 'Recomputing physical aspect checks and strategy matrix with newly grounded RAG knowledge...');
+  try {
+    const recomputed = recomputeStrategyMatrixWithRag({
+      items: ingestCtx.items,
+      evalResults,
+      conflictGraph: graph,
+      targetBudgetUsd: options.targetBudgetUsd,
+      catalogData: ingestCtx.catalogData,
+      chassisDir: ingestCtx.chassisDir
+    }, ragResult, ingestCtx.chassisDir);
+    if (recomputed?.evalResults) Object.assign(evalResults, recomputed.evalResults);
+    if (recomputed?.conflictGraph) Object.assign(graph, recomputed.conflictGraph);
+  } catch (err) {
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', `Dynamic matrix recompute note: ${err.message}`);
+  }
+}
+
+// ============================================================
+// Stage 6: Ephemeral Solution Source Validation
+// ============================================================
+async function executeEphemeralSourceValidation(options, ingestCtx, evalResults) {
+  if (!options.SHEET_VALIDATION) return null;
+  emitProgress(9, 10, 'Ephemeral Source Validation', 'in_progress', 'Validating multi-rank solution sheets via NotebookLM ephemeral source...');
+  try {
+    return await validateSolutionWithEphemeralSource(evalResults, {
+      notebookId: ingestCtx.notebookId,
+      chassisName: ingestCtx.detectedChassisName || ingestCtx.chassisPrefix,
+      targetDir: ingestCtx.chassisDir,
+      isMock: options.OFFLINE_MODE
+    });
+  } catch (ephErr) {
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', `Ephemeral source validation note: ${ephErr.message}`);
+    return null;
   }
 }
 
@@ -881,7 +979,7 @@ async function main() {
     ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
   );
 
-  const { ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
+  const { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
     ...ingestCtx,
     evalResults,
     OFFLINE_MODE: options.OFFLINE_MODE,
@@ -890,12 +988,19 @@ async function main() {
     DEFER_RAG: options.DEFER_RAG
   });
 
+  applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult);
+
   const tMatrixStart = Date.now();
   emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
   const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData);
   const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
 
-  serializeAndExportResults({
+  const ephemeralSourceResult = await executeEphemeralSourceValidation(options, ingestCtx, evalResults);
+  if (ephemeralSourceResult) {
+    evalResults.ephemeralSourceValidation = ephemeralSourceResult;
+  }
+
+  await serializeAndExportResults({
     ...options,
     ...ingestCtx,
     evalResults,

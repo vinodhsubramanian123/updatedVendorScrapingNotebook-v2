@@ -39,17 +39,18 @@ function parseSynergyMezzanine(it, desc, sku) {
   return { it, desc, sku, mezzSlot, type };
 }
 
-const CPU1_OCP_CABLE_SKUS = new Set(['P51911-B21']);
-const CPU2_OCP_CABLE_SKUS = new Set(['P48830-B21']);
-const FC_TRANSCEIVER_32GB_SKUS = new Set(['AJ718A']);
-
-function tallyOcpAndCables(tally, it, desc, sku, qty, role) {
+function tallyOcpAndCables(tally, it, desc, sku, qty, role, mandatorySkus = {}) {
   // CPU/OCP Enablement Cables
-  if (CPU1_OCP_CABLE_SKUS.has(sku) || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('pri') || desc.includes('primary') || desc.includes('cpu1')))) {
+  const isCpu1Ocp = (mandatorySkus?.CPU1_OCP_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.CPU1_OCP_CABLE.sku)) ||
+                    (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('pri') || desc.includes('primary') || desc.includes('cpu1')));
+  if (isCpu1Ocp) {
     tally.hasCpu1Ocp2Cable = true;
     tally.ocpCableItems.push(it);
   }
-  if (CPU2_OCP_CABLE_SKUS.has(sku) || (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('sec') || desc.includes('secondary') || desc.includes('cpu2')))) {
+
+  const isCpu2Ocp = (mandatorySkus?.CPU2_OCP_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.CPU2_OCP_CABLE.sku)) ||
+                    (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('sec') || desc.includes('secondary') || desc.includes('cpu2')));
+  if (isCpu2Ocp) {
     tally.hasCpu2Ocp2Cable = true;
     tally.ocpCableItems.push(it);
   }
@@ -80,11 +81,11 @@ function tallyFcHbas(tally, desc, qty, role) {
 function tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role) {
   const isTransceiverRole = role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp');
   if (isTransceiverRole) {
-    if (desc.includes('32gb') || FC_TRANSCEIVER_32GB_SKUS.has(sku.toUpperCase())) {
+    if (desc.includes('32gb') || desc.includes('32g fc') || desc.includes('32gbs') || desc.includes('32g')) {
       tally.transceiverCount32Gb += qty;
       tally.activeOpticalTransceiverCount += qty;
     }
-    if (desc.includes('64gb')) {
+    if (desc.includes('64gb') || desc.includes('64g fc') || desc.includes('64gbs') || desc.includes('64g')) {
       tally.transceiverCount64Gb += qty;
       tally.activeOpticalTransceiverCount += qty;
     }
@@ -105,20 +106,15 @@ function tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role) {
     tally.synergyInterconnects.push({ it, desc, sku });
   }
 
-  if (role === 'Transceiver' || role === 'Cable Kit' || role === 'Storage Controller' || role === 'Storage Battery' || 
-      desc.includes('transceiver') || desc.includes('cable') || desc.includes('controller') || desc.includes('battery')) {
-    return;
+  // Synergy Mezzanines
+  if (desc.includes('synergy') && desc.includes('mezzanine')) {
+    tally.synergyMezzCards.push(parseSynergyMezzanine(it, desc, sku));
   }
 
-  // Network Adapters
-  if (role === 'Network Adapter' || desc.includes('ethernet') || desc.includes('adapter') || 
-      desc.includes('nic') || desc.includes('sfp') || desc.includes('infiniband') || 
-      desc.includes('slingshot') || desc.includes('mezzanine')) {
-    if (desc.includes('synergy') && desc.includes('mezz')) {
-      tally.synergyMezzCards.push(parseSynergyMezzanine(it, desc, sku));
-    }
-
-    if (desc.includes('ocp') || desc.includes('flr') || desc.includes('flexlom') || desc.includes('ocp3')) {
+  // Standard Network Adapters
+  const isAdapter = role === 'Network Adapter' || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('nic') || desc.includes('sfp28') || desc.includes('baset') || desc.includes('flr');
+  if (isAdapter && !desc.includes('interconnect') && !desc.includes('switch') && !desc.includes('transceiver') && !desc.includes('cable') && !desc.includes('mezzanine')) {
+    if (desc.includes('ocp') || desc.includes('flr') || desc.includes('standup')) {
       tally.hasOcpAdapter = true;
       tally.ocpAdapterCount += qty;
     }
@@ -128,7 +124,7 @@ function tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role) {
   }
 }
 
-function tallyNetworkingItems(items, skuCategoryMap) {
+function tallyNetworkingItems(items, skuCategoryMap, mandatorySkus = {}) {
   const tally = {
     networkPortsCount: 0,
     ocpAdapterCount: 0,
@@ -156,7 +152,7 @@ function tallyNetworkingItems(items, skuCategoryMap) {
     const mappedCategory = skuCategoryMap.get(sku) || '';
     const role = classifyComponentRole(mappedCategory, desc);
 
-    tallyOcpAndCables(tally, it, desc, sku, qty, role);
+    tallyOcpAndCables(tally, it, desc, sku, qty, role, mandatorySkus);
     tallyFcHbasAndSan(tally, desc, sku, qty, role);
     tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role);
   }
@@ -207,7 +203,7 @@ function validateSynergyFabrics(synergyInterconnects, synergyMezzCards) {
   return { hasSynergyFabricMismatch, synergyFabricErrors };
 }
 
-function evalNetworkingOcp(items, catalogData = null) {
+function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}) {
   let maxOcpSlots = 2;
   if (catalogData && catalogData.entries) {
     const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
@@ -217,7 +213,7 @@ function evalNetworkingOcp(items, catalogData = null) {
   }
 
   const skuCategoryMap = buildSkuCategoryMap(catalogData);
-  const t = tallyNetworkingItems(items, skuCategoryMap);
+  const t = tallyNetworkingItems(items, skuCategoryMap, mandatorySkus);
 
   const san = validateSanTransceivers(t);
   const synergy = validateSynergyFabrics(t.synergyInterconnects, t.synergyMezzCards);

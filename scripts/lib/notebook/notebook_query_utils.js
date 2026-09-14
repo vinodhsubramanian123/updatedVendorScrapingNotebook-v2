@@ -195,6 +195,13 @@ function buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceI
   return args;
 }
 
+function formatQueryDuration(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  return `${min}m ${sec < 10 ? '0' : ''}${sec}s (${ms}ms)`;
+}
+
 function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
   const maxAttempts = typeof options === 'number' ? options : (options.maxRetries || 3);
@@ -205,7 +212,16 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
     function runAttempt() {
       attempt++;
       const startTime = Date.now();
-      const currentTimeout = timeoutMs + (attempt > 1 ? 30000 : 0); // Add 30s buffer on retry
+      const currentTimeout = timeoutMs + (attempt > 1 ? 60000 : 0); // Add 60s buffer on retry
+      const budgetMin = Math.round(currentTimeout / 60000);
+
+      logger.info('NOTEBOOK_QUERY', `🚀 Dispatching Cloud Notebook query to [${targetNotebookId.slice(0, 8)}...] (Attempt ${attempt}/${maxAttempts}, Timeout Budget: ${budgetMin}m / ${Math.round(currentTimeout / 1000)}s)...`);
+
+      const heartbeat = setInterval(() => {
+        const elapsedMs = Date.now() - startTime;
+        logger.info('NOTEBOOK_QUERY', `⏳ NotebookLM deep synthesis in progress... [Elapsed: ${formatQueryDuration(elapsedMs)} / Timeout Budget: ${budgetMin}m] (Notebook: ${targetNotebookId.slice(0, 8)}...)`);
+      }, 15000);
+      if (typeof heartbeat.unref === 'function') heartbeat.unref();
 
       const trustedSourceIds = options.context?.authoritativeSourceIds || [];
       const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout);
@@ -215,11 +231,17 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
         env: { ...process.env, PATH: extendedPath },
         maxBuffer: 10 * 1024 * 1024
       }, (err, stdout, stderr) => {
+        clearInterval(heartbeat);
         const latencyMs = Date.now() - startTime;
+        const timeTaken = formatQueryDuration(latencyMs);
 
         if (err) {
           const isTimeout = err.killed || err.code === 'ETIMEDOUT' || (err.message && err.message.includes('timeout'));
-          const isRetryable = !isTimeout && attempt < maxAttempts && (
+          if (isTimeout) {
+            logger.warn('NOTEBOOK_QUERY', `⏱️ Cloud query attempt ${attempt}/${maxAttempts} reached timeout limit after ${timeTaken}.`);
+          }
+
+          const isRetryable = attempt < maxAttempts && (
             (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket')))
           );
 
@@ -229,14 +251,16 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
             return setTimeout(runAttempt, backoffMs);
           }
 
-          return reject({ err, stderr, latencyMs, attempts: attempt });
+          return reject({ err, stderr, latencyMs, timeTaken, attempts: attempt });
         }
+
+        logger.info('NOTEBOOK_QUERY', `✅ NotebookLM deep synthesis completed successfully in ${timeTaken}.`);
 
         let processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
         if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
           if (attempt < maxAttempts) {
             const backoffMs = 2000;
-            logger.warn('NOTEBOOK_QUERY', `Empty answer received. Retrying attempt ${attempt + 1}/${maxAttempts} in ${backoffMs}ms...`);
+            logger.warn('NOTEBOOK_QUERY', `Empty answer received after ${timeTaken}. Retrying attempt ${attempt + 1}/${maxAttempts} in ${backoffMs}ms...`);
             return setTimeout(runAttempt, backoffMs);
           }
         }
@@ -246,6 +270,7 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
           source: 'NOTEBOOK_LM_CLOUD',
           targetNotebookId,
           latencyMs,
+          timeTaken,
           attempts: attempt
         });
       });
@@ -349,7 +374,10 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     return cloudResult;
   } catch (failure) {
     const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err);
-    logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
+    const timeTaken = failure?.timeTaken || (failure?.latencyMs ? `${Math.floor(failure.latencyMs / 1000)}s` : 'unknown');
+    diagnostic.timeTaken = timeTaken;
+    diagnostic.latencyMs = failure?.latencyMs || 0;
+    logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts and ${timeTaken} (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
 
     if (isStrictCloud) {
       return {
@@ -359,6 +387,8 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
         source: 'NOTEBOOK_LM_FAILED',
         isCloudGrounded: false,
         diagnostic,
+        latencyMs: failure?.latencyMs || 0,
+        timeTaken,
         error: failure?.err?.message || 'Strict Cloud Query Failure'
       };
     }
@@ -371,7 +401,9 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
       isCloudGrounded: false,
       groundingTier: 'TIER_2_VERIFIED_LOCAL_SAFETY_NET',
       diagnostic,
-      fallbackReason: `Live Cloud Query Error: ${diagnostic.rootCause} (Attempts: ${failure?.attempts || 1})`
+      latencyMs: failure?.latencyMs || 0,
+      timeTaken,
+      fallbackReason: `Live Cloud Query Error: ${diagnostic.rootCause} (Elapsed: ${timeTaken}, Attempts: ${failure?.attempts || 1})`
     };
   }
 }

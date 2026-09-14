@@ -61,12 +61,6 @@ function estimateSystemPowerWatts(it, desc, role) {
   return cpuWatts + gpuWatts + memWatts + storageWatts;
 }
 
-const DL380A_CHASSIS_SKUS = new Set(['P76706-B21']);
-const DL145_CHASSIS_SKUS = new Set(['P71964-B21']);
-const PLATINUM_PSU_SKUS = new Set(['P38997-B21']);
-const TITANIUM_PSU_SKUS = new Set(['P44712-B21', 'P03178-B21']);
-const CE_REMOVAL_SKUS = new Set(['P35876-B21']);
-
 function parseDl380aGpuModeCapacity(desc) {
   if (!desc.includes('dl380a') || !desc.includes('fio configuration')) return 0;
   const match = desc.match(/(\d+)\s*(?:double[\s-]*wide|dw)\b/i);
@@ -77,13 +71,16 @@ function isGpuModeConfiguration(desc) {
   return parseDl380aGpuModeCapacity(desc) > 0;
 }
 
-function tallyChassisFormFactor(tally, it, desc, sku, role) {
-  if (desc.includes('synergy') && desc.includes('12000') && (desc.includes('frame') || desc.includes('configure-to-order'))) {
+function tallyChassisFormFactor(tally, it, desc, sku, role, skuIndex = null) {
+  const catDesc = skuIndex ? (skuIndex.get(sku)?.skuData?.Description || '').toLowerCase() : '';
+  const fullDesc = `${desc} ${catDesc}`;
+
+  if (fullDesc.includes('synergy') && fullDesc.includes('12000') && (fullDesc.includes('frame') || fullDesc.includes('configure-to-order'))) {
     tally.isSynergy12000Frame = true;
   }
-  if (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('dl380a')) {
+  if (fullDesc.includes('dl380a')) {
     tally.isDl380aGpuChassis = true;
-    if (!desc.includes('fio configuration') && (DL380A_CHASSIS_SKUS.has(sku) || desc.includes('configure-to-order') || desc.includes('cto server'))) {
+    if (!fullDesc.includes('fio configuration') && (fullDesc.includes('configure-to-order') || fullDesc.includes('cto server') || fullDesc.includes('server'))) {
       tally.dl380aServerCount += (it.quantity || it.qty || 1);
     }
   }
@@ -94,12 +91,12 @@ function tallyChassisFormFactor(tally, it, desc, sku, role) {
   } else if (role === 'GPU / Accelerator' || desc.includes('gpu accelerator')) {
     tally.actualGpuCount += (it.quantity || it.qty || 1);
   }
-  if (DL145_CHASSIS_SKUS.has(sku) || desc.includes('dl145')) {
+  if (fullDesc.includes('dl145')) {
     tally.isDl145EdgeChassis = true;
   }
 }
 
-function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
+function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus = {}) {
   if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
     tally.psuCount += (it.quantity || it.qty || 1);
     const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
@@ -111,27 +108,29 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku) {
     if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
       tally.hasDcPowerSupply = true;
     }
-    if (desc.includes('platinum') || PLATINUM_PSU_SKUS.has(sku)) {
+    if (desc.includes('platinum') || desc.includes('plat psu')) {
       tally.hasPlatinumPsu = true;
     }
-    if (desc.includes('titanium') || TITANIUM_PSU_SKUS.has(sku)) {
+    if (desc.includes('titanium') || desc.includes('titn psu')) {
       tally.hasTitaniumPsu = true;
     }
     if (desc.includes('2650w') && desc.includes('titanium')) {
       tally.synergyTitanium2650wCount += (it.quantity || it.qty || 1);
     }
   }
-  if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug')) {
+  if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug') ||
+      (mandatorySkus?.DC_LUG_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.DC_LUG_KIT.sku))) {
     tally.hasDcLugKit = true;
   }
-  if (CE_REMOVAL_SKUS.has(sku) || desc.includes('ce mark removal') || desc.includes('ce mark')) {
+  if (desc.includes('ce mark removal') || desc.includes('ce mark') ||
+      (mandatorySkus?.CE_REMOVAL_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.CE_REMOVAL_KIT.sku))) {
     tally.hasCeRemovalKit = true;
   }
 }
 
-function tallyPowerHardware(tally, it, desc, sku, role, dcLugSku) {
-  tallyChassisFormFactor(tally, it, desc, sku, role);
-  tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku);
+function tallyPowerHardware(tally, it, desc, sku, role, dcLugSku, skuIndex = null, mandatorySkus = {}) {
+  tallyChassisFormFactor(tally, it, desc, sku, role, skuIndex);
+  tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus);
 }
 
 function getDl380aPsuRequirement(tally) {
@@ -199,7 +198,7 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     if (!isGpuModeConfiguration(desc)) {
       totalHardwareWatts += estimateSystemPowerWatts(it, desc, role);
     }
-    tallyPowerHardware(tally, it, desc, sku, role, dcLugSku);
+    tallyPowerHardware(tally, it, desc, sku, role, dcLugSku, skuIndex, mandatorySkus);
   }
 
   const estimatedNodeWattage = totalHardwareWatts + 150;

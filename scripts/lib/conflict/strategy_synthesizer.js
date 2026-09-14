@@ -18,6 +18,7 @@ const { extractWorkloadDna } = require('./workload_dna.js');
 const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
 const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
 const { createDecisionTraceLedger } = require('./decision_trace.js');
+const { getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
 
 let _strategyAddonsCache = null;
 let _physicalMathValidator = null;
@@ -299,12 +300,18 @@ function buildRank3PcieStorageBranchParts(ctx) {
   });
 
   // Cascading Dependency Verification: Ensure Smart Storage Battery protects newly pivoted PCIe write-back cache
-  const hasBattery = rank3Parts.some(p => /p01366|p02377|smart.*battery|hybrid.*capacitor/i.test(p.sku + (p.description || '')));
+  const mandatory = getMandatorySkusForChassis(chassisInfo);
+  const batterySku = mandatory.SMART_STORAGE_BATTERY?.sku || 'P01366-B21';
+  const batteryName = mandatory.SMART_STORAGE_BATTERY?.name || 'HPE 96W Smart Storage Battery';
+  const hasBattery = rank3Parts.some(p => {
+    const s = cleanBaseSKU(p.sku);
+    return s === cleanBaseSKU(batterySku) || /smart.*battery|hybrid.*capacitor/i.test(p.sku + (p.description || ''));
+  });
   if (!hasBattery) {
-    const batteryPrice = getPrice('P01366-B21');
+    const batteryPrice = getPrice(batterySku);
     rank3Parts.push({
-      sku: 'P01366-B21',
-      description: 'HPE 96W Smart Storage Battery (up to 20 Devices)',
+      sku: batterySku,
+      description: batteryName,
       quantity: 1,
       unitPriceUsd: batteryPrice,
       extendedPriceUsd: batteryPrice,
@@ -511,7 +518,7 @@ function computeBomFingerprint(parts = []) {
 }
 
 function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = null, targetDir = '', options = {}) {
-  const isGen12 = chassisInfo && (chassisInfo.gen === 'Gen12' || (chassisInfo.model || '').includes('Gen12'));
+  const mandatory = getMandatorySkusForChassis(chassisInfo);
   const updatedParts = [...parts];
   const injectedFixes = [];
   const partSkus = new Set(updatedParts.map(p => cleanBaseSKU(p.sku)));
@@ -522,13 +529,15 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     const sku = cleanBaseSKU(p.sku);
     return /mr416i|mr216i|sr932i|sr416i/i.test(desc) || /mr416i|mr216i|sr932i/i.test(sku);
   });
-  const hasBattery = partSkus.has('P01366-B21') || updatedParts.some(p => (p.description || '').toLowerCase().includes('storage battery'));
+  const batterySku = mandatory.SMART_STORAGE_BATTERY?.sku || 'P01366-B21';
+  const batteryName = mandatory.SMART_STORAGE_BATTERY?.name || 'HPE 96W Smart Storage Battery';
+  const hasBattery = partSkus.has(cleanBaseSKU(batterySku)) || updatedParts.some(p => (p.description || '').toLowerCase().includes('storage battery'));
 
   if (hasControllerWithCache && !hasBattery) {
-    const batteryPrice = getPrice('P01366-B21');
+    const batteryPrice = getPrice(batterySku);
     const batteryPart = {
-      sku: 'P01366-B21',
-      description: 'HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit',
+      sku: batterySku,
+      description: batteryName,
       quantity: 1,
       unitPriceUsd: batteryPrice,
       extendedPriceUsd: batteryPrice,
@@ -537,8 +546,8 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
       category: 'Storage Battery Enablement'
     };
     updatedParts.push(batteryPart);
-    partSkus.add('P01366-B21');
-    injectedFixes.push({ sku: 'P01366-B21', reason: 'Cascading controller battery injection for write cache protection' });
+    partSkus.add(cleanBaseSKU(batterySku));
+    injectedFixes.push({ sku: batterySku, reason: 'Cascading controller battery injection for write cache protection' });
   }
 
   // 2. High TDP CPU / GPU Fan Check
@@ -548,15 +557,16 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     return match && parseInt(match[1], 10) > 240;
   });
   const hasGpu = updatedParts.some(p => /(nvidia|l40s|a100|h100|gpu)/i.test((p.description || '')));
-  const fanSku = isGen12 ? 'P40502-B21' : 'P48820-B21';
-  const hasHighPerfFan = partSkus.has(fanSku) || partSkus.has('P48820-B21') || partSkus.has('P40502-B21') ||
+  const fanSku = mandatory.HIGH_PERF_FAN_KIT?.sku || 'P48820-B21';
+  const fanName = mandatory.HIGH_PERF_FAN_KIT?.name || 'HPE High Performance Fan Kit';
+  const hasHighPerfFan = partSkus.has(cleanBaseSKU(fanSku)) ||
     updatedParts.some(p => (p.description || '').toLowerCase().includes('high performance fan'));
 
   if ((highTdpCpu || hasGpu) && !hasHighPerfFan) {
     const fanPrice = getPrice(fanSku);
     const fanPart = {
       sku: fanSku,
-      description: isGen12 ? 'HPE DL380 Gen12 High Performance Fan Kit' : 'HPE ProLiant DL380 Gen11 High Performance Fan Kit',
+      description: fanName,
       quantity: 1,
       unitPriceUsd: fanPrice,
       extendedPriceUsd: fanPrice,
@@ -565,7 +575,7 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
       category: 'Thermal Protection'
     };
     updatedParts.push(fanPart);
-    partSkus.add(fanSku);
+    partSkus.add(cleanBaseSKU(fanSku));
     injectedFixes.push({ sku: fanSku, reason: 'Cascading fan kit injection for high TDP / accelerator cooling' });
   }
 
@@ -574,13 +584,15 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     const desc = (p.description || '').toLowerCase();
     return desc.includes('-48vdc') || (desc.includes('dc') && desc.includes('power supply'));
   });
-  const hasLugKit = partSkus.has('P36877-B21') || updatedParts.some(p => (p.description || '').toLowerCase().includes('lug kit'));
+  const lugSku = mandatory.DC_LUG_KIT?.sku || 'P36877-B21';
+  const lugName = mandatory.DC_LUG_KIT?.name || 'HPE 48VDC Terminal Lug Connector Kit';
+  const hasLugKit = partSkus.has(cleanBaseSKU(lugSku)) || updatedParts.some(p => (p.description || '').toLowerCase().includes('lug kit'));
 
   if (hasDcPsu && !hasLugKit) {
-    const lugPrice = getPrice('P36877-B21');
+    const lugPrice = getPrice(lugSku);
     const lugPart = {
-      sku: 'P36877-B21',
-      description: 'HPE 48VDC 4x 8AWG Terminal Lug Connector Kit',
+      sku: lugSku,
+      description: lugName,
       quantity: 1,
       unitPriceUsd: lugPrice,
       extendedPriceUsd: lugPrice,
@@ -589,8 +601,8 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
       category: 'Power Enablement'
     };
     updatedParts.push(lugPart);
-    partSkus.add('P36877-B21');
-    injectedFixes.push({ sku: 'P36877-B21', reason: 'Cascading DC terminal lug connector kit injection' });
+    partSkus.add(cleanBaseSKU(lugSku));
+    injectedFixes.push({ sku: lugSku, reason: 'Cascading DC terminal lug connector kit injection' });
   }
 
   // 4. True 7-Aspect Physical Math Revalidation

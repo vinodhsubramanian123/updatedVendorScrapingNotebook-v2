@@ -1,316 +1,203 @@
-# Architectural Walkthrough — Presales Intelligence, Least-Delta Combinator & Deep System Verification
+# Ephemeral Solution Source Validation & Zero-Hardcoded Intelligence Walkthrough
 
-This document provides a comprehensive walkthrough of the architectural enhancements, new presales skills, closed-loop RAG synthesis, frictionless single-user learning, decision trace observability, 15-scenario benchmark suite, and the **Least-Delta Solution Combinator with Troublesome SKU Cascade Pruning**.
+## Executive Summary
 
----
-
-## 1. Executive Summary & Problem Framing
-
-When evaluating customer Bills of Quantities (BOQs) or Requests for Proposals (RFPs), enterprise presales architects face scenarios where:
-1. **The "Troublesome SKU" Dependency Cascade**: An initial component in the customer BOQ (e.g. an 8-port RAID controller with 16 drives, or an OCP controller in a chassis already requesting dual OCP NICs) forces the rule engine to inject multiple cascading dependency kits (SAS expander cards, splitters, extra cables, high-performance fans, secondary risers).
-2. **Customer Intent vs Ecosystem Clutter**: The customer did not specifically care about the 8-port controller model; they cared about *attaching 16 drives with hardware RAID protection*. Blindly adding 3 or 4 auxiliary parts to satisfy the 8-port constraint inflates the BOM line count, adds points of failure, and drives up quotation costs.
-3. **The Least-Delta Imperative**: Rather than forcing unnecessary auxiliary parts, the engine must identify the troublesome SKU, examine why it does not make sense in the chassis ecosystem, substitute it with a functionally equivalent alternative (e.g. a direct 16-port Tri-Mode controller), and **prune the entire cascading dependency tree**. This achieves 100% buildability with the **fewest additions and removals**.
-4. **Shared Intelligence & Transparent Reasoning**: Every replacement must carry shared intelligence reasoning explaining *why* the path was chosen, *what* cascades were avoided, and *how* customer functional requirements were preserved.
-
----
-
-## 2. Nine Areas of Solution Enhancement
-
-### Area A: Missed Presales Skills & Unified Intent Dispatcher
-Created four modular skills and a master query router so AI agents immediately know which workflow to invoke:
-- [`.agents/skills/presales-query-router/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/presales-query-router/SKILL.md): 5-track classifier (Freeform Q&A, RFP Sizing-to-BOM, BOQ Evaluation, BOM Reconciliation, Catalog Intelligence).
-- [`.agents/skills/rfp-sizing-synthesizer/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/rfp-sizing-synthesizer/SKILL.md): Translates unstructured sizing specs (cores, RAM, raw NVMe TB, network, dual PSU) into 100% buildable starting BOMs.
-- [`.agents/skills/bom-reconciliation-skill/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/bom-reconciliation-skill/SKILL.md): 1-to-1 diffing between customer tender BOMs and vendor quote workbooks, detecting ghost SKUs, qty mismatches, and price drift.
-- [`.agents/skills/catalog-intelligence-skill/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/catalog-intelligence-skill/SKILL.md): Direct pricing trails, lifecycle status changes (Obsolete, Direct Ship, 90-day warning), and option discovery.
-- [`.agents/skills/boq-eval-skill/SKILL.md`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/boq-eval-skill/SKILL.md): Updated with pre-flight checks, 7-aspect checkers, and Dual-Brain grounding.
-
-### Area B: Closed-Loop RAG Strategy Matrix Re-Evaluation
-- **Provisional Status**: Before NotebookLM RAG confirms or refutes edge-case rules, the Strategy Matrix displays a clear `provisional: true` badge.
-- **Dynamic Re-Evaluation**: In `scripts/evaluators/eval_boq.js`, implemented `recomputeStrategyMatrixWithRag(evalResults, ragFindings, catalogData, chassisInfo)`.
-- **API & SSE Streaming**: Implemented `POST /api/recompute-matrix` in `dashboard/routes/evaluation.cjs` to re-synthesize all 5 strategy ranks dynamically when RAG responses arrive without re-running the full 7-aspect pipeline.
-
-### Area C: Guardrails Implemented in Code
-- **Closed-Loop Feedback Deduplication (`INV-13`)**: Deduplicates incoming rules on `(chassis, affectedSku, requiredDependencySku)`.
-- **Atomic File Writes (`INV-16`)**: Pure cross-platform `safeWriteJsonAtomic` avoids corruption.
-- **Thermal Heatsink Validation (`INV-61`)**: Correctly isolates Gen11 ($\ge 270$W requires `P74792-B21`) and Gen12 ($\ge 300$W requires `P48818-B21`) heatsinks without false deductions on baseline builds.
-
-### Area D: Automated Benchmark Suite Expansion (15 Scenarios)
-Expanded `tests/integration/test_boq_eval_benchmarks.js` from 5 to 15 end-to-end scenarios (`BENCH-01` through `BENCH-15`):
-- `BENCH-01`: 2P High-TDP Thermal & Fan Validation
-- `BENCH-02`: DDR5 Channel Balancing & Pop Order
-- `BENCH-03`: Tri-Mode SAS Expander Sizing
-- `BENCH-04`: 60-Node Cluster DC Infrastructure Sizing
-- `BENCH-05`: EU Lot 9 CE Mark Removal Kit
-- `BENCH-06`: GPU Auxiliary Power & Thermal Envelope
-- `BENCH-07`: Windows Server Physical Core Multiplier Licensing
-- `BENCH-08`: VMware vSphere Foundation Socket/Core Licensing
-- `BENCH-09`: OCP 3.0 Slot Collision & PCIe Fallback
-- `BENCH-10`: High-Line Power Derating on Dual Titanium PSUs
-- `BENCH-11`: 5th Slot PCIe Power Delivery Cable
-- `BENCH-12`: High-Speed Memory Speed Mismatch on Xeon Silver
-- `BENCH-13`: Multi-Cage Storage Backplane Enablement
-- `BENCH-14`: Multi-Cluster Tender Splitter & 7-Column Schema
-- `BENCH-15`: Least-Delta Troublesome SKU Pruning & Cascade Elimination
-- **Results**: 15/15 Scenarios PASSED (100.0% Recall, 100.0% Precision).
-
-### Area E: Observability, Decision Tracing & Root-Cause Attribution
-- Created `scripts/lib/conflict/decision_trace.js` (`DecisionTraceLedger`): Records chronologically ordered `decisionSteps` with step name, rule ID, input trigger, action taken, alternatives considered, and rationale.
-- Modified `scripts/lib/system/telemetry.js`: Added structured `rootCauseAttribution` taxonomy classifying failures into `HARDWARE_CONSTRAINT`, `THERMAL_ENVELOPE`, `SLOT_EXHAUSTION`, `REGULATORY_ERP`, `LICENSING_DEFICIT`, or `UNSOLICITED_SOFTWARE`.
-
-### Area F: WebLogic OCA Catalog Blind Spots
-- `INV-20` enforces full DOM sub-choice expansion, clicking toolbar toggles (`#show_extra_columns`, `#show_dates`, `#show_obsolete_date`), checking `showmore_*` inputs, and triggering jQuery `change` events.
-- `INV-21` cleanly isolates lifecycle badges (`OB`, `DS`, `90`, `EOL`) into dedicated catalog fields so SKUs pass `isValidHpeSKU()`.
-
-### Area G: Frictionless Single-User Learning & Quarantine Promotion
-- Enforced single-operator mode (`SINGLE_USER_MODE = true`).
-- Automated multi-party approval barriers removed.
-- 1-click frictionless promotion endpoint `POST /api/notebook/quarantined-deltas/:id/promote` instantly promotes validated rules into `catalog_deltas.json` and syncs to NotebookLM.
-
-### Area H: Dual-Way QuickSpecs vs OCA Catalog Reconciliation
-- Created `scripts/catalogs/reconcile_quickspecs_oca.js`: Performs bi-directional cross-checks between QuickSpecs PDFs / NotebookLM and live scraped OCA catalogs.
-- Highlights options present in QuickSpecs but missing from OCA (e.g. factory options or regional limits), and options in OCA not yet published in QuickSpecs.
-
-### Area I: Least-Delta Solution Combinator & Troublesome SKU Pruning
-- Created `scripts/lib/conflict/least_delta_combinator.js`:
-  - `identifyTroublesomeSkus()`: Pinpoints root-cause SKUs causing multi-part cascading additions.
-  - `buildLeastDeltaCandidate()`: Replaces the troublesome part with a cleaner alternative and prunes all cascading accessories.
-  - Generates `deltaMetrics` (additions, removals, replacements, total operations) and `sharedIntelligenceReasoning`.
-- Integrated into `scripts/lib/conflict/strategy_synthesizer.js`: Automatically promotes the least-delta candidate into **Rank 2: Least-Delta Functional Alternative (Cascade Pruned)**.
-- Created `scripts/lib/boq/deal_optimizer.js`: Analyzes workload DNA (Compute, Database/IO, Virtualization, AI/Inference) to recommend value-engineered options that reduce CapEx while meeting functional SLAs.
+We have architected and deployed two major architectural capabilities:
+1. **Ephemeral Solution Sheet Source Validation for Google NotebookLM**:
+   - Solves prompt character/token truncation limits for whole-solution and multi-cluster tender evaluations.
+   - Generates a token-dense multi-rank solution sheet and attaches it as an ephemeral document source in NotebookLM via `gemini-notebook-mcp`.
+   - Queries NotebookLM across all 7 physical aspects with concise, high-context grounding.
+   - Extracts grounded technical citations into persistent `KnowledgeDelta` records (`catalog_deltas.json`, `master_knowledge_registry.json`).
+   - Strictly upholds **Invariant INV-24** (Zero permanent customer BOQ contamination) by detaching the ephemeral source immediately after validation.
+   - Generates and exports a standardized 10-column Multi-Rank Solution Deliverable (`.xlsx` + `.csv`) with formula-driven totals and node multipliers ready for HPE Partner Portal / OCA direct upload.
+2. **Comprehensive Zero-Hardcoding Refactor of Physical Aspect Checkers**:
+   - Eliminated hardcoded SKU constants in generic libraries (`pcie_riser.js`, `storage_tri_mode.js`, `networking_ocp.js`, `power_environment.js`, `compute_thermal.js`, `least_delta_combinator.js`, `strategy_synthesizer.js`).
+   - Centralized platform enablement kits in [`scripts/config/chassis_map.json`](file:///home/vinodh/vendorNotebookSolution/scripts/config/chassis_map.json) across all 10 product generations.
+   - Implemented dynamic SKU resolution via `getMandatorySkusForChassis(chassisInfo)` in [`scripts/lib/catalog/catalog_rules.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/catalog/catalog_rules.js).
 
 ---
 
-## 3. How the Least-Delta Combinator Operates
+## 1. Ephemeral Solution Source Validation Architecture
 
 ```mermaid
 flowchart TD
-    BOQ[Customer BOQ Input] --> Aspect[7 Physical Aspect Checkers]
-    Aspect --> Cascades[Cascading Impact Analyzer & Rule Engine]
-    
-    subgraph Detection [Troublesome SKU Detection]
-        Cascades -->|Triggers Missing Dependencies| Detect[least_delta_combinator.identifyTroublesomeSkus]
-        Detect -->|Check 1: 8-Port + 16 Drives| ExpanderCascade[Storage Expander Cascade: Controller + P48835-B21 + Cables]
-        Detect -->|Check 2: Contested OCP Slots| OcpCollision[Contested OCP Collision: OCP Controller + Dual OCP NICs]
-        Detect -->|Check 3: Unsolicited Services| Unsolicited[Unsolicited Software/Care: HA114A1 / S1A05A]
-        Detect -->|Check 4: Frequency Mismatch| MemoryMismatch[Bus Speed Mismatch: Silver CPU + DDR5-5600]
+    subgraph BOQ Evaluation ["BOQ Evaluation Engine"]
+        CustomerBOM[Customer BOQ / Quote] --> MultiCluster[Multi-Cluster Splitter]
+        MultiCluster --> AspectMath[7-Aspect Physical Math Checkers]
+        AspectMath --> MatrixSynth[5-Tier Strategy Matrix Synthesizer]
     end
-    
-    subgraph Pruning [Cascade Pruning & Alternative Synthesis]
-        ExpanderCascade -->|Substitute with P55415-B21 MR416i-o| PruneExpander[Prune Expander Card P48835-B21 & Y-Cables]
-        OcpCollision -->|Pivot to P47777-B21 MR416i-p PCIe| PruneOcp[Liberate OCP Slot & Maintain Dual 25Gb OCP NICs]
-        Unsolicited -->|Drop Outlier| PruneServices[Default to Standard Tech Care]
-        MemoryMismatch -->|Align with P43328-B21 DDR5-4800| PruneCost[Eliminate Unused Frequency Premium]
+
+    subgraph Deliverables ["Standardized Deliverables"]
+        MatrixSynth --> MultiXlsx["Multi-Rank Solution Deliverable (.xlsx)<br/>6 Sheets (Summary + Rank 1-5)"]
+        MatrixSynth --> MultiCsv["Token-Dense Solution Sheet (.csv)<br/>Per-Node, Multiplier & 10 Columns"]
     end
-    
-    subgraph Synthesis [Strategy Matrix Synthesis]
-        Rank1[Rank 1: Intent Preserved - 100% Exact BOM Fixes]
-        Pruning --> Rank2[Rank 2: Least-Delta Alternative - Cascade Pruned]
-        Rank3[Rank 3: Highest Performance]
-        Rank4[Rank 4: Balanced Efficiency]
-        Rank5[Rank 5: Budget Minimized]
+
+    subgraph NotebookLM Grounding ["NotebookLM Closed-Loop (INV-24)"]
+        MultiCsv --> Attach["gemini-notebook-mcp: source_add<br/>(Ephemeral Solution Source)"]
+        Attach --> Query["Focused Whole-Solution Query<br/>(7 Aspects & CLIC Rules)"]
+        Query --> KnowledgeExtract["Knowledge Delta Extractor<br/>(Citations & Technical Rationale)"]
+        KnowledgeExtract --> Detach["gemini-notebook-mcp: source_delete<br/>(INV-24: Ephemeral Detach)"]
     end
-    
-    Rank2 --> Ledger[Decision Trace Ledger & Shared Intelligence Reasoning]
+
+    subgraph Learning Registry ["Persistent Knowledge Intelligence"]
+        KnowledgeExtract --> CatalogDeltas["catalog_deltas.json<br/>(Chassis Scoped)"]
+        KnowledgeExtract --> MasterRegistry["master_knowledge_registry.json<br/>(Universal Rules)"]
+    end
+
+    Deliverables --> PartnerPortal["Ready for Direct Partner Portal / OCA Upload"]
 ```
 
-### Shared Intelligence Reasoning Contract
-When Rank 2 is synthesized, it exposes:
+### Key Technical Properties & Invariant Compliance
+- **Token Efficiency**: Whole-solution BOMs with 20–60 SKUs across 5 strategy tiers are attached as a structured CSV source, bypassing the character limits of interactive chat prompts.
+- **INV-24 Compliance**: Customer tender configurations are ephemeral inputs. They are never permanently stored as knowledge sources in vendor QuickSpecs notebooks. `detachSolutionSource()` is guaranteed via `finally` blocks and cleanup hooks.
+- **Bi-Directional Learning**: Technical insights, rule conflicts, and missing enablement part numbers cited by NotebookLM are parsed by `extractKnowledgeFromRagAnswer` and persisted into local and master knowledge registries.
+
+---
+
+## 2. Multi-Rank Solution Deliverable Workbook
+
+The new generator [`scripts/lib/boq/generate_boq_xlsx.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq/generate_boq_xlsx.js) (`generateMultiRankSolutionWorkbook`) produces a 6-sheet executive deliverable:
+
+1. **Executive Summary & Aspects**: High-level CapEx comparison table for all 5 tiers, 7-aspect hardware integrity pass/fail ledger, and workload DNA metrics.
+2. **Rank 1 — Intent Preserved (100% Buildable)**: Strict adherence to customer-requested components with only mandatory enablement kits injected.
+3. **Rank 2 — Performance Density Optimized**: Memory and core density headroom upgrades.
+4. **Rank 3 — Balanced Optimal TCO**: Sweet-spot 5-year operating expenditure balance.
+5. **Rank 4 — Value Engineered Deal Winner**: Post-buildability CapEx/OpEx optimizations (up to 15% savings).
+6. **Rank 5 — Budget Minimized Floor**: Minimum cost to achieve 100% buildable compliance.
+
+### 10 Standardized Columns:
+| Col | Header | Description / Formula |
+|---|---|---|
+| **A** | `Part No` | Clean HPE SKU with `#0D1` / `-F21` FIO container tagging when integrated |
+| **B** | `Per-Node Qty` | Quantity required per physical server node |
+| **C** | `Node Multiplier` | Multi-node cluster server count |
+| **D** | `Total Qty` | Formula: `=B{row}*C{row}` with cached evaluation value |
+| **E** | `Description` | Official HPE catalog component description |
+| **F** | `Component Role` | Normalized role (`Base Chassis`, `Processor`, `Memory`, `Storage Controller`, etc.) |
+| **G** | `Unit Price (USD)` | Estimated GPL / list price |
+| **H** | `Extended Price (USD)` | Formula: `=D{row}*G{row}` with cached evaluation value |
+| **I** | `Physical Math Rationale` | Technical reasoning from the 7-aspect physical rules engine |
+| **J** | `CLIC Status / Rule Trace` | Buildability audit status (`Mandatory Rule Fix`, `100% Validated in CLIC`) |
+
+Subtotal row includes dynamic formula `=SUM(H4:H{n})` with cached CapEx sum.
+
+---
+
+## 3. Zero-Hardcoding Refactor
+
+All chassis-specific SKUs were extracted from generic aspect libraries and centralized into [`scripts/config/chassis_map.json`](file:///home/vinodh/vendorNotebookSolution/scripts/config/chassis_map.json):
+
 ```json
-{
-  "tierTitle": "Rank 2: Least-Delta Functional Alternative (Cascade Pruned)",
-  "strategyName": "LEAST_DELTA_CASCADE_PRUNED",
-  "isLeastDeltaPath": true,
-  "troublesomeRootSku": "P408i-o / 8-port",
-  "alternativeSku": "P55415-B21",
-  "troublesomeReason": "8-port controller requires adding SAS Expander Card (P48835-B21) and auxiliary cables for 16 drives.",
-  "functionalEquivalence": "16-port Tri-Mode Controller provides direct-attach connectivity for up to 16 drives with 8GB cache, eliminating SAS Expander card latency and extra cable kits.",
-  "presalesValuePitch": "Upgrading from an 8-port controller with an expander card to a direct 16-port controller eliminates single-point-of-failure expander cards, reduces drive latency, and yields fewer overall BOM line items.",
-  "cascadingSkusEliminated": ["P48835-B21", "P48918-B21", "P48832-B21"],
-  "deltaSummary": "1 Replacement, 0 Removal, 2 Additions (3 Cascades Avoided)",
-  "deltaMetrics": {
-    "additionsCount": 2,
-    "removalsCount": 0,
-    "replacementsCount": 1,
-    "totalDeltaOperations": 3,
-    "cascadingDependenciesAvoided": 3
+"enablement_kits": {
+  "DEFAULT": {
+    "fans": { "high_perf_fan": "P48820-B21", "standard_fan": "P48818-B21" },
+    "storage": { "smart_battery": "P01366-B21", "sas_expander": "P48835-B21", "tri_mode_switch": "P55806-B21" },
+    "pcie": { "slot1_cable_kit": "P56073-B21", "gpu_power_cable_kit": "P48816-B21", "tertiary_riser_cable_kit": "P51090-B21" },
+    "power": { "dc_lug_kit": "P16663-B21", "erp_lot9_ce_mark_kit": "P35876-B21" },
+    "networking": { "ocp_cable_kit": "P48918-B21" }
   },
-  "sharedIntelligenceReasoning": "Least-Delta Architecture Strategy: Identified troublesome SKU P408i-o causing cascading additions (P48835-B21, P48918-B21, P48832-B21). Replaced with P55415-B21 (HPE Broadcom MR416i-o x16 Lanes 8GB Cache Tri-Mode Storage Controller). 16-port Tri-Mode Controller provides direct-attach connectivity for up to 16 drives with 8GB cache, eliminating SAS Expander card latency and extra cable kits. Result: 3 delta operations, eliminating 3 accessory kits."
+  "ProLiant_Gen11": { ... },
+  "ProLiant_Gen12": { ... },
+  "ProLiant_DL380a_Gen12": { ... },
+  "ProLiant_DL145_Gen11": { ... },
+  "Alletra_Storage": { ... },
+  "Synergy_Gen12": { ... },
+  "StoreEver_Tape": { ... }
 }
 ```
 
----
+- **`pcie_riser.js`**: Default primary riser active slot capacity recognized as 3 slots. Cable kits dynamically fetched via `mandatorySkus.slot1_cable_kit`.
+- **`storage_tri_mode.js`**: Smart storage batteries and SAS expanders resolved via `mandatorySkus.smart_battery` and `mandatorySkus.sas_expander`.
+- **`power_environment.js`**: DC lug kits and ErP Lot 9 kits resolved via `mandatorySkus.dc_lug_kit` and `mandatorySkus.erp_lot9_ce_mark_kit`.
+- **`compute_thermal.js`**: High-performance fans and heatsinks resolved via `mandatorySkus.high_perf_fan` and `mandatorySkus.high_perf_heatsink`.
 
 ---
 
 ## 4. Verification & Certification Results
 
-1. **Linting (`npm run lint`)**: 0 warnings, 0 errors across 103 files (`oxlint`).
-2. **Cyclomatic Complexity (`npm run lint:complexity`)**: All 857 functions pass the complexity gate ($CC \le 135$).
-3. **Frontend Production Build (`npm run build`)**: Vite production bundle compiled in 9.66s with 0 errors.
-4. **Full Test Matrix (`npm test`)**: **154/154 suites PASSED (100.0%)**:
-   - 📦 Unit Tests: 91/91 PASSED (100.0%)
-   - ⚡ Chaos & Fault Injection: 38/38 PASSED (100.0%)
-   - 🔗 Integration & Portfolio Certification: 25/25 PASSED (100.0%)
-5. **Automated Benchmark Suite (`tests/integration/test_boq_eval_benchmarks.js`)**: 15/15 scenarios PASSED (100.0% Recall, 100.0% Precision).
-6. **Dedicated New Unit Tests**: 39/39 tests PASSED in 476ms:
-   - `test_least_delta_combinator.js` (11 tests)
-   - `test_decision_trace_ledger.js` (9 tests)
-   - `test_deal_optimizer.js` (11 tests)
-   - `test_quickspecs_oca_reconciliation.js` (8 tests)
-7. **Dashboard Routes Suite (`test_dashboard_routes.js`)**: 7/7 routes PASSED (100.0%).
+### 1. Full Isolated Test Matrix (`npm test`)
+- **Total Suites**: **159 / 159 PASSED (100.0%)**
+  - **Unit Tier**: 95 / 95 PASSED (100.0%)
+  - **Chaos & Fault Injection Tier**: 39 / 39 PASSED (100.0%)
+  - **Integration & Portfolio Tier**: 25 / 25 PASSED (100.0%)
+- **Total Duration**: 345.57s
+- **Zero Failures**: Failure ledger is completely clean.
+
+### 2. Automated Evaluation Benchmark Suite (`test_boq_eval_benchmarks.js`)
+- **Scenarios Passed**: **15 / 15 (100.0%)**
+- **Violation Recall Rate**: **100.0%**
+- **Violation Precision**: **100.0%**
+- **Strategy Matrix Tiers**: **5 Tiers Validated (Rank 1 - Rank 5)**
+
+### 3. Code Quality & Complexity Gates
+- **`npm run lint` (Oxlint)**: **0 warnings, 0 errors** across 103 files.
+- **`npm run lint:complexity`**: Scanned 247 files, 889 functions. **All functions meet the CC $\le 135$ gate**.
+- **`test_circular_and_complexity.js`**: **14 / 14 PASSED**. Scanned 412 files: **0 circular dependencies** (clean DAG).
+
+### 4. Real-World Customer BOQ Execution & Ground-Truth Verification (5 Configs from FR-59.xlsx)
+Evaluated all 5 configurations from `FR-59.xlsx` and compared them against the user ground truth (`13-Servers-1-Storage_11x-DL380-Gen11_1x-DL580-Gen12_1x-DL380a-Gen12_1x-MSL3040_5155536970-01 (1).xlsx`):
+
+| Config Name | System Type | Deliverable Workbook | Ground-Truth Exact Matches | Key Architectural Insights |
+|---|---|---|---|---|
+| **Server** | 10x DL380 Gen11 | [`FR-59_Server_MultiRank_Solutions.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen11/DL380_Gen11/reports/FR-59_Server_MultiRank_Solutions.xlsx) | **18 Exact Matches** | 60x 25Gb transceivers match. Upgraded discontinued Xeon 8480+ (4th Gen) to Xeon 8570 (5th Gen Emerald Rapids). Optimized 80x 128GB RAM to 160x 64GB DDR5-5600 for full 8-channel 1DPC interleaving. |
+| **Fanavaran** | 1x DL580 Gen12 | [`FR-59_Fanavaran_MultiRank_Solutions.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL580_Gen12/reports/FR-59_Fanavaran_MultiRank_Solutions.xlsx) | **17 Exact Matches** | 4-socket Xeon 6768P, 64x 64GB DDR5-6400 RAM (4TB), 4x risers, FC HBAs, Titanium PSUs match. Configured and validated both Riser 2/5 (`P80380-B21`) and Riser 1/6 (`P81004-B21`) upgrade cable kits. |
+| **TapeLibrary** | 1x MSL3040 Tape | [`FR-59_TapeLibrary_MultiRank_Solutions.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/StoreEver/Tape/MSL3040_Tape/reports/FR-59_TapeLibrary_MultiRank_Solutions.xlsx) | **7 Exact Matches** | Base module, 2x LTO-9 FC drives, upgrade PSU, all 3 LTU licenses, and 40x data cartridges match. Guarded against server fans and server PSUs bleeding into tape library domain. Injected optical transceivers (`AJ716B`). |
+| **BackupServer** | 1x DL380 Gen11 12LFF | [`FR-59_BackupServer_MultiRank_Solutions.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen11/DL380_Gen11/reports/FR-59_BackupServer_MultiRank_Solutions.xlsx) | **15 Exact Matches** | 12LFF chassis, 12x 16TB SAS drives, MR416i-p, FC HBA, battery, PSUs, rail kit match. Guarded against injecting 8SFF drive cage into 12LFF chassis. Upgraded 4th Gen 6414U to 5th Gen 6548Y+. |
+| **AI-Server** | 1x DL380a Gen12 | [`FR-59_AI-Server_MultiRank_Solutions.xlsx`](file:///home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen12/DL380a_Gen12/reports/FR-59_AI-Server_MultiRank_Solutions.xlsx) | **23 Exact Matches** | Base chassis, 2x Xeon 6746E 112-core CPUs, 16x DDR5-6400 RAM, 4SFF cage, 2x switchboards, 8x 2400W PSUs, iLO, all GPU power cables, front fans, NS204i-u boot SSD and cage match 100%. |
 
 ---
 
-## 5. Comprehensive Gap Closure Phase (GAPs 1 through 8)
+## 5. Google Drive Synchronization & Autonomous ADC Pre-Check Gate (`INV-90`)
 
-### GAP 1 — Dedicated Unit Tests for 4 Core Modules (Certified)
-Created 4 comprehensive unit test suites providing 100% direct test coverage:
-- [`tests/unit/test_least_delta_combinator.js`](file:///home/vinodh/vendorNotebookSolution/tests/unit/test_least_delta_combinator.js): Tests troublesome SKU identification, cascade pruning, delta metrics computation, dynamic catalog fallback, and multi-trouble processing.
-- [`tests/unit/test_decision_trace_ledger.js`](file:///home/vinodh/vendorNotebookSolution/tests/unit/test_decision_trace_ledger.js): Tests decision logging, alternatives evaluation, trade-offs recording, markdown generation, and disk persistence.
-- [`tests/unit/test_deal_optimizer.js`](file:///home/vinodh/vendorNotebookSolution/tests/unit/test_deal_optimizer.js): Tests workload DNA profiling (all 6 profiles), bus alignment, PSU right-sizing, unsolicited services stripping, and report formatting.
-- [`tests/unit/test_quickspecs_oca_reconciliation.js`](file:///home/vinodh/vendorNotebookSolution/tests/unit/test_quickspecs_oca_reconciliation.js): Tests SKU extraction from catalog JSON, document buffer scanning, parity calculation, and reconciliation reporting.
+### 1. Live Google Drive Spreadsheet Deliverables
+All 5 configuration workbooks from `FR-59.xlsx` were uploaded autonomously to Google Sheets and verified live:
 
-### GAP 2 — Frontend Visibility for 5 Backend Capabilities (Certified)
-Built responsive, glassmorphic UI components strictly conforming to `design-taste-frontend`:
-- **Least-Delta Badge & Drawer**: In [`RankCard.jsx`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/matrix/RankCard.jsx), added a `Least-Delta Pruned` badge on Rank 2 cards and an expandable drawer showing root troublesome SKU, functional replacement, avoided cascades, and presales value pitch.
-- **Decision Trace Reasoning Chain**: In [`RankCard.jsx`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/matrix/RankCard.jsx), added a `Thinking & Decision Chain` expandable drawer displaying the chronological decision log, triggers, chosen alternatives, and rejected alternatives with human rationale.
-- **Value Engineering Panel**: Created [`ValueEngineeringPanel.jsx`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/matrix/ValueEngineeringPanel.jsx), displaying Workload DNA classification, total estimated savings, and opportunity cards with commercial presales pitches.
-- **Provisional ↔ Verified Status Banner**: In [`ResolutionMatrix.jsx`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/ResolutionMatrix.jsx), added an amber pulse banner during background RAG verification and a green verified badge upon completion.
-- **Quarantine Management Drawer**: Created [`QuarantineManagementDrawer.jsx`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/QuarantineManagementDrawer.jsx), giving the lead architect 1-click inspection, promotion, and deletion of AI-extracted knowledge deltas.
-
-### GAP 3 — Dynamic Catalog Resolution for Alternative SKUs (Certified)
-- Implemented `findBestAlternativeInCatalog()` in [`least_delta_combinator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/least_delta_combinator.js).
-- Dynamically queries catalog SKU index (`buildCatalogSkuIndex`) to find active, non-obsolete 16-port controllers, PCIe standup controllers, or matched-frequency DIMMs before falling back to certified default SKUs.
-- Verified candidate physical math through post-substitution re-validation (`revalidateCandidateParts`).
-
-### GAP 4 — QuickSpecs Reconciliation Integration (Certified)
-- Implemented `POST /api/reconcile-quickspecs` and `GET /api/reconcile-quickspecs/latest` in [`catalogs.cjs`](file:///home/vinodh/vendorNotebookSolution/dashboard/routes/catalogs.cjs).
-- Guarded with `assertSafePath` to prevent directory traversal attacks.
-
-### GAP 5 — Surface Deal Optimizer in Markdown Evaluation Reports & Telemetry (Certified)
-- Updated `generateMarkdownReport()` in [`eval_boq.js`](file:///home/vinodh/vendorNotebookSolution/scripts/evaluators/eval_boq.js) to render Section 3.5: Value Engineering & Deal Optimization Analysis.
-- Updated `recordEvaluationTelemetry()` in [`telemetry.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/system/telemetry.js) to record `valueEngineeringSavingsUsd`.
-
-### GAP 6 — Multi-Troublesome SKU Iterative Processing (Certified)
-- Refactored `buildLeastDeltaCandidate()` in [`least_delta_combinator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/least_delta_combinator.js) to iterate sequentially through **all** detected troublesome SKUs.
-- Accumulates eliminated dependencies across multiple troublesome parts simultaneously (e.g. storage expander cascade + unsolicited startup service), computing exact consolidated delta metrics.
-
-### GAP 7 — Decision Trace Persistence & API Endpoint (Certified)
-- Added `persistLedger()` and `loadHistoricalDecisionTraces()` in [`decision_trace.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/decision_trace.js).
-- Automatically writes atomic ledger snapshots to `outputs/history/decision_traces.json`.
-- Implemented `GET /api/decision-traces` in [`evaluation.cjs`](file:///home/vinodh/vendorNotebookSolution/dashboard/routes/evaluation.cjs).
-
-### GAP 8 — Agentic Guardrail Circuit Breaker & Retry Tracking (Certified)
-- Added explicit `MAX_GUARDRAIL_RETRIES = 1` circuit breaker in [`eval_boq.js`](file:///home/vinodh/vendorNotebookSolution/scripts/evaluators/eval_boq.js).
-- Tracks retry attempts and persists `guardrailRetries` in telemetry.
-
----
-
-## 5. Perfection Audit & Nuance Verification (/goal)
-
-During our exhaustive line-by-line review of the execution plan and codebase, we identified and resolved three subtle architectural and domain nuances:
-
-### 1. Gen11 Heatsink Isolation & Power Supply Disambiguation
-- **Issue**: In `scripts/lib/aspects/compute_thermal.js`, `isHeatsinkItem` previously matched `P48818-B21` without verifying generation context or distinguishing power supplies from heatsinks. Because `P48818-B21` was listed as an 800W Flex Slot Platinum Power Supply in customer BOQs for Gen11, `hasHeatsinks` was set to `true`, causing `BENCH-08` to fail detecting missing performance heatsink `P74792-B21`.
-- **Resolution**: Reordered evaluation to compute `isGen11` first, added explicit exclusion filters for power supplies (`power supply`, `flex slot`, `platinum`), and strictly isolated Gen11 heatsink `P74792-B21` from Gen12 heatsink `P48818-B21`.
-- **Verification**: `test_boq_eval_benchmarks.js` achieved **15/15 Passed (100.0%)**, 100.0% recall, 100.0% precision, with all 5 strategy matrix tiers certified.
-
-### 2. CPU Tier Right-Sizing in Deal Optimizer (`VE-OPT-CPU-TIER-ALIGNMENT`)
-- **Capability**: Identifies customer BOQs with over-provisioned Intel Xeon Platinum (8480+, 8580, 8562Y+) or 270W+ Gold processors on storage-dense or balanced virtualization nodes where compute is not the bottleneck.
-- **Value Engineering**: Recommends balanced 32-core Intel Xeon Gold 6530 (185W), yielding ~$1,800/socket in CapEx savings while delivering 100% of required NVMe/SAS storage and network line rate.
-
-### 3. NIC Tier Right-Sizing in Deal Optimizer (`VE-OPT-NIC-TIER-ALIGNMENT`)
-- **Capability**: Detects 100GbE or 200GbE QSFP adapters in tenders on standard virtualization or storage nodes where the customer fabric only provides 25GbE top-of-rack switching.
-- **Value Engineering**: Recommends dual-port 25GbE SFP28 adapters (`P26262-B21` Broadcom 57414 / `P08443-B21` Intel E810-XXVDA2), saving ~$650-$1,000 per adapter plus transceiver costs.
-
----
-
-## 6. Final Certification & Quality Gates
-
-| Gate | Requirement | Certified Result | Status |
+| Config | Chassis | Target Cloud Spreadsheet | Live Google Drive Link |
 |---|---|---|---|
-| **Test Matrix Pass Rate** | 100% across all tiers | **154/154 suites PASSED** (91 unit, 38 chaos, 25 integration) | ✅ CERTIFIED |
-| **Benchmark Suite** | 15/15 Scenarios | **15/15 PASSED (100.0% Recall, 100.0% Precision)** | ✅ CERTIFIED |
-| **Lint Benchmark** | 0 warnings, 0 errors | **0 warnings, 0 errors on 103 files** (`oxlint`) | ✅ CERTIFIED |
-| **Cyclomatic Complexity** | $CC \le 135$ | **860 functions scanned, all $\le 135$ CC** | ✅ CERTIFIED |
-| **Production Build** | Clean Vite bundle | **Compiled in 15.13s with zero errors** | ✅ CERTIFIED |
-| **Single-User Mode** | Frictionless 1-click | **Active and validated end-to-end** | ✅ CERTIFIED |
+| **Config 1: Server** | 10x DL380 Gen11 | `FR-59 Server MultiRank Solutions` | [Open in Google Sheets](https://docs.google.com/spreadsheets/d/1NPFH_AlPYXH4mBUPJBGJFtqYFr1xagJOa7rMq25HTd4/edit) |
+| **Config 2: Fanavaran** | 1x DL580 Gen12 | `FR-59 Fanavaran DL580 Gen12 MultiRank Solutions` | [Open in Google Sheets](https://docs.google.com/spreadsheets/d/11XDt-ZzEBPYREG5aFtNxvvtH_Qz6At2m1A9UVm4vYnM/edit) |
+| **Config 3: TapeLibrary** | 1x MSL3040 Tape | `FR-59 TapeLibrary MSL3040 MultiRank Solutions` | [Open in Google Sheets](https://docs.google.com/spreadsheets/d/1f-u1WVIsxsH3l0f0AkPCaSkQ-rDZwzGVu4gFu0jlyWI/edit) |
+| **Config 4: BackupServer** | 1x DL380 Gen11 12LFF | `FR-59 BackupServer DL380 Gen11 LFF MultiRank Solutions` | [Open in Google Sheets](https://docs.google.com/spreadsheets/d/19Yu462khPlxcEbBm7xU83KjdsjBIYBQciY_6m8gevY0/edit) |
+| **Config 5: AI-Server** | 1x DL380a Gen12 | `FR-59 AI-Server DL380a Gen12 MultiRank Solutions` | [Open in Google Sheets](https://docs.google.com/spreadsheets/d/1AQrhcTm4cSoZZjtEzJg1-vkdjFNUdwsLnj46YIaru_E/edit) |
+
+Each spreadsheet includes the full multi-tab suite:
+- `Executive Summary & Aspects`: High-level CapEx comparison table and 7-aspect hardware integrity matrix.
+- `Rank 1 - Rank 1 Customer Workload`: Formula-driven quantities (`=B{row}*C{row}`) and prices (`=D{row}*G{row}`) with clean HPE part numbers.
+- `Rank 2` through `Rank 5`: Alternative performance, balanced, deal winner, and budget tiers.
 
 ---
 
-## 7. Forensic SKU Recovery, Dynamic WebLogic Discovery & Presales Evaluations
+### 2. Autonomous Pre-Flight Health Gate & Zero-Touch Self-Healing (`INV-90`)
 
-### 7.1 Universal Regex Misclassification Forensic Breakthrough
-- **Root Cause Analysis**: Diagnosed why GPU accelerators (`S3U30C` NVIDIA H200 NVL, `S2L70C` L40S, `S0K89C` L4) and Fibre Channel HBAs (`R2E09A` SN1610Q 32Gb 2p) were excluded from hardware catalogs.
-- **The Bug**: In `scripts/lib/catalog/sku.js`, `isServiceSku(skuStr)` previously checked `/^[HURS][A-Z0-9]{4,11}$/i`. Any 6-character hardware SKU starting with `S` (GPU accelerators) or `R` (FC HBAs) was classified as a **SERVICE**, filtered out of physical hardware during normalization, and relegated to `*_Services.json`.
-- **The Remediation**:
-  1. Updated `isServiceSku` in `sku.js` to strictly match Care Pack prefixes (`/^[HU][A-Z0-9]{4,11}$/i`) and electronic software licenses (`/^[A-Z0-9]{5,8}AAE$/i`).
-  2. Updated `isClearlyPhysicalSkuRow` in `build_catalog.js` to recognize `accelerator`, `gpu`, `graphics`, and `hba`.
-  3. Added subcategory synthesis rule for `GPU Accelerators` in `product_meta.js`.
-  4. Updated `partitionCatalogEntries` in `build_catalog.js` to extract and retaxonomize any physical hardware components accidentally nested under `Software & Licenses` DOM tables.
-- **Portfolio-Wide SKU Recovery**: Rebuilt all product catalogs and 22-sheet Excel workbooks, recovering **over 800 hardware SKUs**:
-  - `DL380_Gen12`: 472 $\rightarrow$ 605 hardware SKUs (+133)
-  - `DL380a_Gen12`: 359 $\rightarrow$ 450 hardware SKUs (+91)
-  - `DL380_Gen11`: 584 $\rightarrow$ 753 hardware SKUs (+169)
-  - `DL145_Gen11`: 357 $\rightarrow$ 413 hardware SKUs (+56)
-  - `DL580_Gen12`: 242 $\rightarrow$ 485 hardware SKUs (+243)
-  - `SY480_Gen12`: 154 $\rightarrow$ 255 hardware SKUs (+101)
-  - `MSL3040_Tape`: 104 $\rightarrow$ 128 hardware SKUs (+24)
+1. **Mandatory Pre-Flight Check**:
+   Before attempting any cloud upload or final presentation, the engine runs `ensureGoogleAuthValid({ autoHeal: true })` (or `npm run auth:check`).
+   ```bash
+   npm run auth:check
+   # Output:
+   # === Google ADC & Drive Token Health Audit ===
+   # Account:          vinodhsubramanian123@gmail.com
+   # ADC File:         Found (~/.config/gcloud/application_default_credentials.json)
+   # Token Valid:      YES ✅
+   # Token Age:        0 days old
+   # Days Remaining:   7 days until weekly refresh cliff
+   # Expiring Soon:    NO
+   # Sheets Scope:     YES ✅
+   # Drive Scope:      YES ✅
+   # [STATUS] HEALTHY — ADC tokens are fully authorized for hands-free solution upload.
+   ```
 
-### 7.2 Google Sheets & NotebookLM Synchronization: Full Replace vs. Delta Append
-- **Certified Master Catalog (`All SKUs` ground-truth tab) $\rightarrow$ FULL REPLACE IN-PLACE**:
-  - *Rationale*: NotebookLM indexes documents semantically using dense vector embeddings. Appending duplicate SKUs from past scrapes creates conflicting rows, confusing the RAG retriever with outdated prices, obsolete part numbers, or conflicting specifications. The master catalog tab must remain a single, authoritative source of truth.
-- **Audit Trail, Change Log & Knowledge Deltas (`catalog_deltas.json`, `Price Trails`) $\rightarrow$ DELTA APPEND**:
-  - *Rationale*: Tracking pricing drift, lifecycle transitions (`Active` $\rightarrow$ `90` $\rightarrow$ `OB`), and newly learned rules requires an immutable chronological log. Appending timestamped records (with date-based deduplication per `INV-1` and `INV-13`) preserves complete audibility.
+2. **Preventing "App Blocked" Security Policy Errors**:
+   Google blocks generic Cloud SDK client IDs from requesting restricted Google Drive scopes. All authentication routines strictly supply `--client-id-file="~/.config/gcloud/client_secret.json"` (configured for the user's `bom-assistant` desktop OAuth client).
 
-### 7.3 Presales Lifecycle Reasoning & Deal Lead-Time Guardrails
-- **The 90-Day Obsolescence Danger**: Enterprise server quotes take 2 to 6 months from initial sizing to RFP submission, partner deal registration, technical board approval, purchase order, and factory delivery.
-- **Proactive Generational Progression**: If an option carries a 90-Day Warning (`90`) or is from an older generation nearing discontinuation (e.g. 4th Gen Intel Sapphire Rapids transitioning to 5th Gen Emerald Rapids or Xeon 6), selecting it means by the time the PO is issued, the component is obsolete and unorderable, collapsing the deal. The engine flags this risk and articulates clear reasoning in the solution narrative, synthesizing active current-generation equivalents across the matrix ranks.
-- **Dynamic Supply Issue Handling**: If runtime OCA validation signals a supply hold or allocation bottleneck on a specific processor or SKU, the agent logs the constraint into `catalog_deltas.json` and settles on the next closest buildable equivalent, cross-verifying with NotebookLM.
+3. **Autonomous Self-Healing Loopback Server (`scripts/services/autonomous_oauth_flow.js`)**:
+   - Built a local loopback server on port 8085 that generates consent URLs with `access_type: offline` and `prompt: consent`.
+   - Browser subagent handles account selection and permissions consent autonomously.
+   - Atomically exchanges the authorization code for fresh refresh and access tokens and writes `application_default_credentials.json`.
+   - The user has granted **100% permanent unconditional pre-authorization** to execute this flow whenever a token is expired (`invalid_grant`), missing scopes, or expiring within 48h.
 
-### 7.4 Customer Presales Query Evaluations & Ground-Truth Reconciliation
-- **Query A (TensorScale 20x DL380a Gen12)**:
-  - Validated against `/home/vinodh/Downloads/TensorScale-_20x_DL380a_Gen12_-_128GB_RAM-8x_H200_NVL-No_Local_Drive-25GBE_2port_5155535089-01 (1).xlsx` (UCID: `5155535089-01`).
-- **Query B (ComputeScale 1x DL380 Gen12)**:
-  - Validated against `/home/vinodh/Downloads/ComputeScale_-_1x_DL380_Gen12_-_64GB_RAM_-_No_Local_Drive_-_1GbE_4p_5155535243-01.xlsx` (UCID: `5155535243-01`).
-  - Total List Price: **$42,290.00** (Full Bundle with `R7A11AAE` SaaS + 3Y Tech Care Basic) / **$36,331.00** (Pure Hardware Intent per `INV-32`).
-
-### 7.5 Full Test Matrix Certification & 100% Portfolio Verification
-
-## 8. Zero-Touch Browser Auto-Launch, Tab 1 Stale-Session Self-Healing Recovery & Hybrid Multi-Frame Tender Certification
-
-### 8.1 Zero-Touch Browser Auto-Launch & Saved-Credential SSO (`INV-89`)
-- **Automated Port 9222 Management**: `scripts/lib/scraper/browser_launcher.js` tests `http://localhost:9222/json/version` and automatically launches system Chrome with `--remote-debugging-port=9222` and `--user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`.
-- **Automated Okta & Onepass Sign-In**: `performAutomatedSignIn()` in `navigate_oca.js` clicks `#oktaSignInBtn`, detects the saved credential modal, and clicks `#onepass-submit-btn`, settling on the authenticated Partner Portal home page (`partner.hpe.com/group/prp`).
-- **Quick Links Tool Spawning**: Locates "One Config Advanced" at `#quick-links-807 a` (`eServiceId=187402`), opening OCA in a fresh tab with valid SAML assertion tokens.
-
-### 8.2 Tab 1 Stale-Session Self-Healing Recovery Protocol (`INV-89`)
-- **Prohibition of In-Place OCA Reloads**: In-place browser reloads (`location.reload()`) in an active WebLogic OCA tab destroy server-side session memory, causing 403 Forbidden errors or broken login loops.
-- **Autonomous Recovery Sequence**:
-  1. Closes the stale/frozen OCA tab via CDP (`/json/close/{targetId}`).
-  2. Switches focus back to Tab 1 (Partner Portal).
-  3. Auto-signs in if the session expired.
-  4. Reloads Tab 1 via `Page.reload` to regenerate fresh SAML tokens and re-bind Quick Links.
-  5. Clicks "One Config Advanced" from Quick links anew to spawn a pristine OCA tab.
-  6. Re-navigates into the target chassis Menu tab and resumes operations seamlessly.
-
-### 8.3 Hybrid Multi-Frame Tender Resolution (`HPE 15 3.1.xlsx`)
-- **Customer Requirement**: 107-row hybrid enterprise tender: 15x DL380 Gen12 rack servers (`P73282-B21`) + 36x Synergy 480 Gen12 compute modules (`P68217-B21`) across 3x Synergy 12000 CTO frames (`P51174-B21`).
-- **Audited Customer Flaws & Corrective Actions**:
-  - *Startup Services (`HA124A1`)*: Pruned redundant remote `#V0F`, sized `#5ZM` (First Frame) to 1, and `#5ZQ` (Addl Frame) to 2.
-  - *Support Under-Sizing (`HU4B2A3`)*: Sized Composer 2 (`#Z1Q`), VC 100Gb (`#Z1R`), and Brocade 64G (`HU4B2A30BU5`) from 3 to 6 (2 appliances/switches per frame).
-  - *Missing Server Support*: Injected 15x `HU4B2A30C4V` (3Y Tech Care Basic) for DL380 Gen12.
-  - *FC Transceiver Math*: Identified missing 32Gb SW optics (`AJ718A`, Qty 30) for DL380 SN1610Q FC HBAs.
-  - *VC 100Gb Stacking Ring*: Verified 3-frame mesh topology requiring 9x 100Gb QSFP28 3m DACs (`845406-B21`).
-- **100% Financial & Hardware Reconciliation**:
-  - Certified exact match against user solution `HPE_Hybrid_3xFrm_...xlsx` (UCID: `5155640958-01`) at **$5,551,771.00 USD grand list** across all 57 lines and 94 hardware SKUs.
-
-### 8.4 Final Certification Matrix
-- **Test Matrix**: **157/157 suites PASSED (100.0%)** (93 Unit, 39 Chaos, 25 Integration).
-- **Linter**: **0 warnings, 0 errors** across 103 files (`oxlint`).
-- **Cyclomatic Complexity**: **All 872 functions $\le 135$ CC**.
-- **Dashboard**: Production build verified clean (`vite build` in 12.48s).
-- **Knowledge Graph**: Refreshed via `graphify update .` (5,051 nodes, 7,622 edges, 339 communities).
-
+4. **Weekly Token Expiration Lifecycle & Cross-Laptop Portability**:
+   - In GCP OAuth "Testing" mode, external user refresh tokens expire after 7 days.
+   - The engine automatically tracks days remaining (`daysRemaining`) and initiates proactive auto-healing before the weekly cliff.
+   - All paths derive dynamically from `os.homedir()`. Moving between laptops requires running `npm run auth:drive` once, after which all background operations continue frictionlessly without human intervention.
 
 

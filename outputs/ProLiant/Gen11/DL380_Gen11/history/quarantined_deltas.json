@@ -1,0 +1,1032 @@
+[
+  {
+    "deltaId": "DELTA-1789372172560-8tv1b",
+    "traceId": null,
+    "timestamp": "2026-09-14T07:49:32.560Z",
+    "chassis": "DL380_Gen11",
+    "rawMessage": "MR416i-p storage controller (P47777-B21) with Smart Storage Battery (P01366-B21) on DL380 Gen11 mandates storage enablement cable kit (P48918-B21) for cache battery backup functionality.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P01366-B21",
+    "requiredDependencySku": "P48818-B21",
+    "ruleUpdate": "MR416i-p storage controller (P47777-B21) with Smart Storage Battery (P01366-B21) on DL380 Gen11 mandates storage enablement cable kit (P48918-B21) for cache battery backup functionality.",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 10,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "f8a864ec1ad67475cbe5df110c6fd2a92271d45d152a349f14119f65cfcb20dd",
+    "validatedAt": "2026-09-14T07:49:32.582Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_f8a864ec1ad67475",
+    "firstSeenAt": "2026-09-14T07:49:32.583Z",
+    "lastSeenAt": "2026-09-14T07:49:32.583Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-14T07:49:32.583Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P48818-B21_P49145-B21_1789379257191",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P48818-B21",
+    "requiredDependencySku": "P49145-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P48818-B21 requires auxiliary component P49145-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Thermal Heatsink Redline**: With a TDP of **250W** (> 150W threshold), this processor strictly requires the **High-Performance Heatsink** (`P48818-B21`) [5, 9, 10]. Standard heatsinks (`P49145-B21`) are prohibited [9, 11].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-14T09:47:37.191Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "3",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "4",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "5",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "6",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "13",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "14",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "16",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "17",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "25",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "27",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "28",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "29",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "30",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "31",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "32",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "33",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "34",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "40",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "41",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "42",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "6e9945b1c5e76d4ca2d9b5f2e13e450626fa3e653c982ad7945d1e3866a6fd2b",
+    "validatedAt": "2026-09-14T09:47:37.197Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_6e9945b1c5e76d4c",
+    "firstSeenAt": "2026-09-14T09:04:50.483Z",
+    "lastSeenAt": "2026-09-14T09:47:37.199Z",
+    "observationCount": 4,
+    "quarantinedAt": "2026-09-14T09:47:37.199Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_FIO_P52533-B21_P43328-F21_1789379257192",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "OPTION_TYPE_SUBSTITUTION",
+    "affectedSku": "P52533-B21",
+    "requiredDependencySku": "P43328-F21",
+    "reasoning": "Grounding Verification: Standalone BTO option P52533-B21 is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is P43328-F21.",
+    "rawMessage": "* **CTO Factory Integration Requirement**: When configuring a CTO server (`P52533-B21`), standalone BTO memory SKUs with `-B21` suffixes must be translated to Factory-Integrated Option (**`-F21`** suffix: `P43328-F21`) for factory buildability [18, 19].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-14T09:47:37.192Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "3",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "4",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "5",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "6",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "13",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "14",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "16",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "17",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "25",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "27",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "28",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "29",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "30",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "31",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "32",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "33",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "34",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "40",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "41",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "42",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "6e5dd20e497ed24b944190b4723b5778a99be8627b2550f3d35c6da2e649f42c",
+    "validatedAt": "2026-09-14T09:47:37.333Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_6e5dd20e497ed24b",
+    "firstSeenAt": "2026-09-14T09:04:50.488Z",
+    "lastSeenAt": "2026-09-14T09:47:37.335Z",
+    "observationCount": 4,
+    "quarantinedAt": "2026-09-14T09:47:37.335Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_200VAC_240VAC_1789379257193",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "200VAC",
+    "requiredDependencySku": "240VAC",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting 200VAC requires auxiliary component 240VAC to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Input Voltage Requirement**: 1600W Platinum PSUs require **high-line utility voltage** (200VAC to 240VAC) [29, 30].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-14T09:47:37.193Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "3",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "4",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "5",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "6",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "13",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "14",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "16",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "17",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "25",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "27",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "28",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "29",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "30",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "31",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "32",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "33",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "34",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "40",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "41",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "42",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "07b7ba912b5deeefe619fd71194fb291832a483bbf7cdf7bed73645091ca790b",
+    "validatedAt": "2026-09-14T09:47:37.351Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_07b7ba912b5deeef",
+    "firstSeenAt": "2026-09-14T09:04:50.494Z",
+    "lastSeenAt": "2026-09-14T09:47:37.353Z",
+    "observationCount": 4,
+    "quarantinedAt": "2026-09-14T09:47:37.353Z",
+    "quarantineReasons": [
+      "SKU 200VAC not found in target catalog; held in quarantine for manual verification",
+      "Required SKU 240VAC not found in target catalog; held in quarantine for manual verification",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_FIO_P43328-B21_P43328-F21_1789379257194",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "OPTION_TYPE_SUBSTITUTION",
+    "affectedSku": "P43328-B21",
+    "requiredDependencySku": "P43328-F21",
+    "reasoning": "Grounding Verification: Standalone BTO option P43328-B21 is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is P43328-F21.",
+    "rawMessage": "| **Memory SKU** | 32GB DDR5-4800 (`P43328-B21`) | ⚠️ **BTO Suffix Trigger** | Convert `P43328-B21` to CTO FIO SKU **`P43328-F21`** for factory integration [18, 19]. |",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-14T09:47:37.194Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "3",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "4",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "5",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "6",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "13",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "14",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "16",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "17",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "25",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "27",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "28",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "29",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "30",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "31",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "32",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "33",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "34",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "40",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "41",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      },
+      {
+        "index": "42",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "SKU Number P52532-B21 P52533-B21 P52534-B21 P52535-B21 TAA SKU* P52532-B21#GTA P52533-B21#GTA P52534-B21#GTA P52535-B21#GTA HPE Trusted Supply Chain  P36394-B21 – Optional Processor Not included as standard Not included as standard Not included as standard Not included as standard DIMM Slots 32-DIMM slots 32-DIMM slots 32-DIMM slots 32-DIMM slots Storage Controller Embedded SW RAID with 14 SATA ports (12-ports accessible), optional choice of HPE modular MegaRAID controller.  PCIe Three standard in primary riser Drive Cage - available 8LFF 12LFF 8 SFF (8SFF U.3 x1) 24SFF (3x 8SFF U.3"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "89d7209bf06a88aa70edb5a8252c22731a516a2c709933696a992686ef1f69b7",
+    "validatedAt": "2026-09-14T09:47:37.370Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_89d7209bf06a88aa",
+    "firstSeenAt": "2026-09-14T09:04:50.505Z",
+    "lastSeenAt": "2026-09-14T09:47:37.372Z",
+    "observationCount": 4,
+    "quarantinedAt": "2026-09-14T09:47:37.372Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA-1789376966628-5iirx",
+    "traceId": null,
+    "timestamp": "2026-09-14T09:09:26.627Z",
+    "chassis": "DL380_Gen11",
+    "rawMessage": "P51911-B21 is HPE ProLiant DL360 Gen11 CPU1 to OCP2 x8 Enablement Kit, which is chassis-specific to DL360 Gen11. On DL380 Gen11, OCP slot 2 enablement requires DL3XX Gen11 OCP enablement kits such as P48828-B21 (OCP2 x16) or P48830-B21 (CPU2 to OCP2 x8).",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P51911-B21",
+    "requiredDependencySku": "P48828-B21",
+    "ruleUpdate": "P51911-B21 is HPE ProLiant DL360 Gen11 CPU1 to OCP2 x8 Enablement Kit, which is chassis-specific to DL360 Gen11. On DL380 Gen11, OCP slot 2 enablement requires DL3XX Gen11 OCP enablement kits such as P48828-B21 (OCP2 x16) or P48830-B21 (CPU2 to OCP2 x8).",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 6,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "c62811de43f980465caf44a74b292f58e43af744edaab9c4a5acdaf13018792f",
+    "validatedAt": "2026-09-14T09:09:26.676Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_c62811de43f98046",
+    "firstSeenAt": "2026-09-14T09:09:26.680Z",
+    "lastSeenAt": "2026-09-14T09:09:26.680Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-14T09:09:26.680Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  }
+]

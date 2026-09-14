@@ -20,26 +20,34 @@ function isExcludedPcieRole(role) {
          role === 'Service & Support' || role === 'Operating System / License';
 }
 
-const PRIMARY_CABLE_KIT_SKUS = new Set(['P56073-B21']);
-const SECONDARY_CABLE_KIT_SKUS = new Set(['P56074-B21']);
-const GPU_POWER_CABLE_KIT_SKUS = new Set(['P48816-B21', 'P76450-B21', 'P74700-B21']);
-const PRIMARY_RISER_SKUS = new Set(['P48803-B21']);
-const SECONDARY_RISER_SKUS = new Set(['P51083-B21', 'P48802-B21']);
-const TERTIARY_RISER_SKUS = new Set(['P48804-B21']);
-
-function tallyPcieCablesAndGpus(tally, desc, sku, qty, role) {
-  if ((desc.includes('primary') && (desc.includes('cable kit') || desc.includes('prim cbl') || desc.includes('riser cable'))) || PRIMARY_CABLE_KIT_SKUS.has(sku)) {
+function tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus = {}) {
+  const isPrimaryCable = (desc.includes('primary') && (desc.includes('cable kit') || desc.includes('prim cbl') || desc.includes('riser cable'))) ||
+                         desc.includes('riser 1/6') ||
+                         (role === 'PCIe Riser Cable' && desc.includes('primary')) ||
+                         (mandatorySkus?.PRIMARY_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.PRIMARY_CABLE_KIT.sku));
+  if (isPrimaryCable) {
     tally.hasPrimaryCableKit = true;
   }
-  if ((desc.includes('secondary') && (desc.includes('cable kit') || desc.includes('sec cbl') || desc.includes('riser cable'))) || SECONDARY_CABLE_KIT_SKUS.has(sku)) {
+
+  const isSecondaryCable = (desc.includes('secondary') && (desc.includes('cable kit') || desc.includes('sec cbl') || desc.includes('riser cable'))) ||
+                           desc.includes('riser 2/5') ||
+                           (role === 'PCIe Riser Cable' && desc.includes('secondary')) ||
+                           (mandatorySkus?.SECONDARY_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.SECONDARY_CABLE_KIT.sku));
+  if (isSecondaryCable) {
     tally.hasSecondaryCableKit = true;
   }
-  if (desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || desc.includes('12vhpwr') || desc.includes('gpu 16-pin') || GPU_POWER_CABLE_KIT_SKUS.has(sku)) {
+
+  const isGpuPowerCable = desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || 
+                          desc.includes('12vhpwr') || desc.includes('gpu 16-pin') || 
+                          (role === 'Power Cable' && desc.includes('gpu')) ||
+                          (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku));
+  if (isGpuPowerCable) {
     tally.hasGpuPowerCableKit = true;
-    // On DL380a Gen12, P74700-B21 cables 2 GPUs per kit
-    const multiplier = (sku === 'P74700-B21' || desc.includes('gpu 16-pin')) ? 2 : 1;
+    // Multiplier: 16-pin / dual-GPU cables provide 2 GPU connections per kit
+    const multiplier = (desc.includes('gpu 16-pin') || desc.includes('dual gpu') || desc.includes('2-gpu')) ? 2 : 1;
     tally.gpuPowerCableKitCount += (qty * multiplier);
   }
+
   if (isGpuComponent(role, desc)) {
     tally.gpuCount += qty;
   }
@@ -77,15 +85,15 @@ function tallyPcieCardDemand(tally, desc, qty, role, isDl380a = false) {
 function tallyRiserCards(tally, desc, sku, qty, role) {
   if (role === 'PCIe Riser' || desc.includes('riser')) {
     const parsedSlots = parseRiserSlotCount(desc);
-    const position = desc.includes('secondary') ? 'SECONDARY' : desc.includes('tertiary') ? 'TERTIARY' : 'PRIMARY';
+    const position = desc.includes('secondary') || desc.includes('sec riser')
+      ? 'SECONDARY'
+      : (desc.includes('tertiary') || desc.includes('tert riser') ? 'TERTIARY' : 'PRIMARY');
     tally.riserEvidence.push({ sku, description: desc, position, quantity: qty, slotsPerRiser: parsedSlots.slots, evidence: parsedSlots.evidence });
-    if (desc.includes('primary riser') || desc.includes('main riser') || desc.includes('primary x16') || PRIMARY_RISER_SKUS.has(sku)) {
+    if (position === 'PRIMARY') {
       tally.primaryRiserCount += qty;
-    }
-    if (desc.includes('secondary riser') || desc.includes('secondary x16') || SECONDARY_RISER_SKUS.has(sku)) {
+    } else if (position === 'SECONDARY') {
       tally.secondaryRiserCount += qty;
-    }
-    if (desc.includes('tertiary riser') || desc.includes('tertiary x16') || TERTIARY_RISER_SKUS.has(sku)) {
+    } else if (position === 'TERTIARY') {
       tally.tertiaryRiserCount += qty;
     }
   }
@@ -100,7 +108,7 @@ function parseRiserSlotCount(description) {
   return { slots: desc.includes('tertiary') ? 2 : 3, evidence: 'LEGACY_POSITION_FALLBACK' };
 }
 
-function tallyPcieItems(items, catalogData) {
+function tallyPcieItems(items, catalogData, mandatorySkus = {}) {
   const skuIndex = buildCatalogSkuIndex(catalogData);
   const tally = {
     requiredPcieCards: 0,
@@ -118,7 +126,10 @@ function tallyPcieItems(items, catalogData) {
 
   const isDl380a = items.some(it => {
     const d = (it.description || '').toLowerCase();
-    return d.includes('dl380a') || cleanBaseSKU(it.sku) === 'P76706-B21';
+    if (d.includes('dl380a')) return true;
+    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
+    const catDesc = (catItem?.skuData?.Description || catItem?.skuData?.description || '').toLowerCase();
+    return catDesc.includes('dl380a');
   });
 
   for (const it of items) {
@@ -137,7 +148,7 @@ function tallyPcieItems(items, catalogData) {
         : (catalogItem.skuData?.['Component Role'] || classifyComponentRole(catalogItem.parentCategory, desc));
     }
 
-    tallyPcieCablesAndGpus(tally, desc, sku, qty, role);
+    tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus);
     tallyPcieCardDemand(tally, desc, qty, role, isDl380a);
     tallyRiserCards(tally, desc, sku, qty, role);
   }
@@ -146,7 +157,12 @@ function tallyPcieItems(items, catalogData) {
 }
 
 function calculatePcieSlots(t) {
-  const activePrimarySlots = t.hasPrimaryCableKit ? 3 : 2;
+  // Standard enterprise chassis (e.g. DL380 Gen11 / Gen12) include a default primary riser providing 3 physical slots
+  // (Slot 1 x8, Slot 2 x16, Slot 3 x8) electrically routed to CPU 1.
+  // Optional primary riser card kits (e.g. P48803-B21 x16/x16/x16) require a Primary Cable Kit
+  // to activate Slot 1 electrically; without the cable kit, only 2 active slots are available.
+  // When relying on the default embedded chassis riser, 3 standard slots are available.
+  const activePrimarySlots = t.primaryRiserCount > 0 ? (t.hasPrimaryCableKit ? 3 : 2) : 3;
   const activeSecondarySlots = t.secondaryRiserCount > 0 ? (t.hasSecondaryCableKit ? 3 : 2) : 0;
   const activeTertiarySlots = t.tertiaryRiserCount > 0 ? 2 : 0;
 
@@ -190,8 +206,8 @@ function calculatePcieSlots(t) {
   };
 }
 
-function evalPcieRiserSlots(items, catalogData = null) {
-  const t = tallyPcieItems(items, catalogData);
+function evalPcieRiserSlots(items, catalogData = null, mandatorySkus = {}) {
+  const t = tallyPcieItems(items, catalogData, mandatorySkus);
   const s = calculatePcieSlots(t);
 
   return {

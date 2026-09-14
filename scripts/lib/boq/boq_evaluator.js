@@ -54,22 +54,22 @@ const { generateLifecycleRecommendations } = require('../conflict/resolution_mat
 const HIGH_TDP_THRESHOLD_WATTS = 240;
 
 function buildCtoBaseSkus() {
-  const defaults = [
-    'P73282-B21', // DL380 Gen12 SFF CTO
-    'P52534-B21', // DL360 Gen11 CTO
-    'P76706-B21', // DL380 Gen12 8SFF CTO Variant
-    'P56900-B21', // DL380 Gen11 8SFF CTO
-    'P52533-B21', // DL380 Gen11 8LFF CTO
-    'R0Q21A',     // Alletra / MSA Base
-    '864273-B21', // Synergy Module Base
-    'P57100-B21', // Cray GX5000 Base
-    'Q6Q67A'      // StoreEver Tape Base
-  ];
-  const set = new Set(defaults);
+  const set = new Set();
   try {
-    const map = getChassisMap();
-    for (const info of Object.values(map)) {
-      if (info && info.baseSku) set.add(info.baseSku);
+    const cmap = getChassisMap();
+    if (cmap.chassis_base_skus_by_family_gen) {
+      for (const fam of Object.values(cmap.chassis_base_skus_by_family_gen)) {
+        if (fam && fam.skus) {
+          for (const sku of Object.keys(fam.skus)) {
+            set.add(cleanBaseSKU(sku));
+          }
+        }
+      }
+    }
+    if (cmap.chassis_base_skus) {
+      for (const sku of Object.keys(cmap.chassis_base_skus)) {
+        set.add(cleanBaseSKU(sku));
+      }
     }
   } catch (_) {}
   return set;
@@ -139,7 +139,7 @@ function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
  */
 
 function validateNetworkingRules(ctx) {
-  const { network, serverCount, errors, mathDeductions, warnings, missingDependencies } = ctx;
+  const { network, serverCount, mandatorySkus, errors, mathDeductions, warnings, missingDependencies } = ctx;
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
   const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
 
@@ -158,7 +158,9 @@ function validateNetworkingRules(ctx) {
   }
 
   if (network.hasConflictingOcpCables) {
-    const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (P51911-B21) and CPU2/OCP2 Enablement Kit (P48830-B21) cannot be selected together. Unselect P51911-B21 on dual-CPU DL380 servers.`;
+    const cpu1OcpSku = mandatorySkus?.CPU1_OCP_CABLE?.sku || 'CPU1_OCP';
+    const cpu2OcpSku = mandatorySkus?.CPU2_OCP_CABLE?.sku || 'CPU2_OCP';
+    const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (${cpu1OcpSku}) and CPU2/OCP2 Enablement Kit (${cpu2OcpSku}) cannot be selected together. Unselect ${cpu1OcpSku} on dual-CPU servers.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
@@ -223,7 +225,7 @@ function validatePCIeRules(ctx) {
   if (pcie.needsPrimaryCableKit) {
     const primaryCableSku = mandatorySkus?.PRIMARY_CABLE_KIT?.sku || 'P56073-B21';
     const primaryCableName = mandatorySkus?.PRIMARY_CABLE_KIT?.name || 'HPE ProLiant DL380 Primary Cable Kit';
-    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser (P48803-B21) requires Primary Cable Kit (${primaryCableSku}).`;
+    const reason = `CLIC Rule 81356091: Enabling Slot 1 on Primary 3x16 Riser requires Primary Cable Kit (${primaryCableSku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'PRIMARY_RISER_CABLE_KIT',
@@ -238,7 +240,7 @@ function validatePCIeRules(ctx) {
   if (pcie.needsSecondaryCableKit) {
     const secCableSku = mandatorySkus?.SECONDARY_CABLE_KIT?.sku || 'P56074-B21';
     const secCableName = mandatorySkus?.SECONDARY_CABLE_KIT?.name || 'HPE ProLiant DL380 Secondary Cable Kit';
-    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser (P51083-B21) requires Secondary Cable Kit (${secCableSku}).`;
+    const reason = `CLIC Rule 81170920 / 81356092: Enabling Slot 4 on Secondary 3x16 Riser requires Secondary Cable Kit (${secCableSku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'SECONDARY_RISER_CABLE_KIT',
@@ -260,10 +262,14 @@ function validatePCIeRules(ctx) {
 
 function validateThermalRules(ctx) {
   const { items, compute, pcie, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
-  const hasTriModeCage = storage?.hasDriveCage || storage?.needsDriveCageForController || items?.some(it => ['P75741-B21', 'P48814-B21'].includes(ctx.cleanBaseSKU(it.sku)));
+  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
+    items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
+  if (isTapeLibrary) return;
+
+  const hasTriModeCage = storage?.hasDriveCage || storage?.needsDriveCageForController || (mandatorySkus?.GENERIC_CAGE?.sku && items?.some(it => ctx.cleanBaseSKU(it.sku) === ctx.cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
   const needsFansForStorage = hasTriModeCage && storage?.hasStorageController && !compute.hasHighPerfFans;
   if (needsFansForStorage && !missingDependencies.some(d => d.key === 'HIGH_PERF_FAN_KIT')) {
-    const reason = `INV-87: Tri-Mode Drive Cage with Storage Controller alters chassis airflow impedance, mandating High-Performance Fan Kit (P48820-B21).`;
+    const reason = `INV-87: Tri-Mode Drive Cage with Storage Controller alters chassis airflow impedance, mandating High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'HIGH_PERF_FAN_KIT',
@@ -277,7 +283,7 @@ function validateThermalRules(ctx) {
 
   if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
     const reason = pcie.gpuCount > 0 
-      ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (P48820-B21) for adequate cooling envelope.`
+      ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) for adequate cooling envelope.`
       : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
     if (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS) errors.push(reason);
     else warnings.push(reason);
@@ -293,7 +299,7 @@ function validateThermalRules(ctx) {
   }
 
   if (compute.fanKitExceedsMax) {
-    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
+    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
@@ -329,13 +335,15 @@ function validateStorageRules(ctx) {
     });
   }
 
-  if (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict) {
-    const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a') || (it.sku || '').includes('P76706'));
-    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12') || (it.sku || '').includes('P73282'));
-    const cageSku = isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21');
-    const cageDesc = isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit');
-    const cableSku = isGen12 ? 'P76456-B21' : 'P48918-B21';
-    const cableDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit';
+  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
+    items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
+  if (!storage.isLffChassis && !isTapeLibrary && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
+    const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a'));
+    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12'));
+    const cageSku = mandatorySkus.GENERIC_CAGE?.sku || (isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'));
+    const cageDesc = mandatorySkus.GENERIC_CAGE?.name || (isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit'));
+    const cableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || (isGen12 ? 'P76456-B21' : 'P48918-B21');
+    const cableDesc = mandatorySkus.CONTROLLER_CABLE_KIT?.name || (isGen12 ? 'HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit');
     const cageLabel = isDl380a ? '4SFF Drive Cage' : '8SFF Drive Cage';
     const reason = `INV-87: Storage Controller requires physical drive cage and backplane cabling. Internal RAID controller cannot cable into chassis with No Drive Kit. Adding ${cageLabel} (${cageSku}) and Box 2 Cable Kit (${cableSku}).`;
     warnings.push(reason);
@@ -358,19 +366,17 @@ function validateStorageRules(ctx) {
   }
 
   const hasNs204BootDevice = items.some(it => {
-    const s = ctx.cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
-    return s === 'P78279-B21' || s === 'P12965-B21' || d.includes('ns204i');
+    return d.includes('ns204') || d.includes('boot device') || (it.sku && it.sku.toLowerCase().includes('ns204'));
   });
   const hasNs204Enablement = items.some(it => {
-    const s = ctx.cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
-    return s === 'P74755-B21' || s === 'P54442-B21' || (d.includes('ns204') && (d.includes('enablement') || d.includes('rear mount')));
+    return (d.includes('ns204') && (d.includes('enablement') || d.includes('rear mount'))) || (mandatorySkus?.BOOT_DEVICE_ENABLEMENT?.sku && ctx.cleanBaseSKU(it.sku) === ctx.cleanBaseSKU(mandatorySkus.BOOT_DEVICE_ENABLEMENT.sku));
   });
   if (hasNs204BootDevice && !hasNs204Enablement) {
-    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12') || (it.sku || '').includes('P73282'));
-    const enablementSku = isGen12 ? 'P74755-B21' : 'P54442-B21';
-    const enablementDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Mount Enablement Kit' : 'HPE ProLiant DL380 Gen11 NS204i-u Rear Mount Enablement Kit';
+    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12'));
+    const enablementSku = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.sku || (isGen12 ? 'P74755-B21' : 'P54442-B21');
+    const enablementDesc = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.name || 'HPE ProLiant NS204i-u Rear Mount Enablement Kit';
     const reason = `INV-87: NS204i-u Boot Storage Device requires physical Rear Mount Enablement Kit (${enablementSku}).`;
     warnings.push(reason);
     missingDependencies.push({
@@ -384,7 +390,9 @@ function validateStorageRules(ctx) {
   }
 
   if (storage.hasIncompatibleYCable) {
-    const reason = `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) requires PCIe-type RAID controller (MR416i-p/SR932i-p) and Premium Cage (P48814-B21). Not compatible with OCP storage controllers or standard cages. Remove P48832-B21 and use P48918-B21.`;
+    const splitterCableSku = mandatorySkus.TRI_MODE_SPLITTER_CABLE?.sku || 'TRI_MODE_SPLITTER';
+    const enablementCableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21';
+    const reason = `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (${splitterCableSku}) requires PCIe-type RAID controller and Premium Cage. Not compatible with OCP storage controllers or standard cages. Remove ${splitterCableSku} and use ${enablementCableSku}.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
@@ -403,28 +411,33 @@ function validateStorageRules(ctx) {
     });
   }
 
-  const hasEnablementCable = storage.hasOcpCable || items.some(it => ctx.cleanBaseSKU(it.sku) === 'P48918-B21');
+  const controllerCableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21';
+  const controllerCableName = mandatorySkus.CONTROLLER_CABLE_KIT?.name || 'HPE ProLiant Storage Controller Enablement Cable Kit';
+  const hasEnablementCable = storage.hasOcpCable || items.some(it => ctx.cleanBaseSKU(it.sku) === ctx.cleanBaseSKU(controllerCableSku));
   if ((storage.needsCapacitorCable || storage.hasStorageController) && !hasEnablementCable) {
-    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery and Controller require Storage Controller Enablement Cable Kit (P48918-B21) to connect power and sideband telemetry.`;
+    const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery and Controller require Storage Controller Enablement Cable Kit (${controllerCableSku}) to connect power and sideband telemetry.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'STORAGE_CONTROLLER_ENABLEMENT_CABLE',
       rule: 'CLIC Rule 81354652: Capacitor Power Link Requirement',
-      sku: 'P48918-B21',
-      description: 'HPE ProLiant Storage Controller Enablement Cable Kit',
+      sku: controllerCableSku,
+      description: controllerCableName,
       quantity: serverCount,
       reasoning: reason
     });
   }
 
   if (storage.needsSasExpander) {
-    const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (P48835-B21) or Tri-Mode Switch Card (P55806-B21).`;
+    const sasExpanderSku = mandatorySkus.SAS_EXPANDER?.sku || 'P48835-B21';
+    const sasExpanderName = mandatorySkus.SAS_EXPANDER?.name || 'HPE ProLiant SAS Expander Card Kit';
+    const triModeSwitchSku = mandatorySkus.TRI_MODE_SWITCH?.sku || 'P55806-B21';
+    const reason = `Storage Expander Math: ${storage.driveCount} drives exceeds direct controller capacity (${storage.controllerDirectCapacity} drives). Requires SAS Expander Card (${sasExpanderSku}) or Tri-Mode Switch Card (${triModeSwitchSku}).`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'SAS_EXPANDER_CARD',
       rule: 'Storage Expander & Multi-Drive Channel Rule',
-      sku: 'P48835-B21',
-      description: 'HPE ProLiant DL380 Gen11 24SFF SAS Expander Card Kit',
+      sku: sasExpanderSku,
+      description: sasExpanderName,
       quantity: serverCount,
       reasoning: reason
     });
@@ -447,18 +460,28 @@ function validatePowerRules(ctx) {
     });
   }
 
-  const psuPerServer = power.psuCount / serverCount;
-  if (psuPerServer === 1) {
-    const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'POWER_SUPPLY_REDUNDANCY',
-      rule: 'Power Supply N+1 Redundancy Rule',
-      sku: 'P38997-B21',
-      description: 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply',
-      quantity: serverCount,
-      reasoning: reason
-    });
+  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' ||
+    items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
+  if (!isTapeLibrary) {
+    const psuPerServer = power.psuCount / serverCount;
+    if (psuPerServer === 1) {
+      const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
+      warnings.push(reason);
+      const existingPsu = items.find(it => {
+        const d = (it.description || '').toLowerCase();
+        return d.includes('power supply') || d.includes('flex slot') || d.includes('psu');
+      });
+      const psuSku = existingPsu ? ctx.cleanBaseSKU(existingPsu.sku) : (mandatorySkus?.POWER_SUPPLY?.sku || 'P38997-B21');
+      const psuDesc = existingPsu?.description || 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply';
+      missingDependencies.push({
+        key: 'POWER_SUPPLY_REDUNDANCY',
+        rule: 'Power Supply N+1 Redundancy Rule',
+        sku: psuSku,
+        description: psuDesc,
+        quantity: serverCount,
+        reasoning: reason
+      });
+    }
   }
 
   if (pcie.needsGpuPowerCableKit) {
@@ -514,13 +537,15 @@ function validatePowerRules(ctx) {
   }
 
   if (power.needsCeRemovalKit) {
-    const reason = `EU Lot 9 Compliance Advisory: High-draw configuration with Platinum PSUs requires 96% Titanium PSUs (P44712-B21) or CE Mark Removal FIO Enablement Kit (P35876-B21) for non-EU deployment.`;
+    const ceRemovalSku = mandatorySkus.CE_REMOVAL_KIT?.sku || 'P35876-B21';
+    const ceRemovalName = mandatorySkus.CE_REMOVAL_KIT?.name || 'HPE CE Mark Removal FIO Enablement Kit';
+    const reason = `EU Lot 9 Compliance Advisory: High-draw configuration with Platinum PSUs requires 96% Titanium PSUs or CE Mark Removal FIO Enablement Kit (${ceRemovalSku}) for non-EU deployment.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'CE_MARK_REMOVAL_KIT',
       rule: 'EU Lot 9 / CE Mark Regulatory Enablement Rule',
-      sku: 'P35876-B21',
-      description: 'HPE CE Mark Removal FIO Enablement Kit',
+      sku: ceRemovalSku,
+      description: ceRemovalName,
       quantity: serverCount,
       reasoning: reason
     });
@@ -746,6 +771,154 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
   return { chassisDefaults, redundantDefaults };
 }
 
+function buildAspectChecks(ctx) {
+  const {
+    compute, memory, storage, network, pcie, power, support,
+    mandatorySkus, serverCount, hasDriveCageKit,
+    isExceedingActivePcie, isExceedingPcie, isExceedingOcp,
+    cpusPerServer, psuPerServer,
+    activePcieSlotsClusterMax, pcieSlotsClusterMax, ocpSlotsClusterMax,
+    HIGH_TDP_THRESHOLD_WATTS
+  } = ctx;
+
+  return [
+    {
+      id: 1,
+      name: 'Thermal & Compute Math',
+      iconType: 'Cpu',
+      defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
+      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      detail: compute.fanKitExceedsMax
+        ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
+        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
+        ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
+        : compute.isDl380aAccelerator
+        ? `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with DL380a factory-integrated high-performance accelerator cooling architecture.`
+        : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with valid fan kit count.`
+    },
+    {
+      id: 2,
+      name: 'Memory & Channel Balance',
+      iconType: 'Memory',
+      defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
+      status: (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
+      detail: memory.hasBtoMemoryInCto
+        ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
+        : (memory.memoryCount > 0 && !memory.isSupportedPopulation)
+        ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced or is an unsupported asymmetric count.`
+        : !memory.isBalancedChannel
+        ? `Verified ${memory.memoryCount} DIMMs in supported entry population (${memory.memoryCount / serverCount} DIMMs/node, ${memory.totalMemoryGb / serverCount}GB RAM). Note: Maximum memory interleaving bandwidth is achieved with ${memory.channelsPerCpu} DIMMs per socket.`
+        : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
+    },
+    {
+      id: 3,
+      name: 'Storage & Controller Cabling',
+      iconType: 'HardDrive',
+      defaultRule: 'Storage controller, drive cage & cable kit compatibility checks (CLIC Rules 81354627 & 81354632)',
+      status: storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
+      detail: storage.hasIncompatibleYCable
+        ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`
+        : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
+        ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
+        : storage.hasStorageController && !storage.hasSmartBattery
+        ? 'Storage Math Failed: Storage controller requires Smart Storage Battery / Capacitor Kit.'
+        : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
+    },
+    {
+      id: 4,
+      name: 'PCIe Riser & Slot Expansion Math',
+      iconType: 'Layers',
+      defaultRule: 'PCIe slot capacity, active riser cabling & slot expansion rules (CLIC Rules 81016755 & 81354683)',
+      status: isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
+      detail: isExceedingActivePcie
+        ? `PCIe Active Slot Math Failed (CLIC Rule 81016755): ${pcie.requiredPcieCards} required cards exceeds ${activePcieSlotsClusterMax} electrically cabled active slots. Slot 1 and/or Slot 4 require Riser Cable Kits (${mandatorySkus?.PRIMARY_CABLE_KIT?.sku || 'PRIMARY_CABLE_KIT'} / ${mandatorySkus?.SECONDARY_CABLE_KIT?.sku || 'SECONDARY_CABLE_KIT'}).`
+        : isExceedingPcie
+        ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.`
+        : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2
+        ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.'
+        : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${activePcieSlotsClusterMax} active cabled slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node)${pcie.gpuCount > 0 && power.isDl380aGpuChassis ? ` plus ${pcie.gpuCount} front-bay accelerator(s) seated on high-speed switchboards` : ''}.`
+    },
+    {
+      id: 5,
+      name: 'Networking & OCP Interconnect',
+      iconType: 'Zap',
+      defaultRule: 'OCP 3.0 network adapter slots and port allocation rules (CLIC Rule 81355854)',
+      status: isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
+      detail: network.hasConflictingOcpCables
+        ? `CLIC Rule 81355854 Failed: CPU1 to OCP2 (${mandatorySkus?.CPU1_OCP_CABLE?.sku || 'CPU1_OCP'}) and CPU2 to OCP2 (${mandatorySkus?.CPU2_OCP_CABLE?.sku || 'CPU2_OCP'}) enablement kits cannot be selected together.`
+        : isExceedingOcp
+        ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} slots.`
+        : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
+    },
+    {
+      id: 6,
+      name: 'Power & Redundancy Math',
+      iconType: 'Power',
+      defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
+      status: (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
+      detail: power.hasDcPowerSupply && !power.hasDcLugKit
+        ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.'
+        : power.hasDl380aGpuPsuShortage
+        ? `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W PSUs per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount}.`
+        : `Verified power supply and infrastructure dependencies (${psuPerServer} PSUs/node).`
+    },
+    {
+      id: 7,
+      name: 'Vendor Support Taxonomy & Licensing',
+      iconType: 'Award',
+      defaultRule: 'Hardware SKU validation, requested support coverage, and OS core multipliers (INV-28, INV-32)',
+      status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
+        ? 'WARN'
+        : (!support.hasSupportService ? 'WARN' : 'PASS'),
+      detail: support.needsAdditionalWindowsCores
+        ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
+        : support.needsAdditionalVmwareCores
+        ? `VMware Licensing Deficit: Requires ${support.missingVmwareCores} additional VMware core licenses (${support.vmwareLicensedCores}/${support.requiredVmwareCores} cores covered).`
+        : support.needsAdditionalLinuxSubscriptions
+        ? `Linux OS Licensing Deficit: Requires ${support.missingLinuxSubscriptions} additional 1-2 socket subscription(s).`
+        : support.hasSupportService
+        ? `Verified requested support services and OS core allocations${support.hasManagementLicense ? '; customer-selected management licensing is present' : ''}.`
+        : 'Support Taxonomy Advisory: Missing Pointnext / Tech Care service line.'
+    }
+  ];
+}
+
+function buildArchitecturalRationale(ctx) {
+  const { power, pcie, storage, memory, serverCount, compute } = ctx;
+  const architecturalRationale = [];
+  if (power.isDl380aGpuChassis) {
+    if (pcie.gpuCount > 0) {
+      architecturalRationale.push({
+        topic: 'DL380a Gen12 GPU Density & NVLink Bridge Physical Clearance Rule',
+        rationale: 'The DL380a Gen12 platform supports up to 8 double-wide (8DW) GPUs under P75008-B21 (with dual PCIe Gen5 switchboards P74714-B21) or 10DW under P75005-B21 (captive risers). For NVIDIA H200 NVL (S3U30C), physical NVLink bridges (S4A90C / S4A91C) are mandatory for 900 GB/s inter-GPU memory pooling. Per HPE QuickSpecs, the dense 10DW captive riser mode does NOT support NVLink bridges ("10DW configuration does not support GPU NVL bridges"). Therefore, 8DW Mode is the absolute maximum buildable configuration for H200 NVL on this chassis.'
+      });
+      architecturalRationale.push({
+        topic: 'DL380a Front-Bay Accelerator Cabling & Cooling',
+        rationale: 'Front-bay accelerators on DL380a Gen12 connect directly to the switchboards using P74700-B21 (GPU 16-pin FIO Cable Kits, 1 kit per 2 GPUs) and do not consume rear PCIe riser slots, keeping rear slots open for networking and HBAs. High-performance counter-rotating cooling fans are factory-integrated into the P76706-B21 chassis.'
+      });
+    }
+  }
+  if (storage.hasNoDriveKit) {
+    architecturalRationale.push({
+      topic: 'No Local Drive Configuration FIO Kit (873763-B21)',
+      rationale: 'HPE ProLiant Compute DL380 No Drive Configuration FIO Kit (873763-B21, $14 list) satisfies CLIC Rule 81392308 for diskless compute nodes, clearing mandatory front drive cage and RAID controller requirements.'
+    });
+  }
+  if (power.hasCeRemovalKit) {
+    architecturalRationale.push({
+      topic: 'EU Ecodesign ErP Lot 9 Regulatory Clearance (P35876-B21)',
+      rationale: 'HPE CE Mark Removal FIO Enablement Kit (P35876-B21, $1 list) clears EU Lot 9 software prompt for 94% Platinum PSUs on dual-socket configurations without altering requested PSU hardware.'
+    });
+  }
+  if (memory.memoryCount > 0 && !memory.isBalancedChannel && memory.isSupportedPopulation) {
+    architecturalRationale.push({
+      topic: 'Memory Population & Interleaving Bandwidth',
+      rationale: `Configured with ${memory.dimmsPerCpu} DIMMs per socket (${memory.totalMemoryGb / serverCount}GB RAM), which is a valid, certified entry memory population in HPE QuickSpecs. For workloads requiring maximum memory bandwidth, populating all ${memory.channelsPerCpu} channels per socket (1DPC) provides 100% full-channel interleaving.`
+    });
+  }
+  return architecturalRationale;
+}
+
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
   if (!items || !Array.isArray(items) || items.length === 0) {
     const reason = 'Empty BOQ: No SKUs or line items detected.';
@@ -879,12 +1052,15 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
   const psuPerServer = power.psuCount / serverCount;
   const cpusPerServer = compute.cpuCount / serverCount;
-  const hasDriveCageKit = storage.hasDriveCage || items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21' || cleanBaseSKU(it.sku) === 'P48813-B21');
+  const hasDriveCageKit = storage.hasDriveCage || items.some(it => (it.description || '').toLowerCase().includes('drive cage') || (it.description || '').toLowerCase().includes('cage kit') || (mandatorySkus?.GENERIC_CAGE?.sku && cleanBaseSKU(it.sku) === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
   
   const ctx = {
     items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
     chassisInfo, mandatorySkus, CTO_BASE_SKUS, HIGH_TDP_THRESHOLD_WATTS,
-    errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU
+    errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
+    hasDriveCageKit, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
+    isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
+    psuPerServer, cpusPerServer
   };
 
   validateNetworkingRules(ctx);
@@ -898,142 +1074,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   validateStoreEverRules(ctx);
   validateMemoryRules(ctx);
 
-
-  const aspectChecks = [
-    {
-      id: 1,
-      name: 'Thermal & Compute Math',
-      iconType: 'Cpu',
-      defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
-      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
-      detail: compute.fanKitExceedsMax
-        ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (P48820-B21) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
-        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
-        ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
-        : compute.isDl380aAccelerator
-        ? `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with DL380a factory-integrated high-performance accelerator cooling architecture.`
-        : `Verified ${compute.cpuCount} CPUs (${cpusPerServer}/node) within TDP envelope with valid fan kit count.`
-    },
-    {
-      id: 2,
-      name: 'Memory & Channel Balance',
-      iconType: 'Memory',
-      defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
-      status: (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
-      detail: memory.hasBtoMemoryInCto
-        ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
-        : (memory.memoryCount > 0 && !memory.isSupportedPopulation)
-        ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced or is an unsupported asymmetric count.`
-        : !memory.isBalancedChannel
-        ? `Verified ${memory.memoryCount} DIMMs in supported entry population (${memory.memoryCount / serverCount} DIMMs/node, ${memory.totalMemoryGb / serverCount}GB RAM). Note: Maximum memory interleaving bandwidth is achieved with ${memory.channelsPerCpu} DIMMs per socket.`
-        : `Verified ${memory.memoryCount} DIMMs in balanced configuration (${memory.memoryCount / serverCount} DIMMs/node).`
-    },
-    {
-      id: 3,
-      name: 'Storage & Controller Cabling',
-      iconType: 'HardDrive',
-      defaultRule: 'Storage controller, drive cage & cable kit compatibility checks (CLIC Rules 81354627 & 81354632)',
-      status: storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
-      detail: storage.hasIncompatibleYCable
-        ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit (P48832-B21) is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (P48918-B21) is the correct cable.`
-        : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
-        ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
-        : storage.hasStorageController && !storage.hasSmartBattery
-        ? 'Storage Math Failed: Storage controller requires Smart Storage Battery / Capacitor Kit.'
-        : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`
-    },
-    {
-      id: 4,
-      name: 'PCIe Riser & Slot Expansion Math',
-      iconType: 'Layers',
-      defaultRule: 'PCIe slot capacity, active riser cabling & slot expansion rules (CLIC Rules 81016755 & 81354683)',
-      status: isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
-      detail: isExceedingActivePcie
-        ? `PCIe Active Slot Math Failed (CLIC Rule 81016755): ${pcie.requiredPcieCards} required cards exceeds ${activePcieSlotsClusterMax} electrically cabled active slots. Slot 1 and/or Slot 4 require Riser Cable Kits (P56073-B21 / P56074-B21).`
-        : isExceedingPcie
-        ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.`
-        : (pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2
-        ? 'Compute/PCIe Math Failed: Secondary/Tertiary Risers require 2nd CPU socket.'
-        : `Verified ${pcie.requiredPcieCards} PCIe cards fit within ${activePcieSlotsClusterMax} active cabled slots (${Math.ceil(pcie.requiredPcieCards / serverCount)} cards/node)${pcie.gpuCount > 0 && power.isDl380aGpuChassis ? ` plus ${pcie.gpuCount} front-bay accelerator(s) seated on high-speed switchboards` : ''}.`
-    },
-    {
-      id: 5,
-      name: 'Networking & OCP Interconnect',
-      iconType: 'Zap',
-      defaultRule: 'OCP 3.0 network adapter slots and port allocation rules (CLIC Rule 81355854)',
-      status: isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
-      detail: network.hasConflictingOcpCables
-        ? `CLIC Rule 81355854 Failed: CPU1 to OCP2 (P51911-B21) and CPU2 to OCP2 (P48830-B21) enablement kits cannot be selected together.`
-        : isExceedingOcp
-        ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} slots.`
-        : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
-    },
-    {
-      id: 6,
-      name: 'Power & Redundancy Math',
-      iconType: 'Power',
-      defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
-      status: (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
-      detail: power.hasDcPowerSupply && !power.hasDcLugKit
-        ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.'
-        : power.hasDl380aGpuPsuShortage
-        ? `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W PSUs per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount}.`
-        : `Verified power supply and infrastructure dependencies (${psuPerServer} PSUs/node).`
-    },
-    {
-      id: 7,
-      name: 'Vendor Support Taxonomy & Licensing',
-      iconType: 'Award',
-      defaultRule: 'Hardware SKU validation, requested support coverage, and OS core multipliers (INV-28, INV-32)',
-      status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
-        ? 'WARN'
-        : (!support.hasSupportService ? 'WARN' : 'PASS'),
-      detail: support.needsAdditionalWindowsCores
-        ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
-        : support.needsAdditionalVmwareCores
-        ? `VMware Licensing Deficit: Requires ${support.missingVmwareCores} additional VMware core licenses (${support.vmwareLicensedCores}/${support.requiredVmwareCores} cores covered).`
-        : support.needsAdditionalLinuxSubscriptions
-        ? `Linux OS Licensing Deficit: Requires ${support.missingLinuxSubscriptions} additional 1-2 socket subscription(s).`
-        : support.hasSupportService
-        ? `Verified requested support services and OS core allocations${support.hasManagementLicense ? '; customer-selected management licensing is present' : ''}.`
-        : 'Support Taxonomy Advisory: Missing Pointnext / Tech Care service line.'
-    }
-  ];
-
+  const aspectChecks = buildAspectChecks(ctx);
   const formFactorRU = chassisInfo.formFactor === '1U' ? 1 : 
                        chassisInfo.formFactor === '4U' ? 4 : 2;
-
-  const architecturalRationale = [];
-  if (power.isDl380aGpuChassis) {
-    if (pcie.gpuCount > 0) {
-      architecturalRationale.push({
-        topic: 'DL380a Gen12 GPU Density & NVLink Bridge Physical Clearance Rule',
-        rationale: 'The DL380a Gen12 platform supports up to 8 double-wide (8DW) GPUs under P75008-B21 (with dual PCIe Gen5 switchboards P74714-B21) or 10DW under P75005-B21 (captive risers). For NVIDIA H200 NVL (S3U30C), physical NVLink bridges (S4A90C / S4A91C) are mandatory for 900 GB/s inter-GPU memory pooling. Per HPE QuickSpecs, the dense 10DW captive riser mode does NOT support NVLink bridges ("10DW configuration does not support GPU NVL bridges"). Therefore, 8DW Mode is the absolute maximum buildable configuration for H200 NVL on this chassis.'
-      });
-      architecturalRationale.push({
-        topic: 'DL380a Front-Bay Accelerator Cabling & Cooling',
-        rationale: 'Front-bay accelerators on DL380a Gen12 connect directly to the switchboards using P74700-B21 (GPU 16-pin FIO Cable Kits, 1 kit per 2 GPUs) and do not consume rear PCIe riser slots, keeping rear slots open for networking and HBAs. High-performance counter-rotating cooling fans are factory-integrated into the P76706-B21 chassis.'
-      });
-    }
-  }
-  if (storage.hasNoDriveKit) {
-    architecturalRationale.push({
-      topic: 'No Local Drive Configuration FIO Kit (873763-B21)',
-      rationale: 'HPE ProLiant Compute DL380 No Drive Configuration FIO Kit (873763-B21, $14 list) satisfies CLIC Rule 81392308 for diskless compute nodes, clearing mandatory front drive cage and RAID controller requirements.'
-    });
-  }
-  if (power.hasCeRemovalKit) {
-    architecturalRationale.push({
-      topic: 'EU Ecodesign ErP Lot 9 Regulatory Clearance (P35876-B21)',
-      rationale: 'HPE CE Mark Removal FIO Enablement Kit (P35876-B21, $1 list) clears EU Lot 9 software prompt for 94% Platinum PSUs on dual-socket configurations without altering requested PSU hardware.'
-    });
-  }
-  if (memory.memoryCount > 0 && !memory.isBalancedChannel && memory.isSupportedPopulation) {
-    architecturalRationale.push({
-      topic: 'Memory Population & Interleaving Bandwidth',
-      rationale: `Configured with ${memory.dimmsPerCpu} DIMMs per socket (${memory.totalMemoryGb / serverCount}GB RAM), which is a valid, certified entry memory population in HPE QuickSpecs. For workloads requiring maximum memory bandwidth, populating all ${memory.channelsPerCpu} channels per socket (1DPC) provides 100% full-channel interleaving.`
-    });
-  }
+  const architecturalRationale = buildArchitecturalRationale(ctx);
 
   const evalSummary = {
     cpuCount: compute.cpuCount,
@@ -1173,17 +1217,14 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   }
   const requirementResolution = evalResults.requirementResolution || null;
   const pcieLayout = evalResults.evalSummary?.pcie?.slotLayout || null;
-  if (requirementResolution) {
-    const categorySummary = requirementResolution.resolutions.map(resolution => ({
-      expectedRole: resolution.expectedRole,
-      status: resolution.status,
-      confidence: resolution.confidence,
-      candidateSkus: resolution.candidates.map(candidate => candidate.sku)
-    }));
-    queryText += `\nRequirement-category resolution (customer text excluded): ${JSON.stringify(categorySummary)}.`;
+  if (requirementResolution && requirementResolution.resolutions?.length > 0) {
+    const rolesSummary = requirementResolution.resolutions
+      .map(r => `${r.expectedRole}: ${r.status} (${(r.candidates || []).map(c => c.sku).join(', ')})`)
+      .join('; ');
+    queryText += `\nRequirement-category resolution: ${rolesSummary}.`;
   }
   if (pcieLayout) {
-    queryText += `\nPCIe topology to verify: ${JSON.stringify(pcieLayout)}.`;
+    queryText += `\nPCIe topology context: ${pcieLayout.totalMechanicalSlots} mechanical slots, ${pcieLayout.electricallyActiveSlots} active slots, ${pcieLayout.inputDemandPcieCards} PCIe cards required, base primary slots: ${pcieLayout.platformBaseMechanicalSlots}.`;
   }
 
   return {

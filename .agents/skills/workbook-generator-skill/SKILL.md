@@ -53,6 +53,29 @@ Generated via `generate_boq_xlsx.js`:
 - **Sheet 4: Value Engineering Opportunities**:
   - Advisory CapEx/OpEx savings (CPU right-sizing, NIC bandwidth alignment, PSU efficiency).
 
+### 3. Multi-Rank Solution Deliverable Workbook (`generateMultiRankSolutionWorkbook`)
+Generated automatically on every evaluation for direct executive review and Partner Portal upload:
+- **6 Standardized Sheets**:
+  1. `Executive Summary & Aspects`: CapEx comparison across all 5 tiers, Dual-Brain verification badges, Grounding Tier, and 7-aspect hardware integrity pass/fail audit.
+  2. `Rank 1 - Intent Preserved`: Customer intent strictly preserved with 100% buildable enablement kits injected.
+  3. `Rank 2 - Performance Density`: Upgrades for compute and memory headroom.
+  4. `Rank 3 - Balanced Optimal`: Sweet-spot 5-year TCO balance.
+  5. `Rank 4 - Value Engineered`: Post-buildability CapEx/OpEx optimizations (up to 15% savings).
+  6. `Rank 5 - Budget Minimized`: Lowest price point to achieve 100% buildable compliance.
+- **10 Standardized Columns**:
+  1. `Part No` (with `#0D1` / `-F21` FIO container tags for integrated components)
+  2. `Per-Node Qty`
+  3. `Node Multiplier` (Multi-node cluster server count)
+  4. `Total Qty` (Formula: `=B{row}*C{row}` with cached value)
+  5. `Description`
+  6. `Component Role`
+  7. `Unit Price (USD)`
+  8. `Extended Price (USD)` (Formula: `=D{row}*G{row}` with cached value)
+  9. `Physical Math Rationale` (Deterministic technical rule justification)
+  10. `CLIC Status / Rule Trace` (`Mandatory Rule Fix`, `100% Validated in CLIC`, `Strategy Tier Add-on`)
+- **Formula Subtotal**: `=SUM(H4:H{n})` with cached CapEx sum.
+- **Companion Token-Dense CSV (`generateMultiRankSolutionCsv`)**: Flattened multi-rank representation optimized for NotebookLM ephemeral source ingestion without prompt character limits.
+
 ---
 
 ## 🎨 Premium Styling & Cross-Platform Invariants (`INV-16`)
@@ -93,3 +116,56 @@ When the workbook is generated, the agent MUST provide:
    - `Value Engineering` (Advisory deal optimizations)
 3. **CLIC Import Readiness Statement**:
    Confirming that the BOM is formatted for 100% clean, error-free import into HPE OCA / Partner Portal.
+
+---
+
+## 4. Autonomous Google Drive & ADC Authentication Lifecycle Pre-Check
+
+Whenever a solution deliverable is to be synchronized or shared via Google Drive:
+1. **Mandatory Pre-Flight Token Health Audit (INV-90 Gate)**:
+   Every agent MUST run the pre-flight verification gate before attempting any cloud upload or generating deliverables:
+   ```bash
+   npm run auth:check
+   # Equivalently: node scripts/services/google_sheets_service.js check-health
+   ```
+   This command inspects:
+   - Token validity (`tokenValid: true`)
+   - Scopes (`spreadsheets`, `drive`, `documents`)
+   - Token age & remaining lifespan (`daysRemaining` until the 7-day weekly refresh cliff)
+   - Expiration warning (`isExpiringSoon` if age $\ge 5$ days)
+
+2. **Autonomous Zero-Touch Pre-Approval & Self-Healing Policy**:
+   - The human developer has granted **100% UNCONDITIONAL PRE-AUTHORIZATION** for AI agents to execute the re-login and token refresh flows whenever a token is expired (`invalid_grant`), expiring within 48 hours, or missing.
+   - AI agents **MUST NOT pause, ask questions, or wait for human confirmation** to fix expired tokens.
+   - Execute autonomous self-healing:
+     ```bash
+     npm run auth:heal
+     # Or: npm run auth:drive
+     ```
+   - In browser environments, the agent spins up `autonomous_oauth_flow.js` on port 8085, completes the OAuth consent via browser subagent, exchanges tokens, writes ADC atomically, and verifies health—completely hands-free.
+
+3. **Preventing "App Blocked" Security Errors**:
+   Google blocks its generic Cloud SDK client ID from requesting the restricted `https://www.googleapis.com/auth/drive` scope on external personal accounts. The client ID file MUST always be passed explicitly:
+   ```bash
+   npm run auth:drive
+   # Executes: gcloud auth application-default login --client-id-file="~/.config/gcloud/client_secret.json" --scopes="..."
+   ```
+
+4. **Weekly Expiration Self-Healing Lifecycle**:
+   - In GCP OAuth "Testing" mode, external user refresh tokens expire automatically every 7 days.
+   - The pre-flight check validates `tokenValid` and `daysRemaining`. If `daysRemaining <= 1` or `tokenValid === false`, the engine proactively auto-heals and refreshes the token before final solution upload.
+   - For a permanent, non-expiring token: The GCP OAuth consent screen under project `bom-assistant` must have its publishing status set to **"In production"** (under the Audience tab).
+
+5. **Cross-Laptop Seamless Portability Guarantee**:
+   - All credential paths derive dynamically from `os.homedir()` (`~/.config/gcloud/client_secret.json` and `~/.config/gcloud/application_default_credentials.json`).
+   - Zero machine-specific hardcoded paths.
+   - When switching laptops, running `npm run auth:drive` once (or allowing the agent to run `npm run auth:heal`) automatically establishes full zero-touch cloud capability.
+
+6. **Autonomous Cloud Upload**:
+   Once ADC is active, upload any deliverable with:
+   ```bash
+   node scripts/services/google_sheets_service.js upload <path-to-workbook.xlsx> "<Spreadsheet Title>"
+   ```
+   The service outputs the clickable Google Drive link (`https://docs.google.com/spreadsheets/d/${spreadsheetId}`) directly.
+
+

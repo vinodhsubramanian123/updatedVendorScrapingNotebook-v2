@@ -87,6 +87,18 @@ items = [
 result = evalPcieRiserSlots(items);
 assert(result.needsSecondaryRiser === true, `7 cards with primary riser (6 slots) require secondary riser`);
 
+console.log(`\n🔹 Test Group 4: Default Primary Riser Active Slot Capacity`);
+items = [
+  { sku: 'P47777-B21', description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller', quantity: 1 },
+  { sku: 'R2J63A', description: 'HPE SN1610E 32Gb 2-port Fibre Channel Host Bus Adapter', quantity: 1 },
+  { sku: 'P08443-B21', description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', quantity: 1 }
+];
+result = evalPcieRiserSlots(items);
+assert(result.requiredPcieCards === 3, `Counted 3 required PCIe cards`);
+assert(result.activeSlotsAvailable === 3, `Default primary riser provides 3 active slots without additional riser cable kit`);
+assert(result.isExceedingActiveSlots === false, `3 cards do not exceed active slots on default primary riser`);
+assert(result.needsPrimaryCableKit === false, `No primary cable kit required for 3 PCIe cards on default primary riser`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

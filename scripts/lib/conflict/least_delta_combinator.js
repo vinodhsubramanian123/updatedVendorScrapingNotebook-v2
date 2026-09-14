@@ -14,8 +14,23 @@
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
-const { classifyComponentRole } = require('../catalog/product_meta.js');
-const { introspectSku } = require('./cascading_impact_analyzer.js');
+const fs = require('fs');
+const path = require('path');
+
+let cachedChassisMap = null;
+function getChassisMap() {
+  if (!cachedChassisMap) {
+    try {
+      const chassisMapPath = path.resolve(__dirname, '../../config/chassis_map.json');
+      if (fs.existsSync(chassisMapPath)) {
+        cachedChassisMap = JSON.parse(fs.readFileSync(chassisMapPath, 'utf8'));
+      }
+    } catch {
+      cachedChassisMap = {};
+    }
+  }
+  return cachedChassisMap || {};
+}
 
 /**
  * Dynamically find the best alternative SKU in the catalog for a given component role
@@ -28,21 +43,23 @@ const { introspectSku } = require('./cascading_impact_analyzer.js');
  */
 function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, catalogData = null, chassisInfo = {}) {
   const isGen12 = (chassisInfo?.gen || '').includes('12') || (chassisInfo?.model || '').includes('Gen12');
+  const genKey = isGen12 ? 'Gen12' : 'Gen11';
+  const cmap = getChassisMap();
+  const duals = cmap.form_factor_duals?.[genKey]?.storage_controller || {};
 
   // Fallback defaults if catalog is missing or empty
   if (!catalogData || !Array.isArray(catalogData.entries) || catalogData.entries.length === 0) {
     if (roleType === 'STORAGE_EXPANDER_CASCADE') {
-      const altSku = isGen12 ? 'P55415-B21' : 'P55415-B21';
       return {
-        sku: altSku,
+        sku: 'P55415-B21',
         description: 'HPE Broadcom MR416i-o x16 Lanes 8GB Cache Tri-Mode Storage Controller'
       };
     }
     if (roleType === 'CONTESTED_OCP_SLOT_COLLISION') {
-      const pcieSku = isGen12 ? 'P47777-B21' : 'P47777-B21';
+      const pcieAlt = duals.pcie;
       return {
-        sku: pcieSku,
-        description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCIe Storage Controller'
+        sku: pcieAlt?.sku || (isGen12 ? 'P75750-B21' : 'P47777-B21'),
+        description: pcieAlt?.description || 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller'
       };
     }
     if (roleType === 'MEMORY_BUS_SPEED_BOTTLENECK') {
@@ -88,9 +105,10 @@ function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, ca
         };
       }
     }
+    const pcieAlt = duals.pcie;
     return {
-      sku: 'P47777-B21',
-      description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCIe Storage Controller'
+      sku: pcieAlt?.sku || (isGen12 ? 'P75750-B21' : 'P47777-B21'),
+      description: pcieAlt?.description || 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller'
     };
   }
 
@@ -136,7 +154,7 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
   const support = aspects.support || {};
 
   // 1. Troublesome 8-Port Storage Controller with > 8 Drives (Forces SAS Expander + Cables)
-  const hasExpanderMandate = missing.some(d => d.key === 'SAS_EXPANDER_CARD' || d.sku === 'P48835-B21') ||
+  const hasExpanderMandate = missing.some(d => d.key === 'SAS_EXPANDER_CARD' || (d.description && d.description.toLowerCase().includes('expander'))) ||
                              warnings.some(w => w.toLowerCase().includes('sas expander'));
   
   if (hasExpanderMandate) {
@@ -151,16 +169,20 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
 
     if (controllerItem) {
       const alt = findBestAlternativeInCatalog('STORAGE_EXPANDER_CASCADE', controllerItem.sku, { driveCount: storage.driveCount || 16 }, catalogData, chassisInfo);
+      const eliminated = missing
+        .filter(d => d.key === 'SAS_EXPANDER_CARD' || (d.description && (d.description.toLowerCase().includes('expander') || d.description.toLowerCase().includes('cable'))))
+        .map(d => d.sku)
+        .filter(Boolean);
       troublesome.push({
         type: 'STORAGE_EXPANDER_CASCADE',
         originalSku: cleanBaseSKU(controllerItem.sku),
         originalDesc: controllerItem.description || '8-port Storage Controller',
-        troublesomeReason: `8-port controller requires adding SAS Expander Card (P48835-B21) and auxiliary cables for ${storage.driveCount || 16} drives.`,
+        troublesomeReason: `8-port controller requires adding SAS Expander Card and auxiliary cables for ${storage.driveCount || 16} drives.`,
         alternativeSku: alt.sku,
         alternativeDesc: alt.description,
         action: 'SUBSTITUTE_CONTROLLER_DIRECT_ATTACH',
         functionalEquivalence: `16-port Tri-Mode Controller provides direct-attach connectivity for up to 16 drives with 8GB cache, eliminating SAS Expander card latency and extra cable kits.`,
-        cascadingSkusEliminated: ['P48835-B21', 'P48918-B21', 'P48832-B21'],
+        cascadingSkusEliminated: eliminated.length > 0 ? eliminated : ['SAS_EXPANDER_CARD'],
         presalesValuePitch: 'Upgrading from an 8-port controller with an expander card to a direct 16-port controller eliminates single-point-of-failure expander cards, reduces drive latency, and yields fewer overall BOM line items.'
       });
     }
@@ -218,7 +240,7 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
 
   const highSpeedMemory = items.find(it => {
     const d = (it.description || '').toLowerCase();
-    return (d.includes('5600') || it.sku === 'P73300-B21' || it.sku === 'P64707-B21') && (d.includes('memory') || d.includes('rdimm'));
+    return (d.includes('5600') || d.includes('6400') || d.includes('5200')) && (d.includes('memory') || d.includes('rdimm') || d.includes('dimm'));
   });
 
   if (isSilverOrLowTdp && highSpeedMemory) {
@@ -226,7 +248,7 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
     troublesome.push({
       type: 'MEMORY_BUS_SPEED_BOTTLENECK',
       originalSku: cleanBaseSKU(highSpeedMemory.sku),
-      originalDesc: highSpeedMemory.description || 'DDR5-5600 Memory',
+      originalDesc: highSpeedMemory.description || 'High-Speed Memory',
       troublesomeReason: 'Intel Xeon Silver processors throttle memory frequency to 4000-4400 MT/s, rendering DDR5-5600 premium investment ineffective.',
       alternativeSku: memAlt.sku,
       alternativeDesc: memAlt.description,

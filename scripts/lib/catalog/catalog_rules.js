@@ -16,6 +16,21 @@
 const fs = require('fs');
 const path = require('path');
 
+let cachedChassisMap = null;
+function getChassisMap() {
+  if (!cachedChassisMap) {
+    try {
+      const chassisMapPath = path.resolve(__dirname, '../../config/chassis_map.json');
+      if (fs.existsSync(chassisMapPath)) {
+        cachedChassisMap = JSON.parse(fs.readFileSync(chassisMapPath, 'utf8'));
+      }
+    } catch {
+      cachedChassisMap = {};
+    }
+  }
+  return cachedChassisMap || {};
+}
+
 /**
  * Standard default SKU mappings for mandatory physical dependencies
  */
@@ -26,39 +41,80 @@ const DEFAULT_MANDATORY_SKUS = {
   DC_LUG_KIT: { sku: 'P36877-B21', name: 'HPE 1600W -48VDC Power Cable Lug Kit' },
   SMART_STORAGE_BATTERY: { sku: 'P01366-B21', name: 'HPE 96W Smart Storage Battery' },
   CONTROLLER_CABLE_KIT: { sku: 'P48918-B21', name: 'HPE Storage Controller Cable Kit' },
-  TRI_MODE_BOX12_CABLE: { sku: 'P76453-B21', name: 'HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit' }
+  TRI_MODE_SPLITTER_CABLE: { sku: 'P48832-B21', name: 'HPE ProLiant Tri-Mode Splitter Cable Kit' },
+  TRI_MODE_BOX12_CABLE: { sku: 'P76453-B21', name: 'HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit' },
+  PRIMARY_CABLE_KIT: { sku: 'P56073-B21', name: 'HPE ProLiant DL380 Primary Cable Kit' },
+  SECONDARY_CABLE_KIT: { sku: 'P56074-B21', name: 'HPE ProLiant DL380 Secondary Cable Kit' },
+  GPU_POWER_CABLE_KIT: { sku: 'P48816-B21', name: 'HPE ProLiant GPU Auxiliary Power Cable Kit' },
+  CE_REMOVAL_KIT: { sku: 'P35876-B21', name: 'HPE CE Mark Removal FIO Enablement Kit' },
+  BOOT_DEVICE_ENABLEMENT: { sku: 'P54442-B21', name: 'HPE ProLiant DL380 Gen11 NS204i-u Boot Device Enablement Kit' },
+  SAS_EXPANDER: { sku: 'P48835-B21', name: 'HPE ProLiant 24G SAS Expander Card with Cables' },
+  TRI_MODE_SWITCH: { sku: 'P55806-B21', name: 'HPE ProLiant Tri-Mode Switch Card' },
+  GENERIC_CAGE: { sku: 'P48813-B21', name: 'HPE ProLiant DL380 Gen11 8SFF Drive Cage Kit' },
+  PREMIUM_CAGE: { sku: 'P48814-B21', name: 'HPE ProLiant DL380 Gen11 Premium 8SFF U.3 Drive Cage Kit' },
+  CPU1_OCP_CABLE: { sku: 'P51911-B21', name: 'HPE ProLiant DL380 Gen11 CPU1 to OCP2 x8 Enablement Kit' },
+  CPU2_OCP_CABLE: { sku: 'P48830-B21', name: 'HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Kit' }
 };
 
 /**
- * Dynamically resolve mandatory SKUs for a given chassis or fallback to default mappings
+ * Dynamically resolve mandatory SKUs for a given chassis from chassis_map.json enablement_kits
  * @param {object} chassisInfo 
  * @returns {object} Mandatory SKUs mapping
  */
 function getMandatorySkusForChassis(chassisInfo) {
-  const skus = { ...DEFAULT_MANDATORY_SKUS };
+  const cmap = getChassisMap();
+  const kits = cmap.enablement_kits || {};
   const family = (chassisInfo?.family || '').toLowerCase();
   const model = (chassisInfo?.model || '').toLowerCase();
   const gen = (chassisInfo?.gen || '').toLowerCase();
   const isGen12 = gen.includes('12') || model.includes('gen12');
 
+  let kitKey = 'DEFAULT';
   if (family.includes('alletra')) {
-    skus.NO_DRIVE_FIO_KIT = { sku: 'R0Q21A', name: 'HPE Alletra Storage Drive Blank Kit' };
+    kitKey = 'Alletra_Storage';
+  } else if (model.includes('dl380a')) {
+    kitKey = 'ProLiant_DL380a_Gen12';
+  } else if (model.includes('dl145')) {
+    kitKey = 'ProLiant_DL145_Gen11';
   } else if (model.includes('dl360')) {
-    skus.HIGH_PERF_FAN_KIT = { sku: 'P48821-B21', name: 'HPE ProLiant DL360 High Performance Fan Kit' };
-    skus.HIGH_PERF_HEATSINK = { sku: 'P48822-B21', name: 'HPE ProLiant DL360 Performance Heat Sink Kit' };
+    kitKey = 'ProLiant_DL360_Gen11';
+  } else if (family.includes('synergy')) {
+    kitKey = isGen12 ? 'Synergy_Gen12' : 'Synergy_General';
+  } else if (family.includes('storeever') || model.includes('msl')) {
+    kitKey = 'StoreEver_Tape';
+  } else if (family.includes('cray')) {
+    kitKey = 'Cray_General';
+  } else if (model.includes('dl580')) {
+    kitKey = 'ProLiant_DL580_Gen12';
   } else if (isGen12) {
-    skus.HIGH_PERF_FAN_KIT = { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit' };
-    skus.HIGH_PERF_HEATSINK = { sku: 'P48818-B21', name: 'HPE ProLiant DL380 Gen12 High Performance Heatsink' };
-    skus.PRIMARY_CABLE_KIT = { sku: 'P76453-B21', name: 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit' };
-    skus.SECONDARY_CABLE_KIT = { sku: 'P76453-B21', name: 'HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit' };
-  } else {
-    // Gen11 defaults
-    skus.HIGH_PERF_FAN_KIT = { sku: 'P48820-B21', name: 'HPE ProLiant DL380 Gen11 High Performance Fan Kit' };
-    skus.HIGH_PERF_HEATSINK = { sku: 'P74792-B21', name: 'HPE ProLiant Performance Heat Sink Kit' };
-    skus.PRIMARY_CABLE_KIT = { sku: 'P56073-B21', name: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit' };
-    skus.SECONDARY_CABLE_KIT = { sku: 'P56074-B21', name: 'HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit' };
+    kitKey = 'ProLiant_Gen12';
+  } else if (gen.includes('11') || model.includes('gen11')) {
+    kitKey = 'ProLiant_Gen11';
   }
-  return skus;
+
+  const selectedKit = kits[kitKey] || kits.DEFAULT || {};
+
+  return {
+    HIGH_PERF_FAN_KIT: selectedKit.highPerfFanKit || DEFAULT_MANDATORY_SKUS.HIGH_PERF_FAN_KIT,
+    HIGH_PERF_HEATSINK: selectedKit.highPerfHeatsink || DEFAULT_MANDATORY_SKUS.HIGH_PERF_HEATSINK,
+    NO_DRIVE_FIO_KIT: selectedKit.noDriveFioKit || DEFAULT_MANDATORY_SKUS.NO_DRIVE_FIO_KIT,
+    DC_LUG_KIT: selectedKit.dcLugKit || DEFAULT_MANDATORY_SKUS.DC_LUG_KIT,
+    SMART_STORAGE_BATTERY: selectedKit.smartStorageBattery || DEFAULT_MANDATORY_SKUS.SMART_STORAGE_BATTERY,
+    CONTROLLER_CABLE_KIT: selectedKit.controllerCableKit || DEFAULT_MANDATORY_SKUS.CONTROLLER_CABLE_KIT,
+    TRI_MODE_SPLITTER_CABLE: selectedKit.triModeSplitterCable || DEFAULT_MANDATORY_SKUS.TRI_MODE_SPLITTER_CABLE,
+    TRI_MODE_BOX12_CABLE: selectedKit.triModeBox12Cable || DEFAULT_MANDATORY_SKUS.TRI_MODE_BOX12_CABLE,
+    PRIMARY_CABLE_KIT: selectedKit.primaryRiserCableKit || DEFAULT_MANDATORY_SKUS.PRIMARY_CABLE_KIT,
+    SECONDARY_CABLE_KIT: selectedKit.secondaryRiserCableKit || DEFAULT_MANDATORY_SKUS.SECONDARY_CABLE_KIT,
+    GPU_POWER_CABLE_KIT: selectedKit.gpuPowerCableKit || DEFAULT_MANDATORY_SKUS.GPU_POWER_CABLE_KIT,
+    CE_REMOVAL_KIT: selectedKit.ceRemovalKit || DEFAULT_MANDATORY_SKUS.CE_REMOVAL_KIT,
+    BOOT_DEVICE_ENABLEMENT: selectedKit.bootDeviceEnablement || DEFAULT_MANDATORY_SKUS.BOOT_DEVICE_ENABLEMENT,
+    SAS_EXPANDER: selectedKit.sasExpander || DEFAULT_MANDATORY_SKUS.SAS_EXPANDER,
+    TRI_MODE_SWITCH: selectedKit.triModeSwitch || DEFAULT_MANDATORY_SKUS.TRI_MODE_SWITCH,
+    GENERIC_CAGE: selectedKit.genericCage || DEFAULT_MANDATORY_SKUS.GENERIC_CAGE,
+    PREMIUM_CAGE: selectedKit.premiumCage || DEFAULT_MANDATORY_SKUS.PREMIUM_CAGE,
+    CPU1_OCP_CABLE: selectedKit.cpu1OcpCable || DEFAULT_MANDATORY_SKUS.CPU1_OCP_CABLE,
+    CPU2_OCP_CABLE: selectedKit.cpu2OcpCable || DEFAULT_MANDATORY_SKUS.CPU2_OCP_CABLE
+  };
 }
 
 /**

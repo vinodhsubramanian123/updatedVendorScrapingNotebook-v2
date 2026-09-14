@@ -78,10 +78,14 @@ graph TD
   - Outputs a **5-Tier Strategic Resolution Matrix** where **Rank 1 strictly matches customer workload intent** (neither over- nor under-provisioned).
   - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
 
-### 4. Grounded Gemini Notebook Validation (RAG) & Dashboard Command Center
-- **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
+### 4. Grounded Gemini Notebook Validation (RAG) & Ephemeral Source Validation
+- **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md), [`boq-eval-skill`](../boq-eval-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
 - **Action**: 
   - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
+  - **Ephemeral Solution Sheet Source Validation (INV-24)**: When whole-solution or multi-rank configurations exceed prompt character limits, the engine outputs a token-dense solution CSV, temporarily attaches it as a document source, executes grounded validation across all 7 physical aspects, extracts learnings into persistent `KnowledgeDelta` records, and immediately detaches the source.
+  - If new verified deltas are extracted, `recomputeStrategyMatrixWithRag` dynamically recomputes physical checks and re-synthesizes the 5-Tier Strategy Matrix before final deliverable export.
+  - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable** (`.xlsx`) and companion `.csv` via [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md).
+  - **Cloud Delivery & ADC Pre-Flight Health Gate (INV-90)**: Prior to any Google Drive deliverable upload or client sharing, the engine executes `ensureGoogleAuthValid({ autoHeal: true })` (or `npm run auth:check`). It audits token validity, granted scopes, token age, and remaining days until the 7-day weekly refresh cliff. If expired (`invalid_grant`) or expiring within 48h, the agent is 100% pre-authorized to autonomously execute `npm run auth:heal` or `npm run auth:drive` (using `~/.config/gcloud/client_secret.json`) to self-heal credentials without human intervention, ensuring seamless operation across laptop migrations.
   - The React Dashboard provides a full Command-and-Control hub for triggering Knowledge Sync, exporting corrected BOQs, logging portal rejection KnowledgeDeltas, and managing the async RAG status polling (`GET /api/notebook-query-status/:jobId`).
 
 ### 5. Human-in-the-Loop (HITL) Portal Trial & Ambiguity Resolution
@@ -108,6 +112,7 @@ graph TD
 | **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync, registry updates, historical price trails (`INV-1`). |
 | **BOQ Evaluation & Matrices** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math, Workload DNA, 5-tier strategy matrix, Diophantine clustering (`INV-42`). |
 | **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification with explicit Provenance Badges (`[CLOUD_NLM_VERIFIED]`). |
+| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | Multi-rank 10-column workbooks, formula totals, 7-column Partner Portal upload sheets (`INV-32, INV-37`). |
 | **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review, 60s pre-scheduled heartbeat loop, chaos stress testing (`INV-10..19, INV-43`). |
 | **Dynamic Semantic Graph** | `graphify` | AST extraction, `/graphify query`, path analysis, and zero-hallucination architectural navigation. |
 

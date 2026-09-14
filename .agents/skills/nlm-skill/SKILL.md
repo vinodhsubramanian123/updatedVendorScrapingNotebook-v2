@@ -955,3 +955,13 @@ When using Gemini NotebookLM for HPE server architecture, QuickSpecs grounding, 
         ▼ (on ambiguity / missing SKU / conflict)
 [Tier 3: Deterministic Rule Engine + HITL Escalation] (7 Physical Aspect Checkers + Human Confirmation)
 ```
+
+### 4. Ephemeral Solution Source Validation Pattern (`INV-24`)
+- **Problem**: Multi-cluster tenders and whole-solution configurations with 20–60 SKUs across 5 strategy tiers frequently exceed prompt token/character limits in conversational queries, causing truncation and lost context.
+- **Solution**:
+  1. `generateMultiRankSolutionCsv()` outputs a compact, token-dense representation of all strategy ranks with per-node quantities, node multipliers, component roles, and rationales.
+  2. The sheet is attached to the product's NotebookLM notebook as an **ephemeral document source** (`gemini-notebook-mcp:source_add`).
+  3. A concise, focused query prompts NotebookLM to authoritatively validate all 5 ranks across all 7 physical aspects against official QuickSpecs.
+  4. Grounded citations and rule additions are captured by `extractKnowledgeFromRagAnswer` into persistent `KnowledgeDelta` records.
+  5. The temporary source is **immediately detached** via `source_delete` (`INV-24`), ensuring zero permanent customer BOQ contamination of vendor QuickSpecs baselines.
+

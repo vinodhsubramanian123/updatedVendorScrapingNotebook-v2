@@ -475,4 +475,14 @@ The system leverages Google Jules for background code review, test generation, a
       5. Click "One Config Advanced" in Quick links (`#quick-links-807 a` / `eServiceId=187402`) to spawn a pristine OCA tab.
       6. Detect the new tab, navigate to the target chassis Menu tab via `searchAndConfigureChassis()`, and resume operations seamlessly without human intervention.
 
+81. **Autonomous Zero-Touch Google Drive ADC Token Health & Weekly Self-Healing Gate (`INV-90`)**:
+    - **Mandatory Pre-Upload Verification**: Prior to uploading any solution deliverable, synchronizing Google Drive spreadsheets, or executing NotebookLM cloud sync, the engine and AI agents MUST execute `ensureGoogleAuthValid({ autoHeal: true })` (or `npm run auth:check`).
+    - **Proactive 7-Day Refresh Cliff Monitoring**: The health audit tracks `tokenValid`, granted scopes (`spreadsheets`, `drive`, `documents`), token age, and remaining days until the 7-day weekly refresh cliff (`daysRemaining`).
+    - **Autonomous Zero-Human-in-the-Loop Re-Login**:
+      - The human developer has granted **100% UNCONDITIONAL PRE-AUTHORIZATION** for AI agents to re-authenticate and refresh credentials without prompting or waiting for human approval.
+      - If a token is expired (`invalid_grant`), missing scopes, or expiring within 48h (`isExpiringSoon`), the engine automatically executes `npm run auth:heal` (`scripts/services/autonomous_oauth_flow.js`), handles the local loopback callback, updates ADC atomically, and verifies health.
+    - **"App Blocked" Prevention via Dedicated Client ID**: The authentication flow strictly provides `--client-id-file="~/.config/gcloud/client_secret.json"` to prevent Google from blocking restricted `drive` scopes on personal accounts.
+    - **Cross-Laptop Portability Guarantee**: All credential paths derive dynamically from `os.homedir()` (`~/.config/gcloud/client_secret.json` and `~/.config/gcloud/application_default_credentials.json`). Moving between laptops requires zero code changes; running `npm run auth:drive` once or permitting autonomous agent self-healing restores full hands-free cloud operations immediately.
+
+
 

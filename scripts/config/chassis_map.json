@@ -673,7 +673,7 @@
           "description": "Standard Fan Module (6x Fans)",
           "qty": 6,
           "isUpgradeable": true,
-          "upgradeNote": "Replace with P40502-B21 High Performance Fan Kit for TDP >= 240W"
+          "upgradeNote": "Replace with P48820-B21 High Performance Fan Kit for TDP >= 240W"
         },
         {
           "category": "Cooling / Thermal",
@@ -867,6 +867,130 @@
           "description": "HPE NS204i-p NVMe PCIe3 x8 OS Boot Device"
         }
       }
+    }
+  },
+  "enablement_kits": {
+    "DEFAULT": {
+      "highPerfFanKit": { "sku": "P48820-B21", "name": "HPE ProLiant High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P74792-B21", "name": "HPE ProLiant Performance Heat Sink Kit" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "controllerCableKit": { "sku": "P48918-B21", "name": "HPE Storage Controller Cable Kit" },
+      "triModeSplitterCable": { "sku": "P48832-B21", "name": "HPE ProLiant Tri-Mode Splitter Cable Kit" },
+      "triModeBox12Cable": { "sku": "P76453-B21", "name": "HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit" },
+      "primaryRiserCableKit": { "sku": "P56073-B21", "name": "HPE ProLiant DL380 Primary Cable Kit" },
+      "secondaryRiserCableKit": { "sku": "P56074-B21", "name": "HPE ProLiant DL380 Secondary Cable Kit" },
+      "gpuPowerCableKit": { "sku": "P48816-B21", "name": "HPE ProLiant GPU Auxiliary Power Cable Kit" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" },
+      "bootDeviceEnablement": { "sku": "P54442-B21", "name": "HPE ProLiant DL380 Gen11 NS204i-u Boot Device Enablement Kit" },
+      "sasExpander": { "sku": "P48835-B21", "name": "HPE ProLiant 24G SAS Expander Card with Cables" },
+      "triModeSwitch": { "sku": "P55806-B21", "name": "HPE ProLiant Tri-Mode Switch Card" },
+      "genericCage": { "sku": "P48813-B21", "name": "HPE ProLiant DL380 Gen11 8SFF Drive Cage Kit" },
+      "premiumCage": { "sku": "P48814-B21", "name": "HPE ProLiant DL380 Gen11 Premium 8SFF U.3 Drive Cage Kit" },
+      "cpu1OcpCable": { "sku": "P51911-B21", "name": "HPE ProLiant DL380 Gen11 CPU1 to OCP2 x8 Enablement Kit" },
+      "cpu2OcpCable": { "sku": "P48830-B21", "name": "HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Kit" }
+    },
+    "ProLiant_Gen11": {
+      "highPerfFanKit": { "sku": "P48820-B21", "name": "HPE ProLiant DL380 Gen11 High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P74792-B21", "name": "HPE ProLiant Performance Heat Sink Kit" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "controllerCableKit": { "sku": "P48918-B21", "name": "HPE ProLiant Storage Controller Enablement Cable Kit" },
+      "triModeSplitterCable": { "sku": "P48832-B21", "name": "HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit" },
+      "triModeBox12Cable": { "sku": "P76453-B21", "name": "HPE ProLiant Compute UMB PCIe Box 1/2 Cable Kit" },
+      "primaryRiserCableKit": { "sku": "P56073-B21", "name": "HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit" },
+      "secondaryRiserCableKit": { "sku": "P56074-B21", "name": "HPE ProLiant DL380 Gen11 x16/x16/x16 Secondary Cable Kit" },
+      "gpuPowerCableKit": { "sku": "P48816-B21", "name": "HPE ProLiant DL380 Gen11 GPU Auxiliary Power Cable Kit" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" },
+      "bootDeviceEnablement": { "sku": "P54442-B21", "name": "HPE ProLiant DL380 Gen11 NS204i-u Boot Device Enablement Kit" },
+      "sasExpander": { "sku": "P48835-B21", "name": "HPE ProLiant 24G SAS Expander Card with Cables" },
+      "triModeSwitch": { "sku": "P55806-B21", "name": "HPE ProLiant Tri-Mode Switch Card" },
+      "genericCage": { "sku": "P48813-B21", "name": "HPE ProLiant DL380 Gen11 8SFF Drive Cage Kit" },
+      "premiumCage": { "sku": "P48814-B21", "name": "HPE ProLiant DL380 Gen11 Premium 8SFF U.3 Drive Cage Kit" },
+      "cpu1OcpCable": { "sku": "P51911-B21", "name": "HPE ProLiant DL380 Gen11 CPU1 to OCP2 x8 Enablement Kit" },
+      "cpu2OcpCable": { "sku": "P48830-B21", "name": "HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Kit" }
+    },
+    "ProLiant_Gen12": {
+      "highPerfFanKit": { "sku": "P48820-B21", "name": "HPE ProLiant DL380 Gen12 High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P48818-B21", "name": "HPE ProLiant DL380 Gen12 High Performance Heatsink" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "controllerCableKit": { "sku": "P76456-B21", "name": "HPE ProLiant DL380 Gen12 Controller Cable Kit" },
+      "triModeSplitterCable": { "sku": "P76453-B21", "name": "HPE ProLiant DL380 Gen12 UMB PCIe Box 1/2 Cable Kit" },
+      "triModeBox12Cable": { "sku": "P76453-B21", "name": "HPE ProLiant DL380 Gen12 UMB PCIe Box 1/2 Cable Kit" },
+      "primaryRiserCableKit": { "sku": "P76453-B21", "name": "HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit" },
+      "secondaryRiserCableKit": { "sku": "P76453-B21", "name": "HPE DL380 Gen12 Primary/Secondary Full PCIe x16 Riser Cable Kit" },
+      "gpuPowerCableKit": { "sku": "P76450-B21", "name": "HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" },
+      "bootDeviceEnablement": { "sku": "P74755-B21", "name": "HPE ProLiant DL380 Gen12 NS204i-u Boot Device Enablement Kit" },
+      "sasExpander": { "sku": "P48835-B21", "name": "HPE ProLiant 24G SAS Expander Card with Cables" },
+      "triModeSwitch": { "sku": "P55806-B21", "name": "HPE ProLiant Tri-Mode Switch Card" },
+      "genericCage": { "sku": "P75741-B21", "name": "HPE ProLiant DL380 Gen12 8SFF Drive Cage Kit" },
+      "premiumCage": { "sku": "P76449-B21", "name": "HPE ProLiant DL380 Gen12 Premium 8SFF U.3 Drive Cage Kit" },
+      "cpu1OcpCable": { "sku": "P51911-B21", "name": "HPE ProLiant DL380 Gen12 CPU1 to OCP2 x8 Enablement Kit" },
+      "cpu2OcpCable": { "sku": "P48830-B21", "name": "HPE ProLiant DL380 Gen12 CPU2 to OCP2 x8 Enablement Kit" }
+    },
+    "ProLiant_DL580_Gen12": {
+      "highPerfFanKit": { "sku": "P80383-B21", "name": "HPE DL580 Gen12 High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P80382-B21", "name": "HPE DL580 Gen12 High Performance Heatsink Kit" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "controllerCableKit": { "sku": "P76456-B21", "name": "HPE ProLiant DL380 Gen12 Controller Cable Kit" },
+      "primaryRiserCableKit": { "sku": "P81004-B21", "name": "HPE DL580 Gen12 4P Riser 1/6 Upgrade Cable Kit" },
+      "secondaryRiserCableKit": { "sku": "P80380-B21", "name": "HPE DL580 Gen12 4P Riser 2/5 Upgrade Cable Kit" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" }
+    },
+    "ProLiant_DL380a_Gen12": {
+      "highPerfFanKit": { "sku": "P56950-B21", "name": "HPE ProLiant DL380a Gen12 High Performance Counter-Rotating Fan Kit" },
+      "highPerfHeatsink": { "sku": "P48818-B21", "name": "HPE ProLiant DL380a Gen12 High Performance Heatsink" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "controllerCableKit": { "sku": "P76456-B21", "name": "HPE ProLiant DL380 Gen12 Controller Cable Kit" },
+      "gpuPowerCableKit": { "sku": "P74700-B21", "name": "HPE ProLiant DL380a Gen12 GPU 16-pin FIO Cable Kit" },
+      "genericCage": { "sku": "P74710-B21", "name": "HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit" },
+      "premiumCage": { "sku": "P74712-B21", "name": "HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" },
+      "bootDeviceEnablement": { "sku": "P74755-B21", "name": "HPE ProLiant DL380 Gen12 NS204i-u Boot Device Enablement Kit" }
+    },
+    "ProLiant_DL145_Gen11": {
+      "highPerfFanKit": { "sku": "P71965-B21", "name": "HPE ProLiant DL145 Gen11 High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P71966-B21", "name": "HPE ProLiant DL145 Gen11 Performance Heatsink" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" }
+    },
+    "ProLiant_DL360_Gen11": {
+      "highPerfFanKit": { "sku": "P48821-B21", "name": "HPE ProLiant DL360 High Performance Fan Kit" },
+      "highPerfHeatsink": { "sku": "P48822-B21", "name": "HPE ProLiant DL360 Performance Heat Sink Kit" },
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
+      "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" }
+    },
+    "Alletra_Storage": {
+      "noDriveFioKit": { "sku": "R0Q21A", "name": "HPE Alletra Storage Drive Blank Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
+      "sasExpander": { "sku": "P40243-B21", "name": "HPE Alletra SAS Daisy Chain Cable" }
+    },
+    "Synergy_Gen12": {
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE Synergy Drive Blank Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" }
+    },
+    "Synergy_General": {
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE Synergy Drive Blank Kit" },
+      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" }
+    },
+    "StoreEver_Tape": {
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE Tape Storage Blank Kit" }
+    },
+    "Cray_General": {
+      "noDriveFioKit": { "sku": "873763-B21", "name": "HPE Cray Drive Blank Kit" }
     }
   }
 }

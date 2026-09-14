@@ -41,14 +41,19 @@ While the React Dashboard provides an exceptional visual interface for reviewing
    - **Strict Model Separation (`DL380a_Gen12` vs `DL380_Gen12`)**: `DL380a_Gen12` is a dedicated AI accelerator server supporting up to 8DW/16SW GPUs (`P75008-B21`/`P75002-B21` GPU Mode choices, `S3U30C` H200 GPUs, captive GPU risers). Quotes/BOQs specifying "DL380a" or GPU server SKUs MUST evaluate strictly against `outputs/ProLiant/Gen12/DL380a_Gen12` and dedicated NotebookLM notebook `DL380a` (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Never route to standard `DL380_Gen12`.
 2. **Deterministic 7-Aspect Physical Pre-Flight Math**:
    - Executes $O(1)$ indexed checks across: (1) Compute & Thermal TDP, (2) Memory Channel symmetry (1DPC/2DPC), (3) Storage Tri-Mode controllers & drive cages, (4) Networking & OCP slot constraints, (5) PCIe Riser card & slot capacity, (6) Power redundancy & -48VDC telco lug kits, (7) Support services & OS physical core multiplier licensing (`INV-28`).
+   - **Zero-Hardcoding Compliance**: Generic aspect checkers maintain 0 hardcoded SKU strings. All platform enablement kits (fans, cables, batteries, risers, DC lugs, CE mark kits) are dynamically resolved via `mandatorySkus` from [`scripts/config/chassis_map.json`](../../scripts/config/chassis_map.json) and catalog rules. Default primary risers provide 3 electrically active slots without requiring extra cable kits.
 3. **Grounded Gemini NotebookLM Verification (Double Safety Net)**:
    - Evaluates the query payload against the official vendor QuickSpecs PDF and 22-sheet master catalog in NotebookLM.
-   - **INV-24 Compliance**: Customer BOQ files are strictly isolated and NEVER uploaded to NotebookLM sources to prevent poisoning the RAG brain with human errors.
+   - **INV-24 Compliance & Ephemeral Solution Source Validation (`nlm_solution_source_validator.js`)**:
+     - Customer BOQ files are strictly isolated from permanent knowledge sources to prevent poisoning baseline QuickSpecs models with customer errors.
+     - When whole-solution context or multi-rank configurations exceed prompt token/character limits, the engine generates a token-dense solution sheet (`.csv`), temporarily attaches it as an ephemeral document source via `gemini-notebook-mcp:source_add`, queries NotebookLM across all 7 physical aspects, extracts technical citations into persistent `KnowledgeDelta` records, and **immediately detaches the source** (`source_delete`), strictly preserving INV-24.
+   - **Dynamic Matrix Re-Evaluation (`recomputeStrategyMatrixWithRag`)**: If NotebookLM grounding uncovers new verified dependencies or rules, the engine dynamically recomputes physical checks and re-synthesizes the 5-Tier Strategy Matrix before final deliverable export.
 4. **Alternate Parts & Form-Factor Bus Pivoting (Path B Principle)**:
    - When components conflict (e.g. customer requests 2x OCP NICs but also selects an OCP storage controller `MR408i-o`), the engine pivots the storage controller to PCIe standup (`MR416i-p` `P47777-B21`), freeing OCP Slot 1 to preserve 100% of requested networking.
-   - Injects mandatory enablement kits dynamically: secondary CPU heatsinks (`P48818-B21`), internal SAS expanders (`P48835-B21`), GPU auxiliary power cables (`P48816-B21`), CE Mark Removal Kit (`P35876-B21`, `INV-30`), and Primary Cable Kit (`P56073-B21`, `INV-31`).
-5. **100% Partner Portal / CLIC Buildability Guarantee**:
+   - Injects mandatory enablement kits dynamically resolved from `chassis_map.json`: secondary CPU heatsinks, internal SAS expanders, GPU auxiliary power cables, CE Mark Removal Kit (`INV-30`), and Primary Cable Kit (`INV-31`).
+5. **100% Partner Portal / CLIC Buildability Guarantee & Multi-Rank Deliverable**:
    - Ensures internal CTO components carry `#0D1` / `-F21` FIO tags (`INV-25`). Standalone BTO components outside containers fail CLIC validation (Rules 81354490 & 91001655).
+   - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable Workbook** (`.xlsx`) and companion `.csv` with 10 standardized columns (`Part No`, `Per-Node Qty`, `Node Multiplier`, `Total Qty`, `Description`, `Component Role`, `Unit Price`, `Extended Price`, `Physical Math Rationale`, `CLIC Status / Rule Trace`) and formula-driven totals for direct upload to HPE Partner Portal / OCA.
    - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.
 6. **5-Tier Strategic Resolution Matrix Ranking & Least-Delta Optimization**:
    - **Rank 1 (Customer Intent Preserved — RECOMMENDED)**:

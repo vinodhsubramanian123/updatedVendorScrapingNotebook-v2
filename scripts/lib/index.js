@@ -84,7 +84,8 @@ module.exports = {
     localSearch: require('./rag/local_rag_search.js'),
     postFlowSync: require('./sync/post_flow_sync.js'),
     agenticGuardrail: require('./rag/agentic_guardrail.js'),
-    guardrailPrompt: require('./prompts/guardrail_prompt.js')
+    guardrailPrompt: require('./prompts/guardrail_prompt.js'),
+    solutionSourceValidator: require('./sync/nlm_solution_source_validator.js')
   },
 
   // Scraper Subsystem
