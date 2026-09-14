@@ -1,59 +1,6 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Energy Star	Energy Star	max 1	Quantity Constraint	Quantity: max 1
 Processor	Processor	max 4	Quantity Constraint	Quantity: max 4
-Unknown	Heatsink Kit	min 1, Required	Quantity Constraint	Quantity: min 1, Required
 Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
-Unknown	Drive Cage	max 5	Quantity Constraint	Quantity: max 5
-Unknown	SAS Controller	max 4	Quantity Constraint	Quantity: max 4
-Unknown	Smart Storage Battery	max 3	Quantity Constraint	Quantity: max 3
-Cables	Internal Storage Controller Cables	max 1	Quantity Constraint	Quantity: max 1
-Unknown	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
-Unknown	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Identifier/Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Riser Cards	max 6	Quantity Constraint	Quantity: max 6
-Accessories	Accessories	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Ethernet PCIe	max 4	Quantity Constraint	Quantity: max 4
-Unknown	InfiniBand PCIe	max 4	Quantity Constraint	Quantity: max 4
-Cables	Ethernet Cables and QSFP/SFP	max 14	Quantity Constraint	Quantity: max 14
-Unknown	Fibre Channel HBA	max 4	Quantity Constraint	Quantity: max 4
-Unknown	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
-Unknown	Upgrades	max 4	Quantity Constraint	Quantity: max 4
-Transceivers	Transceivers	max 14	Quantity Constraint	Quantity: max 14
-OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
-Management Hardware	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
-Unknown	Security Hardware	max 1	Quantity Constraint	Quantity: max 1
-Manufacturing Services	Manufacturing Services	max 2	Quantity Constraint	Quantity: max 2
-Unknown		Unlimited	Quantity Constraint	Quantity: Unlimited
-Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
-Power Supplies	Power Supplies	max 4	Quantity Constraint	Quantity: max 4
-Accessories	Accessories	max 4	Quantity Constraint	Quantity: max 4
-Power Cords	Power Cords	max 4	Quantity Constraint	Quantity: max 4
-Cooling Options	Power Cooling Options	max 6	Quantity Constraint	Quantity: max 6
-AI-at-Scale	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	Partner Software - Interconnect Management Array	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	Partner Software - Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
-Unknown	Compute Ops Management Enablement SKUs	max 1	Quantity Constraint	Quantity: max 1
-OEM Software	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	iLO	Unlimited	Quantity Constraint	Quantity: Unlimited
-Software	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
-Unknown	INTEL VROC Products	max 1	Quantity Constraint	Quantity: max 1
-Supported Operating System	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	SUSE Linux Enterprise Server	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	Microsoft Windows CAL Packs	Unlimited	Quantity Constraint	Quantity: Unlimited
-Virtualization	Red Hat Enterprise Linux Server-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-Unknown	VMware vCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
 Processor	Processor	max 4	Configuration Rule	Selection constraint for Processor: max 4
@@ -103,10 +50,3 @@ Software & Licenses	High Availability Computing - Cluster Software	no max	Config
 Software & Licenses	MS Windows Server	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
 Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	Selection constraint for Microsoft Windows CAL Packs: no max
-Support Services	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
-Software & Licenses	Partner Software - Interconnect Management Array	no max	Configuration Rule	Selection constraint for Partner Software - Interconnect Management Array: no max
-Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
-Graphics & GPU	GPU Accelerators	max 1	Configuration Rule	Selection constraint for GPU Accelerators: max 1
-Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	Selection constraint for Red Hat OpenShift Platform Container: no max
-Support Services	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account

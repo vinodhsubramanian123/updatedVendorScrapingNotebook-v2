@@ -841,14 +841,15 @@
     "daysActive": 0,
     "lastKnownPrice": "5300.00",
     "fullPriceTrail": "2026-09-09: $5300.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "04/30/2024",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "C0H27A": {
     "productNumber": "C0H27A",
@@ -860,14 +861,15 @@
     "daysActive": 0,
     "lastKnownPrice": "5100.00",
     "fullPriceTrail": "2026-09-09: $5100.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "11/30/2023",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "N7P36A": {
     "productNumber": "N7P36A",
@@ -879,14 +881,15 @@
     "daysActive": 0,
     "lastKnownPrice": "9362.00",
     "fullPriceTrail": "2026-09-09: $9362.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "07/17/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "N7P37A": {
     "productNumber": "N7P37A",
@@ -898,14 +901,15 @@
     "daysActive": 0,
     "lastKnownPrice": "9010.00",
     "fullPriceTrail": "2026-09-09: $9010.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "07/17/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "Q6Q67A": {
     "productNumber": "Q6Q67A",
@@ -917,14 +921,15 @@
     "daysActive": 0,
     "lastKnownPrice": "21600.00",
     "fullPriceTrail": "2026-09-09: $21600.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "05/31/2030",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "Q6Q68A": {
     "productNumber": "Q6Q68A",
@@ -936,14 +941,15 @@
     "daysActive": 0,
     "lastKnownPrice": "16800.00",
     "fullPriceTrail": "2026-09-09: $16800.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "05/31/2030",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "R6Q74A": {
     "productNumber": "R6Q74A",
@@ -955,14 +961,15 @@
     "daysActive": 0,
     "lastKnownPrice": "33000.00",
     "fullPriceTrail": "2026-09-09: $33000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "05/31/2030",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "R6Q75A": {
     "productNumber": "R6Q75A",
@@ -974,14 +981,15 @@
     "daysActive": 0,
     "lastKnownPrice": "24000.00",
     "fullPriceTrail": "2026-09-09: $24000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "05/31/2030",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF570A": {
     "productNumber": "AF570A",
@@ -993,14 +1001,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF568A": {
     "productNumber": "AF568A",
@@ -1012,14 +1021,15 @@
     "daysActive": 0,
     "lastKnownPrice": "71.00",
     "fullPriceTrail": "2026-09-09: $71.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "10/31/2031",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF557A": {
     "productNumber": "AF557A",
@@ -1031,14 +1041,15 @@
     "daysActive": 0,
     "lastKnownPrice": "156.00",
     "fullPriceTrail": "2026-09-09: $156.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "10/31/2031",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF556A": {
     "productNumber": "AF556A",
@@ -1050,14 +1061,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF569A": {
     "productNumber": "AF569A",
@@ -1069,14 +1081,15 @@
     "daysActive": 0,
     "lastKnownPrice": "65.00",
     "fullPriceTrail": "2026-09-09: $65.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "142257-002": {
     "productNumber": "142257-002",
@@ -1088,14 +1101,15 @@
     "daysActive": 0,
     "lastKnownPrice": "34.00",
     "fullPriceTrail": "2026-09-09: $34.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "EOL Warning (90-Day)",
     "vendorDiscontinuedDate": "11/30/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "AF561A": {
     "productNumber": "AF561A",
@@ -1107,14 +1121,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF566A": {
     "productNumber": "AF566A",
@@ -1126,14 +1141,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF558A": {
     "productNumber": "AF558A",
@@ -1145,14 +1161,15 @@
     "daysActive": 0,
     "lastKnownPrice": "65.00",
     "fullPriceTrail": "2026-09-09: $65.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF562A": {
     "productNumber": "AF562A",
@@ -1164,14 +1181,15 @@
     "daysActive": 0,
     "lastKnownPrice": "194.00",
     "fullPriceTrail": "2026-09-09: $194.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "10/31/2031",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "SG579A": {
     "productNumber": "SG579A",
@@ -1183,14 +1201,15 @@
     "daysActive": 0,
     "lastKnownPrice": "142.00",
     "fullPriceTrail": "2026-09-09: $142.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "11/30/2022",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "AF572A": {
     "productNumber": "AF572A",
@@ -1202,14 +1221,15 @@
     "daysActive": 0,
     "lastKnownPrice": "60.00",
     "fullPriceTrail": "2026-09-09: $60.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF560A": {
     "productNumber": "AF560A",
@@ -1221,14 +1241,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF559A": {
     "productNumber": "AF559A",
@@ -1240,14 +1261,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF567A": {
     "productNumber": "AF567A",
@@ -1259,14 +1281,15 @@
     "daysActive": 0,
     "lastKnownPrice": "65.00",
     "fullPriceTrail": "2026-09-09: $65.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF565A": {
     "productNumber": "AF565A",
@@ -1278,14 +1301,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "AF564A": {
     "productNumber": "AF564A",
@@ -1297,14 +1321,15 @@
     "daysActive": 0,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-09-09: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "TC406A": {
     "productNumber": "TC406A",
@@ -1316,14 +1341,15 @@
     "daysActive": 0,
     "lastKnownPrice": "2500.00",
     "fullPriceTrail": "2026-09-09: $2500.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "10/31/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "Q8K96A": {
     "productNumber": "Q8K96A",
@@ -1335,14 +1361,15 @@
     "daysActive": 0,
     "lastKnownPrice": "3000.00",
     "fullPriceTrail": "2026-09-09: $3000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "03/31/2023",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "Q8K97A": {
     "productNumber": "Q8K97A",
@@ -1354,14 +1381,15 @@
     "daysActive": 0,
     "lastKnownPrice": "3000.00",
     "fullPriceTrail": "2026-09-09: $3000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "03/31/2023",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-09-09"
   },
   "Q8K98A": {
     "productNumber": "Q8K98A",
@@ -1373,14 +1401,15 @@
     "daysActive": 0,
     "lastKnownPrice": "6000.00",
     "fullPriceTrail": "2026-09-09: $6000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "12/31/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "Q8L00A": {
     "productNumber": "Q8L00A",
@@ -1392,14 +1421,15 @@
     "daysActive": 0,
     "lastKnownPrice": "6000.00",
     "fullPriceTrail": "2026-09-09: $6000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "12/31/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "Q8K99A": {
     "productNumber": "Q8K99A",
@@ -1411,14 +1441,15 @@
     "daysActive": 0,
     "lastKnownPrice": "2000.00",
     "fullPriceTrail": "2026-09-09: $2000.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "12/31/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "469776-715": {
     "productNumber": "469776-715",
@@ -1430,14 +1461,15 @@
     "daysActive": 0,
     "lastKnownPrice": "1.00",
     "fullPriceTrail": "2026-09-09: $1.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "HA453A1-001": {
     "productNumber": "HA453A1-001",
@@ -1449,14 +1481,15 @@
     "daysActive": 0,
     "lastKnownPrice": "205.00",
     "fullPriceTrail": "2026-09-09: $205.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "HA453A1-003": {
     "productNumber": "HA453A1-003",
@@ -1468,14 +1501,15 @@
     "daysActive": 0,
     "lastKnownPrice": "315.00",
     "fullPriceTrail": "2026-09-09: $315.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "HA453A1-023": {
     "productNumber": "HA453A1-023",
@@ -1487,14 +1521,15 @@
     "daysActive": 0,
     "lastKnownPrice": "384.00",
     "fullPriceTrail": "2026-09-09: $384.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "ZU706A": {
     "productNumber": "ZU706A",
@@ -1506,14 +1541,15 @@
     "daysActive": 0,
     "lastKnownPrice": "149.00",
     "fullPriceTrail": "2026-09-09: $149.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   },
   "ZU723A": {
     "productNumber": "ZU723A",
@@ -1525,13 +1561,14 @@
     "daysActive": 0,
     "lastKnownPrice": "110.00",
     "fullPriceTrail": "2026-09-09: $110.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-09-09"
   }
 }

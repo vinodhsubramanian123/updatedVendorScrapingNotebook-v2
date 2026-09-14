@@ -5748,5 +5748,4215 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
     "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE Add Generic Packaging Kit",
+    "newValue": "[REMOVED SKU] HPE Add Generic Packaging Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "469776-715",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"1.00\",\"Product Number\":\"469776-715\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE FE Proliant Svr Pkg 3 SVC",
+    "newValue": "[REMOVED SKU] HPE FE Proliant Svr Pkg 3 SVC"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-001",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"205.00\",\"Product Number\":\"HA453A1-001\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE FE Multi-node Svr Pkg 3 SVC",
+    "newValue": "[REMOVED SKU] HPE FE Multi-node Svr Pkg 3 SVC"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-003",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"315.00\",\"Product Number\":\"HA453A1-003\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE FE High End Storage Pkg 3 SVC",
+    "newValue": "[REMOVED SKU] HPE FE High End Storage Pkg 3 SVC"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "HA453A1-023",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"384.00\",\"Product Number\":\"HA453A1-023\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE Server Customization Package",
+    "newValue": "[REMOVED SKU] HPE Server Customization Package"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU706A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"149.00\",\"Product Number\":\"ZU706A\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Description",
+    "oldValue": "HPE Customization Service",
+    "newValue": "[REMOVED SKU] HPE Customization Service"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Start Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Discontinued Date",
+    "oldValue": "",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "ZU723A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Encryption Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"110.00\",\"Product Number\":\"ZU723A\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF570A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF568A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF557A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF556A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF569A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2026",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "EOL Warning (90-Day)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Badge",
+    "oldValue": "90",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "EOL Warning (90-Day)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "142257-002",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF561A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF566A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF558A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF562A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "SG579A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF572A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF560A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF559A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF567A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF565A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Description",
+    "oldValue": "HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord",
+    "newValue": "[REMOVED SKU] HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "AF564A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "TC406A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2023",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K96A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2023",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K97A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 KMIP Key Manager LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL3040 KMIP Key Manager LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K98A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 LTO-7+ Path Failover LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL3040 LTO-7+ Path Failover LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8L00A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL3040 Secure Manager LTU",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL3040 Secure Manager LTU"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2028",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q8K99A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2024",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H28A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2023",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "C0H27A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/17/2026",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P36A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/17/2026",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Badge",
+    "oldValue": "OB",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Obsolete (OB)",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "N7P37A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2030",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q67A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2030",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "Q6Q68A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2030",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Description",
+    "oldValue": "HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit",
+    "newValue": "[REMOVED SKU] HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "Discontinued"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Max Qty",
+    "oldValue": "",
+    "newValue": "0"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Discontinued Hardware"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2030",
+    "newValue": "2026-09-09"
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-09-09",
+    "productNumber": "R6Q75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel Host Bus Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
+    "newValue": ""
   }
 ]

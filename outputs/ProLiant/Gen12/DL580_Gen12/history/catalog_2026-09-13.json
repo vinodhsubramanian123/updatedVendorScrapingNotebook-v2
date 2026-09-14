@@ -6,7 +6,7 @@
     "generation": "Gen12",
     "scrapeDate": "2026-09-13",
     "scrapeTimestamp": "2026-09-13T11:29:41.708Z",
-    "totalSubcategories": 33,
+    "totalSubcategories": 2,
     "totalUniqueSKUs": 485,
     "totalTables": 64,
     "diffSummary": {
@@ -328,9 +328,7 @@
       "removedSkusCount": 0,
       "estimatedTokensSaved": 72750,
       "estimatedProcessingTimeSavedMs": 97000
-    },
-    "snapshotChecksum": "221f2103ad1a301d99950a2a73a9a17da9030590c2683f54fb68747b14c2e83c",
-    "snapshotTimestamp": "2026-09-13T11:29:41.971Z"
+    }
   },
   "subcategories": [
     {

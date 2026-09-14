@@ -320,6 +320,11 @@ function diffCurrentCatalogEntries(catalogData, prevCatalog, prevSkuMap, priceHi
       if (!pn) continue;
       currSkuMap.set(pn, sku);
 
+      if (isRemovalTombstone(sku)) {
+        sku['Diff Status'] = 'REMOVED';
+        continue;
+      }
+
       const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
 
       if (!priceHistory[pn]) priceHistory[pn] = [];
@@ -533,6 +538,12 @@ function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companio
       'Discontinued Date':          scrapeDate,
       'Days Active':                String(daysActive),
       'Diff Status':                'REMOVED',
+      'Lifecycle Status':           prevSku['Lifecycle Status'] || prevSku.lifecycleStatus || 'Discontinued',
+      'Lifecycle Badge':            prevSku['Lifecycle Badge'] || (String(prevSku['Lifecycle Status'] || '').includes('OB') ? 'OB' : 'DS'),
+      'Availability':               prevSku['Availability'] || 'Discontinued',
+      'Lead Time':                  prevSku['Lead Time'] || 'Not available (Discontinued)',
+      'Lead Time Source':           prevSku['Lead Time Source'] || 'Catalog deprecation',
+      'Vendor Attributes (JSON)':   prevSku['Vendor Attributes (JSON)'] || '{}',
       'Previous List Price (USD)':  prevPrice.toFixed(2),
       'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
       'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',

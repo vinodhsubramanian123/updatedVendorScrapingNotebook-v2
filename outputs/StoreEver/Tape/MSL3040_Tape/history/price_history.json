@@ -821,98 +821,112 @@
     {
       "date": "2026-09-09",
       "price": 5300,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "C0H27A": [
     {
       "date": "2026-09-09",
       "price": 5100,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "N7P36A": [
     {
       "date": "2026-09-09",
       "price": 9362,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "N7P37A": [
     {
       "date": "2026-09-09",
       "price": 9010,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q6Q67A": [
     {
       "date": "2026-09-09",
       "price": 21600,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q6Q68A": [
     {
       "date": "2026-09-09",
       "price": 16800,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6Q74A": [
     {
       "date": "2026-09-09",
       "price": 33000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6Q75A": [
     {
       "date": "2026-09-09",
       "price": 24000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF570A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF568A": [
     {
       "date": "2026-09-09",
       "price": 71,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF557A": [
     {
       "date": "2026-09-09",
       "price": 156,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF556A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF569A": [
     {
       "date": "2026-09-09",
       "price": 65,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "142257-002": [
     {
       "date": "2026-09-09",
       "price": 34,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF571A": [],
@@ -920,161 +934,184 @@
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF566A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF558A": [
     {
       "date": "2026-09-09",
       "price": 65,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF562A": [
     {
       "date": "2026-09-09",
       "price": 194,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "SG579A": [
     {
       "date": "2026-09-09",
       "price": 142,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF572A": [
     {
       "date": "2026-09-09",
       "price": 60,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF560A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF559A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF567A": [
     {
       "date": "2026-09-09",
       "price": 65,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF565A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "AF564A": [
     {
       "date": "2026-09-09",
       "price": 55,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "TC406A": [
     {
       "date": "2026-09-09",
       "price": 2500,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8K96A": [
     {
       "date": "2026-09-09",
       "price": 3000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8K97A": [
     {
       "date": "2026-09-09",
       "price": 3000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8K98A": [
     {
       "date": "2026-09-09",
       "price": 6000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8L00A": [
     {
       "date": "2026-09-09",
       "price": 6000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8K99A": [
     {
       "date": "2026-09-09",
       "price": 2000,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "469776-715": [
     {
       "date": "2026-09-09",
       "price": 1,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "HA453A1-001": [
     {
       "date": "2026-09-09",
       "price": 205,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "HA453A1-003": [
     {
       "date": "2026-09-09",
       "price": 315,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "HA453A1-023": [
     {
       "date": "2026-09-09",
       "price": 384,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "ZU706A": [
     {
       "date": "2026-09-09",
       "price": 149,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "ZU723A": [
     {
       "date": "2026-09-09",
       "price": 110,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ]
 }
