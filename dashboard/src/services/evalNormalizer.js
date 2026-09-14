@@ -76,10 +76,35 @@ function extractHardwareMetrics(data, inner) {
 
 function extractConflictAndStrategy(data, inner) {
   const conflictGraph = data.conflictGraph ?? inner.conflictGraph ?? {};
-  const rankedSolutions = conflictGraph.rankedSolutions ?? inner.conflictGraph?.rankedSolutions ?? data.rankedSolutions ?? [];
+  const cgRanked = (Array.isArray(conflictGraph.rankedSolutions) && conflictGraph.rankedSolutions.length > 0)
+    ? conflictGraph.rankedSolutions
+    : (Array.isArray(inner.conflictGraph?.rankedSolutions) && inner.conflictGraph.rankedSolutions.length > 0)
+    ? inner.conflictGraph.rankedSolutions
+    : (Array.isArray(data.rankedSolutions) && data.rankedSolutions.length > 0)
+    ? data.rankedSolutions
+    : [];
+
+  const cgRecommended = (Array.isArray(conflictGraph.recommendedSolutions) && conflictGraph.recommendedSolutions.length > 0)
+    ? conflictGraph.recommendedSolutions
+    : (Array.isArray(inner.conflictGraph?.recommendedSolutions) && inner.conflictGraph.recommendedSolutions.length > 0)
+    ? inner.conflictGraph.recommendedSolutions
+    : (Array.isArray(data.recommendedSolutions) && data.recommendedSolutions.length > 0)
+    ? data.recommendedSolutions
+    : [];
+
+  const finalRanked = cgRanked.length > 0 ? cgRanked : cgRecommended;
+  const finalRecommended = cgRecommended.length > 0 ? cgRecommended : finalRanked;
+
+  const mergedConflictGraph = {
+    ...conflictGraph,
+    rankedSolutions: finalRanked,
+    recommendedSolutions: finalRecommended
+  };
+
   return {
-    conflictGraph,
-    rankedSolutions,
+    conflictGraph: mergedConflictGraph,
+    rankedSolutions: finalRanked,
+    recommendedSolutions: finalRecommended,
     workloadDna: conflictGraph.workloadDna ?? data.workloadDna,
     arbitrationResults: conflictGraph.arbitrationResults ?? inner.arbitrationResults ?? data.arbitrationResults ?? null,
     clusterSizing: data.clusterSizing ?? inner.clusterSizing ?? null,

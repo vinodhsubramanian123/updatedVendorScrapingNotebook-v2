@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 const { parseAndConsolidateBOQDetailed, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
-const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../lib/boq/generate_boq_xlsx.js');
+const { serializeAndExportResults, generateMarkdownReport } = require('../lib/boq/eval_output_serializer.js');
 const { validateSolutionWithEphemeralSource } = require('../lib/sync/nlm_solution_source_validator.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
@@ -25,10 +25,9 @@ const { executeNotebookQuery, getAuthoritativeSourceIds } = require('../lib/note
 const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
 const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
 const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
-const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
-const { recordEvaluationTelemetry } = require('../lib/system/telemetry.js');
 const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
+const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -167,6 +166,12 @@ function ingestAndConsolidateBoq(options) {
       chassisDir = chassisDetection.chassisDir;
     }
   } else {
+    if (!fs.existsSync(chassisDir) || !fs.statSync(chassisDir).isDirectory()) {
+      const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+      const cats = listAllCatalogs();
+      const matched = cats.find(c => c.prefix === chassisDir || path.basename(c.catalogDir) === chassisDir || c.catalogDir.includes(chassisDir));
+      if (matched) chassisDir = matched.catalogDir;
+    }
     chassisDetection = {
       chassisDir,
       matchType: 'EXPLICIT_CLI',
@@ -508,427 +513,9 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
 
   return { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs };
 }
-
 // ============================================================
-// Stage 5: Strategic Synthesis & Output Serialization
+// Stage 5: Strategic Synthesis & Output Serialization (Delegated to eval_output_serializer.js)
 // ============================================================
-function generateMarkdownReport(ctx) {
-  const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd, items, budgetOpt, graph, chassisDir, chassisDetection, ragAnswer } = ctx;
-
-  let reportContent = `# HPE Pre-Flight BOQ Evaluation & Validation Report\n\n`;
-  reportContent += `**Target BOQ File**: \`${inputFile}\`  \n`;
-  const chassisLabel = (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'HPE ProLiant BOQ';
-  const notebookLabel = notebookId ? `${chassisLabel} Notebook (\`${notebookId}\`)` : `${chassisLabel} — Local Catalog Rules (no Notebook configured)`;
-  reportContent += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
-  reportContent += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
-  reportContent += `**Quantitative Confidence Score**: \`${evalResults.confidence.score} / 1.00\` (${evalResults.confidence.isHitlTriggered ? '🚨 HITL Review Required' : '✅ Certified Buildable'})  \n`;
-  if (targetBudgetUsd > 0) {
-    reportContent += `**Target CapEx Budget**: \`$${targetBudgetUsd.toLocaleString()} USD\`  \n`;
-  }
-  reportContent += `\n---\n\n`;
-
-  reportContent += `## 📋 1. Consolidated BOQ Hardware Items (${items.length})\n\n`;
-  reportContent += `| # | Product # (SKU) | Consolidated Qty | Description | Est. Unit Price (USD) | Extended Price (USD) |\n`;
-  reportContent += `|---|---|---|---|---|---|\n`;
-  items.forEach((it, idx) => {
-    reportContent += `| ${idx + 1} | \`${it.sku}\` | ${it.quantity} | ${it.description} | \$${(it.unitPriceUsd || 0).toLocaleString()} | \$${(it.extendedPriceUsd || 0).toLocaleString()} |\n`;
-  });
-  reportContent += `\n**Current Baseline BOM Total**: \`$${budgetOpt.currentBomCostUsd.toLocaleString()} USD\`\n\n`;
-  reportContent += `---\n\n`;
-
-  const aspectCount = evalResults.aspectChecks ? evalResults.aspectChecks.length : 7;
-  reportContent += `## ⚡ 2. Modular ${aspectCount}-Aspect Physical Pre-Checks\n\n`;
-  if (evalResults.aspectChecks && Array.isArray(evalResults.aspectChecks)) {
-    evalResults.aspectChecks.forEach(asp => {
-      reportContent += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : '❌ VIOLATION'} — ${asp.detail}\n`;
-    });
-    reportContent += `\n`;
-  } else {
-    reportContent += `- **Aspect 1: Compute & Thermal**: ${evalResults.cpuCount} CPUs (Max TDP: ${evalResults.maxCpuTdpWatts}W) | High-Perf Fans: ${evalResults.hasHighPerfFans ? '✅ Present' : '❌ Missing'}\n`;
-    reportContent += `- **Aspect 2: Memory & Channels**: ${evalResults.memoryCount} DIMMs (${evalResults.totalMemoryGb} GB Total)\n`;
-    reportContent += `- **Aspect 3: Storage & Tri-Mode**: ${evalResults.driveCount} Drives | Controller Battery: ${evalResults.hasSmartBattery ? '✅ Present' : '❌ Missing'}\n`;
-    reportContent += `- **Aspect 4: PCIe Expansion**: ${evalResults.requiredPcieCards || 0} Cards / ${evalResults.totalPcieSlotsAvailable || 2} Slots\n`;
-    reportContent += `- **Aspect 5: Networking & OCP**: OCP Adapter Present: ${evalResults.hasOcpAdapter ? '✅ Present' : '❌ Missing'}\n`;
-    reportContent += `- **Aspect 6: Power & Environment**: -48VDC PSU: ${evalResults.hasDcPowerSupply ? 'YES' : 'NO'} | Lug Kit: ${evalResults.hasDcLugKit ? '✅ Present' : '❌ Missing'}\n`;
-    reportContent += `- **Aspect 7: Support Services**: Support Service Present: ${evalResults.hasSupportService ? '✅ Present' : '❌ Missing'}\n\n`;
-  }
-
-  if (evalResults.missingDependencies.length > 0) {
-    reportContent += `### 🚨 Missing Physical Dependencies Detected\n\n`;
-    reportContent += `| # | Rule Name | Direct SKU Fix | Required Qty | Description |\n`;
-    reportContent += `|---|---|---|---|---|\n`;
-    evalResults.missingDependencies.forEach((dep, idx) => {
-      reportContent += `| ${idx + 1} | ${dep.rule} | \`${dep.sku}\` | ${dep.quantity} | ${dep.description} |\n`;
-    });
-    reportContent += `\n`;
-  }
-
-  reportContent += `## 1. Workload Fingerprint & Intent Analysis  \n`;
-  reportContent += `- **Detected Chassis Variant**: \`${graph.chassisInfo ? graph.chassisInfo.model : (chassisDir.split('/').pop() || 'Unknown')}\`  \n`;
-  reportContent += `- **Primary Workload DNA**: \`${graph.workloadDna ? graph.workloadDna.workloadDescription : 'Balanced Enterprise'}\`  \n`;
-  if (chassisDetection) {
-    reportContent += `- **Chassis Auto-Detection**: Match Type \`${chassisDetection.matchType}\` (Confidence: ${Math.round(chassisDetection.confidenceScore * 100)}%)  \n`;
-  }
-
-  const rulesSrcName = chassisDir ? `${chassisDir.split('/').pop()}_Catalog.json` : 'Unknown_Catalog.json';
-  reportContent += `- **Rules Loaded Source**: \`${graph.rulesSource || rulesSrcName}\` ${graph.isFallbackSource ? '(Fallback Safety Net)' : '(Dual Safety Net)'}  \n\n`;
-
-  if (graph.auditLog && graph.auditLog.length > 0) {
-    reportContent += `| Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |\n`;
-    reportContent += `|---|---|---|---|\n`;
-    graph.auditLog.forEach(al => {
-      const statusIcon = al.status === 'PASS' ? '✅ PASS' : (al.status === 'FAIL' ? '❌ FAIL' : '⚠️ WARNING');
-      reportContent += `| **${al.level}** | ${al.ruleText} | ${statusIcon} | ${al.details} |\n`;
-    });
-    reportContent += `\n`;
-  }
-
-  reportContent += `### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix\n\n`;
-  const dna = graph.workloadDna || {};
-  reportContent += `- **Inferred Workload DNA Profile**: \`${dna.workloadDescription || 'Balanced Enterprise'}\`  \n`;
-  reportContent += `- **CPU / Core Density**: \`${dna.totalCores || 0} Total Cores\` (Max Freq: \`${dna.maxFreqGhz || 0} GHz\`)  \n`;
-  reportContent += `- **Memory Density Ratio**: \`${dna.totalMemoryGb || 0} GB Total RAM\` (\`${dna.gbPerCore || 0} GB/Core\`)  \n`;
-  reportContent += `- **Storage I/O Profile**: \`${dna.storageWorkload || 'READ_INTENSIVE'} (${dna.storageType || 'SATA/NVMe'})\`  \n\n`;
-
-  if (graph.rankedSolutions && graph.rankedSolutions.length > 0) {
-    reportContent += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
-    reportContent += `|---|---|---|---|---|---|---|\n`;
-    graph.rankedSolutions.forEach(rs => {
-      reportContent += `| **Rank ${rs.rank}** | ${rs.name} | \`${rs.score}\` | \$${rs.estimatedCostUsd.toLocaleString()} | ${rs.workloadDnaMatch} | ${rs.changesCount} | ${rs.reasoning} |\n`;
-    });
-    reportContent += `\n`;
-  }
-
-  reportContent += `---\n\n`;
-  reportContent += `## 💰 3. Budget-Constrained Optimization & Golden Rule Assurance\n\n`;
-  reportContent += `${budgetOpt.goldenRuleSummary}\n\n`;
-  reportContent += `- **Mandatory Buildable Cost**: \`$${budgetOpt.mandatoryBomCostUsd.toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
-
-  if (budgetOpt.isBudgetExceeded) {
-    reportContent += `- **Minimum Budget Overrun Delta**: \`+$${budgetOpt.budgetOverrunUsd.toLocaleString()} USD\`\n`;
-    reportContent += `> **Engineering Rationale**: The Golden Rule mandates that solution validation must eliminate 100% of unbuildable errors. Budget caps cannot override mandatory thermal cooling, power terminal safety, or write-cache lithium-ion battery requirements.\n\n`;
-  } else if (targetBudgetUsd > 0) {
-    reportContent += `- **Remaining Budget Surplus**: \`$${budgetOpt.remainingBudgetUsd.toLocaleString()} USD\`\n\n`;
-    if (budgetOpt.recommendedUpgrades.length > 0) {
-      reportContent += `### 🌟 Recommended Surplus Budget Performance Upgrades\n\n`;
-      reportContent += `| Component Upgrade | Recommended SKU | Qty | Cost (USD) | Performance Benefit |\n`;
-      reportContent += `|---|---|---|---|---|\n`;
-      budgetOpt.recommendedUpgrades.forEach(upg => {
-        reportContent += `| ${upg.upgrade} | \`${upg.sku}\` | ${upg.qty} | \$${upg.costUsd.toLocaleString()} | ${upg.benefit} |\n`;
-      });
-      reportContent += `\n`;
-    }
-  }
-
-  if (evalResults.valueEngineering) {
-    const ve = evalResults.valueEngineering;
-    reportContent += `---\n\n`;
-    reportContent += `## 💡 3.5 Value Engineering & Deal Optimization Analysis\n\n`;
-    reportContent += `- **Workload Classification**: \`${ve.workloadProfile?.profileName || 'General Enterprise'}\`\n`;
-    reportContent += `- **Workload Rationale**: ${ve.workloadProfile?.rationale || 'Standard enterprise profile'}\n`;
-    reportContent += `- **Total Identified Savings**: \`$${(ve.totalEstimatedSavingsUsd || 0).toLocaleString()} USD\`\n\n`;
-
-    if (ve.opportunities && ve.opportunities.length > 0) {
-      reportContent += `| Optimization Category | Opportunity Headline | Est. Savings (USD) | Presales Value Pitch |\n`;
-      reportContent += `|---|---|---|---|\n`;
-      ve.opportunities.forEach(opp => {
-        reportContent += `| **${opp.type}** | ${opp.headline} | \$${(opp.potentialSavingsUsd || 0).toLocaleString()} | ${opp.presalesPitch} |\n`;
-      });
-      reportContent += `\n`;
-    }
-  }
-
-  reportContent += `---\n\n`;
-  reportContent += `## 🤖 4. Gemini Notebook RAG Status\n\n`;
-  reportContent += `${ragAnswer}\n\n`;
-  reportContent += `---\n\n`;
-  reportContent += `*Report generated automatically by HPE BOQ Evaluation Engine.*  \n`;
-
-  return reportContent;
-}
-
-async function serializeAndExportResults(ctx) {
-  const {
-    outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
-    graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
-    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir, chassisDetection,
-    budgetOpt, ragAnswer, queryPayload
-  } = ctx;
-
-  const reportDir = path.dirname(outputPath);
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
-
-  const reportContent = generateMarkdownReport(ctx);
-  fs.writeFileSync(outputPath, reportContent, 'utf-8');
-
-  // Multi-Rank Solution Deliverable Export (INV-32, User Specification)
-  const inputBase = path.basename(inputFile, path.extname(inputFile));
-  const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
-  const multiRankWorkbookPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`);
-  const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
-
-  try {
-    generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, chassisPrefix || (graph.chassisInfo ? graph.chassisInfo.model : 'DL380_Gen12'), {
-      clusterSizing: evalResults.clusterSizing
-    });
-    generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
-      clusterSizing: evalResults.clusterSizing
-    });
-    evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
-    evalResults.multiRankCsvPath = multiRankCsvPath;
-  } catch (sheetErr) {
-    const _logger = require('../lib/system/pipeline_logger.js');
-    _logger.warn('EVAL_BOQ', `Multi-Rank workbook export note: ${sheetErr.message}`);
-  }
-
-  try {
-    const autoUpload = Boolean(ctx.syncNlm || (ctx.options && ctx.options.syncNlm) || process.env.AUTO_UPLOAD_NLM === '1');
-    const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION', {
-      autoUploadNLM: autoUpload
-    });
-    evalResults.postFlowSync = syncResult;
-    if (!syncResult.success) {
-      const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
-      evalResults.warnings.push(syncWarning);
-      if (!JSON_MODE) console.log(`\n${syncWarning}`);
-    }
-  } catch (syncErr) {
-    const _syncLogger = require('../lib/system/pipeline_logger.js');
-    _syncLogger.error('EVAL_BOQ', `Post-flow sync failed hard: ${syncErr.message}`);
-    evalResults.postFlowSync = { success: false, error: syncErr.message };
-    evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
-  }
-
-  evalResults.stageBreakdown = {
-    stage1ParsingMs,
-    stage2AspectMathMs,
-    stage3RAGConsultationMs: stage3RAGMs,
-    stage4GeminiVerificationMs: stage4GuardrailMs,
-    stage5ResolutionMatrixMs: stage5MatrixMs
-  };
-
-  recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
-
-  const workflowSteps = [
-    {
-      stepId: 1,
-      title: 'BOQ Pre-cleaning & Parsing',
-      subtitle: 'Excel Multi-Sheet & Raw BOM Cleaning',
-      status: 'COMPLETED',
-      durationMs: 120,
-      details: `Parsed ${items.length} hardware SKU lines from ${inputFile || 'Pasted Text BOM'}. Cleaned formatting and tokenized quantities.`,
-      metrics: { totalSkus: items.length, sheetsParsed: 1 }
-    },
-    {
-      stepId: 2,
-      title: 'Aspect Math & Rule Engine Validation',
-      subtitle: 'Local Hardware Constraints Validation',
-      status: evalResults.errors?.length > 0 ? 'WARNING' : 'COMPLETED',
-      durationMs: 180,
-      details: `Evaluated ${graph.totalRulesEvaluated || 18} hardware rules. Detected ${evalResults.errors?.length || 0} physical conflicts & ${evalResults.missingDependencies?.length || 0} missing accessories.`,
-      metrics: { rulesEvaluated: graph.totalRulesEvaluated || 18, physicalConflicts: evalResults.errors?.length || 0, fixesInjected: evalResults.missingDependencies?.length || 0 }
-    },
-    {
-      stepId: 3,
-      title: 'NotebookLM RAG Consultation',
-      subtitle: 'HPE QuickSpecs Knowledge Grounding',
-      status: evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? 'COMPLETED' : (evalResults.cloudGroundingStatus === 'CLOUD_PENDING' ? 'PENDING' : 'SKIPPED'),
-      durationMs: stage3RAGMs,
-      details: evalResults.cloudGroundingStatus === 'CLOUD_PENDING'
-        ? `Cloud grounding is pending and will be owned by the dashboard worker for Notebook ${notebookId}.`
-        : (notebookId ? `NotebookLM grounding status: ${evalResults.cloudGroundingStatus}.` : `No dedicated Notebook ID mapped for ${chassisPrefix}; local rules remain available.`),
-      metrics: { notebookId: notebookId || 'UNMAPPED', ragStatus: evalResults.cloudGroundingStatus || 'LOCAL_FALLBACK' }
-    },
-    {
-      stepId: 4,
-      title: 'Agentic AI Cross-Verification',
-      subtitle: 'Gemini LLM Dual-Brain Verification',
-      status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN',
-      durationMs: stage4GuardrailMs,
-      details: stage4GuardrailMs > 0 ? 'Agentic guardrail completed.' : 'Agentic guardrail was not run during the provisional local phase.',
-      metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score || 0.9 }
-    },
-    {
-      stepId: 5,
-      title: 'Ranked Solutions & Vertical Parts Itemization',
-      subtitle: '5-Tier Strategic Resolution Matrix',
-      status: 'COMPLETED',
-      durationMs: 150,
-      details: `Synthesized ${graph.rankedSolutions?.length || 0} compatibility tiers; ${graph.recommendedSolutions?.length || 0} passed the buildability, Pareto, uniqueness, and closeness publication gates.`,
-      metrics: { rankedTiers: graph.rankedSolutions?.length || 0, recommendedSolutions: graph.recommendedSolutions?.length || 0, topRankScore: graph.recommendedSolutions?.[0]?.score || null }
-    },
-    {
-      stepId: 6,
-      title: 'Partner Portal Post-BOM Learning Loop',
-      subtitle: 'Bi-Directional Quote Verification',
-      status: 'READY',
-      durationMs: 0,
-      details: 'Ready for official HPE Partner Portal quote verification and self-learning KnowledgeDelta recording.',
-      metrics: { deltaStatus: 'LISTENING_FOR_FEEDBACK' }
-    }
-  ];
-
-  if (JSON_MODE) {
-    const traceId = `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    const provenanceTrace = {
-      traceId,
-      timestamp: new Date(startTime).toISOString(),
-      completedAt: new Date().toISOString(),
-      totalDurationMs: Date.now() - startTime,
-      chassis: chassisPrefix || (graph.chassisInfo ? graph.chassisInfo.model : 'DL380 Gen12 SFF'),
-      inputFile: path.basename(inputFile),
-      stages: [
-        { stageId: 1, name: 'BOQ Parsing & Multi-Cluster Discovery', durationMs: stage1ParsingMs, status: 'COMPLETED' },
-        { stageId: 2, name: '7-Aspect Physical Rule Engine', durationMs: stage2AspectMathMs, status: (evalResults.errors || []).length > 0 ? 'VIOLATIONS_FOUND' : 'CLEAN' },
-        { stageId: 3, name: 'NotebookLM Cloud RAG Grounding', durationMs: stage3RAGMs, status: evalResults.cloudGroundingStatus || 'LOCAL_FALLBACK' },
-        { stageId: 4, name: 'Dual-Brain Agentic Guardrail', durationMs: stage4GuardrailMs, status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN' },
-        { stageId: 5, name: '5-Tier Strategy Matrix & Conflict Resolution', durationMs: stage5MatrixMs, status: 'SYNTHESIZED' },
-        { stageId: 6, name: 'Post-Flow Knowledge Sync', durationMs: 0, status: evalResults.postFlowSync?.syncStatus || 'LOCAL_PAYLOAD_ONLY' }
-      ],
-      grounding: {
-        notebookId,
-        source: evalResults.notebookLmStatus?.source || (evalResults.cloudGroundingStatus === 'CLOUD_PENDING' ? 'NOTEBOOK_LM_PENDING' : 'LOCAL_RULE_ENGINE'),
-        isCloudGrounded: Boolean(evalResults.notebookLmStatus?.isCloudGrounded),
-        groundingTier: evalResults.notebookLmStatus?.groundingTier || 'UNVERIFIED_PENDING',
-        citationsCount: evalResults.notebookLmStatus?.citationsCount || 0,
-        sourcesUsed: evalResults.notebookLmStatus?.sourcesUsed || [],
-        latencyMs: stage3RAGMs
-      },
-      rulesAudit: {
-        totalRulesEvaluated: graph.totalRulesEvaluated || 33,
-        conflictsCount: (graph.conflicts || []).length,
-        resolvedFixesCount: (graph.resolvedFixes || []).length,
-        learnedDeltasCount: evalResults.learnedDeltasCount || 0
-      },
-      unsolicitedServices: {
-        unsolicitedCount: (evalResults.unsolicitedOptionalItems || []).length,
-        totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0
-      },
-      needsActions: evalResults.evalSummary?.needsActions || []
-    };
-
-    const tracePayloads = [
-      {
-        stage: 'Rule Engine Evaluation',
-        timestamp: new Date().toISOString(),
-        payload: {
-          itemsEvaluated: items.length,
-          errorsDetected: evalResults.errors,
-          missingDependencies: evalResults.missingDependencies,
-          confidenceScore: evalResults.confidence.score
-        }
-      },
-      {
-        stage: 'NotebookLM RAG Dispatch',
-        timestamp: new Date().toISOString(),
-        payload: {
-          notebookId,
-          ragPromptSent: formatNotebookQueryPayload(items, evalResults)
-        }
-      }
-    ];
-
-    const jsonResult = {
-      status: 'SUCCESS',
-      data: {
-        traceId,
-        provenanceTrace,
-        inputFile,
-        chassisDir,
-        chassisPrefix,
-        chassisDetection,
-        notebookId,
-        tracePayloads,
-        outputReportPath: outputPath,
-        itemCount: items.length,
-        items,
-        workflowSteps,
-        parsedSheets: [
-          { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
-        ],
-        telemetry: {
-          parsingTimeMs: stage1ParsingMs,
-          aspectMathTimeMs: stage2AspectMathMs,
-          ragTimeMs: stage3RAGMs,
-          guardrailTimeMs: stage4GuardrailMs,
-          matrixTimeMs: stage5MatrixMs,
-          totalEvalTimeMs: Date.now() - startTime
-        },
-        ragAnswer: evalResults.ragAnswer || null,
-        ragResult: evalResults.ragResult || null,
-        notebookLmStatus: evalResults.notebookLmStatus || null,
-        postFlowSync: evalResults.postFlowSync || null,
-        needsActions: evalResults.evalSummary?.needsActions || [],
-        requirementResolution: evalResults.requirementResolution || null,
-        pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
-        unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-        totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-        aspectChecks: evalResults.aspectChecks || [],
-        stageBreakdown: evalResults.stageBreakdown || {},
-        evalResults: {
-          ...evalResults,
-          notebookLmStatus: evalResults.notebookLmStatus || null,
-          postFlowSync: evalResults.postFlowSync || null,
-          needsActions: evalResults.evalSummary?.needsActions || [],
-          unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-          totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-          aspectChecks: evalResults.aspectChecks || [],
-          stageBreakdown: evalResults.stageBreakdown || {},
-          provenanceTrace
-        },
-        clusterSizing: evalResults.clusterSizing || null,
-        chassisDefaults: evalResults.chassisDefaults || [],
-        redundantDefaults: evalResults.redundantDefaults || [],
-        opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
-        conflictGraph: {
-          chassisInfo: graph.chassisInfo,
-          workloadDna: graph.workloadDna,
-          isWholeSolutionValid: graph.isWholeSolutionValid,
-          totalRulesEvaluated: graph.totalRulesEvaluated,
-          conflicts: graph.conflicts,
-          resolvedFixes: graph.resolvedFixes,
-          rankedSolutions: graph.rankedSolutions,
-          auditLog: graph.auditLog,
-          rulesSource: graph.rulesSource,
-          isFallbackSource: graph.isFallbackSource
-        },
-        budgetOptimization: budgetOpt,
-        ragAnswer: ragAnswer || null,
-        notebookPayload: queryPayload,
-        multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
-        multiRankCsvPath: evalResults.multiRankCsvPath || null,
-        ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
-        durationMs: Date.now() - startTime
-      }
-    };
-    emitProgress(10, 10, 'Generation Complete', 'completed', 'Analysis finished successfully.');
-    process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
-  } else {
-    console.log(`\n===============================================================`);
-    console.log(`✅ EVALUATION COMPLETE! Report saved to: ${outputPath}`);
-    if (evalResults.multiRankWorkbookPath) {
-      console.log(`📊 Multi-Rank Solution Deliverable: file://${evalResults.multiRankWorkbookPath}`);
-      console.log(`📄 Token-Dense Solution CSV: file://${evalResults.multiRankCsvPath}`);
-      if (ctx.UPLOAD_DRIVE) {
-        try {
-          const { uploadFileToGoogleSheet, ensureGoogleAuthValid } = require('../services/google_sheets_service.js');
-          const authCheck = await ensureGoogleAuthValid({ autoHeal: true, verbose: false });
-          if (!authCheck.authenticated) {
-            console.log(`\n⚠️ Google Drive upload requires authentication.`);
-            console.log(`👉 Run "npm run auth:drive" or "npm run auth:check" to authenticate without human in the loop.\n`);
-          } else {
-            const driveResult = await uploadFileToGoogleSheet(evalResults.multiRankWorkbookPath);
-            console.log(`☁️ Google Drive Live Deliverable: ${driveResult.spreadsheetUrl}`);
-            console.log(`📄 Spreadsheet ID: ${driveResult.spreadsheetId}\n`);
-          }
-        } catch (err) {
-          console.log(`\n⚠️ Google Drive upload note: ${err.message}`);
-        }
-      }
-    }
-    console.log(`===============================================================\n`);
-  }
-}
 
 function applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult) {
   if (!evalResults.learnedDeltasCount || options.DEFER_RAG || !ragResult) return;
@@ -971,13 +558,59 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
 }
 
 // ============================================================
-// Main Orchestrator
+// Stage 7: Continuous Learning Reflection & Self-Reinforcement
 // ============================================================
-async function main() {
-  const startTime = Date.now();
-  const options = parseEvaluationArguments(process.argv.slice(2));
-  if (!options) return;
+function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options) {
+  const chassisDir = ingestCtx.chassisDir;
+  if (!chassisDir || !fs.existsSync(chassisDir)) return 0;
 
+  const chassisName = path.basename(chassisDir);
+  const activeRules = loadActiveKnowledgeRules(chassisName, chassisDir);
+  const existingPairings = new Set(activeRules.allRules.map(r => `${(r.affectedSku || '').toUpperCase()}:${(r.requiredDependencySku || '').toUpperCase()}`));
+  let learnedCount = 0;
+
+  if (Array.isArray(evalResults.missingDependencies)) {
+    const baseChassis = ingestCtx.items.find(i => i.isCTO || i.category === 'Base Chassis')?.sku || '';
+    for (const dep of evalResults.missingDependencies) {
+      if (!dep.sku || !baseChassis) continue;
+      const pairKey = `${baseChassis.toUpperCase()}:${dep.sku.toUpperCase()}`;
+      if (!existingPairings.has(pairKey)) {
+        const delta = {
+          deltaId: `DELTA_AUTO_${Date.now()}_${dep.sku.replace(/[^A-Za-z0-9]/g, '')}`,
+          affectedSku: baseChassis,
+          requiredDependencySku: dep.sku,
+          ruleType: 'MANDATORY_DEPENDENCY',
+          scopeTaxonomy: 'CHASSIS_SPECIFIC',
+          confidenceScore: 0.95,
+          ruleUpdate: dep.reason || `Mandatory dependency ${dep.sku} required by 7-aspect physical math.`,
+          sourceCitation: 'AUTOMATED_PHYSICAL_MATH_DISCOVERY'
+        };
+        try {
+          const cert = recordAndCertifyLearnedRule(delta, chassisDir);
+          if (cert && cert.persisted) {
+            learnedCount++;
+            existingPairings.add(pairKey);
+            evidenceLedger.recordActiveRuleReached({
+              ruleId: delta.deltaId,
+              ruleType: delta.ruleType,
+              chassis: chassisName,
+              affectedSku: baseChassis,
+              requiredDependencySku: dep.sku,
+              reasoning: delta.ruleUpdate
+            });
+          }
+        } catch (_) {}
+      }
+    }
+  }
+  return learnedCount;
+}
+
+// ============================================================
+// Main Orchestrator Pipeline
+// ============================================================
+async function runEvaluationPipeline(options) {
+  const startTime = Date.now();
   const evidenceLedger = createEvidenceLedger({
     chassis: options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS',
     filePath: options.BOQ_FILE
@@ -1077,10 +710,19 @@ async function main() {
   });
 
   evidenceLedger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {});
+  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
   const { jsonPath, mdPath } = evidenceLedger.finalizeAndExport();
   evalResults.evidenceLogPath = jsonPath;
   evalResults.evidenceSummaryPath = mdPath;
-  evidenceLedger.completePhase(9, 'PASSED', { jsonPath, mdPath });
+  evidenceLedger.completePhase(9, 'PASSED', { jsonPath, mdPath, newLearningsCount });
+
+  return evalResults;
+}
+
+async function main() {
+  const options = parseEvaluationArguments(process.argv.slice(2));
+  if (!options) return;
+  await runEvaluationPipeline(options);
 }
 
 if (require.main === module) {

@@ -74,3 +74,14 @@ All multi-rank deliverables (`*_MultiRank_Solutions.xlsx`) must feature 12 stand
 12. `CLIC Status / Rule Trace` (CLIC validation code & rule ID)
 
 Sheet 1 (`Executive Summary & Aspects`) must include the **Dual-Brain & NotebookLM Comprehensive Verification Audit Table** verifying 100% buildability and grounding across all 5 strategy ranks.
+
+---
+
+## 🔗 Related Skills & Implementation Engines
+- [orchestrator-workflow-skill](../orchestrator-workflow-skill/SKILL.md) — Continuous learning macro lifecycle
+- [execution-trace-skill](../execution-trace-skill/SKILL.md) — 9-phase evidence ledger and trace persistence
+- [boq-eval-skill](../boq-eval-skill/SKILL.md) — 7-aspect pre-flight evaluator and confidence scoring
+- [least-delta-combinator-skill](../least-delta-combinator-skill/SKILL.md) — Troublesome SKU pruning and modernization
+- [catalog-intelligence-skill](../catalog-intelligence-skill/SKILL.md) — Price trails and lifecycle state changes
+- [workbook-generator-skill](../workbook-generator-skill/SKILL.md) — 12-column multi-rank solution deliverable generator
+

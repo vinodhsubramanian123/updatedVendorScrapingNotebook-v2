@@ -76,7 +76,9 @@ P38995-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2
 P52019-B21,Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter,1
 P49048-B21,HPE 800GB SAS 12G Mixed Use SFF BC Multi Vendor SSD,2
 R7A11AAE,HPE Compute Ops Management Enhanced 3-year SaaS,1
-H7J34A3,HPE 3Y Tech Care Essential Support Service,1`);
+H7J34A3,HPE 3Y Tech Care Essential Support Service,1
+P73325-B21,HPE ProLiant Compute Localization FIO Kit,1
+P79558-B21,HPE ProLiant Compute 25C Ambient Temp Config Tracking,1`);
 
   const eval1 = evaluateBOQMultiAspect(csv1);
   const graph1 = evaluateWholeSolutionGraph(eval1.items, eval1.chassisInfo);

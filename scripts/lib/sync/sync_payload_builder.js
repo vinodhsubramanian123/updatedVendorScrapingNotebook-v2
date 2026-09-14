@@ -4,6 +4,7 @@
  *
  * Compiles comprehensive markdown payload with executive summary, active SKU registry,
  * universal rules, chassis gotchas, discontinued SKUs, attribute changes, and price trail.
+ * Deconstructed into modular section builders (CC <= 25 per function).
  */
 
 const fs = require('fs');
@@ -54,6 +55,175 @@ function inferAccessoryClass(desc, cat = '') {
   return null;
 }
 
+function _resolveSyncTargetDirectory(chassisName, catalogPath) {
+  const TEST_CHASSIS_PATTERNS = [
+    /^edge-test-/i,
+    /^hpe-chaos-test-/i,
+    /^tmp[_-]test/i,
+    /^test[_-]/i,
+    /oca-feedback-test/i,
+    /_test$/i
+  ];
+  const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName));
+
+  if (isTestChassis) {
+    const testDir = path.join(PROJECT_ROOT, 'outputs', 'temp', 'test_payloads');
+    if (!fs.existsSync(testDir)) fs.mkdirSync(testDir, { recursive: true });
+    return { targetDir: testDir, isTestChassis: true };
+  }
+
+  if (catalogPath && fs.existsSync(catalogPath)) {
+    const dir = path.dirname(catalogPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    return { targetDir: dir, isTestChassis: false };
+  }
+
+  const histDir = path.join(OUTPUTS_ROOT, 'history');
+  if (!fs.existsSync(histDir)) fs.mkdirSync(histDir, { recursive: true });
+  return { targetDir: histDir, isTestChassis: false };
+}
+
+function _buildHeaderAndSummarySection(targetIdentity, chassisName, totalActiveHwSKUs, totalActiveSrvSKUs, totalRules, hwDiff, srvDiff) {
+  let md = `# ${targetIdentity.vendor} ${chassisName} — Synchronized Catalog Knowledge\n\n`;
+  md += `**Target Product**: \`${chassisName}\`\n\n`;
+  md += `**Scope Identity**: \`${targetIdentity.vendor}/${targetIdentity.pillar}/${targetIdentity.family}/${targetIdentity.generation}/${targetIdentity.productId || chassisName}\`\n\n`;
+  md += `**Sync Timestamp**: ${new Date().toISOString()}\n\n`;
+  md += `**Total Verified SKUs**: \`${totalActiveHwSKUs + totalActiveSrvSKUs}\` (\`${totalActiveHwSKUs}\` Hardware + \`${totalActiveSrvSKUs}\` Services)\n\n`;
+  md += `**Total Synced KnowledgeDeltas**: \`${totalRules}\`\n\n`;
+  md += `This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.\n\n`;
+  md += `---\n\n`;
+
+  md += `## 🚀 Executive Delta & Recent Change Summary\n\n`;
+  md += `| Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |\n`;
+  md += `|----------|------------|---------------------|---------------|-------------------|------------|--------|\n`;
+  md += `| **Hardware Components** | ${totalActiveHwSKUs} | ${hwDiff.added || 0} | ${hwDiff.priceChanged || 0} | ${hwDiff.attributeChanged || 0} | ${hwDiff.reinstated || 0} | **CERTIFIED** |\n`;
+  md += `| **Support Services & SLAs** | ${totalActiveSrvSKUs} | ${srvDiff.added || 0} | ${srvDiff.priceChanged || 0} | ${srvDiff.attributeChanged || 0} | ${srvDiff.reinstated || 0} | **CERTIFIED** |\n`;
+  md += `| **Total Portfolio** | **${totalActiveHwSKUs + totalActiveSrvSKUs}** | **${(hwDiff.added || 0) + (srvDiff.added || 0)}** | **${(hwDiff.priceChanged || 0) + (srvDiff.priceChanged || 0)}** | **${(hwDiff.attributeChanged || 0) + (srvDiff.attributeChanged || 0)}** | **${(hwDiff.reinstated || 0) + (srvDiff.reinstated || 0)}** | **ACTIVE** |\n\n`;
+  return md;
+}
+
+function _buildUniversalAndFamilyRulesSection(targetIdentity, universalRules = [], familyGenRules = []) {
+  let md = `## 🌐 1. Universal Vendor Rules (${targetIdentity.vendor})\n\n`;
+  if (universalRules.length === 0) {
+    md += `*No verified universal vendor rules are registered for this product.*\n\n`;
+  } else {
+    universalRules.forEach((r, idx) => {
+      md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.errorType})*\n`;
+    });
+    md += `\n`;
+  }
+
+  md += `## 🏛️ 2. Family & Generation Rules (${targetIdentity.family} ${targetIdentity.generation})\n\n`;
+  if (familyGenRules.length === 0) {
+    md += `*No verified family/generation rules are registered for this product.*\n\n`;
+  } else {
+    familyGenRules.forEach((r, idx) => {
+      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}**: ${r.ruleUpdate} *(Affected SKU: ${r.affectedSku})*\n`;
+    });
+    md += `\n`;
+  }
+  return md;
+}
+
+function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [], targetIdentity) {
+  let md = `## 🎯 3. Chassis & Solution-Type Gotchas (${chassisName})\n\n`;
+  const relevantChassisRules = chassisSpecificRules.filter(r => {
+    if (isVerifiedSharedAccessoryRule(r, targetIdentity)) return true;
+    const c = String(r.chassis || '').toLowerCase();
+    const target = String(chassisName || '').toLowerCase();
+    return !target || c.includes(target) || target.includes(c);
+  });
+
+  if (relevantChassisRules.length === 0) {
+    md += `*No specific gotchas logged for ${chassisName}. Baseline chassis layout rules active.*\n\n`;
+  } else {
+    relevantChassisRules.forEach((r, idx) => {
+      if (isVerifiedSharedAccessoryRule(r, targetIdentity)) {
+        const compatible = (r.compatibleProductIds || []).map(baseProductId).join(',');
+        const ruleText = String(r.ruleUpdate || '').replace(/\s+/g, ' ').trim();
+        const evidenceIds = (r.verificationSourceIds || []).map(id => String(id).replace(/[^A-Za-z0-9_.:-]/g, '')).filter(Boolean).join(',');
+        md += `${idx + 1}. [SHARED_ACCESSORY_VERIFIED target=${compatible}] **[${r.deltaId}] ${r.affectedSku}**: ${ruleText} (Class: ${r.accessoryClass}; Evidence: ${r.compatibilityEvidenceType}; Sources: ${evidenceIds})\n\n`;
+        return;
+      }
+      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
+      md += `   - **Rule**: ${r.ruleUpdate}\n`;
+      md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;
+      if (r.humanReasoning) {
+        md += `   - 💡 **Human Engineer Rationale**: *"${r.humanReasoning}"*\n`;
+      }
+      md += `\n`;
+    });
+    md += `\n`;
+  }
+  return md;
+}
+
+function _buildDiscontinuedSection(chassisName, discontinuedRegistry = {}, servicesDiscontinuedRegistry = {}, cfg) {
+  let md = `## ⚠️ 4. Discontinued & Obsolete SKUs Registry\n\n`;
+  const discontinuedList = [
+    ...Object.values(discontinuedRegistry),
+    ...Object.values(servicesDiscontinuedRegistry)
+  ].filter(d => d.status === 'DISCONTINUED' || d.status === 'REMOVED' || d.status === 'REINSTATED');
+
+  if (discontinuedList.length === 0) {
+    md += `*No discontinued or reinstated SKUs detected for ${chassisName}. All cataloged SKUs are active.*\n\n`;
+  } else {
+    md += `| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |\n`;
+    md += `|-----|-------------|--------|-------------------|------------------|----------|-----------|\n`;
+    discontinuedList.forEach(d => {
+      const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
+      const description = d.description || 'N/A';
+      let sharedEvidence = description;
+      if (referencesOtherRegisteredProduct(description, chassisName, cfg)) {
+        const accessoryClass = inferAccessoryClass(description, d.mainCategory || d.subCategory);
+        const isIsolated = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board)\b/i.test(description);
+        if (accessoryClass && !isIsolated && skuPn !== 'N/A') {
+          sharedEvidence = `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Class: ${accessoryClass}; Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`;
+        }
+      }
+      md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
+    });
+    md += `\n`;
+  }
+  return md;
+}
+
+function _buildAttributeHistorySection(attributeHistory = []) {
+  let md = `## 🔄 5. Recent Attribute & Specification Modifications Log\n\n`;
+  if (attributeHistory.length === 0) {
+    md += `*No attribute or specification changes recorded across catalog snapshots.*\n\n`;
+  } else {
+    md += `| Timestamp | SKU | Attribute | Old Value | New Value |\n`;
+    md += `|-----------|-----|-----------|-----------|-----------|\n`;
+    attributeHistory.slice(-15).forEach(a => {
+      const aSku = a.productNumber || a.sku || a['Product #'] || 'N/A';
+      const aDate = a.date || a.timestamp?.split('T')[0] || 'N/A';
+      const aField = a.field || a.attribute || 'Specification';
+      md += `| ${aDate} | \`${aSku}\` | ${aField} | ${a.oldValue} | **${a.newValue}** |\n`;
+    });
+    md += `\n`;
+  }
+  return md;
+}
+
+function _buildSameProductVariantSection(chassisName, targetIdentity) {
+  let md = `## 🧩 6. Same-Product CTO Variant Matrix\n\n`;
+  const { getChassisMap } = require('../conflict/conflict_graph.js');
+  const chassisMap = getChassisMap();
+
+  md += `| Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |\n`;
+  md += `|--------------------|----------------|------------|-------------|--------------|\n`;
+  const sameProductVariants = Object.entries(chassisMap).filter(([id]) =>
+    normalize(baseProductId(id)) === normalize(baseProductId(chassisName))
+  );
+  for (const [id, info] of sameProductVariants) {
+    md += `| **${id}** | ${info.family || 'ProLiant'} | ${info.gen || 'Gen12'} | ${info.formFactor || 'SFF'} | \`${info.baseSku || 'N/A'}\` |\n`;
+  }
+  if (sameProductVariants.length === 0) md += `| ${chassisName} | ${targetIdentity.family} | ${targetIdentity.generation} | N/A | \`N/A\` |\n`;
+  md += `\n`;
+  return md;
+}
+
 /**
  * Generate comprehensive markdown sync payload for target chassis
  *
@@ -90,55 +260,30 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   // Find catalog path dynamically
   const { findCatalogJsonFiles } = require('../catalog/sync_registry.js');
   const allCatalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
-
   const baseChassisName = chassisName.replace(/_(SFF|LFF|EDSFF)$/i, '');
-  let catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName) || path.basename(f).startsWith(baseChassisName)) || null;
+  const catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName) || path.basename(f).startsWith(baseChassisName)) || null;
+
+  const { targetDir, isTestChassis } = _resolveSyncTargetDirectory(chassisName, catalogPath);
 
   let catalogData = null;
-  // GAP-7 & INV-7 FIX: Detect ephemeral/test chassis names and route their payloads
-  // to outputs/temp/test_payloads/ to avoid polluting outputs/history/.
-  const TEST_CHASSIS_PATTERNS = [
-    /^edge-test-/i,
-    /^hpe-chaos-test-/i,
-    /^tmp[_-]test/i,
-    /^test[_-]/i,
-    /oca-feedback-test/i,
-    /_test$/i
-  ];
-  const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName));
-
-  let targetDir = isTestChassis
-    ? path.join(PROJECT_ROOT, 'outputs', 'temp', 'test_payloads')
-    : OUTPUTS_ROOT;
-
   if (catalogPath && fs.existsSync(catalogPath)) {
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-      if (!isTestChassis) {
-        targetDir = path.dirname(catalogPath);
-      }
     } catch (e) {
       logger.error('KNOWLEDGE_SYNC', `Failed to parse catalogData at ${catalogPath}`, e);
       throw new Error(`SyncPayloadBuilderError: Corrupt catalog JSON at ${catalogPath}: ${e.message}`);
     }
-  } else if (!isTestChassis) {
-    // No catalog found for a real chassis — fall back to outputs/history/
-    targetDir = path.join(OUTPUTS_ROOT, 'history');
   }
 
-  // Ensure the target directory exists
-  if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-
   const historyDir = path.join(targetDir, 'history');
-  const discontinuedSkusPath = path.join(historyDir, 'discontinued_skus.json');
-  const attributeHistoryPath = path.join(historyDir, 'attribute_history.json');
-
   let discontinuedRegistry = {};
+  const discontinuedSkusPath = path.join(historyDir, 'discontinued_skus.json');
   if (fs.existsSync(discontinuedSkusPath)) {
     try { discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8')); } catch (_) {}
   }
 
   let attributeHistory = [];
+  const attributeHistoryPath = path.join(historyDir, 'attribute_history.json');
   if (fs.existsSync(attributeHistoryPath)) {
     try {
       attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
@@ -154,8 +299,8 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   }
 
   const servicesHistoryDir = path.join(targetDir, 'services_history');
-  const servicesDiscontinuedPath = path.join(servicesHistoryDir, 'services_discontinued_skus.json');
   let servicesDiscontinuedRegistry = {};
+  const servicesDiscontinuedPath = path.join(servicesHistoryDir, 'services_discontinued_skus.json');
   if (fs.existsSync(servicesDiscontinuedPath)) {
     try { servicesDiscontinuedRegistry = JSON.parse(fs.readFileSync(servicesDiscontinuedPath, 'utf-8')); } catch (_) {}
   }
@@ -178,141 +323,16 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   if (!scopedRegistry.target && !isTestChassis) {
     throw new Error(`SyncPayloadBuilderError: Product ${chassisName} is not registered with an exact vendor/family/generation identity.`);
   }
+
   const totalRules = scopedRegistry.totalLearnedRules || 0;
-  const universalRules = scopedRegistry.universalRules || [];
-  const familyGenRules = scopedRegistry.familyGenRules || [];
-  const chassisSpecificRules = scopedRegistry.chassisSpecificRules || [];
-
   const targetIdentity = scopedRegistry.target || { vendor: 'HPE', pillar: 'UNKNOWN', family: 'UNKNOWN', generation: 'UNKNOWN' };
-  let md = `# ${targetIdentity.vendor} ${chassisName} — Synchronized Catalog Knowledge\n\n`;
-  md += `**Target Product**: \`${chassisName}\`\n\n`;
-  md += `**Scope Identity**: \`${targetIdentity.vendor}/${targetIdentity.pillar}/${targetIdentity.family}/${targetIdentity.generation}/${targetIdentity.productId || chassisName}\`\n\n`;
-  md += `**Sync Timestamp**: ${new Date().toISOString()}\n\n`;
-  md += `**Total Verified SKUs**: \`${totalActiveHwSKUs + totalActiveSrvSKUs}\` (\`${totalActiveHwSKUs}\` Hardware + \`${totalActiveSrvSKUs}\` Services)\n\n`;
-  md += `**Total Synced KnowledgeDeltas**: \`${totalRules}\`\n\n`;
-  md += `This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.\n\n`;
-  md += `---\n\n`;
 
-  // 0. Executive Summary
-  md += `## 🚀 Executive Delta & Recent Change Summary\n\n`;
-  md += `| Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |\n`;
-  md += `|----------|------------|---------------------|---------------|-------------------|------------|--------|\n`;
-  md += `| **Hardware Components** | ${totalActiveHwSKUs} | ${hwDiff.added || 0} | ${hwDiff.priceChanged || 0} | ${hwDiff.attributeChanged || 0} | ${hwDiff.reinstated || 0} | **CERTIFIED** |\n`;
-  md += `| **Support Services & SLAs** | ${totalActiveSrvSKUs} | ${srvDiff.added || 0} | ${srvDiff.priceChanged || 0} | ${srvDiff.attributeChanged || 0} | ${srvDiff.reinstated || 0} | **CERTIFIED** |\n`;
-  md += `| **Total Portfolio** | **${totalActiveHwSKUs + totalActiveSrvSKUs}** | **${(hwDiff.added || 0) + (srvDiff.added || 0)}** | **${(hwDiff.priceChanged || 0) + (srvDiff.priceChanged || 0)}** | **${(hwDiff.attributeChanged || 0) + (srvDiff.attributeChanged || 0)}** | **${(hwDiff.reinstated || 0) + (srvDiff.reinstated || 0)}** | **ACTIVE** |\n\n`;
-
-  // 1. Universal Rules
-  md += `## 🌐 1. Universal Vendor Rules (${targetIdentity.vendor})\n\n`;
-  if (universalRules.length === 0) {
-    md += `*No verified universal vendor rules are registered for this product.*\n\n`;
-  } else {
-    universalRules.forEach((r, idx) => {
-      md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.errorType})*\n`;
-    });
-    md += `\n`;
-  }
-
-  // 2. Family & Gen Rules
-  md += `## 🏛️ 2. Family & Generation Rules (${targetIdentity.family} ${targetIdentity.generation})\n\n`;
-  if (familyGenRules.length === 0) {
-    md += `*No verified family/generation rules are registered for this product.*\n\n`;
-  } else {
-    familyGenRules.forEach((r, idx) => {
-      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}**: ${r.ruleUpdate} *(Affected SKU: ${r.affectedSku})*\n`;
-    });
-    md += `\n`;
-  }
-
-  // 3. Chassis Specific Rules
-  md += `## 🎯 3. Chassis & Solution-Type Gotchas (${chassisName})\n\n`;
-  const relevantChassisRules = chassisSpecificRules.filter(r => {
-    if (isVerifiedSharedAccessoryRule(r, targetIdentity)) return true;
-    const c = String(r.chassis || '').toLowerCase();
-    const target = String(chassisName || '').toLowerCase();
-    return !target || c.includes(target) || target.includes(c);
-  });
-
-  if (relevantChassisRules.length === 0) {
-    md += `*No specific gotchas logged for ${chassisName}. Baseline chassis layout rules active.*\n\n`;
-  } else {
-    relevantChassisRules.forEach((r, idx) => {
-      if (isVerifiedSharedAccessoryRule(r, targetIdentity)) {
-        const compatible = r.compatibleProductIds.map(baseProductId).join(',');
-        const ruleText = String(r.ruleUpdate || '').replace(/\s+/g, ' ').trim();
-        const evidenceIds = r.verificationSourceIds.map(id => String(id).replace(/[^A-Za-z0-9_.:-]/g, '')).filter(Boolean).join(',');
-        md += `${idx + 1}. [SHARED_ACCESSORY_VERIFIED target=${compatible}] **[${r.deltaId}] ${r.affectedSku}**: ${ruleText} (Class: ${r.accessoryClass}; Evidence: ${r.compatibilityEvidenceType}; Sources: ${evidenceIds})\n\n`;
-        return;
-      }
-      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
-      md += `   - **Rule**: ${r.ruleUpdate}\n`;
-      md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;
-      if (r.humanReasoning) {
-        md += `   - 💡 **Human Engineer Rationale**: *"${r.humanReasoning}"*\n`;
-      }
-      md += `\n`;
-    });
-    md += `\n`;
-  }
-
-  // 4. Discontinued SKUs
-  md += `## ⚠️ 4. Discontinued & Obsolete SKUs Registry\n\n`;
-  const discontinuedList = [
-    ...Object.values(discontinuedRegistry),
-    ...Object.values(servicesDiscontinuedRegistry)
-  ].filter(d => d.status === 'DISCONTINUED' || d.status === 'REMOVED' || d.status === 'REINSTATED');
-
-  if (discontinuedList.length === 0) {
-    md += `*No discontinued or reinstated SKUs detected for ${chassisName}. All cataloged SKUs are active.*\n\n`;
-  } else {
-    md += `| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |\n`;
-    md += `|-----|-------------|--------|-------------------|------------------|----------|-----------|\n`;
-    discontinuedList.forEach(d => {
-      const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
-      const description = d.description || 'N/A';
-      let sharedEvidence = description;
-      if (referencesOtherRegisteredProduct(description, chassisName, cfg)) {
-        const accessoryClass = inferAccessoryClass(description, d.mainCategory || d.subCategory);
-        const isIsolated = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board)\b/i.test(description);
-        if (accessoryClass && !isIsolated && skuPn !== 'N/A') {
-          sharedEvidence = `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Class: ${accessoryClass}; Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`;
-        }
-      }
-      md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
-    });
-    md += `\n`;
-  }
-
-  // 5. Attribute History
-  md += `## 🔄 5. Recent Attribute & Specification Modifications Log\n\n`;
-  if (attributeHistory.length === 0) {
-    md += `*No attribute or specification changes recorded across catalog snapshots.*\n\n`;
-  } else {
-    md += `| Timestamp | SKU | Attribute | Old Value | New Value |\n`;
-    md += `|-----------|-----|-----------|-----------|-----------|\n`;
-    attributeHistory.slice(-15).forEach(a => {
-      const aSku = a.productNumber || a.sku || a['Product #'] || 'N/A';
-      const aDate = a.date || a.timestamp?.split('T')[0] || 'N/A';
-      const aField = a.field || a.attribute || 'Specification';
-      md += `| ${aDate} | \`${aSku}\` | ${aField} | ${a.oldValue} | **${a.newValue}** |\n`;
-    });
-    md += `\n`;
-  }
-
-  // 6. Same-product CTO variant matrix. Never disclose other products or generations.
-  md += `## 🧩 6. Same-Product CTO Variant Matrix\n\n`;
-  const { getChassisMap } = require('../conflict/conflict_graph.js');
-  const chassisMap = getChassisMap();
-
-  md += `| Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |\n`;
-  md += `|--------------------|----------------|------------|-------------|--------------|\n`;
-  const sameProductVariants = Object.entries(chassisMap).filter(([id]) =>
-    normalize(baseProductId(id)) === normalize(baseProductId(chassisName))
-  );
-  for (const [id, info] of sameProductVariants) {
-    md += `| **${id}** | ${info.family || 'ProLiant'} | ${info.gen || 'Gen12'} | ${info.formFactor || 'SFF'} | \`${info.baseSku || 'N/A'}\` |\n`;
-  }
-  if (sameProductVariants.length === 0) md += `| ${chassisName} | ${targetIdentity.family} | ${targetIdentity.generation} | N/A | \`N/A\` |\n`;
-  md += `\n`;
+  let md = _buildHeaderAndSummarySection(targetIdentity, chassisName, totalActiveHwSKUs, totalActiveSrvSKUs, totalRules, hwDiff, srvDiff);
+  md += _buildUniversalAndFamilyRulesSection(targetIdentity, scopedRegistry.universalRules, scopedRegistry.familyGenRules);
+  md += _buildChassisSpecificRulesSection(chassisName, scopedRegistry.chassisSpecificRules, targetIdentity);
+  md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg);
+  md += _buildAttributeHistorySection(attributeHistory);
+  md += _buildSameProductVariantSection(chassisName, targetIdentity);
 
   // Write payload file
   const safeFilename = `notebook_sync_payload_${chassisName}.md`;

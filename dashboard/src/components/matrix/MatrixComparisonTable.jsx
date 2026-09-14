@@ -45,8 +45,8 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
               </td>
               {tiers.map((t, idx) => {
                 const matchingSkus = (t.skuPartsList || []).filter(p => {
-                  const desc = (p.description || '').toLowerCase();
-                  const category = (p.category || '').toLowerCase();
+                  const desc = String(p.description || '').toLowerCase();
+                  const category = String(p.category || '').toLowerCase();
                   return cat.match.some(m => desc.includes(m) || category.includes(m));
                 });
 

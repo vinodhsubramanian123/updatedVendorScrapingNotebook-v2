@@ -74,6 +74,15 @@
           "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
           "listPrice": 9850,
           "optionType": "CTO"
+        },
+        "P71411-B21": {
+          "model": "DL384 Gen12",
+          "formFactor": "8DW",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL384 Gen12 Configure-to-order Server",
+          "listPrice": 16391,
+          "optionType": "CTO"
         }
       }
     },
@@ -385,6 +394,16 @@
       "gen": "Gen12",
       "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
       "listPrice": 9850,
+      "optionType": "CTO"
+    },
+    "P71411-B21": {
+      "model": "DL384 Gen12",
+      "formFactor": "8DW",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "chassisDir": "outputs/ProLiant/Gen12/DL380a_Gen12",
+      "description": "HPE ProLiant Compute DL384 Gen12 Configure-to-order Server",
+      "listPrice": 16391,
       "optionType": "CTO"
     },
     "P52532-B21": {

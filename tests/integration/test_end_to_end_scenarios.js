@@ -53,10 +53,12 @@ P03178-B21\tHPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit\t2
 P78145-B21\tHPE C13 - C14 WW 250V 10A Gray 2.0m Jumper Cord\t2
 R7A11AAE\tHPE Compute Ops Management Enhanced 3-year SaaS\t1
 H7J34A3\tHPE 3Y Tech Care Essential Support Service\t1
+P73325-B21\tHPE ProLiant Compute Localization FIO Kit\t1
+P79558-B21\tHPE ProLiant Compute 25C Ambient Temp Config Tracking\t1
 `;
 
 const posItems = parseAndConsolidateBOQ(positiveBoqText);
-assert(posItems.length === 14, 'Parsed 14 valid consolidated hardware & service SKUs');
+assert(posItems.length === 16, 'Parsed 16 valid consolidated hardware & service SKUs');
 
 const posEval = evaluatePhysicalMath(posItems);
 assert(posEval.confidence.score === 1.0, `Positive build scored 1.0 / 1.00 confidence (Actual: ${posEval.confidence.score})`);

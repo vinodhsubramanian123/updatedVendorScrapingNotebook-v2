@@ -11,10 +11,10 @@ description: Use this skill to produce structured, auditable execution traces wh
 
 ## 🏗️ Execution Trace Architecture
 
-Every agent-driven presales flow produces two artifacts:
+Every agent-driven presales flow produces two artifacts via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js):
 
-1. **Machine-Readable Trace** (`execution_trace_{run_id}.json`) — saved to `outputs/temp/agent_traces/`
-2. **Human-Readable Summary** (`execution_summary_{run_id}.md`) — presented inline to the user
+1. **Machine-Readable Trace** (`evidence_log_{traceId}.json`) — saved to `outputs/history/evidence_logs/`
+2. **Human-Readable Summary** (`evidence_summary_{traceId}.md`) — saved to `outputs/history/evidence_logs/` and presented inline to the user
 
 ### Trace JSON Schema
 

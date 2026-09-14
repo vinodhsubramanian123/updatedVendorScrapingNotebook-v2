@@ -63,9 +63,9 @@ const SUBSYSTEM_PATTERNS = [
  * Categorize a SKU item into one of the 6 canonical subsystem buckets.
  */
 export function getSubsystemForSku(item) {
-  const cat = (item.category || '').toLowerCase();
-  const sub = (item.subCategory || '').toLowerCase();
-  const desc = (item.description || '').toLowerCase();
+  const cat = String(item?.category || '').toLowerCase();
+  const sub = String(item?.subCategory || '').toLowerCase();
+  const desc = String(item?.description || '').toLowerCase();
   const combined = `${cat} ${sub} ${desc}`;
 
   for (const entry of SUBSYSTEM_PATTERNS) {
@@ -84,8 +84,9 @@ export function identifySubProducts(items = [], productFamily = 'ProLiant') {
 
   // Group by base chassis / compute modules
   const chassisItems = items.filter(it => {
-    const desc = (it.description || '').toLowerCase();
-    const cat = (it.category || '').toLowerCase();
+    if (!it || typeof it !== 'object') return false;
+    const desc = String(it.description || '').toLowerCase();
+    const cat = String(it.category || '').toLowerCase();
     return desc.includes('cto server') || desc.includes('base chassis') || desc.includes('compute module') || desc.includes('module') || desc.includes('enclosure') || cat.includes('chassis') || cat.includes('base');
   });
 

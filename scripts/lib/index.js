@@ -22,7 +22,9 @@ module.exports = {
     geminiRotator: require('./system/gemini_rotator.js'),
     schemas: require('./system/schemas.js'),
     errorEnvelope: require('./system/error_envelope.js'),
-    dataValidator: require('./system/data_validator.js')
+    dataValidator: require('./system/data_validator.js'),
+    evidenceLedger: require('./system/evidence_ledger.js'),
+    traceContext: require('./system/trace_context.js')
   },
 
   // Physical Aspect Checkers Subsystem
@@ -48,7 +50,13 @@ module.exports = {
     strategySynthesizer: require('./conflict/strategy_synthesizer.js'),
     multiClusterSplitter: require('./boq/multi_cluster_splitter.js'),
     budgetOptimizer: require('./boq/budget_optimizer.js'),
+    dealOptimizer: require('./boq/deal_optimizer.js'),
     vendorBomVerifier: require('./boq/vendor_bom_verifier.js'),
+    requirementIntentResolver: require('./boq/requirement_intent_resolver.js'),
+    leastDeltaCombinator: require('./conflict/least_delta_combinator.js'),
+    cascadingImpactAnalyzer: require('./conflict/cascading_impact_analyzer.js'),
+    decisionTrace: require('./conflict/decision_trace.js'),
+    resolutionMatrix: require('./conflict/resolution_matrix.js'),
     xlsxExporter: require('./boq/generate_boq_xlsx.js')
   },
 
@@ -66,7 +74,11 @@ module.exports = {
     skuVersioning: require('./catalog/sku_versioning.js'),
     syncRegistry: require('./catalog/sync_registry.js'),
     profileLoader: require('./system/profile_loader.js'),
-    genericTemplates: require('./catalog/generic_domain_templates.js')
+    genericTemplates: require('./catalog/generic_domain_templates.js'),
+    activeKnowledgeRouter: require('./catalog/active_knowledge_router.js'),
+    classificationDiagnostics: require('./catalog/classification_diagnostics.js'),
+    lifecycle: require('./catalog/lifecycle.js'),
+    productScope: require('./catalog/product_scope.js')
   },
 
   // RAG & Multimodal AI Subsystem
@@ -76,8 +88,11 @@ module.exports = {
     driftInspector: require('./sync/drift_inspector.js'),
     syncPayloadBuilder: require('./sync/sync_payload_builder.js'),
     nlmSyncClient: require('./sync/nlm_sync_client.js'),
+    googleSheetsWriter: require('./sync/google_sheets_writer.js'),
+    quickspecsSync: require('./sync/quickspecs_sync.js'),
     notebookQuery: require('./notebook/notebook_query_utils.js'),
     jobManager: require('./notebook/job_manager.js'),
+    persistentJobStore: require('./notebook/persistent_job_store.js'),
     queryDiagnostics: require('./notebook/query_diagnostics.js'),
     querySanitizer: require('./notebook/query_sanitizer.js'),
     knowledgeExtractor: require('./notebook/knowledge_extractor.js'),
@@ -92,13 +107,16 @@ module.exports = {
   scraper: {
     cdp: require('./scraper/cdp.js'),
     domExtract: require('./scraper/dom_extract.js'),
-    navigateOca: require('./scraper/navigate_oca.js')
+    navigateOca: require('./scraper/navigate_oca.js'),
+    browserLauncher: require('./scraper/browser_launcher.js')
   },
 
   // Feedback & Learning Subsystem
   feedback: {
     loop: require('./feedback/feedback_loop.js'),
-    queue: require('./feedback/feedback_queue.js')
+    queue: require('./feedback/feedback_queue.js'),
+    continuousLearningVerifier: require('./feedback/continuous_learning_verifier.js'),
+    quarantinedDeltas: require('./feedback/quarantined_deltas.js')
   },
 
   // Preprocessor Subsystem

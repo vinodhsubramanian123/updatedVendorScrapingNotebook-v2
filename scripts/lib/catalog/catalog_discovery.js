@@ -120,6 +120,7 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
+    if (/\bdl\s*384\b/i.test(desc) || desc.includes('dl384')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*380\s*a\b/i.test(desc) || desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*145\b/i.test(desc) || desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
     if (/\bdl\s*580\b/i.test(desc) || desc.includes('dl580')) return { ...chassisMap['DL580_Gen12'], id: 'DL580_Gen12' };
@@ -323,6 +324,21 @@ function autoDetectChassisDetailed(boqItems = []) {
 
     const catalogs = listAllCatalogs();
     const modelClean = variant.model.replace(/\s+/g, '_').replace(/HPE_?/i, '');
+
+    // 0. If chassis map explicitly mapped this variant to a target catalog directory, use it directly.
+    if (variant.chassisDir) {
+      const resolved = path.isAbsolute(variant.chassisDir) ? variant.chassisDir : path.join(PROJECT_ROOT, variant.chassisDir);
+      if (fs.existsSync(resolved)) {
+        return {
+          chassisDir: resolved,
+          matchType: 'EXACT_CHASSIS_MAP_DIR',
+          confidenceScore: 1.0,
+          requiresUserConfirmation: false,
+          detectedVariant: variant,
+          candidates: [resolved]
+        };
+      }
+    }
 
     // 1. A base SKU found inside a catalog is the strongest product boundary.
     // Do not infer this from family/generation naming: multiple models share both.

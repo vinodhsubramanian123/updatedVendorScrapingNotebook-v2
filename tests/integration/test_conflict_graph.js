@@ -71,7 +71,10 @@ assert(vOverride.formFactor === 'EDSFF', 'Honored explicit CLI chassis-variant o
 console.log('\n--- Test Group 3: Category Level Mutual Exclusion Rules ---');
 const cleanBoq = [
   { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
-  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Smart Memory Kit' }
+  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Smart Memory Kit' },
+  { sku: 'P73325-B21', description: 'HPE ProLiant Compute Localization FIO Kit' },
+  { sku: 'R7A11AAE', description: 'HPE Compute Ops Management Standard 3-year Upfront SaaS' },
+  { sku: 'P79558-B21', description: 'HPE ProLiant Compute 25C Ambient Temp Config Tracking' }
 ];
 
 const gClean = validateConflictGraph(cleanBoq, [], chassisDir);
@@ -97,7 +100,10 @@ const fixInput = [
 ];
 const boqPsu = [
   { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
-  { sku: 'P17023-B21', description: 'HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit' }
+  { sku: 'P17023-B21', description: 'HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit' },
+  { sku: 'P73325-B21', description: 'HPE ProLiant Compute Localization FIO Kit' },
+  { sku: 'R7A11AAE', description: 'HPE Compute Ops Management Standard 3-year Upfront SaaS' },
+  { sku: 'P79558-B21', description: 'HPE ProLiant Compute 25C Ambient Temp Config Tracking' }
 ];
 
 const gFixes = validateConflictGraph(boqPsu, fixInput, chassisDir);

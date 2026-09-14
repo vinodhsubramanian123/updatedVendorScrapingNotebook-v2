@@ -42,12 +42,15 @@ function splitStructuredRow(line, delimiter) {
   }
   rawParts.push(current.trim().replace(/^["']|["']$/g, ''));
 
-  // Merge unquoted thousand-separated numbers (e.g. "$5" and "584.00" -> "$5,584.00")
+  // Merge unquoted thousand-separated numbers (e.g. "$5" and "584.00" -> "$5,584.00" or "5" and "584.00" -> "5,584.00")
+  // Must have a currency symbol ($) or decimal cents (.xx) so we never merge two adjacent integer columns (e.g. qty 2 and qty 120)
   const merged = [];
   for (let i = 0; i < rawParts.length; i++) {
     const curr = rawParts[i];
     const next = rawParts[i + 1];
-    if (curr && /^\$?\d{1,3}$/.test(curr) && next && /^\d{3}(?:\.\d{2})?$/.test(next)) {
+    const isCurrencyPrefix = curr && /^\$\d{1,3}$/.test(curr) && next && /^\d{3}(?:\.\d{2})?$/.test(next);
+    const isDecimalCents = curr && /^\d{1,3}$/.test(curr) && next && /^\d{3}\.\d{2}$/.test(next);
+    if (isCurrencyPrefix || isDecimalCents) {
       merged.push(`${curr},${next}`);
       i++;
     } else {

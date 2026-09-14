@@ -97,28 +97,7 @@ function validateCategoryRules(fullBomList, conflicts, recordAudit) {
  * @param {string} chassisVariantOverride - Optional CLI override
  * @returns {object} Graph validation results & audit log
  */
-function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '') {
-  let resolvedTargetDir = '';
-  if (typeof targetDir === 'string') {
-    resolvedTargetDir = targetDir;
-  } else if (targetDir && typeof targetDir === 'object') {
-    resolvedTargetDir = targetDir.targetDir || targetDir.chassisDir || targetDir.chassis || '';
-    if (!chassisVariantOverride && targetDir.chassis) {
-      chassisVariantOverride = targetDir.chassis;
-    }
-  }
-
-  const chassisInfo = detectChassisVariant(boqItems, chassisVariantOverride);
-  const catalogData = loadCatalogRules(resolvedTargetDir);
-  const workloadDna = extractWorkloadDna(boqItems);
-
-  const auditLog = [];
-  const conflicts = [];
-  const resolvedFixes = [];
-  const unresolvedConflicts = [];
-  const rulesEvaluated = [];
-
-  // Combine original items + injected fix SKUs into unified BOM list
+function _buildUnifiedBomMap(boqItems, missingDependencies) {
   const fullBomMap = new Map();
   boqItems.forEach(it => {
     const sku = cleanBaseSKU(it.sku);
@@ -152,22 +131,33 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     }
   });
 
-  const fullBomList = Array.from(fullBomMap.values());
+  return { fullBomMap, fullBomList: Array.from(fullBomMap.values()), depsList };
+}
 
-  function recordAudit(level, ruleText, status, details, skuTarget = '') {
-    auditLog.push({
-      timestamp: new Date().toISOString(),
-      level,
-      ruleText,
-      status,
-      details,
-      skuTarget
-    });
+function _isDeltaApplicableToTarget(delta, targetChassis) {
+  const deltaScope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
+  if (deltaScope === 'UNIVERSAL_VENDOR' || deltaScope === 'UNIVERSAL') {
+    return true;
   }
+  const deltaChassis = (delta.chassis || '').toLowerCase();
+  const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
+  const isGen11Target = targetChassis.includes('gen11') || targetChassis.includes('g11');
+  const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
+  const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');
 
-  // 0. LEARNED KNOWLEDGE DELTAS VALIDATION
-  const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
-  const dependencyEdges = new Set(); // Stores "affectedSku->requiredSku"
+  if (isGen12Target && isGen11Delta) return false;
+  if (isGen11Target && isGen12Delta) return false;
+
+  if (deltaScope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
+    if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts) {
+  const dependencyEdges = new Set();
 
   learnedDeltas.forEach(delta => {
     const affectedSku = cleanBaseSKU(delta.affectedSku || delta.sku || '');
@@ -183,60 +173,45 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     }
 
     // Gate 2: Generation & Chassis Scoping Check (INV-48 Generation Firewall)
-    const deltaScope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
-    if (deltaScope !== 'UNIVERSAL_VENDOR' && deltaScope !== 'UNIVERSAL') {
-      const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
-      const deltaChassis = (delta.chassis || '').toLowerCase();
-      const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
-      const isGen11Target = targetChassis.includes('gen11') || targetChassis.includes('g11');
-      const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
-      const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');
-
-      if (isGen12Target && isGen11Delta) return;
-      if (isGen11Target && isGen12Delta) return;
-
-      if (deltaScope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
-        if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
-          return;
-        }
-      }
+    if (!_isDeltaApplicableToTarget(delta, targetChassis)) {
+      return;
     }
 
     const hasAffected = fullBomMap.has(affectedSku) || fullBomList.some(it => (it.description || '').includes(affectedSku));
-    if (hasAffected) {
-      if (requiredSku) {
-        const isSubstOrModernize = delta.ruleType === 'SKU_SUBSTITUTION' || delta.ruleType === 'OPTION_TYPE_SUBSTITUTION' || delta.ruleType === 'GENERATIONAL_MODERNIZATION';
-        if (isSubstOrModernize) {
-          recordAudit('LEARNED_DELTA', `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku);
-          return;
-        }
+    if (!hasAffected) return;
 
-        // Cycle detection guardrail: Check if reverse edge already exists
-        const edgeKey = `${affectedSku}->${requiredSku}`;
-        const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
-
-        if (dependencyEdges.has(reverseEdgeKey)) {
-          const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
-          recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
-          return;
-        }
-        dependencyEdges.add(edgeKey);
-
-        const hasReq = fullBomMap.has(requiredSku) || fullBomList.some(it => (it.description || '').includes(requiredSku));
-        if (!hasReq) {
-          const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
-          conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });
-          recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
-        } else {
-          recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
-        }
-      } else if (msg) {
-        recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+    if (requiredSku) {
+      const isSubstOrModernize = delta.ruleType === 'SKU_SUBSTITUTION' || delta.ruleType === 'OPTION_TYPE_SUBSTITUTION' || delta.ruleType === 'GENERATIONAL_MODERNIZATION';
+      if (isSubstOrModernize) {
+        recordAudit('LEARNED_DELTA', `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku);
+        return;
       }
+
+      // Cycle detection guardrail
+      const edgeKey = `${affectedSku}->${requiredSku}`;
+      const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
+      if (dependencyEdges.has(reverseEdgeKey)) {
+        const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
+        recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
+        return;
+      }
+      dependencyEdges.add(edgeKey);
+
+      const hasReq = fullBomMap.has(requiredSku) || fullBomList.some(it => (it.description || '').includes(requiredSku));
+      if (!hasReq) {
+        const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
+        conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });
+        recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
+      } else {
+        recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
+      }
+    } else if (msg) {
+      recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
     }
   });
+}
 
-  // 2. CHASSIS LEVEL VALIDATION (Form Factor Gates: SFF vs LFF vs EDSFF)
+function _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts) {
   for (const rule of catalogData.parsedRules.filter(r => r.level === 'CHASSIS')) {
     rulesEvaluated.push(rule.ruleText);
     const textLower = rule.ruleText.toLowerCase();
@@ -263,15 +238,13 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
       recordAudit('CHASSIS', rule.ruleText, 'PASS', `Chassis gate passed for ${chassisInfo.formFactor}.`);
     }
   }
+}
 
-  // 3. CATEGORY LEVEL VALIDATION (Memory & Power Supply Mixing Rules)
-  validateCategoryRules(fullBomList, conflicts, recordAudit);
-
-  // 4. SUBCATEGORY & SKU LEVEL DEPENDENCY VALIDATION
+function _evaluateFixSkuDependencies(depsList, fullBomList, chassisInfo, recordAudit, resolvedFixes, unresolvedConflicts) {
   depsList.forEach(fix => {
     const fixSku = cleanBaseSKU(fix.sku);
-
     const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
+
     if (fixSku === cleanBaseSKU(mandatorySkus.HIGH_PERF_FAN_KIT?.sku || 'P48820-B21') || fixSku === cleanBaseSKU(mandatorySkus.HIGH_PERF_HEATSINK?.sku || '')) {
       recordAudit('SKU', `High-TDP Thermal Fix ${fixSku}`, 'PASS', `Injected Thermal Kit ${fixSku} has no physical conflicts with chassis/CPU.`, fixSku);
       resolvedFixes.push({
@@ -280,7 +253,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
         reasoning: `High-Performance Thermal Kit mandatory for CPU TDP >= 240W. Verified zero conflicts with base chassis.`
       });
     } else if (fixSku === cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21')) {
-      const matchingDcPsu = fullBomList.some(it => it.description.toLowerCase().includes('-48vdc'));
+      const matchingDcPsu = fullBomList.some(it => (it.description || '').toLowerCase().includes('-48vdc'));
       if (matchingDcPsu) {
         recordAudit('SKU', `DC Lug Kit ${fixSku} pairing`, 'PASS', `DC Lug Kit paired correctly with -48VDC Power Supply.`, fixSku);
         resolvedFixes.push({
@@ -310,6 +283,73 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
       });
     }
   });
+}
+
+function _filterRecommendedSolutions(rankedSolutions, fullBomList) {
+  const validDistances = rankedSolutions
+    .filter(solution => solution.isUniqueBom && solution.physicalMathClean)
+    .map(solution => solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY);
+  const minimumDistance = validDistances.length > 0 ? Math.min(...validDistances) : Number.POSITIVE_INFINITY;
+  const closenessWindow = Math.max(1, Math.ceil(fullBomList.length * 0.15));
+  return rankedSolutions
+    .filter(solution =>
+      solution.isUniqueBom &&
+      solution.isParetoOptimal &&
+      solution.physicalMathClean &&
+      (solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY) <= minimumDistance + closenessWindow
+    )
+    .slice(0, 3);
+}
+
+/**
+ * Perform 5-level Dependency Conflict Graph validation.
+ *
+ * @param {Array<object>} boqItems - Consolidated BOQ items
+ * @param {Array<object>} missingDependencies - Injected physical fixes
+ * @param {string} targetDir - Output folder for catalog rules
+ * @param {string} chassisVariantOverride - Optional CLI override
+ * @returns {object} Graph validation results & audit log
+ */
+function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '') {
+  let resolvedTargetDir = '';
+  if (typeof targetDir === 'string') {
+    resolvedTargetDir = targetDir;
+  } else if (targetDir && typeof targetDir === 'object') {
+    resolvedTargetDir = targetDir.targetDir || targetDir.chassisDir || targetDir.chassis || '';
+    if (!chassisVariantOverride && targetDir.chassis) {
+      chassisVariantOverride = targetDir.chassis;
+    }
+  }
+
+  const chassisInfo = detectChassisVariant(boqItems, chassisVariantOverride);
+  const catalogData = loadCatalogRules(resolvedTargetDir);
+  const workloadDna = extractWorkloadDna(boqItems);
+
+  const auditLog = [];
+  const conflicts = [];
+  const resolvedFixes = [];
+  const unresolvedConflicts = [];
+  const rulesEvaluated = [];
+
+  function recordAudit(level, ruleText, status, details, skuTarget = '') {
+    auditLog.push({ timestamp: new Date().toISOString(), level, ruleText, status, details, skuTarget });
+  }
+
+  const { fullBomMap, fullBomList, depsList } = _buildUnifiedBomMap(boqItems, missingDependencies);
+
+  // 1. LEARNED KNOWLEDGE DELTAS VALIDATION
+  const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
+  const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
+  _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts);
+
+  // 2. CHASSIS LEVEL VALIDATION (Form Factor Gates: SFF vs LFF vs EDSFF)
+  _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts);
+
+  // 3. CATEGORY LEVEL VALIDATION (Memory & Power Supply Mixing Rules)
+  validateCategoryRules(fullBomList, conflicts, recordAudit);
+
+  // 4. SUBCATEGORY & SKU LEVEL DEPENDENCY VALIDATION
+  _evaluateFixSkuDependencies(depsList, fullBomList, chassisInfo, recordAudit, resolvedFixes, unresolvedConflicts);
 
   // 5. CONTESTED RESOURCE ARBITRATION (Cross-Subsystem Shared Slots & Form Factor Duals)
   const arbitrationResults = arbitrateContestedResources(
@@ -327,7 +367,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
 
   const isWholeSolutionValid = conflicts.length === 0 && unresolvedConflicts.length === 0;
 
-  // Synthesize 5-Tier Ranked Solutions with Cross-Subsystem Arbitration Branches
+  // 6. Synthesize 5-Tier Ranked Solutions with Cross-Subsystem Arbitration Branches
   const rankedSolutions = synthesize5TierRankedSolutions(
     boqItems,
     { missingDependencies: depsList, arbitrationResults },
@@ -335,19 +375,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     chassisInfo,
     targetDir
   );
-  const validDistances = rankedSolutions
-    .filter(solution => solution.isUniqueBom && solution.physicalMathClean)
-    .map(solution => solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY);
-  const minimumDistance = validDistances.length > 0 ? Math.min(...validDistances) : Number.POSITIVE_INFINITY;
-  const closenessWindow = Math.max(1, Math.ceil(fullBomList.length * 0.15));
-  const recommendedSolutions = rankedSolutions
-    .filter(solution =>
-      solution.isUniqueBom &&
-      solution.isParetoOptimal &&
-      solution.physicalMathClean &&
-      (solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY) <= minimumDistance + closenessWindow
-    )
-    .slice(0, 3);
+  const recommendedSolutions = _filterRecommendedSolutions(rankedSolutions, fullBomList);
 
   // Generic Dynamic SKU Introspection across full BOM
   const introspectedComponents = fullBomList.map(it => introspectSku(it, catalogData, chassisInfo));

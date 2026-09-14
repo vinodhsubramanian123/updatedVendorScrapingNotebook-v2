@@ -224,6 +224,11 @@ async function runCustomerBoqFlow() {
       await page.waitForTimeout(1000);
       const topologyHeader = await page.locator('text=Topology View:').or(page.locator('text=Compute & Sockets')).first().isVisible();
       console.log(`  Visual BOQ Topology Modal Rendered: ${topologyHeader ? '✅ PASS' : '❌ FAIL'}`);
+      const closeTopologyBtn = page.locator('button[aria-label="Close modal"]').first();
+      if (await closeTopologyBtn.isVisible().catch(() => false)) {
+        await closeTopologyBtn.click();
+        await page.waitForTimeout(800);
+      }
     }
 
     stepResults.push({ step: 8, name: 'Status & Confidence Verification', passed: true, durationMs: Date.now() - step8Start });
@@ -233,9 +238,9 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     console.log('▶ [Step 9] Opening 5-Tier Strategy Matrix modal...');
     const step9Start = Date.now();
-    const openMatrixBtn = page.locator('button:has-text("Open 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Strategy Matrix")').first();
+    const openMatrixBtn = page.locator('button:has-text("Open 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Resolution Matrix")').first();
     if (await openMatrixBtn.isVisible()) {
-      await openMatrixBtn.click();
+      await openMatrixBtn.click({ force: true });
       await page.waitForTimeout(1000);
     }
 

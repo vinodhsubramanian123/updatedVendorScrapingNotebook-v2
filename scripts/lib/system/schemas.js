@@ -226,7 +226,7 @@ const ConflictGraphSchema = z.object({
     reasoning: z.string().default('')
   })).default([]),
   rankedSolutions: z.array(RankedSolutionSchema).default([]),
-  recommendedSolutions: z.array(RankedSolutionSchema).default([])
+  recommendedSolutions: z.array(RankedSolutionSchema).optional()
 }).passthrough();
 
 const BOQEvaluationResultSchema = z.object({
@@ -256,7 +256,7 @@ const BOQEvaluationResultSchema = z.object({
     reasoning: z.string().default('')
   })).default([]),
   conflictGraph: ConflictGraphSchema.default({})
-});
+}).passthrough();
 
 // ==========================================
 // 6. Master Knowledge Delta Schema

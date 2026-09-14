@@ -97,13 +97,24 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
     if (targetSheet && workbook.SheetNames.includes(targetSheet)) {
       sheetNames = [targetSheet];
     } else {
-      // Default to primary BOM sheet (Sheet 1) and skip non-BOM documentation sheets (Audit, Architecture, Compliance)
-      const nonBomKeywords = ['audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix'];
-      const candidateSheets = workbook.SheetNames.filter(name => {
+      // Prioritize dedicated BOM/Quote sheets if present
+      const bomKeywords = ['bom', 'quote', 'boq', 'tender', 'hardware', 'parts'];
+      const preferredSheet = workbook.SheetNames.find(name => {
         const lower = name.toLowerCase();
-        return !nonBomKeywords.some(kw => lower.includes(kw));
+        return bomKeywords.some(kw => lower === kw || lower.includes(kw));
       });
-      sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
+
+      if (preferredSheet) {
+        sheetNames = [preferredSheet];
+      } else {
+        // Skip non-BOM documentation / diagnostic sheets (Audit, Messages, Errors, Architecture, Compliance)
+        const nonBomKeywords = ['audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix', 'messages', 'message', 'advice', 'log', 'logs', 'error', 'errors', 'validation'];
+        const candidateSheets = workbook.SheetNames.filter(name => {
+          const lower = name.toLowerCase();
+          return !nonBomKeywords.some(kw => lower.includes(kw));
+        });
+        sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
+      }
     }
     sheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];

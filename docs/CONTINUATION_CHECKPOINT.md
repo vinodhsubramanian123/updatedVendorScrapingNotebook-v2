@@ -150,5 +150,28 @@ This is the current engineering status following the completion and verification
   - Clean dashboard production build (`vite build` in 12.48s).
   - Semantic knowledge graph refreshed via `graphify update .` (5051 nodes, 7622 edges, 339 communities).
 
+## Phase 10 — End-to-End Headless Browser Verification, Deep BOM Audit & Structural Decomposition (Certified 2026-09-14)
 
-
+- **Headless Browser Playwright E2E Suite Certification (100% PASS)**:
+  - `tests/e2e/e2e_customer_boq_flow.js`: **13/13 Steps PASSED (100.0%)** on `HP Opportunity- DL380_5 Servers.xlsx` (upload, customer intent extraction, 7 physical aspects, visual topology inspection, 5-tier strategy matrix synthesis, live Excel export).
+  - `tests/e2e/test_e2e_downloads_boq_and_vendor_bom.js`: **9/9 Tests PASSED (100.0%)** on `DOC-20260821-WA0000.xlsx` and `DL380_Gen12_22-server_Vendor_BOM.xlsx` with zero console errors and 0 gaps.
+  - `tests/e2e/e2e_headless_ui_test.js`: **7/7 Tests PASSED (100.0%)** across Header, Chassis Selection, Evaluation Workflow, Catalog Explorer, RAG Dual-Brain Insights, Telemetry Ledger, and Excel Export.
+- **Deep Audit & Root-Cause Remediations**:
+  1. **Zod Schema Passthrough (`BOQEvaluationResultSchema`)**: Added `.passthrough()` to prevent runtime JSON parsing in `dashboard/routes/evaluation.cjs` from silently stripping critical fields (`items`, `workflowSteps`, `parsedSheets`, `clusterSizing`, `chassisDefaults`, `telemetry`).
+  2. **Empty Array Masking in Strategy Matrix**: Replaced `recommendedSolutions ?? rankedSolutions` with non-empty array checks across `ResolutionMatrix.jsx` and `evalNormalizer.js` to ensure fallbacks take effect properly when an empty array `[]` is returned.
+  3. **Visual Topology Numeric Description Coercion**: Wrapped `(item.description || '').toLowerCase()` in `String(...)` across `topologyGraphBuilder.js` and `MatrixComparisonTable.jsx` to eliminate crashes on numeric Excel cells.
+  4. **Multi-Sheet BOM vs Diagnostic Sheet Priority**: Updated `readBoqLines` in `boq_evaluator.js` to prioritize dedicated BOM sheets (`bom`, `quote`, `boq`, `tender`, `hardware`, `parts`) and filter out diagnostic/log sheets (`messages`, `advice`, `log`, `error`, `validation`).
+  5. **DL384 Grace Hopper Chassis Variant Detection**: Added `P71411-B21` (DL384 Gen12 CTO Server with NVIDIA GH200 NVL2 Grace Hopper) to `chassis_map.json` and catalog discovery patterns.
+  6. **Unquoted Thousand Separator Merge Guard (`boq_parser.js`)**: Fixed `splitStructuredRow` which previously merged adjacent integer columns (e.g. Qty/Node `2` followed by Total Qty `120` merged into `2,120`), causing massive quantity and price distortions. Restricted comma-merge to currency prefix (`$`) or decimal cents (`.xx`).
+- **Sample Portfolio Audit Certification (11/11 PASSED)**:
+  - Fully evaluated all 11 real customer BOQ spreadsheets and vendor BOM quotes in `tests/fixtures/samples/`: **11/11 PASSED (100.0%)** with complete 5-tier strategy matrix generation for every file.
+- **Modular Refactoring & Architectural Decoupling**:
+  - Decomposed monolithic `CatalogExplorer.jsx` into modular components under `dashboard/src/components/catalog/` (`CatalogProductSwitcher`, `CatalogFilterBar`, `CatalogTable`, `CatalogChecksumBanner`, `PriceTrendModal`, `SkuAuditModal`).
+  - Extracted evaluation serialization logic from `eval_boq.js` into `scripts/lib/boq/eval_output_serializer.js`.
+  - Extracted sync payload utilities from `sync_payload_builder.js` into `scripts/lib/sync/sync_markdown_formatter.js`.
+- **Full Test Matrix Certification**:
+  - Full isolated test matrix: **162/162 suites PASSED (100.0%)** (97 Unit, 40 Chaos, 25 Integration) + 3/3 Headless Playwright E2E suites.
+  - Zero lint warnings/errors across 110 files (`oxlint`).
+  - All 937 functions within cyclomatic complexity gate ($CC \le 135$).
+  - Clean production dashboard build (`vite build` in 11.29s).
+  - Dynamic semantic graph refreshed via `graphify update .` (5185 nodes, 7930 edges, 345 communities).

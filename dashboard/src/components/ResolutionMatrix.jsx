@@ -70,11 +70,15 @@ export default function ResolutionMatrix({
     }, 2500);
   };
 
-  const rankedFromEval = evalResults?.conflictGraph?.recommendedSolutions
-    ?? evalResults?.recommendedSolutions
-    ?? evalResults?.conflictGraph?.rankedSolutions
-    ?? evalResults?.rankedSolutions
-    ?? [];
+  const rankedFromEval = (Array.isArray(evalResults?.conflictGraph?.rankedSolutions) && evalResults.conflictGraph.rankedSolutions.length > 0)
+    ? evalResults.conflictGraph.rankedSolutions
+    : (Array.isArray(evalResults?.rankedSolutions) && evalResults.rankedSolutions.length > 0)
+    ? evalResults.rankedSolutions
+    : (Array.isArray(evalResults?.conflictGraph?.recommendedSolutions) && evalResults.conflictGraph.recommendedSolutions.length > 0)
+    ? evalResults.conflictGraph.recommendedSolutions
+    : (Array.isArray(evalResults?.recommendedSolutions) && evalResults.recommendedSolutions.length > 0)
+    ? evalResults.recommendedSolutions
+    : [];
 
   const tiers = (rankedFromEval && rankedFromEval.length > 0)
     ? rankedFromEval.map(sol => {

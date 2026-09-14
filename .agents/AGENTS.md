@@ -5,7 +5,7 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 
 ---
 
-## Pipeline State of Health (Last Audited: 2026-09-12)
+## Pipeline State of Health (Last Audited: 2026-09-14)
 
 ### ✅ Certified Products & Portfolio Status (10 Canonical Product Generations)
 | Product | Family | Output Prefix | Unique SKUs | Entries | QuickSpecs PDF | Status |
@@ -21,7 +21,7 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.52 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **158/158 Suites PASSED (100.0%)** (92 Unit, 38 Chaos, 25 Integration, 3 E2E) with 0 lint warnings/errors on 103 files and CC $\le 135$.
+**Total Verified Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **162/162 Suites PASSED (100.0%)** (97 Unit, 40 Chaos, 25 Integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, 11/11 sample portfolio BOMs certified, and CC $\le 135$.
 
 ### ✅ Automated Evaluation Benchmark Suite (`tests/integration/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 15/15 Scenarios (100.0%)

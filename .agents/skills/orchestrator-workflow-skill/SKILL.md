@@ -105,16 +105,32 @@ graph TD
 
 ## 🎯 Sub-Skill Routing & Execution Directory
 
-| Workflow Phase | Responsible Skill / Tool | Description & Links |
+| Workflow Domain | Responsible Skill | Implementation Engine & Direct Links |
 |---|---|---|
-| **SSO & Portal Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | Hands-free SSO passing, tool navigation, chassis search, base price extraction. |
-| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | Live CDP DOM extraction, dynamic expansion (`INV-20`), clean SKU sanitization (`INV-21`). |
-| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync, registry updates, historical price trails (`INV-1`). |
-| **BOQ Evaluation & Matrices** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math, Workload DNA, 5-tier strategy matrix, Diophantine clustering (`INV-42`). |
-| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification with explicit Provenance Badges (`[CLOUD_NLM_VERIFIED]`). |
-| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | Multi-rank 10-column workbooks, formula totals, 7-column Partner Portal upload sheets (`INV-32, INV-37`). |
-| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review, 60s pre-scheduled heartbeat loop, chaos stress testing (`INV-10..19, INV-43`). |
-| **Dynamic Semantic Graph** | `graphify` | AST extraction, `/graphify query`, path analysis, and zero-hallucination architectural navigation. |
+| **Macro Orchestration** | [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) | Macro continuous learning lifecycle across all 6 stages. |
+| **Presales Intent Routing** | [`presales-query-router`](../presales-query-router/SKILL.md) | 5-track intent dispatcher: [`route_query.js`](../../../scripts/evaluators/route_query.js). |
+| **SSO & Portal Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | Hands-free SSO passing & Tab 1 self-healing: [`navigate_oca.js`](../../../scripts/lib/scraper/navigate_oca.js). |
+| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | Live CDP extraction: [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
+| **Catalog Intelligence & Price Trails** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | Historical pricing & state changes: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js). |
+| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync: [`knowledge_sync.js`](../../../scripts/lib/sync/knowledge_sync.js). |
+| **BOQ Evaluation & Aspects** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math: [`eval_boq.js`](../../../scripts/evaluators/eval_boq.js). |
+| **Workload DNA Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | Enterprise app workload matching: [`workload_dna.js`](../../../scripts/lib/conflict/workload_dna.js). |
+| **Least-Delta Combinator** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | Generational upgrades & pruning: [`least_delta_combinator.js`](../../../scripts/lib/conflict/least_delta_combinator.js). |
+| **Active Knowledge Reachability** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Active rule discovery: [`active_knowledge_router.js`](../../../scripts/lib/catalog/active_knowledge_router.js). |
+| **Continuous Learning Verifier** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Zero-repetition certification: [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js). |
+| **Execution Trace & Shared State** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
+| **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js). |
+| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM. |
+| **BOM Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js). |
+| **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/conflict/deal_optimizer.js). |
+| **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js). |
+| **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js). |
+| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js). |
+| **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 14-point acceptance criteria check. |
+| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../scripts/lib/rag/agentic_guardrail.js). |
+| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js). |
+| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) & [`frontend-design`](../frontend-design/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
+| **Dynamic Semantic Graph** | `graphify` | Dynamic semantic graph & AST navigation: [`graphify-out/`](../../../graphify-out/). |
 
 ---
 

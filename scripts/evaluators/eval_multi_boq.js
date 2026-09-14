@@ -187,6 +187,12 @@ async function main() {
         if (rank1) {
           console.log(`     • Workload Intent Alignment: ${rank1.tradeoffMetrics?.intentAlignment || '100%'}`);
         }
+        const wbPath = r.result.data?.multiRankWorkbookPath || r.result.multiRankWorkbookPath;
+        if (wbPath) console.log(`     • Multi-Rank Deliverable: file://${wbPath}`);
+        const logPath = r.result.data?.evidenceLogPath || r.result.evidenceLogPath;
+        if (logPath) console.log(`     • Evidence Shared State: file://${logPath}`);
+        const sumPath = r.result.data?.evidenceSummaryPath || r.result.evidenceSummaryPath;
+        if (sumPath) console.log(`     • Evidence Summary: file://${sumPath}`);
       } else {
         console.log(`❌ Cluster: [${r.sheetName}] -> FAILED: ${r.error}`);
       }
