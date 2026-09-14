@@ -15,9 +15,19 @@ const path = require('path');
 const os = require('os');
 const { OAuth2Client } = require('google-auth-library');
 
-const CLIENT_SECRET_PATH = path.join(os.homedir(), '.config', 'gcloud', 'client_secret.json');
-const ADC_PATH = process.env.GOOGLE_APPLICATION_CREDENTIALS ||
-  path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json');
+function resolveGooglePath(fileName) {
+  if (fileName === 'application_default_credentials.json' && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    return process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  }
+  if (process.platform === 'win32') {
+    const winPath = path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'gcloud', fileName);
+    if (fs.existsSync(winPath)) return winPath;
+  }
+  return path.join(os.homedir(), '.config', 'gcloud', fileName);
+}
+
+const CLIENT_SECRET_PATH = resolveGooglePath('client_secret.json');
+const ADC_PATH = resolveGooglePath('application_default_credentials.json');
 
 const SCOPES = [
   'https://www.googleapis.com/auth/cloud-platform',

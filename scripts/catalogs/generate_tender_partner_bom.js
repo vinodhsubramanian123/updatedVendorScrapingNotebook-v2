@@ -15,10 +15,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const XLSX = require('xlsx-js-style');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const DOWNLOADS_DIR = path.join(process.env.HOME || '/home/vinodh', 'Downloads');
+const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 const OUTPUT_DIR = path.join(PROJECT_ROOT, 'outputs', 'ProLiant', 'Gen11', 'DL380_Gen11');
 
 // Style definitions

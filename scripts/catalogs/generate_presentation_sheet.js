@@ -5,9 +5,12 @@
  */
 
 const path = require('path');
+const os = require('os');
 const xlsx = require('xlsx-js-style');
 
-function buildWorkbook(outputPath = '/home/vinodh/Downloads/Untitled spreadsheet.xlsx') {
+const DEFAULT_OUTPUT = path.join(os.homedir(), 'Downloads', 'Untitled spreadsheet.xlsx');
+
+function buildWorkbook(outputPath = DEFAULT_OUTPUT) {
   const wb = xlsx.utils.book_new();
 
   // ----------------------------------------------------
@@ -171,7 +174,7 @@ function buildWorkbook(outputPath = '/home/vinodh/Downloads/Untitled spreadsheet
 }
 
 if (require.main === module) {
-  const target = process.argv[2] || '/home/vinodh/Downloads/Untitled spreadsheet.xlsx';
+  const target = process.argv[2] || DEFAULT_OUTPUT;
   buildWorkbook(target);
 }
 

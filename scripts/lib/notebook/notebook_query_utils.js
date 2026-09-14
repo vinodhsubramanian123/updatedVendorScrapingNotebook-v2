@@ -14,6 +14,7 @@
 const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 const {
   SCRIPTING_PATTERNS,
@@ -297,11 +298,12 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   const logger = require('../system/pipeline_logger.js');
 
   const envPath = process.env.PATH || '';
-  const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
+  const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
-  const nlmUserPath = path.join(homeBin, 'nlm');
-  const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : 'nlm';
+  const binName = process.platform === 'win32' ? 'nlm.exe' : 'nlm';
+  const nlmUserPath = path.join(homeBin, binName);
+  const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : binName;
 
   const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);

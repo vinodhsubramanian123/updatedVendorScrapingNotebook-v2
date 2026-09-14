@@ -71,19 +71,36 @@ function isBinaryInPath(bin) {
   return false;
 }
 
+const os = require('os');
+
 /**
  * Find available Chrome executable on the current OS.
+ * Supports Linux, macOS Monterey/Ventura/Sonoma/Sequoia, and Windows 10/11.
  * @returns {string} Executable name or path
  */
 function findChromeExecutable() {
+  const home = os.homedir();
+  const localAppData = process.env.LOCALAPPDATA || path.join(home, 'AppData', 'Local');
+  const progFiles = process.env.PROGRAMFILES || 'C:\\Program Files';
+  const progFilesX86 = process.env['PROGRAMFILES(X86)'] || 'C:\\Program Files (x86)';
+
   const candidates = [
+    // Linux
     'google-chrome',
     'google-chrome-stable',
     'chromium',
     'chromium-browser',
+    // macOS (System & User applications)
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+    path.join(home, 'Applications', 'Google Chrome.app', 'Contents', 'MacOS', 'Google Chrome'),
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+    // Windows (System 64-bit, 32-bit, Per-User AppData, and Edge)
+    path.join(progFiles, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+    path.join(progFilesX86, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+    path.join(localAppData, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+    path.join(progFilesX86, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+    path.join(progFiles, 'Microsoft', 'Edge', 'Application', 'msedge.exe')
   ];
 
   for (const bin of candidates) {
@@ -93,8 +110,9 @@ function findChromeExecutable() {
       return bin;
     }
   }
-  return 'google-chrome'; // Default fallback
+  return process.platform === 'win32' ? 'chrome.exe' : 'google-chrome'; // Default fallback
 }
+
 
 /**
  * Ensure Chrome is running with remote debugging on specified port.

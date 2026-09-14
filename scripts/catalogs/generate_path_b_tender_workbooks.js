@@ -8,9 +8,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const xlsx = require('xlsx-js-style');
 
-const DOWNLOADS_DIR = '/home/vinodh/Downloads';
+const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 const MASTER_FILE = path.join(DOWNLOADS_DIR, 'HPE_DL380_Gen11_Certified_Tender_PathB_FormFactor_BOM.xlsx');
 const PORTAL_FILE = path.join(DOWNLOADS_DIR, 'HPE_DL380_Gen11_PartnerPortal_PathB_Upload_BOM.xlsx');
 

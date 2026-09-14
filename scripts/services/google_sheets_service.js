@@ -26,8 +26,18 @@ const NOTEBOOK_SOURCE_CLASSES = new Set([
   'VERIFIED_KNOWLEDGE_DELTA'
 ]);
 
-const ADC_PATH = process.env.GOOGLE_APPLICATION_CREDENTIALS ||
-  path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json');
+function resolveAdcPath() {
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    return process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  }
+  if (process.platform === 'win32') {
+    const winPath = path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'gcloud', 'application_default_credentials.json');
+    if (fs.existsSync(winPath)) return winPath;
+  }
+  return path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json');
+}
+
+const ADC_PATH = resolveAdcPath();
 
 /**
  * Checks gcloud CLI & ADC authentication status.

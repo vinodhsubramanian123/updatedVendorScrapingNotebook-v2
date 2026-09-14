@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFileSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { normalizeLearningText } = require('./google_sheets_writer.js');
@@ -169,7 +170,7 @@ function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassi
   } else {
     try {
       const envPath = process.env.PATH || '';
-      const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
+      const homeBin = path.join(os.homedir(), '.local', 'bin');
       const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
       const cfgEntry = notebookCfg.notebooks && notebookCfg.notebooks[chassisName];

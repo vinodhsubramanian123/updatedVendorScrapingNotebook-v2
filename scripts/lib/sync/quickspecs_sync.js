@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
@@ -144,8 +145,8 @@ function findLocalQuickSpecsPdf(chassisName) {
  */
 function getNotebookSources(notebookId) {
   const envPath = process.env.PATH || '';
-  const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-  const extendedPath = `${homeBin}:${envPath}`;
+  const homeBin = path.join(os.homedir(), '.local', 'bin');
+  const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
   try {
     const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
@@ -256,8 +257,8 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     try {
       const canonicalTitle = `HPE_${chassisName}_QuickSpecs.pdf`;
       const envPath = process.env.PATH || '';
-      const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-      const extendedPath = `${homeBin}:${envPath}`;
+      const homeBin = path.join(os.homedir(), '.local', 'bin');
+      const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
       const stdout = execFileSync('nlm', [
         'source', 'add', notebookId,

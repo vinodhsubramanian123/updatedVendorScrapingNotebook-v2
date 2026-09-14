@@ -38,8 +38,15 @@ Before reading code or executing commands, **query the semantic graph via `/grap
 - **[GEMINI.md](GEMINI.md)**: Guidelines for Gemini LLM prompting, MCP context window management, API rate limit resilience, and NotebookLM RAG fallback.
 - **[.agents/DATA_DICTIONARY.md](.agents/DATA_DICTIONARY.md)**: Canonical schema definitions for catalog JSONs, evaluation results, and telemetry ledgers.
 
-### Cross-Machine Migration (Agentic Restoration)
-If the human user provides you with an `antigravity_migration_bundle.zip`, you must autonomously restore their environment. Read the `ANTIGRAVITY_RESTORE_INSTRUCTIONS.md` inside the bundle and restore the `.env`, Google ADC (`gcloud`), global MCP config (`gemini_config`), and live brain state (`history`). Ensure `npx playwright install` and `npm install -g graphify` are executed if dependencies are missing.
+### 💻 Zero-Touch Cross-Machine Migration (macOS 12.7 Monterey / Windows / Linux)
+When migrating to a new laptop (e.g. MacBook Air on macOS 12.7 Monterey or Windows 10/11):
+1. Clone the repo and install dependencies: `git clone <repo> && cd vendorNotebookSolution && npm install`
+2. Download `antigravity_migration_bundle.zip` to `~/Downloads` (or repo root) from [Google Drive](https://drive.google.com/file/d/1R3joG9HkIT0BgHvzjqvC38CHS5-wVFkg/view?usp=sharing).
+3. Run the autonomous restorer (zero manual intervention required):
+   ```bash
+   npm run restore:env
+   ```
+   This automatically restores `.env`, Google ADC (`gcloud`), Google NotebookLM session cookies (`~/.notebooklm-mcp-cli`), brain state (`outputs/history`), generates machine-accurate `mcp_config.json`, ensures Playwright Chromium is installed, installs `nlm` & `graphifyy`, and validates all 7 enterprise guardrails.
 
 ## 🚀 Quick Start
 

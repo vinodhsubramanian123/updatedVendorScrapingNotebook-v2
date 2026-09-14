@@ -18,6 +18,7 @@
     }
   },
   "scripts": {
+    "restore:env": "node scripts/maintenance/restore_env.js",
     "dev": "node dashboard/server.cjs",
     "start": "node dashboard/server.cjs",
     "guardrail:check": "node scripts/maintenance/guardrail_health_check.js",

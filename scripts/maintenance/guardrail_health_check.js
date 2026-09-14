@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -47,16 +48,31 @@ async function runHealthHeartbeat() {
 
   // Guardrail 1: NotebookLM MCP & CLI Profile
   try {
-    const homeBin = path.join(process.env.HOME || '', '.local', 'bin', 'nlm');
-    const hasNlm = fs.existsSync(homeBin);
-    const profilePath = path.join(process.env.HOME || '', '.notebooklm-mcp-cli', 'profiles', 'default');
-    const hasProfile = fs.existsSync(profilePath);
+    const home = os.homedir();
+    const binName = process.platform === 'win32' ? 'nlm.exe' : 'nlm';
+    const homeBin = path.join(home, '.local', 'bin', binName);
+    
+    // Check local bin or system PATH
+    let hasNlm = fs.existsSync(homeBin);
+    if (!hasNlm && process.env.PATH) {
+      const pathDirs = process.env.PATH.split(path.delimiter);
+      for (const dir of pathDirs) {
+        if (dir && fs.existsSync(path.join(dir, binName))) {
+          hasNlm = true;
+          break;
+        }
+      }
+    }
+
+    const defaultProfile = path.join(home, '.notebooklm-mcp-cli', 'profiles', 'default');
+    const authJson = path.join(home, '.notebooklm-mcp-cli', 'auth.json');
+    const hasProfile = fs.existsSync(defaultProfile) || fs.existsSync(authJson);
 
     if (hasNlm && hasProfile) {
-      recordCheck(1, 'NotebookLM MCP / CLI Connection & OAuth Profile', 'PASS', { nlmPath: homeBin, profile: profilePath });
+      recordCheck(1, 'NotebookLM MCP / CLI Connection & OAuth Profile', 'PASS', { nlmFound: true, profile: defaultProfile });
     } else {
       recordCheck(1, 'NotebookLM MCP / CLI Connection & OAuth Profile', 'FAIL', {
-        error: `Missing nlm binary (${hasNlm}) or default profile (${hasProfile})`
+        error: `Missing nlm binary (${hasNlm}) or authentication profile/auth.json (${hasProfile})`
       });
     }
   } catch (err) {
