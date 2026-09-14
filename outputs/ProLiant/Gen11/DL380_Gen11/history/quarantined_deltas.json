@@ -35,7 +35,7 @@
     ]
   },
   {
-    "deltaId": "DELTA_RAG_DEP_P48818-B21_P49145-B21_1789379257191",
+    "deltaId": "DELTA_RAG_DEP_P48818-B21_P49145-B21_1789390135632",
     "chassis": "DL380 Gen11",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
     "ruleType": "DEPENDENCY_CHAIN",
@@ -46,7 +46,7 @@
     "rawMessage": "* **Thermal Heatsink Redline**: With a TDP of **250W** (> 150W threshold), this processor strictly requires the **High-Performance Heatsink** (`P48818-B21`) [5, 9, 10]. Standard heatsinks (`P49145-B21`) are prohibited [9, 11].",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-14T09:47:37.191Z",
+    "timestamp": "2026-09-14T12:48:55.632Z",
     "confidenceScore": 0.7,
     "citations": [
       {
@@ -262,20 +262,20 @@
     ],
     "scope": "CHASSIS_SPECIFIC",
     "knowledgeFingerprint": "6e9945b1c5e76d4ca2d9b5f2e13e450626fa3e653c982ad7945d1e3866a6fd2b",
-    "validatedAt": "2026-09-14T09:47:37.197Z",
+    "validatedAt": "2026-09-14T12:48:55.639Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_6e9945b1c5e76d4c",
     "firstSeenAt": "2026-09-14T09:04:50.483Z",
-    "lastSeenAt": "2026-09-14T09:47:37.199Z",
-    "observationCount": 4,
-    "quarantinedAt": "2026-09-14T09:47:37.199Z",
+    "lastSeenAt": "2026-09-14T12:48:55.641Z",
+    "observationCount": 6,
+    "quarantinedAt": "2026-09-14T12:48:55.641Z",
     "quarantineReasons": [
       "Confidence score 0.70 is below automatic promotion threshold (0.85)"
     ],
     "status": "IN_QUARANTINE"
   },
   {
-    "deltaId": "DELTA_RAG_FIO_P52533-B21_P43328-F21_1789379257192",
+    "deltaId": "DELTA_RAG_FIO_P52533-B21_P43328-F21_1789390135634",
     "chassis": "DL380 Gen11",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
     "ruleType": "OPTION_TYPE_SUBSTITUTION",
@@ -285,7 +285,7 @@
     "rawMessage": "* **CTO Factory Integration Requirement**: When configuring a CTO server (`P52533-B21`), standalone BTO memory SKUs with `-B21` suffixes must be translated to Factory-Integrated Option (**`-F21`** suffix: `P43328-F21`) for factory buildability [18, 19].",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-14T09:47:37.192Z",
+    "timestamp": "2026-09-14T12:48:55.634Z",
     "confidenceScore": 0.7,
     "citations": [
       {
@@ -501,20 +501,20 @@
     ],
     "scope": "CHASSIS_SPECIFIC",
     "knowledgeFingerprint": "6e5dd20e497ed24b944190b4723b5778a99be8627b2550f3d35c6da2e649f42c",
-    "validatedAt": "2026-09-14T09:47:37.333Z",
+    "validatedAt": "2026-09-14T12:48:55.648Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_6e5dd20e497ed24b",
     "firstSeenAt": "2026-09-14T09:04:50.488Z",
-    "lastSeenAt": "2026-09-14T09:47:37.335Z",
-    "observationCount": 4,
-    "quarantinedAt": "2026-09-14T09:47:37.335Z",
+    "lastSeenAt": "2026-09-14T12:48:55.650Z",
+    "observationCount": 6,
+    "quarantinedAt": "2026-09-14T12:48:55.650Z",
     "quarantineReasons": [
       "Confidence score 0.70 is below automatic promotion threshold (0.85)"
     ],
     "status": "IN_QUARANTINE"
   },
   {
-    "deltaId": "DELTA_RAG_DEP_200VAC_240VAC_1789379257193",
+    "deltaId": "DELTA_RAG_DEP_200VAC_240VAC_1789390135634",
     "chassis": "DL380 Gen11",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
     "ruleType": "DEPENDENCY_CHAIN",
@@ -525,7 +525,7 @@
     "rawMessage": "* **Input Voltage Requirement**: 1600W Platinum PSUs require **high-line utility voltage** (200VAC to 240VAC) [29, 30].",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-14T09:47:37.193Z",
+    "timestamp": "2026-09-14T12:48:55.635Z",
     "confidenceScore": 0.7,
     "citations": [
       {
@@ -741,13 +741,13 @@
     ],
     "scope": "CHASSIS_SPECIFIC",
     "knowledgeFingerprint": "07b7ba912b5deeefe619fd71194fb291832a483bbf7cdf7bed73645091ca790b",
-    "validatedAt": "2026-09-14T09:47:37.351Z",
+    "validatedAt": "2026-09-14T12:48:55.657Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_07b7ba912b5deeef",
     "firstSeenAt": "2026-09-14T09:04:50.494Z",
-    "lastSeenAt": "2026-09-14T09:47:37.353Z",
-    "observationCount": 4,
-    "quarantinedAt": "2026-09-14T09:47:37.353Z",
+    "lastSeenAt": "2026-09-14T12:48:55.659Z",
+    "observationCount": 6,
+    "quarantinedAt": "2026-09-14T12:48:55.659Z",
     "quarantineReasons": [
       "SKU 200VAC not found in target catalog; held in quarantine for manual verification",
       "Required SKU 240VAC not found in target catalog; held in quarantine for manual verification",
@@ -756,7 +756,7 @@
     "status": "IN_QUARANTINE"
   },
   {
-    "deltaId": "DELTA_RAG_FIO_P43328-B21_P43328-F21_1789379257194",
+    "deltaId": "DELTA_RAG_FIO_P43328-B21_P43328-F21_1789390135636",
     "chassis": "DL380 Gen11",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
     "ruleType": "OPTION_TYPE_SUBSTITUTION",
@@ -766,7 +766,7 @@
     "rawMessage": "| **Memory SKU** | 32GB DDR5-4800 (`P43328-B21`) | ⚠️ **BTO Suffix Trigger** | Convert `P43328-B21` to CTO FIO SKU **`P43328-F21`** for factory integration [18, 19]. |",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-14T09:47:37.194Z",
+    "timestamp": "2026-09-14T12:48:55.636Z",
     "confidenceScore": 0.7,
     "citations": [
       {
@@ -982,13 +982,13 @@
     ],
     "scope": "CHASSIS_SPECIFIC",
     "knowledgeFingerprint": "89d7209bf06a88aa70edb5a8252c22731a516a2c709933696a992686ef1f69b7",
-    "validatedAt": "2026-09-14T09:47:37.370Z",
+    "validatedAt": "2026-09-14T12:48:55.666Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_89d7209bf06a88aa",
     "firstSeenAt": "2026-09-14T09:04:50.505Z",
-    "lastSeenAt": "2026-09-14T09:47:37.372Z",
-    "observationCount": 4,
-    "quarantinedAt": "2026-09-14T09:47:37.372Z",
+    "lastSeenAt": "2026-09-14T12:48:55.668Z",
+    "observationCount": 6,
+    "quarantinedAt": "2026-09-14T12:48:55.668Z",
     "quarantineReasons": [
       "Confidence score 0.70 is below automatic promotion threshold (0.85)"
     ],
@@ -1023,6 +1023,41 @@
     "lastSeenAt": "2026-09-14T09:09:26.680Z",
     "observationCount": 1,
     "quarantinedAt": "2026-09-14T09:09:26.680Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789384041695-fw5vp",
+    "traceId": null,
+    "timestamp": "2026-09-14T11:07:21.695Z",
+    "chassis": "DL380_Gen11",
+    "rawMessage": "On DL380 Gen11, HPE 96W Smart Storage Battery P01366-B21 connected to cached Tri-Mode storage controller P47777-B21 strictly requires Storage Controller Enablement Cable Kit P48918-B21 for telemetry and power backup enablement.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P01366-B21",
+    "requiredDependencySku": "P48918-B21",
+    "ruleUpdate": "On DL380 Gen11, HPE 96W Smart Storage Battery P01366-B21 connected to cached Tri-Mode storage controller P47777-B21 strictly requires Storage Controller Enablement Cable Kit P48918-B21 for telemetry and power backup enablement.",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 14,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "86812ecdf33a1635c79391f83e79c37f928025df602f01655b248b4810f4962e",
+    "validatedAt": "2026-09-14T11:07:21.744Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_86812ecdf33a1635",
+    "firstSeenAt": "2026-09-14T11:07:21.750Z",
+    "lastSeenAt": "2026-09-14T11:07:21.750Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-14T11:07:21.750Z",
     "quarantineReasons": [
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",

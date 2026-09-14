@@ -62,6 +62,7 @@ function cleanTestPayloads() {
  * @returns {object} Sync result summary
  */
 function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUATION', options = {}) {
+  const opts = typeof options === 'string' ? { targetDir: options } : (options || {});
   try {
     logger.info('POST_FLOW_SYNC', `Triggering post-flow knowledge sync for ${chassisName} (Flow: ${flowType})`);
     
@@ -69,9 +70,10 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     const registry = buildMasterKnowledgeRegistry();
     
     // 2. Generate updated sync payload for target chassis
-    const autoUpload = Boolean(options.autoUploadNLM || process.env.AUTO_UPLOAD_NLM === '1');
+    const autoUpload = Boolean(opts.autoUploadNLM || process.env.AUTO_UPLOAD_NLM === '1');
     const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
-      confirmSourceRetirement: options.confirmSourceRetirement === true
+      confirmSourceRetirement: opts.confirmSourceRetirement === true,
+      targetDir: opts.targetDir
     });
     
     // 3. Inspect drift metrics

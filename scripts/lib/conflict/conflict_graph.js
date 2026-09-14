@@ -23,47 +23,17 @@ const { synthesize5TierRankedSolutions } = require('./strategy_synthesizer.js');
 const { introspectSku } = require('./cascading_impact_analyzer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
+const { loadActiveKnowledgeRules } = require('../catalog/active_knowledge_router.js');
 
-function loadLearnedKnowledgeDeltas(resolvedTargetDir) {
-  const deltas = [];
-  const seenDeltaKeys = new Set();
-  const pathsToSearch = [
-    path.join(__dirname, '..', '..', 'outputs', 'history', 'master_knowledge_registry.json'),
-    path.join(__dirname, '..', '..', 'outputs', 'history', 'catalog_deltas.json')
-  ];
-  if (resolvedTargetDir && typeof resolvedTargetDir === 'string' && fs.existsSync(resolvedTargetDir)) {
-    pathsToSearch.push(path.join(resolvedTargetDir, 'history', 'catalog_deltas.json'));
+function loadLearnedKnowledgeDeltas(resolvedTargetDir, chassisVariant = '') {
+  try {
+    const rules = loadActiveKnowledgeRules(chassisVariant, resolvedTargetDir);
+    return rules.allRules.map(r => r.rawDelta || r);
+  } catch (err) {
+    const logger = require('../system/pipeline_logger.js');
+    logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
+    return [];
   }
-
-  for (const candidatePath of pathsToSearch) {
-    if (!fs.existsSync(candidatePath)) continue;
-    try {
-      const content = JSON.parse(fs.readFileSync(candidatePath, 'utf-8'));
-      let list = [];
-      if (Array.isArray(content)) {
-        list = content;
-      } else if (Array.isArray(content.deltas)) {
-        list = content.deltas;
-      } else {
-        list = [
-          ...(Array.isArray(content.universalRules) ? content.universalRules : []),
-          ...(Array.isArray(content.familyGenRules) ? content.familyGenRules : []),
-          ...(Array.isArray(content.chassisSpecificRules) ? content.chassisSpecificRules : [])
-        ];
-      }
-
-      for (const delta of list) {
-        const key = delta.deltaId || `${delta.chassis}:${delta.affectedSku}:${delta.requiredDependencySku || ''}:${delta.rawMessage || ''}`;
-        if (seenDeltaKeys.has(key)) continue;
-        seenDeltaKeys.add(key);
-        deltas.push(delta);
-      }
-    } catch (err) {
-      const logger = require('../system/pipeline_logger.js');
-      logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
-    }
-  }
-  return deltas;
 }
 
 function validateCategoryRules(fullBomList, conflicts, recordAudit) {
@@ -235,6 +205,12 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     const hasAffected = fullBomMap.has(affectedSku) || fullBomList.some(it => (it.description || '').includes(affectedSku));
     if (hasAffected) {
       if (requiredSku) {
+        const isSubstOrModernize = delta.ruleType === 'SKU_SUBSTITUTION' || delta.ruleType === 'OPTION_TYPE_SUBSTITUTION' || delta.ruleType === 'GENERATIONAL_MODERNIZATION';
+        if (isSubstOrModernize) {
+          recordAudit('LEARNED_DELTA', `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku);
+          return;
+        }
+
         // Cycle detection guardrail: Check if reverse edge already exists
         const edgeKey = `${affectedSku}->${requiredSku}`;
         const reverseEdgeKey = `${requiredSku}->${affectedSku}`;

@@ -326,3 +326,67 @@ test('Least-Delta — buildLeastDeltaCandidate handles multiple simultaneous tro
   assert.ok(!result.parts.some(p => p.sku === 'P48835-B21'), 'Expander must be pruned');
   assert.ok(result.parts.some(p => p.sku === 'P55415-B21'), 'Alternative controller must be present');
 });
+
+test('Least-Delta — Detects GENERATIONAL_CPU_OBSOLESCENCE and GENERATIONAL_MEMORY_COUPLING on DL380 Gen11', () => {
+  const items = [
+    mkItem('P52533-B21', 'HPE ProLiant DL380 Gen11 12LFF NC Configure-to-order Server'),
+    mkItem('P49619-B21', 'Intel Xeon-Gold 6414U 2.0GHz 32-core 250W Processor for HPE'),
+    mkItem('P43328-B21', 'HPE 32GB (1x32GB) Dual Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit', 8)
+  ];
+  const evalResults = mkEval({
+    missingDependencies: [
+      { sku: 'P43328-F21', description: 'HPE Factory Integrated Option (FIO) Replacement for P43328-B21' }
+    ]
+  });
+
+  const troublesome = identifyTroublesomeSkus(items, evalResults, null, { model: 'DL380_Gen11', gen: 'Gen11' });
+  assert.ok(troublesome.length >= 2, 'Must detect CPU obsolescence and memory coupling');
+
+  const cpuTrouble = troublesome.find(t => t.type === 'GENERATIONAL_CPU_OBSOLESCENCE');
+  assert.ok(cpuTrouble, 'Must find GENERATIONAL_CPU_OBSOLESCENCE');
+  assert.strictEqual(cpuTrouble.originalSku, 'P49619-B21');
+  assert.strictEqual(cpuTrouble.alternativeSku, 'P67082-B21');
+  assert.ok(cpuTrouble.alternativeDesc.includes('6548Y+'), 'Must upgrade to 5th Gen 6548Y+');
+
+  const memTrouble = troublesome.find(t => t.type === 'GENERATIONAL_MEMORY_COUPLING');
+  assert.ok(memTrouble, 'Must find GENERATIONAL_MEMORY_COUPLING');
+  assert.strictEqual(memTrouble.originalSku, 'P43328-B21');
+  assert.strictEqual(memTrouble.alternativeSku, 'P64706-F21');
+  assert.ok(memTrouble.alternativeDesc.includes('5600'), 'Must upgrade to DDR5-5600');
+
+  const baseParts = items.map(it => ({ sku: it.sku, description: it.description, quantity: it.quantity, unitPriceUsd: 100, extendedPriceUsd: 100 * it.quantity }));
+  const fixParts = [{ sku: 'P43328-F21', description: 'HPE FIO Replacement', quantity: 8, unitPriceUsd: 100, extendedPriceUsd: 800 }];
+  const candidate = buildLeastDeltaCandidate(baseParts, fixParts, troublesome, evalResults, null, { model: 'DL380_Gen11' }, () => 200);
+
+  assert.ok(candidate, 'Must generate candidate');
+  assert.strictEqual(candidate.strategyName, 'MODERNIZED_5TH_GEN_PLATFORM');
+  assert.ok(candidate.tierTitle.includes('Modernized 5th Gen Platform'));
+  assert.ok(candidate.parts.some(p => p.sku === 'P67082-B21'), '5th Gen CPU must be in parts');
+  assert.ok(candidate.parts.some(p => p.sku === 'P64706-F21'), 'DDR5-5600 FIO Memory must be in parts');
+  assert.ok(!candidate.parts.some(p => p.sku === 'P43328-F21'), 'Legacy DDR5-4800 FIO fix must be eliminated');
+  assert.ok(!candidate.parts.some(p => p.sku === 'P49619-B21'), 'Legacy 4th Gen CPU must be replaced');
+});
+
+test('Least-Delta — Modernizes 8480+ to 8570 and DDR5-4800 to DDR5-5600 for Config 1 Server', () => {
+  const items = [
+    mkItem('P52534-B21', 'HPE ProLiant DL380 Gen11 8SFF NC Configure-to-order Server', 10),
+    mkItem('P49607-B21', 'Intel Xeon-Platinum 8480+ 2.0GHz 56-core 350W Processor for HPE', 20),
+    mkItem('P43334-B21', 'HPE 128GB (1x128GB) Quad Rank x4 DDR5-4800 CAS-46-39-39 EC8 Registered 3DS Smart Memory Kit', 80)
+  ];
+  const evalResults = mkEval({
+    missingDependencies: [
+      { sku: 'P43334-F21', description: 'HPE Factory Integrated Option (FIO) Replacement for P43334-B21' }
+    ]
+  });
+
+  const troublesome = identifyTroublesomeSkus(items, evalResults, null, { model: 'DL380_Gen11', gen: 'Gen11' });
+  const cpuTrouble = troublesome.find(t => t.type === 'GENERATIONAL_CPU_OBSOLESCENCE');
+  assert.ok(cpuTrouble, 'Must identify 8480+ generational obsolescence');
+  assert.strictEqual(cpuTrouble.alternativeSku, 'P67087-B21');
+  assert.ok(cpuTrouble.alternativeDesc.includes('8570'), 'Must upgrade to 5th Gen 8570');
+
+  const memTrouble = troublesome.find(t => t.type === 'GENERATIONAL_MEMORY_COUPLING');
+  assert.ok(memTrouble, 'Must identify 128GB DDR5-4800 coupling');
+  assert.strictEqual(memTrouble.alternativeSku, 'P69976-F21');
+  assert.ok(memTrouble.alternativeDesc.includes('5600'), 'Must upgrade to 128GB DDR5-5600 FIO');
+});

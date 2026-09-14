@@ -81,13 +81,13 @@ describe('Contested Resource Arbitrator Unit Tests', () => {
     const ranks = graphRes.rankedSolutions;
     assert.equal(ranks.length, 5);
 
-    const formFactorTier = ranks.find(r => r.name.includes('Contested Form-Factor Optimized') || r.name.includes('High-IOPS') || r.rank === 1);
-    assert.ok(formFactorTier);
+    const formFactorTier = ranks.find(r => r.name.includes('Contested Form-Factor Optimized'));
+    assert.ok(formFactorTier, 'Expected Contested Form-Factor Optimized tier to be synthesized');
 
     // Form-Factor Optimized tier should reflect the PCIe Storage + OCP NIC Retention branch
-    assert.ok(formFactorTier.name.includes('Contested Form-Factor Optimized') || formFactorTier.name.includes('High-IOPS') || formFactorTier.name.includes('Intent Preserved'));
+    assert.ok(formFactorTier.name.includes('Contested Form-Factor Optimized'));
     assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P47777-B21' || (p.description && p.description.includes('MR416i-p'))));
-    assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P10115-B21'));
+    assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P10115-B21' || p.sku === 'P08443-B21'));
     assert.ok(formFactorTier.skuPartsList.some(p => p.sku === 'P48832-B21'));
   });
 

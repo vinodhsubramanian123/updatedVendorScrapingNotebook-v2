@@ -42,6 +42,14 @@ function getChassisMap() {
  * @returns {object|null} { sku, description }
  */
 function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, catalogData = null, chassisInfo = {}) {
+  if (roleType === 'GENERATIONAL_CPU_OBSOLESCENCE') {
+    return findGenerationalCpuUpgrade(currentSku, constraints.originalDesc || '', catalogData, chassisInfo);
+  }
+
+  if (roleType === 'GENERATIONAL_MEMORY_COUPLING') {
+    return findDdr5_5600MemoryUpgrade(currentSku, constraints.originalDesc || '', catalogData, chassisInfo, constraints.isCto !== false);
+  }
+
   const isGen12 = (chassisInfo?.gen || '').includes('12') || (chassisInfo?.model || '').includes('Gen12');
   const genKey = isGen12 ? 'Gen12' : 'Gen11';
   const cmap = getChassisMap();
@@ -132,6 +140,171 @@ function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, ca
   }
 
   return null;
+}
+
+/**
+ * Dynamically find matching active 5th Gen Intel Xeon Scalable processor in catalog
+ */
+function findGenerationalCpuUpgrade(currentSku, currentDesc, catalogData = null, chassisInfo = {}) {
+  const descLower = (currentDesc || '').toLowerCase();
+  const coreMatch = descLower.match(/(\d+)\s*-?\s*core/i);
+  const cores = coreMatch ? parseInt(coreMatch[1], 10) : 0;
+  const tdpMatch = descLower.match(/(\d{2,3})\s*w/i);
+  const tdp = tdpMatch ? parseInt(tdpMatch[1], 10) : 0;
+  const is1P = descLower.includes('1p') || /\b\d{4}u\b/i.test(descLower);
+
+  // Fallback defaults if catalog is missing
+  if (!catalogData || !Array.isArray(catalogData.entries) || catalogData.entries.length === 0) {
+    if (cores >= 56 || descLower.includes('8480')) {
+      return {
+        sku: 'P67087-B21',
+        description: 'Intel Xeon-Platinum 8570 2.1GHz 56-core 350W Processor for HPE'
+      };
+    }
+    return {
+      sku: 'P67082-B21',
+      description: 'Intel Xeon-Gold 6548Y+ 2.5GHz 32-core 250W Processor for HPE'
+    };
+  }
+
+  const candidates = [];
+  catalogData.entries.forEach(e => {
+    (e.skus || []).forEach(s => {
+      const d = (s.Description || s.description || '').toLowerCase();
+      const sku = cleanBaseSKU(s['Product #'] || s.sku);
+      const status = s['Lifecycle Status'] || 'ACTIVE';
+      if (/obsolete|eol/i.test(status)) return;
+      // 5th Gen Intel Xeon Scalable: model pattern x5xx
+      const cpuMatch = d.match(/intel\s+xeon[^\d]+(\d)5\d{2}([a-z\+]?)/i);
+      if (cpuMatch) {
+        const cCoreMatch = d.match(/(\d+)\s*-?\s*core/i);
+        const cCores = cCoreMatch ? parseInt(cCoreMatch[1], 10) : 0;
+        const cTdpMatch = d.match(/(\d{2,3})\s*w/i);
+        const cTdp = cTdpMatch ? parseInt(cTdpMatch[1], 10) : 0;
+        const cIs1P = d.includes('1p') || /\b\d{4}u\b/i.test(d);
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
+
+        candidates.push({
+          sku,
+          description: s.Description || s.description,
+          cores: cCores,
+          tdp: cTdp,
+          is1P: cIs1P,
+          price
+        });
+      }
+    });
+  });
+
+  const scored = candidates.map(c => {
+    let score = 0;
+    if (c.cores === cores) score += 100;
+    else if (c.cores > cores) score += 50 - (c.cores - cores);
+    else score -= 100;
+
+    // Disallow 1P candidate for multi-socket original CPU
+    if (!is1P && c.is1P) score -= 200;
+    if (is1P && !c.is1P) score += 20;
+
+    const tdpDiff = Math.abs(c.tdp - tdp);
+    score -= tdpDiff * 0.5;
+
+    return { ...c, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  if (scored[0]) {
+    return {
+      sku: scored[0].sku,
+      description: scored[0].description
+    };
+  }
+
+  // Fallbacks
+  return (cores >= 56 || descLower.includes('8480'))
+    ? { sku: 'P67087-B21', description: 'Intel Xeon-Platinum 8570 2.1GHz 56-core 350W Processor for HPE' }
+    : { sku: 'P67082-B21', description: 'Intel Xeon-Gold 6548Y+ 2.5GHz 32-core 250W Processor for HPE' };
+}
+
+/**
+ * Dynamically find matching active DDR5-5600 Smart Memory in catalog
+ */
+function findDdr5_5600MemoryUpgrade(currentSku, currentDesc, catalogData = null, chassisInfo = {}, isCto = true) {
+  const descLower = (currentDesc || '').toLowerCase();
+  const capMatch = descLower.match(/(\d+)\s*gb/i);
+  const capacity = capMatch ? parseInt(capMatch[1], 10) : 32;
+
+  // Fallback defaults if catalog is missing
+  if (!catalogData || !Array.isArray(catalogData.entries) || catalogData.entries.length === 0) {
+    if (capacity >= 128) {
+      return {
+        sku: isCto ? 'P69976-F21' : 'P69976-B21',
+        description: 'HPE 128GB (1x128GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+      };
+    }
+    if (capacity >= 64) {
+      return {
+        sku: isCto ? 'P64707-F21' : 'P64707-B21',
+        description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+      };
+    }
+    return {
+      sku: isCto ? 'P64706-F21' : 'P64706-B21',
+      description: 'HPE 32GB (1x32GB) Dual Rank x8 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+    };
+  }
+
+  const candidates = [];
+  catalogData.entries.forEach(e => {
+    (e.skus || []).forEach(s => {
+      const d = (s.Description || s.description || '').toLowerCase();
+      const sku = cleanBaseSKU(s['Product #'] || s.sku);
+      const status = s['Lifecycle Status'] || 'ACTIVE';
+      if (/obsolete|eol/i.test(status)) return;
+      if (d.includes('5600') && (d.includes('smart memory') || d.includes('rdimm') || d.includes('fio memory') || d.includes('registered'))) {
+        const cCapMatch = d.match(/(\d+)\s*gb/i);
+        const cCap = cCapMatch ? parseInt(cCapMatch[1], 10) : 0;
+        const isFio = sku.endsWith('-F21') || d.includes('fio') || d.includes('factory integrated');
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
+        candidates.push({
+          sku,
+          description: s.Description || s.description,
+          capacity: cCap,
+          isFio,
+          price
+        });
+      }
+    });
+  });
+
+  const matchingCap = candidates.filter(c => c.capacity === capacity);
+  if (matchingCap.length > 0) {
+    if (isCto) {
+      const fio = matchingCap.find(c => c.isFio);
+      if (fio) return { sku: fio.sku, description: fio.description };
+    }
+    const bto = matchingCap.find(c => !c.isFio);
+    if (bto) return { sku: bto.sku, description: bto.description };
+    return { sku: matchingCap[0].sku, description: matchingCap[0].description };
+  }
+
+  // Fallbacks
+  if (capacity >= 128) {
+    return {
+      sku: isCto ? 'P69976-F21' : 'P69976-B21',
+      description: 'HPE 128GB (1x128GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+    };
+  }
+  if (capacity >= 64) {
+    return {
+      sku: isCto ? 'P64707-F21' : 'P64707-B21',
+      description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+    };
+  }
+  return {
+    sku: isCto ? 'P64706-F21' : 'P64706-B21',
+    description: 'HPE 32GB (1x32GB) Dual Rank x8 DDR5-5600 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit'
+  };
 }
 
 /**
@@ -259,6 +432,69 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
     });
   }
 
+  // 5. Troublesome 4th Gen Intel Sapphire Rapids Processor on Dual-Gen Platform (DL380 Gen11)
+  // Proactively modernizes 4th Gen Xeon (e.g. 6414U, 8480+) to active 5th Gen Emerald Rapids (6548Y+, 8570)
+  // and synchronously upgrades paired DDR5-4800 memory to DDR5-5600 Smart FIO memory.
+  const isGen11Platform = (chassisInfo?.gen || '').includes('11') || (chassisInfo?.model || '').includes('Gen11') ||
+    items.some(it => (it.description || '').toLowerCase().includes('gen11') || (it.sku || '').toLowerCase().includes('p52533') || (it.sku || '').toLowerCase().includes('p52534'));
+
+  const gen4CpuItem = items.find(it => {
+    const d = (it.description || '').toLowerCase();
+    const sku = cleanBaseSKU(it.sku);
+    return (d.includes('processor') || d.includes('xeon') || sku.startsWith('P')) &&
+      (/intel\s+xeon[^\d]+(\d)4\d{2}([a-z\+]?)/i.test(d) || d.includes('6414u') || d.includes('8480+'));
+  });
+
+  if (isGen11Platform && gen4CpuItem) {
+    const altCpu = findBestAlternativeInCatalog('GENERATIONAL_CPU_OBSOLESCENCE', gen4CpuItem.sku, { originalDesc: gen4CpuItem.description }, catalogData, chassisInfo);
+    if (altCpu) {
+      troublesome.push({
+        type: 'GENERATIONAL_CPU_OBSOLESCENCE',
+        originalSku: cleanBaseSKU(gen4CpuItem.sku),
+        originalDesc: gen4CpuItem.description || 'Intel 4th Gen Xeon Processor',
+        troublesomeReason: `4th Gen Intel Sapphire Rapids processor carries impending obsolescence risk (6414U is discontinued OB; 8480+ is legacy) and constrains memory bus to 4800 MT/s.`,
+        alternativeSku: altCpu.sku,
+        alternativeDesc: altCpu.description,
+        action: 'UPGRADE_GENERATIONAL_CPU',
+        functionalEquivalence: `5th Gen Intel Emerald Rapids processor (${altCpu.sku}) delivers drop-in socket compatibility, higher IPC and clock frequencies at identical thermal envelope, and active production lifecycle.`,
+        cascadingSkusEliminated: [],
+        presalesValuePitch: `Upgrading 4th Gen Intel Sapphire Rapids to active 5th Gen Intel Emerald Rapids eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, and matches HPE factory validated solution.`
+      });
+
+      // Synchronously find paired DDR5-4800 memory items and upgrade to DDR5-5600
+      const ddr4800MemItems = items.filter(it => {
+        const d = (it.description || '').toLowerCase();
+        return (d.includes('4800') || d.includes('ddr5-4800')) && (d.includes('memory') || d.includes('rdimm') || d.includes('smart memory'));
+      });
+
+      const isCto = items.some(it => (it.description || '').toLowerCase().includes('configure-to-order') || (it.description || '').toLowerCase().includes('cto'));
+
+      // Find any aspect fix parts injected for DDR5-4800 (e.g. P43328-F21, P43334-F21) to eliminate them
+      const eliminatedFioFixes = missing
+        .filter(d => (d.description || '').toLowerCase().includes('fio') && ((d.description || '').toLowerCase().includes('p433') || (d.sku || '').startsWith('P433')))
+        .map(d => d.sku)
+        .filter(Boolean);
+
+      ddr4800MemItems.forEach(memItem => {
+        const altMem = findBestAlternativeInCatalog('GENERATIONAL_MEMORY_COUPLING', memItem.sku, { originalDesc: memItem.description, isCto }, catalogData, chassisInfo);
+        if (altMem) {
+          troublesome.push({
+            type: 'GENERATIONAL_MEMORY_COUPLING',
+            originalSku: cleanBaseSKU(memItem.sku),
+            originalDesc: memItem.description || 'DDR5-4800 Smart Memory Kit',
+            troublesomeReason: `DDR5-4800 memory operates at legacy 4800 MT/s and is architecturally coupled to 4th Gen CPU; 5th Gen CPU mandates DDR5-5600.`,
+            alternativeSku: altMem.sku,
+            alternativeDesc: altMem.description,
+            action: 'UPGRADE_GENERATIONAL_MEMORY',
+            functionalEquivalence: `DDR5-5600 Smart FIO Memory operates at full 5600 MT/s bus speed, matching 5th Gen CPU memory controller bandwidth and natively fulfilling CTO integration.`,
+            cascadingSkusEliminated: eliminatedFioFixes.length > 0 ? eliminatedFioFixes : [memItem.sku.replace(/-B21$/i, '-F21')],
+            presalesValuePitch: `Synchronously upgrading DDR5-4800 memory to DDR5-5600 Smart FIO Memory unlocks +16.7% memory bandwidth and natively satisfies CTO factory integration.`
+          });
+        }
+      });
+    }
+  }
+
   return troublesome;
 }
 
@@ -314,7 +550,7 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
             isFixInjected: false,
             isStrategyAddon: true,
             isLeastDeltaSubstitution: true,
-            category: 'Least-Delta Functional Replacement'
+            category: trouble.type?.startsWith('GENERATIONAL') ? 'Modernized Platform Hardware' : 'Least-Delta Functional Replacement'
           });
           replacementsCount += 1;
           replacedSkus.push({ from: p.sku, to: trouble.alternativeSku });
@@ -343,18 +579,29 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
     additionsCount += (f.quantity || 1);
   }
 
-  const primaryTrouble = appliedActions[0] || troublesomeSkus[0];
+  const hasGenerationalUpgrade = appliedActions.some(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE');
+  const primaryTrouble = appliedActions.find(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE') || appliedActions[0] || troublesomeSkus[0];
   const totalCost = candidateParts.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.unitPriceUsd * (p.quantity || 1))), 0);
   const totalDeltaOperations = additionsCount + removalsCount + replacementsCount;
 
   const summaryPitches = appliedActions.map(a => a.presalesValuePitch).filter(Boolean);
   const combinedPitch = summaryPitches.length > 0 ? summaryPitches.join(' ') : primaryTrouble.presalesValuePitch;
 
-  const sharedIntelligenceReasoning = `Least-Delta Architecture Strategy: Identified ${appliedActions.length} troublesome SKU(s) causing cascading additions (${allCascadingEliminated.join(', ') || 'multiple auxiliary parts'}). Replaced/pruned with verified functional alternatives. ${primaryTrouble.functionalEquivalence} Result: ${totalDeltaOperations} delta operations, eliminating ${allCascadingEliminated.length} accessory kits.`;
+  const tierTitle = hasGenerationalUpgrade
+    ? 'Rank 2: Modernized 5th Gen Platform & High-Speed DDR5-5600 Architecture'
+    : 'Rank 2: Least-Delta Functional Alternative (Cascade Pruned)';
+
+  const strategyName = hasGenerationalUpgrade
+    ? 'MODERNIZED_5TH_GEN_PLATFORM'
+    : 'LEAST_DELTA_CASCADE_PRUNED';
+
+  const sharedIntelligenceReasoning = hasGenerationalUpgrade
+    ? `Modernized 5th Gen Platform Strategy: Upgraded legacy 4th Gen Intel Sapphire Rapids processor to active 5th Gen Intel Emerald Rapids (${primaryTrouble.alternativeSku}) and synchronously upgraded memory to DDR5-5600 Smart FIO Memory. Eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, eliminates standalone BTO-to-FIO memory violations, and aligns 100% with official HPE factory validated solution.`
+    : `Least-Delta Architecture Strategy: Identified ${appliedActions.length} troublesome SKU(s) causing cascading additions (${allCascadingEliminated.join(', ') || 'multiple auxiliary parts'}). Replaced/pruned with verified functional alternatives. ${primaryTrouble.functionalEquivalence} Result: ${totalDeltaOperations} delta operations, eliminating ${allCascadingEliminated.length} accessory kits.`;
 
   return {
-    tierTitle: 'Rank 2: Least-Delta Functional Alternative (Cascade Pruned)',
-    strategyName: 'LEAST_DELTA_CASCADE_PRUNED',
+    tierTitle,
+    strategyName,
     isLeastDeltaPath: true,
     troublesomeRootSku: primaryTrouble.originalSku,
     alternativeSku: primaryTrouble.alternativeSku,

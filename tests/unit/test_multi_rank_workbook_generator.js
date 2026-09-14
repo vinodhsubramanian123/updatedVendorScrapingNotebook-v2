@@ -151,8 +151,10 @@ describe('Multi-Rank Solution Workbook & Deliverable Suite', () => {
     assert.strictEqual(headerRow[5], 'Component Role');
     assert.strictEqual(headerRow[6], 'Unit Price (USD)');
     assert.strictEqual(headerRow[7], 'Extended Price (USD)');
-    assert.strictEqual(headerRow[8], 'Physical Math Rationale');
-    assert.strictEqual(headerRow[9], 'CLIC Status / Rule Trace');
+    assert.strictEqual(headerRow[8], 'Physical Math & Rule Engine Rationale');
+    assert.strictEqual(headerRow[9], 'Gemini NotebookLM Badge');
+    assert.strictEqual(headerRow[10], 'Agentic Guardrail & Evals Trace');
+    assert.strictEqual(headerRow[11], 'CLIC Status / Rule Trace');
   });
 
   test('3. Rank 1 items contain formula-driven multiplier and extended price calculations', () => {
@@ -186,7 +188,9 @@ describe('Multi-Rank Solution Workbook & Deliverable Suite', () => {
     assert.ok(headerLine.includes('Strategy Rank'), 'Header should include Strategy Rank');
     assert.ok(headerLine.includes('Part No'), 'Header should include Part No');
     assert.ok(headerLine.includes('Node Multiplier'), 'Header should include Node Multiplier');
-    assert.ok(headerLine.includes('Physical Math Rationale'), 'Header should include Physical Math Rationale');
+    assert.ok(headerLine.includes('Physical Math & Rule Engine Rationale'), 'Header should include Physical Math & Rule Engine Rationale');
+    assert.ok(headerLine.includes('Gemini NotebookLM Badge'), 'Header should include Gemini NotebookLM Badge');
+    assert.ok(headerLine.includes('Agentic Guardrail & Evals Trace'), 'Header should include Agentic Guardrail & Evals Trace');
 
     // Verify all 5 ranks are present in CSV
     assert.ok(csvContent.includes('"Rank 1"'), 'CSV must contain Rank 1 items');

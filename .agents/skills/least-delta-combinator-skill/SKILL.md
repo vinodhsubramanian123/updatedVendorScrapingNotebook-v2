@@ -97,5 +97,27 @@ When the Least-Delta Combinator produces a Rank 1L alternative, the agent MUST p
   • Prunes: Completely eliminates SAS Expander & Extra Cables!
   • Net CapEx Impact: Saves $650.00 vs Path 1A.
   • Reliability Benefit: Eliminates 3 potential physical failure points in storage bus.
-====================================================================
 ```
+
+---
+
+## 🚀 Generational CPU & Memory Modernization Protocol (`INV-42`)
+
+On dual-generation platforms (such as HPE ProLiant DL380 Gen11 supporting both 4th Gen Sapphire Rapids and 5th Gen Emerald Rapids), customer tender drafts often specify legacy 4th Gen processors paired with DDR5-4800 memory.
+
+### The Problem
+- 4th Gen Xeon Scalable CPUs (`x4xx` such as `6414U`, `8480+`) are entering 90-day warning / obsolescence or capped at DDR5-4800 memory bus speeds.
+- Upgrading the processor alone causes memory bus mismatch errors, while leaving 4th Gen processors in modernized alternative ranks misses massive performance and lifecycle benefits for negligible price differences (e.g. Xeon 8570 5th Gen is only +$69 over Xeon 8480+ 4th Gen).
+
+### The Autonomous Resolution
+1. **Rank 1 (Customer Intent Preserved)**:
+   - Retains the customer's drafted 4th Gen CPU and applies minimal mandatory FIO fixes (`#0D1`, power cables, heatsinks) to achieve 100% buildability without changing architectural intent.
+2. **Alternative Strategic Ranks (Rank 2 Modernized, Rank 3 High-IOPS, Rank 4/5)**:
+   - **CPU Upgrade**: `findGenerationalCpuUpgrade()` dynamically scans active 5th Gen (`x5xx`) CPUs in the platform catalog matching socket count (1P/2P), $\ge$ core count, and closest TDP.
+     - *Example 1*: `P49619-B21` (Xeon 6414U 32c 250W 1P) $\rightarrow$ `P67082-B21` (Xeon 6548Y+ 32c 250W 1P/2P).
+     - *Example 2*: `P49607-B21` (Xeon 8480+ 56c 350W 2P) $\rightarrow$ `P67087-B21` (Xeon 8570 56c 350W 2P).
+   - **Coupled Memory Upgrade (`INV-42`)**: `findDdr5_5600MemoryUpgrade()` synchronously maps legacy DDR5-4800 DIMMs to DDR5-5600 Smart FIO memory:
+     - 32GB: `P43328-B21` $\rightarrow$ `P64706-F21` (HPE 32GB 2Rx8 DDR5-5600 Smart FIO Kit).
+     - 64GB: `P43331-B21` $\rightarrow$ `P64707-F21` (HPE 64GB 2Rx4 DDR5-5600 Smart FIO Kit).
+     - 128GB: `P43334-B21` $\rightarrow$ `P69976-F21` (HPE 128GB 4Rx4 DDR5-5600 Smart FIO Kit).
+   - **Cascading Pruning**: Automatically prunes DDR5-4800 BTO-to-FIO aspect fixes (`P43328-F21`, `P43334-F21`) since the 5600 MT/s DIMMs are already factory-integrated Smart Memory.

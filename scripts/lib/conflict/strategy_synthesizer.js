@@ -342,6 +342,9 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
   });
 
   rawCandidates.sort((a, b) => {
+    if (a.rank !== undefined && b.rank !== undefined && a.rank !== b.rank) {
+      return a.rank - b.rank;
+    }
     if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
     if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
       return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
@@ -839,12 +842,22 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         category: a.category || 'Performance Acceleration'
       };
     });
-    rank3Parts = [...rank1Parts, ...rank3Addons];
+    const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
+    const rank3BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
+    const rank3BaseCost = isModernizedGen5 ? rank2Cost : rank1Cost;
+    rank3Parts = [...rank3BaseParts, ...rank3Addons];
     rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-    rank3Cost = rank1Cost + rank3AddonCost;
+    rank3Cost = rank3BaseCost + rank3AddonCost;
+    if (isModernizedGen5) {
+      rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized (Modernized 5th Gen Platform)';
+      rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection on the modernized 5th Gen platform for enhanced transactional database read/write IOPS.';
+    }
   }
 
   // Rank 4
+  const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
+  const rank4BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
+  const rank4BaseCost = isModernizedGen5 ? rank2Cost : rank1Cost;
   const rank4ConfigAddons = tierConfig.rank4 || [];
   const rank4RawList = rank4ConfigAddons.length > 0
     ? rank4ConfigAddons
@@ -862,9 +875,12 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       category: a.category || 'Expansion Infrastructure'
     };
   });
-  const rank4Parts = [...rank1Parts, ...rank4Addons];
+  const rank4Parts = [...rank4BaseParts, ...rank4Addons];
   const rank4AddonCost = rank4Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-  const rank4Cost = rank1Cost + rank4AddonCost;
+  const rank4Cost = rank4BaseCost + rank4AddonCost;
+  const rank4Name = isModernizedGen5
+    ? 'Rank 4: Maximum Density & Future Scalability Expansion (Modernized 5th Gen Platform)'
+    : 'Rank 4: Maximum Density & Future Scalability Expansion';
 
   // Rank 5: Budget & CapEx Minimized Buildable Baseline
   const rank5Parts = rank1Parts.map(p => ({
@@ -938,7 +954,11 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         strategyAddonCost: rank2AddonCost,
         totalBudgetUsd: v2.totalCost
       },
-      workloadDnaMatch: rank2LeastDelta ? 'Least-Delta Optimization (Pruned Cascades)' : 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)',
+      workloadDnaMatch: rank2LeastDelta
+        ? (rank2LeastDelta.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM'
+            ? 'Modernized 5th Gen Platform (Emerald Rapids + DDR5-5600)'
+            : 'Least-Delta Optimization (Pruned Cascades)')
+        : 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)',
       changesCount: rank2LeastDelta ? rank2LeastDelta.deltaMetrics.totalDeltaOperations : (fixes.length + (rank2Parts.length - rank1Parts.length) + v2.injectedFixes.length),
       skuPartsList: v2.parts,
       bomFingerprint: computeBomFingerprint(v2.parts),
@@ -999,7 +1019,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 4,
-      name: 'Rank 4: Maximum Density & Future Scalability Expansion',
+      name: rank4Name,
       score: parseFloat(Math.max(0.55, 0.82 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v4.totalCost,
       budgetBreakdown: {
