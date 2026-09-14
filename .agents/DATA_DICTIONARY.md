@@ -92,13 +92,13 @@ Output of `eval_boq.js` / `/api/eval-boq` consumed by `App.jsx`, `ResolutionMatr
     "chassisDir": "outputs/ProLiant/Gen12/DL380_Gen12"
   },
   "aspectMath": {
-    "thermal": { "status": "PASS", "maxTdpW": 250, "heatsinkType": "High Performance Fan Kit Required", "fanKitSku": "P48820-B21" },
-    "power": { "status": "PASS", "requiredWatts": 1600, "suppliedWatts": 2000, "redundancy": "1+1", "dcLugKitRequired": false, "estimatedNodeWattage": 950, "needsHighLine220v": true },
-    "memory": { "status": "PASS", "totalDimms": 16, "channelsPerCpu": 8, "symmetry": "100% Balanced (1DPC)" },
+    "thermal": { "status": "PASS", "maxTdpW": 250, "heatsinkType": "High Performance Fan Kit Required", "fanKitSku": "P48820-B21", "uniqueCpuSkus": ["P49614-B21"], "hasMixedCpuModels": false },
+    "power": { "status": "PASS", "requiredWatts": 1600, "suppliedWatts": 2000, "redundancy": "1+1", "dcLugKitRequired": false, "estimatedNodeWattage": 950, "needsHighLine220v": true, "hasMixedAcDcPower": false, "hasMixedEfficiencyPsus": false, "hasMixedWattagePsus": false, "platinumPsuCount": 2, "titaniumPsuCount": 0 },
+    "memory": { "status": "PASS", "totalDimms": 16, "channelsPerCpu": 8, "symmetry": "100% Balanced (1DPC)", "hasMixedDdrGeneration": false, "hasMixedMemoryTypes": false, "ddrGeneration": "DDR5", "memoryType": "RDIMM" },
     "pcie": { "status": "PASS", "lanesRequired": 48, "lanesAvailable": 64, "gpuCount": 2, "needsGpuPowerCableKit": true, "gpuPowerCableSku": "P48816-B21" },
-    "storage": { "status": "PASS", "controller": "MR416i-o", "batteryRequired": true, "batterySku": "P01366-B21", "driveCount": 16, "needsSasExpander": true, "sasExpanderSku": "P48835-B21" },
+    "storage": { "status": "PASS", "controller": "MR416i-o", "batteryRequired": true, "batterySku": "P01366-B21", "driveCount": 16, "needsSasExpander": true, "sasExpanderSku": "P48835-B21", "sffDriveCount": 16, "lffDriveCount": 0, "hasLffDrivesInSffChassis": false },
     "network": { "status": "PASS", "adapter": "1Gb 4-port BASE-T OCP3" },
-    "support": { "status": "PASS", "careLevel": "Pointnext Tech Care Essential 3Y", "sla": "24x7 4h Onsite", "physicalCores": 64, "needsAdditionalWindowsCores": true, "additionalWindowsCores": 48 }
+    "support": { "status": "PASS", "careLevel": "Pointnext Tech Care Essential 3Y", "sla": "24x7 4h Onsite", "physicalCores": 64, "needsAdditionalWindowsCores": true, "additionalWindowsCores": 48, "hasContradictoryInstallServices": false, "hasSaasSubscription": false, "hasHardwareSupport": true, "hasSaasWithoutHardwareSupport": false }
   },
   "clusterSizing": {
     "totalNodes": 60,
@@ -522,6 +522,56 @@ Returned by `scripts/lib/boq/vendor_bom_verifier.js` and exposed via `POST /api/
   "verificationTimestamp": "2026-09-13T10:00:00.000Z"
 }
 ```
+
+---
+
+## 14. CLIC Advice Ingestion & Divergent Resolution Schema (`clicAdviceReport`)
+
+Emitted by `scripts/scrapers/parse_clic_modal.js` via `parseClicAdviceExcel`.
+
+```json
+{
+  "totalItems": 3,
+  "warningsCount": 1,
+  "errorsCount": 2,
+  "hasUnbuildableErrors": true,
+  "warnings": [
+    {
+      "sheet": "Advice",
+      "row": 4,
+      "severity": "WARNING",
+      "message": "Secondary controller does not include battery backup kit. Cache vaulting may be disabled."
+    }
+  ],
+  "errors": [
+    {
+      "sheet": "Advice",
+      "row": 7,
+      "severity": "ERROR",
+      "message": "Unbuildable: Direct attach drive count exceeds controller port limit (8 drives maximum).",
+      "ruleId": "81354627"
+    }
+  ],
+  "resolutionPaths": [
+    {
+      "path": "A",
+      "type": "SAS_EXPANDER",
+      "suggestedSku": "P48835-B21",
+      "description": "HPE SAS 24G Expander Card",
+      "targetRank": "Rank 1A (Single-Controller SAS Bus)"
+    },
+    {
+      "path": "B",
+      "type": "SECONDARY_CONTROLLER",
+      "suggestedSku": "P48918-B21",
+      "description": "Add secondary Tri-Mode Controller MR408i-o and cable kit",
+      "targetRank": "Rank 1B (Dual Distributed Controllers)"
+    }
+  ],
+  "extractedAt": "2026-09-15T01:30:00.000Z"
+}
+```
+
 
 
 

@@ -1263,6 +1263,110 @@ WebLogic OCA relies on server-side session memory tied to temporary SAML tokens 
 2. **Zero Human Prompts**: The human user is never asked to launch Chrome, sign in, or click buttons. Saved credentials and Quick Links handle the entire lifecycle autonomously.
 3. **Seamless Scraper Handshake**: Scraper pipelines automatically catch CDP disconnects and silent freezes, invoke `recoverAndLaunchFreshOCA()`, and resume catalog extraction from a clean baseline.
 
+---
+
+## 91. Intra-Category Mutual Exclusion & Contradiction Resolution (`INV-91`)
+
+In enterprise presales and customer BOQ ingestion, invalid combinations frequently occur within the *same* category or subcategory before cross-category aspect checks are even reached. Attempting to evaluate downstream dependencies when the base configuration contains self-contradictory hardware creates cascading errors.
+
+### The 5 Intra-Category Guardrails:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                        INTRA-CATEGORY MUTUAL EXCLUSION MATRIX                                   │
+├──────────────────────┬──────────────────────────────────────────┬───────────────────────────────┤
+│ Domain               │ Illegal Combination                      │ Resolution & Invariant        │
+├──────────────────────┼──────────────────────────────────────────┼───────────────────────────────┤
+│ 1. Power Supplies    │ AC (100V-240V) + -48VDC Telco PSUs       │ Strict Mutual Exclusion       │
+│                      │ Platinum (94%) + Titanium (96%) in 1 node│ Even-Pair Multi-Cluster Check │
+│                      │ Mismatched Wattages (800W + 1600W)       │ Wattage Uniformity            │
+├──────────────────────┼──────────────────────────────────────────┼───────────────────────────────┤
+│ 2. Support Services  │ Onsite Installation (HA114A1) +          │ Contradiction Error:          │
+│                      │ Remote Deployment (HA454A1)              │ Customer must pick one scope  │
+├──────────────────────┼──────────────────────────────────────────┼───────────────────────────────┤
+│ 3. Memory Subsystem  │ DDR4 + DDR5 Memory Modules               │ Physical Pin/Bus Incompatible │
+│                      │ RDIMM + LRDIMM + MRDIMM Mixing           │ Memory Signaling Incompatible │
+├──────────────────────┼──────────────────────────────────────────┼───────────────────────────────┤
+│ 4. Compute Subsystem │ Dual-Socket CPU Model Mismatch           │ Identical stepping/freq/cores │
+├──────────────────────┼──────────────────────────────────────────┼───────────────────────────────┤
+│ 5. Storage Chassis   │ LFF 3.5" Drives/Cages in SFF 2.5" Chassis│ Form Factor Mismatch Guard    │
+└──────────────────────┴──────────────────────────────────────────┴───────────────────────────────┘
+```
+
+### Multi-Cluster Matched PSU Tolerance:
+In large multi-node tenders (e.g. 60-node tenders with 20x High-Power nodes requiring 1800W Titanium PSUs and 40x General Compute nodes using 1600W Platinum PSUs), a naive check for `hasPlatinum && hasTitanium` would falsely reject the combined manifest. The evaluator (`boq_evaluator.js` and `conflict_graph.js`) implements **Even-Pair Multi-Cluster Tolerance**:
+- If `serverCount > 1` AND `platinumPsuCount % 2 === 0` AND `titaniumPsuCount % 2 === 0` AND both counts $\ge 2$, the configuration is approved for multi-cluster partitioning.
+- If `serverCount === 1` OR either count is odd, `hasMixedEfficiencyPsus` raises a hard buildability deduction.
+
+---
+
+## 92. SaaS Cloud Software vs. Physical Break-Fix Hardware Support Delineation (`INV-92`)
+
+SaaS cloud management subscriptions (e.g. `R7A11AAE` HPE Compute Ops Management 3-year SaaS, `S1A05A`) and physical hardware break-fix service care (e.g. `HU4B2A3` HPE Pointnext Tech Care 3-year) represent fundamentally distinct operational layers:
+1. **Physical Care (`isHardwareBreakFixSupport`)**: Guarantees onsite parts replacement, SLA dispatch, and hardware firmware defect coverage.
+2. **SaaS Subscriptions (`isSaasSoftwareSubscription`)**: Provides remote telemetry, cloud orchestration, and centralized inventory management.
+
+### Operational Directives:
+- **Zero Conflation**: SaaS licenses must never be counted toward satisfying physical hardware support requirements, nor vice versa.
+- **Unsolicited Software Guard (`INV-32`)**: SaaS licenses must never be injected into Rank 1 intent builds unless explicitly requested by the customer.
+- **Advisory Deficit Flag (`hasSaasWithoutHardwareSupport`)**: If a customer BOM specifies SaaS cloud management software without an accompanying Pointnext Tech Care support contract, the engine emits a non-blocking advisory notification alerting presales engineers that hardware break-fix coverage is missing.
+
+---
+
+## 93. CLIC Advice Graph Stack Trace Ingestion & Divergent Multi-Path Resolution (`INV-93`)
+
+When a customer configuration is validated in HPE OCA/CLIC or an advice workbook is uploaded, the configurator produces a structured stack trace of rules, warnings, and unbuildable errors.
+
+### The 4-Stage CLIC Advice Ingestion Architecture:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                    CLIC ADVICE INGESTION & DIVERGENT RESOLUTION WORKFLOW                        │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. Excel / Modal Extraction: parseClicAdviceExcel extracts error rows and advice messages       │
+│ 2. Severity Separation:                                                                         │
+│    - Warnings / Advisories: Isolated into warnings[] -> Ignored for buildability score         │
+│    - Unbuildable Errors: Isolated into errors[] -> Hard build-breaking blockers                 │
+│ 3. Stack Trace Parsing: Extracts rule IDs, conflicting SKUs, and remediation text               │
+│ 4. Divergent Resolution Path Branching:                                                         │
+│    - Path A: SAS Expander Card (P48835-B21) -> Injected into Rank 1A (Single-Controller Bus)   │
+│    - Path B: Secondary Tri-Mode Controller (MR408i-o) -> Injected into Rank 1B (Dual Controller)│
+│    - Path C: Least-Delta Pruning -> Injected into Rank 1L (Minimal Mutation Build)              │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Strategic Value:
+Customer RFQs frequently do not specify which architectural remediation path is preferred. By tracking divergent paths as first-class citizens, the engine populates alternative buildable solutions in the 5-Tier Strategy Matrix, enabling presales architects to present both options with clear price and performance trade-offs.
+
+---
+
+## 94. Tiered Multi-Brain Verification Architecture & Token Conservation Policy
+
+To ensure verified accuracy while maintaining token efficiency and non-blocking autonomy, the solution implements a 4-tier brain hierarchy:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                      TIERED MULTI-BRAIN SYSTEM ARCHITECTURE                                     │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Tier 1: Antigravity / Gemini 3.6 Flash (Primary Lead Execution Architect)                       │
+│ - Drives local dual-brain pipeline, 7 physical aspect checkers, and conflict graph synthesis     │
+│ - Enforces atomic file operations, 0-warning lints, and cyclomatic complexity gates (CC <= 135) │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Tier 2: Gemini NotebookLM (Authoritative Intent & Ground-Truth Brain)                           │
+│ - Authoritative repository for QuickSpecs PDFs, 22-sheet catalogs, and KnowledgeDeltas         │
+│ - Mandatory grounding anchor whenever physical rules or component constraints are in doubt     │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Tier 3: OpenAI Codex / GPT-6 Astra Light via Plus Subscription (Secondary Safety Net)           │
+│ - Light-hearted, token-conservative usage for critical questions and peer-review audits         │
+│ - Reviews walkthrough artifacts and execution traces to verify completeness and sanity          │
+│ - Fail-Open / Non-Blocking: If tokens or quota are unavailable, autonomous pipeline proceeds   │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Tier 4: Gemini Studio (Future Synthesis & Visual Steering)                                      │
+│ - Multi-turn conversational reasoning, visual executive summaries, and presentation rendering  │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
 
 
 

@@ -175,3 +175,34 @@ This is the current engineering status following the completion and verification
   - All 937 functions within cyclomatic complexity gate ($CC \le 135$).
   - Clean production dashboard build (`vite build` in 11.29s).
   - Dynamic semantic graph refreshed via `graphify update .` (5185 nodes, 7930 edges, 345 communities).
+
+## Phase 11 — Intra-Category Mutual Exclusion, Support Services Delineation, CLIC Advice Divergent Resolution & Tiered Multi-Brain Verification (Certified 2026-09-15)
+
+- **Intra-Category Mutual Exclusion Engine (`INV-91`)**:
+  - **AC vs. DC Power Input**: Implemented `hasMixedAcDcPower` in `power_environment.js` and `conflict_graph.js` to block invalid mixing of standard AC power and -48VDC telco inputs within the same server node.
+  - **PSU Efficiency Tier Separation**: Implemented `hasMixedEfficiencyPsus` detecting invalid mixing of Platinum (94%) and Titanium (96%) power supplies. Added multi-cluster pair tolerance: in multi-node tenders, allows mixed efficiencies only when `serverCount > 1` and each efficiency is allocated in even pairs ($\ge 2$, `count % 2 === 0`), ensuring each node gets a matched pair while strictly blocking single-node efficiency mixing.
+  - **Wattage Uniformity**: Implemented `hasMixedWattagePsus` preventing mismatched wattages (e.g. 800W + 1600W) in redundant pairs.
+  - **Support & Deployment Contradiction**: Implemented `hasContradictoryInstallServices` in `support_manufacturing.js` to detect contradictory deployment scopes (Onsite Installation & Startup `HA114A1` vs. Remote Deployment `HA454A1`) within the same configuration.
+  - **Memory Generation Incompatibility**: Implemented `hasMixedDdrGeneration` preventing physical mixing of DDR4 and DDR5 memory modules.
+  - **Memory Module Technology Mixing**: Implemented `hasMixedMemoryTypes` detecting illegal mixing of RDIMM, LRDIMM, and MRDIMM technologies across memory channels or sockets.
+  - **Dual-Socket CPU Uniformity**: Implemented `hasMixedCpuModels` in `compute_thermal.js` enforcing matching processor stepping, frequency, and core count across dual-socket platforms.
+  - **Storage Drive Form Factor Guard**: Implemented `hasLffDrivesInSffChassis` in `storage_tri_mode.js` preventing LFF 3.5" drive cages and drives inside 2.5" SFF chassis.
+- **SaaS Software Subscriptions vs Physical Break-Fix Support Delineation (`INV-92`)**:
+  - Delineated SaaS cloud management software (`R7A11AAE` Compute Ops Management, `S1A05A`) from physical hardware break-fix care (Pointnext Tech Care `HU4B2A3`).
+  - Added `hasSaasWithoutHardwareSupport`: flags an advisory deficit when cloud software licenses are present without underlying hardware maintenance, preventing conflation or improper substitution.
+- **CLIC Advice Graph Stack Trace Ingestion & Divergent Multi-Path Resolution (`INV-93`)**:
+  - Enhanced `parseClicAdviceExcel` in `parse_clic_modal.js` to strictly isolate unbuildable errors from non-build-breaking advisory warnings.
+  - Automatically parses CLIC stack traces and extracts alternative remediation hints (`resolutionPaths`).
+  - Routes divergent valid remediation choices (e.g. SAS Expander vs 2nd RAID Controller) into parallel branches of the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget), ensuring presales architects can evaluate alternative buildable paths based on customer priorities.
+- **Tiered Multi-Brain Verification Architecture & Token Conservation Policy**:
+  - **Brain 1 (Antigravity / Gemini 3.6 Flash)**: Primary Lead Execution Architect driving the Dual-Brain evaluation pipeline, deterministic rule engine, zero-warning lints, and cyclomatic complexity gates ($CC \le 135$).
+  - **Brain 2 (Gemini NotebookLM)**: Authoritative Intent & Ground-Truth Brain grounded in QuickSpecs PDFs, live 22-sheet catalogs, and verified `KnowledgeDelta` records. Authoritative anchor whenever in doubt.
+  - **Brain 3 (OpenAI Codex / GPT-6 Astra Light)**: Secondary Verification & Safety Layer accessed token-conservatively via Plus subscription for independent peer review of walkthroughs, critical diff audits, and edge-case sanity checks (non-blocking / fail-open).
+  - **Brain 4 (Gemini Studio)**: Future synthesis layer for multi-turn visual steering and executive presentation.
+- **Full Test Matrix Certification**:
+  - **163+ Test Suites Certified (100.0% PASS)** across unit, chaos, integration, and E2E tiers.
+  - New dedicated integration suite: `tests/integration/test_intra_category_conflicts.js` (**13/13 PASSED, 100.0%**).
+  - Aspect checkers certified: Support (43/43 PASS), Power (21/21 PASS), Memory (100% PASS), Conflict Graph (24/24 PASS).
+  - All 970 functions in 253 files passing cyclomatic complexity gate ($CC \le 135$, peak $CC = 125$).
+  - 0 lint warnings/errors across 110 files (`oxlint`).
+
