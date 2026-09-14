@@ -49,6 +49,15 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.hasHighPerfFans, false);
       assert.strictEqual(result.hasHeatsinks, true);
     });
+
+    await t2.test('Detects mixed processor models on single-node build', () => {
+      const items = [
+        { sku: 'P11223-B21', description: 'Intel Xeon Platinum 8490H 1.9GHz 60-core 350W Processor', quantity: 1 },
+        { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 1 }
+      ];
+      const result = evalComputeThermal(items, null, {}, 1);
+      assert.strictEqual(result.hasMixedCpuModels, true);
+    });
   });
 
   await t.test('evalMemoryChannel', async (t2) => {
@@ -98,6 +107,22 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.totalMemoryGb, 0);
       assert.strictEqual(result.isBalancedChannel, false);
       assert.strictEqual(result.hasBtoMemoryInCto, false);
+    });
+
+    await t2.test('Detects DDR generation and memory module type conflicts', () => {
+      const ddrMixed = [
+        { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Smart Memory Kit', quantity: 4 },
+        { sku: 'P00924-B21', description: '32GB Dual Rank x4 DDR4-2933 Smart Memory Kit', quantity: 4 }
+      ];
+      const r1 = evalMemoryChannel(ddrMixed);
+      assert.strictEqual(r1.hasMixedDdrGeneration, true);
+
+      const typeMixed = [
+        { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Registered Smart Memory Kit', quantity: 4 },
+        { sku: 'P69730-B21', description: '128GB Quad Rank x4 DDR5-6400 Load-Reduced Smart Memory Kit', quantity: 4 }
+      ];
+      const r2 = evalMemoryChannel(typeMixed);
+      assert.strictEqual(r2.hasMixedMemoryTypes, true);
     });
   });
 
@@ -166,6 +191,17 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.requiredDl380aPsuCount, 8);
       assert.strictEqual(result.hasMixedPsuWattages, true);
       assert.strictEqual(result.hasDl380aGpuPsuShortage, true);
+    });
+
+    await t2.test('Detects mixed AC and DC power supply conflict', () => {
+      const items = [
+        { sku: 'P38995-B21', description: '800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit', quantity: 2 },
+        { sku: 'P17023-B21', description: '1600W Flex Slot -48VDC Hot Plug Power Supply Kit', quantity: 2 }
+      ];
+      const result = evalPowerEnvironment(items);
+      assert.strictEqual(result.hasAcPowerSupply, true);
+      assert.strictEqual(result.hasDcPowerSupply, true);
+      assert.strictEqual(result.hasMixedAcDcPower, true);
     });
   });
 
@@ -258,6 +294,14 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.hasSmartBattery, false);
       assert.strictEqual(result.hasNoDriveKit, false);
     });
+
+    await t2.test('Detects LFF drives in SFF chassis mismatch', () => {
+      const items = [
+        { sku: 'P12345-B21', description: 'HPE 18TB SAS 12G 7.2K LFF LP Multi Vendor HDD', quantity: 4 }
+      ];
+      const result = evalStorageTriMode(items);
+      assert.strictEqual(result.hasLffDrivesInSffChassis, true);
+    });
   });
 
   await t.test('evalNetworkingOcp', async (t2) => {
@@ -338,6 +382,17 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
     await t2.test('Empty items list', () => {
       const result = evalSupportManufacturing([]);
       assert.strictEqual(result.hasSupportService, false);
+    });
+
+    await t2.test('Detects contradictory installation services (Onsite vs Remote)', () => {
+      const items = [
+        { sku: 'HA114A1', description: 'HPE Installation and Startup Service', quantity: 1 },
+        { sku: 'HA454A1', description: 'HPE Remote Installation Service', quantity: 1 }
+      ];
+      const result = evalSupportManufacturing(items);
+      assert.strictEqual(result.hasOnsiteInstallService, true);
+      assert.strictEqual(result.hasRemoteInstallService, true);
+      assert.strictEqual(result.hasContradictoryInstallServices, true);
     });
   });
 

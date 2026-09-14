@@ -10,6 +10,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   let cpuCount = 0;
   let maxCpuTdpWatts = 0;
   let fanKitCount = 0;
+  const uniqueCpuSkus = new Set();
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
@@ -25,6 +26,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     if (role === 'Processor' || /^p\d{5}-b21$/i.test(it.sku)) {
       if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
         cpuCount += (it.quantity || 1);
+        if (sku) uniqueCpuSkus.add(sku);
         const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
         if (tdpMatch) {
           const tdp = parseInt(tdpMatch[1], 10);
@@ -91,6 +93,8 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     isAmdEpyc8004: items.some(it => (it.description || '').toLowerCase().includes('epyc 8')),
     // DL380a 8DW GPU thermal envelope: high-TDP GPUs mandate high-perf cooling
     isDl380aAccelerator,
+    uniqueCpuSkus: Array.from(uniqueCpuSkus),
+    hasMixedCpuModels: (serverCount === 1 || !serverCount) && uniqueCpuSkus.size > 1,
     // High TDP (> 185W) mandates High-Performance Fan Kit + Heatsink
     needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)
   };

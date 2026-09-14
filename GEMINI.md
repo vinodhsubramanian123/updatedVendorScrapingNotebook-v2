@@ -59,3 +59,20 @@
   4. Reload Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML session tokens and re-bind Quick Links.
   5. Click "One Config Advanced" from Quick links anew to spawn a pristine OCA tab.
   6. Re-navigate into the target chassis Menu tab and resume scraping/configuration without human intervention.
+
+## 10. Tiered Multi-Brain Verification & CLIC Advice Divergent Path Resolution Protocol (`INV-91` - `INV-93`)
+- **Multi-Brain Collaboration & Token Conservation**:
+  - **Antigravity / Gemini 3.6 Flash**: Primary Lead Execution Architect. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates ($CC \le 135$).
+  - **Gemini NotebookLM**: Authoritative Intent & Ground-Truth Brain. Grounding source for QuickSpecs PDFs, live 22-sheet catalogs, and verified KnowledgeDeltas. Whenever in doubt, query NotebookLM; if confidence $< 0.95$, escalate to human.
+  - **OpenAI Codex / GPT-6 Astra Light**: Secondary Verification & Peer Review Safety Layer. Utilized in a light-hearted, token-conservative manner via Plus subscription for critical architectural verifications, diff audits, and independent verification of generated walkthroughs and analysis reports. Fail-open non-blocking (if tokens/quota are unavailable, the autonomous pipeline never halts).
+  - **Gemini Studio**: Future synthesis layer for multi-turn reasoning and visual steering.
+- **Intra-Category Mutual Exclusion & Delineation (`INV-91`, `INV-92`)**:
+  - AC and -48VDC power supplies are mutually exclusive. Platinum and Titanium PSU efficiencies cannot be mixed in the same server. Disparate PSU wattages are forbidden in redundant pairs.
+  - Onsite Installation (`HA114A1`) and Remote Deployment (`HA454A1`) services are mutually exclusive.
+  - DDR4 and DDR5 memory modules are physically incompatible. RDIMM, LRDIMM, and MRDIMM modules cannot be mixed across channels or sockets.
+  - Dual-socket servers require uniform processor models (matching stepping, TDP, frequency, and core count).
+  - SaaS software subscriptions (e.g. `R7A11AAE` Compute Ops Management) and physical hardware support (Pointnext Tech Care `HU4B2A3`) are distinct operational layers and cannot be conflated or substituted.
+- **CLIC Advice Ingestion & Divergent Multi-Path Resolution (`INV-93`)**:
+  - When CLIC Advice workbooks or live modals are ingested, warnings/advisories are ignored for build-breaking purposes, while unbuildable errors are isolated and mapped.
+  - When multiple valid remediation paths exist (e.g. SAS Expander vs. 2nd RAID Controller), the engine preserves divergent resolution paths to feed the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget).
+

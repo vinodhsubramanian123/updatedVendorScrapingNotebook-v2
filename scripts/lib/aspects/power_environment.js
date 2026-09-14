@@ -105,14 +105,21 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus 
       if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
       tally.psuWattages.add(w);
     }
-    if (desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc')) {
+    const isDc = desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc') || desc.includes('hvdc');
+    if (isDc) {
       tally.hasDcPowerSupply = true;
+      tally.dcPsuCount = (tally.dcPsuCount || 0) + (it.quantity || it.qty || 1);
+    } else {
+      tally.hasAcPowerSupply = true;
+      tally.acPsuCount = (tally.acPsuCount || 0) + (it.quantity || it.qty || 1);
     }
     if (desc.includes('platinum') || desc.includes('plat psu')) {
       tally.hasPlatinumPsu = true;
+      tally.platinumPsuCount = (tally.platinumPsuCount || 0) + (it.quantity || it.qty || 1);
     }
     if (desc.includes('titanium') || desc.includes('titn psu')) {
       tally.hasTitaniumPsu = true;
+      tally.titaniumPsuCount = (tally.titaniumPsuCount || 0) + (it.quantity || it.qty || 1);
     }
     if (desc.includes('2650w') && desc.includes('titanium')) {
       tally.synergyTitanium2650wCount += (it.quantity || it.qty || 1);
@@ -163,7 +170,10 @@ function checkLot9CeRemovalNeeds(tally, estimatedNodeWattage) {
 
 function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   const tally = {
+    hasAcPowerSupply: false,
     hasDcPowerSupply: false,
+    acPsuCount: 0,
+    dcPsuCount: 0,
     hasDcLugKit: false,
     hasPlatinumPsu: false,
     hasTitaniumPsu: false,
@@ -208,7 +218,11 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   const dl380aPsu = checkDl380aPsuCompliance(tally);
 
   return {
+    hasAcPowerSupply: tally.hasAcPowerSupply,
     hasDcPowerSupply: tally.hasDcPowerSupply,
+    hasMixedAcDcPower: tally.hasAcPowerSupply && tally.hasDcPowerSupply,
+    acPsuCount: tally.acPsuCount,
+    dcPsuCount: tally.dcPsuCount,
     hasDcLugKit: tally.hasDcLugKit,
     hasPlatinumPsu: tally.hasPlatinumPsu,
     hasTitaniumPsu: tally.hasTitaniumPsu,
@@ -226,6 +240,10 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
     requiredDl380aPsuCount: dl380aPsu.requiredCount,
     hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
+    hasMixedWattagePsus: tally.psuWattages.size > 1,
+    hasMixedEfficiencyPsus: tally.hasPlatinumPsu && tally.hasTitaniumPsu,
+    platinumPsuCount: tally.platinumPsuCount || 0,
+    titaniumPsuCount: tally.titaniumPsuCount || 0,
     hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,
     hasDl380aGpuPsuShortage: dl380aPsu.hasShortage,
     isDl145EdgeChassis: tally.isDl145EdgeChassis,

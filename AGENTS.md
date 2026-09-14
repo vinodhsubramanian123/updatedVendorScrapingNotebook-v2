@@ -484,5 +484,30 @@ The system leverages Google Jules for background code review, test generation, a
     - **"App Blocked" Prevention via Dedicated Client ID**: The authentication flow strictly provides `--client-id-file="~/.config/gcloud/client_secret.json"` to prevent Google from blocking restricted `drive` scopes on personal accounts.
     - **Cross-Laptop Portability Guarantee**: All credential paths derive dynamically from `os.homedir()` (`~/.config/gcloud/client_secret.json` and `~/.config/gcloud/application_default_credentials.json`). Moving between laptops requires zero code changes; running `npm run auth:drive` once or permitting autonomous agent self-healing restores full hands-free cloud operations immediately.
 
+82. **Intra-Category & Presales Mutual Exclusion Protocol (`INV-91`)**:
+    - **Up-Front Category-Level Gate**: Before whole-solution synthesis, the conflict engine evaluates intra-category and subcategory mutual exclusion to eliminate contradictory selections at their source:
+      1. *Power Supply Input Architecture & Redundancy Homogeneity*: AC and -48VDC power supplies cannot share the same backplane. Redundant PSUs forbid mixing Platinum (94%) and Titanium (96%) efficiencies or mixing disparate wattages within a single server node.
+      2. *Installation Support Services*: Onsite Installation/Startup Service (`HA114A1`, `HA124A1`, `H7J38A1`) and Remote Deployment Service (`HA454A1`, `H7J32A`) are mutually exclusive within the same solution.
+      3. *Memory Generation & Type*: DDR4 and DDR5 memory modules are physically incompatible. RDIMM, LRDIMM, and MRDIMM modules cannot be mixed across channels or sockets.
+      4. *Processor Model Uniformity*: Multi-socket nodes require identical processor SKUs (matching stepping, core count, frequency, and cache).
+
+83. **SaaS Cloud Subscription vs. Physical Hardware Break-Fix Support Delineation Protocol (`INV-92`)**:
+    - **Fundamental Contractual Distinction**: SaaS cloud management subscriptions (e.g. GreenLake Compute Ops Management `R7A11AAE`, `S1A05A`, E-LTU) and physical hardware break-fix support (Pointnext Tech Care `HU4B2A3`, Foundation Care) represent distinct operational contracts and MUST NOT be conflated, substituted, or treated as interchangeable.
+    - **Deficit Advisory Warning**: Any solution bill of materials containing SaaS management software without physical hardware warranty/support coverage MUST emit an explicit advisory notice: `SaaS software subscriptions (Compute Ops Management) and physical hardware support (Tech Care) are distinct operational layers. SaaS cannot substitute for physical server break-fix maintenance coverage.`
+    - **Zero Hallucination / Blind Assumption**: AI agents must never assume that a software subscription covers physical chassis components without verifying against NotebookLM and QuickSpecs specifications.
+
+84. **Tiered Multi-Brain Verification & CLIC Advice Divergent Multi-Path Resolution Protocol (`INV-93`)**:
+    - **Multi-Brain Collaboration Hierarchy**:
+      1. *Lead Architect & Pair Programmer*: Antigravity / Gemini 3.6 Flash drives execution, deterministic 7-aspect physical math, atomic file updates, cyclomatic complexity gates ($CC \le 135$), zero-warning linter compliance, and test matrix certification.
+      2. *Ground-Truth Verification Brain*: Gemini NotebookLM RAG (QuickSpecs PDFs + live OCA scraped 22-sheet catalogs + deduplicated knowledge deltas). Whenever in doubt, query NotebookLM; if confidence $< 0.95$, escalate to human.
+      3. *Secondary Verification & Audit Safety Layer*: OpenAI Codex (GPT-6 Astra Light / Plus subscription) is utilized judiciously as a secondary verification and peer review layer for critical architectural questions, diff reviews, and sanity checks on generated walkthroughs and analysis outputs. The pipeline is non-blocking fail-open (if tokens or quota are unavailable, the autonomous pipeline never halts).
+      4. *Future Synthesis*: Gemini Studio for multi-turn conversational reasoning and visual pipeline steering.
+    - **CLIC Advice Ingestion & Divergent Multi-Path Resolution**:
+      - When an exported CLIC Advice workbook or runtime advice modal is uploaded:
+        - *Ignore Warnings*: Advisory notices (e.g., general warranty notices, non-blocking recommendations) are separated into advisories and do not fail the build.
+        - *Isolate Unbuildable Errors*: Hard build-breaking errors (e.g., missing cables, slot oversubscriptions, form-factor gates) are extracted with exact Rule# and Product#.
+        - *Map Divergent Resolution Paths*: When CLIC Advice or physical topology offers multiple valid remedies (e.g., Path A: SAS Expander `P48835-B21` vs. Path B: 2nd RAID Controller `P48824-B21`), the engine preserves both options as divergent branches feeding the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget) based on closeness to original customer BOQ and architectural elegance.
+
+
 
 

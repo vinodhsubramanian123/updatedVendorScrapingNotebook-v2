@@ -27,6 +27,10 @@ function isDriveComponent(role, desc) {
 function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
   if (isDriveComponent(role, desc)) {
     tally.driveCount += qty;
+    const isLff = (desc.includes('lff') || desc.includes('3.5in') || desc.includes('3.5"') || desc.includes('3.5 in')) && !desc.includes('cage');
+    const isSff = (desc.includes('sff') || desc.includes('2.5in') || desc.includes('2.5"') || desc.includes('2.5 in')) && !desc.includes('cage');
+    if (isLff) tally.lffDriveCount = (tally.lffDriveCount || 0) + qty;
+    if (isSff) tally.sffDriveCount = (tally.sffDriveCount || 0) + qty;
   }
 
   // Drive Cage
@@ -180,6 +184,8 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     msl3040BaseModuleCount: 0,
     msl3040ExpansionModuleCount: 0,
     dataCartridgeCount: 0,
+    lffDriveCount: 0,
+    sffDriveCount: 0,
     has4SffCage: false,
     has4EdsffCage: false,
     hasMr216iO: false,
@@ -295,6 +301,9 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
     totalMsl3040Slots: storeEver.totalMsl3040Slots,
     exceedsMaxMsl3040Slots: storeEver.exceedsMaxMsl3040Slots,
     exceedsSlotCapacity: storeEver.exceedsSlotCapacity,
+    lffDriveCount: t.lffDriveCount,
+    sffDriveCount: t.sffDriveCount,
+    hasLffDrivesInSffChassis: !t.isLffChassis && !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && t.lffDriveCount > 0,
     // DL380a drive cage mutual exclusion (Rule 81016788)
     hasDriveCageMixingConflict: t.has4SffCage && t.has4EdsffCage,
     // MR216i-o RAID 5/6 no-cache warning

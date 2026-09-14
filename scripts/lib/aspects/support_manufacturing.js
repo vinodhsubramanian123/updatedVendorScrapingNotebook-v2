@@ -40,6 +40,45 @@ function isUnsolicitedOptionalService(sku, description = '') {
   return false;
 }
 
+function isOnsiteInstallationService(sku, description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = (description || '').toLowerCase();
+  if (['HA114A1', 'HA124A1', 'H7J38A1', 'H7J34A'].includes(clean) || clean.startsWith('HA114A1') || clean.startsWith('HA124A1')) {
+    return true;
+  }
+  return /(?:onsite|on-site).*(?:install|startup|deploy|service)|(?:install|startup|deploy|implementation).*(?:onsite|on-site)/i.test(desc) ||
+    /\bons startup\b/i.test(desc);
+}
+
+function isRemoteInstallationService(sku, description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = (description || '').toLowerCase();
+  if (['HA454A1', 'H7J32A'].includes(clean) || clean.startsWith('HA454A1')) {
+    return true;
+  }
+  return /\bremote\b.*(?:install|startup|deploy|service|setup)|(?:install|startup|deploy|setup).*\bremote\b/i.test(desc);
+}
+
+function isSaasSoftwareSubscription(sku, description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = (description || '').toLowerCase();
+  if (VALID_MANAGEMENT_SKUS.has(clean) || clean === 'S1A05A' || clean.endsWith('AAE')) {
+    return true;
+  }
+  return desc.includes('saas') || desc.includes('compute ops management') || desc.includes('ops management') ||
+    desc.includes('greenlake') || desc.includes('cloud subscription') || desc.includes('e-ltu');
+}
+
+function isHardwareBreakFixSupport(sku, description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = (description || '').toLowerCase();
+  if (clean.startsWith('HU4B') || clean.startsWith('H7J3') || clean.startsWith('H8Q')) {
+    return true;
+  }
+  return desc.includes('tech care') || desc.includes('foundation care') || desc.includes('proactive care') ||
+    desc.includes('hardware support') || desc.includes('pointnext') || (desc.includes('warranty') && !desc.includes('saas'));
+}
+
 function parseCpuInfo(desc, qty) {
   let coresPerCpu = 16;
   const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
@@ -72,6 +111,12 @@ function tallySupportItems(items, catalogData) {
     parsedCpuCores: 0,
     detectedCpuSockets: 0,
     targetVmwareCores: 0,
+    hasOnsiteInstallService: false,
+    hasRemoteInstallService: false,
+    hasSaasSubscription: false,
+    hasHardwareSupport: false,
+    onsiteInstallItems: [],
+    remoteInstallItems: [],
     unsolicitedOptionalItems: []
   };
 
@@ -79,6 +124,21 @@ function tallySupportItems(items, catalogData) {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;
+
+    if (isOnsiteInstallationService(it.sku, it.description)) {
+      tally.hasOnsiteInstallService = true;
+      tally.onsiteInstallItems.push(it);
+    }
+    if (isRemoteInstallationService(it.sku, it.description)) {
+      tally.hasRemoteInstallService = true;
+      tally.remoteInstallItems.push(it);
+    }
+    if (isSaasSoftwareSubscription(it.sku, it.description)) {
+      tally.hasSaasSubscription = true;
+    }
+    if (isHardwareBreakFixSupport(it.sku, it.description)) {
+      tally.hasHardwareSupport = true;
+    }
 
     if (isUnsolicitedOptionalService(it.sku, it.description)) {
       const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
@@ -274,6 +334,14 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     
     unsolicitedOptionalItems: t.unsolicitedOptionalItems,
     totalUnsolicitedCostUsd: t.totalUnsolicitedCostUsd,
+    hasOnsiteInstallService: t.hasOnsiteInstallService,
+    hasRemoteInstallService: t.hasRemoteInstallService,
+    hasContradictoryInstallServices: t.hasOnsiteInstallService && t.hasRemoteInstallService,
+    hasSaasSubscription: t.hasSaasSubscription,
+    hasHardwareSupport: t.hasHardwareSupport,
+    hasSaasWithoutHardwareSupport: t.hasSaasSubscription && !t.hasHardwareSupport,
+    onsiteInstallItems: t.onsiteInstallItems,
+    remoteInstallItems: t.remoteInstallItems,
     serverCount: nodes,
     defaultSupportSku: 'HU4B2A3',
     defaultManagementSku: null
@@ -283,6 +351,10 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
 module.exports = {
   evalSupportManufacturing,
   isUnsolicitedOptionalService,
+  isOnsiteInstallationService,
+  isRemoteInstallationService,
+  isSaasSoftwareSubscription,
+  isHardwareBreakFixSupport,
   VALID_MANAGEMENT_SKUS,
   UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };

@@ -40,7 +40,7 @@ function validateCategoryRules(fullBomList, conflicts, recordAudit) {
   const descriptions = item => (item.description || '').toLowerCase();
   const memoryItems = fullBomList.filter(item => {
     const description = descriptions(item);
-    return description.includes('memory') || description.includes('rdimm');
+    return description.includes('memory') || description.includes('rdimm') || description.includes('lrdimm') || description.includes('ddr5') || description.includes('ddr4');
   });
   const hasX4 = memoryItems.some(item => descriptions(item).includes('x4'));
   const hasX8 = memoryItems.some(item => descriptions(item).includes('x8'));
@@ -66,17 +66,41 @@ function validateCategoryRules(fullBomList, conflicts, recordAudit) {
     recordAudit('CATEGORY', '96GB Memory cannot be mixed with any other Memory.', 'PASS', 'No 96GB capacity mixing detected.');
   }
 
+  // Memory Generation Mixing (DDR4 vs DDR5)
+  const hasDdr4 = memoryItems.some(item => descriptions(item).includes('ddr4'));
+  const hasDdr5 = memoryItems.some(item => descriptions(item).includes('ddr5'));
+  if (hasDdr4 && hasDdr5) {
+    const error = 'Mixing of DDR4 and DDR5 memory modules is physically incompatible.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Mixing of DDR4 and DDR5 memory is not allowed', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Mixing of DDR4 and DDR5 memory is not allowed', 'PASS', 'Memory technology is uniform.');
+  }
+
+  // Memory Module Type Mixing (RDIMM vs LRDIMM vs MRDIMM)
+  const hasLrdimm = memoryItems.some(item => descriptions(item).includes('lrdimm') || descriptions(item).includes('load-reduced') || descriptions(item).includes('load reduced'));
+  const hasMrdimm = memoryItems.some(item => descriptions(item).includes('mrdimm') || descriptions(item).includes('multiplexed'));
+  const hasRdimm = memoryItems.some(item => (descriptions(item).includes('rdimm') || descriptions(item).includes('registered')) && !descriptions(item).includes('lrdimm') && !descriptions(item).includes('mrdimm'));
+  if ((hasRdimm && (hasLrdimm || hasMrdimm)) || (hasLrdimm && hasMrdimm)) {
+    const error = 'Mixing of RDIMM, LRDIMM, or MRDIMM memory types is strictly not supported.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Mixing of RDIMM and LRDIMM/MRDIMM memory is not allowed', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Mixing of RDIMM and LRDIMM/MRDIMM memory is not allowed', 'PASS', 'Memory module type is uniform.');
+  }
+
+  // Power Supply Input Architecture (AC vs DC)
   const psus = fullBomList.filter(item => {
     const description = descriptions(item);
-    return description.includes('power supply') || description.includes('psu');
-  });
-  const hasAcPsu = psus.some(item => {
-    const description = descriptions(item);
-    return !description.includes('-48vdc') && !description.includes('dc');
+    return description.includes('power supply') || description.includes('psu') || description.includes('flex slot');
   });
   const hasDcPsu = psus.some(item => {
-    const description = descriptions(item);
-    return description.includes('-48vdc') || description.includes('dc');
+    const d = descriptions(item);
+    return d.includes('-48vdc') || d.includes('48vdc') || d.includes('48v dc') || d.includes('dc power') || d.includes('hvdc');
+  });
+  const hasAcPsu = psus.some(item => {
+    const d = descriptions(item);
+    return !d.includes('-48vdc') && !d.includes('48vdc') && !d.includes('48v dc') && !d.includes('dc power') && !d.includes('hvdc');
   });
 
   if (hasAcPsu && hasDcPsu) {
@@ -85,6 +109,89 @@ function validateCategoryRules(fullBomList, conflicts, recordAudit) {
     recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'FAIL', error);
   } else {
     recordAudit('CATEGORY', 'Mixing of Power supplies are not allowed.', 'PASS', 'Power supply selection is homogenous (all DC or all AC).');
+  }
+
+  // Power Supply Efficiency Uniformity (Platinum vs Titanium)
+  let platCount = 0;
+  let titnCount = 0;
+  psus.forEach(item => {
+    const d = descriptions(item);
+    const qty = item.quantity || 1;
+    if (d.includes('platinum') || d.includes('plat psu')) platCount += qty;
+    if (d.includes('titanium') || d.includes('titn psu')) titnCount += qty;
+  });
+  const hasPlat = platCount > 0;
+  const hasTitn = titnCount > 0;
+  const isMultiClusterEvenPairs = (platCount >= 2 && titnCount >= 2 && platCount % 2 === 0 && titnCount % 2 === 0);
+
+  if (hasPlat && hasTitn && !isMultiClusterEvenPairs) {
+    const error = 'Mixing Platinum and Titanium power supply efficiencies in the same server is strictly not supported.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Power Supply Efficiency Uniformity', 'FAIL', error);
+  } else if (hasPlat && hasTitn && isMultiClusterEvenPairs) {
+    recordAudit('CATEGORY', 'Power Supply Efficiency Uniformity', 'PASS', 'Power supplies allocated in even pairs for multi-cluster configuration.');
+  } else {
+    recordAudit('CATEGORY', 'Power Supply Efficiency Uniformity', 'PASS', 'Power supply efficiency is uniform.');
+  }
+
+  // Support Services Contradiction (Onsite vs Remote Installation)
+  const isOnsiteInstall = item => {
+    const sku = cleanBaseSKU(item.sku);
+    const d = descriptions(item);
+    if (['HA114A1', 'HA124A1', 'H7J38A1', 'H7J34A'].includes(sku) || sku.startsWith('HA114A1') || sku.startsWith('HA124A1')) return true;
+    return /(?:onsite|on-site).*(?:install|startup|deploy|service)|(?:install|startup|deploy|implementation).*(?:onsite|on-site)/i.test(d) || /\bons startup\b/i.test(d);
+  };
+  const isRemoteInstall = item => {
+    const sku = cleanBaseSKU(item.sku);
+    const d = descriptions(item);
+    if (['HA454A1', 'H7J32A'].includes(sku) || sku.startsWith('HA454A1')) return true;
+    return /\bremote\b.*(?:install|startup|deploy|service|setup)|(?:install|startup|deploy|setup).*\bremote\b/i.test(d);
+  };
+
+  const hasOnsite = fullBomList.some(isOnsiteInstall);
+  const hasRemote = fullBomList.some(isRemoteInstall);
+  if (hasOnsite && hasRemote) {
+    const error = 'Contradictory Installation Support Services: Configuration contains both Onsite Installation/Startup Service and Remote Deployment Service.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Contradictory Installation Support Services', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Installation Support Services', 'PASS', 'Installation support services are non-contradictory.');
+  }
+
+  // SaaS Software vs Hardware Support Delineation
+  const isSaas = item => {
+    const sku = cleanBaseSKU(item.sku);
+    const d = descriptions(item);
+    return ['R7A11AAE', 'R7A12AAE', 'S2E10AAE', 'S5E59AAE', 'S1A05A'].includes(sku) ||
+      sku.endsWith('AAE') || d.includes('saas') || d.includes('compute ops management');
+  };
+  const isHwSupport = item => {
+    const sku = cleanBaseSKU(item.sku);
+    const d = descriptions(item);
+    return sku.startsWith('HU4B') || sku.startsWith('H7J3') || sku.startsWith('H8Q') ||
+      d.includes('tech care') || d.includes('foundation care') || d.includes('proactive care') ||
+      (d.includes('warranty') && !d.includes('saas'));
+  };
+  const hasSaasItem = fullBomList.some(isSaas);
+  const hasHwSupportItem = fullBomList.some(isHwSupport);
+  if (hasSaasItem && !hasHwSupportItem) {
+    recordAudit('CATEGORY', 'SaaS vs Hardware Support Delineation', 'INFO', 'Solution includes SaaS cloud management software without physical hardware warranty support. SaaS and hardware support are distinct operational tiers.');
+  } else {
+    recordAudit('CATEGORY', 'SaaS vs Hardware Support Delineation', 'PASS', 'Support services and software subscriptions delineated.');
+  }
+
+  // Processor Model Uniformity (Single Node)
+  const cpuItems = fullBomList.filter(item => {
+    const d = descriptions(item);
+    return (d.includes('processor') || d.includes('xeon') || d.includes('epyc')) && !d.includes('heatsink') && !d.includes('fan');
+  });
+  const cpuSkus = new Set(cpuItems.map(item => cleanBaseSKU(item.sku)).filter(Boolean));
+  if (cpuSkus.size > 1) {
+    const error = 'Mixing of different processor models within the same server configuration is strictly not supported.';
+    conflicts.push({ level: 'CATEGORY', type: 'MUTUAL_EXCLUSION', message: error });
+    recordAudit('CATEGORY', 'Processor Model Uniformity', 'FAIL', error);
+  } else {
+    recordAudit('CATEGORY', 'Processor Model Uniformity', 'PASS', 'Processor selection is uniform.');
   }
 }
 

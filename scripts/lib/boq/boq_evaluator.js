@@ -273,6 +273,12 @@ function validatePCIeRules(ctx) {
 
 function validateThermalRules(ctx) {
   const { items, compute, pcie, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
+  if (compute.hasMixedCpuModels) {
+    const reason = `Processor Architecture Conflict: Multi-socket server configurations require identical processor models (same core count, stepping, and frequency). Detected distinct CPU SKUs: ${(compute.uniqueCpuSkus || []).join(', ')}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
   const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
     items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
   if (isTapeLibrary) return;
@@ -332,6 +338,12 @@ function validateThermalRules(ctx) {
 
 function validateStorageRules(ctx) {
   const { items, storage, power, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (storage.hasLffDrivesInSffChassis) {
+    const reason = `Storage Form Factor Conflict: 3.5" LFF drives (${storage.lffDriveCount}) cannot be installed in a 2.5" SFF chassis backplane.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
   if (storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController && !storage.hasDriveCage) {
     const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
     warnings.push(reason);
@@ -457,6 +469,22 @@ function validateStorageRules(ctx) {
 
 function validatePowerRules(ctx) {
   const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items } = ctx;
+  if (power.hasMixedAcDcPower) {
+    const reason = `Power Architecture Conflict: Configuration mixes AC power supplies (${power.acPsuCount}) and -48VDC power supplies (${power.dcPsuCount}) in the same chassis enclosure. AC and DC power supplies cannot be mixed within the same backplane.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  const isMultiClusterMatchedPsuTender = serverCount > 1 &&
+    ((power.platinumPsuCount || 0) >= 2 && (power.titaniumPsuCount || 0) >= 2) &&
+    ((power.platinumPsuCount || 0) % 2 === 0) && ((power.titaniumPsuCount || 0) % 2 === 0);
+
+  if (power.hasMixedEfficiencyPsus && !isMultiClusterMatchedPsuTender) {
+    const reason = `Power Architecture Conflict: Configuration mixes Platinum and Titanium power supply efficiencies in the same server. Redundant power supplies must have matching efficiency ratings.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
   if (power.hasDcPowerSupply && !power.hasDcLugKit) {
     const reason = `Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.`;
     errors.push(reason);
@@ -564,7 +592,20 @@ function validatePowerRules(ctx) {
 }
 
 function validateSupportRules(ctx) {
-  const { support, serverCount, warnings, missingDependencies } = ctx;
+  const { support, serverCount, warnings, errors, mathDeductions, missingDependencies } = ctx;
+  if (support.hasContradictoryInstallServices) {
+    const onsiteSkus = (support.onsiteInstallItems || []).map(i => i.sku).join(', ');
+    const remoteSkus = (support.remoteInstallItems || []).map(i => i.sku).join(', ');
+    const reason = `Contradictory Support Services: Configuration contains both Onsite Installation/Startup Service (${onsiteSkus || 'Onsite'}) and Remote Deployment Service (${remoteSkus || 'Remote'}). Onsite and remote deployment models are mutually exclusive within the same solution.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  if (support.hasSaasWithoutHardwareSupport) {
+    const reason = `SaaS vs Hardware Support Delineation: Configuration includes SaaS software subscriptions without physical Pointnext hardware support/warranty (Tech Care/Foundation Care). SaaS cloud management cannot substitute for physical server break-fix maintenance coverage.`;
+    warnings.push(reason);
+  }
+
   if (support.needsAdditionalWindowsCores) {
     const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores || support.totalCoveredWindowsCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;
     warnings.push(reason);
@@ -714,6 +755,17 @@ function validateStoreEverRules(ctx) {
 
 function validateMemoryRules(ctx) {
   const { memory, compute, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  if (memory.hasMixedDdrGeneration) {
+    const reason = `Memory Generation Conflict: Mixing DDR4 and DDR5 memory modules in the same server is physically incompatible.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (memory.hasMixedMemoryTypes) {
+    const reason = `Memory Architecture Conflict: Mixing RDIMM, LRDIMM, or MRDIMM memory modules in the same system is strictly unsupported.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
   if (memory.hasBtoMemoryInCto) {
     memory.btoMemoryViolations.forEach(v => {
       errors.push(v.reason);

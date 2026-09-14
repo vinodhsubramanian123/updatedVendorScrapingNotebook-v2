@@ -92,6 +92,46 @@ const gMemMixed = validateConflictGraph(mixedMemoryBoq, [], chassisDir);
 assert(gMemMixed.isWholeSolutionValid === false, 'Detected x4 and x8 memory mixing violation');
 assert(gMemMixed.conflicts.some(c => c.message.includes('x4 and x8 memory')), 'Reported exact memory mixing conflict message');
 
+// Mixed AC and DC Power Supplies
+const mixedPsuBoq = [
+  { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
+  { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply' },
+  { sku: 'P17023-B21', description: 'HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit' }
+];
+const gPsuMixed = validateConflictGraph(mixedPsuBoq, [], chassisDir);
+assert(gPsuMixed.isWholeSolutionValid === false, 'Detected AC and DC power supply mixing violation');
+assert(gPsuMixed.conflicts.some(c => c.message.includes('AC and DC power supplies')), 'Reported exact AC/DC power mixing conflict message');
+
+// Contradictory Support Services (Onsite vs Remote)
+const contradictorySupportBoq = [
+  { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
+  { sku: 'HA114A1', description: 'HPE Installation and Startup Service' },
+  { sku: 'HA454A1', description: 'HPE Remote Installation Service' }
+];
+const gSupportConflict = validateConflictGraph(contradictorySupportBoq, [], chassisDir);
+assert(gSupportConflict.isWholeSolutionValid === false, 'Detected contradictory installation support services violation');
+assert(gSupportConflict.conflicts.some(c => c.message.includes('Contradictory Installation Support Services')), 'Reported exact support contradiction message');
+
+// Mixed DDR4 and DDR5 Memory
+const mixedDdrBoq = [
+  { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
+  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Smart Memory Kit' },
+  { sku: 'P00924-B21', description: '32GB Dual Rank x4 DDR4-2933 Smart Memory Kit' }
+];
+const gDdrMixed = validateConflictGraph(mixedDdrBoq, [], chassisDir);
+assert(gDdrMixed.isWholeSolutionValid === false, 'Detected DDR4 and DDR5 memory mixing violation');
+assert(gDdrMixed.conflicts.some(c => c.message.includes('DDR4 and DDR5')), 'Reported exact DDR generation conflict message');
+
+// Mixed RDIMM and LRDIMM Memory
+const mixedTypeBoq = [
+  { sku: 'P73282-B21', description: 'HPE DL380 Gen12 SFF Server' },
+  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Registered Smart Memory Kit' },
+  { sku: 'P69730-B21', description: '128GB Quad Rank x4 DDR5-6400 Load-Reduced Smart Memory Kit' }
+];
+const gTypeMixed = validateConflictGraph(mixedTypeBoq, [], chassisDir);
+assert(gTypeMixed.isWholeSolutionValid === false, 'Detected RDIMM and LRDIMM memory type mixing violation');
+assert(gTypeMixed.conflicts.some(c => c.message.includes('RDIMM, LRDIMM, or MRDIMM')), 'Reported exact memory type conflict message');
+
 // 4. Cascading Fix Resolution
 console.log('\n--- Test Group 4: Cascading Fix Resolution ---');
 const fixInput = [

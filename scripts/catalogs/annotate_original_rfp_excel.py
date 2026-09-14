@@ -8,11 +8,15 @@ and adding side-by-side Columns G (HPE Proposed SKU & Split Qty), H (Compliance 
 and I (HPE Technical Remarks & Reconciliation Rationale) to give maximum clarity in customer/management meetings.
 """
 
+import sys
+import os
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
-TARGET_FILE = '/home/vinodh/Downloads/GID-RFQS-HPE-2026-006 (1).xlsx'
+TARGET_FILE = sys.argv[1] if len(sys.argv) > 1 else '/home/vinodh/Downloads/GID-RFQS-HPE-2026-006 (2).xlsx'
+if not os.path.exists(TARGET_FILE):
+    TARGET_FILE = '/home/vinodh/Downloads/GID-RFQS-HPE-2026-006 (1).xlsx'
 
 wb = openpyxl.load_workbook(TARGET_FILE)
 ws = wb['Sheet1']
@@ -84,8 +88,8 @@ original_rows_enrichment = [
     {
         "no": "2",
         "category": "Model Name (Bundled Options)",
-        "unit_price": 13431.00,
-        "total_price": 805860.00,
+        "unit_price": 21514.00,
+        "total_price": 1290840.00,
         "proposed": "P52534-B21 (Qty: 60 CTO Chassis)\n• Includes Bundled P02377-B21 Capacitor & P48183-B21 Boot RAID\n• Cluster A (Platinum): 20 Nodes\n• Cluster B (Gold): 40 Nodes",
         "status": "100% Fulfilled & Form-Factor Optimized",
         "style": STYLE_PIVOT,
@@ -99,8 +103,8 @@ original_rows_enrichment = [
     {
         "no": "3a",
         "category": "Processors (Cluster A)",
-        "unit_price": 12500.00,
-        "total_price": 500000.00,
+        "unit_price": 23877.00,
+        "total_price": 955080.00,
         "proposed": "P67088-B21 (Qty: 40)\n• Cluster A: 2 CPUs/node × 20 nodes = 40 CPUs\n• Cluster B: 0 CPUs",
         "status": "100% Exact Match",
         "style": STYLE_EXACT,
@@ -125,8 +129,8 @@ original_rows_enrichment = [
     {
         "no": "4",
         "category": "Memory (RAM)",
-        "unit_price": 1250.00,
-        "total_price": 600000.00,
+        "unit_price": 28532.00,
+        "total_price": 13695360.00,
         "proposed": "P64707-F21 (Qty: 480)\n• Cluster A: 8 DIMMs/node × 20 nodes = 160\n• Cluster B: 8 DIMMs/node × 40 nodes = 320",
         "status": "FIO SKU Standardized (Rules 81354490 & 91001655)",
         "style": STYLE_PIVOT,
@@ -139,8 +143,8 @@ original_rows_enrichment = [
     {
         "no": "5a",
         "category": "Network Controller (10/25Gb)",
-        "unit_price": 785.00,
-        "total_price": 78500.00,
+        "unit_price": 1184.00,
+        "total_price": 118400.00,
         "proposed": "160 Total 10/25Gb Adapters:\n• P26262-B21 (PCIe Standup): Qty 100 (20 Cluster A + 80 Cluster B)\n• P10115-B21 (OCP3 Adapter): Qty 60 (20 Cluster A + 40 Cluster B)",
         "status": "100% Port Match (Bus Rebalanced)",
         "style": STYLE_EXACT,
@@ -165,8 +169,8 @@ original_rows_enrichment = [
     {
         "no": "5c",
         "category": "Storage SAN Networking",
-        "unit_price": 3450.00,
-        "total_price": 414000.00,
+        "unit_price": 7410.00,
+        "total_price": 889200.00,
         "proposed": "R2E09A (Qty: 120)\n• Cluster A: 2 HBAs/node × 20 nodes = 40\n• Cluster B: 2 HBAs/node × 40 nodes = 80",
         "status": "100% Exact Match",
         "style": STYLE_EXACT,
@@ -177,8 +181,8 @@ original_rows_enrichment = [
     {
         "no": "6a",
         "category": "Storage Drive Cage",
-        "unit_price": 780.00,
-        "total_price": 46800.00,
+        "unit_price": 416.00,
+        "total_price": 24960.00,
         "proposed": "P48814-B21 (Qty: 60)\n• Cluster A: 1 cage/node × 20 nodes = 20\n• Cluster B: 1 cage/node × 40 nodes = 40",
         "status": "Premium Cage Upgrade (Rule 81354632)",
         "style": STYLE_PIVOT,
@@ -228,8 +232,8 @@ original_rows_enrichment = [
     {
         "no": "8a",
         "category": "Power Supply (Cluster B)",
-        "unit_price": 1150.00,
-        "total_price": 92000.00,
+        "unit_price": 890.00,
+        "total_price": 71200.00,
         "proposed": "P38997-B21 (Qty: 80)\n• Cluster A: 0 PSUs\n• Cluster B: 2 PSUs/node × 40 nodes = 80",
         "status": "100% Exact Match",
         "style": STYLE_EXACT,
@@ -338,8 +342,8 @@ factory_additions = [
         "PCIe Riser Enablement (Cluster B)",
         "[MANDATORY FACTORY INJECTION] HPE ProLiant DL380 Gen11 x16/x16/x16 Primary Cable Kit (P56073-B21)",
         0,
-        185.00,
-        7400.00,
+        409.00,
+        16360.00,
         "P56073-B21 (Qty: 40 Kits)\n• Cluster A: 0 kits\n• Cluster B: 1 kit/node × 40 nodes = 40 kits",
         "Mandatory Factory Addition (Rule 81016755)",
         STYLE_ADDED,
@@ -353,8 +357,8 @@ factory_additions = [
         "Storage Cache Enablement Cable",
         "[MANDATORY FACTORY INJECTION] HPE ProLiant Storage Controller Enablement Cable Kit (P48918-B21)",
         0,
-        164.00,
-        9840.00,
+        38.00,
+        2280.00,
         "P48918-B21 (Qty: 60 Kits)\n• Cluster A: 1 cable/node × 20 nodes = 20\n• Cluster B: 1 cable/node × 40 nodes = 40",
         "Mandatory Factory Addition (Rule 81354652)",
         STYLE_ADDED,
@@ -367,8 +371,8 @@ factory_additions = [
         "Cloud Management & Order Control",
         "[MANDATORY FACTORY INJECTION] HPE Compute Ops Management Enhanced 3-Year SaaS Base License (R7A11AAE)",
         0,
-        420.00,
-        25200.00,
+        450.00,
+        27000.00,
         "R7A11AAE (Qty: 60 Licenses)\n• Cluster A: 1 license/node × 20 nodes = 20\n• Cluster B: 1 license/node × 40 nodes = 40",
         "Mandatory Process Addition (Rule 81322276)",
         STYLE_ADDED,
@@ -471,7 +475,7 @@ for c_idx in range(1, 10):
 tot_words_r = tot_fig_r + 1
 ws.cell(tot_words_r, 1, "Total Price (in words):")
 ws.cell(tot_words_r, 2, "")
-ws.cell(tot_words_r, 3, "Four Million One Hundred Thirty-Two Thousand Five Hundred Eighty US Dollars Only ($4,132,580.00 USD)")
+ws.cell(tot_words_r, 3, "Eighteen Million Six Hundred Forty Three Thousand Six Hundred Sixty US Dollars Only ($18,643,660.00 USD)")
 ws.merge_cells(start_row=tot_words_r, start_column=3, end_row=tot_words_r, end_column=9)
 ws.row_dimensions[tot_words_r].height = 28
 

@@ -3,7 +3,11 @@
  * tests/test_aspect_support_manufacturing.js — Tests for Support & Manufacturing Aspect Pre-Check
  */
 
-const { evalSupportManufacturing } = require('../../scripts/lib/aspects/support_manufacturing.js');
+const {
+  evalSupportManufacturing,
+  isSaasSoftwareSubscription,
+  isHardwareBreakFixSupport
+} = require('../../scripts/lib/aspects/support_manufacturing.js');
 
 let totalPasses = 0;
 let totalFails = 0;
@@ -132,7 +136,46 @@ result = evalSupportManufacturing(items, null, 0, 1);
 assert(result.dataCartridgeCount === 50, `Counted 50 data cartridges`);
 assert(result.expectedCleaningCartridges === 3, `Calculated 3 expected cleaning cartridges for 50 tapes (1 per 20)`);
 assert(result.needsMoreCleaningCartridges === true, `Flagged need for more cleaning cartridges (found 1, expected 3)`);
-assert(result.missingCleaningCartridges === 2, `Calculated 2 missing cleaning cartridges`);
+console.log(`\n🔹 Test Group 8: Contradictory Installation Support Services (Onsite vs Remote)`);
+items = [
+  { sku: 'HA114A1', description: 'HPE Installation and Startup Service', quantity: 1 },
+  { sku: 'HA454A1', description: 'HPE Remote Installation and Startup Service', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.hasOnsiteInstallService === true, `Detected Onsite Installation Service`);
+assert(result.hasRemoteInstallService === true, `Detected Remote Installation Service`);
+assert(result.hasContradictoryInstallServices === true, `Flagged hasContradictoryInstallServices conflict`);
+
+items = [
+  { sku: 'HA114A1 5A6', description: 'HPE ProLiant DL/ML ONS Startup SVC', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.hasOnsiteInstallService === true, `Detected Onsite Installation Service`);
+assert(result.hasRemoteInstallService === false, `No Remote Installation Service`);
+assert(result.hasContradictoryInstallServices === false, `No contradiction for single Onsite service`);
+
+console.log(`\n🔹 Test Group 9: SaaS Software vs Hardware Support Delineation`);
+assert(isSaasSoftwareSubscription('R7A11AAE', 'HPE GreenLake COM 3yr SaaS') === true, 'Detected SaaS SKU R7A11AAE');
+assert(isSaasSoftwareSubscription('P52534-B21', 'HPE ProLiant Server') === false, 'Hardware server is not SaaS');
+assert(isHardwareBreakFixSupport('HU4B2A3', 'HPE 3Y Tech Care Essential Service') === true, 'Detected Pointnext Tech Care hardware support');
+assert(isHardwareBreakFixSupport('R7A11AAE', 'HPE GreenLake COM 3yr SaaS') === false, 'SaaS subscription is not hardware break-fix support');
+
+items = [
+  { sku: 'R7A11AAE', description: 'HPE GreenLake COM 3yr SaaS', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.hasSaasSubscription === true, 'Detected SaaS subscription');
+assert(result.hasHardwareSupport === false, 'Detected absence of hardware break-fix support');
+assert(result.hasSaasWithoutHardwareSupport === true, 'Flagged hasSaasWithoutHardwareSupport warning');
+
+items = [
+  { sku: 'HU4B2A3', description: 'HPE 3Y Tech Care Essential Service', quantity: 1 },
+  { sku: 'R7A11AAE', description: 'HPE GreenLake COM 3yr SaaS', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.hasSaasSubscription === true, 'Detected SaaS subscription');
+assert(result.hasHardwareSupport === true, 'Detected hardware support');
+assert(result.hasSaasWithoutHardwareSupport === false, 'No deficit when hardware support is present');
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

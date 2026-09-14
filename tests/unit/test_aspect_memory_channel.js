@@ -129,7 +129,24 @@ items = [
   { sku: 'P98765-B21', description: 'HPE 32GB 2Rx8 PC4-3200AA-R Smart Memory Kit', quantity: 16 }
 ];
 result = evalMemoryChannel(items, 2);
-assert(result.memoryItems.length === 2, `Parsed both x4 and x8 memory modules`);
+console.log(`\n🔹 Test Group 6: DDR Generation and RDIMM/LRDIMM Mixing Checks`);
+items = [
+  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Smart Memory Kit', quantity: 8 },
+  { sku: 'P00924-B21', description: '32GB Dual Rank x4 DDR4-2933 Smart Memory Kit', quantity: 8 }
+];
+result = evalMemoryChannel(items, 2);
+assert(result.hasDdr4Memory === true, `Detected DDR4 memory`);
+assert(result.hasDdr5Memory === true, `Detected DDR5 memory`);
+assert(result.hasMixedDdrGeneration === true, `Flagged hasMixedDdrGeneration conflict`);
+
+items = [
+  { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Registered Smart Memory Kit', quantity: 8 },
+  { sku: 'P69730-B21', description: '128GB Quad Rank x4 DDR5-6400 Load-Reduced Smart Memory Kit', quantity: 8 }
+];
+result = evalMemoryChannel(items, 2);
+assert(result.hasRdimm === true, `Detected RDIMM memory`);
+assert(result.hasLrdimm === true, `Detected LRDIMM memory`);
+assert(result.hasMixedMemoryTypes === true, `Flagged hasMixedMemoryTypes conflict`);
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

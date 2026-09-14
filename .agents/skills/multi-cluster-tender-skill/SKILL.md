@@ -52,7 +52,27 @@ For any cluster where $N > 1$:
 4. **High-Line 200V–240V Utility Power Derating**:
    If estimated node power draw exceeds $800\text{W}$, alert the customer to derate below 110V/120V circuits and mandate high-line 200V–240V C13/C14 PDUs (`INV-29`).
 5. **Rail Kit Coverage**:
-   Injects exactly 1x Easy Install Rail Kit (`P52341-B21` or `P73325-B21`) per physical server node.
+### 4. Universal Infrastructure Decomposition Archetypes (Server, Storage & Networking)
+
+The multi-cluster decomposition engine operates generically across all enterprise domains with zero hardcoding of cluster counts, multipliers, or quantities:
+
+1. **Server Compute Archetype**:
+   - **Multi-Processor Partitioning**: Solves $\sum m_i s_i = Q_{\text{total\_cpus}}$ where $s_i$ is sockets per node (1, 2, 4, or 8). Groups by processor core/TDP profiles (e.g. Platinum vs Gold).
+   - **Multi-Model Server Partitioning**: Groups distinct server chassis SKUs (e.g. 1U DL360 + 2U DL380, or 2U DL380 + 4U DL380a GPU server).
+   - **Proportional Options Allocation**: Allocates memory, storage controllers, boot devices, optical transceivers, and risers dynamically using the minimal-variance integer Diophantine solver (`solveDiophantineMultiCluster`).
+   - **Option Kit Normalization**: Automatically identifies server-level option kits (such as High-Performance Fan Kits) where customer quantities reflect raw component counts (e.g. 360 fans for 60 nodes) and normalizes to 1 kit per node per CLIC Rule 81354654.
+
+2. **Storage Array Archetype**:
+   - **Controller Node Clustering**: Identifies active-active dual controller node pairs (e.g. Alletra 9000 2N/4N, Alletra 6000 2N). Validates symmetric HBA and interface module population (`hbaCount % 2 === 0`).
+   - **Expansion Shelf Scaling**: Detects SAS/NVMe expansion shelves (J2000, D3940) and calculates redundant daisy-chain cabling ($N_{\text{cables}} \ge N_{\text{shelves}} \times 2$).
+   - **Tape Automation Partitioning**: Validates StoreEver MSL3040 Base Modules vs Expansion Modules (max 6 expansion modules per library). Calculates total cartridge slots ($40 + 40 \times N_{\text{exp}}$), drive counts, and SAS/FC transceiver-to-drive ratios.
+   - **RAID Geometry Math**: Enforces minimum drive cardinality per array pool (RAID 6 $\ge 6$ SSDs, RAID 10 $\ge 4$ SSDs).
+
+3. **Networking & Fabric Archetype**:
+   - **Spine / Leaf Tier Partitioning**: Decomposes enterprise network tenders into Core/Spine switches (e.g. Aruba CX 8325 32-port 100G) and Access/Leaf/ToR switches (e.g. CX 6300 48-port 1G/10G).
+   - **Port-to-Transceiver Parity**: Validates that optical transceivers (SFP28, QSFP28) and DAC/AOC patch cables match physical port populations without orphaned optics.
+   - **Fibre Channel SAN Fabric Redundancy**: Validates dual-fabric SAN redundancy (Fabric A + Fabric B), detecting single points of failure (`sanSwitchCount === 1` when FC HBAs are present).
+   - **Synergy Composable Fabrics**: Validates mezzanine-to-interconnect bay mapping: Bay 1/4 (Mezz 1), Bay 2/5 (Mezz 2), Bay 3/6 (Mezz 3), preventing Ethernet-to-FC fabric cross-talk.
 
 ---
 

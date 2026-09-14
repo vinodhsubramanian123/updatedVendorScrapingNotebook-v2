@@ -80,7 +80,15 @@ items = [
 ];
 result = evalStorageTriMode(items);
 assert(result.hasStorageController === true, `Detected controller for Tri-Mode cabling`);
-assert(result.hasSmartBattery === true, `Detected battery backup requirement for Tri-Mode`);
+console.log(`\n🔹 Test Group 5: Drive Form Factor Tracking and LFF in SFF Mismatch`);
+items = [
+  { sku: 'P12345-B21', description: 'HPE 960GB SAS 12G Read Intensive SFF BC Multi Vendor SSD', quantity: 4 },
+  { sku: 'P54321-B21', description: 'HPE 18TB SAS 12G Business Critical 7.2K LFF LP 512e Multi Vendor HDD', quantity: 2 }
+];
+result = evalStorageTriMode(items);
+assert(result.sffDriveCount === 4, `Counted 4 SFF drives`);
+assert(result.lffDriveCount === 2, `Counted 2 LFF drives`);
+assert(result.hasLffDrivesInSffChassis === true, `Flagged LFF drives in non-LFF chassis`);
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

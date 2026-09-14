@@ -84,6 +84,7 @@ items = [
 result = evalComputeThermal(items);
 assert(result.cpuCount === 2, `Counted 2 CPUs`);
 assert(result.maxCpuTdpWatts === 350, `Extracted 350W max TDP correctly from multiple SKUs`);
+assert(result.hasMixedCpuModels === true, `Flagged mixed CPU models on single node`);
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

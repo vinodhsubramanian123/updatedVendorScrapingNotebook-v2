@@ -33,6 +33,7 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
   console.log(`📑 Ingesting ${rows.length} CLIC advice items from: ${excelPath}`);
 
   const results = [];
+  const advisories = [];
   const seenRules = new Set();
 
   for (const r of rows) {
@@ -40,12 +41,46 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
     const productNum = String(r['Product#'] || r['Product #'] || r['Product'] || '').trim();
     const adviceText = String(r['Advice Text'] || r['AdviceText'] || r['Message'] || '').trim();
     const desc = String(r['Description'] || '').trim();
+    const severity = String(r['Severity'] || r['Type'] || r['Level'] || '').trim().toLowerCase();
 
     if (!adviceText || adviceText.length < 5) continue;
 
     const dedupKey = `${ruleNum}_${productNum}_${adviceText.substring(0, 40)}`;
     if (seenRules.has(dedupKey)) continue;
     seenRules.add(dedupKey);
+
+    const isWarning = severity.includes('warning') || severity.includes('advisory') ||
+      (!severity && /^warning\b/i.test(adviceText)) || (!severity && adviceText.toLowerCase().includes('recommend'));
+    const isUnbuildable = severity.includes('unbuildable') || severity.includes('error') ||
+      adviceText.toLowerCase().includes('unbuildable') || adviceText.toLowerCase().includes('is not buildable') ||
+      adviceText.toLowerCase().includes('must include') || adviceText.toLowerCase().includes('requires') ||
+      adviceText.toLowerCase().includes('cannot be selected') || adviceText.toLowerCase().includes('not allowed');
+
+    if (isWarning && !isUnbuildable) {
+      advisories.push({
+        ruleNum,
+        productNum,
+        description: desc,
+        adviceText,
+        severity: 'WARNING'
+      });
+      console.log(`  ℹ️ Advisory Warning (Ignored for buildability): Rule ${ruleNum.padEnd(10)} | SKU: ${productNum}`);
+      continue;
+    }
+
+    // Unbuildable Error: detect multi-path resolution choices
+    const resolutionPaths = [];
+    if (/\b(?:or|alternatively|instead)\b/i.test(adviceText)) {
+      const parts = adviceText.split(/\b(?:or|alternatively|instead)\b/i);
+      parts.forEach((p, idx) => {
+        if (p.trim().length > 3) {
+          resolutionPaths.push({
+            pathId: `Path_${String.fromCharCode(65 + idx)}`,
+            suggestion: p.trim()
+          });
+        }
+      });
+    }
 
     const feedbackPayload = `[CLIC RULE ${ruleNum || 'PORTAL'}] Product ${productNum}: ${adviceText}`;
     try {
@@ -55,14 +90,20 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
         productNum,
         description: desc,
         adviceText,
+        severity: 'ERROR',
+        resolutionPaths,
         deltaId: delta.deltaId,
         ruleUpdate: delta.ruleUpdate
       });
-      console.log(`  ✅ Logged Rule ${ruleNum.padEnd(10)} | SKU: ${productNum.padEnd(12)} -> Delta: ${delta.deltaId}`);
+      console.log(`  ✅ Logged Unbuildable Rule ${ruleNum.padEnd(10)} | SKU: ${productNum.padEnd(12)} -> Delta: ${delta.deltaId}`);
     } catch (err) {
       console.warn(`  ⚠️ Failed to log feedback for rule ${ruleNum}:`, err.message);
     }
   }
+
+  results.unbuildableErrors = results;
+  results.advisories = advisories;
+  results.totalIngested = results.length + advisories.length;
 
   return results;
 }

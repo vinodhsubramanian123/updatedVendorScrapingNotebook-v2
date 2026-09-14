@@ -11,6 +11,11 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   let memoryCount = 0;
   let totalMemoryGb = 0;
   let cpuCount = passedCpuCount;
+  let hasDdr4Memory = false;
+  let hasDdr5Memory = false;
+  let hasRdimm = false;
+  let hasLrdimm = false;
+  let hasMrdimm = false;
   const btoMemoryViolations = [];
   const memoryItems = [];
   const skuIndex = buildCatalogSkuIndex(catalogData);
@@ -36,6 +41,16 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
       const qty = (it.quantity || 1);
       memoryCount += qty;
       memoryItems.push(it);
+
+      if (desc.includes('ddr4')) hasDdr4Memory = true;
+      if (desc.includes('ddr5')) hasDdr5Memory = true;
+
+      const isLrdimm = desc.includes('lrdimm') || desc.includes('load-reduced') || desc.includes('load reduced');
+      const isMrdimm = desc.includes('mrdimm') || desc.includes('multiplexed');
+      const isRdimm = (desc.includes('rdimm') || desc.includes('registered')) && !isLrdimm && !isMrdimm;
+      if (isRdimm) hasRdimm = true;
+      if (isLrdimm) hasLrdimm = true;
+      if (isMrdimm) hasMrdimm = true;
 
       const gbMatch = desc.match(/(\d+)\s*gb/i);
       if (gbMatch) {
@@ -65,6 +80,9 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   // Supported per-socket DIMM populations per Intel Xeon / AMD EPYC QuickSpecs: 1, 2, 4, 6, 8, 12, 16
   const isSupportedPopulation = memoryCount > 0 && (memoryCount % cpuCount === 0) && [1, 2, 4, 6, 8, 12, 16].includes(dimmsPerCpu);
   const isBalancedChannel = memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
+  const hasMixedDdrGeneration = hasDdr4Memory && hasDdr5Memory;
+  const hasMixedMemoryTypes = (hasRdimm && (hasLrdimm || hasMrdimm)) || (hasLrdimm && hasMrdimm);
+
   return {
     memoryCount,
     totalMemoryGb,
@@ -74,6 +92,13 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
     isBalancedChannel,
     btoMemoryViolations,
     hasBtoMemoryInCto: btoMemoryViolations.length > 0,
+    hasDdr4Memory,
+    hasDdr5Memory,
+    hasMixedDdrGeneration,
+    hasRdimm,
+    hasLrdimm,
+    hasMrdimm,
+    hasMixedMemoryTypes,
     memoryItems
   };
 }

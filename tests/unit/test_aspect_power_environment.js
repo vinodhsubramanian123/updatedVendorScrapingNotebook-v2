@@ -72,6 +72,36 @@ result = evalPowerEnvironment(items);
 assert(result.psuCount === 2, `Counted 2 high-line PSUs`);
 assert(result.hasDcPowerSupply === false, `High-line 277VAC is not marked as DC`);
 
+console.log(`\n🔹 Test Group 4: Mixed AC and DC Power Supply Conflict Detection`);
+items = [
+  { sku: 'P12345-B21', description: 'HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit', quantity: 2 },
+  { sku: 'P17023-B21', description: 'HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit', quantity: 2 }
+];
+result = evalPowerEnvironment(items);
+assert(result.hasAcPowerSupply === true, `Detected AC power supply in mixed config`);
+assert(result.hasDcPowerSupply === true, `Detected DC power supply in mixed config`);
+assert(result.hasMixedAcDcPower === true, `Correctly flagged hasMixedAcDcPower conflict`);
+assert(result.acPsuCount === 2, `Counted 2 AC PSUs`);
+assert(result.dcPsuCount === 2, `Counted 2 DC PSUs`);
+
+console.log(`\n🔹 Test Group 5: Mixed PSU Efficiency and Mixed Wattage Detection`);
+items = [
+  { sku: 'P38995-B21', description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply', quantity: 1 },
+  { sku: 'P03178-B21', description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply', quantity: 1 }
+];
+result = evalPowerEnvironment(items);
+assert(result.hasPlatinumPsu === true, 'Detected Platinum PSU');
+assert(result.hasTitaniumPsu === true, 'Detected Titanium PSU');
+assert(result.hasMixedEfficiencyPsus === true, 'Flagged hasMixedEfficiencyPsus conflict');
+assert(result.hasMixedWattagePsus === true, 'Flagged hasMixedWattagePsus (800W vs 1000W)');
+
+items = [
+  { sku: 'P38995-B21', description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply', quantity: 2 }
+];
+result = evalPowerEnvironment(items);
+assert(result.hasMixedEfficiencyPsus === false, 'No mixed efficiency for dual Platinum');
+assert(result.hasMixedWattagePsus === false, 'No mixed wattage for dual 800W');
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);
