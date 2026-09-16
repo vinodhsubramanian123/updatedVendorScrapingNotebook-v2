@@ -255,6 +255,87 @@ async function main() {
     assert(discontinuedDateRows.length / denominator >= 0.95, `Discontinued-date coverage is >=95% (${discontinuedDateRows.length}/${currentHardwareRows.length})`);
   }
 
+  // ── AUDIT 4B: Price Sanity & Anti-Fabrication Guardrail (INV-94) ────────────
+  if (!JSON_MODE) console.log('\n--- AUDIT 4B: Price Sanity & Anti-Fabrication Guardrail (INV-94) ---');
+  let quantityAsPriceViolations = 0;
+  let skuAsPriceViolations = 0;
+  let invalidChassisSkus = 0;
+
+  allSkusSheet.forEach(row => {
+    const pn = String(row['Product #'] || '').trim();
+    const desc = String(row['Description'] || '').toLowerCase();
+    const parentCat = String(row['Parent Category'] || '');
+    const rawQty = String(row['Current Qty'] || '0').trim();
+    const rawPrice = String(row['Unit Price (USD)'] || '0').replace(/[$,]/g, '').trim();
+    const numPrice = parseFloat(rawPrice) || 0;
+    const numQty = parseInt(rawQty, 10) || 0;
+
+    // 1. Quantity-as-Price check: Processors, Memory, Power, Controllers must not have price == quantity (e.g. $1, $2)
+    const isMajorComponent = /processor|intel xeon|amd epyc|memory|dimm|rdimm|power supply|smart array|tri-mode|nvme|solid state/i.test(desc) ||
+                             ['Processors', 'Memory', 'Power Supplies', 'Storage Controllers'].includes(parentCat);
+    if (isMajorComponent && numPrice > 0 && numPrice <= 2 && numPrice === numQty) {
+      quantityAsPriceViolations++;
+      if (!JSON_MODE) console.error(`  ❌ Quantity-as-price violation: SKU ${pn} (${desc}) has price $${numPrice} matching Qty ${numQty}`);
+    }
+
+    // 2. Part-number-as-price check: price must not equal the 6-digit prefix of the SKU
+    const skuNumMatch = pn.match(/^(\d{6})/);
+    if (skuNumMatch && numPrice === parseInt(skuNumMatch[1], 10)) {
+      skuAsPriceViolations++;
+      if (!JSON_MODE) console.error(`  ❌ SKU-as-price violation: SKU ${pn} parsed as price $${numPrice}`);
+    }
+
+    // 3. Chassis variants must all be valid HPE SKUs
+    if (parentCat === 'Chassis' || String(row['Sub-Category'] || '') === 'Variants') {
+      if (!isValidHpeSKU(pn)) {
+        invalidChassisSkus++;
+        if (!JSON_MODE) console.error(`  ❌ Invalid Chassis SKU: ${pn}`);
+      }
+    }
+  });
+
+  assert(quantityAsPriceViolations === 0, `0 Quantity-as-price violations found (Rule INV-94)`);
+  assert(skuAsPriceViolations === 0, `0 Part-number-as-price violations found (Rule INV-94)`);
+  assert(invalidChassisSkus === 0, `0 Invalid chassis variant SKUs found (Rule INV-94)`);
+
+  // 4. Base Chassis List Price Ground Truth Assertion
+  try {
+    const cmapPath = path.join(__dirname, '..', '..', 'scripts', 'config', 'chassis_map.json');
+    if (fs.existsSync(cmapPath)) {
+      const cmap = JSON.parse(fs.readFileSync(cmapPath, 'utf8'));
+      const byFam = cmap.chassis_base_skus_by_family_gen || {};
+      const cleanFilePrefix = filePrefix.toLowerCase().replace(/[^a-z0-9]/g, '');
+      let expectedBaseSku = null;
+      let expectedListPrice = null;
+
+      for (const [k, grp] of Object.entries(byFam)) {
+        const normKey = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normModel = (grp.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (cleanFilePrefix.includes(normKey) || (normModel && cleanFilePrefix.includes(normModel))) {
+          const skus = grp.skus || {};
+          const firstSku = Object.keys(skus)[0];
+          if (firstSku && skus[firstSku]?.listPrice) {
+            expectedBaseSku = firstSku;
+            expectedListPrice = skus[firstSku].listPrice;
+            break;
+          }
+        }
+      }
+
+      if (expectedBaseSku && expectedListPrice) {
+        const chassisRow = allSkusSheet.find(r => cleanBaseSKU(r['Product #']) === expectedBaseSku);
+        if (chassisRow) {
+          const actualPrice = parseFloat(String(chassisRow['Unit Price (USD)'] || '0').replace(/[$,]/g, ''));
+          assert(actualPrice === expectedListPrice,
+            `Base Chassis ${expectedBaseSku} list price ($${actualPrice.toFixed(2)}) strictly matches chassis_map.json ($${expectedListPrice.toFixed(2)})`);
+          assert(actualPrice !== 2350, `Base Chassis list price is NOT corrupted placeholder $2350.00`);
+        }
+      }
+    }
+  } catch (cmapErr) {
+    if (!JSON_MODE) console.warn(`  ⚠️ Chassis map price assertion skipped: ${cmapErr.message}`);
+  }
+
   const chassisRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants');
   assert(chassisRows.length > 0, 'At least one currently discoverable CTO base chassis is present');
   if (!auditResults.isDegraded) {

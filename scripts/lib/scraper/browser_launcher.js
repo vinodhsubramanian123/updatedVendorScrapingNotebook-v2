@@ -133,24 +133,35 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
   }
 
   const chromeBin = findChromeExecutable();
-  const args = [
+  const chromeArgs = [
     `--remote-debugging-port=${port}`,
     `--user-data-dir=${PROFILE_DIR}`,
+    '--remote-allow-origins=*',
     '--no-first-run',
     '--no-default-browser-check',
     initialUrl
   ];
 
   try {
-    const proc = spawn(chromeBin, args, {
-      detached: true,
-      stdio: 'ignore'
-    });
+    let proc;
+    if (process.platform === 'win32') {
+      proc = spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
+        detached: true,
+        stdio: 'ignore',
+        windowsHide: false
+      });
+    } else {
+      proc = spawn(chromeBin, chromeArgs, {
+        detached: true,
+        stdio: 'ignore',
+        windowsHide: false
+      });
+    }
     proc.unref();
 
-    // Poll until port becomes active (up to 8 seconds)
+    // Poll until port becomes active (up to 25 seconds)
     const startTime = Date.now();
-    while (Date.now() - startTime < 8000) {
+    while (Date.now() - startTime < 25000) {
       await new Promise(r => setTimeout(r, 500));
       if (await isCdpAlive(port)) {
         console.log(`✅ Chrome successfully launched and listening on CDP port ${port}.`);
@@ -158,7 +169,7 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
       }
     }
 
-    console.warn(`⚠️ Chrome launched but CDP port ${port} did not respond within 8s.`);
+    console.warn(`⚠️ Chrome launched but CDP port ${port} did not respond within 25s.`);
     return { ok: false, wasLaunched: true, port };
   } catch (err) {
     console.error(`❌ Failed to launch Chrome: ${err.message}`);

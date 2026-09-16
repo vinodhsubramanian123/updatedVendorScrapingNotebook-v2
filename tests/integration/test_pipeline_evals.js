@@ -234,9 +234,16 @@ async function main() {
     }
 
     // Check cross-generation contamination (e.g. Gen11 in Gen12)
-    if (currentChassisGen.includes('gen12') && (desc.includes('GEN11') || desc.includes('GEN10') || desc.includes('DL360'))) {
+    if (currentChassisGen.includes('gen12') && (desc.includes('GEN11') || desc.includes('GEN10'))) {
       crossGenChassisCount++;
-    } else if (currentChassisGen.includes('gen11') && (desc.includes('GEN12') || desc.includes('GEN10') || desc.includes('DL360'))) {
+    } else if (currentChassisGen.includes('gen11') && (desc.includes('GEN12') || desc.includes('GEN10'))) {
+      crossGenChassisCount++;
+    }
+
+    // Check cross-model contamination dynamically
+    if (filePrefix.includes('DL380_') && desc.includes('DL360')) {
+      crossGenChassisCount++;
+    } else if (filePrefix.includes('DL360_') && desc.includes('DL380')) {
       crossGenChassisCount++;
     }
   });

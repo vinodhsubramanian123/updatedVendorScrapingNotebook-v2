@@ -33,9 +33,10 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
     if (isSff) tally.sffDriveCount = (tally.sffDriveCount || 0) + qty;
   }
 
-  // Drive Cage
+  // Drive Cage & Backplane Kits
   const isGenericCage = desc.includes('drive cage') || desc.includes('sff cage') || desc.includes('lff cage') || 
       desc.includes('cage kit') || desc.includes('box 1') || desc.includes('box 2') || 
+      desc.includes('backplane') || desc.includes('backplane kit') ||
       (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku));
   if (isGenericCage && !desc.includes('premium') && !desc.includes('u.3 prem')) {
     tally.hasDriveCage = true;

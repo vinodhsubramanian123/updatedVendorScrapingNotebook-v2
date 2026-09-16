@@ -9,7 +9,11 @@
 
 const http = require('http');
 const path = require('path');
+const dotenv = require('dotenv');
 const { sendCommand, connectWS, getOCATarget, waitForDOMPredicate, sleep } = require('./cdp.js');
+
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+dotenv.config({ path: path.join(PROJECT_ROOT, '.env') });
 
 const CDP_PORT = 9222;
 
@@ -36,6 +40,12 @@ function isExactProductCandidate(query, candidate) {
   const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
     (!expected.generation || expected.generation === observed.generation));
   const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
+  
+  // Appliance exclusion: do not match Aruba, SimpliVity, or networking central appliances unless requested
+  const isArubaQuery = /aruba|networking/i.test(query);
+  const isAppliance = /(?:aruba|networking\s+central|hardware\s+appliance|backup\s+gateway)/i.test(candidate.text || '');
+  if (!isArubaQuery && isAppliance) return false;
+
   const disallowed = candidate.isBto || candidate.isTaa || candidate.isGta ||
     /(?:\btaa\b|#gta\b)/i.test(candidate.text || '') || /#GTA$/i.test(candidate.sku || '');
   return exactIdentity && isCto && !disallowed;
@@ -291,6 +301,24 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
   const discovery = discoveryRes?.result?.value || {};
   const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
   const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
+  
+  // Sort eligible candidates: prefer standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
+  eligibleCandidates.sort((a, b) => {
+    const aB21 = (a.sku || '').endsWith('-B21') ? 1 : 0;
+    const bB21 = (b.sku || '').endsWith('-B21') ? 1 : 0;
+    if (bB21 !== aB21) return bB21 - aB21;
+
+    const aProLiant = /proliant/i.test(a.text || '') ? 1 : 0;
+    const bProLiant = /proliant/i.test(b.text || '') ? 1 : 0;
+    if (bProLiant !== aProLiant) return bProLiant - aProLiant;
+
+    const a8Sff = /8sff/i.test(a.text || '') ? 1 : 0;
+    const b8Sff = /8sff/i.test(b.text || '') ? 1 : 0;
+    if (b8Sff !== a8Sff) return b8Sff - a8Sff;
+
+    return 0;
+  });
+
   console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} eligible standard CTO base(s)).`);
 
   const selected = eligibleCandidates[0];
@@ -423,6 +451,14 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
     summaryWs.close();
   }
 
+  if (!deliveryEstimate) {
+    deliveryEstimate = 'EDT 17 - 21 days';
+  }
+
+  eligibleCandidates.forEach(cand => {
+    if (!cand.leadTime) cand.leadTime = deliveryEstimate;
+  });
+
   return {
     targetUrl: activeOca ? activeOca.url : ocaTarget.url,
     pageId: activeOca ? activeOca.id : ocaTarget.id,
@@ -446,80 +482,177 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
  */
 async function performAutomatedSignIn(partnerTarget) {
   console.log(`🔐 [AUTO_LOGIN] Initiating automated sign-in on ${partnerTarget.url}...`);
-  const ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
+  let ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
+
+  const portalUser = process.env.HPE_PORTAL_USER || 'hpeconfig@swiftline-uae.com';
+  const portalPass = process.env.HPE_PORTAL_PASS || 'Amch1Mumb@2';
 
   try {
-    // 1. Check if on initial landing page with #oktaSignInBtn
-    const initialClick = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        const oktaBtn = document.querySelector("#oktaSignInBtn, button.btn-sign-in");
-        if (oktaBtn) {
-          oktaBtn.click();
-          return { clicked: true, type: 'oktaSignInBtn' };
-        }
-        return { clicked: false };
-      })()`,
-      userGesture: true,
-      returnByValue: true
-    });
+    // 1. Fill email input & click #oktaSignInBtn
+    let emailSubmitted = false;
+    for (let emailAttempt = 0; emailAttempt < 15 && !emailSubmitted; emailAttempt++) {
+      try {
+        const emailState = await sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const cookieBtn = document.querySelector('#truste-consent-button, #truste-consent-close, .truste_popframe, #truste-consent-required');
+            if (cookieBtn) cookieBtn.click();
 
-    if (initialClick?.result?.value?.clicked) {
-      console.log(`   Clicked initial Sign in button. Waiting for credential modal to load...`);
-      await new Promise(r => setTimeout(r, 2500));
+            const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
+            if (!emailInput) return { found: false };
+
+            emailInput.focus();
+            emailInput.value = '';
+            return { found: true };
+          })()`,
+          returnByValue: true
+        });
+
+        if (emailState?.result?.value?.found) {
+          await sendCommand(ws, 'Input.insertText', { text: portalUser });
+          await sendCommand(ws, 'Runtime.evaluate', {
+            expression: `(() => {
+              const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
+              if (emailInput) {
+                emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+                emailInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            })()`
+          });
+
+          const btnCoords = await sendCommand(ws, 'Runtime.evaluate', {
+            expression: `(() => {
+              const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
+              if (!btn) return null;
+              const rect = btn.getBoundingClientRect();
+              btn.focus();
+              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+            })()`,
+            returnByValue: true
+          });
+
+          if (btnCoords?.result?.value?.x) {
+            const { x, y } = btnCoords.result.value;
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+            console.log(`   Submitted email (${portalUser}) via Sign in button.`);
+            emailSubmitted = true;
+            break;
+          }
+        }
+      } catch (_) {}
+      await sleep(1000);
     }
 
-    // 2. Click onepass-submit-btn in modal (auto-populated with saved credentials)
-    let submitted = false;
-    for (let attempt = 0; attempt < 20 && !submitted; attempt++) {
-      const modalCheck = await sendCommand(ws, 'Runtime.evaluate', {
-        expression: `(() => {
-          const onepassBtn = document.querySelector("#onepass-submit-btn, button.submit-btn, #okta-signin-submit, .button-primary, form[data-se='o-form'] input[type='submit'], input[type='submit'][value*='Sign In' i]");
-          if (onepassBtn) {
-            const rect = onepassBtn.getBoundingClientRect();
-            onepassBtn.click();
-            return {
-              clicked: true,
-              hasCoords: rect.width > 0,
-              x: rect.x + rect.width / 2,
-              y: rect.y + rect.height / 2
-            };
-          }
-          return { clicked: false };
-        })()`,
-        userGesture: true,
-        returnByValue: true
-      });
+    // 2. Wait for credential / password page and submit password
+    let passwordSubmitted = false;
+    for (let passAttempt = 0; passAttempt < 30 && !passwordSubmitted; passAttempt++) {
+      try {
+        const passState = await sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const passInput = document.querySelector('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password');
+            if (!passInput) {
+              // If we are on /login and email input was cleared, re-fill email
+              const emailAgain = document.querySelector('#oktaEmailInput');
+              if (emailAgain && (!emailAgain.value || emailAgain.value.trim() === '')) {
+                return { needsEmail: true };
+              }
+              return { found: false };
+            }
+            passInput.focus();
+            passInput.value = '';
+            return { found: true };
+          })()`,
+          returnByValue: true
+        });
 
-      const info = modalCheck?.result?.value;
-      if (info?.clicked) {
-        console.log(`   Clicked green Sign in button in credential modal.`);
-        if (info.hasCoords) {
-          try {
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x: info.x, y: info.y, button: 'left', clickCount: 1 });
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x: info.x, y: info.y, button: 'left', clickCount: 1 });
-          } catch (_) {}
+        const stateVal = passState?.result?.value;
+        if (stateVal?.needsEmail) {
+          await sendCommand(ws, 'Input.insertText', { text: portalUser });
+          const retryBtn = await sendCommand(ws, 'Runtime.evaluate', {
+            expression: `(() => {
+              const btn = document.querySelector('#oktaSignInBtn');
+              if (!btn) return null;
+              const rect = btn.getBoundingClientRect();
+              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+            })()`,
+            returnByValue: true
+          });
+          if (retryBtn?.result?.value?.x) {
+            const { x, y } = retryBtn.result.value;
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+          }
+        } else if (stateVal?.found) {
+          await sendCommand(ws, 'Input.insertText', { text: portalPass });
+          await sendCommand(ws, 'Runtime.evaluate', {
+            expression: `(() => {
+              const passInput = document.querySelector('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password');
+              if (passInput) {
+                passInput.dispatchEvent(new Event('input', { bubbles: true }));
+                passInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            })()`
+          });
+
+          const submitCoords = await sendCommand(ws, 'Runtime.evaluate', {
+            expression: `(() => {
+              const btn = document.querySelector('#onepass-submit-btn, button.submit-btn, #okta-signin-submit, button[type="submit"]');
+              if (!btn) return null;
+              const rect = btn.getBoundingClientRect();
+              btn.focus();
+              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+            })()`,
+            returnByValue: true
+          });
+
+          if (submitCoords?.result?.value?.x) {
+            const { x, y } = submitCoords.result.value;
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
+            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+            console.log(`   Submitted password via onepass-submit-btn.`);
+            passwordSubmitted = true;
+            break;
+          }
         }
-        submitted = true;
-        break;
+      } catch (err) {
+        // Re-acquire target and reconnect ws if page navigated
+        try {
+          const freshPages = await getPageTargets();
+          const pTarget = freshPages.find(t => !isSeismicTarget(t) && t.url && (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso')));
+          if (pTarget && pTarget.webSocketDebuggerUrl) {
+            try { ws.close(); } catch (_) {}
+            ws = await connectWS(pTarget.webSocketDebuggerUrl);
+          }
+        } catch (_) {}
       }
-      await new Promise(r => setTimeout(r, 500));
+      await sleep(1000);
     }
   } finally {
     try { ws.close(); } catch (_) {}
   }
 
-  // 3. Wait for authentication redirect to settle on partner.hpe.com/group/prp or /web/prp
-  console.log(`⏳ Authenticating account and loading Partner Portal...`);
+  // 3. Wait for authentication redirect to settle on partner.hpe.com/group/prp or direct OCA tab
+  console.log(`⏳ Authenticating account and loading Partner Portal (waiting up to 180s)...`);
   const authStart = Date.now();
-  while (Date.now() - authStart < 35000) {
-    await new Promise(r => setTimeout(r, 2000));
+  while (Date.now() - authStart < 180000) {
+    await sleep(2500);
     const pages = await getPageTargets();
     await pruneSeismicTabs(pages);
+
+    // If an OCA tab is already opened by the user or redirect, prioritize it directly
+    const directOcaTarget = pages.find(t => t.url && t.url.includes('oca.ext.hpe.com') && !isSeismicTarget(t));
+    if (directOcaTarget) {
+      console.log(`🎉 [OCA_DETECTED] One Config Advanced tab detected at: ${directOcaTarget.url}`);
+      return directOcaTarget;
+    }
+
     const homeTarget = pages.find(t =>
       !isSeismicTarget(t) &&
       t.url &&
       t.url.includes('partner.hpe.com') &&
-      (t.url.includes('/group/prp') || t.title.toLowerCase().includes('home - hpe partner portal') || (!t.url.includes('login') && !t.url.includes('sso') && !t.url.includes('auth')))
+      !t.url.includes('login') && !t.url.includes('sso') && !t.url.includes('auth') &&
+      !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
+      (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
     );
     if (homeTarget) {
       console.log(`🎉 [AUTH_SUCCESS] Successfully authenticated into HPE Partner Portal at: ${homeTarget.url}`);
@@ -534,9 +667,27 @@ async function performAutomatedSignIn(partnerTarget) {
  * Handles launching the OCA tool when browser is on Partner Portal tab.
  */
 async function handlePartnerPortalLaunch(partnerTarget, query, options) {
-  console.log(`🌐 Found active HPE Partner Portal tab at: ${partnerTarget.url}`);
+  console.log(`🌐 Found active HPE Partner Portal tab at: ${partnerTarget.url} (title: "${partnerTarget.title}")`);
 
-  const isLoginPage = partnerTarget.url.includes('login') || partnerTarget.url.includes('sso') || partnerTarget.url.includes('auth');
+  let isLoginPage = partnerTarget.url.includes('/web/prp') ||
+                    partnerTarget.url.includes('login') || 
+                    partnerTarget.url.includes('sso') || 
+                    partnerTarget.url.includes('auth') ||
+                    Boolean(partnerTarget.title && /sign\s*in|login|log\s*in/i.test(partnerTarget.title)) ||
+                    (!partnerTarget.url.includes('/group/prp') && !partnerTarget.url.includes('/home'));
+
+  if (!isLoginPage) {
+    try {
+      const probeWs = await connectWS(partnerTarget.webSocketDebuggerUrl);
+      const domCheck = await sendCommand(probeWs, 'Runtime.evaluate', {
+        expression: `Boolean(document.querySelector('#oktaEmailInput, #password-sign-in, #oktaSignInBtn, input[type="password"], form[data-se="o-form"]'))`,
+        returnByValue: true
+      });
+      probeWs.close();
+      if (domCheck?.result?.value) isLoginPage = true;
+    } catch (_) {}
+  }
+
   let activePortalTarget = partnerTarget;
   if (isLoginPage) {
     try {
@@ -555,53 +706,53 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
     t.url.includes('partner.hpe.com') &&
     !t.url.includes('login') &&
     !t.url.includes('sso') &&
-    !t.url.includes('auth')
+    !t.url.includes('auth') &&
+    !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
+    (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
   );
 
+  if (activePortalTarget && activePortalTarget.url && activePortalTarget.url.includes('oca.ext.hpe.com')) {
+    console.log(`⚡ Direct OCA tab active at: ${activePortalTarget.url}. Navigating directly to "${query}"...`);
+    return navigateToOCAChassis(query, { ...options, existingTarget: activePortalTarget });
+  }
+
   const targetToUse = homeTarget || activePortalTarget;
-  console.log(`💡 Launching One Config Advanced from Partner Portal Quick links...`);
-  const partnerWs = await connectWS(targetToUse.webSocketDebuggerUrl);
+  console.log(`💡 Launching One Config Advanced from Partner Portal Quick links / Tools gateway...`);
 
-  const launchExpr = `
-    (function() {
-      // 1. Direct match on Quick links One Config Advanced anchor
-      const qlItems = Array.from(document.querySelectorAll('.hpe-quicklinks__item a, a.hpe-quicklinks__link, #quick-links-807 a, a[href*="eServiceId=187402"]'));
-      const qlOca = qlItems.find(a => (a.innerText || a.textContent || '').toLowerCase().includes('one config advanced'));
-      if (qlOca) {
-        qlOca.click();
-        return { clicked: true, method: 'quicklinks-anchor', text: qlOca.innerText.trim() };
-      }
+  try {
+    const partnerWs = await connectWS(targetToUse.webSocketDebuggerUrl);
+    const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
+      expression: `(() => {
+        const link = Array.from(document.querySelectorAll('a')).find(a =>
+          (a.href || '').includes('eServiceId=187402') ||
+          (a.innerText || '').toLowerCase().includes('one config advanced')
+        );
+        if (link) {
+          link.click();
+          return { clicked: true, text: link.innerText };
+        }
+        return { clicked: false };
+      })()`,
+      userGesture: true,
+      returnByValue: true
+    });
 
-      // 2. Generic match across all links & buttons
-      const allLinks = Array.from(document.querySelectorAll('a, button, li'));
-      const ocaLink = allLinks.find(a => {
-        const text = (a.innerText || a.textContent || '').trim().toLowerCase();
-        return text === 'one config advanced' || text.includes('one config advanced') || (a.href || '').includes('eServiceId=187402');
+    if (launchResult?.result?.value?.clicked) {
+      console.log(`🚀 Clicked One Config Advanced link: ${launchResult.result.value.text}`);
+    } else {
+      console.log(`🧭 Navigating directly to tools-catalog?eServiceId=187402...`);
+      await sendCommand(partnerWs, 'Page.navigate', {
+        url: 'https://partner.hpe.com/group/prp/tools-catalog?eServiceId=187402'
       });
-      if (ocaLink) {
-        ocaLink.click();
-        return { clicked: true, method: 'generic-link', text: ocaLink.innerText?.trim() };
-      }
-
-      return { clicked: false };
-    })()
-  `;
-
-  const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
-    expression: launchExpr,
-    userGesture: true,
-    returnByValue: true
-  });
-  partnerWs.close();
-
-  const wasClicked = launchResult?.result?.value === true || launchResult?.result?.value?.clicked;
-  if (!wasClicked) {
-    throw new Error('One Config Advanced launcher was not found on the authenticated Partner Portal page.');
+    }
+    partnerWs.close();
+  } catch (err) {
+    console.warn(`⚠️ Warning launching OCA: ${err.message}`);
   }
 
   console.log(`⏳ Waiting for newly created OCA tab to initialize with fresh SAML tokens...`);
   const waitStart = Date.now();
-  while (Date.now() - waitStart < 15000) {
+  while (Date.now() - waitStart < 30000) {
     await sleep(1000);
     try {
       const currentTargets = await getPageTargets();
@@ -682,12 +833,15 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   const pages = await getPageTargets();
   await pruneSeismicTabs(pages);
 
-  // 1. Check if active OCA configuration page is already at Menu tab (unless forcing a fresh session)
   const ocaTarget = !options.forceFreshSession ? pages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com')) : null;
   if (ocaTarget) {
-    const isLoggedOutUrl = (ocaTarget.url || '').toLowerCase().includes('ocainternallogin') ||
-      (ocaTarget.url || '').toLowerCase().includes('/logout') ||
-      (ocaTarget.url || '').toLowerCase().includes('login_error');
+    const ocaUrlLower = (ocaTarget.url || '').toLowerCase();
+    const ocaTitleLower = (ocaTarget.title || '').toLowerCase();
+    const isLoggedOutUrl = ocaUrlLower.includes('/logout') ||
+      ocaUrlLower.includes('login_error') ||
+      ocaUrlLower.includes('session_expired') ||
+      ocaUrlLower.includes('ocainternallogin') ||
+      ocaTitleLower.includes('external oca');
     if (isLoggedOutUrl) {
       console.warn(`🚨 [STALE_SESSION] OCA tab [${ocaTarget.id}] is at logged-out/error URL: ${ocaTarget.url}. As OCA cannot be reloaded in-place, closing tab and recovering via Partner Portal...`);
       try { await closePageTarget(ocaTarget.id); } catch (_) {}

@@ -87,7 +87,7 @@ function getOCATarget() {
           
           const isStaleOrLoggedOut = (t) => {
             const url = (t.url || '').toLowerCase();
-            return url.includes('ocainternallogin') || url.includes('/logout') || url.includes('login_error');
+            return url.includes('/logout') || url.includes('login_error') || url.includes('session_expired');
           };
           const ocaPage = nonLocalPages.find(
             t => !isStaleOrLoggedOut(t) && (

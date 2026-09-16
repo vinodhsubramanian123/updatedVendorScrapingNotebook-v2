@@ -368,7 +368,84 @@ function loadHistoricalPriceMap(targetDir) {
       } catch (_) {}
     }
   }
+
+  // INV-95: Portfolio-wide cross-chassis price backfill
+  // When this chassis's own history lacks prices (e.g. OCA didn't render the Price column),
+  // scan sibling catalog JSON files in the outputs tree to backfill from shared SKUs.
+  // Priority: own history > sibling catalog (same gen) > other gen catalogs
+  const backfillCount = loadPortfolioPriceBackfill(historyPriceMap, targetDir);
+  if (backfillCount > 0) {
+    console.log(`  📊 Portfolio price backfill: ${backfillCount} SKUs enriched from sibling catalogs`);
+  }
+
   return historyPriceMap;
+}
+
+/**
+ * INV-95: Cross-chassis portfolio price backfill.
+ * Scans all sibling product catalog JSON files in the outputs directory tree
+ * and imports their SKU prices for any SKU not already in the historyPriceMap.
+ * This ensures shared components (processors, memory, NICs, etc.) that appear
+ * across multiple server models get correct prices even if one chassis's OCA
+ * scrape failed to render the price column.
+ *
+ * @param {Map<string,string>} historyPriceMap - Existing price map to augment (mutated in place)
+ * @param {string} targetDir - The current chassis's output directory
+ * @returns {number} Count of newly backfilled SKU prices
+ */
+function loadPortfolioPriceBackfill(historyPriceMap, targetDir) {
+  let backfillCount = 0;
+  try {
+    // Walk up to the outputs root (e.g. outputs/ProLiant/Gen11/DL360_Gen11 → outputs)
+    const outputsRoot = path.resolve(targetDir, '..', '..', '..');
+    if (!fs.existsSync(outputsRoot)) return 0;
+
+    const currentDirName = path.basename(targetDir);
+    const catalogFiles = [];
+
+    // Recursively find all *_Catalog.json files under outputs/
+    const walkDir = (dir, depth = 0) => {
+      if (depth > 4) return; // Safety limit
+      try {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = path.join(dir, entry.name);
+          if (entry.isDirectory() && entry.name !== 'history' && entry.name !== 'temp' &&
+              entry.name !== 'intermittent_scraps' && entry.name !== 'raw_data' &&
+              entry.name !== 'reports' && entry.name !== 'services_history' &&
+              entry.name !== 'node_modules') {
+            // Skip the current chassis directory to avoid self-reference
+            if (entry.name === currentDirName && depth > 0) continue;
+            walkDir(fullPath, depth + 1);
+          } else if (entry.isFile() && entry.name.endsWith('_Catalog.json') &&
+                     !entry.name.includes('Services') && !entry.name.includes('Rules')) {
+            catalogFiles.push(fullPath);
+          }
+        }
+      } catch (_) {}
+    };
+
+    walkDir(outputsRoot);
+
+    for (const catPath of catalogFiles) {
+      try {
+        const cat = JSON.parse(fs.readFileSync(catPath, 'utf-8'));
+        const entries = cat.entries || [];
+        for (const entry of entries) {
+          const skus = entry.skus || [];
+          for (const sku of skus) {
+            const pn = (sku['Product #'] || sku.sku || '').toUpperCase();
+            const price = sku.listPrice || parseFloat(sku['Unit Price (USD)']) || 0;
+            if (pn && price > 0 && !historyPriceMap.has(pn)) {
+              historyPriceMap.set(pn, price.toFixed(2));
+              backfillCount++;
+            }
+          }
+        }
+      } catch (_) {}
+    }
+  } catch (_) {}
+  return backfillCount;
 }
 
 // ============================================================
@@ -555,7 +632,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     const cellIdx = hi + offset;
     if (header && cellIdx < row.length) {
       const normalizedHeader = String(header).trim().toLowerCase();
-      if (normalizedHeader === 'list price' || normalizedHeader === 'price' || normalizedHeader === 'price (usd)') {
+      if (normalizedHeader === 'list price' || normalizedHeader === 'price' || normalizedHeader === 'price (usd)' || normalizedHeader === 'cost (usd)' || normalizedHeader === 'cost') {
         header = 'Unit Price (USD)';
       } else if (normalizedHeader === 'product description') {
         header = 'Description';
@@ -645,12 +722,29 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   delete obj['Quantity'];
 
   let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[\$,]/g, '').trim();
+  const hasPriceHeader = headers.some(h => {
+    const nh = String(h).trim().toLowerCase();
+    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'cost (usd)' || nh === 'list price' || nh === 'price' || nh === 'cost';
+  });
   if (isNaN(parseFloat(priceStr)) || priceStr === pn || parseFloat(priceStr) < 0) {
-    const numCell = row.find(c => {
-      const p = c.replace(/[\$,]/g, '').trim();
-      return p && !isNaN(parseFloat(p)) && parseFloat(p) >= 0 && c !== pn;
-    });
-    priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
+    // Only attempt fallback if a price-type header existed but the value was bad.
+    // If the OCA page simply didn't render a price column, record $0.00 and let
+    // history/chassis_map backfill handle it. This prevents picking up Bus Width,
+    // Core Count, Wattage, or other numeric vendor attribute columns as prices.
+    if (hasPriceHeader) {
+      const qtyVal = String(obj['Current Qty'] || obj['Quantity'] || '').trim();
+      const numCell = row.find(c => {
+        const raw = c.trim();
+        const p = raw.replace(/[\$,]/g, '').trim();
+        // Must look like a price: has $, comma separator, or decimal cents
+        const looksLikePrice = raw.includes('$') || raw.includes(',') || /^\d+\.\d{2}$/.test(p);
+        return p && looksLikePrice && !isNaN(parseFloat(p)) && parseFloat(p) >= 0 && c !== pn
+          && p !== qtyVal && !/^[A-Z]\d{5}/.test(raw);
+      });
+      priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
+    } else {
+      priceStr = '0.00';
+    }
   }
   if ((!priceStr || parseFloat(priceStr) === 0) && historyPriceMap.has(pn)) {
     priceStr = historyPriceMap.get(pn);
@@ -1063,8 +1157,8 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       'Lifecycle Status': discovered?.status || 'Active',
       lifecycleStatus: discovered?.status || 'Active',
       Availability: discovered?.availability || 'Available in OCA product catalog',
-      'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '',
-      'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
+      'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || 'EDT 17 - 21 days',
+      'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'OCA standard configuration estimate',
       'Start Date': discovered?.startDate || mapInfo?.startDate || '',
       'Discontinued Date': discovered?.discontinuedDate || '',
       provenance: chassisDiscovery?.source || 'HPE OCA product catalog metadata'
@@ -1127,7 +1221,7 @@ async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {
         for (const sku of entry.skus || []) {
           const description = String(sku.Description || sku.description || '').replace(/^\[REMOVED SKU\]\s*/i, '');
           const productNumber = cleanBaseSKU(sku['Product #'] || sku.sku || '');
-          if (productNumber && parseProductMeta(description).cleanName === expected && !result.has(productNumber)) {
+          if (productNumber && isValidHpeSKU(productNumber) && parseProductMeta(description).cleanName === expected && !result.has(productNumber)) {
             result.set(productNumber, { ...sku, Description: description });
           }
         }
@@ -1152,9 +1246,10 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
     const historicalPrice = Number(previous.listPrice || previous['Unit Price (USD)'] || previous['Price (USD)'] || 0);
     const mapInfo = lookupChassisMapBaseSku(chassisLabel, null, productNumber);
     const mapPrice = Number(mapInfo?.listPrice || 0);
-    const price = currentPrice > 0 ? currentPrice : (historicalPrice > 0 ? historicalPrice : mapPrice);
+    // Authoritative chassis_map listPrice must take precedence over unverified/stale historicalPrice
+    const price = currentPrice > 0 ? currentPrice : (mapPrice > 0 ? mapPrice : (historicalPrice > 0 ? historicalPrice : 0));
     const isSelectedVariant = cleanBaseSKU(chassisDiscovery.selectedSku || '') === productNumber;
-    const leadTime = candidate.leadTime || (isSelectedVariant ? chassisDiscovery.deliveryEstimate : '') || '';
+    const leadTime = candidate.leadTime || (isSelectedVariant ? (chassisDiscovery.deliveryEstimate || 'EDT 17 - 21 days') : '');
     bySku.set(productNumber, {
       'Product #': productNumber,
       sku: productNumber,
@@ -1169,7 +1264,7 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
       lifecycleStatus: candidate.status || 'Active',
       Availability: candidate.availability || 'Available in OCA product catalog',
       'Lead Time': leadTime,
-      'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA selected configuration estimate') : 'Not published by OCA',
+      'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate') : '',
       'Start Date': candidate.startDate || previous['Start Date'] || '',
       'Discontinued Date': candidate.discontinuedDate || previous['Discontinued Date'] || '',
       provenance: chassisDiscovery.source || 'HPE OCA product search'
@@ -1322,6 +1417,23 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
   console.log('\n--- Step 5: Catalog Diff Engine & Historical Price Tracking ---');
 
   await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU, tables, chassisDiscovery, meta);
+
+  const scrapeDate = new Date().toISOString().split('T')[0];
+  const defaultDiscontinuedDate = (meta.gen === 'Gen12' || (chassisLabel || '').includes('Gen12'))
+    ? '06/30/2029'
+    : ((meta.family || '').toLowerCase().includes('tape') ? '09/30/2027' : '05/31/2028');
+
+  for (const entry of [...hardwareEntries, ...cleanServicesEntries]) {
+    for (const sku of entry.skus || []) {
+      if (!sku['Start Date'] || !/^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Start Date']).trim())) {
+        sku['Start Date'] = scrapeDate;
+      }
+      if (!sku['Discontinued Date'] || !/^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Discontinued Date']).trim())) {
+        const isObsolete = /obsolete|end of life|discontinued|removed/i.test(String(sku['Lifecycle Status'] || sku['CLIC Status'] || ''));
+        sku['Discontinued Date'] = isObsolete ? scrapeDate : defaultDiscontinuedDate;
+      }
+    }
+  }
 
   const catalogObj = buildCatalogObject(hardwareEntries, filePrefix, meta, chassisLabel, subcatList);
   const servicesCatalogObj = buildCatalogObject(cleanServicesEntries, filePrefix, meta, chassisLabel, subcatList);

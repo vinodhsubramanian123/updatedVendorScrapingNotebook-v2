@@ -212,6 +212,60 @@ async function auditAndPromoteStaging({
   }
 }
 
+function resolveExpectedProductIdentity(targetChassisQuery, notebookConfig) {
+  let expectedIdentity = resolveProductIdentity(targetChassisQuery, notebookConfig);
+  if (!expectedIdentity) {
+    const { inferPillar } = require('../lib/catalog/product_scope.js');
+    const derived = parseProductMeta(targetChassisQuery);
+    if (derived && derived.family && derived.gen) {
+      expectedIdentity = {
+        vendor: 'HPE',
+        pillar: inferPillar(derived.family),
+        family: derived.family,
+        generation: derived.gen,
+        productId: derived.cleanName
+      };
+    }
+  }
+  return expectedIdentity;
+}
+
+function resolveBaseSkuForProduct(meta, chassisDiscovery, profile) {
+  let baseSku = null;
+  try {
+    const cmap = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/chassis_map.json'), 'utf8'));
+    const byFam = cmap.chassis_base_skus_by_family_gen || {};
+    const cleanNorm = (meta.cleanName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    for (const [k, grp] of Object.entries(byFam)) {
+      const normKey = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const normModel = (grp.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if ((normKey && cleanNorm.includes(normKey)) || (normModel && cleanNorm.includes(normModel))) {
+        const first = Object.keys(grp.skus || {})[0];
+        if (first) { baseSku = first; break; }
+      }
+    }
+    if (!baseSku && cmap.chassis_base_skus) {
+      for (const [skuId, info] of Object.entries(cmap.chassis_base_skus)) {
+        const normModel = (info.model || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const famMatch = (info.family || '').toLowerCase() === (meta?.family || '').toLowerCase();
+        const genMatch = (info.gen || '').toLowerCase() === (meta?.gen || '').toLowerCase();
+        if (famMatch && genMatch && normModel && cleanNorm.includes(normModel)) {
+          baseSku = skuId;
+          break;
+        }
+      }
+    }
+  } catch (_) {}
+
+  if (!baseSku) {
+    baseSku = profile?.baseSku || meta?.baseSku || chassisDiscovery?.selectedSku || null;
+  }
+  if (!baseSku) {
+    throw new Error(`[Guardrail INV-24/INV-25] Unable to dynamically resolve base chassis SKU for "${meta.cleanName}". Zero-hardcoding guardrail forbids falling back to another product generation.`);
+  }
+  return baseSku;
+}
+
 async function main() {
   const pipelineStart = Date.now();
   const logger = require('../lib/system/pipeline_logger.js');
@@ -481,11 +535,11 @@ async function main() {
 
     if (targetChassisQuery) {
       const notebookConfig = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf8'));
-      const expectedIdentity = resolveProductIdentity(targetChassisQuery, notebookConfig);
-      const observedIdentity = resolveProductIdentity(meta.cleanName, notebookConfig);
+      const expectedIdentity = resolveExpectedProductIdentity(targetChassisQuery, notebookConfig);
       if (!expectedIdentity) {
         throw new Error(`Product identity gate: requested product "${targetChassisQuery}" is not registered.`);
       }
+      const observedIdentity = resolveProductIdentity(meta.cleanName, notebookConfig) || { productId: meta.cleanName };
       if (!observedIdentity || normalize(observedIdentity.productId) !== normalize(expectedIdentity.productId)) {
         throw new Error(`Product identity gate: requested ${expectedIdentity.productId}, but active OCA page resolved as ${meta.cleanName}. No data was promoted.`);
       }
@@ -629,20 +683,7 @@ async function main() {
         }
       }
 
-      let baseSku = 'P68217-B21';
-      try {
-        const cmap = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/chassis_map.json'), 'utf8'));
-        const byFam = cmap.chassis_base_skus_by_family_gen || {};
-        const cleanNorm = (meta.cleanName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        for (const [k, grp] of Object.entries(byFam)) {
-          const normKey = k.toLowerCase().replace(/[^a-z0-9]/g, '');
-          const normModel = (grp.modelFamily || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-          if ((normKey && cleanNorm.includes(normKey)) || (normModel && cleanNorm.includes(normModel))) {
-            const first = Object.keys(grp.skus || {})[0];
-            if (first) { baseSku = first; break; }
-          }
-        }
-      } catch (_) {}
+      const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
 
       const edtMatch = fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
       const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : 'EDT 17 - 21 days';

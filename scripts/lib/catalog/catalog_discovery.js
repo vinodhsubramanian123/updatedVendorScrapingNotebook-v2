@@ -34,6 +34,7 @@ function getChassisMap() {
     "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
     "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "baseSku": "R0Q21A", "model": "Alletra Storage System" },
     "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "baseSku": "P76706-B21", "model": "DL380a Gen12" },
+    "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
     "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "baseSku": "P71964-B21", "model": "DL145 Gen11" }
   };
 
@@ -123,6 +124,7 @@ function detectChassisVariant(items, overrideVariant = '') {
     if (/\bdl\s*384\b/i.test(desc) || desc.includes('dl384')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*380\s*a\b/i.test(desc) || desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*145\b/i.test(desc) || desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
+    if (/\bdl\s*360\b/i.test(desc) || desc.includes('dl360')) return { ...(chassisMap['DL360_Gen11'] || { family: 'ProLiant', gen: 'Gen11', formFactor: '8SFF', model: 'DL360 Gen11', baseSku: 'P52499-B21' }), id: 'DL360_Gen11' };
     if (/\bdl\s*580\b/i.test(desc) || desc.includes('dl580')) return { ...chassisMap['DL580_Gen12'], id: 'DL580_Gen12' };
     if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen12') || desc.includes('gen 12'))) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
     if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen11') || desc.includes('gen 11'))) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };

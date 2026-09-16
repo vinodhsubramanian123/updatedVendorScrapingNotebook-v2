@@ -143,7 +143,9 @@ async function runTests() {
       ws.on('message', msg => {
         const req = JSON.parse(msg);
         if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && (req.params.expression.includes('ocaLink') || req.params.expression.includes('One Config Advanced'))) {
+          if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: false } } }));
+          } else if (req.params.expression && (req.params.expression.toLowerCase().includes('one config advanced') || req.params.expression.includes('187402') || req.params.expression.includes('ocaLink'))) {
             launchCalled = true;
             // Simulate that launching opens OCA page
             mockTargets.unshift({
@@ -153,10 +155,12 @@ async function runTests() {
               title: 'OCA Menu',
               webSocketDebuggerUrl: 'ws://localhost:18999'
             });
-            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true } } } }));
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true, text: 'One Config Advanced', launched: true } } } }));
           } else {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
           }
+        } else {
+          ws.send(JSON.stringify({ id: req.id, result: {} }));
         }
       });
       ws.on('close', () => {
@@ -239,7 +243,9 @@ async function runTests() {
         if (req.method === 'Page.reload') {
           ws.send(JSON.stringify({ id: req.id, result: {} }));
         } else if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && (req.params.expression.includes('ocaLink') || req.params.expression.includes('One Config Advanced'))) {
+          if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: false } } }));
+          } else if (req.params.expression && (req.params.expression.toLowerCase().includes('one config advanced') || req.params.expression.includes('187402') || req.params.expression.includes('ocaLink'))) {
             freshTabSpawned = true;
             mockTargets.unshift({
               type: 'page',
@@ -248,10 +254,12 @@ async function runTests() {
               title: 'OCA Menu',
               webSocketDebuggerUrl: 'ws://localhost:18999'
             });
-            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true } } } }));
+            ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true, text: 'One Config Advanced', launched: true } } } }));
           } else {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
           }
+        } else {
+          ws.send(JSON.stringify({ id: req.id, result: {} }));
         }
       });
       ws.on('close', () => {

@@ -72,7 +72,7 @@
           "family": "ProLiant",
           "gen": "Gen12",
           "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
-          "listPrice": 9850,
+          "listPrice": 21407,
           "optionType": "CTO"
         },
         "P71411-B21": {
@@ -82,6 +82,40 @@
           "gen": "Gen12",
           "description": "HPE ProLiant Compute DL384 Gen12 Configure-to-order Server",
           "listPrice": 16391,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "ProLiant_DL360_Gen11": {
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "modelFamily": "DL360 Gen11",
+      "skus": {
+        "P52499-B21": {
+          "model": "DL360 Gen11 8SFF",
+          "formFactor": "8SFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL360 Gen11 8SFF NC CTO Server",
+          "listPrice": 5045,
+          "optionType": "CTO"
+        },
+        "P52498-B21": {
+          "model": "DL360 Gen11 4LFF",
+          "formFactor": "4LFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL360 Gen11 4LFF NC CTO Server",
+          "listPrice": 5045,
+          "optionType": "CTO"
+        },
+        "P52500-B21": {
+          "model": "DL360 Gen11 20EDSFF",
+          "formFactor": "20EDSFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL360 Gen11 20EDSFF CTO Server",
+          "listPrice": 5045,
           "optionType": "CTO"
         }
       }
@@ -393,7 +427,7 @@
       "family": "ProLiant",
       "gen": "Gen12",
       "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
-      "listPrice": 9850,
+      "listPrice": 21407,
       "optionType": "CTO"
     },
     "P71411-B21": {

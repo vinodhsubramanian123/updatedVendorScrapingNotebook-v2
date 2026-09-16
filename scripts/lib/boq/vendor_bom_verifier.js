@@ -225,9 +225,36 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  const resolvedCatalogDir = catalogDir
-    ? path.resolve(catalogDir)
-    : path.resolve(__dirname, '..', '..', '..', 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12');
+  let resolvedCatalogDir = catalogDir ? path.resolve(catalogDir) : null;
+  if (!resolvedCatalogDir) {
+    // Attempt auto-resolution from vendor or customer filename
+    const candidateName = path.basename(customerFile || vendorFile);
+    const match = candidateName.match(/(DL\d{3}[a-z]?_Gen\d{2}|DL\d{3}[a-z]?|SY\d{3}|MSL\d{4}|GX\d{4}|Alletra)/i);
+    if (match) {
+      const chassisName = match[1];
+      const outputsDir = path.resolve(__dirname, '..', '..', '..', 'outputs');
+      for (const fam of ['ProLiant', 'Synergy', 'StoreEver', 'Cray', 'Alletra']) {
+        const famDir = path.join(outputsDir, fam);
+        if (!fs.existsSync(famDir)) continue;
+        for (const gen of fs.readdirSync(famDir)) {
+          const genDir = path.join(famDir, gen);
+          if (!fs.existsSync(genDir) || !fs.statSync(genDir).isDirectory()) continue;
+          for (const mod of fs.readdirSync(genDir)) {
+            if (mod.toLowerCase().includes(chassisName.toLowerCase()) || chassisName.toLowerCase().includes(mod.toLowerCase())) {
+              resolvedCatalogDir = path.join(genDir, mod);
+              break;
+            }
+          }
+          if (resolvedCatalogDir) break;
+        }
+        if (resolvedCatalogDir) break;
+      }
+    }
+  }
+  if (!resolvedCatalogDir) {
+    console.error('Error: Please specify target catalog directory via --catalog <dir> (e.g. --catalog outputs/ProLiant/Gen11/DL360_Gen11). Zero-hardcoding guardrail forbids defaulting.');
+    process.exit(1);
+  }
 
   let proposedSolution = null;
   if (customerFile && fs.existsSync(customerFile)) {

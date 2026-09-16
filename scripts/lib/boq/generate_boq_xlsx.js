@@ -701,7 +701,7 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
  */
 function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassisId = '', options = {}) {
   const wb = XLSX.utils.book_new();
-  const chassis = chassisId || evalResults.chassis || evalResults.chassisVariant || 'DL380_Gen12';
+  const chassis = chassisId || evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis';
   const serverCount = evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
   const styles = _getWorkbookStyles();
 
@@ -894,7 +894,7 @@ if (require.main === module) {
       generatePartnerPortalUploadBOM(evalResults, outPath);
       console.log(`\n✅ Generated Partner Portal Upload Workbook: ${outPath}`);
     } else {
-      generateProfessionalBOQ(evalResults, outPath, evalResults.chassis || 'DL380_Gen12', rankTier);
+      generateProfessionalBOQ(evalResults, outPath, evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis', rankTier);
       console.log(`\n✅ Generated Executive BOQ Workbook (Rank ${rankTier}): ${outPath}`);
     }
   } catch (err) {

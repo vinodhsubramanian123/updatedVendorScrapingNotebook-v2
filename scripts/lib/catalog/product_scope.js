@@ -21,6 +21,8 @@ function baseProductId(value) {
 }
 
 const PRODUCT_ALIASES = {
+  'dl360': 'DL360_Gen11',
+  'dl360gen11': 'DL360_Gen11',
   'dl380a': 'DL380a_Gen12',
   'dl380agen12': 'DL380a_Gen12',
   'dl145': 'DL145_Gen11',

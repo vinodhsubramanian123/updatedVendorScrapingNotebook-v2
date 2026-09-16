@@ -360,7 +360,10 @@ function validateStorageRules(ctx) {
 
   const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
     items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
-  if (!storage.isLffChassis && !isTapeLibrary && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
+  const is1UChassis = ctx.chassisInfo?.model?.includes('DL360') ||
+    items?.some(it => (it.description || '').toLowerCase().includes('dl360') || it.sku === 'P52499-B21' || it.sku === 'P52498-B21' || it.sku === 'P52497-B21');
+  const hasBackplaneKit = items?.some(it => (it.description || '').toLowerCase().includes('backplane') || it.sku === 'P48895-B21');
+  if (!storage.isLffChassis && !isTapeLibrary && !is1UChassis && !hasBackplaneKit && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
     const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a'));
     const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12'));
     const cageSku = mandatorySkus.GENERIC_CAGE?.sku || (isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'));

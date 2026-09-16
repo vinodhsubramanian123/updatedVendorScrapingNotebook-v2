@@ -643,7 +643,17 @@ if (require.main === module) {
 
   const filePath = path.resolve(args[0]);
   const chIdx = args.indexOf('--chassis');
-  const chassisName = chIdx !== -1 && args[chIdx + 1] ? args[chIdx + 1] : 'DL380_Gen12';
+  let chassisName = chIdx !== -1 && args[chIdx + 1] ? args[chIdx + 1] : null;
+  if (!chassisName) {
+    // Attempt inference from file path
+    const fileBase = path.basename(filePath);
+    const match = fileBase.match(/(DL\d{3}[a-z]?_Gen\d{2}|DL\d{3}[a-z]?|SY\d{3}|MSL\d{4}|GX\d{4}|Alletra)/i);
+    chassisName = match ? match[1] : null;
+  }
+  if (!chassisName) {
+    console.error('Error: Please specify target chassis via --chassis <name> (e.g. --chassis DL360_Gen11). Zero-hardcoding guardrail forbids defaulting.');
+    process.exit(1);
+  }
   const jsonOut = args.includes('--json');
 
   try {

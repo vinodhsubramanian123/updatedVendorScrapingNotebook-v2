@@ -51,6 +51,41 @@
         "combined": "d745cdd1b9ee46ab552b7d9c2250674093cf7541341d3dda2cf4d06ec57fa26d"
       }
     },
+    "DL360_Gen11": {
+      "notebookId": "528d2896-92ac-4c85-98c3-6405b4925b0c",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "canonicalDriveEnabled": true,
+      "driveSheetId": "1f1p831aZa-dfGb--58xrJB3l0TEAjU3t-mnPSOmjBuM",
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1f1p831aZa-dfGb--58xrJB3l0TEAjU3t-mnPSOmjBuM/edit",
+      "driveSourceId": "7a7cc41b-263c-46ca-92f3-6f227f2d3557",
+      "lastSyncedSourceName": "DL360_Gen11 Canonical Knowledge",
+      "lastSyncedSourceId": "7a7cc41b-263c-46ca-92f3-6f227f2d3557",
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "queryEnabled": true,
+      "trustedSourceIds": [
+        "1f999bdc-f838-4e24-b142-23b70dfc98bb",
+        "67afb299-6e94-4a8c-b7fb-2af499d5d4bf",
+        "7a7cc41b-263c-46ca-92f3-6f227f2d3557",
+        "71b7d4e0-c917-4bef-b372-5caec16c9c78"
+      ],
+      "officialSourceIds": [
+        "1f999bdc-f838-4e24-b142-23b70dfc98bb"
+      ],
+      "certifiedCatalogSourceIds": [
+        "7a7cc41b-263c-46ca-92f3-6f227f2d3557"
+      ],
+      "quarantinedSourceIds": [],
+      "verifiedLearningSourceIds": [],
+      "canonicalKnowledgeSourceIds": [
+        "67afb299-6e94-4a8c-b7fb-2af499d5d4bf",
+        "7a7cc41b-263c-46ca-92f3-6f227f2d3557"
+      ],
+      "lastSyncedAt": "2026-09-16T17:48:00.000Z",
+      "cloudSyncState": "VERIFIED"
+    },
     "DL380_Gen11": {
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
       "vendor": "HPE",
