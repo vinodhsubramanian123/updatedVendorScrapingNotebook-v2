@@ -206,3 +206,30 @@ This is the current engineering status following the completion and verification
   - All 970 functions in 253 files passing cyclomatic complexity gate ($CC \le 135$, peak $CC = 125$).
   - 0 lint warnings/errors across 110 files (`oxlint`).
 
+---
+
+## Phase 12 — Graphify Semantic Graph Setup, Universal Pre-Approval, Scraped Pre-Flight Gate & Strategy Double-Check (Certified 2026-09-17)
+
+- **Universal MCP Pre-Authorization & Permanent Zero-Waiting Blanket Policy**:
+  - Granted 100% unconditional permanent blanket auto-approval for all MCP tools across `jules`, `gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, and `visualization` in `~/.gemini/config/config.json`.
+  - Zero waiting or permission pauses; fully autonomous execution.
+- **Graphify Semantic Dependency Graph Setup on Windows**:
+  - Identified root cause of missing `graphify-mcp` (bare `uv tool install graphifyy` omitted `[mcp]` extras).
+  - Re-installed via `uv tool install "graphifyy[mcp]" --force` and exported 10 MCP JSON schemas to `~/.gemini/antigravity-ide/mcp/graphify/`.
+  - Dynamic AST graph maps 5,255 nodes, 8,350 edges, and 346 communities across 757 source files.
+- **DL360 Gen11 Pricing Root Causes & Portfolio Price Backfill (`INV-94`, `INV-95`)**:
+  - Fixed DOM column mapping (`"Cost (USD)"`), quantity counter fallback pollution, and chassis base price mapping (`$5,045` for `P52499-B21`).
+  - Implemented `loadPortfolioPriceBackfill()` restoring DL360 Gen11 hardware pricing from 3 SKUs (0.4%) to **619 SKUs (88.1%)**.
+- **Scraped-Catalog Pre-Flight Certification Gate (`INV-96`)**:
+  - Implemented `isCatalogCertified(chassisId, outputsRoot)` in `catalog_discovery.js`.
+  - Step 0 in `eval_boq.js` checks that target chassis directory exists, companion `*_Catalog.json` has `totalUniqueSKUs > 0`, and `*_OCA_Catalog.xlsx` is present before executing physical math. Halts un-scraped chassis early with `[ERR_UNSCRAPED_SOLUTION]`.
+- **Autonomous Multi-Rank Strategy Double-Check (`INV-97`)**:
+  - Enhanced `executeEphemeralSourceValidation` in `eval_boq.js` to autonomously attach synthesized multi-rank strategy CSV to product NotebookLM notebooks, verify physical rules across 7 aspects, and detach per `INV-24`.
+- **Elimination of Silent Hardcoded Fallbacks (`INV-98`)**:
+  - Purged silent `'DL380_Gen12'` fallbacks in `route_query.js`, `eval_output_serializer.js`, `knowledge_sync.js`, and `running_knowledge_sync.js`.
+  - Fixed Synergy 480 Gen12 compute blade detection vs generic switch module in `catalog_discovery.js`.
+- **Full Test Matrix Certification**:
+  - **163/163 suites PASSED (100.0%)** (97 Unit, 40 Chaos, 26 Integration).
+  - 0 lint warnings/errors across 110 files (`oxlint`).
+  - All 976 functions within cyclomatic complexity gate ($CC \le 135$).
+  - Clean git status synchronized to `origin/main`.

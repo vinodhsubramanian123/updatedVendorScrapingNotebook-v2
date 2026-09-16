@@ -1439,11 +1439,41 @@ Rebuilding the graph via `npm run update:graph` parsed 757 source files into:
 - AI agents MUST NOT read full source files when investigating unfamiliar subsystem boundaries.
 - Query the graph first: `graphify query "<question>" --budget 1500` performs a bounded BFS traversal across AST dependency subgraphs, returning precise function signatures, call paths, and file references within token budgets.
 
+---
 
+## 97. Pre-Flight Scraped Solution Certification Gate, Multi-Rank Strategy Double-Check, and Hardcoding Elimination (INV-96, INV-97, INV-98)
 
+### 1. The Core Failure Modes & Why Previous Agentic Flows Were Misled:
+1. **Evaluating Un-Scraped Chassis:**
+   - When customer BOQ requests specified a chassis model that was not yet scraped or unmapped in `chassis_map.json`, the evaluator previously proceeded anyway with `catalogData = null` or defaulted to a fallback.
+   - Downstream physical aspect checkers attempted rule validation against nonexistent catalogs, producing misleading compliance scores, false positives, or silent failures.
+2. **Post-Synthesis Strategy Blindspot:**
+   - Previous NotebookLM RAG grounding strictly verified the customer's raw input BOQ. When the 5-Tier Strategy Synthesizer injected necessary physical components (e.g. SAS Expander `P48835-B21`, Tri-Mode cables `P48918-B21`, Primary Riser cables `P56073-B21`, high-wattage power supplies), these newly synthesized solutions were never double-checked against QuickSpecs before exporting deliverables.
+3. **Silent Hardcoded Fallbacks to `'DL380_Gen12'`:**
+   - Multiple helper scripts silently defaulted to `'DL380_Gen12'` when chassis identity was unmapped. This scattered reasoning and caused rules meant for DL380 Gen12 (such as DDR5-6400 or Xeon 6700P) to evaluate against DL360 or Synergy blades.
+4. **Sub-string Ambiguity in Chassis Detection:**
+   - Server descriptions containing `Synergy 480` matched generic `synergy` tokens and resolved to `SY100Gb_F32_Module` (an interconnect switch) instead of `SY480_Gen12` (the compute blade).
 
+### 2. Architectural Resolutions & Implemented Invariants:
 
+#### `INV-96: Scraped-Catalog Pre-Flight Certification Gate`
+- **Rule**: Before executing physical math checks or synthesizing strategy matrices, `scripts/evaluators/eval_boq.js` MUST call `isCatalogCertified(chassisId, outputsRoot)`.
+- **Validation Criteria**:
+  1. The catalog directory `outputs/{Family}/{Gen}/{Model}/` must exist on disk.
+  2. The companion catalog JSON (`*_Catalog.json`) must exist and contain `totalUniqueSKUs > 0`.
+  3. The 22-sheet Excel catalog workbook (`*_OCA_Catalog.xlsx`) must exist and be accessible.
+- **Fail-Fast Behavior**: If a catalog is un-scraped, evaluation halts immediately with `[ERR_UNSCRAPED_SOLUTION]` and provides the exact CLI command to scrape the product (`node scripts/scrapers/scrape_oca_solution.js --family ... --model ...`).
 
+#### `INV-97: Autonomous Multi-Rank Strategy Double-Check via Ephemeral NotebookLM Grounding`
+- **Rule**: When cloud RAG is enabled, `eval_boq.js` autonomously executes `executeEphemeralSourceValidation` on the synthesized 5-Tier Strategy Matrix.
+- **Protocol**:
+  1. Exports an ephemeral solution manifest containing the proposed Rank 1 through Rank 5 builds.
+  2. Temporarily attaches the manifest to the product NotebookLM notebook via `source_add`.
+  3. Queries across all 7 physical aspects to verify that synthesized expanders, risers, and cables comply with QuickSpecs guidelines.
+  4. Immediately detaches the source to strictly adhere to Customer BOQ Isolation (`INV-24`).
+  5. Records the full verification ledger in `evalResults.solutionDoubleCheck`.
 
-
-
+#### `INV-98: Generation-Isolated vs Universal Knowledge Scoping`
+- **Rule**: Knowledge Deltas are strictly segregated:
+  1. `CHASSIS_SPECIFIC` deltas reside exclusively in `outputs/{Family}/{Gen}/{Model}/history/catalog_deltas.json` to prevent cross-generation contamination (e.g. DDR4 vs DDR5, Gen11 vs Gen12 PCIe risers).
+  2. `UNIVERSAL_CROSS_CHASSIS` rules reside in `outputs/history/master_universal_knowledge_charter.md` and cover platform-wide truths (e.g. FIO `#0D1` tagging, redundant PSU matching, minimum OS core licensing).
