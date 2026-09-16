@@ -94,7 +94,8 @@ Every solution column presented to the user must display:
 - Unit List Price (USD)
 - Extended List Price (USD)
 - **Total CapEx Budget** clearly summed at the bottom.
-- If a price cannot be resolved from certified history, the total is flagged as `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33`. Silent $0 totals are forbidden.
+- If a price cannot be resolved from certified history, the total is flagged as `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33`. Silent $0 totals are strictly forbidden.
+- **Price Sanity & Portfolio Backfill (`INV-94`, `INV-95`)**: Extracted component prices are guarded against table counter pollution (`INV-94`). Catalogs with OCA pricing withholding are automatically backfilled from verified same-generation sibling server catalogs (`INV-95`), ensuring comprehensive pricing coverage across all matrix ranks.
 
 ---
 

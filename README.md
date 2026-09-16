@@ -49,7 +49,7 @@ The engine is certified cross-platform across **Linux Mint / Ubuntu**, **Windows
 | **Python (>=3.10)** | `sudo apt-get install -y python3 python3-pip` | `winget install Python.Python.3.12` | `brew install python@3.11` (or system python3) |
 | **Google Chrome** | `wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i ...` | Standard installer (`C:\Program Files\Google\Chrome`) | `brew install --cask google-chrome` (`/Applications/Google Chrome.app`) |
 | **CLI Tools (`uv`)** | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` | `brew install uv` (or `curl -LsSf https://astral.sh/uv/install.sh \| sh`) |
-| **NotebookLM & Graphify** | `uv tool install notebooklm-mcp-cli && uv tool install graphifyy` | `uv tool install notebooklm-mcp-cli` & `uv tool install graphifyy` | `uv tool install notebooklm-mcp-cli` & `uv tool install graphifyy` |
+| **NotebookLM & Graphify** | `uv tool install notebooklm-mcp-cli && uv tool install "graphifyy[mcp]"` | `uv tool install notebooklm-mcp-cli` & `uv tool install "graphifyy[mcp]"` | `uv tool install notebooklm-mcp-cli` & `uv tool install "graphifyy[mcp]"` |
 
 ---
 

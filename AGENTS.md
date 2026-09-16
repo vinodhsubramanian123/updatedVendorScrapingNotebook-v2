@@ -508,6 +508,19 @@ The system leverages Google Jules for background code review, test generation, a
         - *Isolate Unbuildable Errors*: Hard build-breaking errors (e.g., missing cables, slot oversubscriptions, form-factor gates) are extracted with exact Rule# and Product#.
         - *Map Divergent Resolution Paths*: When CLIC Advice or physical topology offers multiple valid remedies (e.g., Path A: SAS Expander `P48835-B21` vs. Path B: 2nd RAID Controller `P48824-B21`), the engine preserves both options as divergent branches feeding the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget) based on closeness to original customer BOQ and architectural elegance.
 
+85. **Price Sanity, Clean Header Parsing & Anti-Fabrication Guardrail (`INV-94`)**:
+    - **Header Mapping & Cost Normalization**: `parseSingleTableRow` in `dom_extract.js` MUST explicitly map variations of cost headers (`cost`, `cost (usd)`, `ext cost`, `extended price`, `price`) to clean numerical prices. It must strictly reject un-parsed status strings, table headers, or blank placeholders.
+    - **Anti-Fabrication & Strict Column Filtering**:
+      - Numerical fallback logic MUST NEVER confuse table quantity columns (e.g. standard order multiples of 1, 2, 4, 8) or SKU-like part numbers with currency prices.
+      - Any price extraction violating quantity-as-price ($1, $2, $4 without FIO kit confirmation) or SKU-as-price (matching `^[A-Z0-9]{6}-[A-Z0-9]{3}$`) must be flagged and rejected by staging audit `verify_excel_tally.js` (Audit 4B).
+    - **Chassis Map Integrity**: Every chassis SKU discovered during scraping (e.g. `P52499-B21`, `P52500-B21`, `P52501-B21` for DL360 Gen11) MUST be mapped in `chassis_map.json` with correct form factor (1U/2U), socket count, and base chassis price.
+
+86. **Cross-Chassis Portfolio Price Backfill Protocol (`INV-95`)**:
+    - **Deterministic Sibling Catalog Scanning**: When a chassis's own raw scrape or price history lacks pricing for shared commodity options (e.g. where WebLogic OCA rendered $0 or cost columns were withheld during scrape), `loadPortfolioPriceBackfill()` in `build_catalog.js` scans sibling product catalogs within the exact same HPE generation family (e.g., DL380 Gen11, DL380a Gen11 for DL360 Gen11).
+    - **Strict Generation Firewall (`INV-48`) Compliance**: Price backfill is strictly restricted to sibling catalogs of the SAME product generation (e.g., Gen11 $\rightarrow$ Gen11 only, Gen12 $\rightarrow$ Gen12 only). Cross-generation price bleeding (e.g. Gen11 DDR4/early DDR5 to Gen12 MRDIMMs) is strictly prohibited.
+    - **Real-Time Provenance & Audit Logging**: Any backfilled SKU price must log the source sibling catalog in build telemetry to preserve 100% auditable price provenance without fabricating numbers.
+
+
 
 
 

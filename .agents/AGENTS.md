@@ -548,6 +548,30 @@ The following 7 invariants were found broken in live code and fixed. Future agen
   5. Click "One Config Advanced" in Quick links (`#quick-links-807 a` / `eServiceId=187402`) to spawn a pristine OCA tab.
   6. Re-navigate the fresh tab to the target chassis Menu tab and resume operations seamlessly without human intervention.
 
+### INV-90: Autonomous Zero-Touch Google Drive ADC Token Health & Weekly Self-Healing Gate
+- **Pattern**: Google OAuth access tokens expire and refresh tokens hit 7-day cliffs on personal desktop clients.
+- **Rule**: Prior to any Google Drive upload or sync, the engine executes `ensureGoogleAuthValid({ autoHeal: true })`. AI agents are 100% pre-authorized to execute autonomous healing (`npm run auth:heal`) without waiting for human approval.
+
+### INV-91: Intra-Category & Presales Mutual Exclusion Protocol
+- **Pattern**: Contradictory components selected within the same category cause immediate CLIC build failures.
+- **Rule**: Enforce mutual exclusion: AC vs -48VDC power supplies; disparate PSU wattages/efficiencies in redundant pairs; Onsite Installation (`HA114A1`) vs Remote Deployment (`HA454A1`); DDR4 vs DDR5; RDIMM vs LRDIMM vs MRDIMM; disparate processor steppings/models across dual sockets.
+
+### INV-92: SaaS Cloud Subscription vs. Physical Hardware Break-Fix Support Delineation Protocol
+- **Pattern**: SaaS software subscriptions (Compute Ops Management) and physical hardware support (Pointnext Tech Care) are distinct operational contracts.
+- **Rule**: Software SaaS subscriptions cannot substitute for physical server break-fix warranty. A solution containing SaaS software without hardware break-fix support must emit an advisory notice.
+
+### INV-93: Tiered Multi-Brain Verification & CLIC Advice Divergent Multi-Path Resolution Protocol
+- **Pattern**: CLIC Advice and physical topology often allow multiple valid buildable remedies (e.g. SAS Expander vs 2nd RAID Controller).
+- **Rule**: Warnings are separated from unbuildable errors. When multiple valid resolution paths exist, both branches are preserved as divergent options feeding the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget).
+
+### INV-94: Price Sanity, Clean Header Parsing & Anti-Fabrication Guardrail
+- **Pattern**: Incomplete table header mapping in WebLogic OCA caused "cost (usd)" to be unmapped, and numeric fallbacks occasionally mistook order quantities (e.g. 1, 2) or part numbers as prices.
+- **Rule**: `parseSingleTableRow` in `dom_extract.js` explicitly maps all cost header variants (`cost`, `cost (usd)`, `ext cost`, `extended price`, `price`) to numeric prices. Fallbacks strictly reject quantities and SKU-like strings. Staging audit `verify_excel_tally.js` fails hard if quantity-as-price or SKU-as-price violations are found.
+
+### INV-95: Cross-Chassis Portfolio Price Backfill Protocol
+- **Pattern**: When a newly scraped chassis has unrendered prices for shared commodity components (e.g. DL360 Gen11 where WebLogic OCA rendered $0), but sibling products of the exact same HPE generation have verified historical prices.
+- **Rule**: `loadPortfolioPriceBackfill()` in `build_catalog.js` deterministically scans sibling catalogs in the same generation directory (`outputs/ProLiant/Gen11/`) to backfill prices for shared SKUs (CPUs, DIMMs, drives, NICs, cables, FIO kits). Strictly respects Generation Firewalls (`INV-48`) to prohibit cross-generation bleeding, and logs source catalog provenance in build telemetry.
+
 ---
 
 ## History Directory Hygiene Rules

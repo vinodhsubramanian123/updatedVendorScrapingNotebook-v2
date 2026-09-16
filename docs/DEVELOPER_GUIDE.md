@@ -10,7 +10,7 @@
   - Node.js: `brew install node` (or nvm)
   - Python & uv: `brew install uv` (or `pip3 install uv`)
   - Google Chrome: `brew install --cask google-chrome` (installed in `/Applications/Google Chrome.app`)
-  - Playwright & CLI tools: `uv tool install notebooklm-mcp-cli` & `uv tool install graphifyy`
+  - Playwright & CLI tools: `uv tool install notebooklm-mcp-cli` & `uv tool install "graphifyy[mcp]"`
 
 ### Initial Setup
 ```bash
@@ -22,9 +22,9 @@ npm install
 # 2. Install Playwright Chromium binary (Required for E2E headless tests)
 npx playwright install chromium
 
-# 3. Install CLI tools via uv (or pip install notebooklm-mcp-cli graphifyy)
+# 3. Install CLI tools via uv (or pip install notebooklm-mcp-cli "graphifyy[mcp]")
 uv tool install notebooklm-mcp-cli
-uv tool install graphifyy
+uv tool install "graphifyy[mcp]"
 ```
 
 ### Cross-Machine Autonomous Migration (`npm run restore:env`)
@@ -100,6 +100,35 @@ npm run dev
 | `npm run jules:prs` | Inspect open pull requests on GitHub via native REST API |
 | `npm run jules:prune` | Prune merged remote feature branches from GitHub |
 | `npm run jules:archive` | Audit and archive completed Jules sessions |
+
+### Dynamic Semantic Knowledge Graph (`graphify`)
+To conserve LLM tokens and eliminate brute-force file crawling, the repository maintains an automated AST dependency graph (`graphify-out/graph.json`) tracking 5,200+ nodes, 8,300+ edges, and 340+ modular communities.
+
+#### CLI Commands
+```bash
+# Update the semantic graph after structural changes
+npm run update:graph
+
+# Query God nodes (highest degree centrality hotspots)
+graphify god-nodes
+
+# Display graph stats
+graphify stats
+
+# Semantic BFS query with token budget
+graphify query "How does BOQ evaluation resolve power envelope conflicts?" --budget 1500
+```
+
+#### Graphify Native MCP Tools (Auto-Approved)
+The MCP server `graphify-mcp` exposes 10 tools registered in `~/.gemini/antigravity-ide/mcp/graphify/`:
+- `query_graph`: Natural language AST semantic search over code dependencies.
+- `get_node`: Query details, docstrings, and signatures for a specific module or function.
+- `get_neighbors`: Retrieve incoming and outgoing dependencies for a node.
+- `get_community`: Inspect architectural modules clustered in a community.
+- `god_nodes`: Identify high-risk God nodes and architectural hotspots.
+- `graph_stats`: Return total node, edge, and community statistics.
+- `shortest_path`: Trace dependency paths between two disparate files or classes.
+- `list_prs`, `get_pr_impact`, `triage_prs`: Pull request impact and blast radius assessment.
 
 ---
 
