@@ -21,7 +21,7 @@ This workspace contains tools for scraping, parsing, and organizing HPE server p
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 | 1 (Baseline + CTO variants) | ✅ Verified (0.52 MB) | ✅ Baseline PASS |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 | 1 (Baseline + CTO variants) | ⏳ Configured in map | ✅ Baseline PASS |
 
-**Total Verified Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **162/162 Suites PASSED (100.0%)** (97 Unit, 40 Chaos, 25 Integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, 11/11 sample portfolio BOMs certified, and CC $\le 135$.
+**Total Verified Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **167/167 Suites PASSED (100.0%)** (101 Unit, 40 Chaos, 26 Integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, 11/11 sample portfolio BOMs certified, all Codex audit findings F01–F13 resolved, and CC $\le 135$.
 
 ### ✅ Automated Evaluation Benchmark Suite (`tests/integration/test_boq_eval_benchmarks.js`)
 - **Pass Rate**: 15/15 Scenarios (100.0%)
@@ -579,6 +579,30 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 ### INV-97: Autonomous Solution Strategy Double-Check Protocol
 - **Pattern**: The 5-Tier Strategy Matrix synthesizes Rank 1 (Intent Match) and Rank 1L (Least Delta Alternative), adding enablement kits (cables, expanders, risers, DC lugs) that must be verified against vendor spec sheets.
 - **Rule**: After strategy matrix generation, the engine automatically verifies the synthesized solution against the product's NotebookLM notebook via `validateSolutionWithEphemeralSource()` in `nlm_solution_source_validator.js`. The multi-rank solution CSV is temporarily attached as an ephemeral source in NotebookLM, validated across all 7 physical aspects, and immediately detached per `INV-24`, recording verification attestation in `evalResults.solutionDoubleCheck`.
+
+### INV-98: Generation-Isolated vs Universal Knowledge Scoping
+- **Pattern**: Knowledge deltas must be segregated to prevent cross-generation rule contamination (e.g. DDR4 vs DDR5).
+- **Rule**: `CHASSIS_SPECIFIC` deltas reside exclusively in `outputs/{Family}/{Gen}/{Model}/history/catalog_deltas.json` and sync exclusively to that product's notebook. `UNIVERSAL_CROSS_CHASSIS` rules reside in `outputs/history/master_universal_knowledge_charter.md` covering universal truths (e.g. FIO `#0D1` suffixing, redundant PSU matching, minimum OS core licensing).
+
+### INV-99: Zero Unearned Verification Badges & Evidence-Derived Reporting
+- **Pattern**: Status claims must strictly derive from runtime evidence rather than static strings or ungrounded assumptions.
+- **Rule**: All exported Excel workbooks, JSON results, and UI dashboard badges MUST derive verification tags strictly from verified runtime evidence (`rank.evidence`, `rank.isBuildable`, `rank.cloudGrounded`). Fabricating static labels like "100% Factory Buildable in CLIC" or "7/7 ASPECTS PASS" when evaluation is ungrounded, pending, or failed is strictly prohibited.
+
+### INV-100: Solution Source Ephemeral Validation & Robust Cleanup Protocol
+- **Pattern**: Candidate solution manifests temporarily attached to NotebookLM must not linger in production notebooks.
+- **Rule**: Ephemeral candidate solution sources attached to NotebookLM for multi-rank validation MUST be removed using `nlm source delete <sourceId>` enclosed within a guaranteed `finally` block, ensuring no candidate artifacts persist in the knowledge base or violate Customer BOQ Isolation (`INV-24`).
+
+### INV-101: Multi-Sheet Sheet Name Integrity & Quantity Conservation
+- **Pattern**: When evaluating multi-sheet tenders, evaluating the wrong worksheet duplicates clusters and invalidates BOM counts.
+- **Rule**: When evaluating multi-sheet tenders with an explicitly requested `targetSheet`, `readBoqLines` in `boq_evaluator.js` MUST evaluate that exact sheet. If the requested sheet is missing from the workbook, the engine MUST throw a hard exception (`[ERR_SHEET_NOT_FOUND]`) rather than silently defaulting to the first sheet.
+
+### INV-102: Immutable Candidate Manifest & Non-Destructive Knowledge Deduplication
+- **Pattern**: Candidate mutations must not contaminate shared arrays, and multi-dependency rules must not overwrite each other.
+- **Rule**: Every candidate in the 5-Tier Strategy Matrix MUST maintain an immutable part manifest with an independent SHA-256 hash. Knowledge delta deduplication in `continuous_learning_verifier.js` MUST match on `(affectedSku, ruleType, requiredDependencySku)`, ensuring that distinct physical dependencies are never overwritten.
+
+### INV-103: Cross-Platform Atomic File I/O & Windows Lock Resilience
+- **Pattern**: File watchers and anti-virus locks on Windows cause `fs.renameSync` to intermittently raise `EPERM`.
+- **Rule**: Atomic filesystem operations in `scripts/lib/system/fs_compat.js` MUST catch both `EXDEV` and `EPERM`, falling back transparently to `copyFileSync` and `unlinkSync` to guarantee cross-platform atomic writes.
 
 ---
 

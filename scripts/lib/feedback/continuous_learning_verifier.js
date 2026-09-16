@@ -116,8 +116,14 @@ function recordAndCertifyLearnedRule(delta, chassisDir, testBom = []) {
     ...delta
   };
 
-  // Deduplicate in place
-  const existingIdx = existing.findIndex(e => e.deltaId === deltaId || (e.affectedSku === fullDelta.affectedSku && e.ruleType === fullDelta.ruleType));
+  // Deduplicate in place on composite identity (deltaId OR affectedSku + ruleType + dependencySku)
+  const fullDepSku = fullDelta.requiredDependencySku || fullDelta.targetSku || null;
+  const existingIdx = existing.findIndex(e =>
+    e.deltaId === deltaId ||
+    (e.affectedSku === fullDelta.affectedSku &&
+     e.ruleType === fullDelta.ruleType &&
+     (e.requiredDependencySku || e.targetSku || null) === fullDepSku)
+  );
   if (existingIdx >= 0) {
     existing[existingIdx] = fullDelta;
   } else {

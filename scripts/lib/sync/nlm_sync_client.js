@@ -77,7 +77,10 @@ function isGroundedCanary(parsed, sourceId, chassisName) {
 
 function isTargetDriveSourceFresh(output, targetSourceId = null, quarantinedSourceIds = []) {
   const text = String(output || '').trim();
-  if (/all drive sources are up to date/i.test(text)) return true;
+  if (!text) return false;
+  if (/all drive sources are up to date/i.test(text) || /(?:sources? (?:are )?up to date|in sync|no stale sources?)/i.test(text)) {
+    return true;
+  }
   try {
     const parsed = JSON.parse(text);
     if (Array.isArray(parsed)) {
@@ -91,12 +94,20 @@ function isTargetDriveSourceFresh(output, targetSourceId = null, quarantinedSour
       const relevantStale = parsed.filter(s => !quarantinedSet.has(String(s.id || s.source_id)));
       return relevantStale.length === 0;
     }
-  } catch (_) {
-    if (targetSourceId && text.includes(String(targetSourceId))) {
-      return false;
+    if (parsed && typeof parsed === 'object') {
+      if (parsed.upToDate === true || parsed.stale === false) return true;
+      if (Array.isArray(parsed.stale_sources || parsed.staleSources)) {
+        const list = parsed.stale_sources || parsed.staleSources;
+        if (targetSourceId) {
+          return !list.some(s => String(s.id || s.source_id || s) === String(targetSourceId));
+        }
+        return list.length === 0;
+      }
     }
+  } catch (_) {
+    // Unrecognized or invalid output cannot be verified as fresh
   }
-  return true;
+  return false;
 }
 
 function isDriveFreshnessReportClean(output) {

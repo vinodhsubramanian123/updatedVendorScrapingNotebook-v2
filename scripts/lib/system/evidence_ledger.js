@@ -20,9 +20,9 @@ class EvidenceLedger {
   constructor(options = {}) {
     this.traceId = options.traceId || (getTraceId() !== 'NO_TRACE_CONTEXT' ? getTraceId() : `TRC-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
     this.startedAt = new Date().toISOString();
-    this.chassis = options.chassis || 'UNKNOWN_CHASSIS';
+    this.chassis = options.chassis || (options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'));
     this.customerInput = {
-      filePath: options.filePath || null,
+      filePath: options.filePath || options.inputFile || options.BOQ_FILE || null,
       serverCount: options.serverCount || 1,
       totalRequestedLines: options.totalRequestedLines || 0
     };
@@ -41,6 +41,32 @@ class EvidenceLedger {
       strategySynthesized: false,
       dualBrainVerified: false,
       activeDeltaCount: 0
+    };
+  }
+
+  /**
+   * Dynamically update target chassis once detected from BOM
+   */
+  updateTargetChassis(chassis, chassisDir = '') {
+    if (chassis) {
+      this.chassis = chassis;
+      this.sharedState.currentChassis = chassis;
+    }
+    if (chassisDir) {
+      this.customerInput.chassisDir = chassisDir;
+    }
+  }
+
+  /**
+   * Get an immutable snapshot of current ledger state
+   */
+  getSummarySnapshot() {
+    return {
+      traceId: this.traceId,
+      chassis: this.chassis,
+      sharedState: { ...this.sharedState },
+      dualBrainVerified: this.sharedState.dualBrainVerified,
+      phasesCount: Object.keys(this.phases).length
     };
   }
 
@@ -82,6 +108,15 @@ class EvidenceLedger {
     phase.warnings = Array.isArray(warnings) ? warnings : [];
     phase.errors = Array.isArray(errors) ? errors : [];
 
+    // Advance sharedState completion milestones strictly upon success
+    if (phaseNum === 3 && status === 'PASSED') {
+      this.sharedState.aspectChecksCompleted = true;
+    } else if (phaseNum === 4 && status === 'PASSED') {
+      this.sharedState.conflictGraphCompleted = true;
+    } else if (phaseNum === 6 && status === 'PASSED') {
+      this.sharedState.strategySynthesized = true;
+    }
+
     logger.info('EVIDENCE_LEDGER', `[Phase ${phaseNum}: ${phase.phaseName}] COMPLETED (${status}) in ${phase.durationMs}ms`);
   }
 
@@ -122,14 +157,17 @@ class EvidenceLedger {
    * Record a NotebookLM RAG grounded verification query and response
    */
   recordNotebookLmTrace(queryPayload, responseSummary = {}, citations = [], status = 'VERIFIED_GROUNDED') {
+    const isCloudVerified = status === 'VERIFIED_GROUNDED' && ((Array.isArray(citations) && citations.length > 0) || responseSummary?.isCloudGrounded === true);
+    const recordedStatus = isCloudVerified ? 'VERIFIED_GROUNDED' : (status === 'VERIFIED_GROUNDED' ? 'LOCAL_RAG_FALLBACK' : status);
+
     this.notebookLmTraces.push({
       timestamp: new Date().toISOString(),
-      querySummary: typeof queryPayload === 'string' ? queryPayload.slice(0, 200) : (queryPayload.intent || 'RAG_GROUNDING_CHECK'),
-      status,
+      querySummary: typeof queryPayload === 'string' ? queryPayload.slice(0, 200) : (queryPayload?.intent || 'RAG_GROUNDING_CHECK'),
+      status: recordedStatus,
       citations: Array.isArray(citations) ? citations : [],
       responseSummary
     });
-    this.sharedState.dualBrainVerified = true;
+    this.sharedState.dualBrainVerified = Boolean(isCloudVerified);
   }
 
   /**

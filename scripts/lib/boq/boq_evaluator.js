@@ -87,15 +87,19 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
   let lines = [];
   const targetPath = (filePath && typeof filePath === 'string')
     ? filePath
-    : (typeof rawInput === 'string' && (rawInput.endsWith('.xlsx') || rawInput.endsWith('.xls') || rawInput.endsWith('.csv') || rawInput.endsWith('.tsv') || rawInput.endsWith('.txt')) && fs.existsSync(rawInput))
+    : (typeof rawInput === 'string' && fs.existsSync(rawInput))
     ? rawInput
     : '';
 
   if (targetPath && (targetPath.endsWith('.xlsx') || targetPath.endsWith('.xls'))) {
     const workbook = xlsx.readFile(targetPath);
     let sheetNames = [];
-    if (targetSheet && workbook.SheetNames.includes(targetSheet)) {
-      sheetNames = [targetSheet];
+    if (targetSheet) {
+      if (workbook.SheetNames.includes(targetSheet)) {
+        sheetNames = [targetSheet];
+      } else {
+        throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
+      }
     } else {
       // Prioritize dedicated BOM/Quote sheets if present
       const bomKeywords = ['bom', 'quote', 'boq', 'tender', 'hardware', 'parts'];
@@ -121,9 +125,19 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
       const csvText = xlsx.utils.sheet_to_csv(sheet);
       lines.push(...csvText.split(/\r?\n/));
     });
-  } else if (targetPath) {
-    const fileContent = fs.readFileSync(targetPath, 'utf-8');
-    lines = fileContent.split(/\r?\n/);
+  } else if (Array.isArray(rawInput)) {
+    lines = rawInput.map(item => {
+      if (typeof item === 'string') return item;
+      if (item && typeof item === 'object') {
+        const sku = item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'] || '';
+        const qty = item.quantity ?? item.qty ?? 1;
+        const desc = item.description ?? item.desc ?? '';
+        return `${sku}\t${qty}\t${desc}`;
+      }
+      return String(item);
+    });
+  } else if (targetPath && fs.existsSync(targetPath)) {
+    lines = fs.readFileSync(targetPath, 'utf8').split(/\r?\n/);
   } else {
     lines = String(rawInput || '').split(/\r?\n/);
   }
@@ -1366,5 +1380,6 @@ module.exports = {
   evalNetworkingOcp,
   evalPcieRiserSlots,
   evalPowerEnvironment,
-  evalSupportManufacturing
+  evalSupportManufacturing,
+  readBoqLines
 };

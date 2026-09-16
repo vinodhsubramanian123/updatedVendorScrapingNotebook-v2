@@ -68,8 +68,8 @@ function _loadRawDeltasFromDisk(chassisDir) {
  * @param {string} [chassisDir] - Directory path to chassis outputs
  * @returns {object} Categorized active rules
  */
-function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '') {
-  const rawDeltas = _loadRawDeltasFromDisk(chassisDir);
+function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options = {}) {
+  const rawDeltas = Array.isArray(options?.rawDeltas) ? options.rawDeltas : _loadRawDeltasFromDisk(chassisDir);
   const targetChassis = String(chassisVariant || (chassisDir ? path.basename(chassisDir) : '')).toLowerCase();
 
   const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
@@ -92,12 +92,18 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '') {
     const msg = delta.rawMessage || delta.reasoning || delta.ruleUpdate || '';
     const scope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
 
+    // Gate 0: Governance & Approval status check
+    const status = String(delta.governanceStatus || delta.status || 'ACTIVE').toUpperCase();
+    if (status === 'PENDING' || status === 'QUARANTINED' || status === 'REJECTED' || status === 'DRAFT') {
+      continue;
+    }
+
     // Gate 1: SKU syntax sanity
     if (affectedSku && (SKU_BLACKLIST.has(affectedSku.toUpperCase()) || !isValidHpeSKU(affectedSku))) {
       continue;
     }
 
-    // Gate 2: Generation Isolation Firewall (INV-48)
+    // Gate 2: Generation & Family Isolation Firewall (INV-48)
     if (scope !== 'UNIVERSAL_VENDOR' && scope !== 'UNIVERSAL') {
       const deltaChassis = String(delta.chassis || '').toLowerCase();
       const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
@@ -105,6 +111,13 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '') {
 
       if (isGen12Target && isGen11Delta) continue;
       if (isGen11Target && isGen12Delta) continue;
+
+      // Family isolation check
+      const targetFamily = targetChassis.includes('sy') ? 'synergy' : (targetChassis.includes('msl') ? 'storeever' : (targetChassis.includes('alletra') ? 'alletra' : (targetChassis.includes('gx') || targetChassis.includes('cray') ? 'cray' : 'proliant')));
+      const deltaFamily = deltaChassis.includes('sy') ? 'synergy' : (deltaChassis.includes('msl') ? 'storeever' : (deltaChassis.includes('alletra') ? 'alletra' : (deltaChassis.includes('gx') || deltaChassis.includes('cray') ? 'cray' : (deltaChassis ? 'proliant' : ''))));
+      if (deltaFamily && targetFamily && deltaFamily !== targetFamily) {
+        continue;
+      }
 
       if (scope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
         if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
@@ -156,6 +169,7 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '') {
 
 module.exports = {
   loadActiveKnowledgeRules,
+  filterDeltaRules: (rawDeltas, chassisVariant = '', chassisDir = '') => loadActiveKnowledgeRules(chassisVariant, chassisDir, { rawDeltas }),
   MASTER_REGISTRY_PATH,
   GLOBAL_DELTAS_PATH
 };

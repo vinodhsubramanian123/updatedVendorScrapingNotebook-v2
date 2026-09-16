@@ -62,7 +62,9 @@ While the React Dashboard provides an exceptional visual interface for reviewing
    - **CLIC Advice Ingestion & Divergent Multi-Path Resolution (`INV-93`)**: Ingests OCA/CLIC advice modals and workbooks via `parseClicAdviceExcel`. Isolates non-blocking advisory warnings from unbuildable errors. Parses rule stack traces to extract multiple valid remediation branches (e.g. SAS Expander vs 2nd Controller) into parallel sub-paths (Rank 1A, Rank 1B, Rank 1L least-delta).
    - **Autonomous Strategy Double-Check (`INV-97`)**: Before final serialization, the engine automatically attaches the multi-rank solution CSV as an ephemeral source in NotebookLM, double-checking that added enablement kits (cables, expanders, risers) satisfy QuickSpecs rules and newly learned deltas.
    - **Tiered Multi-Brain Verification Safety Net**: Primary execution driven by Antigravity / Gemini 3.6 Flash, ground-truth anchored in Gemini NotebookLM (QuickSpecs/catalogs), and token-conservatively verified via OpenAI Codex (GPT-6 Astra Light) for critical walkthrough and diff reviews (fail-open / non-blocking).
-   - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable Workbook** (`.xlsx`) and companion `.csv` with 10 standardized columns (`Part No`, `Per-Node Qty`, `Node Multiplier`, `Total Qty`, `Description`, `Component Role`, `Unit Price`, `Extended Price`, `Physical Math Rationale`, `CLIC Status / Rule Trace`) and formula-driven totals for direct upload to HPE Partner Portal / OCA.
+   - **Deliverable Formats (Analytical Workbook vs Partner Portal Upload Sheet, `INV-99`)**:
+     - **1. Analytical Engineering Workbook (`.xlsx`)**: Comprehensive 6-sheet workbook with 10-12 standardized columns (`Part No`, `Per-Node Qty`, `Node Multiplier`, `Total Qty`, `Description`, `Component Role`, `Unit Price`, `Extended Price`, `Physical Math Rationale`, `CLIC Status / Rule Trace`) for multi-rank strategic evaluation and architecture review.
+     - **2. Dedicated 7-Column Partner Portal Upload Sheet (`.xlsx` / `.csv`)**: Formatted to the strict 7-column OCA upload contract (`Item`, `Product #`, `Description`, `Qty`, `List Price`, `Ext Price`, `Category`) for direct, 100% error-free import into HPE OCA / Partner Portal.
    - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.
 6. **5-Tier Strategic Resolution Matrix Ranking & Least-Delta Optimization**:
    - **Rank 1 (Customer Intent Preserved — RECOMMENDED)**:
@@ -117,11 +119,11 @@ When evaluating customer BOQs or answering configuration questions:
 
 ---
 
-### 🧠 Dual-Brain Verification Badges & Honest Observability
-Outputs must always present explicit verification badges:
-- `[🧠 Deterministic Brain: 7-Aspect Physical Math PASSED]`
-- `[📚 Intent RAG Brain: Grounded in NotebookLM (Notebook ID: <id>)]`
-- `[🛡️ CLIC/OCA Pre-Flight: 100% Buildability Certified]`
+### 🧠 Dual-Brain Verification Badges & Honest Observability (`INV-99` Evidence-Gated)
+Outputs must always present explicit verification badges derived strictly from runtime evidence:
+- When verified: `[🧠 Deterministic Brain: 7-Aspect Physical Math PASSED]`, `[📚 Intent RAG Brain: Grounded in NotebookLM (Notebook ID: <id>)]`, `[🛡️ CLIC/OCA Pre-Flight: 100% Buildability Certified]`
+- When ungrounded or unverified: `[⚠️ Deterministic Brain: UNVERIFIED / FAILED]`, `[⚠️ RAG Brain: CLOUD_FAILED / PENDING]`, `[⚠️ CLIC/OCA: LOCAL_ONLY / UNVERIFIED]`
+- **Zero Unearned Badges Invariant (`INV-99`)**: Badges, stamps, and certificates must never be fabricated statically. If an aspect check was skipped, pending, or failed, it must be reported honestly as unverified or failed.
 - **Unmapped Model Notice**: If a product is not in `scripts/config/notebooks.json`, display:
   `[⚠️ Knowledge Mapping Notice: Product <Model> catalog unpromoted or unmapped. Running in Local Deterministic Engine + QuickSpecs fallback mode until scraped.]`
 - **Ambiguity Rule**: If a requirement cannot be mapped with high confidence, the agent MUST ask the user for clarification.

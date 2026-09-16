@@ -77,7 +77,7 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
     return { success: false, sourceId: null, error: 'Invalid notebookId or missing solution file' };
   }
 
-  const isTestEnv = options.isMock || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true';
+  const isTestEnv = options.isMock || options.offlineTest || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true';
   if (isTestEnv) {
     const mockId = `mock-src-${Date.now().toString(36)}`;
     logger.info('NLM_SOURCE_VALIDATOR', `[MOCK] Attached ephemeral solution source "${title}" (${mockId})`);
@@ -107,8 +107,16 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
  * @param {object} [options] - Optional flags
  * @returns {boolean} True if successfully detached
  */
+/**
+ * Detach an ephemeral solution source from NotebookLM (INV-24 Compliance).
+ *
+ * @param {string} notebookId - Target notebook UUID
+ * @param {string} sourceId - Ephemeral source UUID to delete
+ * @param {object} [options] - Optional flags
+ * @returns {boolean} True if successfully detached
+ */
 function detachSolutionSource(notebookId, sourceId, options = {}) {
-  if (!notebookId || !sourceId) return false;
+  if (!sourceId) return false;
 
   const isTestEnv = options.isMock || sourceId.startsWith('mock-') || sourceId.startsWith('sim-');
   if (isTestEnv) {
@@ -117,7 +125,8 @@ function detachSolutionSource(notebookId, sourceId, options = {}) {
   }
 
   try {
-    execFileSync('nlm', ['source', 'delete', notebookId, sourceId, '--confirm'], {
+    // Note: nlm source delete accepts source_ids, not notebook UUID
+    execFileSync('nlm', ['source', 'delete', sourceId, '--confirm'], {
       encoding: 'utf-8',
       timeout: 20000
     });
@@ -127,6 +136,26 @@ function detachSolutionSource(notebookId, sourceId, options = {}) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Could not detach source ${sourceId}: ${err.message}`);
     return false;
   }
+}
+
+/**
+ * Check if the RAG answer reports that the solution has unbuildable or invalid components.
+ */
+function isNegativeRagVerdict(answer) {
+  if (!answer || typeof answer !== 'string') return false;
+  const lower = answer.toLowerCase();
+  const negativeSignals = [
+    'not buildable',
+    'unbuildable',
+    'clic error',
+    'cannot be built',
+    'missing mandatory',
+    'incompatible',
+    'violates rule',
+    'validation failed',
+    'invalid configuration'
+  ];
+  return negativeSignals.some(s => lower.includes(s));
 }
 
 /**
@@ -162,7 +191,7 @@ function buildSolutionSourceValidationPrompt(sourceTitle, chassisName) {
  * @returns {Promise<object>} Validation report with workbook deliverable and learned deltas
  */
 async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
-  const chassisName = evalResults.chassis || evalResults.chassisVariant || options.chassis;
+  const chassisName = evalResults.chassis || evalResults.chassisVariant || evalResults.targetChassis || evalResults.detectedChassis || options.chassis || options.chassisName || (evalResults.conflictGraph?.chassisInfo?.model) || (options.targetDir ? path.basename(options.targetDir) : null);
   if (!chassisName) {
     throw new Error('[Guardrail INV-24] Missing target chassis identifier in evaluation results. Dynamic resolution required.');
   }
@@ -190,18 +219,20 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const attachRes = attachSolutionSource(notebookId, csvPath, sourceTitle, options);
   const sourceId = attachRes.sourceId;
 
-  // Step 4: Dispatch focused solution validation query
-  const prompt = buildSolutionSourceValidationPrompt(sourceTitle, chassisName);
   let ragAnswer = '';
   let citations = [];
   let isCloudGrounded = false;
+  let sourceDetached = false;
 
   try {
+    // Step 4: Dispatch focused solution validation query
+    const prompt = buildSolutionSourceValidationPrompt(sourceTitle, chassisName);
+
     if (hasLiveNotebook && attachRes.success && !attachRes.isMock) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
-        chassis: chassisName,
+        context: { chassis: chassisName },
         timeoutMs: options.timeoutMs || 60000,
-        sourceIds: options.sourceIds
+        sourceIds: options.sourceIds || (sourceId ? [sourceId] : undefined)
       });
       ragAnswer = queryRes.answer || '';
       citations = queryRes.citations || [];
@@ -213,6 +244,11 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   } catch (queryErr) {
     logger.warn('NLM_SOURCE_VALIDATOR', `NotebookLM query failed: ${queryErr.message}; preserving physical math certification.`);
     ragAnswer = `Deterministic physical math validated: All mandatory enablement kits satisfied for ${chassisName}. Note: Cloud validation query timed out or failed (${queryErr.message}).`;
+  } finally {
+    // Step 6: Guaranteed detach of ephemeral solution source (INV-24 Compliance)
+    if (sourceId) {
+      sourceDetached = detachSolutionSource(notebookId, sourceId, options);
+    }
   }
 
   // Step 5: Extract learnings into KnowledgeDelta records
@@ -249,12 +285,6 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Knowledge extraction note: ${extErr.message}`);
   }
 
-  // Step 6: Detach ephemeral solution source (INV-24 Compliance)
-  let sourceDetached = false;
-  if (sourceId) {
-    sourceDetached = detachSolutionSource(notebookId, sourceId, options);
-  }
-
   // Step 7: Trigger post-flow sync to align local and master knowledge registries
   let syncStatus = null;
   try {
@@ -263,8 +293,14 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Post-flow sync note: ${syncErr.message}`);
   }
 
+  const isRejected = isNegativeRagVerdict(ragAnswer);
+  const doubleCheckVerdict = isRejected
+    ? 'DOUBLE_CHECK_REJECTED'
+    : (isCloudGrounded ? 'DOUBLE_CHECK_PASSED' : (attachRes.isMock ? 'OFFLINE_MOCK_VERIFIED' : 'LOCAL_RULES_FALLBACK'));
+
   return {
-    success: true,
+    success: attachRes.success && !isRejected,
+    doubleCheckVerdict,
     chassis: chassisName,
     notebookId,
     sourceId,

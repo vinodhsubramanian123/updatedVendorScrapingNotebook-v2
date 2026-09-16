@@ -882,20 +882,13 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     ? 'Rank 4: Maximum Density & Future Scalability Expansion (Modernized 5th Gen Platform)'
     : 'Rank 4: Maximum Density & Future Scalability Expansion';
 
-  // Rank 5: Budget & CapEx Minimized Buildable Baseline
-  const rank5Parts = rank1Parts.map(p => ({
-    ...p,
-    category: p.isFixInjected ? 'Aspect Rule Fix' : 'Minimal CapEx Baseline'
-  }));
-  const rank5Cost = rank1Cost;
-
   // Re-validate each candidate tier through 7 physical aspects with fingerprint memoization
   const revalidateMemo = new Map();
   function revalidateCached(candidateParts) {
     const fp = computeBomFingerprint(candidateParts);
     if (revalidateMemo.has(fp)) {
       const cached = revalidateMemo.get(fp);
-      return { ...cached, parts: candidateParts };
+      return { ...cached, parts: cached.parts };
     }
     const res = revalidateCandidateParts(candidateParts, chassisInfo, getPrice, loadedCatalog, targetDir, options);
     revalidateMemo.set(fp, res);
@@ -906,6 +899,12 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const v2 = revalidateCached(rank2Parts);
   const v3 = revalidateCached(rank3Parts);
   const v4 = revalidateCached(rank4Parts);
+
+  // Rank 5: Budget & CapEx Minimized Buildable Baseline (derived from revalidated v1.parts)
+  const rank5Parts = v1.parts.map(p => ({
+    ...p,
+    category: p.isFixInjected ? 'Aspect Rule Fix' : 'Minimal CapEx Baseline'
+  }));
   const v5 = { parts: rank5Parts, injectedFixes: v1.injectedFixes, totalCost: v1.totalCost, physicalMathClean: v1.physicalMathClean, aspectErrors: v1.aspectErrors };
 
   // Create Candidates Array

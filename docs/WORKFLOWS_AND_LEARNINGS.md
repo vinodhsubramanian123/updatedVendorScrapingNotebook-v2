@@ -1477,3 +1477,78 @@ Rebuilding the graph via `npm run update:graph` parsed 757 source files into:
 - **Rule**: Knowledge Deltas are strictly segregated:
   1. `CHASSIS_SPECIFIC` deltas reside exclusively in `outputs/{Family}/{Gen}/{Model}/history/catalog_deltas.json` to prevent cross-generation contamination (e.g. DDR4 vs DDR5, Gen11 vs Gen12 PCIe risers).
   2. `UNIVERSAL_CROSS_CHASSIS` rules reside in `outputs/history/master_universal_knowledge_charter.md` and cover platform-wide truths (e.g. FIO `#0D1` tagging, redundant PSU matching, minimum OS core licensing).
+
+---
+
+## 98. Full End-to-End Agentic Customer BOQ Flow, Stage Contracts & Codex Audit Remediation (INV-99 through INV-103)
+
+### 1. The 11 Canonical Agentic Stages & Stage-Gate Contracts
+
+To guarantee that customer deliverables are 100% buildable, grounded in vendor truth, and completely free from unearned verification badges, every inquiry follows this rigorous 11-stage pipeline:
+
+| Stage | Subsystem / File | Required Input & Recorded Evidence | Exit Gate & Invariant Checked |
+|---|---|---|---|
+| **1. Intake & Routing** | `route_query.js`, `boq_parser.js` | Original tender file (XLSX, CSV, TSV) or OCR photo hash, raw text, query intent classification. | Provenance preserved; non-XLSX files read via `fs.readFileSync`; image queries routed to Gemini OCR; no dropped rows (`INV-78`). |
+| **2. Catalog & Source Readiness** | `catalog_discovery.js`, `isCatalogCertified()` | Target chassis ID, country/currency, companion JSON, 22-sheet Excel catalog, official QuickSpecs PDF. | Certified catalog must exist with `totalUniqueSKUs > 0` and verified Excel workbook; fails fast on un-scraped chassis (`INV-96`). |
+| **3. Normalize & Partition** | `multi_cluster_splitter.js`, `boq_evaluator.js` | Multi-node tenders, cluster multipliers, explicit target sheet name, per-node counts, CTO container hierarchies. | Strict sheet identity: requested `targetSheet` must exist or throw hard exception; quantities conserved across partitions (`INV-101`). |
+| **4. Validate Requested BOM** | `aspects/*`, `conflict_graph.js` | Exact component quantities, form factor rules, 7 physical checkers (Compute, Memory, Storage, PCIe, Power, Net, Support). | Every component checked against physical limits; errors remain fatal; zero hardcoded SKUs (`INV-25` - `INV-31`). |
+| **5. Synthesize Candidates** | `strategy_synthesizer.js`, `least_delta_combinator.js` | Unbuildable errors, catalog alternative parts, customer priorities, workload DNA. | Immutable candidate manifests with SHA-256 hashes; minimum-delta ranking preserving customer intent; duplicate candidates eliminated (`INV-74`, `INV-102`). |
+| **6. Validate Every Candidate** | `nlm_solution_source_validator.js` | Synthesized candidate BOMs, product notebook ID, official QuickSpecs sources. | Ephemeral attachment of candidate manifest to NotebookLM; 7-aspect RAG verification; guaranteed detachment in `finally` (`INV-97`, `INV-100`). |
+| **7. Reconcile & Repair** | `conflict_graph.js`, `deal_optimizer.js` | RAG feedback, physical discrepancies, CapEx/OpEx optimizations. | Discrepancies reconciled; BOM mutations re-evaluated; final manifest locked with exact item hashes (`INV-76`, `INV-93`). |
+| **8. Configurator & Finance** | `sku_versioning.js`, `generate_boq_xlsx.js` | Active GPL price lists, price history snapshots, known-zero prices vs unpriced SKUs. | Line-by-line financial itemization; incomplete totals honestly flagged; no silent $0 fabrications (`INV-33`, `INV-94`). |
+| **9. Build & Publish** | `eval_output_serializer.js`, `google_sheets_writer.js` | Validated candidate BOMs, cluster layout, 7-column Partner Portal upload template. | Dedicated 7-column upload sheet generated; status strictly evidence-derived; Google Sheets sync verified (`INV-99`, `INV-103`). |
+| **10. Learn & Synchronize** | `running_knowledge_sync.js`, `post_flow_sync.js` | Verified `KnowledgeDelta` records, RAG citations, quarantine audit. | Deltas segregated into chassis-scoped vs universal charter; non-destructive composite deduplication; awaited sync (`INV-13`, `INV-98`, `INV-102`). |
+| **11. Close Evidence** | `evidence_ledger.js` | Stage receipts, run ID, component hashes, sheet URL, cleanup confirmations. | Finalized after delivery serialization; durable trace persisted to `outputs/history/evidence_ledgers.json` (`INV-75`). |
+
+---
+
+### 2. Deep Learnings from the 2026-09-17 Codex Agentic Flow Audit (Findings F01–F13)
+
+1. **Elimination of False/Unearned Badges (F01)**:
+   - **Flaw**: Previous workbook exporters generated static "100% Factory Buildable in CLIC" and "7/7 ASPECTS PASS" text even when validation had failed or was skipped (`cloudGroundingStatus: CLOUD_FAILED`).
+   - **Resolution**: Status strings now strictly derive from per-rank evaluation evidence (`rank.evidence`, `rank.isBuildable`, `rank.cloudGrounded`). If an aspect was not evaluated or failed, it is displayed as `UNVERIFIED` or `FAILED`.
+2. **Ephemeral Source Validation Contract Alignment (F02, F03)**:
+   - **Flaw**: Mismatched contract between `eval_boq.js` (passing `chassisName`) and `nlm_solution_source_validator.js` (expecting `options.chassis`). Furthermore, source deletion CLI syntax incorrectly passed `<notebookId> <sourceId>` instead of `<sourceId>`.
+   - **Resolution**: Standardized typed option normalization across both subsystems. Updated `nlm source delete` to supply only the source ID and wrapped the cleanup inside a guaranteed `finally` block to prevent orphan cloud sources.
+3. **Canonical Pipeline Entry Point Unification (F04)**:
+   - **Flaw**: `route_query.js` bypassed the canonical `eval_boq.js` orchestration pipeline for certain routes, and non-XLSX file paths were treated as raw text strings.
+   - **Resolution**: All query routes now instantiate a canonical query object and invoke `eval_boq.js`. Non-XLSX files are read from disk via `fs.readFileSync(resolvedPath, 'utf8')`. Image uploads are routed directly to Gemini Vision OCR.
+4. **Multi-Sheet Tender Integrity & Zero-Silent-Defaulting (F05)**:
+   - **Flaw**: `eval_multi_boq.js` called child evaluations with hardcoded `"Server Config"` sheet names, falling back to the first sheet if missing and causing duplicate evaluations of the first cluster.
+   - **Resolution**: When `targetSheet` is explicitly specified, `readBoqLines` validates that the worksheet exists in `workbook.SheetNames`. If absent, it throws a fatal `Error: Requested targetSheet '...' does not exist in workbook`.
+5. **Strict Catalog Certification Receipts (F06)**:
+   - **Flaw**: `isCatalogCertified()` merely checked for directory presence and non-zero SKUs, without verifying the 22-sheet Excel companion workbook.
+   - **Resolution**: Certification now requires: (1) Directory presence, (2) `totalUniqueSKUs > 0` in catalog JSON, and (3) verified presence of `*_OCA_Catalog.xlsx`.
+6. **Immutable Candidate Manifests & Quantity Preservation (F07)**:
+   - **Flaw**: Candidate mutations shared in-memory arrays, and distance scoring prioritized arbitrary rank numbers over customer intent preservation.
+   - **Resolution**: Each synthesized candidate is an immutable snapshot with deep-cloned component lists and unique SHA-256 BOM hashes. Distance scoring penalizes deviations from requested customer quantities.
+7. **End-to-End Evidence Ledger Accuracy (F08)**:
+   - **Flaw**: Evidence ledger finalized before delivery serialization was complete, losing final Google Sheet URLs and delivery receipts.
+   - **Resolution**: Ledger tracks state transitions across all 11 stages and is finalized and exported strictly after Stage 9/10 completion.
+8. **7-Column Partner Portal Contract & Transactional Delivery (F09)**:
+   - **Flaw**: Exported workbooks lacked strict 7-column header alignment (`Item`, `Product #`, `Description`, `Qty`, `List Price`, `Ext Price`, `Category`).
+   - **Resolution**: Standardized the 7-column layout with clean headers across all upload generators, certified via `test_partner_portal_upload_bom_format.js`.
+9. **Non-Destructive Composite Learning Deduplication (F10)**:
+   - **Flaw**: Rule deduplication on `(affectedSku, ruleType)` caused different mandatory dependencies for the same base chassis to overwrite each other.
+   - **Resolution**: Updated composite deduplication key to `(affectedSku, ruleType, requiredDependencySku)`. Multiple distinct cable, cage, or controller dependencies for the same chassis are preserved in full.
+10. **Awaited Asynchronous Post-Flow Synchronization (F11)**:
+    - **Flaw**: Post-flow sync was called without `await`, returning premature success before background synchronization completed, and referenced missing helper methods.
+    - **Resolution**: Fully awaited `await triggerPostFlowSyncAsync()`, replaced undefined calls with `collectAllDeltas()`, and verified atomic charter updates.
+11. **Cross-Platform Windows File Locking Resilience (EPERM)**:
+    - **Flaw**: Atomic file writes on Windows (`fs.renameSync`) intermittently threw `EPERM` when concurrent processes, IDE watchers, or antivirus temporarily held open read handles on target files.
+    - **Resolution**: Enhanced `safeWriteJsonAtomic` and atomic write utilities in `fs_compat.js` to catch both `EXDEV` and `EPERM`, transparently falling back to `copyFileSync` and `unlinkSync`.
+
+---
+
+### 3. Codified Invariants (INV-99 through INV-103):
+
+- **`INV-99: Zero Unearned Verification Badges & Evidence-Derived Reporting`**:
+  All UI badges, CLI reports, and exported Excel workbooks MUST derive verification labels strictly from verified runtime evidence. Static or default claims of "100% Factory Buildable" or "RAG Grounded" in the absence of matching proof are strictly prohibited.
+- **`INV-100: Solution Source Ephemeral Validation & Robust Cleanup Protocol`**:
+  When attaching candidate solution manifests to NotebookLM for multi-rank validation, the cleanup routine MUST invoke `nlm source delete <sourceId>` inside a guaranteed `finally` block, ensuring no temporary candidate artifacts persist in the knowledge base.
+- **`INV-101: Multi-Sheet Sheet Name Integrity & Quantity Conservation`**:
+  When evaluating multi-sheet workbooks, if an explicit `targetSheet` is specified, the parser MUST evaluate that exact sheet or throw a hard exception. Silently falling back to the first available worksheet is forbidden.
+- **`INV-102: Immutable Candidate Manifest & Non-Destructive Knowledge Delta Deduplication`**:
+  Every synthesized solution candidate MUST maintain an immutable part manifest with an independent SHA-256 hash. Knowledge delta deduplication MUST match on `(affectedSku, ruleType, requiredDependencySku)` to guarantee that distinct dependencies are never overwritten.
+- **`INV-103: Cross-Platform Atomic File I/O & Windows Lock Resilience`**:
+  Atomic filesystem operations MUST provide cross-platform resilience. When `renameSync` encounters temporary Windows file locks (`EPERM`), it MUST automatically fall back to atomic copy-and-unlink (`copyFileSync` + `unlinkSync`) rather than failing the execution.

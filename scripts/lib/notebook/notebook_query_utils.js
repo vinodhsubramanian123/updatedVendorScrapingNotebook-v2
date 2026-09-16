@@ -362,9 +362,11 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
         fallbackReason: 'Notebook has no canary-verified trusted source allow-list (INV-24 fail-closed)'
       };
     }
+    const candidateSourceIds = Array.isArray(options.sourceIds) ? options.sourceIds : (options.sourceId ? [options.sourceId] : []);
+    const combinedSourceIds = Array.from(new Set([...authoritativeSourceIds, ...candidateSourceIds]));
     const queryOptions = {
       ...options,
-      context: { ...(options.context || {}), authoritativeSourceIds }
+      context: { ...(options.context || {}), authoritativeSourceIds: combinedSourceIds }
     };
     const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, queryOptions);
     if (cloudResult.groundingVerification === 'VERIFIED_GROUNDED') {

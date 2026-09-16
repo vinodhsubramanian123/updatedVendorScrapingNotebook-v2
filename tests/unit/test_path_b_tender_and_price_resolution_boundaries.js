@@ -88,7 +88,7 @@ test('▶ [SUITE 2]: Standardized 7-Column Reconciliation BOM Schema (INV-32)', 
   const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
   // Assert strict 7-column header contract
-  const expectedHeaders = ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
+  const expectedHeaders = ['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
   assert.deepEqual(rows[0], expectedHeaders, 'Row 0 must match exact 7-column reconciliation schema');
 
   // Verify subtotal row presence in Column index 2

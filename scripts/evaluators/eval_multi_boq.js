@@ -165,7 +165,7 @@ async function main() {
   const startTime = Date.now();
   
   // Spawn parallel evaluations
-  const promises = targetEvaluationFiles.map(t => evaluateSheetParallel(t.filePath, 'Server Config', t.clusterName));
+  const promises = targetEvaluationFiles.map(t => evaluateSheetParallel(t.filePath, t.sheetName, t.clusterName));
   const results = await Promise.all(promises);
 
   const durationMs = Date.now() - startTime;
@@ -183,7 +183,7 @@ async function main() {
         const rank1 = r.result.data?.conflictGraph?.rankedSolutions?.[0];
         const conflicts = r.result.data?.conflictSummary?.totalConflicts || 0;
         console.log(`✅ Cluster: [${r.sheetName}] -> Chassis: ${chassis}`);
-        console.log(`     • Physical Conflicts: ${conflicts} (Status: ${conflicts <= 2 ? '100% BUILDABLE' : 'ACTION REQUIRED'})`);
+        console.log(`     • Physical Conflicts: ${conflicts} (Status: ${conflicts === 0 ? '100% BUILDABLE' : 'ACTION REQUIRED'})`);
         if (rank1) {
           console.log(`     • Workload Intent Alignment: ${rank1.tradeoffMetrics?.intentAlignment || '100%'}`);
         }

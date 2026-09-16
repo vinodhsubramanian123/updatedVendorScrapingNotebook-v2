@@ -94,17 +94,17 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     cleanTestPayloads();
 
     // 5. Optionally trigger running knowledge charter sync if requested
-    let runningKnowledgeResult = null;
+    let runningKnowledgePromise = null;
     if (options.syncRunningKnowledge) {
       try {
         const { syncRunningKnowledge } = require('../../services/running_knowledge_sync.js');
-        runningKnowledgeResult = syncRunningKnowledge({ dryRun: false });
+        runningKnowledgePromise = syncRunningKnowledge({ dryRun: false });
       } catch (rkErr) {
         logger.warn('POST_FLOW_SYNC', `Running knowledge sync advisory: ${rkErr.message}`);
       }
     }
-    
-    return {
+
+    const result = {
       success: syncStatus !== 'CLOUD_FAILED',
       syncStatus,
       cloudUploaded: Boolean(autoUpload && payload.uploadResult?.success),
@@ -115,8 +115,19 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
       driftStatus: drift.status,
       unSyncedDeltasCount: drift.unSyncedDeltasCount,
       uploadResult: payload.uploadResult || null,
-      runningKnowledgeSynced: Boolean(runningKnowledgeResult)
+      runningKnowledgeSynced: false,
+      runningKnowledgePromise
     };
+
+    if (runningKnowledgePromise) {
+      runningKnowledgePromise.then((res) => {
+        result.runningKnowledgeSynced = Boolean(res && res.success !== false);
+      }).catch(() => {
+        result.runningKnowledgeSynced = false;
+      });
+    }
+
+    return result;
   } catch (err) {
     logger.error('POST_FLOW_SYNC', `Failed post-flow knowledge sync for ${chassisName}`, err);
     return {
@@ -128,4 +139,17 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
   }
 }
 
-module.exports = { triggerPostFlowSync, cleanTestPayloads };
+async function triggerPostFlowSyncAsync(chassisName = 'Unknown_Chassis', flowType = 'EVALUATION', options = {}) {
+  const result = triggerPostFlowSync(chassisName, flowType, options);
+  if (result.runningKnowledgePromise) {
+    try {
+      const rkRes = await result.runningKnowledgePromise;
+      result.runningKnowledgeSynced = Boolean(rkRes && rkRes.success !== false);
+    } catch (_) {
+      result.runningKnowledgeSynced = false;
+    }
+  }
+  return result;
+}
+
+module.exports = { triggerPostFlowSync, triggerPostFlowSyncAsync, cleanTestPayloads };

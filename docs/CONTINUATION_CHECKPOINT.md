@@ -233,3 +233,31 @@ This is the current engineering status following the completion and verification
   - 0 lint warnings/errors across 110 files (`oxlint`).
   - All 976 functions within cyclomatic complexity gate ($CC \le 135$).
   - Clean git status synchronized to `origin/main`.
+
+---
+
+## Phase 13 — Codex Agentic Flow Audit Remediation, Evidence-Gated Validation & Windows File Locking Resilience (Certified 2026-09-17)
+
+- **Comprehensive Resolution of Codex Agentic Flow Audit (Findings F01–F13)**:
+  - **F01 (Evidence-Derived Workbook Status)**: Replaced static/unearned "100% Factory Buildable in CLIC" and "7/7 ASPECTS PASS" claims in `generate_boq_xlsx.js` with strictly evidence-derived status tags (`rank.evidence`, `rank.isBuildable`, `rank.cloudGrounded`).
+  - **F02 & F03 (Ephemeral Solution Source Double-Check & Robust Cleanup)**: Standardized typed chassis options in `nlm_solution_source_validator.js` and `notebook_query_utils.js`. Corrected CLI syntax to `nlm source delete <sourceId>` and enclosed cleanup in guaranteed `finally` blocks.
+  - **F04 (Canonical Pipeline Entry Point Unification)**: Unified query routes in `route_query.js` to create canonical query objects and invoke `eval_boq.js`. Supported image routing to Gemini Vision OCR and disk reading via `fs.readFileSync` for non-XLSX files in `boq_evaluator.js`.
+  - **F05 (Multi-Sheet Tender Integrity)**: Enforced strict sheet identity in `readBoqLines`; when an explicit `targetSheet` is specified, it throws a fatal exception if absent from the workbook rather than silently defaulting to the first sheet.
+  - **F06 (Strict Catalog Pre-Flight Certification)**: Enforced workbook presence (`*_OCA_Catalog.xlsx`), companion JSON, and `totalUniqueSKUs > 0` in `catalog_discovery.js:isCatalogCertified()`.
+  - **F07 (Immutable Candidate Manifests & Distance Scoring)**: Enforced deep cloning, distinct SHA-256 BOM hashes, full physical re-evaluation per candidate, and customer intent distance scoring in `strategy_synthesizer.js`.
+  - **F08 (End-to-End Evidence Ledger Persistence)**: Standardized phase transition receipts across all 11 stages; finalized and exported ledger strictly after delivery serialization in `evidence_ledger.js`.
+  - **F09 (7-Column Partner Portal Contract)**: Standardized exact 7-column header layout in `generate_boq_xlsx.js` (`Item`, `Product #`, `Description`, `Qty`, `List Price`, `Ext Price`, `Category`) and verified Google Sheets transactional delivery.
+  - **F10 (Scoped vs Universal Learning & Non-Destructive Deduplication)**: Separated chassis deltas (`catalog_deltas.json`) from universal charter rules (`master_universal_knowledge_charter.md`). Deduplicated rules on composite key `(affectedSku, ruleType, requiredDependencySku)` in `continuous_learning_verifier.js`.
+  - **F11 (Awaited Post-Flow Synchronization)**: Fully awaited `triggerPostFlowSyncAsync()` in `eval_output_serializer.js` and replaced hallucinated calls with `collectAllDeltas()` in `running_knowledge_sync.js`.
+  - **F12 (Master Sheet Delta & History Schemas)**: Aligned price history fields (`oldPrice`, `prevPrice`) and included both hardware and services history in `google_sheets_writer.js`.
+  - **F13 (Authoritative QuickSpecs Verification)**: Mapped DL360 Gen11 and verified authoritative source PDF tracking in `quickspecs_sync.js`.
+- **Cross-Platform Windows File Locking Resilience (`fs_compat.js`, `INV-103`)**:
+  - Addressed intermittent Windows `EPERM` locks on `fs.renameSync` caused by background file watchers and antivirus engines by catching both `EXDEV` and `EPERM` and transparently falling back to `copyFileSync` and `unlinkSync`.
+- **Dedicated Audit Remediation Test Suite (`test_agentic_flow_audit_remediation.js`)**:
+  - Added unit and boundary tests explicitly verifying all 13 audit fixes, ensuring zero regressions on false badges, sheet routing, and deduplication.
+- **Full Test Matrix Certification**:
+  - **167/167 suites PASSED (100.0%)** (101 Unit, 40 Chaos, 26 Integration).
+  - 0 lint warnings/errors across 110 files (`oxlint`).
+  - All 980+ functions within cyclomatic complexity gate ($CC \le 135$).
+  - Clean dashboard build and live evidence ledgers.
+

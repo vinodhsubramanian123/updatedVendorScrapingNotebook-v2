@@ -84,7 +84,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
     const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
     // Row 1: Header Schema
-    const expectedHeaders = ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
+    const expectedHeaders = ['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
     assert.deepEqual(rows[0], expectedHeaders);
 
     // Row 2: First item in Cluster A
@@ -93,7 +93,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
     assert.equal(rows[1][2], 20);           // Set multiplier
     assert.equal(rows[1][4], 5070);         // Unit price
     assert.equal(rows[1][5], 101400);       // Extended price = 1 * 20 * 5070
-    assert.equal(rows[1][6], '100% Validated in CLIC');
+    assert.equal(rows[1][6], 'Ready for Portal Upload');
 
     // Row 3: Second item in Cluster A
     assert.equal(rows[2][0], 'P67088-B21');
@@ -114,7 +114,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
     assert.equal(rows[6][0], 'CONFIGURATION #2: 40x Cluster_B');
     assert.equal(rows[8][0], 'Part No');
     assert.equal(rows[8][1], 'Qty');
-    assert.equal(rows[8][2], 'Total Qty');
+    assert.equal(rows[8][2], 'Set');
 
     // Clean up temporary test file
     fs.unlinkSync(tempExportPath);

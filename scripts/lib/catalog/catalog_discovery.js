@@ -520,6 +520,17 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
+  if (!matched.xlsxPath || !fs.existsSync(matched.xlsxPath)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Master 22-sheet Excel catalog (.xlsx) missing on disk for '${cleanId}'. Scrape must be fully exported.`
+    };
+  }
+
   if ((matched.skuCount || 0) <= 0) {
     return {
       certified: false,
@@ -530,12 +541,52 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
+  let catalogContent = null;
+  try {
+    catalogContent = JSON.parse(fs.readFileSync(matched.catalogJsonPath, 'utf-8'));
+  } catch (err) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: 0,
+      reason: `Catalog JSON could not be parsed: ${err.message}`
+    };
+  }
+
+  const meta = catalogContent?.metadata || {};
+  if (!meta.scrapeDate || !/^\d{4}-\d{2}-\d{2}$/.test(meta.scrapeDate)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Catalog metadata missing canonical scrapeDate (YYYY-MM-DD) for '${cleanId}'.`
+    };
+  }
+
+  // Minimum cardinality check for flagship rack servers
+  const isFlagshipRackServer = /dl380|dl360|dl580|sy480/i.test(cleanId);
+  if (isFlagshipRackServer && (matched.skuCount < 20)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Flagship server '${cleanId}' has only ${matched.skuCount} SKUs, failing minimum cardinality threshold (>= 20). Incomplete catalog.`
+    };
+  }
+
   return {
     certified: true,
     catalogDir: matched.catalogDir,
     catalogPath: matched.catalogJsonPath,
     xlsxPath: matched.xlsxPath,
-    skuCount: matched.skuCount
+    skuCount: matched.skuCount,
+    scrapeDate: meta.scrapeDate
   };
 }
 

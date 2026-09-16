@@ -67,7 +67,14 @@ function toChangeRows(targetDir, options = {}) {
     rows.push(row);
   };
   const attributeHistory = readJsonIfPresent(path.join(historyDir, 'attribute_history.json'), []);
+  const servicesAttributeHistory = readJsonIfPresent(path.join(historyDir, 'services_attribute_history.json'), []);
+  const allAttributes = [
+    ...(Array.isArray(attributeHistory) ? attributeHistory : []),
+    ...(Array.isArray(servicesAttributeHistory) ? servicesAttributeHistory : [])
+  ];
+
   const priceHistory = readJsonIfPresent(path.join(historyDir, 'price_history.json'), {});
+  const servicesPriceHistory = readJsonIfPresent(path.join(historyDir, 'services_price_history.json'), {});
   const catalogDeltas = readJsonIfPresent(path.join(historyDir, 'catalog_deltas.json'), []);
   const discontinued = readJsonIfPresent(path.join(historyDir, 'discontinued_skus.json'), {});
   const allowedSkus = options.allowedSkus instanceof Set ? options.allowedSkus : null;
@@ -77,7 +84,7 @@ function toChangeRows(targetDir, options = {}) {
   const isAllowedCatalogSku = sku => !sku || !allowedSkus || allowedSkus.has(String(sku).toUpperCase()) ||
     discontinuedSkus.has(String(sku).toUpperCase());
 
-  for (const item of Array.isArray(attributeHistory) ? attributeHistory : []) {
+  for (const item of allAttributes) {
     const sku = item.sku || item.productNumber || item['Product #'] || '';
     if (!isAllowedCatalogSku(sku)) continue;
     pushChange([
@@ -87,17 +94,21 @@ function toChangeRows(targetDir, options = {}) {
     ]);
   }
 
-  const priceEntries = Array.isArray(priceHistory)
-    ? priceHistory
-    : Object.entries(priceHistory || {}).flatMap(([sku, value]) =>
+  const rawPrices = [
+    ...(Array.isArray(priceHistory) ? priceHistory : Object.entries(priceHistory || {}).flatMap(([sku, value]) =>
       (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }))
-    );
-  for (const item of priceEntries.filter(Boolean)) {
+    )),
+    ...(Array.isArray(servicesPriceHistory) ? servicesPriceHistory : Object.entries(servicesPriceHistory || {}).flatMap(([sku, value]) =>
+      (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }))
+    ))
+  ];
+
+  for (const item of rawPrices.filter(Boolean)) {
     const sku = item.sku || item.productNumber || item['Product #'] || '';
     if (!isAllowedCatalogSku(sku)) continue;
     pushChange([
       'PRICE', item.timestamp || item.date || '', sku,
-      'List Price', item.oldPrice ?? item.previousPrice ?? '', item.newPrice ?? item.price ?? '', item.status || 'CHANGED',
+      'List Price', item.oldPrice ?? item.previousPrice ?? item.prevPrice ?? '', item.newPrice ?? item.price ?? '', item.status || 'CHANGED',
       item.source || 'certified price history'
     ]);
   }

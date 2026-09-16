@@ -2,7 +2,7 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-16T20:02:31.963Z  
+**Last Synchronized:** 2026-09-16T21:20:26.501Z  
 **Total Deduplicated Learned Rules:** 68  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
@@ -170,10 +170,10 @@ Total verified rules indexed in this build: **68**.
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `EXTENDED_AMBIENT_TRACKING` | `P71964-B21` | `P73021-B21` | DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking. | 1x |
-| 🏛️ FAMILY | `DL380_Gen11` | `ARCHITECTURE_BASELINE` | `PORTAL` | `P52534-B21` | If PORTAL is present, P52534-B21 is mandatory. | 1x |
-| 🌐 UNIVERSAL | `DL380_Gen11` | `ARCHITECTURE_BASELINE` | `PORTAL` | `P64707-B21` | If PORTAL is present, P64707-B21 is mandatory. | 1x |
-| 🏛️ FAMILY | `DL380_Gen11` | `ARCHITECTURE_BASELINE` | `PORTAL` | `—` | Portal validation flagged restriction on PORTAL. | 1x |
-| 🏛️ FAMILY | `DL380_Gen11` | `ARCHITECTURE_BASELINE` | `PORTAL` | `P58335-B21` | If PORTAL is present, P58335-B21 is mandatory. | 1x |
+| 🏛️ FAMILY | `DL380_Gen11` | `undefined` | `PORTAL` | `P52534-B21` | If PORTAL is present, P52534-B21 is mandatory. | 1x |
+| 🌐 UNIVERSAL | `DL380_Gen11` | `undefined` | `PORTAL` | `P64707-B21` | If PORTAL is present, P64707-B21 is mandatory. | 1x |
+| 🏛️ FAMILY | `DL380_Gen11` | `undefined` | `PORTAL` | `—` | Portal validation flagged restriction on PORTAL. | 1x |
+| 🏛️ FAMILY | `DL380_Gen11` | `undefined` | `PORTAL` | `P58335-B21` | If PORTAL is present, P58335-B21 is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `CARRY_OVER_VALIDATED` | `P48183-B21` | `—` | P48183-B21`)** [cite: 250] is fully supported | 1x |
 | 🏛️ FAMILY | `DL380_Gen11` | `PHYSICAL_ATTACH_REQUIREMENT` | `P48832-B21` | `P48814-B21` | If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory. | 1x |
 | 🏛️ FAMILY | `DL380_Gen11` | `PHYSICAL_POWER_ENABLEMENT` | `P02377-B21` | `P48918-B21` | If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mand | 1x |
@@ -193,19 +193,19 @@ Total verified rules indexed in this build: **68**.
 | 📦 CHASSIS | `DL380_Gen12` | `THERMAL_TRACKING` | `P73282-B21` | `P79558-B21` | P79558-B21 tracks 25C ambient baseline for Gen12 chassis. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `COOLING_MANDATE` | `P74507-B21` | `P48820-B21` | CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY` | `HU4B2A30C4V` | `P73282-B21` | Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer err | 1x |
-| 🏛️ FAMILY | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P73282-B21` | `P73282-B21` | If P73282-B21 is present, P73282-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P74573-B21` | `P74573-B21` | If P74573-B21 is present, P74573-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P48820-B21` | `P48820-B21` | If P48820-B21 is present, P48820-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P69728-B21` | `P69728-B21` | If P69728-B21 is present, P69728-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P47777-B21` | `P47777-B21` | If P47777-B21 is present, P47777-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P01366-B21` | `P01366-B21` | If P01366-B21 is present, P01366-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P03178-B21` | `P03178-B21` | If P03178-B21 is present, P03178-B21 is mandatory. | 1x |
-| 🏛️ FAMILY | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P76449-B21` | `P76450-B21` | Portal validation flagged restriction on P76450-B21. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `PREPROCESSING_SPLIT_CONFIRMED` | `NONE` | `—` | Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1 | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P74573-B21` | `P74792-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceed | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P74573-B21` | `P48820-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system | 1x |
-| 🏛️ FAMILY | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P69728-F21` | `DDR5-6400` | If P69728-F21 is present, DDR5-6400 is mandatory. | 1x |
+| 🏛️ FAMILY | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P73282-B21` | `P73282-B21` | If P73282-B21 is present, P73282-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74573-B21` | If P74573-B21 is present, P74573-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P48820-B21` | `P48820-B21` | If P48820-B21 is present, P48820-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P69728-B21` | `P69728-B21` | If P69728-B21 is present, P69728-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P47777-B21` | `P47777-B21` | If P47777-B21 is present, P47777-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P01366-B21` | `P01366-B21` | If P01366-B21 is present, P01366-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P03178-B21` | `P03178-B21` | If P03178-B21 is present, P03178-B21 is mandatory. | 1x |
+| 🏛️ FAMILY | `DL380_Gen12` | `undefined` | `P76449-B21` | `P76450-B21` | Portal validation flagged restriction on P76450-B21. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `PREPROCESSING_SPLIT_CONFIRMED` | `undefined` | `—` | Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1 | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74792-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceed | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P48820-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system | 1x |
+| 🏛️ FAMILY | `DL380_Gen12` | `undefined` | `P69728-F21` | `DDR5-6400` | If P69728-F21 is present, DDR5-6400 is mandatory. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `OPTION_TYPE_SUBSTITUTION` | `P69728-B21` | `P69728-F21` | / **`P69728-B21`** / HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit / Memory / RDIMM (BTO) / **❌ BLOCKED in C | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `873763-B21` | / **`P75740-B21`** / HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit / Smart Chassis / Drive Cage / **✅ Valid Front  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P28586-B21` | `P75740-B21` | / **`P28586-B21`** / HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD / Storage / SFF SAS HDD / **✅ Valid SAS HDD** / 12G SAS 10 | 1x |
@@ -221,7 +221,7 @@ Total verified rules indexed in this build: **68**.
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P10180-B21` | `P72203-B21` | / **P10180-B21** / Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC / **❌ OBSOLETE** / Legacy Gen11 part number [8]. It also **re | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P74573-B21` | `P48820-B21` | • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 / Constraint: learned (Intel Xeon 6730P 250W  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P74573-B21` | `P74792-B21` | • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 / Constraint: learned (Intel Xeon 6730P 250W  | 1x |
-| 🏛️ FAMILY | `DL380_Gen12` | `ARCHITECTURE_BASELINE` | `P10180-B21` | `P51181-B21` | P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. | 1x |
+| 🏛️ FAMILY | `DL380_Gen12` | `undefined` | `P10180-B21` | `P51181-B21` | P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P76453-B21` | `P48918-B21` | 3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages  | 1x |
 | 🏛️ FAMILY | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 🏛️ FAMILY | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |

@@ -33,6 +33,15 @@ const KNOWN_QUICKSPECS_DOC_MAP = {
     expectedFamily: 'ProLiant',
     expectedGen: 'Gen11'
   },
+  'DL360_Gen11': {
+    docId: 'a50004306enw',
+    docIdPattern: /a50004306|DL360/i,
+    titlePattern: /DL360\s*Gen\s*11/i,
+    blockedPattern: /Gen\s*12|DL380/i,
+    productName: 'HPE ProLiant DL360 Gen11',
+    expectedFamily: 'ProLiant',
+    expectedGen: 'Gen11'
+  },
   'DL380_Gen12_SFF': {
     docId: 'a00073551enw',
     docIdPattern: /a00073551/i,

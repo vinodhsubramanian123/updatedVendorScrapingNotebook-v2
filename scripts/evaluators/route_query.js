@@ -38,9 +38,9 @@ function getBaseChassisSku(chassisKey = '') {
 function getChassisCatalog(queryText = '', context = {}) {
   const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase();
 
-  let relDir = 'ProLiant/Gen12/DL380_Gen12';
-  let chassisKey = 'DL380_Gen12';
-  let catalogName = 'DL380_Gen12_Catalog.json';
+  let relDir = null;
+  let chassisKey = null;
+  let catalogName = null;
 
   if (/\bdl\s*380\s*a\b/i.test(text) || text.includes('dl380a')) {
     relDir = 'ProLiant/Gen12/DL380a_Gen12';
@@ -50,6 +50,19 @@ function getChassisCatalog(queryText = '', context = {}) {
     relDir = 'ProLiant/Gen11/DL380_Gen11';
     chassisKey = 'DL380_Gen11';
     catalogName = 'DL380_Gen11_Catalog.json';
+  } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen12') || text.includes('gen 12'))) {
+    relDir = 'ProLiant/Gen12/DL380_Gen12';
+    chassisKey = 'DL380_Gen12';
+    catalogName = 'DL380_Gen12_Catalog.json';
+  } else if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
+    return {
+      chassisKey: 'DL360_Gen12_UNSUPPORTED',
+      catalogDir: null,
+      catalogPath: null,
+      catalogData: null,
+      isAmbiguous: true,
+      error: 'DL360 Gen12 is not currently available in portfolio (DL360 Gen11 is available)'
+    };
   } else if (text.includes('dl360') || text.includes('dl 360')) {
     relDir = 'ProLiant/Gen11/DL360_Gen11';
     chassisKey = 'DL360_Gen11';
@@ -78,6 +91,21 @@ function getChassisCatalog(queryText = '', context = {}) {
     relDir = 'Cray/Gen1/GX5000_General_RACK';
     chassisKey = 'GX5000_General_RACK';
     catalogName = 'GX5000_General_RACK_Catalog.json';
+  } else if (text.includes('dl380') || text.includes('dl 380')) {
+    relDir = 'ProLiant/Gen12/DL380_Gen12';
+    chassisKey = 'DL380_Gen12';
+    catalogName = 'DL380_Gen12_Catalog.json';
+  }
+
+  if (!relDir) {
+    return {
+      chassisKey: 'UNKNOWN_PRODUCT',
+      catalogDir: null,
+      catalogPath: null,
+      catalogData: null,
+      isAmbiguous: true,
+      error: 'Product platform and generation could not be resolved from input.'
+    };
   }
 
   const catalogDir = path.join(PROJECT_ROOT, 'outputs', relDir);
@@ -89,7 +117,7 @@ function getChassisCatalog(queryText = '', context = {}) {
     } catch (_) {}
   }
 
-  return { chassisKey, catalogDir, catalogPath, catalogData };
+  return { chassisKey, catalogDir, catalogPath, catalogData, isAmbiguous: false };
 }
 
 /**
@@ -103,8 +131,17 @@ function classifyQueryIntent(queryText = '', context = {}) {
   const filePath = context.filePath || context.file || '';
 
   // 1. File-based detection
-  if (filePath) {
-    const ext = path.extname(filePath).toLowerCase();
+  const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
+  if (detectedPath) {
+    const ext = path.extname(detectedPath).toLowerCase();
+    if (['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp'].includes(ext)) {
+      return {
+        intent: 'OCR_QUOTE_INGESTION',
+        confidence: 0.98,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        rationale: 'Input contains an image file or scanned quote document designated for OCR ingestion.'
+      };
+    }
     if (['.csv', '.xlsx', '.xls', '.tsv'].includes(ext)) {
       if (text.includes('reconcile') || text.includes('compare') || text.includes('quote vs tender') || context.secondaryFilePath) {
         return {
@@ -251,13 +288,30 @@ async function executeRoutedQuery(queryText = '', context = {}) {
       if (context.filePath && fs.existsSync(context.filePath)) {
         responseData = evaluateBOQMultiAspect(context.filePath);
       } else if (context.items && Array.isArray(context.items)) {
-        responseData = evaluateBOQMultiAspect(context.items);
+        const chassisInfo = getChassisCatalog(queryText, context);
+        responseData = evaluateBOQMultiAspect(context.items, {
+          targetDir: chassisInfo.catalogDir || '',
+          catalogData: chassisInfo.catalogData,
+          productConfirmed: !chassisInfo.isAmbiguous
+        });
       } else {
         responseData = {
           message: 'BOQ evaluation requested. Please upload or specify a BOQ file path or item list.',
           suggestedAction: 'UPLOAD_BOQ_SPREADSHEET'
         };
       }
+      break;
+    }
+
+    case 'OCR_QUOTE_INGESTION': {
+      const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp)/i)?.[0] || '');
+      responseData = {
+        intent: 'OCR_QUOTE_INGESTION',
+        filePath: imgPath,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        status: 'READY_FOR_OCR',
+        message: `Image input identified (${path.basename(imgPath || 'quote')}). Routed to multimodal Gemini Vision OCR pipeline.`
+      };
       break;
     }
 
@@ -337,7 +391,12 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         // Run multi-aspect evaluation across all 7 physical aspects to synthesize Rank 1 - 5 matrix
         if (candidateItems.length > 0) {
           try {
-            evaluation = evaluateBOQMultiAspect(candidateItems, { chassis: chassisInfo.chassisKey });
+            evaluation = evaluateBOQMultiAspect(candidateItems, {
+              chassis: chassisInfo.chassisKey,
+              targetDir: chassisInfo.catalogDir || '',
+              catalogData: chassisInfo.catalogData,
+              productConfirmed: !chassisInfo.isAmbiguous
+            });
           } catch (evalErr) {
             evaluation = { error: evalErr.message };
           }
@@ -478,5 +537,6 @@ if (require.main === module) {
 
 module.exports = {
   classifyQueryIntent,
-  executeRoutedQuery
+  executeRoutedQuery,
+  getChassisCatalog
 };

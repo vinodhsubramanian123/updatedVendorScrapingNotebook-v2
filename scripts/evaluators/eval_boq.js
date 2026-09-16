@@ -200,8 +200,8 @@ function ingestAndConsolidateBoq(options) {
   const detectedChassisName = path.basename(chassisDir || '');
 
   // Pre-Flight Scraped-Catalog Gate (INV-96)
-  const isTestFixture = /test|fixture|temp|mock|split_clusters/i.test(chassisDir) || process.env.NODE_ENV === 'test';
-  if (!isTestFixture && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
+  const isExplicitTestPath = /(?:^|[\\/])tests[\\/]fixtures|(?:^|[\\/])outputs[\\/]temp[\\/]test_payloads/i.test(chassisDir) || process.env.NODE_ENV === 'test';
+  if (!isExplicitTestPath && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
     const certCheck = isCatalogCertified(detectedChassisName);
     if (!certCheck.certified) {
       const errorMsg = `❌ PRE-FLIGHT ERROR: [ERR_UNSCRAPED_SOLUTION] Solution '${detectedChassisName}' has not been scraped or certified.\nReason: ${certCheck.reason}\n💡 Run 'npm run scrape:oca -- --profile <profile>' or trigger the scraper in the dashboard to establish ground truth before evaluating.`;
@@ -576,7 +576,8 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
     });
     if (result) {
       evalResults.solutionDoubleCheck = {
-        status: result.isCloudGrounded ? 'DOUBLE_CHECK_PASSED' : (result.isMock ? 'OFFLINE_MOCK_VERIFIED' : 'LOCAL_RULES_PASSED'),
+        status: result.doubleCheckVerdict || (result.isCloudGrounded ? 'DOUBLE_CHECK_PASSED' : (result.isMock ? 'OFFLINE_MOCK_VERIFIED' : 'LOCAL_RULES_PASSED')),
+        verdict: result.doubleCheckVerdict,
         sourceId: result.sourceId,
         citationsCount: (result.citations || []).length,
         extractedDeltasCount: (result.extractedDeltas || []).length
@@ -645,12 +646,15 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
 async function runEvaluationPipeline(options) {
   const startTime = Date.now();
   const evidenceLedger = createEvidenceLedger({
-    chassis: options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS',
-    filePath: options.BOQ_FILE
+    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
+    filePath: options.inputFile || options.BOQ_FILE
   });
 
-  evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.BOQ_FILE });
+  evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
   const ingestCtx = ingestAndConsolidateBoq(options);
+  if (ingestCtx.chassisDir) {
+    evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
+  }
   evidenceLedger.completePhase(1, 'PASSED', {
     itemsCount: ingestCtx.items.length,
     chassisDir: ingestCtx.chassisDir,
@@ -671,9 +675,10 @@ async function runEvaluationPipeline(options) {
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
   );
-  evidenceLedger.completePhase(3, 'PASSED', {
+  const aspectPhaseStatus = (evalResults.isMathClean !== false && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0)) ? 'PASSED' : 'ACTION_REQUIRED';
+  evidenceLedger.completePhase(3, aspectPhaseStatus, {
     missingDependencies: evalResults.missingDependencies?.length || 0,
-    aspectPassCount: evalResults.aspectPassCount || 7
+    aspectPassCount: evalResults.aspectPassCount || (evalResults.isMathClean !== false ? 7 : 0)
   });
 
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
@@ -721,6 +726,13 @@ async function runEvaluationPipeline(options) {
     evalResults.ephemeralSourceValidation = ephemeralSourceResult;
   }
 
+  evidenceLedger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {});
+  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
+  const { jsonPath, mdPath } = evidenceLedger.finalizeAndExport();
+  evalResults.evidenceLogPath = jsonPath;
+  evalResults.evidenceSummaryPath = mdPath;
+  evidenceLedger.completePhase(9, 'PASSED', { jsonPath, mdPath, newLearningsCount });
+
   evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
   evalResults.evidenceLedger = evidenceLedger;
 
@@ -739,15 +751,10 @@ async function runEvaluationPipeline(options) {
     stage5MatrixMs
   });
   evidenceLedger.completePhase(8, 'PASSED', {
-    workbookPath: evalResults.multiRankWorkbookPath || ''
+    workbookPath: evalResults.multiRankWorkbookPath || '',
+    evidenceLogPath: jsonPath,
+    evidenceSummaryPath: mdPath
   });
-
-  evidenceLedger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {});
-  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
-  const { jsonPath, mdPath } = evidenceLedger.finalizeAndExport();
-  evalResults.evidenceLogPath = jsonPath;
-  evalResults.evidenceSummaryPath = mdPath;
-  evidenceLedger.completePhase(9, 'PASSED', { jsonPath, mdPath, newLearningsCount });
 
   return evalResults;
 }

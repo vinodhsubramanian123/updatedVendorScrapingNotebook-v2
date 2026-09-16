@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('./generate_boq_xlsx.js');
 const { formatNotebookQueryPayload } = require('./boq_evaluator.js');
-const { triggerPostFlowSync } = require('../sync/post_flow_sync.js');
+const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
@@ -322,13 +322,16 @@ async function handleGoogleDriveUpload(workbookPath) {
     if (!authCheck.authenticated) {
       console.log(`\n⚠️ Google Drive upload requires authentication.`);
       console.log(`👉 Run "npm run auth:drive" or "npm run auth:check" to authenticate without human in the loop.\n`);
+      return null;
     } else {
       const driveResult = await uploadFileToGoogleSheet(workbookPath);
       console.log(`☁️ Google Drive Live Deliverable: ${driveResult.spreadsheetUrl}`);
       console.log(`📄 Spreadsheet ID: ${driveResult.spreadsheetId}\n`);
+      return driveResult;
     }
   } catch (err) {
     console.log(`\n⚠️ Google Drive upload note: ${err.message}`);
+    return null;
   }
 }
 
@@ -373,7 +376,7 @@ async function serializeAndExportResults(ctx) {
   // Post-flow sync
   try {
     const autoUpload = Boolean(ctx.syncNlm || (ctx.options && ctx.options.syncNlm) || process.env.AUTO_UPLOAD_NLM === '1');
-    const syncResult = triggerPostFlowSync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload });
+    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: true });
     evalResults.postFlowSync = syncResult;
     if (!syncResult.success) {
       const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
@@ -398,12 +401,22 @@ async function serializeAndExportResults(ctx) {
 
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
+  // Deliverable Drive Upload if requested
+  if (ctx.UPLOAD_DRIVE && evalResults.multiRankWorkbookPath) {
+    const driveUpload = await handleGoogleDriveUpload(evalResults.multiRankWorkbookPath);
+    if (driveUpload) {
+      evalResults.googleDriveDeliverable = driveUpload;
+    }
+  }
+
   const workflowSteps = _buildWorkflowSteps(ctx);
 
   if (JSON_MODE) {
     const traceId = `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
     const tracePayloads = _buildTracePayloads(ctx);
+
+    const isMathClean = evalResults.isMathClean !== false && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
 
     const jsonResult = {
       status: 'SUCCESS',
@@ -417,6 +430,10 @@ async function serializeAndExportResults(ctx) {
         notebookId,
         tracePayloads,
         outputReportPath: outputPath,
+        evidenceLogPath: evalResults.evidenceLogPath || null,
+        evidenceSummaryPath: evalResults.evidenceSummaryPath || null,
+        googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
+        buildStatus: isMathClean ? 'LOCAL_RULE_CHECKED' : 'ACTION_REQUIRED',
         itemCount: items.length,
         items,
         workflowSteps,
@@ -485,9 +502,6 @@ async function serializeAndExportResults(ctx) {
     if (evalResults.multiRankWorkbookPath) {
       console.log(`📊 Multi-Rank Solution Deliverable: file://${evalResults.multiRankWorkbookPath}`);
       console.log(`📄 Token-Dense Solution CSV: file://${evalResults.multiRankCsvPath}`);
-      if (ctx.UPLOAD_DRIVE) {
-        await handleGoogleDriveUpload(evalResults.multiRankWorkbookPath);
-      }
     }
     console.log(`===============================================================\n`);
   }

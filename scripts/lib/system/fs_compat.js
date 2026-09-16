@@ -19,7 +19,7 @@ function moveFile(src, dest) {
   try {
     fs.renameSync(src, dest);
   } catch (err) {
-    if (err.code === 'EXDEV') {
+    if (err.code === 'EXDEV' || err.code === 'EPERM') {
       fs.copyFileSync(src, dest);
       fs.unlinkSync(src);
     } else {

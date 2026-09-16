@@ -2,7 +2,7 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
-**Current engineering handoff (2026-09-14):** Phases 1 through 10 of `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **162/162 suites PASSED (100.0%)** (97 unit, 40 chaos, 25 integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, clean dashboard build, 11/11 sample portfolio BOMs certified, and all 937 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
+**Current engineering handoff (2026-09-17):** Phases 1 through 13 of `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **167/167 suites PASSED (100.0%)** (101 unit, 40 chaos, 26 integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, clean dashboard build, 11/11 sample portfolio BOMs certified, all Codex audit findings F01–F13 resolved, and all functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
 
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
 - **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
@@ -527,6 +527,32 @@ The system leverages Google Jules for background code review, test generation, a
     - **Post-Synthesis Grounded Double-Check**: After the 5-Tier Strategic Resolution Matrix synthesizes Rank 1 (Intent Preserved) and Rank 1L (Least Delta Alternative), the engine automatically verifies the synthesized solution against the product's NotebookLM notebook via `validateSolutionWithEphemeralSource()` in `scripts/lib/sync/nlm_solution_source_validator.js`.
     - **Zero-Contamination Ephemeral Attachment (`INV-24`)**: The multi-rank solution CSV is temporarily attached as an ephemeral source in NotebookLM, validated across all 7 physical aspects to confirm 100% buildability and verify that added enablement kits (cables, SAS expanders, auxiliary GPU power) comply with QuickSpecs and newly learned rules, and then immediately detached (`source_delete`).
     - **Verification Telemetry Attestation**: The double-check result is recorded in `evalResults.solutionDoubleCheck` (`DOUBLE_CHECK_PASSED` / `OFFLINE_MOCK_VERIFIED`) and logged to the execution trace ledger before final deliverable export.
+
+89. **Generation-Isolated vs Universal Knowledge Scoping Protocol (`INV-98`)**:
+    - Knowledge deltas MUST be strictly partitioned:
+      - `CHASSIS_SPECIFIC`: Reside exclusively in `outputs/{Family}/{Gen}/{Model}/history/catalog_deltas.json` and sync exclusively to that product's notebook to prevent cross-generation rule contamination.
+      - `UNIVERSAL_CROSS_CHASSIS`: Reside in `outputs/history/master_universal_knowledge_charter.md` covering universal truths (e.g. FIO `#0D1` suffixing, redundant PSU matching, minimum OS core licensing).
+
+90. **Zero Unearned Verification Badges & Evidence-Derived Reporting (`INV-99`)**:
+    - All exported Excel workbooks, JSON results, and UI dashboard badges MUST derive verification tags strictly from verified runtime evidence (`rank.evidence`, `rank.isBuildable`, `rank.cloudGrounded`).
+    - Fabricating static or unconditional labels like "100% Factory Buildable in CLIC" or "7/7 ASPECTS PASS" when evaluation is ungrounded, pending, or failed is strictly prohibited.
+
+91. **Solution Source Ephemeral Validation & Robust Cleanup Protocol (`INV-100`)**:
+    - Ephemeral candidate solution sources attached to NotebookLM for multi-rank validation MUST be removed using `nlm source delete <sourceId>` enclosed within a guaranteed `finally` block.
+    - Temporary candidate manifests MUST NEVER linger in production notebooks or pollute ground-truth QuickSpecs sources (`INV-24`).
+
+92. **Multi-Sheet Sheet Name Integrity & Quantity Conservation (`INV-101`)**:
+    - When evaluating multi-sheet tenders with an explicitly requested `targetSheet`, `readBoqLines` in `boq_evaluator.js` MUST evaluate that exact sheet.
+    - If the requested sheet is missing from the workbook, the engine MUST throw a hard exception (`[ERR_SHEET_NOT_FOUND]`) rather than silently defaulting to the first sheet, preventing erroneous duplicate evaluations.
+
+93. **Immutable Candidate Manifest & Non-Destructive Knowledge Deduplication (`INV-102`)**:
+    - Every candidate in the 5-Tier Strategy Matrix MUST maintain an immutable part manifest with an independent SHA-256 hash, and distance scoring MUST prioritize customer intent preservation.
+    - Knowledge delta deduplication in `continuous_learning_verifier.js` MUST match on `(affectedSku, ruleType, requiredDependencySku)`, ensuring that distinct physical dependencies (e.g. multiple distinct cable kits for a chassis) are never overwritten.
+
+94. **Cross-Platform Atomic File I/O & Windows Lock Resilience (`INV-103`)**:
+    - Atomic filesystem operations in `scripts/lib/system/fs_compat.js` MUST be resilient across all OS environments.
+    - When `renameSync` encounters temporary Windows file locks (`EPERM`), it MUST automatically catch the error and fall back to `copyFileSync` and `unlinkSync`, guaranteeing atomic file integrity without crashing on file watchers or anti-virus processes.
+
 
 
 
