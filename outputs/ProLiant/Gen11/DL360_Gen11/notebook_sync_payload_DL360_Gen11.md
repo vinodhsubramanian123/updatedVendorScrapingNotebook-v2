@@ -1,12 +1,12 @@
-# HPE SY100Gb_F32_Module — Synchronized Catalog Knowledge
+# HPE DL360_Gen11 — Synchronized Catalog Knowledge
 
-**Target Product**: `SY100Gb_F32_Module`
+**Target Product**: `DL360_Gen11`
 
-**Scope Identity**: `HPE/SERVER/Synergy/General/SY100Gb_F32`
+**Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL360_Gen11`
 
-**Sync Timestamp**: 2026-09-16T19:35:23.647Z
+**Sync Timestamp**: 2026-09-16T19:35:12.287Z
 
-**Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
+**Total Verified SKUs**: `1429` (`694` Hardware + `735` Services)
 
 **Total Synced KnowledgeDeltas**: `0`
 
@@ -18,25 +18,25 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 3 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **3** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 694 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 735 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1429** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
 *No verified universal vendor rules are registered for this product.*
 
-## 🏛️ 2. Family & Generation Rules (Synergy General)
+## 🏛️ 2. Family & Generation Rules (ProLiant Gen11)
 
 *No verified family/generation rules are registered for this product.*
 
-## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
+## 🎯 3. Chassis & Solution-Type Gotchas (DL360_Gen11)
 
-*No specific gotchas logged for SY100Gb_F32_Module. Baseline chassis layout rules active.*
+*No specific gotchas logged for DL360_Gen11. Baseline chassis layout rules active.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-*No discontinued or reinstated SKUs detected for SY100Gb_F32_Module. All cataloged SKUs are active.*
+*No discontinued or reinstated SKUs detected for DL360_Gen11. All cataloged SKUs are active.*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
@@ -46,5 +46,5 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
-| **SY100Gb_F32_Module** | Synergy | Gen1 | Blade | `864273-B21` |
+| **DL360_Gen11** | ProLiant | Gen11 | 8SFF | `P52499-B21` |
 

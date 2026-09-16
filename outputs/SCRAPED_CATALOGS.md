@@ -13,3 +13,4 @@
 
 | 2026-09-09 | DL580 Gen12 | ProLiant | Gen12 | `DL580_Gen12` | **242** | [DL580_Gen12_OCA_Catalog.xlsx](ProLiant/Gen12/DL580_Gen12/DL580_Gen12_OCA_Catalog.xlsx) | [DL580_Gen12_Catalog.json](ProLiant/Gen12/DL580_Gen12/DL580_Gen12_Catalog.json) | Advisory (No QS Link) | `outputs/ProLiant/Gen12/DL580_Gen12/` |
 | 2026-09-11 | SY480 Gen12 | Synergy | Gen12 | `SY480_Gen12` | **154** | [SY480_Gen12_OCA_Catalog.xlsx](Synergy/Gen12/SY480_Gen12/SY480_Gen12_OCA_Catalog.xlsx) | [SY480_Gen12_Catalog.json](Synergy/Gen12/SY480_Gen12/SY480_Gen12_Catalog.json) | [PDF](Synergy/Gen12/SY480_Gen12/HPE_SY480_Gen12_QuickSpecs.pdf) | `outputs/Synergy/Gen12/SY480_Gen12/` |
+| 2026-09-16 | DL360 Gen11 | ProLiant | Gen11 | `DL360_Gen11` | **704** | [DL360_Gen11_OCA_Catalog.xlsx](ProLiant/Gen11/DL360_Gen11/DL360_Gen11_OCA_Catalog.xlsx) | [DL360_Gen11_Catalog.json](ProLiant/Gen11/DL360_Gen11/DL360_Gen11_Catalog.json) | Advisory (No QS Link) | `outputs/ProLiant/Gen11/DL360_Gen11/` |

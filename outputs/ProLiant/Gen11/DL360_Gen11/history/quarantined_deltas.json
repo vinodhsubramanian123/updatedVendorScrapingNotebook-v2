@@ -1,0 +1,112 @@
+[
+  {
+    "deltaId": "DELTA_RAG_DEP_P49614-B21_P43322-B21_1789573287095",
+    "chassis": "DL360 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P49614-B21",
+    "requiredDependencySku": "P43322-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P49614-B21 requires auxiliary component P43322-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "Your sources do not contain detailed QuickSpecs rules, thermal constraint requirements for the 270W Intel Xeon-Gold 6430 processor (P49614-B21), memory channel population guidelines for DDR5-4800 (P43322-B21), backplane enablement cable mapping, or slot allocation validations for the remaining part",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T15:41:27.096Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "71b7d4e0-c917-4bef-b372-5caec16c9c78",
+        "title": "⚠️ 4. Discontinued & Obsolete SKUs Registry No discontinued or reinstated SKUs detected for DL360_Gen11. All cataloged SKUs are active. 🔄 5. Recent Attribute & Specification Modifications Log No attribute or specification changes recorded across catalog snapshots. 🧩 6. Same-Product CTO Variant Matrix <cited_table>"
+      },
+      {
+        "index": "2",
+        "sourceId": "71b7d4e0-c917-4bef-b372-5caec16c9c78",
+        "title": "⚠️ 4. Discontinued & Obsolete SKUs Registry No discontinued or reinstated SKUs detected for DL360_Gen11. All cataloged SKUs are active. 🔄 5. Recent Attribute & Specification Modifications Log No attribute or specification changes recorded across catalog snapshots. 🧩 6. Same-Product CTO Variant Matrix <cited_table>"
+      }
+    ],
+    "scope": "FAMILY_GEN",
+    "knowledgeFingerprint": "25d1d9f5630b6c82984c06a15eca2f67cb46a8c2bb39064c8b563a917374936f",
+    "validatedAt": "2026-09-16T15:41:27.098Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_25d1d9f5630b6c82",
+    "firstSeenAt": "2026-09-16T14:25:09.934Z",
+    "lastSeenAt": "2026-09-16T15:41:27.100Z",
+    "observationCount": 2,
+    "quarantinedAt": "2026-09-16T15:41:27.100Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA-1789568805815-bucw9",
+    "traceId": null,
+    "timestamp": "2026-09-16T14:26:45.815Z",
+    "chassis": "DL360_Gen11",
+    "rawMessage": "HPE MR408i-o Gen11 OCP Storage Controller requires P52416-B21 HPE ProLiant DL360 Gen11 OROC Tri-Mode Cable Kit to connect to the 8SFF Tri-Mode Backplane (P48895-B21).",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P58335-B21",
+    "requiredDependencySku": "P52416-B21",
+    "ruleUpdate": "HPE MR408i-o Gen11 OCP Storage Controller requires P52416-B21 HPE ProLiant DL360 Gen11 OROC Tri-Mode Cable Kit to connect to the 8SFF Tri-Mode Backplane (P48895-B21).",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 7,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "88021b6d4e37273f7932bd1f3f433cc02eded27f0f62fb89d3162a1601722672",
+    "validatedAt": "2026-09-16T14:26:45.822Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_88021b6d4e37273f",
+    "firstSeenAt": "2026-09-16T14:26:45.822Z",
+    "lastSeenAt": "2026-09-16T14:26:45.822Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T14:26:45.822Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789568805832-x1vry",
+    "traceId": null,
+    "timestamp": "2026-09-16T14:26:45.832Z",
+    "chassis": "DL360_Gen11",
+    "rawMessage": "Secondary OCP3 slot usage in DL360 Gen11 with dual processors requires P48830-B21 CPU2 to OCP2 x8 Enablement Kit.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P51181-B21",
+    "requiredDependencySku": "P48830-B21",
+    "ruleUpdate": "Secondary OCP3 slot usage in DL360 Gen11 with dual processors requires P48830-B21 CPU2 to OCP2 x8 Enablement Kit.",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 8,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "545258e4288441112446db750d159cb01e3a96d85b180397688b09558d9a4c99",
+    "validatedAt": "2026-09-16T14:26:45.842Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_545258e428844111",
+    "firstSeenAt": "2026-09-16T14:26:45.845Z",
+    "lastSeenAt": "2026-09-16T14:26:45.845Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T14:26:45.845Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  }
+]

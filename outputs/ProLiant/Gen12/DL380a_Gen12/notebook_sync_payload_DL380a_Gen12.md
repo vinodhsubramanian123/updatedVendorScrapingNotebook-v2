@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-16T12:33:32.982Z
+**Sync Timestamp**: 2026-09-16T19:35:18.466Z
 
 **Total Verified SKUs**: `662` (`450` Hardware + `212` Services)
 

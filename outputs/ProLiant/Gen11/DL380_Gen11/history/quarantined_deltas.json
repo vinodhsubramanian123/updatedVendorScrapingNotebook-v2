@@ -5691,5 +5691,1165 @@
       "Confidence score 0.70 is below automatic promotion threshold (0.85)"
     ],
     "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P01366-B21_P02377-B21_1789564548538",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P01366-B21",
+    "requiredDependencySku": "P02377-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P01366-B21 requires auxiliary component P02377-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* Because the controller contains 4GB write cache, it mandates write-cache protection via **`P01366-B21`** (*96W Smart Storage Battery*) or **`P02377-B21`** (*Smart Storage Hybrid Capacitor*) [26, 27].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T13:15:48.538Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "3",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "4",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "5",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "6",
+        "sourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
+        "title": "Untitled spreadsheet - Sheet1 <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "13",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "14",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "16",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "17",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "25",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "27",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "28",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "29",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "30",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "31",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "32",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "33",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "34",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "20bad67192d2c6df383d0b40cfaac35c3ee4da546b08126b545308584d2f09ce",
+    "validatedAt": "2026-09-16T13:15:48.542Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_20bad67192d2c6df",
+    "firstSeenAt": "2026-09-16T13:15:48.548Z",
+    "lastSeenAt": "2026-09-16T13:15:48.548Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:15:48.548Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P58335-B21_P01366-B21_1789564548538",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P58335-B21",
+    "requiredDependencySku": "P01366-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P58335-B21 requires auxiliary component P01366-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* Combining `P58335-B21` and `P01366-B21` **strictly requires enablement cable `P48918-B21`** [1, 25, 26, 28-31].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T13:15:48.538Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "3",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "4",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "5",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "6",
+        "sourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
+        "title": "Untitled spreadsheet - Sheet1 <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "13",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "14",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "16",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "17",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "25",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "27",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "28",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "29",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "30",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "31",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "32",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "33",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "34",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "f0e74b8c461966f3a346a746d18265ca0af7deb848ae7bd29b799ca1684ab420",
+    "validatedAt": "2026-09-16T13:15:48.575Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_f0e74b8c461966f3",
+    "firstSeenAt": "2026-09-16T13:15:48.581Z",
+    "lastSeenAt": "2026-09-16T13:15:48.581Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:15:48.581Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P48918-B21_P01366-B21_1789564548538",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P48918-B21",
+    "requiredDependencySku": "P01366-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P48918-B21 requires auxiliary component P01366-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **Naming Ambiguity Resolved**: Although titled \"DL360 Gen11...\" in QuickSpecs, platform rules explicitly map `P48918-B21` as the mandatory enablement cable required on DL380 Gen11 to connect write-cache batteries (`P01366-B21`) to Tri-Mode storage controllers (`P58335-B21`) [1, 29-31].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T13:15:48.538Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "3",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "4",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "5",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "6",
+        "sourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
+        "title": "Untitled spreadsheet - Sheet1 <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "13",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "14",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "16",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "17",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "25",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "27",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "28",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "29",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "30",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "31",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "32",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "33",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "34",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "30a4e30e845cf89aaece9c77c018ab59db1c19ac6b240cee410d5206c63842f3",
+    "validatedAt": "2026-09-16T13:15:48.611Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_30a4e30e845cf89a",
+    "firstSeenAt": "2026-09-16T13:15:48.618Z",
+    "lastSeenAt": "2026-09-16T13:15:48.618Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:15:48.618Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P40507-B21_P58335-B21_1789564548538",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P40507-B21",
+    "requiredDependencySku": "P58335-B21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P40507-B21 requires auxiliary component P58335-B21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* Both are SFF Basic Carrier (BC) drives [32]. Note that the SAS drive (`P40507-B21`) requires a hardware RAID/HBA controller like `P58335-B21` as embedded SATA cannot run SAS protocols [23, 33, 34].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T13:15:48.538Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "3",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "4",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "5",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "6",
+        "sourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
+        "title": "Untitled spreadsheet - Sheet1 <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "13",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "14",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "16",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "17",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "25",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "27",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "28",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "29",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "30",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "31",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "32",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "33",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "34",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "93ca478abb096a06343a951ee8dd2215a1053ccc5198349328986c3102935343",
+    "validatedAt": "2026-09-16T13:15:48.651Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_93ca478abb096a06",
+    "firstSeenAt": "2026-09-16T13:15:48.660Z",
+    "lastSeenAt": "2026-09-16T13:15:48.660Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:15:48.660Z",
+    "quarantineReasons": [
+      "SKU P40507-B21 not found in target catalog; held in quarantine for manual verification",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_FIO_P43322-B21_P43322-F21_1789564548538",
+    "chassis": "DL380 Gen11",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "OPTION_TYPE_SUBSTITUTION",
+    "affectedSku": "P43322-B21",
+    "requiredDependencySku": "P43322-F21",
+    "reasoning": "Grounding Verification: Standalone BTO option P43322-B21 is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is P43322-F21.",
+    "rawMessage": "| **Factory Memory** | `P43322-B21` (BTO SKU) [17] | **`P43322-F21`** [18, 19] | Translates BTO memory to FIO tag for CTO factory integration [17, 19]. |",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T13:15:48.538Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "2",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "3",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "4",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "5",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "6",
+        "sourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
+        "title": "Untitled spreadsheet - Sheet1 <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "8",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "9",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "10",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "11",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "12",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "13",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "14",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "15",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "16",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "17",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "18",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "19",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "20",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "21",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "22",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "23",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "24",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "25",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "26",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "27",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "28",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "29",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "30",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "31",
+        "sourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
+        "title": "- **Processor Generation Memory Gating**: QuickSpecs and platform rules enforce that DDR5-4800 memory kits (`P50311-B21` / `P50312-B21`) are supported strictly with 4th Gen Intel Xeon processors. 5th Gen Intel Xeon processors strictly require DDR5-5600 memory (`P64707-B21`). Incompatible with Gen12 DDR5-6400 memory controllers. - **Enablement Cable Naming Ambiguity Resolved**: `P48918-B21` is officially titled \"HPE ProLiant DL360 Gen11 Storage Controller Enablement Cable Kit\" in QuickSpecs, but is the exact mandatory cable required on DL380 Gen11 to connect write-cache battery/capacitor (`P01366-B21` / `P02377-B21`) to Tri-Mode storage controllers (`P47777-B21` / `P58335-B21`). The engine preserves this mapping and does not reject it as a DL360-only part."
+      },
+      {
+        "index": "32",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "33",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "34",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "35",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "36",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "37",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "38",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      },
+      {
+        "index": "39",
+        "sourceId": "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
+        "title": "Notes:  − The 8SFF chassis is upgraded to support up to 24SFF (front) with a variety of 8SFF Drive Cages to select from, including 8SFF U.3 x4/x2 Trimode, 8SFF U.3 (x1 Trimode), and 8SFF SAS/SATA. See “Drive Cages” section within this document for options. − The 8SFF chassis comes with an 8SFF U.3 x1 Trimode drive bay by default in bay 3.  − The Universal Media Bay (P50728-B21) is only available as an option for the 8SFF chassis and can only be populated in Box 1. QuickSpecs  HPE ProLiant DL380 Gen11"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "9010bdcaeeffcbf5105558a2a040c9a90e3fbb7753db940575440d215522c62f",
+    "validatedAt": "2026-09-16T13:15:48.689Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_9010bdcaeeffcbf5",
+    "firstSeenAt": "2026-09-16T13:15:48.694Z",
+    "lastSeenAt": "2026-09-16T13:15:48.694Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:15:48.694Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA-1789564644277-j4jew",
+    "traceId": null,
+    "timestamp": "2026-09-16T13:17:24.277Z",
+    "chassis": "DL380_Gen11",
+    "rawMessage": "On DL380 Gen11, P58335-B21 (MR408i-o controller) with P01366-B21 (96W Smart Storage Battery) requires P48918-B21 (Storage Controller Enablement Cable Kit) for write-cache battery enablement.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P58335-B21",
+    "requiredDependencySku": "P48918-B21",
+    "ruleUpdate": "On DL380 Gen11, P58335-B21 (MR408i-o controller) with P01366-B21 (96W Smart Storage Battery) requires P48918-B21 (Storage Controller Enablement Cable Kit) for write-cache battery enablement.",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 5,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "7de874bd02529544dcf782e8054f6bfc56a348155c3c33ffea32e181b1195347",
+    "validatedAt": "2026-09-16T13:17:24.285Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_7de874bd02529544",
+    "firstSeenAt": "2026-09-16T13:17:24.290Z",
+    "lastSeenAt": "2026-09-16T13:17:24.290Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T13:17:24.290Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
   }
 ]

@@ -1,0 +1,226 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Energy Star	Energy Star	max 1	Quantity Constraint	Quantity: max 1
+Processor	Processors	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Heatsink Kit	max 2	Quantity Constraint	Quantity: max 2
+Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
+Memory	Memory Blank Kit	max 99	Quantity Constraint	Quantity: max 99
+Storage Devices	SAS Controller	max 3	Quantity Constraint	Quantity: max 3
+Storage Devices	Smart Storage Battery	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	Internal Storage Controller Cables	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Drive Cage	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	BIOS Mode	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Factory Configuration Settings	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Logical Size Settings	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	vSAN Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Riser Cards	max 2	Quantity Constraint	Quantity: max 2
+OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
+Networking	InfiniBand PCIe	max 2	Quantity Constraint	Quantity: max 2
+Networking	Ethernet PCIe	max 2	Quantity Constraint	Quantity: max 2
+Networking	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
+Networking	Fibre Channel HBA	max 2	Quantity Constraint	Quantity: max 2
+Networking	Transceivers	max 12	Quantity Constraint	Quantity: max 12
+Transceivers	Upgrades	max 2	Quantity Constraint	Quantity: max 2
+Transceivers	OCP Infiniband	max 2	Quantity Constraint	Quantity: max 2
+Transceivers	Power Supplies	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Cooling Options	max 2	Quantity Constraint	Quantity: max 2
+Accessories	Power Cords	max 2	Quantity Constraint	Quantity: max 2
+Security Options	Security Hardware	max 3	Quantity Constraint	Quantity: max 3
+Security Options	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
+Manufacturing Services	Manufacturing Services	max 1	Quantity Constraint	Quantity: max 1
+Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
+Graphics Options	Graphics	max 2	Quantity Constraint	Quantity: max 2
+Hybrid RAID	INTEL VROC Products-FIO	Unlimited	Quantity Constraint	Quantity: Unlimited
+Hybrid RAID	INTEL VROC Products-BTO	Unlimited	Quantity Constraint	Quantity: Unlimited
+Hybrid RAID	Pensando DSP (SW)	Unlimited	Quantity Constraint	Quantity: Unlimited
+Hybrid RAID		Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMware NSX	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare VCenter Srm Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare VCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare VCenter Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare Client Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare VSphere Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare VSphere Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+Virtualization	VMWare Core Editions	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+SGI Software	Data Management Framework DMF	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	MS Windows Server Additional License	max 999	Quantity Constraint	Quantity: max 999
+SGI Software	MS Windows Server CALs	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	MS Windows Server Not Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	MS Windows Server Preinstalled	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	Red Hat Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	Red Hat SAP Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	Red Hat-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	SUSE Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	SUSE SAP Operating Systems	Unlimited	Quantity Constraint	Quantity: Unlimited
+SGI Software	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
+Private Cloud Business Edition	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+Private Cloud Business Edition	Integrated Lights Out Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Private Cloud Business Edition	Hadoop Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Private Cloud Business Edition	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+Private Cloud Business Edition	Linux Value Added Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+AI-at-Scale	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Partner Software - Operating System 8pks	max 30969	Quantity Constraint	Quantity: max 30969
+HPC Software Products	OEM Software	max 999	Quantity Constraint	Quantity: max 999
+OEM Software	Reseller Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
+Processor	Processors	required	Configuration Rule	Selection constraint for Processors: required
+Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	Selection constraint for Heatsink Kit: max 2
+Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	Max quantity of product limited by space available.
+Memory	Memory	max 32	Configuration Rule	Selection constraint for Memory: max 32
+Memory	Memory	max 32	Configuration Rule	Mixing of x4 and x8 memory is not allowed
+Memory	Memory	max 32	Configuration Rule	This Processor supports only PC5-4800B Memory
+Memory	Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Memory	Memory	max 32	Configuration Rule	128GB 2Rx4 PC5-4800B-R memory cannot be mixed with any other memory
+Memory	Memory	max 32	Configuration Rule	Mixing of 3DS and Non 3DS memory is not allowed
+Memory	Memory	max 32	Configuration Rule	96GB Memory cannot be mixed with any other Memory
+Memory	Memory Blank Kit	max 99	Configuration Rule	Selection constraint for Memory Blank Kit: max 99
+Storage Controllers	SAS Controller	max 3	Configuration Rule	Selection constraint for SAS Controller: max 3
+Cables & Enablement Kits	Smart Storage Batteries	max 2	Configuration Rule	Selection constraint for Smart Storage Batteries: max 2
+Storage Controllers	Internal Storage Controller Cables	max 2	Configuration Rule	Selection constraint for Internal Storage Controller Cables: max 2
+Storage Controllers	Internal Storage Controller Cables	max 2	Configuration Rule	The SFF products are not supported with LFF model  
+               			  The LFF products are not supported with SFF model
+Storage Controllers	Internal Storage Controller Cables	max 2	Configuration Rule	Supported with EDSFF CTO Model only.
+Storage Controllers	Internal Storage Controller Cables	max 2	Configuration Rule	Private Product is not valid for current customer account
+Storage Controllers	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Drive Enclosures / Drives	Drive Cage	max 2	Configuration Rule	Selection constraint for Drive Cage: max 2
+Drive Enclosures / Drives	Drive Cage	max 2	Configuration Rule	The SFF products are not supported with LFF model  
+               			  The LFF products are not supported with SFF model
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection constraint for Optical Drive: max 1
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Accessories & Infrastructure	Drive Blank & FIO Enablement Kits	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Software & Licenses	BIOS Mode	max 1	Configuration Rule	Selection constraint for BIOS Mode: max 1
+Cables & Enablement Kits	Factory Configuration Settings	max 1	Configuration Rule	Selection constraint for Factory Configuration Settings: max 1
+Software & Licenses	iLO Common Password	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+Factory Configuration Settings	Logical Size Settings	max 1	Configuration Rule	Selection constraint for Logical Size Settings: max 1
+Accessories & Infrastructure	Trusted Supply Chain	max 1	Configuration Rule	Selection constraint for Trusted Supply Chain: max 1
+Accessories & Infrastructure	vSAN Tracking SKUs	max 1	Configuration Rule	Selection constraint for vSAN Tracking SKUs: max 1
+Memory	Memory Setting	max 1	Configuration Rule	Selection constraint for Memory Setting: max 1
+Memory	Memory Setting	max 1	Configuration Rule	Supported only for NEBS Models
+PCIe Risers	Riser Cards	max 2	Configuration Rule	Selection constraint for Riser Cards: max 2
+PCIe Risers	Riser Cards	max 2	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Cables & Enablement Kits	Solid State Drives (NVMe/SAS/SATA)	max 2	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2
+OS Boot Device	OS Boot Device	max 2	Configuration Rule	Private Product is not valid for current customer account
+Networking	InfiniBand PCIe	max 2	Configuration Rule	Selection constraint for InfiniBand PCIe: max 2
+Networking	InfiniBand PCIe	max 2	Configuration Rule	Private Product is not valid for current customer account
+Networking	InfiniBand PCIe	max 2	Configuration Rule	There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
+Networking	Ethernet PCIe	max 2	Configuration Rule	Selection constraint for Ethernet PCIe: max 2
+Networking	Ethernet PCIe	max 2	Configuration Rule	Private Product is not valid for current customer account
+Networking	OCP Ethernet	max 2	Configuration Rule	Selection constraint for OCP Ethernet: max 2
+Networking	OCP Ethernet	max 2	Configuration Rule	Private Product is not valid for current customer account
+Networking	Fibre Channel HBA	max 2	Configuration Rule	Selection constraint for Fibre Channel HBA: max 2
+Networking	Fibre Channel HBA	max 2	Configuration Rule	These products are hidden due to Supply constraints
+Networking	Transceivers	max 12	Configuration Rule	Selection constraint for Transceivers: max 12
+Cables & Enablement Kits	Storage Controller Cable Kits	max 2	Configuration Rule	Selection constraint for Storage Controller Cable Kits: max 2
+Networking	OCP Infiniband	max 2	Configuration Rule	Selection constraint for OCP Infiniband: max 2
+Networking	OCP Infiniband	max 2	Configuration Rule	Private Product is not valid for current customer account
+Power Supplies	Power Supplies	max 2	Configuration Rule	Selection constraint for Power Supplies: max 2
+Power Supplies	Power Supplies	max 2	Configuration Rule	Mixing of different Power supply SKU is not allowed.
+Power Supplies	Power Supplies	max 2	Configuration Rule	The SFF products are not supported with LFF model  
+               			  The LFF products are not supported with SFF model
+Power Supplies	Power Supplies	max 2	Configuration Rule	AC Power cord can only be selected with AC Power supply
+Cooling / Thermal	Power Cooling Options	max 2	Configuration Rule	Selection constraint for Power Cooling Options: max 2
+Cooling / Thermal	Power Cooling Options	max 2	Configuration Rule	If Standard Heatsink is selected, then Performance fan cannot be selected.
+Cooling / Thermal	Power Cooling Options	max 2	Configuration Rule	Max quantity of product limited by space available.
+Cooling / Thermal	Power Cooling Options	max 2	Configuration Rule	AC Power cord can only be selected with AC Power supply
+Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	Selection constraint for Power Cords: max 2
+Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	AC Power cord can only be selected with AC Power supply
+Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 3	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 3
+Accessories & Infrastructure	Management Hardware	max 1	Configuration Rule	Selection constraint for Management Hardware: max 1
+Security Options	Management Hardware	max 1	Configuration Rule	The SFF products are not supported with LFF model  
+               			  The LFF products are not supported with SFF model
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 2	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 2
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 2	Configuration Rule	The SFF products are not supported with LFF model  
+               			  The LFF products are not supported with SFF model
+Graphics & GPU	Graphics	max 2	Configuration Rule	Selection constraint for Graphics: max 2
+Graphics & GPU	Graphics	max 2	Configuration Rule	Private Product is not valid for current customer account
+Storage Controllers	INTEL VROC Products-FIO	no max	Configuration Rule	Selection constraint for INTEL VROC Products-FIO: no max
+Processor	Processor Options	no max	Configuration Rule	Selection constraint for VMware NSX: no max
+Software & Licenses	VMWare VCenter Srm Products	no max	Configuration Rule	Selection constraint for VMWare VCenter Srm Products: no max
+Software & Licenses	VMWare VCloud Products	no max	Configuration Rule	Selection constraint for VMWare VCloud Products: no max
+Software & Licenses	VMWare VCenter Products	no max	Configuration Rule	Selection constraint for VMWare VCenter Products: no max
+Processor	Processor Options	no max	Configuration Rule	Selection constraint for VMWare VSphere Editions: no max
+Software & Licenses	VMWare VSphere Editions	no max	Configuration Rule	Selection constraint for VMWare VSphere Editions: no max
+Software & Licenses	VMWare VSphere Kits	no max	Configuration Rule	Selection constraint for VMWare VSphere Kits: no max
+Software & Licenses	VMWare Core Editions	no max	Configuration Rule	Selection constraint for VMWare Core Editions: no max
+HPE Compute Ops Management	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	MS Windows Server Additional License	max 999	Configuration Rule	Selection constraint for MS Windows Server Additional License: max 999
+Software & Licenses	MS Windows Server CALs	no max	Configuration Rule	Selection constraint for MS Windows Server CALs: no max
+Software & Licenses	MS Windows Server Not Preinstalled	no max	Configuration Rule	Selection constraint for MS Windows Server Not Preinstalled: no max
+Software & Licenses	MS Windows Server Preinstalled	no max	Configuration Rule	Selection constraint for MS Windows Server Preinstalled: no max
+Software & Licenses	Red Hat Operating Systems	no max	Configuration Rule	Selection constraint for Red Hat Operating Systems: no max
+Software & Licenses	Red Hat SAP Operating System	no max	Configuration Rule	Selection constraint for Red Hat SAP Operating System: no max
+Software & Licenses	Red Hat-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat-Virtualization: no max
+Software & Licenses	SUSE Add-ons	no max	Configuration Rule	Selection constraint for SUSE Add-ons: no max
+Software & Licenses	SUSE Operating Systems	no max	Configuration Rule	Selection constraint for SUSE Operating Systems: no max
+Software & Licenses	SUSE SAP Operating Systems	no max	Configuration Rule	Selection constraint for SUSE SAP Operating Systems: no max
+Software & Licenses	OneView Management Software	max 1	Configuration Rule	Selection constraint for OneView Management Software: max 1
+Software & Licenses	OneView Management Software	max 1	Configuration Rule	Not Supported ProStack Server Software
+Software & Licenses	Integrated Lights Out Software	no max	Configuration Rule	Selection constraint for Integrated Lights Out Software: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Hadoop Software: no max
+Software & Licenses	Hadoop Software	no max	Configuration Rule	Selection constraint for Hadoop Software: no max
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Selection constraint for Proliant Software Media Kits: no max
+Software & Licenses	Linux Value Added Software	no max	Configuration Rule	Selection constraint for Linux Value Added Software: no max
+Accessories & Infrastructure	Accessories & Infrastructure Options	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
+Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
+Support Services	Support Services Options	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
+Software & Licenses	Partner Software - Operating System 8pks	max 30969	Configuration Rule	Selection constraint for Partner Software - Operating System 8pks: max 30969
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+Support Services	Manufacturing Services	max 1	Configuration Rule	Selection constraint for Manufacturing Services: max 1
+Storage Controllers	INTEL VROC Products-BTO	no max	Configuration Rule	Selection constraint for INTEL VROC Products-BTO: no max
+Support Services	Hybrid RAID Options	no max	Configuration Rule	Selection constraint for Hybrid RAID Options: no max
+Software & Licenses	VMware NSX	no max	Configuration Rule	Selection constraint for VMware NSX: no max
+Software & Licenses	VMware NSX	no max	Configuration Rule	Private Product is not valid for current customer account
+Software & Licenses	VMWare VCloud Products	no max	Configuration Rule	Private Product is not valid for current customer account
+Software & Licenses	VMWare Client Virtualization	no max	Configuration Rule	Selection constraint for VMWare Client Virtualization: no max
+Software & Licenses	VMWare VSphere Editions	no max	Configuration Rule	Private Product is not valid for current customer account
+Software & Licenses	Server Management & Operating System Licenses	required	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: required
+Software & Licenses	SUSE containers	no max	Configuration Rule	Selection constraint for SUSE containers: no max
+Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
+Graphics & GPU	GPU Accelerators	no max	Configuration Rule	Selection constraint for GPU Accelerators: no max
+Software & Licenses	OEM Software	max 999	Configuration Rule	Selection constraint for OEM Software: max 999
+Support Services	Reseller Option Kit	no max	Configuration Rule	Selection constraint for Reseller Option Kit: no max
+OEM Software	Reseller Option Kit	no max	Configuration Rule	Selection constraint for Reseller Option Kit: no max
+Networking	InfiniBand PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
+Networking	Ethernet PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
+Networking	OCP Ethernet		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
+Networking	Transceivers		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers, Ethernet PCIe, OCP Ethernet, InfiniBand PCIe)
+Virtualization	VMWare Core Editions		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	MS Windows Server Not Preinstalled		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	MS Windows Server Preinstalled		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	Red Hat Operating Systems		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	Red Hat-Virtualization		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	SUSE containers		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+SGI Software	SUSE Operating Systems		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	Partner Software - Operating System 8pks		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+OEM Software	Reseller Option Kit		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+Virtualization	VMWare Core Editions		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	MS Windows Server Not Preinstalled		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	MS Windows Server Preinstalled		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	Red Hat Operating Systems		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	Red Hat-Virtualization		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	SUSE containers		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+SGI Software	SUSE Operating Systems		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+HPC Software Products	Partner Software - Operating System 8pks		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+OEM Software	Reseller Option Kit		Recommendation	It is recommended to select an Operating System (VMWare Core Editions, MS Windows Server Not Preinstalled, MS Windows Server Preinstalled, Red Hat Operating Systems, Red Hat-Virtualization, SUSE containers, SUSE Operating Systems, Partner Software - Operating System 8pks, Reseller Option Kit)
+Transceivers	Power Supplies		Selection Guide	In order to select the right size power supply for your ProLiant Server it is highly recommended to use 'HPE Power Advisor' located at 'https://poweradvisorext.it.hpe.com/?Page=Index' (Power Supplies)
+Transceivers	Power Supplies		Mixing Rule	Mixing of different Power supply SKU is not allowed
+Power Supplies	Power Cooling Options		Conditional Rule	If Standard Heatsink is selected, then Performance fan cannot be selected.	Product #	Description	Quantity	Cost (USD)	Obsolete	P48908-B21	HPE ProLiant DL3X0 Gen11 1U High Performance Fan Kit	0
+Power Supplies	Power Cooling Options		Conditional Rule	If Standard Heatsink is selected, then Performance fan cannot be selected.
+Storage Devices	Internal Storage Controller Cables		Chassis Gate Rule	Supported with EDSFF CTO Model only
+Memory	Memory		Incompatibility Rule	cannot be mixed with any other memory	Product #	Description	Quantity	Cost (USD)	HPE Recommended	Capacity	Type	Rank	Frequency	Obsolete	P43334-B21 [OB]	HPE 128GB (1x128GB) Quad Rank x4 DDR5-4800 CAS-46-39-39 EC8 Registered 3DS Smart Memory Kit	0	128	RDIMM	QUAD	4800	P69974-F21 [OB]	HPE 128GB (1x128GB)
+Memory	Memory		Incompatibility Rule	cannot be mixed with any other memory
+Memory	Memory		Incompatibility Rule	cannot be mixed with any other Memory	Product #	Description	Quantity	Cost (USD)	HPE Recommended	Capacity	Type	Rank	Frequency	Obsolete	P66675-F21	HPE 96GB (1x96GB) Dual Rank x4 DDR5-4800 CAS-46-45-45 EC8 Registered Smart FIO Memory Kit	0	96	RDIMM	DUAL	4800
+Memory	Memory		Incompatibility Rule	cannot be mixed with any other Memory
