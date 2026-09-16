@@ -178,6 +178,7 @@ function isIgnoredDiscoveryPath(file, filePath) {
   if (file.startsWith('.')) return true;
   if (IGNORED_DISCOVERY_DIRS.has(file)) return true;
   if (file.startsWith('failed_staging') || file.startsWith('staging_')) return true;
+  if (file.endsWith('.tmp') || file.endsWith('.bak') || file.includes('.tmp')) return true;
   if (filePath && (filePath.includes(`${path.sep}temp${path.sep}`) || filePath.endsWith(`${path.sep}temp`))) return true;
   return false;
 }
@@ -202,7 +203,12 @@ function findCatalogJsonFiles(dir) {
       } else if (file.endsWith('_Catalog.json') && !filePath.includes('raw_data')) {
         results.push(filePath);
       }
-    } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+    } catch (e) {
+      if (e && e.code !== 'ENOENT') {
+        const _logger = require('../system/pipeline_logger.js');
+        _logger.warn('ERROR', 'catalog_discovery.js', e);
+      }
+    }
   });
 
   return results;

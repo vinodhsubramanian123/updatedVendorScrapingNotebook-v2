@@ -299,11 +299,16 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
 
   const envPath = process.env.PATH || '';
   const homeBin = path.join(os.homedir(), '.local', 'bin');
-  const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
+  const macPaths = process.platform === 'darwin' ? ['/opt/homebrew/bin', '/usr/local/bin'] : [];
+  const extendedPath = [homeBin, ...macPaths, envPath].filter(Boolean).join(path.delimiter);
 
   const binName = process.platform === 'win32' ? 'nlm.exe' : 'nlm';
   const nlmUserPath = path.join(homeBin, binName);
-  const nlmExecutable = fs.existsSync(nlmUserPath) ? nlmUserPath : binName;
+  const macHomebrewPath = path.join('/opt/homebrew', 'bin', binName);
+  const macUsrPath = path.join('/usr/local', 'bin', binName);
+  const nlmExecutable = fs.existsSync(nlmUserPath)
+    ? nlmUserPath
+    : (fs.existsSync(macHomebrewPath) ? macHomebrewPath : (fs.existsSync(macUsrPath) ? macUsrPath : binName));
 
   const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);

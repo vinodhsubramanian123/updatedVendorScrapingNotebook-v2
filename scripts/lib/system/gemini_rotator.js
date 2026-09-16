@@ -18,6 +18,9 @@ const { safeWriteJsonAtomic } = require('./fs_compat.js');
 const logger = require('./pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+if (!process.env.GEMINI_API_KEY && fs.existsSync(path.join(PROJECT_ROOT, '.env'))) {
+  require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
+}
 const STATE_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'gemini_keys_state.json');
 
 class ApiQuotaExhaustedError extends Error {

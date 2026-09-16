@@ -3,6 +3,7 @@
 *.js text eol=lf
 *.json text eol=lf
 *.tsv text eol=lf
+*.csv text eol=lf
 *.md text eol=lf
 
 # Binary files — no conversion

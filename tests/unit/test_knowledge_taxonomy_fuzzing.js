@@ -93,24 +93,26 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
 
   await t.test('buildMasterKnowledgeRegistry() bucket routing and schema compatibility', async (t2) => {
     t2.mock.method(fs, 'existsSync', (p) => {
-      if (typeof p === 'string' && (p.endsWith('outputs') || p.endsWith('history'))) return true;
-      if (typeof p === 'string' && p.includes('chassis_A')) return true;
+      const norm = typeof p === 'string' ? p.replace(/\\/g, '/') : '';
+      if (norm.endsWith('outputs') || norm.endsWith('history')) return true;
+      if (norm.includes('chassis_A')) return true;
       return false;
     });
 
     t2.mock.method(fs, 'readdirSync', (p, options) => {
-      if (typeof p === 'string' && p.endsWith('outputs')) {
+      const norm = typeof p === 'string' ? p.replace(/\\/g, '/') : '';
+      if (norm.endsWith('outputs')) {
         return [
           { name: 'history', isDirectory: () => true },
           { name: 'chassis_A', isDirectory: () => true }
         ];
       }
-      if (typeof p === 'string' && p.endsWith('history')) {
+      if (norm.endsWith('history')) {
         return [
           { name: 'catalog_deltas.json', isDirectory: () => false }
         ];
       }
-      if (typeof p === 'string' && p.endsWith('chassis_A')) {
+      if (norm.endsWith('chassis_A')) {
         return [
           { name: 'catalog_deltas.json', isDirectory: () => false }
         ];
@@ -125,19 +127,20 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
     
     const originalReadFileSync = fs.readFileSync;
     t2.mock.method(fs, 'readFileSync', (p, encoding) => {
-      if (typeof p === 'string' && p.endsWith('.tmp')) {
+      const norm = typeof p === 'string' ? p.replace(/\\/g, '/') : '';
+      if (norm.endsWith('.tmp')) {
         return '{}';
       }
-      if (typeof p === 'string' && p.endsWith('master_knowledge_registry.json')) {
+      if (norm.endsWith('master_knowledge_registry.json')) {
         return '{}';
       }
-      if (typeof p === 'string' && p.includes('history/catalog_deltas.json')) {
+      if (norm.includes('history/catalog_deltas.json')) {
         return JSON.stringify([
           { deltaId: 'D1', affectedSku: 'S1', rawMessage: 'all hpe' },
           { deltaId: 'D2', affectedSku: 'S2', rawMessage: 'family-wide option policy' }
         ]);
       }
-      if (typeof p === 'string' && p.includes('chassis_A/catalog_deltas.json')) {
+      if (norm.includes('chassis_A/catalog_deltas.json')) {
         return JSON.stringify([
           { deltaId: 'D3', affectedSku: 'S3', rawMessage: 'random', chassis: 'chassis_A' }
         ]);

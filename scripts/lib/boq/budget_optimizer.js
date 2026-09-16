@@ -149,8 +149,8 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   const goldenRuleSummary = !hasBudgetConstraint
     ? `ℹ️ No budget constraint provided — showing mandatory buildable cost only.`
     : (isBudgetExceeded
-      ? `⚠️ GOLDEN RULE MANDATE: Target budget of $${targetBudgetUsd.toLocaleString()} is exceeded by +$${budgetOverrunUsd.toLocaleString()}. Mandatory buildable cost is $${mandatoryBomCost.toLocaleString()} to eliminate unbuildable errors.`
-      : `✅ GOLDEN RULE COMPLIANT: Mandatory buildable cost $${mandatoryBomCost.toLocaleString()} fits within target budget of $${targetBudgetUsd.toLocaleString()} (Surplus: $${remainingBudgetUsd.toLocaleString()}).`);
+      ? `⚠️ GOLDEN RULE MANDATE: Target budget of $${targetBudgetUsd.toLocaleString('en-US')} is exceeded by +$${budgetOverrunUsd.toLocaleString('en-US')}. Mandatory buildable cost is $${mandatoryBomCost.toLocaleString('en-US')} to eliminate unbuildable errors.`
+      : `✅ GOLDEN RULE COMPLIANT: Mandatory buildable cost $${mandatoryBomCost.toLocaleString('en-US')} fits within target budget of $${targetBudgetUsd.toLocaleString('en-US')} (Surplus: $${remainingBudgetUsd.toLocaleString('en-US')}).`);
 
   return {
     targetBudgetUsd,

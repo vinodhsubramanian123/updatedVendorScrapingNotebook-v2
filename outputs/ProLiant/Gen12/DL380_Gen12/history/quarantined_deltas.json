@@ -1,8 +1,8 @@
 [
   {
-    "deltaId": "DELTA-1789417673714-qu46f",
+    "deltaId": "DELTA-1789561048734-wdl31",
     "traceId": null,
-    "timestamp": "2026-09-14T20:27:53.714Z",
+    "timestamp": "2026-09-16T12:17:28.733Z",
     "chassis": "DL380_Gen12",
     "rawMessage": "Vendor Partner Portal auto-inserted SKU P73282-B21 (Qty 1): HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -21,13 +21,13 @@
     "scope": "CHASSIS_SPECIFIC",
     "confidenceScore": 0.7,
     "knowledgeFingerprint": "b759f41678689985dedb3fabd884023ee08a5e1e639610546f4accc011d2475d",
-    "validatedAt": "2026-09-14T20:27:53.732Z",
+    "validatedAt": "2026-09-16T12:17:28.752Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_b759f41678689985",
     "firstSeenAt": "2026-09-13T06:02:02.858Z",
-    "lastSeenAt": "2026-09-14T20:27:53.743Z",
-    "observationCount": 42,
-    "quarantinedAt": "2026-09-14T20:27:53.743Z",
+    "lastSeenAt": "2026-09-16T12:17:28.756Z",
+    "observationCount": 45,
+    "quarantinedAt": "2026-09-16T12:17:28.756Z",
     "quarantineReasons": [
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
@@ -35,9 +35,9 @@
     ]
   },
   {
-    "deltaId": "DELTA-1789417673754-fvhl0",
+    "deltaId": "DELTA-1789561048777-rssk4",
     "traceId": null,
-    "timestamp": "2026-09-14T20:27:53.754Z",
+    "timestamp": "2026-09-16T12:17:28.777Z",
     "chassis": "DL380_Gen12",
     "rawMessage": "Vendor Partner Portal auto-inserted SKU P74573-B21 (Qty 2): Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -56,13 +56,13 @@
     "scope": "CHASSIS_SPECIFIC",
     "confidenceScore": 0.7,
     "knowledgeFingerprint": "b5338277e433642a3883343a6feb99beece288a81fe6ed6d5fc48c834888be56",
-    "validatedAt": "2026-09-14T20:27:53.766Z",
+    "validatedAt": "2026-09-16T12:17:28.790Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_b5338277e433642a",
     "firstSeenAt": "2026-09-13T06:02:02.872Z",
-    "lastSeenAt": "2026-09-14T20:27:53.769Z",
-    "observationCount": 41,
-    "quarantinedAt": "2026-09-14T20:27:53.769Z",
+    "lastSeenAt": "2026-09-16T12:17:28.793Z",
+    "observationCount": 44,
+    "quarantinedAt": "2026-09-16T12:17:28.793Z",
     "quarantineReasons": [
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
@@ -70,9 +70,9 @@
     ]
   },
   {
-    "deltaId": "DELTA-1789417673777-hbhyi",
+    "deltaId": "DELTA-1789561048808-06mk4",
     "traceId": null,
-    "timestamp": "2026-09-14T20:27:53.777Z",
+    "timestamp": "2026-09-16T12:17:28.808Z",
     "chassis": "DL380_Gen12",
     "rawMessage": "Vendor Partner Portal auto-inserted SKU P69728-B21 (Qty 12): HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -91,13 +91,13 @@
     "scope": "CHASSIS_SPECIFIC",
     "confidenceScore": 0.7,
     "knowledgeFingerprint": "ee09b5d2b89a93f01571f4448e8dcdd36fc3bb55a11257f4ec24ab384e9d70f9",
-    "validatedAt": "2026-09-14T20:27:53.789Z",
+    "validatedAt": "2026-09-16T12:17:28.819Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_ee09b5d2b89a93f0",
     "firstSeenAt": "2026-09-13T06:02:02.886Z",
-    "lastSeenAt": "2026-09-14T20:27:53.792Z",
-    "observationCount": 41,
-    "quarantinedAt": "2026-09-14T20:27:53.792Z",
+    "lastSeenAt": "2026-09-16T12:17:28.824Z",
+    "observationCount": 44,
+    "quarantinedAt": "2026-09-16T12:17:28.824Z",
     "quarantineReasons": [
       "SKU P69728-B21 not found in target catalog; held in quarantine for manual verification",
       "Automated learning has no traceable source citation; held for evidence review",
@@ -106,9 +106,9 @@
     ]
   },
   {
-    "deltaId": "DELTA-1789417673800-srchj",
+    "deltaId": "DELTA-1789561048839-cpr6m",
     "traceId": null,
-    "timestamp": "2026-09-14T20:27:53.800Z",
+    "timestamp": "2026-09-16T12:17:28.839Z",
     "chassis": "DL380_Gen12",
     "rawMessage": "Vendor Partner Portal auto-inserted SKU P47777-B21 (Qty 1): HPE MR416i-p Gen11 SPG x16 Lanes 8GB Cache PCI SPG Controller",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -127,13 +127,13 @@
     "scope": "CHASSIS_SPECIFIC",
     "confidenceScore": 0.7,
     "knowledgeFingerprint": "0134915ea4ea95c2c85b33c50b918c37c4414cca0d32a9a6e9ef9860a3ec3d11",
-    "validatedAt": "2026-09-14T20:27:53.812Z",
+    "validatedAt": "2026-09-16T12:17:28.849Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_0134915ea4ea95c2",
     "firstSeenAt": "2026-09-13T06:02:02.900Z",
-    "lastSeenAt": "2026-09-14T20:27:53.814Z",
-    "observationCount": 41,
-    "quarantinedAt": "2026-09-14T20:27:53.814Z",
+    "lastSeenAt": "2026-09-16T12:17:28.852Z",
+    "observationCount": 44,
+    "quarantinedAt": "2026-09-16T12:17:28.852Z",
     "quarantineReasons": [
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
@@ -141,9 +141,9 @@
     ]
   },
   {
-    "deltaId": "DELTA-1789417673822-x171r",
+    "deltaId": "DELTA-1789561048865-w8xlp",
     "traceId": null,
-    "timestamp": "2026-09-14T20:27:53.822Z",
+    "timestamp": "2026-09-16T12:17:28.865Z",
     "chassis": "DL380_Gen12",
     "rawMessage": "Vendor Partner Portal auto-inserted SKU P17023-B21 (Qty 2): HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
@@ -162,13 +162,13 @@
     "scope": "CHASSIS_SPECIFIC",
     "confidenceScore": 0.7,
     "knowledgeFingerprint": "9c8714ebe2206eebcbaf6f1db940246eae717fe0a81dee57cbd55df83cd3902f",
-    "validatedAt": "2026-09-14T20:27:53.834Z",
+    "validatedAt": "2026-09-16T12:17:28.872Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_9c8714ebe2206eeb",
     "firstSeenAt": "2026-09-13T06:02:02.914Z",
-    "lastSeenAt": "2026-09-14T20:27:53.836Z",
-    "observationCount": 41,
-    "quarantinedAt": "2026-09-14T20:27:53.836Z",
+    "lastSeenAt": "2026-09-16T12:17:28.874Z",
+    "observationCount": 44,
+    "quarantinedAt": "2026-09-16T12:17:28.874Z",
     "quarantineReasons": [
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
@@ -1571,7 +1571,7 @@
     "status": "IN_QUARANTINE"
   },
   {
-    "deltaId": "DELTA_RAG_DEP_P38995-B21_P35876-B21_1789396293443",
+    "deltaId": "DELTA_RAG_DEP_P38995-B21_P35876-B21_1789561682904",
     "chassis": "DL380 Gen12",
     "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
     "ruleType": "DEPENDENCY_CHAIN",
@@ -1579,10 +1579,10 @@
     "requiredDependencySku": "P35876-B21",
     "requiredCapability": null,
     "reasoning": "Grounding Verification: Selecting P38995-B21 requires auxiliary component P35876-B21 to satisfy physical/telemetry routing.",
-    "rawMessage": "4. **EU ErP Lot 9 Regulatory Bypass**: When configuring 94% Platinum power supplies (such as `P38995-B21`), **`P35876-B21`** (CE Mark Removal FIO Kit) is required outside the EU to bypass Lot 9 regulatory blocks cleanly [1, 5, 8, 9].",
+    "rawMessage": "* **EU ErP Lot 9 Compliance:** European Union ErP Lot 9 mandates 96% Titanium efficiency power supplies [22, 23]. When deploying 94% Platinum PSUs (`P38995-B21`) outside the EU, the **CE Mark Removal FIO Enablement Kit (`P35876-B21`)** (\\$1.00) must be included to clear regulatory prompts [1, 7, 22]",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-14T14:31:33.444Z",
+    "timestamp": "2026-09-16T12:28:02.904Z",
     "confidenceScore": 0.7,
     "citations": [
       {
@@ -1593,238 +1593,133 @@
       {
         "index": "2",
         "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "3",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "4",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "5",
         "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "6",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "7",
         "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "8",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "9",
         "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "10",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "11",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "12",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "13",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "14",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "15",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "16",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "17",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "18",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "19",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "20",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "21",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "22",
         "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "23",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       },
       {
         "index": "24",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
       },
       {
         "index": "25",
         "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "26",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "27",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "28",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "29",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "30",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "31",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "32",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "33",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "34",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "35",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "36",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "37",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "38",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
-      },
-      {
-        "index": "39",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "40",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "41",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "42",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "43",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "44",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "45",
-        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "title": "What’s New − Intel® Xeon® 6 Processors. − Up to two front OCP NIC. − NS204i-u front install option. − EDSFF drives in SFF CTO Server. − DDR5 with 6400 MT/s memory at 1DPC. − GPU performance Kit for improved thermals (post launch support). QuickSpecs  HPE ProLiant Compute DL380 Gen12 Overview Platform Information Form Factor − 2U rack Chassis Types − SFF CTO Server with up to 24 SFF front, Universal Media Bay (P74749-B21), multi-purpose cage, and up to 6SFF rear drive bay options. − 24 SFF CTO Server with 24 SFF front, up to 6 SFF rear drive bay options. − 8 LFF CTO Server with 8 LFF, 2 SFF front, 4 LFF Mid and up to 4LFF or 2 SFF rear drive bay options. − 12 LFF CTO Server with 12 LFF front, 4LFF Mid and 4LFF or 2SFF rear drives.  − EDSFF CTO Server with 36 EDSFF front or 12 EDSFF with 16SFF in front and up to 2SFF rear drive bay."
-      },
-      {
-        "index": "46",
-        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
-        "title": "--- ## 3. Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints ### 3.1 HPE ProLiant Compute DL380 Gen12 - **Architecture**: 2U dual-socket enterprise server powered by Intel Xeon 6 Series (P-Cores and E-Cores) with 8-channel DDR5-6400 memory. - **Base Models**: 8SFF NC (`P73282-B21`, lowest-cost entry), 24SFF (`P73283-B21`), 12LFF (`P73284-B21`), 8LFF (`P73285-B21`), EDSFF (`P73286-B21`). - **The 6 Sourcing FIO Overrides & Bypasses**: 1. **Storage Bypass**: `873763-B21` No Drive FIO Kit ($14.00) clears the unbuildable bare-chassis block and strips redundant drive cage and storage controller requirements."
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
       }
     ],
     "scope": "CHASSIS_SPECIFIC",
     "knowledgeFingerprint": "7f77de5f7c5ebe3e5888b6148d531efd4c82fa92a9f063135547aba7b8d38bdf",
-    "validatedAt": "2026-09-14T14:31:33.449Z",
+    "validatedAt": "2026-09-16T12:28:02.984Z",
     "governanceStatus": "QUARANTINED",
     "quarantineId": "QUARANTINE_7f77de5f7c5ebe3e",
     "firstSeenAt": "2026-09-13T06:35:05.891Z",
-    "lastSeenAt": "2026-09-14T14:31:33.451Z",
-    "observationCount": 4,
-    "quarantinedAt": "2026-09-14T14:31:33.451Z",
+    "lastSeenAt": "2026-09-16T12:28:02.988Z",
+    "observationCount": 5,
+    "quarantinedAt": "2026-09-16T12:28:02.988Z",
     "quarantineReasons": [
       "Confidence score 0.70 is below automatic promotion threshold (0.85)"
     ],
@@ -2190,6 +2085,352 @@
     "observationCount": 1,
     "quarantinedAt": "2026-09-14T14:18:49.708Z",
     "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.00 is below automatic promotion threshold (0.85)"
+    ]
+  },
+  {
+    "deltaId": "DELTA_RAG_DEP_P69727-B21_P69727-F21_1789561682902",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "P69727-B21",
+    "requiredDependencySku": "P69727-F21",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting P69727-B21 requires auxiliary component P69727-F21 to satisfy physical/telemetry routing.",
+    "rawMessage": "* **DL380 Gen12 memory controllers strictly require DDR5-6400 Smart Memory** (e.g., `P69727-B21` / `P69727-F21` for 32GB 2Rx8 DDR5-6400) [2, 17-19].",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T12:28:02.903Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "2",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "3",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "5",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "6",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "12",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "15",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "16",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "19",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "22",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "24",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      }
+    ],
+    "scope": "FAMILY_GEN",
+    "knowledgeFingerprint": "e40ec11bdf352a4f417369a4410276ba85c8cbde58a8a8bb2fcdb175412eebee",
+    "validatedAt": "2026-09-16T12:28:02.936Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_e40ec11bdf352a4f",
+    "firstSeenAt": "2026-09-16T12:28:02.945Z",
+    "lastSeenAt": "2026-09-16T12:28:02.945Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T12:28:02.945Z",
+    "quarantineReasons": [
+      "SKU P69727-B21 not found in target catalog; held in quarantine for manual verification",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA_RAG_FIO_P73282-B21_P69727-F21_1789561682903",
+    "chassis": "DL380 Gen12",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "OPTION_TYPE_SUBSTITUTION",
+    "affectedSku": "P73282-B21",
+    "requiredDependencySku": "P69727-F21",
+    "reasoning": "Grounding Verification: Standalone BTO option P73282-B21 is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is P69727-F21.",
+    "rawMessage": "* **CTO Tagging Rule:** Standalone BTO memory (`-B21` suffix) placed inside a CTO base chassis (`P73282-B21`) is flagged in portal checks; factory-integrated orders require the **`-F21` FIO suffix** (`P69727-F21`) [19, 20].",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-09-16T12:28:02.903Z",
+    "confidenceScore": 0.7,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+        "title": "<cited_table>"
+      },
+      {
+        "index": "2",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "3",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "4",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "5",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "6",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "7",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "8",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "9",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "10",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "11",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "12",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "13",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "14",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "15",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "16",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "17",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "18",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "19",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "20",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "21",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "22",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "23",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      },
+      {
+        "index": "24",
+        "sourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+        "title": "| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. | | **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. | | **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |"
+      },
+      {
+        "index": "25",
+        "sourceId": "6eb52606-9295-4f0b-af65-89454b2d443a",
+        "title": "CTO Server  HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-Order Server HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-Order Server SKU Number P73282-B21 P73283-B21 P73284-B21 P73285-B21 P73286-B21 TAA SKU* P73282-B21#GTA P73283-B21#GTA P73284 B21#GTA P73285-B21#GTA P73286-B21#GTA Processor Not included as default Memory 32-DIMM slots for HPE ProLiant Compute DDR5 Smart Memory – 6400MT/s"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "69a91cc68f87df666e74ff9cd9eff3294fd3995d28d65664b2ac38df83cb12b9",
+    "validatedAt": "2026-09-16T12:28:02.962Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_69a91cc68f87df66",
+    "firstSeenAt": "2026-09-16T12:28:02.966Z",
+    "lastSeenAt": "2026-09-16T12:28:02.966Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T12:28:02.966Z",
+    "quarantineReasons": [
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)"
+    ],
+    "status": "IN_QUARANTINE"
+  },
+  {
+    "deltaId": "DELTA-1789561759957-4rh0u",
+    "traceId": null,
+    "timestamp": "2026-09-16T12:29:19.956Z",
+    "chassis": "DL380_Gen12",
+    "rawMessage": "Gen11 5th Gen Intel Xeon Scalable CPUs (such as Xeon Gold 6548Y, P73299-B21) and DDR5-5600 RAM (P73300-B21) are strictly incompatible with DL380 Gen12. DL380 Gen12 requires Intel Xeon 6 Series processors and DDR5-6400 Smart Memory.",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P73299-B21",
+    "requiredDependencySku": "P74573-B21",
+    "ruleUpdate": "Gen11 5th Gen Intel Xeon Scalable CPUs (such as Xeon Gold 6548Y, P73299-B21) and DDR5-5600 RAM (P73300-B21) are strictly incompatible with DL380 Gen12. DL380 Gen12 requires Intel Xeon 6 Series processors and DDR5-6400 Smart Memory.",
+    "humanReasoning": "Agentic Guardrail Loop derived from RAG/DB fact-check",
+    "sourceAgent": "AGENTIC_GUARDRAIL",
+    "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
+    "citations": [],
+    "guardrailTurn": 4,
+    "preConfidenceScore": 0,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "IN_QUARANTINE",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0,
+    "knowledgeFingerprint": "9e39d12ed7ff8e845ecfe888e568a8481d7e8a2609f6ae7df5b1ace659ae4b7a",
+    "validatedAt": "2026-09-16T12:29:19.964Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_9e39d12ed7ff8e84",
+    "firstSeenAt": "2026-09-16T12:29:19.970Z",
+    "lastSeenAt": "2026-09-16T12:29:19.970Z",
+    "observationCount": 1,
+    "quarantinedAt": "2026-09-16T12:29:19.970Z",
+    "quarantineReasons": [
+      "SKU P73299-B21 not found in target catalog; held in quarantine for manual verification",
       "Automated learning has no traceable source citation; held for evidence review",
       "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
       "Confidence score 0.00 is below automatic promotion threshold (0.85)"

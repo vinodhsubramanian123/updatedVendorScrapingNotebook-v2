@@ -6,6 +6,7 @@
 'use strict';
 
 const fs    = require('fs');
+const os    = require('os');
 const XLSX  = require('xlsx-js-style');
 const path  = require('path');
 const { sendCommand, getOCATarget, connectWS, sleep } = require('../../scripts/lib/scraper/cdp.js');
@@ -368,19 +369,26 @@ async function main() {
   // ── GUARDRAIL 7: Live Cloud NotebookLM Health & Token Verification ─────────
   console.log('\n--- TEST 7: Live Cloud NotebookLM Health & Token Verification ---');
   const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
-  const homeDir = process.env.HOME || '';
-  const nlmUserPath = path.join(homeDir, '.local', 'bin', 'nlm');
-  const hasNlmBinary = fs.existsSync(nlmUserPath) || (() => {
-    const isWin = process.platform === 'win32';
-    const binaryName = isWin ? 'nlm.cmd' : 'nlm';
+  const homeDir = os.homedir();
+  const isWin = process.platform === 'win32';
+  const binExtensions = isWin ? ['nlm.exe', 'nlm.cmd', 'nlm.bat', 'nlm'] : ['nlm'];
+  const nlmUserPaths = [
+    ...binExtensions.map(b => path.join(homeDir, '.local', 'bin', b)),
+    ...binExtensions.map(b => path.join('/opt/homebrew', 'bin', b)),
+    ...binExtensions.map(b => path.join('/usr/local', 'bin', b))
+  ];
+  const hasNlmBinary = nlmUserPaths.some(p => fs.existsSync(p)) || (() => {
     const pathDirs = (process.env.PATH || '').split(path.delimiter).filter(Boolean);
     return pathDirs.some(dir => {
-      try { return fs.existsSync(path.join(dir, binaryName)); } catch (_) { return false; }
+      return binExtensions.some(b => {
+        try { return fs.existsSync(path.join(dir, b)); } catch (_) { return false; }
+      });
     });
   })();
 
   const profileDir = path.join(homeDir, '.notebooklm-mcp-cli', 'profiles', 'default');
-  const hasAuthProfile = fs.existsSync(profileDir);
+  const authJson = path.join(homeDir, '.notebooklm-mcp-cli', 'auth.json');
+  const hasAuthProfile = fs.existsSync(profileDir) || fs.existsSync(authJson);
 
   if (hasNlmBinary) {
     console.log('✅ GUARDRAIL PASS: Post-flight: nlm CLI executable is installed in PATH (~/.local/bin/nlm)');

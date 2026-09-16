@@ -70,7 +70,7 @@ async function main() {
     }
   });
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 150; i++) {
     if (serverReady) break;
     await new Promise(r => setTimeout(r, 100));
   }

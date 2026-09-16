@@ -158,7 +158,13 @@ function restoreEnv(extractedDir) {
   const envDst = path.join(PROJECT_ROOT, '.env');
 
   if (fs.existsSync(envSrc)) {
-    fs.copyFileSync(envSrc, envDst);
+    let content = fs.readFileSync(envSrc, 'utf-8');
+    // Sanitize: strip host-specific PATH exports to prevent cross-platform pollution (Linux vs macOS vs Windows)
+    content = content
+      .split('\n')
+      .filter(line => !line.trim().startsWith('PATH='))
+      .join('\n');
+    fs.writeFileSync(envDst, content, 'utf-8');
     success(`Restored .env configuration to ${envDst}`);
   } else if (!fs.existsSync(envDst)) {
     const envExample = path.join(PROJECT_ROOT, '.env.example');
@@ -307,13 +313,23 @@ function configureMcpServers(extractedDir, sys) {
 
   const proxyBundle = findMcpProxyBundle();
 
-  // Find notebooklm-mcp command
+  // Find notebooklm-mcp command (checks ~/.local/bin, macOS Homebrew /opt/homebrew/bin, and /usr/local/bin)
   const binExt = sys.isWin ? '.exe' : '';
-  const localNlmMcp = path.join(sys.home, '.local', 'bin', `notebooklm-mcp${binExt}`);
-  let nlmCommand = `notebooklm-mcp${binExt}`;
-  if (fs.existsSync(localNlmMcp)) {
-    nlmCommand = localNlmMcp;
+  function resolveMcpBinary(baseName) {
+    const candidates = [
+      path.join(sys.home, '.local', 'bin', `${baseName}${binExt}`),
+      ...(sys.isMac ? [
+        path.join('/opt/homebrew', 'bin', `${baseName}${binExt}`),
+        path.join('/usr/local', 'bin', `${baseName}${binExt}`)
+      ] : [])
+    ];
+    for (const c of candidates) {
+      if (fs.existsSync(c)) return c;
+    }
+    return `${baseName}${binExt}`;
   }
+
+  const nlmCommand = resolveMcpBinary('notebooklm-mcp');
 
   const julesConfig = {
     command: "npx",
@@ -326,13 +342,19 @@ function configureMcpServers(extractedDir, sys) {
     julesConfig.env = { JULES_API_KEY: julesApiKey };
   }
 
+  const graphifyMcpCommand = resolveMcpBinary('graphify-mcp');
+
   const mcpConfig = {
     mcpServers: {
       "gemini-notebook-mcp": {
         command: nlmCommand,
         args: []
       },
-      "jules": julesConfig
+      "jules": julesConfig,
+      "graphify": {
+        command: graphifyMcpCommand,
+        args: []
+      }
     }
   };
 

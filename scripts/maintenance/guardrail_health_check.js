@@ -17,6 +17,7 @@ const path = require('path');
 const os = require('os');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 
 const RESULTS = {
   timestamp: new Date().toISOString(),
@@ -54,6 +55,13 @@ async function runHealthHeartbeat() {
     
     // Check local bin or system PATH
     let hasNlm = fs.existsSync(homeBin);
+    if (!hasNlm) {
+      const macHomebrew = path.join('/opt/homebrew', 'bin', binName);
+      const macUsr = path.join('/usr/local', 'bin', binName);
+      if (fs.existsSync(macHomebrew) || fs.existsSync(macUsr)) {
+        hasNlm = true;
+      }
+    }
     if (!hasNlm && process.env.PATH) {
       const pathDirs = process.env.PATH.split(path.delimiter);
       for (const dir of pathDirs) {

@@ -28,15 +28,17 @@ function runTest() {
   try {
     // 1. Test Auth & Connection via nlm CLI
     console.log('> Testing connection (nlm notebook list)...');
+    const os = require('os');
     const envPath = process.env.PATH || '';
-    const homeBin = path.join(process.env.HOME || '', '.local', 'bin');
-    const extendedPath = `${homeBin}:${envPath}`;
+    const homeBin = path.join(os.homedir(), '.local', 'bin');
+    const extendedPath = `${homeBin}${path.delimiter}/opt/homebrew/bin${path.delimiter}/usr/local/bin${path.delimiter}${envPath}`;
+    const nlmCmd = process.platform === 'win32' ? (fs.existsSync(path.join(homeBin, 'nlm.exe')) ? `"${path.join(homeBin, 'nlm.exe')}"` : 'nlm.exe') : 'nlm';
 
-    const listOutput = execSync('nlm notebook list --json', {
+    const listOutput = execSync(`${nlmCmd} notebook list --json`, {
       encoding: 'utf-8',
       stdio: 'pipe',
       env: { ...process.env, PATH: extendedPath },
-      timeout: 5000
+      timeout: 10000
     });
     const notebooks = JSON.parse(listOutput);
     
