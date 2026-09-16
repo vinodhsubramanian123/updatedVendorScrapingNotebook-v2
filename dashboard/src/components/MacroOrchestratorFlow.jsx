@@ -311,14 +311,19 @@ export default function MacroOrchestratorFlow({
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
-                <button onClick={() => setShowLogConsole(!showLogConsole)} className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-[10px] flex items-center gap-1 font-mono transition-colors">
+                <button
+                  onClick={() => setShowLogConsole(!showLogConsole)}
+                  aria-expanded={showLogConsole}
+                  aria-controls="log-console-content"
+                  className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-[10px] flex items-center gap-1 font-mono transition-colors"
+                >
                   {showLogConsole ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />} {showLogConsole ? 'Hide Logs' : 'View Detailed Logs'}
                 </button>
               </div>
             </div>
 
             {showLogConsole && (
-              <div className="p-4 font-mono text-[11.5px] leading-relaxed h-64 overflow-y-auto space-y-1.5 bg-slate-950 text-slate-200 select-text">
+              <div id="log-console-content" className="p-4 font-mono text-[11.5px] leading-relaxed h-64 overflow-y-auto space-y-1.5 bg-slate-950 text-slate-200 select-text">
                 {filteredLogs.length === 0 ? (
                   <div className="text-center py-6 text-slate-600 text-xs">Waiting for pipeline execution events...</div>
                 ) : (
