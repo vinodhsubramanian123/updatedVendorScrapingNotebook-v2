@@ -357,7 +357,8 @@ async function serializeAndExportResults(ctx) {
   const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
 
   try {
-    generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, chassisPrefix || (graph.chassisInfo ? graph.chassisInfo.model : 'DL380_Gen12'), {
+    const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
+    generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, targetChassisName, {
       clusterSizing: evalResults.clusterSizing
     });
     generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {

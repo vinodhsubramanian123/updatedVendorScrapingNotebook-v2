@@ -131,7 +131,8 @@ function detectChassisVariant(items, overrideVariant = '') {
     if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
     if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };
     if (desc.includes('cray') || desc.includes('gx5000')) return { ...chassisMap['GX5000_General_RACK'], id: 'GX5000_General_RACK' };
-    if (desc.includes('synergy')) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
+    if (desc.includes('sy480') || desc.includes('synergy 480') || (desc.includes('synergy') && (desc.includes('480') || desc.includes('blade') || desc.includes('compute')))) return { ...(chassisMap['SY480_Gen12'] || { family: 'Synergy', gen: 'Gen12', formFactor: 'Compute Module', model: 'SY480 Gen12', baseSku: 'P68217-B21' }), id: 'SY480_Gen12' };
+    if (desc.includes('synergy') || desc.includes('f32') || desc.includes('100gb')) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
   }
 
   // If no chassis can be identified, trigger Human-in-the-Loop confirmation instead of silent Gen12 assumption
@@ -474,6 +475,70 @@ function autoDetectChassisDir(boqItems = []) {
   return autoDetectChassisDetailed(boqItems).chassisDir;
 }
 
+/**
+ * Verifies if a given chassis catalog is certified and was scraped at least once.
+ * Checks for:
+ * 1. Directory existence in outputs/
+ * 2. *_Catalog.json existence with metadata.totalUniqueSKUs > 0
+ * 3. *_OCA_Catalog.xlsx existence
+ *
+ * @param {string} chassisId - Chassis name or prefix (e.g. 'DL380_Gen12', 'DL360_Gen11')
+ * @param {string} [outputsRoot] - Optional outputs root override
+ * @returns {{ certified: boolean, catalogPath: string|null, xlsxPath: string|null, skuCount: number, reason?: string, catalogDir?: string }}
+ */
+function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
+  if (!chassisId || typeof chassisId !== 'string') {
+    return { certified: false, catalogPath: null, xlsxPath: null, skuCount: 0, reason: 'Invalid or missing chassis identifier' };
+  }
+
+  const cleanId = chassisId.trim();
+  const catalogs = listAllCatalogs(outputsRoot);
+
+  const matched = catalogs.find(c =>
+    c.id.toLowerCase() === cleanId.toLowerCase() ||
+    c.chassis.toLowerCase() === cleanId.toLowerCase() ||
+    path.basename(c.catalogDir).toLowerCase() === cleanId.toLowerCase()
+  );
+
+  if (!matched) {
+    return {
+      certified: false,
+      catalogPath: null,
+      xlsxPath: null,
+      skuCount: 0,
+      reason: `No catalog directory or snapshot found for '${cleanId}' in outputs/. Solution has never been scraped.`
+    };
+  }
+
+  if (!matched.catalogJsonPath || !fs.existsSync(matched.catalogJsonPath)) {
+    return {
+      certified: false,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: 0,
+      reason: `Catalog JSON missing on disk for '${cleanId}' at ${matched.catalogJsonPath}`
+    };
+  }
+
+  if ((matched.skuCount || 0) <= 0) {
+    return {
+      certified: false,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: 0,
+      reason: `Catalog for '${cleanId}' has 0 unique SKUs. Incomplete or empty scrape.`
+    };
+  }
+
+  return {
+    certified: true,
+    catalogDir: matched.catalogDir,
+    catalogPath: matched.catalogJsonPath,
+    xlsxPath: matched.xlsxPath,
+    skuCount: matched.skuCount
+  };
+}
+
 module.exports = {
   checkCdpHealth,
   findCatalogJsonFiles,
@@ -484,5 +549,7 @@ module.exports = {
   autoDetectChassisDetailed,
   getChassisMap,
   invalidateChassisMapCache,
-  detectChassisVariant
+  detectChassisVariant,
+  isCatalogCertified
 };
+

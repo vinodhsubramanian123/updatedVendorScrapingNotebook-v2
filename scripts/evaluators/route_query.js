@@ -25,6 +25,7 @@ function getBaseChassisSku(chassisKey = '') {
   const map = {
     'DL380_Gen12': 'P73282-B21',
     'DL380_Gen11': 'P52534-B21',
+    'DL360_Gen11': 'P52499-B21',
     'DL380a_Gen12': 'P76706-B21',
     'DL145_Gen11': 'P71964-B21',
     'DL580_Gen12': 'P73282-B21',
@@ -49,6 +50,10 @@ function getChassisCatalog(queryText = '', context = {}) {
     relDir = 'ProLiant/Gen11/DL380_Gen11';
     chassisKey = 'DL380_Gen11';
     catalogName = 'DL380_Gen11_Catalog.json';
+  } else if (text.includes('dl360') || text.includes('dl 360')) {
+    relDir = 'ProLiant/Gen11/DL360_Gen11';
+    chassisKey = 'DL360_Gen11';
+    catalogName = 'DL360_Gen11_Catalog.json';
   } else if (/\bdl\s*145\b/i.test(text) || text.includes('dl145')) {
     relDir = 'ProLiant/Gen11/DL145_Gen11';
     chassisKey = 'DL145_Gen11';

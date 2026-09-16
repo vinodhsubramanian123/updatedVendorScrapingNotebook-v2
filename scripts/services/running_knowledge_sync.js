@@ -152,6 +152,8 @@ function parseRulesFromMarkdown(text, sourceFilename) {
     currentChassis = 'DL380_Gen12';
   } else if (/dl380[_\s-]?gen[_\s-]?11/i.test(headerText)) {
     currentChassis = 'DL380_Gen11';
+  } else if (/dl360[_\s-]?gen[_\s-]?11|dl360/i.test(headerText)) {
+    currentChassis = 'DL360_Gen11';
   } else if (/dl145/i.test(headerText)) {
     currentChassis = 'DL145_Gen11';
   } else if (/dl580/i.test(headerText)) {
@@ -160,6 +162,8 @@ function parseRulesFromMarkdown(text, sourceFilename) {
     currentChassis = 'MSL3040_Tape';
   } else if (/alletra/i.test(headerText)) {
     currentChassis = 'Alletra_Storage_System';
+  } else if (/sy480|synergy[_\s-]?480|synergy.*compute/i.test(headerText)) {
+    currentChassis = 'SY480_Gen12';
   } else if (/synergy|sy100gb/i.test(headerText)) {
     currentChassis = 'SY100Gb_F32_Module';
   } else if (/gx5000|cray/i.test(headerText)) {

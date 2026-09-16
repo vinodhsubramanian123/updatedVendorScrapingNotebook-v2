@@ -70,6 +70,7 @@ graph TD
 ### 3. BOQ Ingestion, 8-Stage Atomicity & Conflict Graph
 - **Actor**: [`boq-eval-skill`](../boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
 - **Action**:
+  - **Pre-Flight Scraped-Catalog Gate (INV-96)**: Prior to running physical checks, the engine asserts `isCatalogCertified(chassisId)`. If the target chassis has never been scraped from OCA or has 0 SKUs, evaluation halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent/user to scrape ground truth first.
   - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
   - Ingests customer BOQs, multi-sheet proposals, or obfuscated SKU text.
   - Extracts **Workload DNA Profile** (CPU core/freq density, RAM per core ratio, GPU VDI class, NVMe RI vs MU vs WI SSDs).
@@ -82,6 +83,7 @@ graph TD
 - **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md), [`boq-eval-skill`](../boq-eval-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
 - **Action**: 
   - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
+  - **Autonomous Solution Strategy Double-Check (INV-97)**: Once the 5-Tier Strategy Matrix is generated, the newly synthesized Rank 1 and Rank 1L solutions are automatically verified against the product NotebookLM notebook (using ephemeral solution source validation) to double-check that added enablement kits (cables, SAS expanders, auxiliary GPU power) comply with QuickSpecs and newly learned rules.
   - **Ephemeral Solution Sheet Source Validation (INV-24)**: When whole-solution or multi-rank configurations exceed prompt character limits, the engine outputs a token-dense solution CSV, temporarily attaches it as a document source, executes grounded validation across all 7 physical aspects, extracts learnings into persistent `KnowledgeDelta` records, and immediately detaches the source.
   - If new verified deltas are extracted, `recomputeStrategyMatrixWithRag` dynamically recomputes physical checks and re-synthesizes the 5-Tier Strategy Matrix before final deliverable export.
   - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable** (`.xlsx`) and companion `.csv` via [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md).

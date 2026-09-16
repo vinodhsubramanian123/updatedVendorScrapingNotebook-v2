@@ -67,6 +67,7 @@ sequenceDiagram
 |---------|--------|---------------|-------------|--------|-------|-----------------|
 | HPE ProLiant DL380 Gen12 | ProLiant | `DL380_Gen12` | 472 HW / 667 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE ProLiant DL380 Gen11 | ProLiant | `DL380_Gen11` | 584 HW / 1109 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
+| HPE ProLiant DL360 Gen11 | ProLiant | `DL360_Gen11` | 703 HW / 295 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE ProLiant DL380a Gen12 | ProLiant | `DL380a_Gen12` | 359 HW / 295 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE ProLiant DL145 Gen11 | ProLiant | `DL145_Gen11` | 357 HW / 267 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE ProLiant DL580 Gen12 | ProLiant | `DL580_Gen12` | 242 HW / 626 Svc | 22 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
@@ -76,7 +77,7 @@ sequenceDiagram
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 
-**Total Portfolio Intelligence**: **10 Canonical Product Generations Certified** across 5 families (2,280 unique hardware SKUs on disk). Full isolated test matrix certified at **158/158 Suites PASSED (100.0%)**.
+**Total Portfolio Intelligence**: **11 Canonical Product Generations Certified** across 5 families (2,983 unique hardware SKUs on disk). Full isolated test matrix certified at **163/163 Suites PASSED (100.0%)**.
 
 ---
 

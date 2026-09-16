@@ -34,7 +34,11 @@ While the React Dashboard provides an exceptional visual interface for reviewing
 
 ---
 
-### 🔄 The 7 Atomic Steps of the BOQ Evaluation Journey
+### 🔄 The 8 Atomic Steps of the BOQ Evaluation Journey
+0. **Scraped Catalog Grounding Gate (`INV-96`)**:
+   - Asserts `isCatalogCertified(chassisId)` before parsing component lines or running physical math.
+   - Verifies that `outputs/{Family}/{Gen}/{Model}/` contains `*_Catalog.json` (with `totalUniqueSKUs > 0`) and `*_OCA_Catalog.xlsx`.
+   - If the catalog does not exist or has 0 SKUs, halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent to trigger `oca-portal-navigator` $\rightarrow$ `oca-catalog-scraper` to establish ground truth rather than proceeding on hallucinated or ungrounded data.
 1. **Intake, Ingestion & CTO Normalization**:
    - Extracts base chassis and CTO multipliers (e.g. resolving a 5x server order into an atomic 1-unit profile).
    - Identifies and excludes non-BOM documentation tabs (Cover pages, T&Cs, Readmes) using `isNonBomSheet` (`INV-63`).
@@ -56,6 +60,7 @@ While the React Dashboard provides an exceptional visual interface for reviewing
 5. **100% Partner Portal / CLIC Buildability Guarantee & Multi-Rank Deliverable**:
    - Ensures internal CTO components carry `#0D1` / `-F21` FIO tags (`INV-25`). Standalone BTO components outside containers fail CLIC validation (Rules 81354490 & 91001655).
    - **CLIC Advice Ingestion & Divergent Multi-Path Resolution (`INV-93`)**: Ingests OCA/CLIC advice modals and workbooks via `parseClicAdviceExcel`. Isolates non-blocking advisory warnings from unbuildable errors. Parses rule stack traces to extract multiple valid remediation branches (e.g. SAS Expander vs 2nd Controller) into parallel sub-paths (Rank 1A, Rank 1B, Rank 1L least-delta).
+   - **Autonomous Strategy Double-Check (`INV-97`)**: Before final serialization, the engine automatically attaches the multi-rank solution CSV as an ephemeral source in NotebookLM, double-checking that added enablement kits (cables, expanders, risers) satisfy QuickSpecs rules and newly learned deltas.
    - **Tiered Multi-Brain Verification Safety Net**: Primary execution driven by Antigravity / Gemini 3.6 Flash, ground-truth anchored in Gemini NotebookLM (QuickSpecs/catalogs), and token-conservatively verified via OpenAI Codex (GPT-6 Astra Light) for critical walkthrough and diff reviews (fail-open / non-blocking).
    - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable Workbook** (`.xlsx`) and companion `.csv` with 10 standardized columns (`Part No`, `Per-Node Qty`, `Node Multiplier`, `Total Qty`, `Description`, `Component Role`, `Unit Price`, `Extended Price`, `Physical Math Rationale`, `CLIC Status / Rule Trace`) and formula-driven totals for direct upload to HPE Partner Portal / OCA.
    - Zero quote is deemed valid unless it compiles with 0 errors in the vendor configurator.

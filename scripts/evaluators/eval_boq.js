@@ -19,7 +19,7 @@ const { serializeAndExportResults, generateMarkdownReport } = require('../lib/bo
 const { validateSolutionWithEphemeralSource } = require('../lib/sync/nlm_solution_source_validator.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
-const { autoDetectChassisDetailed } = require('../lib/catalog/catalog_discovery.js');
+const { autoDetectChassisDetailed, isCatalogCertified } = require('../lib/catalog/catalog_discovery.js');
 const { emitProgress } = require('../lib/system/progress.js');
 const { executeNotebookQuery, getAuthoritativeSourceIds } = require('../lib/notebook/notebook_query_utils.js');
 const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
@@ -198,6 +198,27 @@ function ingestAndConsolidateBoq(options) {
   }
 
   const detectedChassisName = path.basename(chassisDir || '');
+
+  // Pre-Flight Scraped-Catalog Gate (INV-96)
+  const isTestFixture = /test|fixture|temp|mock|split_clusters/i.test(chassisDir) || process.env.NODE_ENV === 'test';
+  if (!isTestFixture && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
+    const certCheck = isCatalogCertified(detectedChassisName);
+    if (!certCheck.certified) {
+      const errorMsg = `❌ PRE-FLIGHT ERROR: [ERR_UNSCRAPED_SOLUTION] Solution '${detectedChassisName}' has not been scraped or certified.\nReason: ${certCheck.reason}\n💡 Run 'npm run scrape:oca -- --profile <profile>' or trigger the scraper in the dashboard to establish ground truth before evaluating.`;
+      console.error(errorMsg);
+      if (JSON_MODE || process.env.STRUCTURED_PROGRESS) {
+        process.stdout.write('\n\n' + JSON.stringify({
+          status: 'ERROR',
+          error: 'ERR_UNSCRAPED_SOLUTION',
+          chassis: detectedChassisName,
+          message: certCheck.reason,
+          directive: 'Catalog must be scraped from HPE OCA before pre-flight evaluation.'
+        }) + '\n');
+      }
+      process.exit(1);
+    }
+  }
+
   const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
   const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
     ? explicitNotebookId
@@ -538,18 +559,30 @@ function applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, 
 }
 
 // ============================================================
-// Stage 6: Ephemeral Solution Source Validation
+// Stage 6: Ephemeral Solution Source Validation & Strategy Double-Check (INV-97)
 // ============================================================
 async function executeEphemeralSourceValidation(options, ingestCtx, evalResults) {
-  if (!options.SHEET_VALIDATION) return null;
+  // Autonomous Strategy Double-Check (INV-97):
+  // Runs whenever sheet validation is explicitly requested OR when cloud RAG is active and a live product notebook is mapped.
+  const shouldValidate = options.SHEET_VALIDATION || (!options.OFFLINE_MODE && !options.DEFER_RAG && ingestCtx.notebookId);
+  if (!shouldValidate) return null;
   emitProgress(9, 10, 'Ephemeral Source Validation', 'in_progress', 'Validating multi-rank solution sheets via NotebookLM ephemeral source...');
   try {
-    return await validateSolutionWithEphemeralSource(evalResults, {
+    const result = await validateSolutionWithEphemeralSource(evalResults, {
       notebookId: ingestCtx.notebookId,
       chassisName: ingestCtx.detectedChassisName || ingestCtx.chassisPrefix,
       targetDir: ingestCtx.chassisDir,
       isMock: options.OFFLINE_MODE
     });
+    if (result) {
+      evalResults.solutionDoubleCheck = {
+        status: result.isCloudGrounded ? 'DOUBLE_CHECK_PASSED' : (result.isMock ? 'OFFLINE_MOCK_VERIFIED' : 'LOCAL_RULES_PASSED'),
+        sourceId: result.sourceId,
+        citationsCount: (result.citations || []).length,
+        extractedDeltasCount: (result.extractedDeltas || []).length
+      };
+    }
+    return result;
   } catch (ephErr) {
     const _logger = require('../lib/system/pipeline_logger.js');
     _logger.warn('EVAL_BOQ', `Ephemeral source validation note: ${ephErr.message}`);

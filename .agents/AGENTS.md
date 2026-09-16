@@ -572,6 +572,14 @@ The following 7 invariants were found broken in live code and fixed. Future agen
 - **Pattern**: When a newly scraped chassis has unrendered prices for shared commodity components (e.g. DL360 Gen11 where WebLogic OCA rendered $0), but sibling products of the exact same HPE generation have verified historical prices.
 - **Rule**: `loadPortfolioPriceBackfill()` in `build_catalog.js` deterministically scans sibling catalogs in the same generation directory (`outputs/ProLiant/Gen11/`) to backfill prices for shared SKUs (CPUs, DIMMs, drives, NICs, cables, FIO kits). Strictly respects Generation Firewalls (`INV-48`) to prohibit cross-generation bleeding, and logs source catalog provenance in build telemetry.
 
+### INV-96: Catalog Scraped & Certified Pre-Flight Gate
+- **Pattern**: When evaluating customer BOQs, un-scraped chassis lack ground-truth wattages, slot counts, base prices, and CTO variants.
+- **Rule**: Prior to running physical checks, `eval_boq.js` and `boq-eval-skill` MUST assert `isCatalogCertified(chassisId)` from `catalog_discovery.js`. If `outputs/{Family}/{Gen}/{Model}/` is missing or contains 0 SKUs, the engine halts immediately with `[ERR_UNSCRAPED_SOLUTION]`, directing the operator to run `scrape_oca_solution.js` or trigger the scraper in the dashboard to establish certified ground truth first.
+
+### INV-97: Autonomous Solution Strategy Double-Check Protocol
+- **Pattern**: The 5-Tier Strategy Matrix synthesizes Rank 1 (Intent Match) and Rank 1L (Least Delta Alternative), adding enablement kits (cables, expanders, risers, DC lugs) that must be verified against vendor spec sheets.
+- **Rule**: After strategy matrix generation, the engine automatically verifies the synthesized solution against the product's NotebookLM notebook via `validateSolutionWithEphemeralSource()` in `nlm_solution_source_validator.js`. The multi-rank solution CSV is temporarily attached as an ephemeral source in NotebookLM, validated across all 7 physical aspects, and immediately detached per `INV-24`, recording verification attestation in `evalResults.solutionDoubleCheck`.
+
 ---
 
 ## History Directory Hygiene Rules

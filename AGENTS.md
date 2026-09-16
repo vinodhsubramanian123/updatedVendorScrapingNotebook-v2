@@ -518,7 +518,15 @@ The system leverages Google Jules for background code review, test generation, a
 86. **Cross-Chassis Portfolio Price Backfill Protocol (`INV-95`)**:
     - **Deterministic Sibling Catalog Scanning**: When a chassis's own raw scrape or price history lacks pricing for shared commodity options (e.g. where WebLogic OCA rendered $0 or cost columns were withheld during scrape), `loadPortfolioPriceBackfill()` in `build_catalog.js` scans sibling product catalogs within the exact same HPE generation family (e.g., DL380 Gen11, DL380a Gen11 for DL360 Gen11).
     - **Strict Generation Firewall (`INV-48`) Compliance**: Price backfill is strictly restricted to sibling catalogs of the SAME product generation (e.g., Gen11 $\rightarrow$ Gen11 only, Gen12 $\rightarrow$ Gen12 only). Cross-generation price bleeding (e.g. Gen11 DDR4/early DDR5 to Gen12 MRDIMMs) is strictly prohibited.
-    - **Real-Time Provenance & Audit Logging**: Any backfilled SKU price must log the source sibling catalog in build telemetry to preserve 100% auditable price provenance without fabricating numbers.
+87. **Catalog Scraped & Certified Pre-Flight Gate (`INV-96`)**:
+    - **Mandatory Grounding Verification**: Prior to executing BOQ evaluation or running 7-aspect physical math, `eval_boq.js` and `boq-eval-skill` MUST assert `isCatalogCertified(chassisId)` from `scripts/lib/catalog/catalog_discovery.js`.
+    - **Strict Pre-Flight Assertion**: The target chassis catalog directory (`outputs/{Family}/{Gen}/{Model}/`) MUST exist, contain a valid `*_Catalog.json` with `metadata.totalUniqueSKUs > 0`, and contain the companion `*_OCA_Catalog.xlsx`.
+    - **Ungrounded Evaluation Prohibition**: If the target chassis has never been scraped from HPE OCA or has 0 SKUs, evaluation MUST NOT proceed on ungrounded data. The engine immediately raises `[ERR_UNSCRAPED_SOLUTION]` with explicit instructions to run `scrape_oca_solution.js` or launch the scraper in the dashboard to establish certified ground truth first.
+
+88. **Autonomous Solution Strategy Double-Check Protocol (`INV-97`)**:
+    - **Post-Synthesis Grounded Double-Check**: After the 5-Tier Strategic Resolution Matrix synthesizes Rank 1 (Intent Preserved) and Rank 1L (Least Delta Alternative), the engine automatically verifies the synthesized solution against the product's NotebookLM notebook via `validateSolutionWithEphemeralSource()` in `scripts/lib/sync/nlm_solution_source_validator.js`.
+    - **Zero-Contamination Ephemeral Attachment (`INV-24`)**: The multi-rank solution CSV is temporarily attached as an ephemeral source in NotebookLM, validated across all 7 physical aspects to confirm 100% buildability and verify that added enablement kits (cables, SAS expanders, auxiliary GPU power) comply with QuickSpecs and newly learned rules, and then immediately detached (`source_delete`).
+    - **Verification Telemetry Attestation**: The double-check result is recorded in `evalResults.solutionDoubleCheck` (`DOUBLE_CHECK_PASSED` / `OFFLINE_MOCK_VERIFIED`) and logged to the execution trace ledger before final deliverable export.
 
 
 

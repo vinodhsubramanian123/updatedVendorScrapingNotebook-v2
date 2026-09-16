@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/Alletra/Storage/Alletra_Storage_System`
 
-**Sync Timestamp**: 2026-09-16T19:35:08.499Z
+**Sync Timestamp**: 2026-09-16T20:05:35.963Z
 
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
 
