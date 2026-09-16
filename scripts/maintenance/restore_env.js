@@ -414,14 +414,14 @@ function verifyPythonCliTools(sys) {
   if (hasUv) {
     info(`Found 'uv'. Auto-installing missing CLI tools via uv tool...`);
     if (!hasNlm) execSync('uv tool install notebooklm-mcp-cli', { stdio: 'inherit' });
-    if (!hasGraphify) execSync('uv tool install graphifyy', { stdio: 'inherit' });
+    if (!hasGraphify) execSync('uv tool install "graphifyy[mcp]"', { stdio: 'inherit' });
   } else {
     info(`Checking pip / python3...`);
     try {
       if (!hasNlm) execSync('python3 -m pip install notebooklm-mcp-cli --quiet', { stdio: 'inherit' });
-      if (!hasGraphify) execSync('python3 -m pip install graphifyy --quiet', { stdio: 'inherit' });
+      if (!hasGraphify) execSync('python3 -m pip install "graphifyy[mcp]" --quiet', { stdio: 'inherit' });
     } catch (_) {
-      warn(`Please ensure 'pip install notebooklm-mcp-cli graphifyy' or 'uv tool install ...' is run.`);
+      warn(`Please ensure 'pip install notebooklm-mcp-cli "graphifyy[mcp]"' or 'uv tool install "graphifyy[mcp]"' is run.`);
     }
   }
 }
