@@ -248,10 +248,10 @@ describe('evalNormalizer', () => {
 
       const result = buildAspectChecksFromEval(evalData);
 
-      expect(result[0].status).toBe('PASS');
-      expect(result[0].detail).toContain('High-Perf Fans: ❌');
-      expect(result[5].status).toBe('PASS');
-      expect(result[5].detail).toBe('DC PSU: NO | Lug Kit: ❌');
+      expect(result[0].status).toBe('UNKNOWN');
+      expect(result[0].detail).toContain('High-Perf Fans: ⚠️ Unknown');
+      expect(result[5].status).toBe('UNKNOWN');
+      expect(result[5].detail).toBe('DC PSU: UNKNOWN | Lug Kit: N/A');
     });
   });
 });

@@ -18,26 +18,40 @@
  */
 export function buildAspectChecksFromEval(evalData) {
   if (!evalData || Object.keys(evalData).length === 0) return [];
+  const boolStatus = (val) => val === true ? 'PASS' : (val === false ? 'FAIL' : 'UNKNOWN');
+
+  let pcieStatus = 'UNKNOWN';
+  if (typeof evalData.requiredPcieCards === 'number' && typeof evalData.totalPcieSlotsAvailable === 'number') {
+    pcieStatus = evalData.requiredPcieCards <= evalData.totalPcieSlotsAvailable ? 'PASS' : 'FAIL';
+  }
+
+  let powerStatus = 'UNKNOWN';
+  if (evalData.hasDcPowerSupply === true) {
+    powerStatus = evalData.hasDcLugKit === true ? 'PASS' : (evalData.hasDcLugKit === false ? 'FAIL' : 'UNKNOWN');
+  } else if (evalData.hasDcPowerSupply === false) {
+    powerStatus = 'PASS';
+  }
+
   return [
     {
       id: 1, name: 'Compute & Thermal',
-      status: evalData.hasHighPerfFans !== false ? 'PASS' : 'FAIL',
-      detail: `${evalData.cpuCount || 0} CPUs (Max TDP: ${evalData.maxCpuTdpWatts || 0}W) | High-Perf Fans: ${evalData.hasHighPerfFans ? '✅' : '❌'}`
+      status: boolStatus(evalData.hasHighPerfFans),
+      detail: `${evalData.cpuCount || 0} CPUs (Max TDP: ${evalData.maxCpuTdpWatts || 0}W) | High-Perf Fans: ${evalData.hasHighPerfFans === true ? '✅' : (evalData.hasHighPerfFans === false ? '❌' : '⚠️ Unknown')}`
     },
     {
       id: 2, name: 'Memory & Channels',
-      status: evalData.isBalancedChannel !== false ? 'PASS' : 'FAIL',
+      status: boolStatus(evalData.isBalancedChannel),
       detail: `${evalData.memoryCount || 0} DIMMs (${evalData.totalMemoryGb || 0} GB Total)`
     },
     {
       id: 3, name: 'Storage & Tri-Mode',
-      status: evalData.hasSmartBattery !== false ? 'PASS' : 'FAIL',
-      detail: `${evalData.driveCount || 0} Drives | Battery: ${evalData.hasSmartBattery ? '✅' : '❌'}`
+      status: boolStatus(evalData.hasSmartBattery),
+      detail: `${evalData.driveCount || 0} Drives | Battery: ${evalData.hasSmartBattery === true ? '✅' : (evalData.hasSmartBattery === false ? '❌' : '⚠️ Unknown')}`
     },
     {
       id: 4, name: 'PCIe Expansion',
-      status: (evalData.requiredPcieCards || 0) <= (evalData.totalPcieSlotsAvailable || 8) ? 'PASS' : 'FAIL',
-      detail: `${evalData.requiredPcieCards || 0} Cards / ${evalData.totalPcieSlotsAvailable || 8} Slots`
+      status: pcieStatus,
+      detail: `${evalData.requiredPcieCards ?? '?'} Cards / ${evalData.totalPcieSlotsAvailable ?? '?'} Slots`
     },
     {
       id: 5, name: 'Networking & OCP',
@@ -46,8 +60,8 @@ export function buildAspectChecksFromEval(evalData) {
     },
     {
       id: 6, name: 'Power & Ambient',
-      status: (!evalData.hasDcPowerSupply || evalData.hasDcLugKit) ? 'PASS' : 'FAIL',
-      detail: `DC PSU: ${evalData.hasDcPowerSupply ? 'YES' : 'NO'} | Lug Kit: ${evalData.hasDcLugKit ? '✅' : '❌'}`
+      status: powerStatus,
+      detail: `DC PSU: ${evalData.hasDcPowerSupply === true ? 'YES' : (evalData.hasDcPowerSupply === false ? 'NO' : 'UNKNOWN')} | Lug Kit: ${evalData.hasDcLugKit === true ? '✅' : (evalData.hasDcLugKit === false ? '❌' : 'N/A')}`
     },
     {
       id: 7, name: 'Support Services',
@@ -120,6 +134,12 @@ function extractProvenanceAndTrace(data, inner) {
   return {
     provenanceTrace,
     traceId: data.traceId ?? provenanceTrace?.traceId ?? null,
+    evidenceHealth: data.evidenceHealth ?? inner.evidenceHealth ?? null,
+    evidenceLogPath: data.evidenceLogPath ?? inner.evidenceLogPath ?? null,
+    evidenceSummaryPath: data.evidenceSummaryPath ?? inner.evidenceSummaryPath ?? null,
+    portalWorkbookPath: data.portalWorkbookPath ?? inner.portalWorkbookPath ?? null,
+    deliveryError: data.deliveryError ?? inner.deliveryError ?? null,
+    manifestSha256: data.manifestSha256 ?? inner.manifestSha256 ?? null,
     needsActions: inner.needsActions ?? data.needsActions ?? [],
     unsolicitedOptionalItems: inner.unsolicitedOptionalItems ?? data.unsolicitedOptionalItems ?? [],
     totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
@@ -153,7 +173,7 @@ export function normalizeEvalResult(payload) {
     items: data.items ?? inner.items ?? [],
     bomItems: data.items ?? inner.items ?? data.bomItems ?? [],
     unclassifiedSkus: data.unclassifiedSkus ?? inner.unclassifiedSkus ?? [],
-    chassis: data.chassisPrefix || data.chassisDir || inner.chassis || 'DL380_Gen12_SFF',
+    chassis: data.chassisPrefix || data.chassisDir || inner.chassis || 'UNKNOWN_PRODUCT',
     targetBudgetUsd: data.targetBudgetUsd ?? inner.targetBudgetUsd ?? 0,
     // Hoist inner eval fields to top level for component backward-compat
     errors: inner.errors ?? data.errors ?? [],

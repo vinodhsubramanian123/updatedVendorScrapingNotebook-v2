@@ -121,6 +121,12 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
+    const explicitPlatform = desc.match(/\b(dl\s*\d{3}[a-z]?)\s*gen\s*(\d+)\b/i);
+    if (explicitPlatform) {
+      const id = `${explicitPlatform[1].replace(/\s/g, '').toUpperCase().replace(/A$/, 'a')}_Gen${explicitPlatform[2]}`;
+      if (chassisMap[id]) return { ...chassisMap[id], id };
+      return { unknown: true, requiresUserConfirmation: true, id, model: id, family: 'ProLiant', gen: `Gen${explicitPlatform[2]}`, reason: 'Explicit product generation has no mapped catalog' };
+    }
     if (/\bdl\s*384\b/i.test(desc) || desc.includes('dl384')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*380\s*a\b/i.test(desc) || desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
     if (/\bdl\s*145\b/i.test(desc) || desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
@@ -556,6 +562,18 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
   }
 
   const meta = catalogContent?.metadata || {};
+  const actualSkus = new Set((catalogContent.entries || []).flatMap(entry => entry.skus || []).map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean));
+  if (actualSkus.size !== Number(meta.totalUniqueSKUs)) {
+    return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Catalog SKU tally mismatch: metadata=${meta.totalUniqueSKUs}, actual=${actualSkus.size}` };
+  }
+  try {
+    const bytes = fs.readFileSync(matched.xlsxPath);
+    if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('Not an XLSX ZIP container');
+    const workbook = require('xlsx-js-style').read(bytes, { type: 'buffer' });
+    if (!workbook.Sheets['All SKUs']) throw new Error('Missing All SKUs sheet');
+  } catch (error) {
+    return { certified: false, catalogPath: matched.catalogJsonPath, xlsxPath: matched.xlsxPath, reason: `Invalid master workbook: ${error.message}` };
+  }
   if (!meta.scrapeDate || !/^\d{4}-\d{2}-\d{2}$/.test(meta.scrapeDate)) {
     return {
       certified: false,
@@ -603,4 +621,3 @@ module.exports = {
   detectChassisVariant,
   isCatalogCertified
 };
-

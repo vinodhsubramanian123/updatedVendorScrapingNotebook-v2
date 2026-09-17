@@ -416,4 +416,43 @@ When evaluating or auto-remediating BOQs across any product family:
     - **Holistic Re-Synthesis**: Whenever an existing solution is expanded or modified, the engine MUST re-evaluate the entire coexisting BOM across all 7 physical aspects simultaneously to ensure zero unbuildable contradictions or hidden dependencies.
     - **Static Pre-Processing + Dynamic RAG Grounding**: High-speed deterministic rules catch baseline slot, cage, and thermal boundaries instantly; dynamic NotebookLM queries verify end-to-end vendor QuickSpecs reasoning with full patience.
     - **Closed-Loop Knowledge Delta Sync**: Any newly surfaced physical rules or factory prerequisites are automatically extracted via `knowledge_extractor.js`, persisted in `master_knowledge_registry.json`, and synced across notebooks so the engine continuously improves.
+15. **Terminal Evidence Ledger Lifecycle & Structural Guarantees (`INV-104`)**:
+    - `evidenceLedger.finalizeAndExport()` MUST run strictly after Phase 8 (Deliverables) and Phase 9 (Continuous Learning) finish, or inside top-level terminal error handlers (`catch (error)`).
+    - Every phase (1 through 9) MUST record an unambiguous terminal status (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`). No phase may ever remain `RUNNING` or `undefined`.
+    - Every input artifact (`CUSTOMER_INPUT`, `CATALOG`) and deliverable artifact (`ANALYSIS_REPORT`, `RANKED_WORKBOOK`, `RANKED_CSV`, `PARTNER_PORTAL_WORKBOOK`) must record existence status, size, and cryptographic SHA-256 fingerprint.
+16. **Strict Epistemological Segregation & Circular Authority Prohibition (`INV-105`)**:
+    - Ephemeral candidate BOM sources attached as query inputs to NotebookLM MUST be strictly segregated from `authoritativeSourceIds`.
+    - Candidate self-citations yield `UNKNOWN` and cannot certify vendor grounding.
+17. **Zero Default Success & Strict Boolean Normalization (`INV-106`)**:
+    - Evaluators and normalizers must NEVER use loose inequality checks (`!== false ? 'PASS' : 'FAIL'`).
+    - Absent or undefined aspect checks or requirements MUST evaluate strictly to `'UNKNOWN'` (or `'OPTIONAL'`), never defaulting to `'PASS'`.
+18. **Candidate Manifest Invalidation & Cryptographic Fingerprinting (`INV-107`)**:
+    - Candidate review receipts are cryptographically bound to the SHA-256 manifest hash (`solutionFingerprint`).
+    - Any alteration of a SKU or quantity immediately invalidates previous review receipts, withholding cloud delivery until re-verified.
+19. **Atomic Non-Destructive Cloud Write & Readback Verification (`INV-108`)**:
+    - Cloud delivery operations (Google Sheets) MUST NOT use destructive full-sheet wipes (`values:batchClear`).
+    - Updates must use in-place cell updates (`spreadsheets.batchUpdate` with `updateCells`) followed by mandatory `values:batchGet` readback verification comparing SHA-256 row fingerprints.
+20. **Universal Knowledge Scope Isolation & Quarantine Firewalls (`INV-109`)**:
+    - Universal knowledge charters must strictly exclude single-product thresholds, TDP limits, and part numbers. Single-product rules must remain quarantined in `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and `quarantined_deltas.json`.
+21. **Safe Search Tokenizer & Regex Metacharacter Sanitization (`INV-110`)**:
+    - Query tokenizers (e.g. `prepareSearchTerms` in `local_rag_search.js`) must strip markdown syntax (`**`, `_`, `` ` ``, `#`) and escape regex metacharacters (`replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`) before passing search tokens to `new RegExp`.
+22. **Error Trace Correlation in Machine-Parseable Output (`INV-111`)**:
+    - Pre-flight error handlers MUST attach `traceId` and `evidenceLogPath`, mark all unreached downstream phases as `NOT_REACHED`, and emit them in `__EVAL_RESULT_JSON__{ status: 'ERROR', error: ..., data: { traceId, evidenceLogPath } }__EVAL_RESULT_JSON__`.
+
+---
+
+## 6. Cognitive Mandates & Root Cause Prevention for Presales Architects
+
+To ensure that neither humans nor autonomous agents repeat the blind spots identified in the 2026-09-17 audit:
+1. **Adversarial Negative-Path Priority**: For every feature, candidate, or rule, test missing, empty, corrupt, and boundary inputs first. A failure or missing check must NEVER become a success claim.
+2. **Disk-Persistence Verification**: Verify actual files on disk and their SHA-256 hashes, not in-memory return objects or transient flags.
+3. **Four-Tier Epistemological Discipline**:
+   - Tier 0: Customer Input = Untrusted Claim.
+   - Tier 1: Local Aspect Rules = Pre-Flight Math Sanity Check.
+   - Tier 2: Grounded NotebookLM Review = Document Citation Check.
+   - Tier 3: Live OCA/CLIC Portal Response = Official Vendor Acceptance Receipt.
+   Never conflate Tier 1 or Tier 2 with Tier 3. Deliverables must label `PORTAL VALIDATION PENDING` until a live CLIC transaction occurs.
+4. **Zero Optimistic Falsification**: When an external service (LLM, RAG, API) is unavailable or offline, mark the stage as `ACTION_REQUIRED` or `INCOMPLETE`. Never fabricate a synthetic pass.
+5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (165+ suites), `npm run lint` (0 warnings on 110 files), and complexity gates ($CC \le 135$).
+
 

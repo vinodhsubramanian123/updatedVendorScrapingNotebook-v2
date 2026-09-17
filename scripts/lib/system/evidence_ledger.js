@@ -9,7 +9,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getTraceId, runWithTrace } = require('./trace_context.js');
+const crypto = require('crypto');
+const { getTraceId } = require('./trace_context.js');
+const { execFileSync } = require('child_process');
 const { safeWriteJsonAtomic } = require('./fs_compat.js');
 const logger = require('./pipeline_logger.js');
 
@@ -32,6 +34,8 @@ class EvidenceLedger {
     this.notebookLmTraces = [];
     this.arbitrationDecisions = [];
     this.modernizationDecisions = [];
+    this.artifacts = [];
+    this.events = [];
     this.sharedState = {
       currentChassis: this.chassis,
       nodeMultiplier: options.serverCount || 1,
@@ -74,6 +78,7 @@ class EvidenceLedger {
    * Start a named phase in the pipeline
    */
   startPhase(phaseNum, phaseName, inputSummary = {}) {
+    this.events.push({ sequence: this.events.length + 1, phaseNum, event: 'STARTED', timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     this.phases[key] = {
       phaseNumber: phaseNum,
@@ -95,6 +100,7 @@ class EvidenceLedger {
    * Complete a named phase with results and verification checks
    */
   completePhase(phaseNum, status = 'PASSED', outputSummary = {}, checks = [], warnings = [], errors = []) {
+    this.events.push({ sequence: this.events.length + 1, phaseNum, event: status, timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     if (!this.phases[key]) {
       this.startPhase(phaseNum, `Phase ${phaseNum}`, {});
@@ -108,13 +114,17 @@ class EvidenceLedger {
     phase.warnings = Array.isArray(warnings) ? warnings : [];
     phase.errors = Array.isArray(errors) ? errors : [];
 
-    // Advance sharedState completion milestones strictly upon success
-    if (phaseNum === 3 && status === 'PASSED') {
-      this.sharedState.aspectChecksCompleted = true;
-    } else if (phaseNum === 4 && status === 'PASSED') {
-      this.sharedState.conflictGraphCompleted = true;
-    } else if (phaseNum === 6 && status === 'PASSED') {
-      this.sharedState.strategySynthesized = true;
+    // Execution completion and validation outcome are separate facts.
+    const executed = !['RUNNING', 'SKIPPED', 'NOT_RUN'].includes(status);
+    if (phaseNum === 3) {
+      this.sharedState.aspectChecksCompleted = executed;
+      this.sharedState.aspectChecksStatus = status;
+    } else if (phaseNum === 4) {
+      this.sharedState.conflictGraphCompleted = executed;
+      this.sharedState.conflictGraphStatus = status;
+    } else if (phaseNum === 6) {
+      this.sharedState.strategySynthesized = executed;
+      this.sharedState.strategyStatus = status;
     }
 
     logger.info('EVIDENCE_LEDGER', `[Phase ${phaseNum}: ${phase.phaseName}] COMPLETED (${status}) in ${phase.durationMs}ms`);
@@ -157,17 +167,44 @@ class EvidenceLedger {
    * Record a NotebookLM RAG grounded verification query and response
    */
   recordNotebookLmTrace(queryPayload, responseSummary = {}, citations = [], status = 'VERIFIED_GROUNDED') {
-    const isCloudVerified = status === 'VERIFIED_GROUNDED' && ((Array.isArray(citations) && citations.length > 0) || responseSummary?.isCloudGrounded === true);
+    const isCloudVerified = status === 'VERIFIED_GROUNDED' && responseSummary?.isCloudGrounded === true && Array.isArray(citations) && citations.length > 0;
     const recordedStatus = isCloudVerified ? 'VERIFIED_GROUNDED' : (status === 'VERIFIED_GROUNDED' ? 'LOCAL_RAG_FALLBACK' : status);
 
     this.notebookLmTraces.push({
       timestamp: new Date().toISOString(),
-      querySummary: typeof queryPayload === 'string' ? queryPayload.slice(0, 200) : (queryPayload?.intent || 'RAG_GROUNDING_CHECK'),
+      querySummary: typeof queryPayload === 'string' ? queryPayload : (queryPayload?.intent || 'RAG_GROUNDING_CHECK'),
+      queryPayload,
+      querySha256: crypto.createHash('sha256').update(JSON.stringify(queryPayload ?? null)).digest('hex'),
       status: recordedStatus,
       citations: Array.isArray(citations) ? citations : [],
       responseSummary
     });
     this.sharedState.dualBrainVerified = Boolean(isCloudVerified);
+  }
+
+  recordArtifact(role, filePath, details = {}) {
+    const artifact = { role, filePath, ...details, recordedAt: new Date().toISOString(), exists: false };
+    if (filePath && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const bytes = fs.readFileSync(filePath);
+      Object.assign(artifact, { exists: true, sizeBytes: bytes.length, sha256: crypto.createHash('sha256').update(bytes).digest('hex') });
+    }
+    this.artifacts.push(artifact);
+    return artifact;
+  }
+
+  getHealth() {
+    const gaps = [];
+    if (!this.customerInput.filePath) gaps.push('INPUT_NOT_IDENTIFIED');
+    if (!this.chassis || this.chassis === 'UNKNOWN_CHASSIS') gaps.push('CHASSIS_NOT_IDENTIFIED');
+    for (let n = 1; n <= 9; n++) {
+      const phase = this.phases[`phase_${n}`];
+      if (!phase) gaps.push(`PHASE_${n}_MISSING`);
+      else if (phase.status === 'RUNNING') gaps.push(`PHASE_${n}_UNFINISHED`);
+    }
+    if (!this.skuAuditLedger.length) gaps.push('SKU_DECISIONS_MISSING');
+    if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
+    const outcomes = Object.values(this.phases).map(p => p.status);
+    return { healthy: gaps.length === 0, gaps, workflowStatus: outcomes.includes('FAILED') ? 'FAILED' : (outcomes.every(s => s === 'PASSED' || s === 'RESOLVED') && gaps.length === 0 ? 'COMPLETE' : 'INCOMPLETE') };
   }
 
   /**
@@ -181,8 +218,17 @@ class EvidenceLedger {
       fs.mkdirSync(exportDir, { recursive: true });
     }
 
+    const execution = { nodeVersion: process.version, platform: process.platform, gitRevision: null, workingDiffSha256: null };
+    try {
+      execution.gitRevision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: PROJECT_ROOT, encoding: 'utf8', timeout: 5000 }).trim();
+      execution.workingDiffSha256 = crypto.createHash('sha256').update(execFileSync('git', ['diff', 'HEAD', '--', 'scripts', 'dashboard'], { cwd: PROJECT_ROOT, timeout: 5000, maxBuffer: 10 * 1024 * 1024 })).digest('hex');
+    } catch (error) { execution.revisionError = error.message; }
     const payload = {
-      version: '1.0.0',
+      version: '2.0.0',
+      execution,
+      health: this.getHealth(),
+      events: this.events,
+      artifacts: this.artifacts,
       traceId: this.traceId,
       startedAt: this.startedAt,
       completedAt: this.completedAt,
@@ -217,6 +263,7 @@ class EvidenceLedger {
       `# Antigravity Execution Trace & Shared State Evidence Log`,
       `**Trace ID:** \`${this.traceId}\` | **Chassis:** \`${this.chassis}\` | **Duration:** ${this.totalDurationMs}ms`,
       `**Timestamp:** ${this.startedAt} to ${this.completedAt}`,
+      `**Evidence health:** ${JSON.stringify(this.getHealth())}`,
       '',
       `## 1. Pipeline Execution Phases & Status`,
       `| Phase | Name | Status | Duration (ms) | Key Output |`,
@@ -251,6 +298,9 @@ class EvidenceLedger {
       lines.push(`*... and ${this.skuAuditLedger.length - 50} more items recorded in JSON log.*`);
     }
 
+    lines.push('', '## 4. NotebookLM verification', '```json', JSON.stringify(this.notebookLmTraces, null, 2), '```');
+    lines.push('', '## 5. Artifact fingerprints and delivery receipts', '```json', JSON.stringify(this.artifacts, null, 2), '```');
+    lines.push('', '## 6. Complete phase inputs, decisions, checks and outcomes', '```json', JSON.stringify(this.phases, null, 2), '```');
     return lines.join('\n');
   }
 }

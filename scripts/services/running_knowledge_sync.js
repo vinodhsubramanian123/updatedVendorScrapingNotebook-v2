@@ -15,6 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+const { refreshSharedKnowledgeSources } = require('../lib/sync/shared_knowledge_refresh');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 const logger = require('../lib/system/pipeline_logger.js');
 const {
@@ -342,12 +344,10 @@ The **HPE AI Studio BOQ Evaluator & Conflict Resolution Engine** maintains a dua
 
 | Category | Law / Invariant | Enforcement & Technical Rationale |
 | :--- | :--- | :--- |
-| **Option Placement** | **INV-25: Multi-Chassis Container Tree** | Components inside Configure-to-Order (CTO) base chassis must carry Factory-Integrated Option tags (\`#0D1\` / \`-F21\`). Standalone BTO (\`-B21\`) components placed in CTO containers fail factory CLIC validation (Rules 81354490 & 91001655). |
-| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. |
-| **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. |
-| **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |
-| **Memory Restrictions** | **Zero Rank & Monolithic Mixing** | Mixing of x4 and x8 memory is prohibited. Mixing standard planar RDIMMs with 3DS RDIMMs is prohibited. 96GB/128GB densities are mutually exclusive. 16GB RDIMMs are restricted strictly to 1DPC. |
-| **Power Infrastructure** | **INV-30: EU ErP Lot 9 & Platinum PSUs** | European Union ErP Lot 9 mandates 96% Titanium power supplies. Platinum PSUs (94%) deployed outside Europe require the \`P35876-B21\` CE Mark Removal FIO Enablement Kit ($1.00 list) to bypass regulatory blocks cleanly. |
+| **Scope** | Product isolation | Resolve SKU dependencies, thermal thresholds, memory population and regional restrictions from the exact product/generation notebook and current official vendor evidence. Never generalize a product rule from this shared charter. |
+| **Customer intent** | Minimum mandatory change | Preserve requested functions and quantities; explain and cite every mandatory substitution or addition. |
+| **Verification** | Separate evidence stages | Distinguish local checks, cited document review and actual vendor configurator acceptance. Missing evidence remains unverified. |
+| **Learning** | Governed promotion | Local inferences are proposals until independently supported. Product-specific learning remains in its product notebook. |
 | **Power Redundancy** | **Zero PSU Model Mixing** | Mixing different PSU wattages, efficiencies, or part numbers in a single chassis is strictly prohibited. |
 | **Storage Controllers** | **INV-26: Tri-Mode Port Channel Math** | 8-port controllers (MR408i / MR216i) address maximum 8 physical drives directly. Configurations exceeding 8 drives on a single controller require SAS Expander (\`P48835-B21\`) or Tri-Mode Switch (\`P55806-B21\`). |
 | **Storage Enablement** | **Motherboard Telemetry Bridge & Battery** | Tri-Mode RAID controllers (MR416i-p) carry-over to Gen12 require Storage Controller Enablement Cables (\`P48918-B21\`) for sideband telemetry and 96W Smart Storage Batteries (\`P01366-B21\`) for write-cache protection. |
@@ -479,6 +479,10 @@ ${deduplicatedRules.map(r => {
  * Generates the scoped Universal Vendor Architecture Charter (universal rules only).
  */
 function generateUniversalCharterMarkdown(universalRules) {
+  universalRules = universalRules.filter(rule => ['UNIVERSAL_VENDOR', 'UNIVERSAL'].includes(rule.scopeTaxonomy)
+    && (!rule.affectedSku || ['GLOBAL', 'ALL', '*'].includes(rule.affectedSku))
+    && !rule.requiredDependencySku
+    && ['ACTIVE', 'VERIFIED'].includes(rule.governanceStatus || rule.status));
   const timestamp = new Date().toISOString();
   return `# Universal Vendor Architecture & Platform Invariants Charter
 
@@ -493,12 +497,10 @@ function generateUniversalCharterMarkdown(universalRules) {
 
 | Category | Law / Invariant | Enforcement & Technical Rationale |
 | :--- | :--- | :--- |
-| **Option Placement** | **INV-25: Multi-Chassis Container Tree** | Components inside Configure-to-Order (CTO) base chassis must carry Factory-Integrated Option tags (\`#0D1\` / \`-F21\`). Standalone BTO (\`-B21\`) components placed in CTO containers fail factory CLIC validation (Rules 81354490 & 91001655). |
-| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. |
-| **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. |
-| **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |
-| **Memory Restrictions** | **Zero Rank & Monolithic Mixing** | Mixing of x4 and x8 memory is prohibited. Mixing standard planar RDIMMs with 3DS RDIMMs is prohibited. 96GB/128GB densities are mutually exclusive. 16GB RDIMMs are restricted strictly to 1DPC. |
-| **Power Infrastructure** | **INV-30: EU ErP Lot 9 & Platinum PSUs** | European Union ErP Lot 9 mandates 96% Titanium power supplies. Platinum PSUs (94%) deployed outside Europe require the \`P35876-B21\` CE Mark Removal FIO Enablement Kit ($1.00 list) to bypass regulatory blocks cleanly. |
+| **Scope** | Product isolation | Resolve hardware dependencies and thresholds from the exact product/generation notebook and current official vendor evidence. |
+| **Customer intent** | Minimum mandatory change | Preserve requested functions and quantities; cite each mandatory substitution or addition. |
+| **Verification** | Separate evidence stages | Distinguish local checks, document review and actual configurator acceptance. Missing evidence remains unverified. |
+| **Learning** | Governed promotion | Local inferences remain proposals until independently supported. Specific learning stays in the relevant product notebook. |
 
 ---
 
@@ -583,7 +585,9 @@ async function syncRunningKnowledge(options = {}) {
   // 5. Generate Running Knowledge Charter Markdown and Universal Charter Markdown
   logger.info('RUNNING_KNOWLEDGE', 'Generating Master Running Knowledge Charter Markdown...');
   const charterMarkdown = generateRunningKnowledgeCharterMarkdown(deduplicatedRules);
-  const universalCharterMarkdown = generateUniversalCharterMarkdown(universalRules);
+  const universalBase = generateUniversalCharterMarkdown(universalRules);
+  const sharedRevision = crypto.createHash('sha256').update(universalBase).digest('hex');
+  const universalCharterMarkdown = `${universalBase}\nShared knowledge revision: ${sharedRevision}\n`;
 
   fs.writeFileSync(RUNNING_CHARTER_PATH, charterMarkdown, 'utf8');
   fs.writeFileSync(UNIVERSAL_CHARTER_PATH, universalCharterMarkdown, 'utf8');
@@ -591,6 +595,7 @@ async function syncRunningKnowledge(options = {}) {
 
   // 6. Google Drive Document Creation or In-Place Update
   let googleDocResult = null;
+  let sourceRefresh = { verified: false, results: [] };
   const config = loadNotebooksConfig();
   let existingDocId = config.runningKnowledgeDoc?.documentId || null;
 
@@ -599,17 +604,17 @@ async function syncRunningKnowledge(options = {}) {
     if (existingDocId && !force) {
       try {
         logger.info('RUNNING_KNOWLEDGE', `Updating existing Google Doc on Drive (ID: ${existingDocId})...`);
-        googleDocResult = await updateGoogleDoc(existingDocId, charterMarkdown, {
+        googleDocResult = await updateGoogleDoc(existingDocId, universalCharterMarkdown, {
           title: CHARTER_TITLE
         });
         logger.info('RUNNING_KNOWLEDGE', `Successfully updated Google Doc: ${googleDocResult.documentUrl}`);
       } catch (updateErr) {
         logger.warn('RUNNING_KNOWLEDGE', `Update failed (${updateErr.message}). Creating fresh Google Doc...`);
-        googleDocResult = await createGoogleDoc(CHARTER_TITLE, charterMarkdown, { folderId });
+        googleDocResult = await createGoogleDoc(CHARTER_TITLE, universalCharterMarkdown, { folderId });
       }
     } else {
       logger.info('RUNNING_KNOWLEDGE', `Creating new Google Doc in Drive folder ${folderId}...`);
-      googleDocResult = await createGoogleDoc(CHARTER_TITLE, charterMarkdown, { folderId });
+      googleDocResult = await createGoogleDoc(CHARTER_TITLE, universalCharterMarkdown, { folderId });
       logger.info('RUNNING_KNOWLEDGE', `Created Google Doc: ${googleDocResult.documentUrl}`);
     }
 
@@ -625,52 +630,7 @@ async function syncRunningKnowledge(options = {}) {
       chassisRuleCount: chassisSpecificRules.length
     };
 
-    // Build RUNNING_DOC_SOURCE_IDS dynamically from notebooks.json (C1 fix)
-    // This ensures all notebooks are covered, including Alletra, Synergy, and GX5000
-    const RUNNING_DOC_SOURCE_IDS = {};
-    if (config.notebooks) {
-      for (const [chassis, entry] of Object.entries(config.notebooks)) {
-        if (entry.runningKnowledgeSourceId) {
-          RUNNING_DOC_SOURCE_IDS[chassis] = entry.runningKnowledgeSourceId;
-        }
-      }
-    }
-    // Ensure known grounded IDs are present as fallback for any gaps
-    const KNOWN_SOURCE_IDS = {
-      DL380_Gen12: '1c9f7b40-d826-4974-8dcb-0e1e73bd6520',
-      DL380_Gen11: 'd97e7d3c-dd44-4a02-b9f2-021003c96016',
-      DL380a_Gen12: '3c75e029-2864-4833-b7b1-f992f0d20232',
-      DL145_Gen11: 'dbd6ab4a-9793-49f7-8756-9a35f5919c2e',
-      DL580_Gen12: '5113e36d-0364-4b00-bc94-02521ab224e0',
-      MSL3040_Tape: 'd0b76b30-f540-4119-9f56-0283184fc9fe'
-    };
-    for (const [chassis, sourceId] of Object.entries(KNOWN_SOURCE_IDS)) {
-      if (!RUNNING_DOC_SOURCE_IDS[chassis]) {
-        RUNNING_DOC_SOURCE_IDS[chassis] = sourceId;
-      }
-    }
-
-    if (config.notebooks) {
-      for (const [chassis, sourceId] of Object.entries(RUNNING_DOC_SOURCE_IDS)) {
-        if (config.notebooks[chassis]) {
-          config.notebooks[chassis].runningKnowledgeDocId = googleDocResult.documentId;
-          config.notebooks[chassis].runningKnowledgeSourceId = sourceId;
-          config.notebooks[chassis].runningKnowledgeDocUrl = googleDocResult.documentUrl;
-
-          // Ensure source is in canonicalKnowledgeSourceIds and trustedSourceIds
-          if (Array.isArray(config.notebooks[chassis].canonicalKnowledgeSourceIds)) {
-            if (!config.notebooks[chassis].canonicalKnowledgeSourceIds.includes(sourceId)) {
-              config.notebooks[chassis].canonicalKnowledgeSourceIds.push(sourceId);
-            }
-          }
-          if (Array.isArray(config.notebooks[chassis].trustedSourceIds)) {
-            if (!config.notebooks[chassis].trustedSourceIds.includes(sourceId)) {
-              config.notebooks[chassis].trustedSourceIds.push(sourceId);
-            }
-          }
-        }
-      }
-    }
+    sourceRefresh = await refreshSharedKnowledgeSources(config, googleDocResult.documentId, sharedRevision);
 
     safeWriteJsonAtomic(NOTEBOOKS_CONFIG_PATH, config);
     logger.info('RUNNING_KNOWLEDGE', `Updated notebooks.json with runningKnowledgeDoc ID: ${googleDocResult.documentId}`);
@@ -683,7 +643,10 @@ async function syncRunningKnowledge(options = {}) {
   logger.info('RUNNING_KNOWLEDGE', '=== Synchronization Completed Successfully ===');
 
   return {
-    success: true,
+    success: dryRun || (Boolean(googleDocResult) && sourceRefresh.verified),
+    cloudDocumentUpdated: Boolean(googleDocResult),
+    notebookSourcesVerified: sourceRefresh.verified,
+    sourceRefresh,
     totalRules: deduplicatedRules.length,
     googleDoc: googleDocResult,
     charterPath: RUNNING_CHARTER_PATH,
@@ -719,5 +682,6 @@ module.exports = {
   computeRuleCompositeKey,
   deduplicateRules,
   parseRulesFromMarkdown,
-  generateRunningKnowledgeCharterMarkdown
+  generateRunningKnowledgeCharterMarkdown,
+  generateUniversalCharterMarkdown
 };

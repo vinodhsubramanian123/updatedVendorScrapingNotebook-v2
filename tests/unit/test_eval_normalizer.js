@@ -75,10 +75,25 @@ async function runTests() {
   assert.strictEqual(defaultResult.length, 7, 'Should generate 7 aspect checks for default data');
 
   const defaultCompute = defaultResult.find(a => a.id === 1);
-  assert.strictEqual(defaultCompute.status, 'PASS', 'Compute should pass by default if hasHighPerfFans is not false');
+  assert.strictEqual(defaultCompute.status, 'UNKNOWN', 'Compute must be UNKNOWN if hasHighPerfFans is undefined');
 
   const defaultPower = defaultResult.find(a => a.id === 6);
-  assert.strictEqual(defaultPower.status, 'PASS', 'Power should pass by default if hasDcPowerSupply is undefined/falsy');
+  assert.strictEqual(defaultPower.status, 'UNKNOWN', 'Power must be UNKNOWN if power supply type is undefined');
+
+  console.log('▶ Test: Hoisting of evidence health and deliverable paths');
+  const { normalizeEvalResult } = await import('../../dashboard/src/services/evalNormalizer.js');
+  const normalized = normalizeEvalResult({
+    data: {
+      traceId: 'TRC-TEST-123',
+      evidenceHealth: { healthy: true, gaps: [], workflowStatus: 'COMPLETE' },
+      portalWorkbookPath: 'outputs/temp/test_Partner_Portal.xlsx',
+      deliveryError: null,
+      manifestSha256: 'abc123sha'
+    }
+  });
+  assert.strictEqual(normalized.evidenceHealth?.healthy, true, 'evidenceHealth should be hoisted');
+  assert.strictEqual(normalized.portalWorkbookPath, 'outputs/temp/test_Partner_Portal.xlsx', 'portalWorkbookPath should be hoisted');
+  assert.strictEqual(normalized.manifestSha256, 'abc123sha', 'manifestSha256 should be hoisted');
 
   console.log('✅ All Eval Normalizer tests passed!\n');
 }

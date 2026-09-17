@@ -2,6 +2,24 @@
 const XLSX = require('xlsx-js-style');
 const fs = require('fs');
 const path = require('path');
+const { solutionFingerprint, candidateReviewCurrent } = require('./solution_evidence');
+
+function rankReviewBadge(evaluation, candidate) {
+  const review = evaluation.ephemeralSourceValidation;
+  const verdict = review?.rankVerdicts?.find(row => String(row.rank) === String(candidate.rank));
+  return review?.isCloudGrounded === true && review.manifestSha256 === solutionFingerprint(evaluation) && verdict ? `CANDIDATE DOCUMENT REVIEW: ${verdict.verdict}` : 'CANDIDATE DOCUMENT REVIEW: UNVERIFIED';
+}
+
+function generateRankedPortalWorkbook(evaluation, exportPath) {
+  const workbook = XLSX.utils.book_new();
+  const candidates = _getRankedSolutions(evaluation);
+  for (const candidate of candidates) {
+    const candidateWorkbook = generatePartnerPortalUploadBOM([{ name: candidate.name, multiplier: evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1, items: candidate.skuPartsList || [] }]);
+    XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[candidateWorkbook.SheetNames[0]], `Rank ${candidate.rank}`);
+  }
+  if (exportPath) XLSX.writeFile(workbook, exportPath);
+  return workbook;
+}
 
 function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
   const wb = XLSX.utils.book_new();
@@ -240,10 +258,10 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
       portalData.push([]);
       portalData.push([]);
       portalData.push([`CONFIGURATION #${cIdx + 1}: ${mult}x ${clusterTitle}`]);
-      portalData.push([`Scope: ${mult} Servers | ${cluster.isClicValidated ? '100% Factory Buildable' : 'Deterministic Validated Baseline'}`]);
-      portalData.push(['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+      portalData.push([`Scope: ${mult} Servers | Portal validation receipt required`]);
+      portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
     } else {
-      portalData.push(['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+      portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
     }
 
     let configSubtotal = 0;
@@ -275,7 +293,7 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
   if (clusterList.length > 1) {
     portalData.push([]);
     portalData.push([]);
-    portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, '100% Validated & Certified for HPE Partner Portal Upload']);
+    portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, 'Portal validation pending']);
   }
 
   const ws = XLSX.utils.aoa_to_sheet(portalData);
@@ -382,7 +400,7 @@ function _getWorkbookStyles() {
 function _getRankedSolutions(evalResults) {
   let rankedSolutions = evalResults.conflictGraph?.recommendedSolutions || evalResults.conflictGraph?.rankedSolutions || [];
   if (!Array.isArray(rankedSolutions) || rankedSolutions.length === 0) {
-    const isClean = evalResults.isMathClean !== false && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+    const isClean = evalResults.isMathClean === true && evalResults.conflictGraph?.isWholeSolutionValid === true && Array.isArray(evalResults.aspectChecks) && evalResults.aspectChecks.length >= 7 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
     const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
       ...f,
       sku: f.sku || f.key,
@@ -395,10 +413,10 @@ function _getRankedSolutions(evalResults) {
       name: isClean ? 'Customer Intent Preserved (Deterministic Verified)' : 'Customer Intent (Unresolved Physical Gaps - Draft)',
       reasoning: isClean ? 'Baseline configuration with all mandatory 7-aspect hardware dependency kits satisfied.' : 'Uncertified baseline configuration with pending physical requirements or conflicts.',
       estimatedCostUsd: evalResults.budgetOptimization?.currentBomCostUsd || 0,
-      skuPartsList: [...baseItems, ...fixes],
+      skuPartsList: baseItems,
       tradeoffMetrics: { intentAlignment: isClean ? '100%' : 'PENDING_RESOLUTION' },
       isDraft: !isClean,
-      isCertified: isClean && evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED',
+      isCertified: false,
       buildabilityStatus: isClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS'
     }];
   }
@@ -416,13 +434,13 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
   }
   const summaryData = [
     ['HPE PROLIANT AI STUDIO - MULTI-RANK SOLUTION WORKBOOK'],
-    [`Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | ${evalResults?.isMathClean !== false ? 'Deterministic Verified Baseline' : 'Draft Baseline (Issues Detected)'}`],
+    [`Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | Evaluation draft; consult individual validation gates`],
     [],
     ['SOLUTION METRICS & EVALUATION STATUS'],
     ['Target Server / Chassis', chassis],
     ['Total Server Nodes', serverCount],
-    ['Overall Physical Build Status', evalResults.isMathClean !== false ? '✅ 100% BUILDABLE (PASS)' : '❌ ACTION REQUIRED — PHYSICAL GAPS DETECTED'],
-    ['Dual-Brain Verification Badge', evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? '🛡️ DUAL-BRAIN CLOUD GROUNDED (100% PASS)' : (evalResults.cloudGroundingStatus || 'LOCAL_RULE_VERIFIED')],
+    ['Overall Physical Build Status', evalResults.isMathClean === true ? 'LOCAL_RULE_CHECKED — PORTAL VALIDATION PENDING' : 'ACTION REQUIRED — UNVERIFIED OR PHYSICAL GAPS'],
+    ['Dual-Brain Verification Badge', candidateReviewCurrent(evalResults) ? 'CANDIDATE DOCUMENT REVIEW PASSED — PORTAL VALIDATION PENDING' : 'CANDIDATE REVIEW NOT VERIFIED'],
     ['NotebookLM Knowledge Tier', evalResults.notebookLmStatus?.groundingTier || (evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? 'TIER_1_LIVE_CLOUD_GROUNDED' : 'TIER_2_VERIFIED_LOCAL_SAFETY_NET')],
     ['QuickSpecs Citations Verified', evalResults.notebookLmStatus?.citationsCount ? `${evalResults.notebookLmStatus.citationsCount} Authoritative Citations` : 'Deterministic Catalog Grounding'],
     ['Evaluation Timestamp', evalResults.metadata?.generatedAt || new Date().toISOString()],
@@ -439,7 +457,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
       } else if (s.physicalMathClean === false || evalResults.isMathClean === false) {
         buildStatus = '❌ UNRESOLVED PHYSICAL GAPS';
       } else {
-        buildStatus = '✅ LOCAL_RULE_CHECKED';
+        buildStatus = s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED' : 'UNVERIFIED';
       }
     }
     summaryData.push([
@@ -447,7 +465,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
       s.name || `Strategy Rank ${s.rank}`,
       s.estimatedCostUsd || 0,
       s.budgetBreakdown?.fixCost || 0,
-      s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean !== false ? '100%' : 'PENDING'),
+      s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING'),
       buildStatus
     ]);
   });
@@ -477,41 +495,13 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
   summaryData.push(['Rank Tier', 'Strategy Name', '7-Aspect Physical Math', 'Gemini NotebookLM Badge', 'Agentic Guardrail Trace', 'Multi-Agent / Codex Review', 'Citations & Grounding Reference', 'Knowledge Delta Sync Status']);
 
   rankedSolutions.forEach(s => {
-    const isRank1 = s.rank === 1 || String(s.rank).startsWith('1');
-    const isRank2 = s.rank === 2 || String(s.rank).includes('2');
-    const isRank3 = s.rank === 3 || String(s.rank).includes('3');
-    const isRank4 = s.rank === 4 || String(s.rank).includes('4');
-    const isRank5 = s.rank === 5 || String(s.rank).includes('5');
+    const aspectPass = s.physicalMathClean === true;
+    const aspectBadge = aspectPass ? 'LOCAL PHYSICAL CHECK PASSED' : 'UNVERIFIED OR ASPECT ISSUES';
 
-    const aspectPass = (s.physicalMathClean !== false && evalResults.isMathClean !== false);
-    const aspectBadge = aspectPass ? '✅ 7/7 ASPECTS PASS' : '❌ ASPECT ISSUES DETECTED';
-
-    let nlmBadge = evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED'
-      ? '🛡️ GEMINI NOTEBOOKLM VERIFIED'
-      : (evalResults.cloudGroundingStatus === 'CLOUD_FAILED'
-        ? '❌ NOTEBOOKLM QUERY FAILED'
-        : (evalResults.cloudGroundingStatus || 'LOCAL_RULE_VERIFIED'));
-
-    let guardrailTrace = 'Deterministic Physical Rules & QuickSpecs Grounded';
-    let citations = evalResults.notebookLmStatus?.citationsCount ? `${evalResults.notebookLmStatus.citationsCount} Authoritative Citations` : 'QuickSpecs Baseline / Rule Engine Validated';
-
-    if (isRank1) {
-      guardrailTrace = 'Customer Intent Preserved | Mandatory Enablement Kits Injected (#0D1 FIO)';
-    } else if (isRank2) {
-      guardrailTrace = 'Generational Modernization: 4th Gen -> 5th Gen Emerald Rapids + DDR5-5600 Smart FIO';
-      citations = 'QuickSpecs Gen11 / INV-42 Generational Coupling / Rule 81354490';
-    } else if (isRank3) {
-      guardrailTrace = 'Modernized 5th Gen Platform + Storage Battery Cache & High-IOPS Enablement';
-      citations = 'QuickSpecs Gen11 / Battery & Cache Rules / INV-42';
-    } else if (isRank4) {
-      guardrailTrace = 'Secondary Riser Expansion + Redundant Fan Headroom for Max Scalability';
-      citations = 'QuickSpecs Gen11 / Riser & Fan Envelope Rules';
-    } else if (isRank5) {
-      guardrailTrace = 'Minimal CapEx Baseline | Unsolicited Services Pruned | 100% Buildable Floor';
-      citations = 'QuickSpecs Gen11 / INV-32 Zero Unsolicited Software';
-    }
-
-    const syncBadge = evalResults.postFlowSync?.success
+    const nlmBadge = rankReviewBadge(evalResults, s);
+    const guardrailTrace = s.reasoning || 'No candidate decision rationale recorded';
+    const citations = JSON.stringify(evalResults.ephemeralSourceValidation?.rankVerdicts?.find(r => r.rank === s.rank)?.citations || []);
+    const syncBadge = evalResults.postFlowSync?.syncStatus === 'CLOUD_VERIFIED'
       ? '✅ SYNCED (catalog_deltas & master_registry)'
       : (evalResults.postFlowSync?.syncStatus ? `⚠️ SYNC: ${evalResults.postFlowSync.syncStatus}` : 'SYNC PENDING');
 
@@ -582,7 +572,7 @@ function _styleSummarySheet(wsSummary, summaryData, styles) {
 function _buildRankSheetData(s, serverCount, evalResults = {}) {
   const rankData = [];
   rankData.push([`HPE SOLUTION SPECIFICATION — RANK ${s.rank}: ${s.name || ''}`]);
-  rankData.push([`Estimated CapEx: $${(s.estimatedCostUsd || 0).toLocaleString()} | Alignment: ${s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean !== false ? '100%' : 'PENDING')} | Server Nodes: ${serverCount}`]);
+  rankData.push([`Estimated CapEx: $${(s.estimatedCostUsd || 0).toLocaleString()} | Alignment: ${s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING')} | Server Nodes: ${serverCount}`]);
   rankData.push([
     'Part No',
     'Per-Node Qty',
@@ -653,9 +643,9 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
       unitPrice,
       { t: 'n', f: `D${rowNum}*G${rowNum}`, v: extPrice },
       rationale,
-      nlmBadge,
-      guardrailTrace,
-      status
+      rankReviewBadge(evalResults, s),
+      it.reasoning || s.reasoning || 'No candidate validation evidence recorded',
+      s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'DRAFT; VALIDATION REQUIRED'
     ]);
     rowNum++;
   });
@@ -670,10 +660,10 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
     '',
     '',
     { t: 'n', f: `SUM(H${rowStart}:H${rowNum - 1})`, v: rankSubtotal },
-    `${serverCount} Node(s) Fully Qualified`,
-    '🛡️ 100% NLM Grounded',
-    '🤖 Dual-Brain Certified',
-    '100% Build Certified in CLIC'
+    `${serverCount} Node(s)`,
+    rankReviewBadge(evalResults, s),
+    s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED' : 'UNVERIFIED',
+    'PORTAL VALIDATION PENDING'
   ]);
 
   return { rankData, items };
@@ -782,7 +772,7 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
  */
 function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}) {
   const serverCount = evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
-  const rankedSolutions = evalResults.conflictGraph?.rankedSolutions || [];
+  const rankedSolutions = _getRankedSolutions(evalResults);
 
   const headers = [
     'Strategy Rank',
@@ -872,9 +862,9 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
         escapeCsvCell(unitPrice.toFixed(2)),
         escapeCsvCell(extPrice.toFixed(2)),
         escapeCsvCell(rationale),
-        escapeCsvCell(nlmBadge),
-        escapeCsvCell(guardrailTrace),
-        escapeCsvCell(status)
+        escapeCsvCell(rankReviewBadge(evalResults, s)),
+        escapeCsvCell(it.reasoning || s.reasoning || 'No candidate validation evidence recorded'),
+        escapeCsvCell(s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'DRAFT; VALIDATION REQUIRED')
       ].join(','));
     });
   });
@@ -889,6 +879,7 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
 }
 
 module.exports = {
+  generateRankedPortalWorkbook,
   generateProfessionalBOQ,
   generatePartnerPortalUploadBOM,
   generatePartnerPortalReadyWorkbook: generatePartnerPortalUploadBOM,

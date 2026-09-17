@@ -261,3 +261,29 @@ This is the current engineering status following the completion and verification
   - All 980+ functions within cyclomatic complexity gate ($CC \le 135$).
   - Clean dashboard build and live evidence ledgers.
 
+---
+
+## Phase 14 — Evidence Workflow Remediation, Second-Wave Boundary Certification & Deep Cognitive Alignment (Certified 2026-09-17)
+
+- **Comprehensive Resolution of Second-Wave Audit & Cognitive Realignment**:
+  - Addressed remaining subtle evidence gaps: lifecycle inversion (ledger exported before delivery/sync), candidate source authority leakage, decorative workbook badges, and destructive cloud sheets wipes.
+  - Codified 8 new architectural invariants (`INV-104` to `INV-111`) enforcing strict non-repudiation, disk-persistence verification, and safe query tokenization.
+- **Permanent Invariants Codified**:
+  - **INV-104 (Terminal Evidence Ledger Lifecycle)**: `finalizeAndExport()` executes strictly after Phase 8 (Deliverables) and Phase 9 (Continuous Learning). Every phase records a terminal status (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`). Input/deliverable artifacts record existence, size, and SHA-256 fingerprints.
+  - **INV-105 (Strict Epistemological Segregation)**: Ephemeral candidate BOM sources attached as query inputs to NotebookLM are segregated from `authoritativeSourceIds`. Candidate self-citations evaluate to `UNKNOWN`.
+  - **INV-106 (Zero Default Success)**: Replaced loose `!== false ? 'PASS' : 'FAIL'` truthiness checks with strict booleans. Absent or undefined data strictly evaluates to `'UNKNOWN'` (or `'OPTIONAL'`), never defaulting to `'PASS'`.
+  - **INV-107 (Candidate Manifest Invalidation)**: Review receipts are bound to the SHA-256 manifest fingerprint (`solutionFingerprint`). Any SKU/quantity change invalidates prior review receipts, withholding cloud delivery.
+  - **INV-108 (Atomic Non-Destructive Cloud Write)**: Eliminated destructive `values:batchClear`. Updates use `spreadsheets.batchUpdate` with `updateCells` followed by mandatory `values:batchGet` readback verification comparing SHA-256 row fingerprints.
+  - **INV-109 (Universal Knowledge Scope Isolation)**: Universal charters strictly exclude single-product rules/thresholds; single-product rules remain quarantined in `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and `quarantined_deltas.json`.
+  - **INV-110 (Safe Search Tokenizer & Regex Sanitization)**: Strips markdown syntax (`**`, `_`, `` ` ``, `#`) and escapes regex metacharacters (`replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`) before constructing regular expressions in `local_rag_search.js`.
+  - **INV-111 (Error Trace Correlation in Machine-Parseable Output)**: Pre-flight error handlers attach `traceId` and `evidenceLogPath`, mark unreached phases as `NOT_REACHED`, and emit them in `__EVAL_RESULT_JSON__{ status: 'ERROR', error: ..., data: { traceId, evidenceLogPath } }__EVAL_RESULT_JSON__`.
+- **Exhaustive Evaluation Audits Executed**:
+  - **11/11 Sample Portfolio Spreadsheets Evaluated**: `BOQ-3787_Customer_Quote.xlsx`, `CLIC_Advice_TempUCID.xlsx`, `DL380_Gen11_60-node_Split_Cluster_Tender.xlsx`, `DL380_Gen11_Certified_20-40-node_Tender_BOM.xlsx`, `DL380_Gen11_PartnerPortal_20-40-node_Upload_BOM.xlsx`, `DL380_Gen11_Vendor_BOM.xlsx`, `DL380_Gen11_Vendor_BOM_5155411222-01.xlsx`, `DL380_Gen12_22-server_Vendor_BOM.xlsx`, `DOC-20260821-WA0000_Customer_BOQ.xlsx`, `GID-RFQS-HPE-2026-006_Customer_Tender.xlsx`, `HP Opportunity- DL380_5 Servers.xlsx`. All 11 produced `healthy: true`, `gaps: []`, `contradictions: 0` evidence logs.
+  - **15/15 Benchmark Scenarios Evaluated**: `BENCH-01` through `BENCH-15` certified 100% PASS with full evidence logs on disk.
+  - **Negative & Failure Paths Evaluated**: Missing files, empty CSVs, unmapped platforms, zero/negative quantities, and simulated portal errors cleanly handled and tracked.
+- **Evidence Health Audit Certification**:
+  - `node scripts/maintenance/audit_evidence_health.js --save` verifies all current evaluation runs meet 100% structural health criteria.
+- **Working Tree State**:
+  - All changes unstaged/uncommitted per explicit user directive to enable independent second-opinion audit by OpenAI Codex and Claude. Zero checkins executed.
+
+

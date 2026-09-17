@@ -169,18 +169,6 @@ function quoteSheetTitle(title) {
   return `'${String(title).replace(/'/g, "''")}'`;
 }
 
-async function ensureTabs(client, baseUrl, requestedTitles) {
-  const metadata = await client.request({ url: `${baseUrl}?fields=sheets.properties(sheetId,title)`, method: 'GET' });
-  const availableTitles = new Set((metadata.data?.sheets || []).map(sheet => sheet.properties?.title).filter(Boolean));
-  const missing = requestedTitles.filter(title => !availableTitles.has(title));
-  if (missing.length === 0) return;
-  await client.request({
-    url: `${baseUrl}:batchUpdate`,
-    method: 'POST',
-    data: { requests: missing.map(title => ({ addSheet: { properties: { title } } })) }
-  });
-}
-
 async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {}) {
   if (!spreadsheetId) throw new Error('Google spreadsheet ID is required');
   const tabs = { ...DEFAULT_TABS, ...(options.tabs || {}) };
@@ -193,28 +181,46 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
   const auth = options.auth || new GoogleAuth({ scopes: [SHEETS_SCOPE] });
   const client = options.client || await auth.getClient();
   const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}`;
-  await ensureTabs(client, baseUrl, tabRows.map(([title]) => title));
-
-  const ranges = tabRows.map(([title]) => `${quoteSheetTitle(title)}!A:ZZZ`);
-  await client.request({ url: `${baseUrl}/values:batchClear`, method: 'POST', data: { ranges } });
-  const update = await client.request({
-    url: `${baseUrl}/values:batchUpdate`,
+  const metadata = await client.request({ url: `${baseUrl}?fields=sheets.properties`, method: 'GET' });
+  const properties = (metadata.data?.sheets || []).map(sheet => sheet.properties);
+  let nextId = Math.max(0, ...properties.map(p => p.sheetId)) + 1;
+  const requests = [];
+  for (const [title, values] of tabRows) {
+    const existing = properties.find(p => p.title === title);
+    const sheetId = existing?.sheetId ?? nextId++;
+    const gridProperties = { rowCount: Math.max(existing?.gridProperties?.rowCount || 1000, values.length), columnCount: Math.max(existing?.gridProperties?.columnCount || 26, ...values.map(row => row.length)) };
+    if (!existing) requests.push({ addSheet: { properties: { sheetId, title, gridProperties } } });
+    else requests.push({ updateSheetProperties: { properties: { sheetId, gridProperties }, fields: 'gridProperties.rowCount,gridProperties.columnCount' } });
+    // One atomic batch replaces all values, including stale trailing cells.
+    requests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: values.map(row => ({ values: row.map(value => ({ userEnteredValue: typeof value === 'number' ? { numberValue: value } : typeof value === 'boolean' ? { boolValue: value } : { stringValue: String(value ?? '') } })) })) } });
+  }
+  await client.request({
+    url: `${baseUrl}:batchUpdate`,
     method: 'POST',
-    data: {
-      valueInputOption: 'RAW',
-      data: tabRows.map(([title, values]) => ({
-        range: `${quoteSheetTitle(title)}!A1`,
-        majorDimension: 'ROWS',
-        values
-      }))
-    }
+    data: { requests }
   });
+  const ranges = tabRows.map(([title]) => `ranges=${encodeURIComponent(quoteSheetTitle(title))}`).join('&');
+  const readback = await client.request({ url: `${baseUrl}/values:batchGet?${ranges}&valueRenderOption=UNFORMATTED_VALUE`, method: 'GET' });
+  const normalize = rows => {
+    const result = (rows || []).map(row => { const cells = row.map(cell => cell ?? ''); while (cells.length && cells.at(-1) === '') cells.pop(); return cells; });
+    while (result.length && result.at(-1).length === 0) result.pop();
+    return result;
+  };
+  const readbackFingerprints = {};
+  for (let index = 0; index < tabRows.length; index++) {
+    const [title, expected] = tabRows[index];
+    const actual = readback.data?.valueRanges?.[index]?.values;
+    if (!actual || stableRowsFingerprint(normalize(actual)) !== stableRowsFingerprint(normalize(expected))) throw new Error(`Google Sheet readback mismatch for ${title}; synchronization is not verified`);
+    readbackFingerprints[title] = stableRowsFingerprint(normalize(actual));
+  }
 
   return {
     success: true,
     spreadsheetId,
     tabsWritten: tabRows.map(([title, rows]) => ({ title, rows: rows.length })),
-    totalUpdatedCells: update.data?.totalUpdatedCells || null,
+    readbackVerified: true,
+    readbackFingerprints,
+    verifiedAt: new Date().toISOString(),
     fingerprints: datasets.fingerprints || null
   };
 }

@@ -101,7 +101,8 @@ describe('NotebookLM Ephemeral Solution Source Validation Suite', () => {
       notebookId: 'nb-mock-test'
     });
 
-    assert.strictEqual(res.success, true);
+    assert.strictEqual(res.success, false, 'A mock attachment is not a cloud validation success');
+    assert.strictEqual(res.doubleCheckVerdict, 'DOUBLE_CHECK_UNVERIFIED');
     assert.strictEqual(res.chassis, 'DL380_Gen12');
     assert.strictEqual(res.sourceDetached, true, 'Ephemeral source must be detached to uphold INV-24');
     assert.ok(fs.existsSync(res.workbookPath), 'Multi-rank solution workbook must exist on disk');

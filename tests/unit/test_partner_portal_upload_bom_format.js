@@ -84,7 +84,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
     const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
     // Row 1: Header Schema
-    const expectedHeaders = ['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
+    const expectedHeaders = ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
     assert.deepEqual(rows[0], expectedHeaders);
 
     // Row 2: First item in Cluster A

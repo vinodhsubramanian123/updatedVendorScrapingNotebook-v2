@@ -18,11 +18,22 @@ const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
 const { cleanBaseSKU, isValidHpeSKU } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
+const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
 function getBaseChassisSku(chassisKey = '') {
-  const map = {
+  try {
+    const cmap = getChassisMap();
+    if (cmap[chassisKey]?.baseSku) return cmap[chassisKey].baseSku;
+    if (cmap[chassisKey]?.sku) return cmap[chassisKey].sku;
+    for (const [k, v] of Object.entries(cmap)) {
+      if (v.model === chassisKey || k.toLowerCase() === chassisKey.toLowerCase()) {
+        if (v.baseSku) return v.baseSku;
+      }
+    }
+  } catch (_) {}
+  const fallback = {
     'DL380_Gen12': 'P73282-B21',
     'DL380_Gen11': 'P52534-B21',
     'DL360_Gen11': 'P52499-B21',
@@ -32,29 +43,14 @@ function getBaseChassisSku(chassisKey = '') {
     'SY480_Gen12': '864273-B21',
     'MSL3040_Tape': 'Q6Q67A'
   };
-  return map[chassisKey] || 'P73282-B21';
+  return fallback[chassisKey] || null;
 }
 
 function getChassisCatalog(queryText = '', context = {}) {
   const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase();
 
-  let relDir = null;
-  let chassisKey = null;
-  let catalogName = null;
-
-  if (/\bdl\s*380\s*a\b/i.test(text) || text.includes('dl380a')) {
-    relDir = 'ProLiant/Gen12/DL380a_Gen12';
-    chassisKey = 'DL380a_Gen12';
-    catalogName = 'DL380a_Gen12_Catalog.json';
-  } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen11') || text.includes('gen 11'))) {
-    relDir = 'ProLiant/Gen11/DL380_Gen11';
-    chassisKey = 'DL380_Gen11';
-    catalogName = 'DL380_Gen11_Catalog.json';
-  } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen12') || text.includes('gen 12'))) {
-    relDir = 'ProLiant/Gen12/DL380_Gen12';
-    chassisKey = 'DL380_Gen12';
-    catalogName = 'DL380_Gen12_Catalog.json';
-  } else if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
+  // 1. Explicit unsupported check
+  if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
     return {
       chassisKey: 'DL360_Gen12_UNSUPPORTED',
       catalogDir: null,
@@ -63,61 +59,85 @@ function getChassisCatalog(queryText = '', context = {}) {
       isAmbiguous: true,
       error: 'DL360 Gen12 is not currently available in portfolio (DL360 Gen11 is available)'
     };
-  } else if (text.includes('dl360') || text.includes('dl 360')) {
-    relDir = 'ProLiant/Gen11/DL360_Gen11';
-    chassisKey = 'DL360_Gen11';
-    catalogName = 'DL360_Gen11_Catalog.json';
-  } else if (/\bdl\s*145\b/i.test(text) || text.includes('dl145')) {
-    relDir = 'ProLiant/Gen11/DL145_Gen11';
-    chassisKey = 'DL145_Gen11';
-    catalogName = 'DL145_Gen11_Catalog.json';
-  } else if (/\bdl\s*580\b/i.test(text) || text.includes('dl580')) {
-    relDir = 'ProLiant/Gen12/DL580_Gen12';
-    chassisKey = 'DL580_Gen12';
-    catalogName = 'DL580_Gen12_Catalog.json';
-  } else if (text.includes('synergy') || text.includes('sy480') || text.includes('sy 480')) {
-    relDir = 'Synergy/Gen12/SY480_Gen12';
-    chassisKey = 'SY480_Gen12';
-    catalogName = 'SY480_Gen12_Catalog.json';
-  } else if (text.includes('msl3040') || text.includes('msl 3040') || text.includes('tape')) {
-    relDir = 'StoreEver/Gen1/MSL3040_Tape';
-    chassisKey = 'MSL3040_Tape';
-    catalogName = 'MSL3040_Tape_Catalog.json';
-  } else if (text.includes('alletra') || text.includes('b10000')) {
-    relDir = 'Alletra/Storage/Alletra_Storage_System';
-    chassisKey = 'Alletra_Storage_System';
-    catalogName = 'Alletra_Storage_System_Catalog.json';
-  } else if (text.includes('cray') || text.includes('gx5000') || text.includes('gx 5000')) {
-    relDir = 'Cray/Gen1/GX5000_General_RACK';
-    chassisKey = 'GX5000_General_RACK';
-    catalogName = 'GX5000_General_RACK_Catalog.json';
-  } else if (text.includes('dl380') || text.includes('dl 380')) {
-    relDir = 'ProLiant/Gen12/DL380_Gen12';
-    chassisKey = 'DL380_Gen12';
-    catalogName = 'DL380_Gen12_Catalog.json';
   }
 
-  if (!relDir) {
+  // 2. Discover all available catalogs dynamically
+  let catalogs = [];
+  try {
+    catalogs = listAllCatalogs();
+  } catch (_) {}
+
+  // 3. Match against dynamic catalogs
+  let matchedCatalog = null;
+
+  // Direct ID check if chassisName or model was passed
+  if (context.chassisName || context.model) {
+    const target = (context.chassisName || context.model).toLowerCase();
+    matchedCatalog = catalogs.find(c => c.id.toLowerCase() === target || c.chassis.toLowerCase() === target);
+  }
+
+  if (!matchedCatalog) {
+    // Specific model checks to prevent general substring collision
+    if (/\bdl\s*380\s*a\b/i.test(text) || text.includes('dl380a')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl380a'));
+    } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen11') || text.includes('gen 11'))) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen11');
+    } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen12') || text.includes('gen 12'))) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen12');
+    } else if (text.includes('dl360') || text.includes('dl 360')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl360'));
+    } else if (/\bdl\s*145\b/i.test(text) || text.includes('dl145')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl145'));
+    } else if (/\bdl\s*580\b/i.test(text) || text.includes('dl580')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl580'));
+    } else if (text.includes('synergy') || text.includes('sy480') || text.includes('sy 480')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('sy480'));
+    } else if (text.includes('msl3040') || text.includes('msl 3040') || text.includes('tape')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('msl3040'));
+    } else if (text.includes('alletra') || text.includes('b10000')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('alletra'));
+    } else if (text.includes('cray') || text.includes('gx5000') || text.includes('gx 5000')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('gx5000'));
+    } else if (text.includes('dl380') || text.includes('dl 380')) {
+      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen12');
+    } else {
+      // Dynamic fallback for any other catalog in the portfolio
+      matchedCatalog = catalogs.find(c => {
+        const idLower = c.id.toLowerCase().replace(/_/g, ' ');
+        return text.includes(c.id.toLowerCase()) || text.includes(idLower);
+      });
+    }
+  }
+
+  const explicitGeneration = text.match(/\bgen\s*(\d+)\b/i)?.[1];
+  if (matchedCatalog && explicitGeneration && !new RegExp(`(?:^|_)Gen${explicitGeneration}(?:_|$)`, 'i').test(matchedCatalog.id)) matchedCatalog = null;
+
+  if (!matchedCatalog) {
     return {
       chassisKey: 'UNKNOWN_PRODUCT',
       catalogDir: null,
       catalogPath: null,
       catalogData: null,
       isAmbiguous: true,
-      error: 'Product platform and generation could not be resolved from input.'
+      error: 'Product platform and generation could not be resolved from input.',
+      availableCatalogs: catalogs.map(c => c.id)
     };
   }
 
-  const catalogDir = path.join(PROJECT_ROOT, 'outputs', relDir);
-  const catalogPath = path.join(catalogDir, catalogName);
   let catalogData = null;
-  if (fs.existsSync(catalogPath)) {
+  if (fs.existsSync(matchedCatalog.catalogJsonPath)) {
     try {
-      catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+      catalogData = JSON.parse(fs.readFileSync(matchedCatalog.catalogJsonPath, 'utf-8'));
     } catch (_) {}
   }
 
-  return { chassisKey, catalogDir, catalogPath, catalogData, isAmbiguous: false };
+  return {
+    chassisKey: matchedCatalog.id,
+    catalogDir: matchedCatalog.catalogDir,
+    catalogPath: matchedCatalog.catalogJsonPath,
+    catalogData,
+    isAmbiguous: false
+  };
 }
 
 /**
@@ -273,22 +293,62 @@ async function executeRoutedQuery(queryText = '', context = {}) {
     case 'FREEFORM_QA': {
       const chassisInfo = getChassisCatalog(queryText, context);
       const chassisName = context.chassisName || context.model || chassisInfo.chassisKey;
-      const ragResult = queryLocalKnowledgeBase(queryText, chassisName);
+      let ragResult = null;
+      let isCloudGrounded = false;
+      let cloudSource = null;
+
+      const isOffline = Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true');
+      if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
+        try {
+          const { resolveProductNotebookId } = require('../lib/sync/nlm_solution_source_validator.js');
+          const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
+          const notebookId = resolveProductNotebookId(chassisName);
+          if (notebookId) {
+            const queryRes = await executeNotebookQuery(notebookId, queryText, {
+              context: { chassis: chassisName },
+              timeout: 15000
+            });
+            if (queryRes && queryRes.answer && !queryRes.isFallback) {
+              ragResult = queryRes;
+              isCloudGrounded = queryRes.isCloudGrounded;
+              cloudSource = queryRes.source;
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (!ragResult) {
+        ragResult = queryLocalKnowledgeBase(queryText, chassisName);
+      }
+
       responseData = {
         chassis: chassisName,
         catalogDir: chassisInfo.catalogDir,
         answer: ragResult.answer,
-        citations: ragResult.citations,
-        source: 'Local RAG Dual-Layer Search & Master Knowledge Registry'
+        citations: ragResult.citations || [],
+        source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
+        isCloudGrounded: Boolean(isCloudGrounded)
       };
       break;
     }
 
     case 'BOQ_EVALUATION': {
+      const chassisInfo = getChassisCatalog(queryText, context);
       if (context.filePath && fs.existsSync(context.filePath)) {
-        responseData = evaluateBOQMultiAspect(context.filePath);
+        try {
+          const { runEvaluationPipeline } = require('./eval_boq.js');
+          const evalRes = await runEvaluationPipeline({
+            inputFile: context.filePath,
+            chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
+            targetSheetName: context.targetSheet || undefined,
+            JSON_MODE: true,
+            OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
+          });
+          responseData = evalRes;
+        } catch (pipeErr) {
+          responseData = { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
+        }
       } else if (context.items && Array.isArray(context.items)) {
-        const chassisInfo = getChassisCatalog(queryText, context);
         responseData = evaluateBOQMultiAspect(context.items, {
           targetDir: chassisInfo.catalogDir || '',
           catalogData: chassisInfo.catalogData,
@@ -318,20 +378,56 @@ async function executeRoutedQuery(queryText = '', context = {}) {
     case 'CATALOG_INTELLIGENCE': {
       const skuMatch = queryText.match(/[A-Z0-9]{5,7}-[A-Z0-9]{3,4}/i);
       const targetSku = skuMatch ? cleanBaseSKU(skuMatch[0]) : null;
-      const historyFile = path.join(PROJECT_ROOT, 'outputs', 'history', 'price_history.json');
+      const chassisInfo = getChassisCatalog(queryText, context);
+      const historyFile = chassisInfo.catalogDir ? path.join(chassisInfo.catalogDir, 'history', 'price_history.json') : null;
       let skuHistory = null;
-      if (fs.existsSync(historyFile)) {
+      if (historyFile && fs.existsSync(historyFile)) {
         try {
           const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
           skuHistory = targetSku ? (hist[targetSku] || null) : hist;
         } catch (e) {}
       }
 
+      let liveSkuDetails = null;
+      if (targetSku && chassisInfo.catalogData?.entries) {
+        for (const entry of chassisInfo.catalogData.entries) {
+          if (Array.isArray(entry.skus)) {
+            const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
+            if (found) {
+              liveSkuDetails = {
+                sku: found.sku || found['Product #'],
+                description: found.Description || found.description,
+                category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
+                subCategory: entry.subCategory || null,
+                lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
+                effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
+                discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
+                currentPriceUsd: found.listPrice || (found['Unit Price (USD)'] ? parseFloat(found['Unit Price (USD)']) : null),
+                priceHistoryTrail: found['Price History Trail'] || null,
+                availability: found.Availability || null
+              };
+              break;
+            }
+          }
+        }
+      }
+
       responseData = {
         targetSku,
         pricingTrail: skuHistory,
+        liveDetails: liveSkuDetails ? {
+          description: liveSkuDetails.description,
+          category: liveSkuDetails.category,
+          subCategory: liveSkuDetails.subCategory,
+          lifecycleStatus: liveSkuDetails.lifecycleStatus,
+          effectiveStartDate: liveSkuDetails.effectiveStartDate,
+          discontinuedDate: liveSkuDetails.discontinuedDate,
+          currentPriceUsd: liveSkuDetails.currentPriceUsd,
+          priceHistoryTrail: liveSkuDetails.priceHistoryTrail,
+          availability: liveSkuDetails.availability
+        } : null,
         message: targetSku
-          ? `Catalog Intelligence retrieved for SKU ${targetSku}.`
+          ? `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`
           : 'Catalog Intelligence retrieved across tracked portfolio.'
       };
       break;
@@ -339,6 +435,9 @@ async function executeRoutedQuery(queryText = '', context = {}) {
 
     case 'RFP_SIZING_TO_BOM': {
       const chassisInfo = getChassisCatalog(queryText, context);
+      const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
+      const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
+
       let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
       if (rawLines.length === 1) {
         const clauses = queryText.split(/\s+(?:with|and|plus|,)\s+/i).map(c => c.trim()).filter(Boolean);
@@ -395,7 +494,8 @@ async function executeRoutedQuery(queryText = '', context = {}) {
               chassis: chassisInfo.chassisKey,
               targetDir: chassisInfo.catalogDir || '',
               catalogData: chassisInfo.catalogData,
-              productConfirmed: !chassisInfo.isAmbiguous
+              productConfirmed: !chassisInfo.isAmbiguous,
+              serverCount
             });
           } catch (evalErr) {
             evaluation = { error: evalErr.message };
@@ -403,9 +503,81 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         }
       }
 
+      let traceId = null;
+      let evidenceLogPath = null;
+      try {
+        const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
+        const crypto = require('crypto');
+        const ledger = createEvidenceLedger({
+          chassis: chassisInfo.chassisKey,
+          serverCount,
+          totalRequestedLines: rawLines.length,
+          query: queryText,
+          filePath: context.filePath || null
+        });
+        traceId = ledger.traceId;
+        ledger.customerInput.filePath = context.filePath || 'QUERY_INPUT_SIZING';
+        ledger.customerInput.queryText = queryText;
+        ledger.recordArtifact('CUSTOMER_INPUT', null, {
+          queryText,
+          sha256: crypto.createHash('sha256').update(queryText).digest('hex'),
+          exists: true
+        });
+
+        ledger.startPhase(1, 'Presales Sizing Intake & Parsing', { query: queryText, serverCount });
+        ledger.completePhase(1, 'PASSED', { rawLineCount: rawLines.length, serverCount });
+
+        ledger.startPhase(2, 'Dynamic Catalog Resolution', { chassis: chassisInfo.chassisKey });
+        ledger.completePhase(2, chassisInfo.catalogData ? 'PASSED' : 'ACTION_REQUIRED', { chassisKey: chassisInfo.chassisKey });
+
+        ledger.startPhase(3, '7-Aspect Physical Evaluation of Sized Candidate BOM', { candidateItemCount: candidateItems.length });
+        candidateItems.forEach(item => {
+          ledger.recordSkuAudit(
+            item.sku,
+            'SIZED_CANDIDATE_SKU',
+            item.description || 'Synthesized from natural language sizing specification',
+            null,
+            item.role || item.category || 'Candidate Component',
+            { quantity: item.quantity, serverCount }
+          );
+        });
+        ledger.completePhase(3, evaluation && !evaluation.error && evaluation.mathFrameworkPass === true && !evaluation.errors?.length ? 'PASSED' : 'ACTION_REQUIRED', {
+          errors: evaluation?.errors?.length || 0,
+          confidenceScore: evaluation?.confidence?.score || null
+        });
+
+        ledger.startPhase(4, 'Workload DNA & Construction Plan Analysis', { constructionPlan: sizingResult?.constructionPlan || [] });
+        ledger.completePhase(4, sizingResult && !sizingResult.requiresHumanClarification ? 'PASSED' : 'ACTION_REQUIRED', { resolutionsCount: sizingResult?.resolutions?.length || 0 });
+
+        ledger.startPhase(5, 'Strategy Synthesis & Multi-Node Cluster Sizing', { serverCount });
+        ledger.completePhase(5, 'ACTION_REQUIRED', { clusterSizing: evaluation?.clusterSizing || null, reason: 'Sized candidates require full pipeline validation before ranking or delivery.' });
+
+        ledger.startPhase(6, 'Confidence Floor & Presales Clarification Scoring', { requiresClarification: sizingResult?.requiresHumanClarification });
+        ledger.completePhase(6, !sizingResult || sizingResult.requiresHumanClarification ? 'ACTION_REQUIRED' : 'PASSED', {
+          requiresHumanClarification: sizingResult?.requiresHumanClarification
+        });
+
+        ledger.startPhase(7, 'QuickSpecs & Dynamic Catalog Verification', { chassisKey: chassisInfo.chassisKey });
+        ledger.completePhase(7, 'ACTION_REQUIRED', { catalogAvailable: Boolean(chassisInfo.catalogData), reason: 'QuickSpecs and whole-candidate NotebookLM review have not run in the sizing path.' });
+
+        ledger.startPhase(8, 'Presales Candidate BOM Generation', { itemCount: candidateItems.length });
+        ledger.completePhase(8, 'ACTION_REQUIRED', { candidateBOM: candidateItems, reason: 'Draft sizing output only; no validated portal workbook or Google Sheet delivery.' });
+
+        ledger.startPhase(9, 'Presales Evidence Trace Finalization', {});
+        ledger.completePhase(9, 'ACTION_REQUIRED', { status: 'SIZING_DRAFT', reason: 'Knowledge synchronization has not run in the sizing path.' });
+
+        const exported = ledger.finalizeAndExport();
+        evidenceLogPath = exported.jsonPath;
+      } catch (err) {
+        const _logger = require('../lib/system/pipeline_logger.js');
+        _logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
+      }
+
       responseData = {
         intent: 'RFP_SIZING_TO_BOM',
         chassis: chassisInfo.chassisKey,
+        serverCount,
+        clusterSizing: evaluation?.clusterSizing || null,
         sizingRequirements: sizingResult?.intent || null,
         categoryCoverage: sizingResult?.categoryCoverage || null,
         resolutions: sizingResult?.resolutions || [],
@@ -413,7 +585,9 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
         candidateBOM: candidateItems,
         evaluation,
-        status: sizingResult?.requiresHumanClarification ? 'REQUIRES_HUMAN_CLARIFICATION' : 'SIZING_SYNTHESIZED_AND_EVALUATED'
+        traceId,
+        evidenceLogPath,
+        status: !sizingResult || sizingResult.requiresHumanClarification ? 'REQUIRES_HUMAN_CLARIFICATION' : 'SIZING_DRAFT'
       };
       break;
     }
@@ -439,6 +613,15 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         }
 
         const auditReport = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir);
+        if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
+          auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
+            sku,
+            isValidFormat: isValidHpeSKU(sku),
+            note: isValidHpeSKU(sku)
+              ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+              : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+          }));
+        }
         responseData = {
           intent: 'BOM_RECONCILIATION',
           auditReport,
@@ -448,6 +631,15 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         };
       } else if (context.filePath && fs.existsSync(context.filePath)) {
         const auditReport = verifyVendorBOM(path.resolve(context.filePath), { rank: 1, skuList: [] }, chassisInfo.catalogDir);
+        if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
+          auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
+            sku,
+            isValidFormat: isValidHpeSKU(sku),
+            note: isValidHpeSKU(sku)
+              ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+              : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+          }));
+        }
         responseData = {
           intent: 'BOM_RECONCILIATION',
           auditReport,

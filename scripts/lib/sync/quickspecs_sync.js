@@ -191,7 +191,8 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
   const notebookEntry = notebookCfg.notebooks?.[chassisName];
   const notebookId = options.forcedNotebookId ||
     (typeof notebookEntry === 'object' ? notebookEntry?.notebookId : notebookEntry) ||
-    (chassisName === 'DL380_Gen11' ? 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6' : notebookCfg.defaultNotebookId);
+    null;
+  if (!notebookId) return { chassis: chassisName, status: 'UNMAPPED_NOTEBOOK', sourceFound: false, timestamp: new Date().toISOString() };
 
   const productSpec = KNOWN_QUICKSPECS_DOC_MAP[chassisName] || {
     docId: null,
@@ -264,7 +265,7 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
   // Auto-Upload if requested and source is missing
   if (options.autoUpload && !sourceFound && localPdfPath && fs.existsSync(localPdfPath)) {
     try {
-      const canonicalTitle = `HPE_${chassisName}_QuickSpecs.pdf`;
+      const canonicalTitle = `HPE_${chassisName}_QuickSpecs_${productSpec.docId || 'unidentified'}.pdf`;
       const envPath = process.env.PATH || '';
       const homeBin = path.join(os.homedir(), '.local', 'bin');
       const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
@@ -284,8 +285,8 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
         success: true,
         message: `Successfully uploaded ${canonicalTitle} to Notebook ${notebookId}`
       };
-      result.sourceFound = true;
-      result.status = 'CERTIFIED_GROUNDED';
+      const verified = await verifyNotebookQuickSpecs(chassisName, { ...options, autoUpload: false });
+      return { ...verified, uploadResult: result.uploadResult };
     } catch (uploadErr) {
       result.uploadResult = {
         success: false,

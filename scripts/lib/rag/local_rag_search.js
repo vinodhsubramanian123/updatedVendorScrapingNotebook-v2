@@ -32,7 +32,10 @@ function prepareSearchTerms(query) {
     ? query
     : (query?.query || query?.text || (typeof query === 'object' && query !== null ? JSON.stringify(query) : ''));
   const cleanQuery = (rawQueryStr || '').toLowerCase();
-  const rawWords = cleanQuery.split(/[\s,;.!?'"()[\]{}]+/).filter(w => w.length > 0);
+  const rawWords = cleanQuery
+    .replace(/[*_~`#]/g, ' ')
+    .split(/[\s,;.!?'"()[\]{}<>\/\\=+:|]+/)
+    .filter(w => w.length > 0);
   const searchTerms = rawWords.filter(w => !STOP_WORDS.has(w) && w.length >= 2);
 
   let expandedSearchTerms = [...searchTerms];
@@ -126,7 +129,7 @@ function searchProcessorSkusInEntry(entry, folderName, catalogJson, minCores, se
         if (coresInSku !== null && coresInSku >= minCores) {
           matchedProcessorSkus.push({ chassis: folderName, sku: skuPn, description: desc, cores: coresInSku, price, catalogPath: catalogJson });
         }
-      } else if (searchTerms.length === 0 || searchTerms.some(term => descLower.includes(term))) {
+      } else {
         matchedProcessorSkus.push({ chassis: folderName, sku: skuPn, description: desc, cores: coresInSku, price, catalogPath: catalogJson });
       }
     }
@@ -148,7 +151,13 @@ function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, 
     const descLower = desc.toLowerCase();
     if (activeTerms.some(term => {
       if (term.length <= 2) {
-        return new RegExp(`\\b${term}\\b`, 'i').test(descLower) || new RegExp(`\\b${term}\\b`, 'i').test(sLower);
+        try {
+          const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const re = new RegExp(`\\b${escapedTerm}\\b`, 'i');
+          return re.test(descLower) || re.test(sLower);
+        } catch (_) {
+          return sLower.includes(term) || descLower.includes(term);
+        }
       }
       return sLower.includes(term) || descLower.includes(term);
     })) {

@@ -76,3 +76,13 @@
   - When CLIC Advice workbooks or live modals are ingested, warnings/advisories are ignored for build-breaking purposes, while unbuildable errors are isolated and mapped.
   - When multiple valid remediation paths exist (e.g. SAS Expander vs. 2nd RAID Controller), the engine preserves divergent resolution paths to feed the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget).
 
+## 11. Epistemic Truth & Cognitive Mandates (`INV-104` to `INV-111`)
+- **Non-Repudiation on Disk**: Truth exists in persistent files on disk verified by SHA-256 fingerprints, never in transient in-memory flags.
+- **Zero Default Success**: Loose `!== false ? 'PASS' : 'FAIL'` is strictly forbidden. Missing or undefined checks evaluate to `'UNKNOWN'` or `'OPTIONAL'`.
+- **Zero Self-Citation**: Ephemeral candidate BOMs attached to NotebookLM are query inputs only; self-citations evaluate to `UNKNOWN`.
+- **Terminal Lifecycle**: Evidence ledger finalize strictly after Phase 8 and Phase 9 complete. All phases must be terminal (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`).
+- **Non-Destructive Cloud Delivery**: Google Sheets updates use in-place `updateCells` + `values:batchGet` readback verification; `batchClear` is strictly prohibited.
+- **Universal Scope Isolation**: Single-product rules are quarantined; universal charters contain only multi-product invariants.
+- **Zero Unverified Checkins**: Never commit or push without explicit user instruction. Keep the working tree clean for independent Codex and Claude peer reviews.
+
+

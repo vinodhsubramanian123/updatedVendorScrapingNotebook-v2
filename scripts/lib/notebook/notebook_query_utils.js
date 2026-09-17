@@ -224,7 +224,7 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
       }, 15000);
       if (typeof heartbeat.unref === 'function') heartbeat.unref();
 
-      const trustedSourceIds = options.context?.authoritativeSourceIds || [];
+      const trustedSourceIds = options.querySourceIds || options.context?.authoritativeSourceIds || [];
       const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout);
       execFile(nlmExecutable, queryArgs, {
         timeout: currentTimeout,
@@ -312,7 +312,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
 
   const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-  const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10);
+  const timeoutMs = options.timeout || options.timeoutMs || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
   const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
 
   // Fail-closed to Local RAG if no notebook mapped for this chassis
@@ -327,8 +327,8 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     };
   }
 
-  const cacheKey = `${targetNotebookId}:${sanitizedQuery.trim()}`;
-  if (!options.bypassCache) {
+  const cacheKey = `${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(getNotebookConfigEntry(targetNotebookId, options.context || {}))}:${JSON.stringify(options.sourceIds || [])}`;
+  if (!options.bypassCache && !options.offlineMode && !options.useLocalRagOnly && process.env.USE_LOCAL_RAG_ONLY !== '1' && process.env.LOCAL_EVAL_ONLY !== '1') {
     const cached = getCachedRagResult(cacheKey);
     if (cached?.isCloudGrounded === true && cached?.groundingVerification === 'VERIFIED_GROUNDED') {
       logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
@@ -366,7 +366,8 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     const combinedSourceIds = Array.from(new Set([...authoritativeSourceIds, ...candidateSourceIds]));
     const queryOptions = {
       ...options,
-      context: { ...(options.context || {}), authoritativeSourceIds: combinedSourceIds }
+      querySourceIds: combinedSourceIds,
+      context: { ...(options.context || {}), authoritativeSourceIds }
     };
     const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, queryOptions);
     if (cloudResult.groundingVerification === 'VERIFIED_GROUNDED') {

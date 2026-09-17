@@ -84,7 +84,10 @@
         "7a7cc41b-263c-46ca-92f3-6f227f2d3557"
       ],
       "lastSyncedAt": "2026-09-16T17:48:00.000Z",
-      "cloudSyncState": "VERIFIED"
+      "cloudSyncState": "VERIFIED",
+      "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
+      "runningKnowledgeSourceId": "71b7d4e0-c917-4bef-b372-5caec16c9c78",
+      "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
     },
     "DL380_Gen11": {
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
@@ -492,7 +495,7 @@
     "documentUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
     "title": "HPE AI Studio — Master Running Knowledge & Learnings Charter",
     "folderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
-    "lastSyncedAt": "2026-09-16T21:20:31.461Z",
+    "lastSyncedAt": "2026-09-17T07:17:02.215Z",
     "totalDeduplicatedRules": 68,
     "universalRuleCount": 1,
     "chassisRuleCount": 35

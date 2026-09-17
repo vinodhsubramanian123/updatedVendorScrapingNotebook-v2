@@ -79,7 +79,9 @@ function auditNotebooks() {
     // Recommended field checks
     for (const { field, label, validate, severity } of RECOMMENDED_FIELDS) {
       if (!validate(entry[field])) {
-        issues.push({ notebook: key, severity, category: 'RECOMMENDED_FIELD', field, message: `Missing ${label} — ${severity === 'HIGH' ? 'RAG grounding may be degraded' : 'optional but recommended'}` });
+        const effectiveSeverity = entry.queryEnabled === false && severity === 'HIGH' ? 'LOW' : severity;
+        const note = entry.queryEnabled === false ? 'fail-closed advisory product' : (severity === 'HIGH' ? 'RAG grounding may be degraded' : 'optional but recommended');
+        issues.push({ notebook: key, severity: effectiveSeverity, category: 'RECOMMENDED_FIELD', field, message: `Missing ${label} — ${note}` });
       }
     }
 

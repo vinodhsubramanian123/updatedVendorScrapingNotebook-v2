@@ -131,11 +131,11 @@ function validateGroundingCitations(processedResult, context = {}) {
   }
 
   // Verify authoritative source match
-  const hasAuthoritativeSource =
-    allSourceTexts.some(txt => AUTHORITATIVE_SOURCE_PATTERN.test(txt)) ||
-    citedSourceIds.some(id => authoritativeSourceIds.has(id));
+  const hasAuthoritativeSource = authoritativeSourceIds.size > 0
+    ? citations.some(citation => authoritativeSourceIds.has(String(sourceId(citation))))
+    : allSourceTexts.some(txt => AUTHORITATIVE_SOURCE_PATTERN.test(txt));
 
-  if (citations.length > 0 && (hasAuthoritativeSource || allSourceTexts.length === 0)) {
+  if (citations.length > 0 && hasAuthoritativeSource) {
     processedResult.groundingVerification = 'VERIFIED_GROUNDED';
     processedResult.isCloudGrounded = true;
     processedResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';

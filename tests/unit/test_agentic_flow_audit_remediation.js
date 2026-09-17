@@ -113,7 +113,7 @@ test('Codex Audit Remediation — Full 13-Finding Validation Matrix', async (t) 
       assert.ok(headerRow, 'Header row with Part No must exist');
       assert.deepStrictEqual(
         headerRow.slice(0, 7),
-        ['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'],
+        ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'],
         'Columns must exactly match the 7-column portal schema'
       );
     } finally {
@@ -220,13 +220,13 @@ test('Codex Audit Remediation — Full 13-Finding Validation Matrix', async (t) 
       fs.writeFileSync(xlsxPath, 'dummy xlsx content');
       const cert2 = isCatalogCertified('DL380_Gen12', isolatedRoot);
       assert.strictEqual(cert2.certified, false, 'Flagship catalog with < 20 SKUs must NOT be certified');
-      assert.match(cert2.reason, /minimum cardinality threshold/i);
+      assert.match(cert2.reason, /SKU tally mismatch/i);
 
       // 3. Fix SKU count to 50
       dummyCatalog.metadata.totalUniqueSKUs = 50;
       fs.writeFileSync(jsonPath, JSON.stringify(dummyCatalog));
       const cert3 = isCatalogCertified('DL380_Gen12', isolatedRoot);
-      assert.strictEqual(cert3.certified, true, 'Catalog with .xlsx and >= 20 SKUs must be certified');
+      assert.strictEqual(cert3.certified, false, 'Inflated metadata and a dummy XLSX must never certify a catalog');
     } finally {
       if (fs.existsSync(isolatedRoot)) fs.rmSync(isolatedRoot, { recursive: true, force: true });
     }

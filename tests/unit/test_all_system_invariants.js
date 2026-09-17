@@ -156,7 +156,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     const XLSX = require('xlsx-js-style');
     const wb = XLSX.readFile(tempFile);
     const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
-    assert.deepEqual(rows[0], ['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
+    assert.deepEqual(rows[0], ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
     const subtotal = rows.find(r => r[2] && String(r[2]).includes('SUBTOTAL:'));
     assert.ok(subtotal, 'Must contain subtotal row in Set column');
     fs.unlinkSync(tempFile);

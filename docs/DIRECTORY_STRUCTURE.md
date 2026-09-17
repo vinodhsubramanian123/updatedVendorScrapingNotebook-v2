@@ -102,6 +102,7 @@ vendorNotebookSolution/
 │   └── README.md                          ← Outputs lifecycle guide
 │
 ├── docs/                                  ← Consolidated project documentation
+│   ├── INVARIANTS.md                      ← Canonical catalog of all 116 Technical Invariants (INV-1 to INV-116)
 │   ├── ARCHITECTURE_AND_DESIGN.md         ← Core architecture, Dual-Brain paradigm & diagrams
 │   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines, agentic guardrails & 80 comprehensive learnings
 │   ├── DEVELOPER_GUIDE.md                 ← Local dev, testing tiers, debugging playbook, and API guide

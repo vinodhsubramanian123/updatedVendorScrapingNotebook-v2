@@ -13,12 +13,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('./generate_boq_xlsx.js');
+const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv, generateRankedPortalWorkbook } = require('./generate_boq_xlsx.js');
 const { formatNotebookQueryPayload } = require('./boq_evaluator.js');
 const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
+const { candidateReviewCurrent } = require('./solution_evidence');
 
 function _buildHeaderSection(ctx) {
   const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd } = ctx;
@@ -29,7 +30,7 @@ function _buildHeaderSection(ctx) {
   md += `**Target BOQ File**: \`${inputFile}\`  \n`;
   md += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
   md += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
-  md += `**Quantitative Confidence Score**: \`${evalResults.confidence?.score ?? 1.0} / 1.00\` (${evalResults.confidence?.isHitlTriggered ? '🚨 HITL Review Required' : '✅ Certified Buildable'})  \n`;
+  md += `**Quantitative Confidence Score**: \`${evalResults.confidence?.score ?? 'UNKNOWN'} / 1.00\` (model confidence; not a portal certification)  \n`;
   if (targetBudgetUsd > 0) {
     md += `**Target CapEx Budget**: \`$${targetBudgetUsd.toLocaleString()} USD\`  \n`;
   }
@@ -190,7 +191,7 @@ function _buildWorkflowSteps(ctx) {
       title: 'BOQ Pre-cleaning & Parsing',
       subtitle: 'Excel Multi-Sheet & Raw BOM Cleaning',
       status: 'COMPLETED',
-      durationMs: 120,
+      durationMs: ctx.stage1ParsingMs ?? null,
       details: `Parsed ${items.length} hardware SKU lines from ${inputFile || 'Pasted Text BOM'}. Cleaned formatting and tokenized quantities.`,
       metrics: { totalSkus: items.length, sheetsParsed: 1 }
     },
@@ -199,7 +200,7 @@ function _buildWorkflowSteps(ctx) {
       title: 'Aspect Math & Rule Engine Validation',
       subtitle: 'Local Hardware Constraints Validation',
       status: evalResults.errors?.length > 0 ? 'WARNING' : 'COMPLETED',
-      durationMs: 180,
+      durationMs: ctx.stage2AspectMathMs ?? null,
       details: `Evaluated ${graph.totalRulesEvaluated || 18} hardware rules. Detected ${evalResults.errors?.length || 0} physical conflicts & ${evalResults.missingDependencies?.length || 0} missing accessories.`,
       metrics: { rulesEvaluated: graph.totalRulesEvaluated || 18, physicalConflicts: evalResults.errors?.length || 0, fixesInjected: evalResults.missingDependencies?.length || 0 }
     },
@@ -228,7 +229,7 @@ function _buildWorkflowSteps(ctx) {
       title: 'Ranked Solutions & Vertical Parts Itemization',
       subtitle: '5-Tier Strategic Resolution Matrix',
       status: 'COMPLETED',
-      durationMs: 150,
+      durationMs: ctx.stage5MatrixMs ?? null,
       details: `Synthesized ${graph.rankedSolutions?.length || 0} compatibility tiers; ${graph.recommendedSolutions?.length || 0} passed the buildability, Pareto, uniqueness, and closeness publication gates.`,
       metrics: { rankedTiers: graph.rankedSolutions?.length || 0, recommendedSolutions: graph.recommendedSolutions?.length || 0, topRankScore: graph.recommendedSolutions?.[0]?.score || null }
     },
@@ -255,7 +256,7 @@ function _buildProvenanceTrace(ctx, traceId) {
     timestamp: new Date(startTime).toISOString(),
     completedAt: new Date().toISOString(),
     totalDurationMs: Date.now() - startTime,
-    chassis: chassisPrefix || (graph.chassisInfo ? graph.chassisInfo.model : 'DL380 Gen12 SFF'),
+    chassis: chassisPrefix || graph.chassisInfo?.model || 'UNKNOWN_CHASSIS',
     inputFile: path.basename(inputFile),
     stages: [
       { stageId: 1, name: 'BOQ Parsing & Multi-Cluster Discovery', durationMs: stage1ParsingMs, status: 'COMPLETED' },
@@ -275,7 +276,7 @@ function _buildProvenanceTrace(ctx, traceId) {
       latencyMs: stage3RAGMs
     },
     rulesAudit: {
-      totalRulesEvaluated: graph.totalRulesEvaluated || 33,
+      totalRulesEvaluated: graph.totalRulesEvaluated ?? null,
       conflictsCount: (graph.conflicts || []).length,
       resolvedFixesCount: (graph.resolvedFixes || []).length,
       learnedDeltasCount: evalResults.learnedDeltasCount || 0
@@ -369,14 +370,18 @@ async function serializeAndExportResults(ctx) {
     });
     evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
     evalResults.multiRankCsvPath = multiRankCsvPath;
+    const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
+    generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
+    evalResults.portalWorkbookPath = portalWorkbookPath;
   } catch (sheetErr) {
     logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
+    evalResults.deliveryError = sheetErr.message;
   }
 
   // Post-flow sync
   try {
-    const autoUpload = Boolean(ctx.syncNlm || (ctx.options && ctx.options.syncNlm) || process.env.AUTO_UPLOAD_NLM === '1');
-    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: true });
+    const autoUpload = !ctx.OFFLINE_MODE && !ctx.DEFER_RAG;
+    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: autoUpload });
     evalResults.postFlowSync = syncResult;
     if (!syncResult.success) {
       const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
@@ -402,24 +407,43 @@ async function serializeAndExportResults(ctx) {
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
   // Deliverable Drive Upload if requested
-  if (ctx.UPLOAD_DRIVE && evalResults.multiRankWorkbookPath) {
-    const driveUpload = await handleGoogleDriveUpload(evalResults.multiRankWorkbookPath);
+  if (ctx.UPLOAD_DRIVE && !candidateReviewCurrent(evalResults)) {
+    evalResults.deliveryError = 'Google Sheet publication withheld: the final candidate BOM has no current successful document review';
+  } else if (ctx.UPLOAD_DRIVE && evalResults.multiRankWorkbookPath) {
+    const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath);
     if (driveUpload) {
       evalResults.googleDriveDeliverable = driveUpload;
+    } else {
+      evalResults.deliveryError = 'Requested Google Sheet upload did not return a delivery receipt';
     }
+  }
+
+  const ledger = evalResults.evidenceLedger;
+  if (ledger) {
+    ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
+    ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+    ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
+    ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+    ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', { workbookPath: evalResults.multiRankWorkbookPath || null, googleDriveDeliverable: evalResults.googleDriveDeliverable || null, uploadRequested: Boolean(ctx.UPLOAD_DRIVE) }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
+    ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', { newLearningsCount: evalResults.newLearningsCount || 0 });
+    ledger.completePhase(9, evalResults.postFlowSync?.syncStatus === 'CLOUD_VERIFIED' && evalResults.postFlowSync?.runningKnowledgeSynced === true ? 'PASSED' : 'ACTION_REQUIRED', { newLearningsCount: evalResults.newLearningsCount || 0, postFlowSync: evalResults.postFlowSync });
+    const exported = ledger.finalizeAndExport(ctx.evidenceDir);
+    evalResults.evidenceLogPath = exported.jsonPath;
+    evalResults.evidenceSummaryPath = exported.mdPath;
+    evalResults.evidenceHealth = exported.payload.health;
   }
 
   const workflowSteps = _buildWorkflowSteps(ctx);
 
   if (JSON_MODE) {
-    const traceId = `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const traceId = ledger?.traceId || `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
     const tracePayloads = _buildTracePayloads(ctx);
 
-    const isMathClean = evalResults.isMathClean !== false && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+    const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
 
     const jsonResult = {
-      status: 'SUCCESS',
+      status: evalResults.deliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
       data: {
         traceId,
         provenanceTrace,
@@ -482,6 +506,7 @@ async function serializeAndExportResults(ctx) {
           conflicts: graph.conflicts,
           resolvedFixes: graph.resolvedFixes,
           rankedSolutions: graph.rankedSolutions,
+          recommendedSolutions: evalResults.conflictGraph?.recommendedSolutions || [],
           auditLog: graph.auditLog,
           rulesSource: graph.rulesSource,
           isFallbackSource: graph.isFallbackSource
@@ -494,7 +519,7 @@ async function serializeAndExportResults(ctx) {
         durationMs: Date.now() - startTime
       }
     };
-    emitProgress(10, 10, 'Generation Complete', 'completed', 'Analysis finished successfully.');
+    emitProgress(10, 10, 'Evaluation Finished', 'completed', `Analysis status: ${jsonResult.status}. Consult evidence health for outstanding gates.`);
     process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
   } else {
     console.log(`\n===============================================================`);

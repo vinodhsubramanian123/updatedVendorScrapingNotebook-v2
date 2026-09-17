@@ -417,7 +417,7 @@ function _filterRecommendedSolutions(rankedSolutions, fullBomList) {
  * @param {string} chassisVariantOverride - Optional CLI override
  * @returns {object} Graph validation results & audit log
  */
-function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '') {
+function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '', options = {}) {
   let resolvedTargetDir = '';
   if (typeof targetDir === 'string') {
     resolvedTargetDir = targetDir;
@@ -475,7 +475,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   const isWholeSolutionValid = conflicts.length === 0 && unresolvedConflicts.length === 0;
 
   // 6. Synthesize 5-Tier Ranked Solutions with Cross-Subsystem Arbitration Branches
-  const rankedSolutions = synthesize5TierRankedSolutions(
+  const rankedSolutions = options.skipSynthesis ? [] : synthesize5TierRankedSolutions(
     boqItems,
     { missingDependencies: depsList, arbitrationResults },
     { isWholeSolutionValid, conflicts },

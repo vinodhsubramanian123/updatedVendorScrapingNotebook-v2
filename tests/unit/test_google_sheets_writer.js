@@ -77,6 +77,7 @@ test('Google Sheet writer creates missing canonical tabs and updates them in bat
   const client = {
     async request(request) {
       requests.push(request);
+      if (request.url.includes('/values:batchGet')) return { data: { valueRanges: [datasets.catalogRows, datasets.learningRows, datasets.changeRows, datasets.metadataRows].map(values => ({ values })) } };
       if (request.method === 'GET') {
         return { data: { sheets: [{ properties: { sheetId: 1, title: 'Certified Catalog' } }] } };
       }
@@ -96,9 +97,10 @@ test('Google Sheet writer creates missing canonical tabs and updates them in bat
   assert.equal(result.success, true);
   assert.equal(result.tabsWritten.length, 4);
   const addTabs = requests.find(request => request.url.endsWith(':batchUpdate'));
-  assert.equal(addTabs.data.requests.length, 3);
-  const valueUpdate = requests.find(request => request.url.endsWith('/values:batchUpdate'));
-  assert.equal(valueUpdate.data.data.length, 4);
+  assert.equal(addTabs.data.requests.filter(r => r.addSheet).length, 3);
+  assert.equal(addTabs.data.requests.filter(r => r.updateCells).length, 4);
+  assert.equal(requests.some(request => request.url.includes('batchClear')), false);
+  assert.equal(result.readbackVerified, true);
   assert.equal(result.fingerprints.combined, 'abc');
 });
 
@@ -107,6 +109,7 @@ test('canonical workbook bootstrap creates one four-tab spreadsheet before writi
   const client = {
     async request(request) {
       requests.push(request);
+      if (request.url.includes('/values:batchGet')) return { data: { valueRanges: [datasets.catalogRows, datasets.learningRows, datasets.changeRows, datasets.metadataRows].map(values => ({ values })) } };
       if (request.url === 'https://sheets.googleapis.com/v4/spreadsheets' && request.method === 'POST') {
         return { data: { spreadsheetId: 'created-sheet', spreadsheetUrl: 'https://docs.google.com/spreadsheets/d/created-sheet/edit' } };
       }
@@ -125,4 +128,21 @@ test('canonical workbook bootstrap creates one four-tab spreadsheet before writi
   assert.equal(result.created, true);
   assert.equal(result.spreadsheetId, 'created-sheet');
   assert.equal(requests[0].data.sheets.length, 4);
+});
+
+test('failed batch never clears live sheets and incorrect readback cannot claim sync', async () => {
+  const datasets = { catalogRows: [['SKU']], learningRows: [['Rule']], changeRows: [['Change']], metadataRows: [['Key']] };
+  const calls = [];
+  const client = { async request(request) {
+    calls.push(request);
+    if (request.method === 'GET') return { data: { sheets: [], valueRanges: [{ values: [['WRONG']] }] } };
+    throw new Error('Atomic batch rejected');
+  } };
+  await assert.rejects(replaceGoogleSheetWorkbook('sheet-id', datasets, { client }), /Atomic batch rejected/);
+  assert.equal(calls.some(call => call.url.includes('batchClear')), false);
+  const readbackClient = { async request(request) {
+    if (request.url.includes('values:batchGet')) return { data: { valueRanges: [{ values: [['WRONG']] }] } };
+    return { data: { sheets: [] } };
+  } };
+  await assert.rejects(replaceGoogleSheetWorkbook('sheet-id', datasets, { client: readbackClient }), /readback mismatch/);
 });

@@ -70,7 +70,7 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     const registry = buildMasterKnowledgeRegistry();
     
     // 2. Generate updated sync payload for target chassis
-    const autoUpload = Boolean(opts.autoUploadNLM || process.env.AUTO_UPLOAD_NLM === '1');
+    const autoUpload = opts.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : opts.autoUploadNLM === true;
     const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
       confirmSourceRetirement: opts.confirmSourceRetirement === true,
       targetDir: opts.targetDir
@@ -121,7 +121,7 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
 
     if (runningKnowledgePromise) {
       runningKnowledgePromise.then((res) => {
-        result.runningKnowledgeSynced = Boolean(res && res.success !== false);
+        result.runningKnowledgeSynced = res?.success === true;
       }).catch(() => {
         result.runningKnowledgeSynced = false;
       });
@@ -144,10 +144,15 @@ async function triggerPostFlowSyncAsync(chassisName = 'Unknown_Chassis', flowTyp
   if (result.runningKnowledgePromise) {
     try {
       const rkRes = await result.runningKnowledgePromise;
-      result.runningKnowledgeSynced = Boolean(rkRes && rkRes.success !== false);
+      result.runningKnowledgeSynced = rkRes?.success === true;
     } catch (_) {
       result.runningKnowledgeSynced = false;
     }
+  }
+  delete result.runningKnowledgePromise;
+  if (options.syncRunningKnowledge && !result.runningKnowledgeSynced) {
+    result.success = false;
+    result.error = result.error || 'Running knowledge synchronization did not complete successfully';
   }
   return result;
 }

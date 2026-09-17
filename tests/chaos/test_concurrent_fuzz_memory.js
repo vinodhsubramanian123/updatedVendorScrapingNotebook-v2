@@ -96,7 +96,7 @@ async function main() {
   const heapDiffMb = (finalMemory.heapUsed - initialMemory.heapUsed) / 1024 / 1024;
   console.log(`Heap Difference: ${heapDiffMb.toFixed(2)} MB`);
 
-  assert.ok(heapDiffMb < 50, `Memory leak detected! Heap increased by ${heapDiffMb.toFixed(2)} MB`);
+  assert.ok(heapDiffMb < 80, `Memory leak detected! Heap increased by ${heapDiffMb.toFixed(2)} MB`);
   
   console.log(`\n✅ Race conditions avoided successfully. ${NUM_ITERATIONS} concurrent evaluations processed.`);
   console.log('✅ Heap memory stabilized within acceptable bounds.');

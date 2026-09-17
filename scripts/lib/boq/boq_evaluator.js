@@ -1229,7 +1229,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       resolvedDir = autoDetectChassisDir(items);
     }
 
-    conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir);
+    conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir, '', { skipSynthesis: options.skipSynthesis === true });
   }
 
   const isMathClean = errors.length === 0;

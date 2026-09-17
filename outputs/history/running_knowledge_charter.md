@@ -2,7 +2,7 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-16T21:20:26.501Z  
+**Last Synchronized:** 2026-09-17T17:50:12.637Z  
 **Total Deduplicated Learned Rules:** 68  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
@@ -44,12 +44,10 @@ The **HPE AI Studio BOQ Evaluator & Conflict Resolution Engine** maintains a dua
 
 | Category | Law / Invariant | Enforcement & Technical Rationale |
 | :--- | :--- | :--- |
-| **Option Placement** | **INV-25: Multi-Chassis Container Tree** | Components inside Configure-to-Order (CTO) base chassis must carry Factory-Integrated Option tags (`#0D1` / `-F21`). Standalone BTO (`-B21`) components placed in CTO containers fail factory CLIC validation (Rules 81354490 & 91001655). |
-| **Processors & Thermal** | **TDP Redline & Heatsink Selection** | Single processors with TDP ≤ 185W run on standard heatsinks. Single processors with TDP > 185W up to 350W strictly mandate Performance Heatsinks. |
-| **Cooling & Fans** | **High-Performance Fan Threshold** | Standard 4-fan cooling is capped at 240W system-wide. High-Performance Fan Kits are strictly required when: CPU TDP ≥ 240W, cabled NVMe storage is configured, or dual-processor (2P) configurations are deployed. |
-| **Memory Channels** | **8-Channel Symmetrical Interleaving** | Intel Xeon 6 memory controllers mandate population in balanced blocks of 8 or 16 DIMMs per CPU (1DPC at 6400 MT/s, 2DPC throttled to 6000 MT/s). Asymmetrical quantities disable interleaving and incur severe throughput degradation. |
-| **Memory Restrictions** | **Zero Rank & Monolithic Mixing** | Mixing of x4 and x8 memory is prohibited. Mixing standard planar RDIMMs with 3DS RDIMMs is prohibited. 96GB/128GB densities are mutually exclusive. 16GB RDIMMs are restricted strictly to 1DPC. |
-| **Power Infrastructure** | **INV-30: EU ErP Lot 9 & Platinum PSUs** | European Union ErP Lot 9 mandates 96% Titanium power supplies. Platinum PSUs (94%) deployed outside Europe require the `P35876-B21` CE Mark Removal FIO Enablement Kit ($1.00 list) to bypass regulatory blocks cleanly. |
+| **Scope** | Product isolation | Resolve SKU dependencies, thermal thresholds, memory population and regional restrictions from the exact product/generation notebook and current official vendor evidence. Never generalize a product rule from this shared charter. |
+| **Customer intent** | Minimum mandatory change | Preserve requested functions and quantities; explain and cite every mandatory substitution or addition. |
+| **Verification** | Separate evidence stages | Distinguish local checks, cited document review and actual vendor configurator acceptance. Missing evidence remains unverified. |
+| **Learning** | Governed promotion | Local inferences are proposals until independently supported. Product-specific learning remains in its product notebook. |
 | **Power Redundancy** | **Zero PSU Model Mixing** | Mixing different PSU wattages, efficiencies, or part numbers in a single chassis is strictly prohibited. |
 | **Storage Controllers** | **INV-26: Tri-Mode Port Channel Math** | 8-port controllers (MR408i / MR216i) address maximum 8 physical drives directly. Configurations exceeding 8 drives on a single controller require SAS Expander (`P48835-B21`) or Tri-Mode Switch (`P55806-B21`). |
 | **Storage Enablement** | **Motherboard Telemetry Bridge & Battery** | Tri-Mode RAID controllers (MR416i-p) carry-over to Gen12 require Storage Controller Enablement Cables (`P48918-B21`) for sideband telemetry and 96W Smart Storage Batteries (`P01366-B21`) for write-cache protection. |

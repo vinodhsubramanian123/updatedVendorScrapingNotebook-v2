@@ -26,6 +26,8 @@ const { runAgenticGuardrail } = require('../lib/rag/agentic_guardrail.js');
 const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
 const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
 const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
+const { runWithTrace } = require('../lib/system/trace_context');
+const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 
@@ -86,10 +88,26 @@ Examples:
     process.exit(0);
   }
 
-  const inputFile = args[0];
-  if (!fs.existsSync(inputFile)) {
-    console.error(`❌ Input BOQ file not found: ${inputFile}`);
-    process.exit(1);
+  const fileArgIdx = args.indexOf('--file');
+  let inputFile = (fileArgIdx !== -1 && args[fileArgIdx + 1]) ? args[fileArgIdx + 1] : null;
+  if (!inputFile) {
+    const flagsWithVal = new Set(['--chassis', '--notebook-id', '--output', '--sheet', '--simulate-portal-error', '--output-dir', '--budget', '--file']);
+    for (let i = 0; i < args.length; i++) {
+      const arg = args[i];
+      if (flagsWithVal.has(arg)) {
+        i++;
+        continue;
+      }
+      if (!arg.startsWith('--') && !arg.startsWith('-')) {
+        inputFile = arg;
+        break;
+      }
+    }
+  }
+
+  if (!inputFile || !fs.existsSync(inputFile)) {
+    console.error(`❌ Input BOQ file not found: ${inputFile || '(none provided)'}`);
+    // Let the traced pipeline persist the failure and return structured evidence.
   }
 
   const nbIdx = args.indexOf('--notebook-id');
@@ -146,6 +164,7 @@ Examples:
 // Stage 2: BOQ Parsing & Chassis Ingestion
 // ============================================================
 function ingestAndConsolidateBoq(options) {
+  if (!options.inputFile || !fs.existsSync(options.inputFile)) throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
   const { inputFile, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
   let chassisDir = options.chassisDir;
 
@@ -194,7 +213,7 @@ function ingestAndConsolidateBoq(options) {
     if (process.env.STRUCTURED_PROGRESS) {
       process.stdout.write('\n\n' + JSON.stringify(errPayload) + '\n');
     }
-    process.exit(1);
+    throw new Error(errPayload.message);
   }
 
   const detectedChassisName = path.basename(chassisDir || '');
@@ -215,7 +234,7 @@ function ingestAndConsolidateBoq(options) {
           directive: 'Catalog must be scraped from HPE OCA before pre-flight evaluation.'
         }) + '\n');
       }
-      process.exit(1);
+      throw new Error(`ERR_UNSCRAPED_SOLUTION: ${certCheck.reason}`);
     }
   }
 
@@ -277,6 +296,7 @@ function ingestAndConsolidateBoq(options) {
 
   return {
     items,
+    inputFile,
     chassisDir,
     chassisPrefix,
     chassisDetection,
@@ -359,7 +379,7 @@ function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, req
 // Stage 4: Grounded Gemini Notebook Validation & Agentic Loop
 // ============================================================
 async function executeGroundedRagValidation(ctx) {
-  const { items, evalResults, notebookId, catalogData, chassisDetection, detectedChassisName, chassisDir, OFFLINE_MODE, JSON_MODE } = ctx;
+  const { items, evalResults, notebookId, catalogData, chassisDetection, detectedChassisName, chassisDir, OFFLINE_MODE, JSON_MODE, inputFile } = ctx;
 
   const tRagStart = Date.now();
   emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
@@ -517,8 +537,7 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
       if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
       
       const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-      // Re-run evaluation. evaluateBOQMultiAspect will reload the latest rules from disk.
-      const retryResults = evaluateBOQMultiAspect('', { filePath: inputFile, catalogData, targetDir: chassisDir });
+      const retryResults = evaluateBOQMultiAspect(items, { filePath: inputFile || ctx.inputFile || '', catalogData, targetDir: chassisDir });
       
       evalResults.errors = retryResults.errors;
       evalResults.warnings = retryResults.warnings;
@@ -617,23 +636,22 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
           scopeTaxonomy: 'CHASSIS_SPECIFIC',
           confidenceScore: 0.95,
           ruleUpdate: dep.reason || `Mandatory dependency ${dep.sku} required by 7-aspect physical math.`,
-          sourceCitation: 'AUTOMATED_PHYSICAL_MATH_DISCOVERY'
+          sourceCitation: 'AUTOMATED_PHYSICAL_MATH_DISCOVERY',
+          status: 'PENDING',
+          governanceStatus: 'PENDING',
+          verificationStatus: 'REQUIRES_INDEPENDENT_VENDOR_EVIDENCE'
         };
         try {
           const cert = recordAndCertifyLearnedRule(delta, chassisDir);
           if (cert && cert.persisted) {
             learnedCount++;
             existingPairings.add(pairKey);
-            evidenceLedger.recordActiveRuleReached({
-              ruleId: delta.deltaId,
-              ruleType: delta.ruleType,
-              chassis: chassisName,
-              affectedSku: baseChassis,
-              requiredDependencySku: dep.sku,
-              reasoning: delta.ruleUpdate
-            });
+            evidenceLedger.recordSkuAudit(dep.sku, 'LEARNING_PROPOSED', delta.ruleUpdate, delta.deltaId, 'Mandatory dependency proposal', { status: 'PENDING' });
           }
-        } catch (_) {}
+        } catch (learnErr) {
+          const _logger = require('../lib/system/pipeline_logger.js');
+          _logger.warn('EVAL_BOQ', `Continuous learning proposal failed: ${learnErr.message}`);
+        }
       }
     }
   }
@@ -643,18 +661,28 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
 // ============================================================
 // Main Orchestrator Pipeline
 // ============================================================
-async function runEvaluationPipeline(options) {
+function runEvaluationPipeline(options) {
+  return runWithTrace(options.traceId, () => runEvaluationPipelineWithinTrace(options));
+}
+
+async function runEvaluationPipelineWithinTrace(options) {
   const startTime = Date.now();
   const evidenceLedger = createEvidenceLedger({
     chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
     filePath: options.inputFile || options.BOQ_FILE
   });
-
+  evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
+  try {
   evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
   const ingestCtx = ingestAndConsolidateBoq(options);
   if (ingestCtx.chassisDir) {
     evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
+    evidenceLedger.recordArtifact('CATALOG', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog.json`));
   }
+  evidenceLedger.customerInput.totalRequestedLines = ingestCtx.items.length;
+  evidenceLedger.customerInput.serverCount = ingestCtx.serverCount || 1;
+  evidenceLedger.sharedState.nodeMultiplier = ingestCtx.serverCount || 1;
+  ingestCtx.items.forEach(item => evidenceLedger.recordSkuAudit(item.sku, 'NORMALIZED_INPUT', 'Parsed customer input; this record does not certify compatibility.', null, item.category, { quantity: item.quantity }));
   evidenceLedger.completePhase(1, 'PASSED', {
     itemsCount: ingestCtx.items.length,
     chassisDir: ingestCtx.chassisDir,
@@ -663,9 +691,9 @@ async function runEvaluationPipeline(options) {
 
   evidenceLedger.startPhase(2, 'Active Knowledge Routing & Discovery', { chassis: path.basename(ingestCtx.chassisDir) });
   const activeRules = loadActiveKnowledgeRules(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
-  activeRules.allRules.forEach(r => evidenceLedger.recordActiveRuleReached(r));
   evidenceLedger.completePhase(2, 'PASSED', {
-    totalRulesReached: activeRules.allRules.length,
+    totalRulesAvailable: activeRules.allRules.length,
+    availableRuleIds: activeRules.allRules.map(r => r.ruleId || r.deltaId),
     modernizationsCount: activeRules.generationalModernizations.length,
     substitutionsCount: activeRules.substitutions.length,
     dependenciesCount: activeRules.mandatoryDependencies.length
@@ -675,14 +703,25 @@ async function runEvaluationPipeline(options) {
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
   );
-  const aspectPhaseStatus = (evalResults.isMathClean !== false && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0)) ? 'PASSED' : 'ACTION_REQUIRED';
+  (evalResults.missingDependencies || []).forEach(dep => {
+    evidenceLedger.recordActiveRuleReached({
+      ruleId: dep.ruleId || 'PHYSICAL_ASPECT_DEP',
+      ruleType: dep.category || 'MISSING_DEPENDENCY',
+      chassis: path.basename(ingestCtx.chassisDir),
+      affectedSku: dep.affectedSku || null,
+      targetSku: dep.sku,
+      reasoning: dep.reason || '',
+      scopeTaxonomy: 'CHASSIS_SPECIFIC'
+    });
+  });
+  const aspectPhaseStatus = (evalResults.isMathClean === true && evalResults.aspectChecks?.length > 0 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0)) ? 'PASSED' : 'ACTION_REQUIRED';
   evidenceLedger.completePhase(3, aspectPhaseStatus, {
     missingDependencies: evalResults.missingDependencies?.length || 0,
-    aspectPassCount: evalResults.aspectPassCount || (evalResults.isMathClean !== false ? 7 : 0)
-  });
+    aspectPassCount: (evalResults.aspectChecks || []).filter(a => a.status === 'PASS').length
+  }, evalResults.aspectChecks || []);
 
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
-  evidenceLedger.completePhase(4, 'PASSED', {
+  evidenceLedger.completePhase(4, graph?.isWholeSolutionValid === true ? 'PASSED' : 'ACTION_REQUIRED', {
     conflicts: graph?.conflicts?.length || 0,
     hasContentions: Boolean(graph?.arbitrationResults?.hasContentions)
   });
@@ -697,16 +736,32 @@ async function runEvaluationPipeline(options) {
   emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
   const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData);
   const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
-  evidenceLedger.completePhase(6, 'PASSED', {
-    ranksProduced: evalResults.conflictGraph?.rankedSolutions?.length || 5,
-    budgetCapEx: budgetOpt?.optimizedBudgetUsd || 0
+  const confidenceScore = evalResults.confidence?.score ?? 1.0;
+  const isLowConfidence = confidenceScore < 0.55 || Boolean(evalResults.confidence?.isHitlTriggered);
+  if (isLowConfidence) {
+    for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
+      candidate.advisoryStatus = 'LOW_CONFIDENCE_ADVISORY';
+    }
+  }
+  evidenceLedger.completePhase(6, (!isLowConfidence && evalResults.conflictGraph?.rankedSolutions?.length) ? 'PASSED' : 'ACTION_REQUIRED', {
+    ranksProduced: evalResults.conflictGraph?.rankedSolutions?.length || 0,
+    budgetCapEx: budgetOpt?.optimizedBudgetUsd || 0,
+    confidenceScore,
+    isLowConfidence
   });
 
   evidenceLedger.startPhase(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', {});
+  let quickSpecs = { status: 'NOT_RUN_OFFLINE_OR_DEFERRED' };
+  if (!options.OFFLINE_MODE && !options.DEFER_RAG && ingestCtx.notebookId) {
+    const { verifyNotebookQuickSpecs } = require('../lib/sync/quickspecs_sync');
+    quickSpecs = await verifyNotebookQuickSpecs(path.basename(ingestCtx.chassisDir), { autoUpload: true, forcedNotebookId: ingestCtx.notebookId });
+  }
+  evalResults.quickSpecsVerification = quickSpecs;
+  const sourceReady = quickSpecs.status === 'CERTIFIED_GROUNDED';
   const { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
     ...ingestCtx,
     evalResults,
-    OFFLINE_MODE: options.OFFLINE_MODE,
+    OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
     JSON_MODE: options.JSON_MODE,
     SYNC_RAG: options.SYNC_RAG,
     DEFER_RAG: options.DEFER_RAG
@@ -714,27 +769,72 @@ async function runEvaluationPipeline(options) {
   if (ragResult) {
     evidenceLedger.recordNotebookLmTrace(queryPayload, ragResult, ragResult?.citations || []);
   }
-  evidenceLedger.completePhase(7, ragResult ? 'PASSED' : 'SKIPPED', {
-    verified: Boolean(ragResult),
-    citationsCount: ragResult?.citations?.length || 0
-  });
+  evidenceLedger.phases.phase_7.outputSummary = {
+    primaryRag: {
+      verified: evidenceLedger.sharedState.dualBrainVerified,
+      citationsCount: ragResult?.citations?.length || 0,
+      quickSpecs
+    }
+  };
 
   applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult);
 
-  const ephemeralSourceResult = await executeEphemeralSourceValidation(options, ingestCtx, evalResults);
+  for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
+    const checked = evaluatePhysicalMath(candidate.skuPartsList || [], ingestCtx.catalogData, ingestCtx.chassisDir, { skipSynthesis: true });
+    candidate.finalValidation = {
+      aspectChecks: checked.aspectChecks || [],
+      errors: checked.errors || [],
+      missingDependencies: checked.missingDependencies || [],
+      graph: checked.conflictGraph,
+      checkedAt: new Date().toISOString()
+    };
+    candidate.physicalMathClean = checked.isMathClean === true && checked.conflictGraph?.isWholeSolutionValid === true && !(checked.missingDependencies || []).length;
+    candidate.buildabilityStatus = candidate.physicalMathClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS';
+    const delta = candidateDelta(ingestCtx.items, candidate);
+    candidate.customerDistance = { changedLines: delta.length, changedUnits: delta.reduce((sum, row) => sum + Math.abs(row.after - row.before), 0), metric: 'SKU quantity delta; functional preservation requires independent candidate review' };
+  }
+  if (evalResults.conflictGraph?.recommendedSolutions) {
+    evalResults.conflictGraph.recommendedSolutions = (evalResults.conflictGraph.rankedSolutions || [])
+      .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false)
+      .sort((a, b) => a.customerDistance.changedLines - b.customerDistance.changedLines || a.customerDistance.changedUnits - b.customerDistance.changedUnits || a.rank - b.rank)
+      .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1 }));
+  }
+  evidenceLedger.phases.phase_6.outputSummary.candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
+    rank: candidate.rank,
+    name: candidate.name,
+    rationale: candidate.reasoning,
+    manifest: candidate.skuPartsList,
+    delta: candidateDelta(ingestCtx.items, candidate),
+    finalValidation: candidate.finalValidation,
+    buildabilityStatus: candidate.buildabilityStatus
+  }));
+  evidenceLedger.phases.phase_6.outputSummary.manifestSha256 = solutionFingerprint(evalResults);
+
+  const ephemeralSourceResult = sourceReady ? await executeEphemeralSourceValidation(options, ingestCtx, evalResults) : null;
   if (ephemeralSourceResult) {
     evalResults.ephemeralSourceValidation = ephemeralSourceResult;
+    evidenceLedger.recordNotebookLmTrace(ephemeralSourceResult.queryPayload, ephemeralSourceResult, ephemeralSourceResult.citations || [], ephemeralSourceResult.success ? 'VERIFIED_GROUNDED' : 'ACTION_REQUIRED');
+  }
+  evidenceLedger.phases.phase_7.outputSummary.solutionSourceValidation = ephemeralSourceResult || { status: 'NOT_RUN' };
+  evidenceLedger.sharedState.dualBrainVerified = ephemeralSourceResult?.success === true;
+  evidenceLedger.completePhase(7, ephemeralSourceResult?.success ? 'PASSED' : 'ACTION_REQUIRED', evidenceLedger.phases.phase_7.outputSummary);
+  if (ephemeralSourceResult?.success) {
+    for (const phaseNumber of [3, 4]) {
+      const phase = evidenceLedger.phases[`phase_${phaseNumber}`];
+      if (phase.status === 'ACTION_REQUIRED') evidenceLedger.completePhase(phaseNumber, 'RESOLVED', { ...phase.outputSummary, resolvedBy: 'Final candidate validation in phase 6 and cited candidate review in phase 7' }, phase.checks, phase.warnings, phase.errors);
+    }
+  }
+  for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
+    for (const part of candidate.skuPartsList || []) {
+      evidenceLedger.recordSkuAudit(part.sku, part.isFixInjected ? 'PROPOSED_FIX' : 'CANDIDATE_COMPONENT', part.reason || candidate.reasoning || 'Candidate manifest; consult validation verdict.', part.ruleId || null, part.category, { rank: candidate.rank, quantity: part.quantity, physicalMathClean: candidate.physicalMathClean });
+    }
   }
 
-  evidenceLedger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {});
-  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
-  const { jsonPath, mdPath } = evidenceLedger.finalizeAndExport();
-  evalResults.evidenceLogPath = jsonPath;
-  evalResults.evidenceSummaryPath = mdPath;
-  evidenceLedger.completePhase(9, 'PASSED', { jsonPath, mdPath, newLearningsCount });
-
   evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
-  evalResults.evidenceLedger = evidenceLedger;
+  Object.defineProperty(evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
+
+  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
+  evalResults.newLearningsCount = newLearningsCount;
 
   await serializeAndExportResults({
     ...options,
@@ -750,13 +850,37 @@ async function runEvaluationPipeline(options) {
     stage4GuardrailMs,
     stage5MatrixMs
   });
-  evidenceLedger.completePhase(8, 'PASSED', {
-    workbookPath: evalResults.multiRankWorkbookPath || '',
-    evidenceLogPath: jsonPath,
-    evidenceSummaryPath: mdPath
-  });
-
   return evalResults;
+  } catch (error) {
+    let failedPhaseNum = 1;
+    for (const phase of Object.values(evidenceLedger.phases)) {
+      if (phase.status === 'RUNNING') {
+        failedPhaseNum = phase.phaseNumber;
+        evidenceLedger.completePhase(phase.phaseNumber, 'FAILED', {}, [], [], [error.message]);
+      }
+    }
+    for (let n = 1; n <= 9; n++) {
+      if (!evidenceLedger.phases[`phase_${n}`]) {
+        evidenceLedger.phases[`phase_${n}`] = {
+          phaseNumber: n,
+          phaseName: `Phase ${n}`,
+          status: 'NOT_REACHED',
+          startedAt: null,
+          completedAt: null,
+          durationMs: 0,
+          inputSummary: {},
+          outputSummary: null,
+          checks: [],
+          warnings: [],
+          errors: [`Pipeline aborted due to upstream failure in phase ${failedPhaseNum}: ${error.message}`]
+        };
+      }
+    }
+    const exported = evidenceLedger.finalizeAndExport(options.evidenceDir);
+    error.traceId = evidenceLedger.traceId;
+    error.evidenceLogPath = exported.jsonPath;
+    throw error;
+  }
 }
 
 async function main() {
@@ -769,7 +893,14 @@ if (require.main === module) {
   main().catch(err => {
     const JSON_MODE = process.argv.includes('--json');
     if (JSON_MODE) {
-      process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({ status: 'ERROR', error: err.message }) + '__EVAL_RESULT_JSON__\n');
+      process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({
+        status: 'ERROR',
+        error: err.message,
+        data: {
+          traceId: err.traceId || null,
+          evidenceLogPath: err.evidenceLogPath || null
+        }
+      }) + '__EVAL_RESULT_JSON__\n');
     } else {
       console.error('Fatal evaluation error:', err);
     }
@@ -833,8 +964,8 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
   // 5. Update data payload
   const updatedData = {
     ...baseData,
-    isProvisional: false,
-    matrixStatus: 'VERIFIED_POST_RAG',
+    isProvisional: true,
+    matrixStatus: 'CANDIDATE_REVIEW_REQUIRED',
     cloudGroundingStatus: ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK',
     ragAnswer: ragResult.answer || baseData.ragAnswer,
     ragResult,
@@ -849,8 +980,8 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
     evalResults: {
       ...(baseData.evalResults || {}),
       ...reEval,
-      isProvisional: false,
-      matrixStatus: 'VERIFIED_POST_RAG',
+      isProvisional: true,
+      matrixStatus: 'CANDIDATE_REVIEW_REQUIRED',
       cloudGroundingStatus: ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK',
       ragAnswer: ragResult.answer,
       ragResult
@@ -867,6 +998,7 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
 }
 
 module.exports = {
+  runEvaluationPipeline,
   main,
   getDefaultNotebookId,
   parseEvaluationArguments,
@@ -877,4 +1009,3 @@ module.exports = {
   serializeAndExportResults,
   recomputeStrategyMatrixWithRag
 };
-
