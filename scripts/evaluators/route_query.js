@@ -278,6 +278,365 @@ function classifyQueryIntent(queryText = '', context = {}) {
 }
 
 /**
+ * Modular Handlers for Presales Query Tracks
+ */
+async function _handleFreeformQa(queryText, context) {
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const chassisName = context.chassisName || context.model || chassisInfo.chassisKey;
+  let ragResult = null;
+  let isCloudGrounded = false;
+  let cloudSource = null;
+
+  const isOffline = Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true');
+  if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
+    try {
+      const { resolveProductNotebookId } = require('../lib/sync/nlm_solution_source_validator.js');
+      const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
+      const notebookId = resolveProductNotebookId(chassisName);
+      if (notebookId) {
+        const queryRes = await executeNotebookQuery(notebookId, queryText, {
+          context: { chassis: chassisName },
+          timeout: 15000
+        });
+        if (queryRes && queryRes.answer && !queryRes.isFallback) {
+          ragResult = queryRes;
+          isCloudGrounded = queryRes.isCloudGrounded;
+          cloudSource = queryRes.source;
+        }
+      }
+    } catch (_) {}
+  }
+
+  if (!ragResult) {
+    ragResult = queryLocalKnowledgeBase(queryText, chassisName);
+  }
+
+  return {
+    chassis: chassisName,
+    catalogDir: chassisInfo.catalogDir,
+    answer: ragResult.answer,
+    citations: ragResult.citations || [],
+    source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
+    isCloudGrounded: Boolean(isCloudGrounded)
+  };
+}
+
+async function _handleBoqEvaluation(queryText, context) {
+  const chassisInfo = getChassisCatalog(queryText, context);
+  if (context.filePath && fs.existsSync(context.filePath)) {
+    try {
+      const { runEvaluationPipeline } = require('./eval_boq.js');
+      return await runEvaluationPipeline({
+        inputFile: context.filePath,
+        chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
+        targetSheetName: context.targetSheet || undefined,
+        JSON_MODE: true,
+        OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
+      });
+    } catch (pipeErr) {
+      return { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
+    }
+  } else if (context.items && Array.isArray(context.items)) {
+    return evaluateBOQMultiAspect(context.items, {
+      targetDir: chassisInfo.catalogDir || '',
+      catalogData: chassisInfo.catalogData,
+      productConfirmed: !chassisInfo.isAmbiguous
+    });
+  } else {
+    return {
+      message: 'BOQ evaluation requested. Please upload or specify a BOQ file path or item list.',
+      suggestedAction: 'UPLOAD_BOQ_SPREADSHEET'
+    };
+  }
+}
+
+function _handleOcrQuoteIngestion(queryText, context) {
+  const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp)/i)?.[0] || '');
+  return {
+    intent: 'OCR_QUOTE_INGESTION',
+    filePath: imgPath,
+    skillTarget: 'ocr-quote-ingestion-skill',
+    status: 'READY_FOR_OCR',
+    message: `Image input identified (${path.basename(imgPath || 'quote')}). Routed to multimodal Gemini Vision OCR pipeline.`
+  };
+}
+
+function _handleCatalogIntelligence(queryText, context) {
+  const skuMatch = queryText.match(/[A-Z0-9]{5,7}-[A-Z0-9]{3,4}/i);
+  const targetSku = skuMatch ? cleanBaseSKU(skuMatch[0]) : null;
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const historyFile = chassisInfo.catalogDir ? path.join(chassisInfo.catalogDir, 'history', 'price_history.json') : null;
+  let skuHistory = null;
+  if (historyFile && fs.existsSync(historyFile)) {
+    try {
+      const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
+      skuHistory = targetSku ? (hist[targetSku] || null) : hist;
+    } catch (e) {}
+  }
+
+  let liveSkuDetails = null;
+  if (targetSku && chassisInfo.catalogData?.entries) {
+    for (const entry of chassisInfo.catalogData.entries) {
+      if (Array.isArray(entry.skus)) {
+        const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
+        if (found) {
+          liveSkuDetails = {
+            sku: found.sku || found['Product #'],
+            description: found.Description || found.description,
+            category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
+            subCategory: entry.subCategory || null,
+            lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
+            effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
+            discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
+            currentPriceUsd: found.listPrice || (found['Unit Price (USD)'] ? parseFloat(found['Unit Price (USD)']) : null),
+            priceHistoryTrail: found['Price History Trail'] || null,
+            availability: found.Availability || null
+          };
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    targetSku,
+    pricingTrail: skuHistory,
+    liveDetails: liveSkuDetails ? {
+      description: liveSkuDetails.description,
+      category: liveSkuDetails.category,
+      subCategory: liveSkuDetails.subCategory,
+      lifecycleStatus: liveSkuDetails.lifecycleStatus,
+      effectiveStartDate: liveSkuDetails.effectiveStartDate,
+      discontinuedDate: liveSkuDetails.discontinuedDate,
+      currentPriceUsd: liveSkuDetails.currentPriceUsd,
+      priceHistoryTrail: liveSkuDetails.priceHistoryTrail,
+      availability: liveSkuDetails.availability
+    } : null,
+    message: targetSku
+      ? `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`
+      : 'Catalog Intelligence retrieved across tracked portfolio.'
+  };
+}
+
+async function _handleRfpSizing(queryText, context) {
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
+  const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
+
+  let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
+  if (rawLines.length === 1) {
+    const clauses = queryText.split(/\s+(?:with|and|plus|,)\s+/i).map(c => c.trim()).filter(Boolean);
+    if (clauses.length > 1) rawLines = clauses;
+  }
+  const unresolvedRequirements = rawLines.map(line => ({ line }));
+
+  let sizingResult = null;
+  let candidateItems = [];
+  let evaluation = null;
+
+  if (chassisInfo.catalogData) {
+    sizingResult = resolveRequirementIntent({
+      rawLines,
+      unresolvedRequirements,
+      catalogData: chassisInfo.catalogData,
+      productConfirmed: true
+    });
+
+    const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
+    if (baseSku) {
+      candidateItems.push({
+        sku: baseSku,
+        quantity: 1,
+        description: `${chassisInfo.chassisKey} CTO Base Chassis`
+      });
+    }
+
+    (sizingResult.resolutions || []).forEach(r => {
+      const sku = r.appliedSku || r.candidates?.[0]?.sku;
+      if (sku && isValidHpeSKU(sku)) {
+        let qty = 1;
+        const qtyMatch = r.input.match(/\b(\d+)\s*(?:x|units?|pcs?|processors?|cpus?|dimms?|drives?|ssds?|psus?)\b/i);
+        if (qtyMatch) {
+          qty = parseInt(qtyMatch[1], 10) || 1;
+        } else if (r.expectedRole === 'Processor' && r.input.toLowerCase().includes('dual')) {
+          qty = 2;
+        }
+        candidateItems.push({
+          sku,
+          quantity: qty,
+          description: r.candidates?.[0]?.description || r.input,
+          role: r.expectedRole,
+          confidence: r.confidence
+        });
+      }
+    });
+
+    if (candidateItems.length > 0) {
+      try {
+        evaluation = evaluateBOQMultiAspect(candidateItems, {
+          chassis: chassisInfo.chassisKey,
+          targetDir: chassisInfo.catalogDir || '',
+          catalogData: chassisInfo.catalogData,
+          productConfirmed: !chassisInfo.isAmbiguous,
+          serverCount
+        });
+      } catch (evalErr) {
+        evaluation = { error: evalErr.message };
+      }
+    }
+  }
+
+  let traceId = null;
+  let evidenceLogPath = null;
+  try {
+    const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
+    const crypto = require('crypto');
+    const ledger = createEvidenceLedger({
+      chassis: chassisInfo.chassisKey,
+      serverCount,
+      totalRequestedLines: rawLines.length,
+      query: queryText,
+      filePath: context.filePath || null
+    });
+    traceId = ledger.traceId;
+    ledger.customerInput.filePath = context.filePath || 'QUERY_INPUT_SIZING';
+    ledger.customerInput.queryText = queryText;
+    ledger.recordArtifact('CUSTOMER_INPUT', null, {
+      queryText,
+      sha256: crypto.createHash('sha256').update(queryText).digest('hex'),
+      exists: true
+    });
+
+    ledger.startPhase(1, 'Presales Sizing Intake & Parsing', { query: queryText, serverCount });
+    ledger.completePhase(1, 'PASSED', { rawLineCount: rawLines.length, serverCount });
+
+    ledger.startPhase(2, 'Dynamic Catalog Resolution', { chassis: chassisInfo.chassisKey });
+    ledger.completePhase(2, chassisInfo.catalogData ? 'PASSED' : 'ACTION_REQUIRED', { chassisKey: chassisInfo.chassisKey });
+
+    ledger.startPhase(3, '7-Aspect Physical Evaluation of Sized Candidate BOM', { candidateItemCount: candidateItems.length });
+    candidateItems.forEach(item => {
+      ledger.recordSkuAudit(
+        item.sku,
+        'SIZED_CANDIDATE_SKU',
+        item.description || 'Synthesized from natural language sizing specification',
+        null,
+        item.role || item.category || 'Candidate Component',
+        { quantity: item.quantity, serverCount }
+      );
+    });
+    ledger.completePhase(3, evaluation && !evaluation.error && evaluation.mathFrameworkPass === true && !evaluation.errors?.length ? 'PASSED' : 'ACTION_REQUIRED', {
+      errors: evaluation?.errors?.length || 0,
+      confidenceScore: evaluation?.confidence?.score || null
+    });
+
+    ledger.startPhase(4, 'Workload DNA & Construction Plan Analysis', { constructionPlan: sizingResult?.constructionPlan || [] });
+    ledger.completePhase(4, sizingResult && !sizingResult.requiresHumanClarification ? 'PASSED' : 'ACTION_REQUIRED', { resolutionsCount: sizingResult?.resolutions?.length || 0 });
+
+    ledger.startPhase(5, 'Strategy Synthesis & Multi-Node Cluster Sizing', { serverCount });
+    ledger.completePhase(5, 'ACTION_REQUIRED', { clusterSizing: evaluation?.clusterSizing || null, reason: 'Sized candidates require full pipeline validation before ranking or delivery.' });
+
+    ledger.startPhase(6, 'Confidence Floor & Presales Clarification Scoring', { requiresClarification: sizingResult?.requiresHumanClarification });
+    ledger.completePhase(6, !sizingResult || sizingResult.requiresHumanClarification ? 'ACTION_REQUIRED' : 'PASSED', {
+      requiresHumanClarification: sizingResult?.requiresHumanClarification
+    });
+
+    ledger.startPhase(7, 'QuickSpecs & Dynamic Catalog Verification', { chassisKey: chassisInfo.chassisKey });
+    ledger.completePhase(7, 'ACTION_REQUIRED', { catalogAvailable: Boolean(chassisInfo.catalogData), reason: 'QuickSpecs and whole-candidate NotebookLM review have not run in the sizing path.' });
+
+    ledger.startPhase(8, 'Presales Candidate BOM Generation', { itemCount: candidateItems.length });
+    ledger.completePhase(8, 'ACTION_REQUIRED', { candidateBOM: candidateItems, reason: 'Draft sizing output only; no validated portal workbook or Google Sheet delivery.' });
+
+    ledger.startPhase(9, 'Presales Evidence Trace Finalization', {});
+    ledger.completePhase(9, 'ACTION_REQUIRED', { status: 'SIZING_DRAFT', reason: 'Knowledge synchronization has not run in the sizing path.' });
+
+    const exported = ledger.finalizeAndExport();
+    evidenceLogPath = exported.jsonPath;
+  } catch (err) {
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
+  }
+
+  return {
+    intent: 'RFP_SIZING_TO_BOM',
+    chassis: chassisInfo.chassisKey,
+    serverCount,
+    clusterSizing: evaluation?.clusterSizing || null,
+    sizingRequirements: sizingResult?.intent || null,
+    categoryCoverage: sizingResult?.categoryCoverage || null,
+    resolutions: sizingResult?.resolutions || [],
+    constructionPlan: sizingResult?.constructionPlan || [],
+    requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
+    candidateBOM: candidateItems,
+    evaluation,
+    traceId,
+    evidenceLogPath,
+    status: !sizingResult || sizingResult.requiresHumanClarification ? 'REQUIRES_HUMAN_CLARIFICATION' : 'SIZING_DRAFT'
+  };
+}
+
+function _handleBomReconciliation(queryText, context) {
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const vendorFile = context.vendorFilePath || context.secondaryFilePath || (context.filePath?.toLowerCase().includes('vendor') ? context.filePath : null);
+  const customerFile = context.customerFilePath || (context.secondaryFilePath ? context.filePath : null);
+
+  if (vendorFile && fs.existsSync(vendorFile)) {
+    let proposedSolution = null;
+    if (customerFile && fs.existsSync(customerFile)) {
+      const evalRes = evaluateBOQMultiAspect(customerFile);
+      proposedSolution = evalRes.matrix?.rank1 || {
+        rank: 1,
+        name: 'Rank 1: Baseline Intent Preserved',
+        skuList: evalRes.parsedItems || []
+      };
+    } else if (context.proposedSolution) {
+      proposedSolution = context.proposedSolution;
+    } else {
+      proposedSolution = { rank: 1, name: 'Baseline Evaluation', skuList: [] };
+    }
+
+    const auditReport = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir);
+    if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
+      auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
+        sku,
+        isValidFormat: isValidHpeSKU(sku),
+        note: isValidHpeSKU(sku)
+          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+      }));
+    }
+    return {
+      intent: 'BOM_RECONCILIATION',
+      auditReport,
+      message: auditReport.is100PercentMatch
+        ? 'Vendor quote perfectly matches proposed configuration.'
+        : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`
+    };
+  } else if (context.filePath && fs.existsSync(context.filePath)) {
+    const auditReport = verifyVendorBOM(path.resolve(context.filePath), { rank: 1, skuList: [] }, chassisInfo.catalogDir);
+    if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
+      auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
+        sku,
+        isValidFormat: isValidHpeSKU(sku),
+        note: isValidHpeSKU(sku)
+          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+      }));
+    }
+    return {
+      intent: 'BOM_RECONCILIATION',
+      auditReport,
+      message: `Single-file audit completed against catalog ${chassisInfo.chassisKey}.`
+    };
+  } else {
+    return {
+      intent: 'BOM_RECONCILIATION',
+      message: 'BOM Reconciliation requires a vendor quote file (--vendor) and optional customer tender file (--customer).',
+      suggestedAction: 'UPLOAD_VENDOR_AND_CUSTOMER_SPREADSHEETS'
+    };
+  }
+}
+
+/**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
  * @param {object} context 
@@ -290,372 +649,31 @@ async function executeRoutedQuery(queryText = '', context = {}) {
   let responseData = null;
 
   switch (classification.intent) {
-    case 'FREEFORM_QA': {
-      const chassisInfo = getChassisCatalog(queryText, context);
-      const chassisName = context.chassisName || context.model || chassisInfo.chassisKey;
-      let ragResult = null;
-      let isCloudGrounded = false;
-      let cloudSource = null;
-
-      const isOffline = Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true');
-      if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
-        try {
-          const { resolveProductNotebookId } = require('../lib/sync/nlm_solution_source_validator.js');
-          const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
-          const notebookId = resolveProductNotebookId(chassisName);
-          if (notebookId) {
-            const queryRes = await executeNotebookQuery(notebookId, queryText, {
-              context: { chassis: chassisName },
-              timeout: 15000
-            });
-            if (queryRes && queryRes.answer && !queryRes.isFallback) {
-              ragResult = queryRes;
-              isCloudGrounded = queryRes.isCloudGrounded;
-              cloudSource = queryRes.source;
-            }
-          }
-        } catch (_) {}
-      }
-
-      if (!ragResult) {
-        ragResult = queryLocalKnowledgeBase(queryText, chassisName);
-      }
-
-      responseData = {
-        chassis: chassisName,
-        catalogDir: chassisInfo.catalogDir,
-        answer: ragResult.answer,
-        citations: ragResult.citations || [],
-        source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
-        isCloudGrounded: Boolean(isCloudGrounded)
-      };
+    case 'FREEFORM_QA':
+      responseData = await _handleFreeformQa(queryText, context);
       break;
-    }
 
-    case 'BOQ_EVALUATION': {
-      const chassisInfo = getChassisCatalog(queryText, context);
-      if (context.filePath && fs.existsSync(context.filePath)) {
-        try {
-          const { runEvaluationPipeline } = require('./eval_boq.js');
-          const evalRes = await runEvaluationPipeline({
-            inputFile: context.filePath,
-            chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
-            targetSheetName: context.targetSheet || undefined,
-            JSON_MODE: true,
-            OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
-          });
-          responseData = evalRes;
-        } catch (pipeErr) {
-          responseData = { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
-        }
-      } else if (context.items && Array.isArray(context.items)) {
-        responseData = evaluateBOQMultiAspect(context.items, {
-          targetDir: chassisInfo.catalogDir || '',
-          catalogData: chassisInfo.catalogData,
-          productConfirmed: !chassisInfo.isAmbiguous
-        });
-      } else {
-        responseData = {
-          message: 'BOQ evaluation requested. Please upload or specify a BOQ file path or item list.',
-          suggestedAction: 'UPLOAD_BOQ_SPREADSHEET'
-        };
-      }
+    case 'BOQ_EVALUATION':
+      responseData = await _handleBoqEvaluation(queryText, context);
       break;
-    }
 
-    case 'OCR_QUOTE_INGESTION': {
-      const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp)/i)?.[0] || '');
-      responseData = {
-        intent: 'OCR_QUOTE_INGESTION',
-        filePath: imgPath,
-        skillTarget: 'ocr-quote-ingestion-skill',
-        status: 'READY_FOR_OCR',
-        message: `Image input identified (${path.basename(imgPath || 'quote')}). Routed to multimodal Gemini Vision OCR pipeline.`
-      };
+    case 'OCR_QUOTE_INGESTION':
+      responseData = _handleOcrQuoteIngestion(queryText, context);
       break;
-    }
 
-    case 'CATALOG_INTELLIGENCE': {
-      const skuMatch = queryText.match(/[A-Z0-9]{5,7}-[A-Z0-9]{3,4}/i);
-      const targetSku = skuMatch ? cleanBaseSKU(skuMatch[0]) : null;
-      const chassisInfo = getChassisCatalog(queryText, context);
-      const historyFile = chassisInfo.catalogDir ? path.join(chassisInfo.catalogDir, 'history', 'price_history.json') : null;
-      let skuHistory = null;
-      if (historyFile && fs.existsSync(historyFile)) {
-        try {
-          const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
-          skuHistory = targetSku ? (hist[targetSku] || null) : hist;
-        } catch (e) {}
-      }
-
-      let liveSkuDetails = null;
-      if (targetSku && chassisInfo.catalogData?.entries) {
-        for (const entry of chassisInfo.catalogData.entries) {
-          if (Array.isArray(entry.skus)) {
-            const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
-            if (found) {
-              liveSkuDetails = {
-                sku: found.sku || found['Product #'],
-                description: found.Description || found.description,
-                category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
-                subCategory: entry.subCategory || null,
-                lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
-                effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
-                discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
-                currentPriceUsd: found.listPrice || (found['Unit Price (USD)'] ? parseFloat(found['Unit Price (USD)']) : null),
-                priceHistoryTrail: found['Price History Trail'] || null,
-                availability: found.Availability || null
-              };
-              break;
-            }
-          }
-        }
-      }
-
-      responseData = {
-        targetSku,
-        pricingTrail: skuHistory,
-        liveDetails: liveSkuDetails ? {
-          description: liveSkuDetails.description,
-          category: liveSkuDetails.category,
-          subCategory: liveSkuDetails.subCategory,
-          lifecycleStatus: liveSkuDetails.lifecycleStatus,
-          effectiveStartDate: liveSkuDetails.effectiveStartDate,
-          discontinuedDate: liveSkuDetails.discontinuedDate,
-          currentPriceUsd: liveSkuDetails.currentPriceUsd,
-          priceHistoryTrail: liveSkuDetails.priceHistoryTrail,
-          availability: liveSkuDetails.availability
-        } : null,
-        message: targetSku
-          ? `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`
-          : 'Catalog Intelligence retrieved across tracked portfolio.'
-      };
+    case 'CATALOG_INTELLIGENCE':
+      responseData = _handleCatalogIntelligence(queryText, context);
       break;
-    }
 
-    case 'RFP_SIZING_TO_BOM': {
-      const chassisInfo = getChassisCatalog(queryText, context);
-      const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
-      const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
-
-      let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
-      if (rawLines.length === 1) {
-        const clauses = queryText.split(/\s+(?:with|and|plus|,)\s+/i).map(c => c.trim()).filter(Boolean);
-        if (clauses.length > 1) rawLines = clauses;
-      }
-      const unresolvedRequirements = rawLines.map(line => ({ line }));
-
-      let sizingResult = null;
-      let candidateItems = [];
-      let evaluation = null;
-
-      if (chassisInfo.catalogData) {
-        sizingResult = resolveRequirementIntent({
-          rawLines,
-          unresolvedRequirements,
-          catalogData: chassisInfo.catalogData,
-          productConfirmed: true
-        });
-
-        // Inject base chassis SKU if available
-        const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
-        if (baseSku) {
-          candidateItems.push({
-            sku: baseSku,
-            quantity: 1,
-            description: `${chassisInfo.chassisKey} CTO Base Chassis`
-          });
-        }
-
-        (sizingResult.resolutions || []).forEach(r => {
-          const sku = r.appliedSku || r.candidates?.[0]?.sku;
-          if (sku && isValidHpeSKU(sku)) {
-            let qty = 1;
-            const qtyMatch = r.input.match(/\b(\d+)\s*(?:x|units?|pcs?|processors?|cpus?|dimms?|drives?|ssds?|psus?)\b/i);
-            if (qtyMatch) {
-              qty = parseInt(qtyMatch[1], 10) || 1;
-            } else if (r.expectedRole === 'Processor' && r.input.toLowerCase().includes('dual')) {
-              qty = 2;
-            }
-            candidateItems.push({
-              sku,
-              quantity: qty,
-              description: r.candidates?.[0]?.description || r.input,
-              role: r.expectedRole,
-              confidence: r.confidence
-            });
-          }
-        });
-
-        // Run multi-aspect evaluation across all 7 physical aspects to synthesize Rank 1 - 5 matrix
-        if (candidateItems.length > 0) {
-          try {
-            evaluation = evaluateBOQMultiAspect(candidateItems, {
-              chassis: chassisInfo.chassisKey,
-              targetDir: chassisInfo.catalogDir || '',
-              catalogData: chassisInfo.catalogData,
-              productConfirmed: !chassisInfo.isAmbiguous,
-              serverCount
-            });
-          } catch (evalErr) {
-            evaluation = { error: evalErr.message };
-          }
-        }
-      }
-
-      let traceId = null;
-      let evidenceLogPath = null;
-      try {
-        const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
-        const crypto = require('crypto');
-        const ledger = createEvidenceLedger({
-          chassis: chassisInfo.chassisKey,
-          serverCount,
-          totalRequestedLines: rawLines.length,
-          query: queryText,
-          filePath: context.filePath || null
-        });
-        traceId = ledger.traceId;
-        ledger.customerInput.filePath = context.filePath || 'QUERY_INPUT_SIZING';
-        ledger.customerInput.queryText = queryText;
-        ledger.recordArtifact('CUSTOMER_INPUT', null, {
-          queryText,
-          sha256: crypto.createHash('sha256').update(queryText).digest('hex'),
-          exists: true
-        });
-
-        ledger.startPhase(1, 'Presales Sizing Intake & Parsing', { query: queryText, serverCount });
-        ledger.completePhase(1, 'PASSED', { rawLineCount: rawLines.length, serverCount });
-
-        ledger.startPhase(2, 'Dynamic Catalog Resolution', { chassis: chassisInfo.chassisKey });
-        ledger.completePhase(2, chassisInfo.catalogData ? 'PASSED' : 'ACTION_REQUIRED', { chassisKey: chassisInfo.chassisKey });
-
-        ledger.startPhase(3, '7-Aspect Physical Evaluation of Sized Candidate BOM', { candidateItemCount: candidateItems.length });
-        candidateItems.forEach(item => {
-          ledger.recordSkuAudit(
-            item.sku,
-            'SIZED_CANDIDATE_SKU',
-            item.description || 'Synthesized from natural language sizing specification',
-            null,
-            item.role || item.category || 'Candidate Component',
-            { quantity: item.quantity, serverCount }
-          );
-        });
-        ledger.completePhase(3, evaluation && !evaluation.error && evaluation.mathFrameworkPass === true && !evaluation.errors?.length ? 'PASSED' : 'ACTION_REQUIRED', {
-          errors: evaluation?.errors?.length || 0,
-          confidenceScore: evaluation?.confidence?.score || null
-        });
-
-        ledger.startPhase(4, 'Workload DNA & Construction Plan Analysis', { constructionPlan: sizingResult?.constructionPlan || [] });
-        ledger.completePhase(4, sizingResult && !sizingResult.requiresHumanClarification ? 'PASSED' : 'ACTION_REQUIRED', { resolutionsCount: sizingResult?.resolutions?.length || 0 });
-
-        ledger.startPhase(5, 'Strategy Synthesis & Multi-Node Cluster Sizing', { serverCount });
-        ledger.completePhase(5, 'ACTION_REQUIRED', { clusterSizing: evaluation?.clusterSizing || null, reason: 'Sized candidates require full pipeline validation before ranking or delivery.' });
-
-        ledger.startPhase(6, 'Confidence Floor & Presales Clarification Scoring', { requiresClarification: sizingResult?.requiresHumanClarification });
-        ledger.completePhase(6, !sizingResult || sizingResult.requiresHumanClarification ? 'ACTION_REQUIRED' : 'PASSED', {
-          requiresHumanClarification: sizingResult?.requiresHumanClarification
-        });
-
-        ledger.startPhase(7, 'QuickSpecs & Dynamic Catalog Verification', { chassisKey: chassisInfo.chassisKey });
-        ledger.completePhase(7, 'ACTION_REQUIRED', { catalogAvailable: Boolean(chassisInfo.catalogData), reason: 'QuickSpecs and whole-candidate NotebookLM review have not run in the sizing path.' });
-
-        ledger.startPhase(8, 'Presales Candidate BOM Generation', { itemCount: candidateItems.length });
-        ledger.completePhase(8, 'ACTION_REQUIRED', { candidateBOM: candidateItems, reason: 'Draft sizing output only; no validated portal workbook or Google Sheet delivery.' });
-
-        ledger.startPhase(9, 'Presales Evidence Trace Finalization', {});
-        ledger.completePhase(9, 'ACTION_REQUIRED', { status: 'SIZING_DRAFT', reason: 'Knowledge synchronization has not run in the sizing path.' });
-
-        const exported = ledger.finalizeAndExport();
-        evidenceLogPath = exported.jsonPath;
-      } catch (err) {
-        const _logger = require('../lib/system/pipeline_logger.js');
-        _logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
-      }
-
-      responseData = {
-        intent: 'RFP_SIZING_TO_BOM',
-        chassis: chassisInfo.chassisKey,
-        serverCount,
-        clusterSizing: evaluation?.clusterSizing || null,
-        sizingRequirements: sizingResult?.intent || null,
-        categoryCoverage: sizingResult?.categoryCoverage || null,
-        resolutions: sizingResult?.resolutions || [],
-        constructionPlan: sizingResult?.constructionPlan || [],
-        requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
-        candidateBOM: candidateItems,
-        evaluation,
-        traceId,
-        evidenceLogPath,
-        status: !sizingResult || sizingResult.requiresHumanClarification ? 'REQUIRES_HUMAN_CLARIFICATION' : 'SIZING_DRAFT'
-      };
+    case 'RFP_SIZING_TO_BOM':
+      responseData = await _handleRfpSizing(queryText, context);
       break;
-    }
 
-    case 'BOM_RECONCILIATION': {
-      const chassisInfo = getChassisCatalog(queryText, context);
-      const vendorFile = context.vendorFilePath || context.secondaryFilePath || (context.filePath?.toLowerCase().includes('vendor') ? context.filePath : null);
-      const customerFile = context.customerFilePath || (context.secondaryFilePath ? context.filePath : null);
-
-      if (vendorFile && fs.existsSync(vendorFile)) {
-        let proposedSolution = null;
-        if (customerFile && fs.existsSync(customerFile)) {
-          const evalRes = evaluateBOQMultiAspect(customerFile);
-          proposedSolution = evalRes.matrix?.rank1 || {
-            rank: 1,
-            name: 'Rank 1: Baseline Intent Preserved',
-            skuList: evalRes.parsedItems || []
-          };
-        } else if (context.proposedSolution) {
-          proposedSolution = context.proposedSolution;
-        } else {
-          proposedSolution = { rank: 1, name: 'Baseline Evaluation', skuList: [] };
-        }
-
-        const auditReport = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir);
-        if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-          auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
-            sku,
-            isValidFormat: isValidHpeSKU(sku),
-            note: isValidHpeSKU(sku)
-              ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-              : 'Unrecognized SKU format; potential typo or non-HPE part number.'
-          }));
-        }
-        responseData = {
-          intent: 'BOM_RECONCILIATION',
-          auditReport,
-          message: auditReport.is100PercentMatch
-            ? 'Vendor quote perfectly matches proposed configuration.'
-            : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`
-        };
-      } else if (context.filePath && fs.existsSync(context.filePath)) {
-        const auditReport = verifyVendorBOM(path.resolve(context.filePath), { rank: 1, skuList: [] }, chassisInfo.catalogDir);
-        if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-          auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
-            sku,
-            isValidFormat: isValidHpeSKU(sku),
-            note: isValidHpeSKU(sku)
-              ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-              : 'Unrecognized SKU format; potential typo or non-HPE part number.'
-          }));
-        }
-        responseData = {
-          intent: 'BOM_RECONCILIATION',
-          auditReport,
-          message: `Single-file audit completed against catalog ${chassisInfo.chassisKey}.`
-        };
-      } else {
-        responseData = {
-          intent: 'BOM_RECONCILIATION',
-          message: 'BOM Reconciliation requires a vendor quote file (--vendor) and optional customer tender file (--customer).',
-          suggestedAction: 'UPLOAD_VENDOR_AND_CUSTOMER_SPREADSHEETS'
-        };
-      }
+    case 'BOM_RECONCILIATION':
+      responseData = _handleBomReconciliation(queryText, context);
       break;
-    }
 
-    default: {
+    default:
       responseData = {
         intent: classification.intent,
         skillTarget: classification.skillTarget,
@@ -663,7 +681,6 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         promptContext: queryText
       };
       break;
-    }
   }
 
   return {

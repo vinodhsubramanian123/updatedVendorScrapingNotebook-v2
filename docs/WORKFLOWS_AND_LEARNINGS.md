@@ -1590,3 +1590,23 @@ Following the second-wave audit and comprehensive adversarial verification acros
 - **`INV-110: Safe Search Tokenizer & Regex Metacharacter Sanitization`**: Query tokenizers must strip markdown syntax and escape regex metacharacters (`replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`) before passing tokens to `new RegExp`.
 - **`INV-111: Error Trace Correlation in Machine-Parseable Output`**: Evaluator error handlers must attach `traceId` and `evidenceLogPath` and emit them in `__EVAL_RESULT_JSON__{ status: 'ERROR', error: ..., data: { traceId, evidenceLogPath } }__EVAL_RESULT_JSON__` on fatal failures.
 
+---
+
+### 5. Deep Learnings from Third-Wave Autonomous Perfection & Token Optimization (`INV-112` to `INV-116`)
+
+During the third-wave continuous learning audit and `/goal perfection` milestone, five additional systemic invariants and an optimal 3-tier cognitive architecture were codified:
+
+#### A. Codified Invariants (INV-112 through INV-116)
+- **`INV-112: Direct Catalog Option Table Schema Traversal`**: Option tables in HPE OCA scraped catalogs are structured under `catalogData.entries[].skus[]`. Catalog intelligence parsers must iterate directly over entries and nested skus rather than assuming a `categories` object, extracting `parentCategory`, `subCategory`, `lifecycleStatus`, and `listPrice`.
+- **`INV-113: Chassis-Scoped Historical Pricing Partitioning`**: Historical price trail records are partitioned strictly per product chassis at `outputs/{Family}/{Gen}/{Model}/history/price_history.json`. Queries must dynamically resolve the target model directory via `catalog_discovery.js` instead of assuming a global history file.
+- **`INV-114: Strict-Mode Variable Scope Hoisting in Multi-Branch Dispatchers`**: In `'use strict'` dispatchers and `switch` statements, variables referenced across conditional branches (`chassisInfo`, `context`) must be hoisted to block or function scope before branching on file vs in-memory items, preventing temporal dead zone `ReferenceError` hazards.
+- **`INV-115: Position-Independent CLI Argument Parsing`**: Command-line evaluators (`eval_boq.js`) must scan for non-flag tokens and support explicit `--file <path>`, ensuring option flags (`--offline`, `--json`, `--chassis`) placed before the target file do not trigger false "file not found" errors.
+- **`INV-116: Full 9-Phase Terminal Evidence Lifecycle for Presales Sizing`**: Presales pipelines that generate an `EvidenceLedger` (`RFP_SIZING_TO_BOM`) must advance all 9 phases to a terminal status (`PASSED`, `ACTION_REQUIRED`, or `RESOLVED`), cryptographically fingerprint customer requirements (`CUSTOMER_INPUT` SHA-256), and log candidate SKUs in `skuAuditLedger`, guaranteeing 100% healthy evidence logs (`healthy: true`, `gaps: []`).
+
+#### B. 3-Tier Cognitive Architecture for Token Optimization
+To permanently prevent static rule bloat from causing prompt truncation and skill exclusion:
+1. **Tier 1: Master Operating Charter (`AGENTS.md`)**: Streamlined to ~9.7 KB with universal pre-approvals (`INV-0`), Dual-Brain principles, and a complete Dynamic Skill Dispatch Matrix. `.agents/AGENTS.md` is a 1.2 KB pointer. Ensures 100% of skills are visible in the `<skills>` prompt without truncation.
+2. **Tier 2: On-Demand Dynamic Skills (`.agents/skills/*/SKILL.md`)**: 23 specialized workflow guides loaded only when user intents trigger them, freeing 90%+ of the active context window.
+3. **Tier 3: Dynamic Epistemic Truth & Semantic Graph**: Full 116 Invariant specifications stored in [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md), cognitive anti-patterns stored in [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///c:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2/.agents/rules/epistemic_truth_and_deep_reasoning.md), and dynamic code relationships traversed via `/graphify query`.
+
+
