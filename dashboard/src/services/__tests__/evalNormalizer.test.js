@@ -131,7 +131,7 @@ describe('evalNormalizer', () => {
       expect(result.items).toEqual([]);
       expect(result.bomItems).toEqual([]);
       expect(result.unclassifiedSkus).toEqual([]);
-      expect(result.chassis).toBe('DL380_Gen12_SFF');
+      expect(result.chassis).toBe('UNKNOWN_PRODUCT');
       expect(result.targetBudgetUsd).toBe(0);
       expect(result.errors).toEqual([]);
       expect(result.warnings).toEqual([]);
