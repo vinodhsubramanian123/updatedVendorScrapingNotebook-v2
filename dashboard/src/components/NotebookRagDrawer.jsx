@@ -150,16 +150,18 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
       <div className="flex border-b border-slate-200 mb-4">
         <button
           onClick={() => setActiveTab('QUERY')}
-          className={`pb-2 px-3 text-xs font-bold border-b-2 transition-colors ${
-            activeTab === 'QUERY' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
+          aria-label="RAG Query and Scenarios Tab"
+          className={`pb-2 px-3 text-xs font-bold border-b-2 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:rounded ${
+            activeTab === 'QUERY' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           RAG Query & Scenarios
         </button>
         <button
           onClick={() => setActiveTab('HISTORY')}
-          className={`pb-2 px-3 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
-            activeTab === 'HISTORY' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
+          aria-label="Consultation History Ledger Tab"
+          className={`pb-2 px-3 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:rounded ${
+            activeTab === 'HISTORY' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           Consultation History Ledger
