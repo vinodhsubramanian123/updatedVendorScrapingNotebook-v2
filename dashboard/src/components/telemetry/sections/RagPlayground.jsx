@@ -40,6 +40,7 @@ export default function RagPlayground() {
           onKeyDown={(e) => { if (e.key === 'Enter') handleRagQuery(); }}
         />
         <button
+          aria-label="Run RAG Search"
           onClick={handleRagQuery}
           disabled={isQuerying || !ragQuery.trim()}
           className="btn-primary text-xs shrink-0 disabled:opacity-50"

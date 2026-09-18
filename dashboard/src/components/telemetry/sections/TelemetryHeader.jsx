@@ -14,6 +14,7 @@ export default function TelemetryHeader({ onRefresh, loading }) {
         </p>
       </div>
       <button
+        aria-label="Refresh Telemetry Data"
         onClick={onRefresh}
         disabled={loading}
         className="btn-secondary text-xs"

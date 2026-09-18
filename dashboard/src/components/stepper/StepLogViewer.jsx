@@ -49,6 +49,7 @@ export default function StepLogViewer({
           </select>
 
           <button
+            aria-label="Copy logs to clipboard"
             onClick={onCopyLogs}
             className="p-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[11px] flex items-center gap-1 px-2 transition-colors"
             title="Copy logs"
