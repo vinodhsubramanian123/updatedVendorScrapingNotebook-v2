@@ -40,6 +40,9 @@ setSessionInfo({ error: 'Failed to connect to CDP observability endpoint' });
     <div className="relative">
       <button
         onClick={handleOpenObservability}
+        aria-haspopup="dialog"
+        aria-expanded={showPopover}
+        aria-busy={loadingObs}
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${
           status.status === 'READY'
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
