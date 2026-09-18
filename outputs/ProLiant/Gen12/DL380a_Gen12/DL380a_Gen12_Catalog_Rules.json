@@ -913,6 +913,34 @@
       "constraint": "",
       "maxQty": "",
       "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "P74700-B21",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Observed price drift on P74700-B21 (memory)"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "S4A91C",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Observed price drift on S4A91C (drive)"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "HA113A1",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Observed price drift on HA113A1 (support)"
+    },
+    {
+      "parentCategory": "Learned Feedback Rules",
+      "subCategory": "HU4B2A30C4W",
+      "constraint": "learned",
+      "maxQty": 1,
+      "rule": "Observed price drift on HU4B2A30C4W (service)"
     }
   ]
 }

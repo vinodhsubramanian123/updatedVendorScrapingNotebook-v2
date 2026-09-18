@@ -157,10 +157,10 @@ async function auditAndPromoteStaging({
   // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
   let postFlowSyncResult = null;
   try {
-    const { triggerPostFlowSync } = require('../lib/sync/post_flow_sync.js');
-    postFlowSyncResult = triggerPostFlowSync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true });
+    const { triggerPostFlowSyncAsync } = require('../lib/sync/post_flow_sync.js');
+    postFlowSyncResult = await triggerPostFlowSyncAsync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true, syncRunningKnowledge: true });
   } catch (syncErr) {
-    console.warn('Warning during triggerPostFlowSync:', syncErr.message);
+    console.warn('Warning during triggerPostFlowSyncAsync:', syncErr.message);
     postFlowSyncResult = { success: false, error: syncErr.message };
   }
 

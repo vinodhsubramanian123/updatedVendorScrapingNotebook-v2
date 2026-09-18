@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-18T17:13:45.564Z  
-**Total Deduplicated Learned Rules:** 69  
+**Last Synchronized:** 2026-09-18T17:31:12.349Z  
+**Total Deduplicated Learned Rules:** 73  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **69**.
+Total verified rules indexed in this build: **73**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -185,6 +185,10 @@ Total verified rules indexed in this build: **69**.
 | 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |

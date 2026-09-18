@@ -98,7 +98,7 @@ export default function ResolutionMatrix({
           score: sol.score || 0.9,
           intentMatch: sol.tradeoffMetrics?.intentAlignment || `${Math.round((sol.score || 0.9) * 100)}%`,
           capex: sol.pricingComplete === false
-            ? `Pricing incomplete (${sol.priceUnavailableSkus?.length || 0} SKU${sol.priceUnavailableSkus?.length === 1 ? '' : 's'})`
+            ? `Partial: $${Number(sol.estimatedCostUsd || 0).toLocaleString()} (Missing: ${sol.priceUnavailableSkus?.length || 0} SKU${sol.priceUnavailableSkus?.length === 1 ? '' : 's'})`
             : `$${Number(sol.estimatedCostUsd || 0).toLocaleString()}`,
           budgetBreakdown: sol.budgetBreakdown || null,
           badgeClass: sol.rank === 1 ? 'badge-emerald' : sol.rank <= 3 ? 'badge-blue' : 'badge-amber',

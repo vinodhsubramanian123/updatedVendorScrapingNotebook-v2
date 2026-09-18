@@ -151,8 +151,10 @@ async function triggerPostFlowSyncAsync(chassisName = 'Unknown_Chassis', flowTyp
   }
   delete result.runningKnowledgePromise;
   if (options.syncRunningKnowledge && !result.runningKnowledgeSynced) {
-    result.success = false;
-    result.error = result.error || 'Running knowledge synchronization did not complete successfully';
+    // GAP-2 FIX: Do not override result.success to false here.
+    // A failure in running knowledge sync should be an advisory warning, not a fatal flow error.
+    const logger = require('../system/pipeline_logger.js');
+    logger.warn('POST_FLOW_SYNC', 'Running knowledge synchronization did not complete successfully (non-fatal)');
   }
   return result;
 }

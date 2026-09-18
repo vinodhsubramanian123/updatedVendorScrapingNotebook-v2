@@ -33,8 +33,8 @@ function isGlobalItem(it, multiplier = 1) {
     /^(?:HPE )?(?:Installation Service|3Y Tech Care Basic Service)$/i.test(it.description || '')) {
     return true;
   }
-  // Transceivers or cables that cannot divide evenly into the configuration multiplier are order-level infrastructure
-  if (multiplier > 1 && /\btransceiver\b/i.test(it.description || '')) {
+  // Transceivers, switches, racks, cables that cannot divide evenly into the configuration multiplier are order-level infrastructure
+  if (multiplier > 1 && /\b(?:transceiver|switch|rack|pdu|ups|cable|dac|aoc|kvm)\b/i.test(it.description || '')) {
     const raw = Number(it.quantity ?? it.qty ?? 1);
     if (!Number.isInteger(raw / multiplier)) {
       return true;

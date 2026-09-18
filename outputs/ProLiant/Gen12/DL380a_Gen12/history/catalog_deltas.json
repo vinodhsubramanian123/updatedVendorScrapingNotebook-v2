@@ -1,0 +1,261 @@
+[
+  {
+    "deltaId": "DELTA-1789752537004-v9j6p",
+    "traceId": null,
+    "timestamp": "2026-09-18T17:28:57.003Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Price drift detected for P74700-B21: required for solution accuracy",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "P74700-B21",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Observed price drift on P74700-B21 (memory)",
+    "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "HUMAN_AUDITOR",
+    "citations": [
+      "HPE OCA Verified Data 5155756524-01"
+    ],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.95,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "PROMOTED",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.95,
+    "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+    "validatedAt": "2026-09-18T17:28:57.029Z",
+    "governanceStatus": "ACTIVE",
+    "quarantineId": "QUARANTINE_55d46c7d05d0c059",
+    "firstSeenAt": "2026-09-18T17:27:23.051Z",
+    "lastSeenAt": "2026-09-18T17:28:57.015Z",
+    "observationCount": 3,
+    "quarantinedAt": "2026-09-18T17:28:57.015Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+      "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+      "Evidence-backed decision awaiting atomic promotion"
+    ],
+    "humanReview": {
+      "reviewer": "antigravity-auditor",
+      "reasoning": "Confirmed delta via official vendor documentation",
+      "verified": true,
+      "decision": "APPROVE",
+      "evidence": [
+        {
+          "type": "OFFICIAL_VENDOR_PORTAL",
+          "id": "5155756524-01"
+        }
+      ]
+    },
+    "promotedAt": "2026-09-18T17:28:57.029Z",
+    "promotedBy": "antigravity-auditor",
+    "postConfidenceScore": 0.95,
+    "confidenceHistory": [
+      {
+        "timestamp": "2026-09-18T17:28:57.029Z",
+        "from": 0.95,
+        "to": 0.95,
+        "reason": "Confirmed delta via official vendor documentation",
+        "evidenceIds": [
+          "5155756524-01"
+        ]
+      }
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789752537592-otj9t",
+    "traceId": null,
+    "timestamp": "2026-09-18T17:28:57.592Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Price drift detected for S4A91C: required for solution accuracy",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "S4A91C",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Observed price drift on S4A91C (drive)",
+    "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "HUMAN_AUDITOR",
+    "citations": [
+      "HPE OCA Verified Data 5155756524-01"
+    ],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.95,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "PROMOTED",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.95,
+    "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+    "validatedAt": "2026-09-18T17:28:57.613Z",
+    "governanceStatus": "ACTIVE",
+    "quarantineId": "QUARANTINE_1e9d00353f4dc525",
+    "firstSeenAt": "2026-09-18T17:27:23.068Z",
+    "lastSeenAt": "2026-09-18T17:28:57.602Z",
+    "observationCount": 3,
+    "quarantinedAt": "2026-09-18T17:28:57.602Z",
+    "quarantineReasons": [
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+      "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+      "Evidence-backed decision awaiting atomic promotion"
+    ],
+    "humanReview": {
+      "reviewer": "antigravity-auditor",
+      "reasoning": "Confirmed delta via official vendor documentation",
+      "verified": true,
+      "decision": "APPROVE",
+      "evidence": [
+        {
+          "type": "OFFICIAL_VENDOR_PORTAL",
+          "id": "5155756524-01"
+        }
+      ]
+    },
+    "promotedAt": "2026-09-18T17:28:57.613Z",
+    "promotedBy": "antigravity-auditor",
+    "postConfidenceScore": 0.95,
+    "confidenceHistory": [
+      {
+        "timestamp": "2026-09-18T17:28:57.613Z",
+        "from": 0.95,
+        "to": 0.95,
+        "reason": "Confirmed delta via official vendor documentation",
+        "evidenceIds": [
+          "5155756524-01"
+        ]
+      }
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789752537783-790yf",
+    "traceId": null,
+    "timestamp": "2026-09-18T17:28:57.783Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Price drift detected for HA113A1: required for solution accuracy",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "HA113A1",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Observed price drift on HA113A1 (support)",
+    "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "HUMAN_AUDITOR",
+    "citations": [
+      "HPE OCA Verified Data 5155756524-01"
+    ],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.95,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "PROMOTED",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.95,
+    "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+    "validatedAt": "2026-09-18T17:28:57.799Z",
+    "governanceStatus": "ACTIVE",
+    "quarantineId": "QUARANTINE_82b64b6852109a8c",
+    "firstSeenAt": "2026-09-18T17:28:25.672Z",
+    "lastSeenAt": "2026-09-18T17:28:57.789Z",
+    "observationCount": 2,
+    "quarantinedAt": "2026-09-18T17:28:57.789Z",
+    "quarantineReasons": [
+      "SKU HA113A1 not found in target catalog; held in quarantine for manual verification",
+      "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+      "Evidence-backed decision awaiting atomic promotion"
+    ],
+    "humanReview": {
+      "reviewer": "antigravity-auditor",
+      "reasoning": "Confirmed delta via official vendor documentation",
+      "verified": true,
+      "decision": "APPROVE",
+      "evidence": [
+        {
+          "type": "OFFICIAL_VENDOR_PORTAL",
+          "id": "5155756524-01"
+        }
+      ]
+    },
+    "promotedAt": "2026-09-18T17:28:57.799Z",
+    "promotedBy": "antigravity-auditor",
+    "postConfidenceScore": 0.95,
+    "confidenceHistory": [
+      {
+        "timestamp": "2026-09-18T17:28:57.799Z",
+        "from": 0.95,
+        "to": 0.95,
+        "reason": "Confirmed delta via official vendor documentation",
+        "evidenceIds": [
+          "5155756524-01"
+        ]
+      }
+    ]
+  },
+  {
+    "deltaId": "DELTA-1789752537975-31r35",
+    "traceId": null,
+    "timestamp": "2026-09-18T17:28:57.975Z",
+    "chassis": "DL380a_Gen12",
+    "rawMessage": "Price drift detected for HU4B2A30C4W: required for solution accuracy",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "affectedSku": "HU4B2A30C4W",
+    "requiredDependencySku": null,
+    "ruleUpdate": "Observed price drift on HU4B2A30C4W (service)",
+    "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+    "sourceAgent": "PORTAL_OBSERVATION",
+    "source": "HUMAN_AUDITOR",
+    "citations": [
+      "HPE OCA Verified Data 5155756524-01"
+    ],
+    "guardrailTurn": null,
+    "preConfidenceScore": 0.95,
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "solutionType": "General Server",
+    "status": "PROMOTED",
+    "scope": "CHASSIS_SPECIFIC",
+    "confidenceScore": 0.95,
+    "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+    "validatedAt": "2026-09-18T17:28:57.991Z",
+    "governanceStatus": "ACTIVE",
+    "quarantineId": "QUARANTINE_13a413006139592a",
+    "firstSeenAt": "2026-09-18T17:27:23.098Z",
+    "lastSeenAt": "2026-09-18T17:28:57.980Z",
+    "observationCount": 3,
+    "quarantinedAt": "2026-09-18T17:28:57.980Z",
+    "quarantineReasons": [
+      "SKU HU4B2A30C4W not found in target catalog; held in quarantine for manual verification",
+      "Automated learning has no traceable source citation; held for evidence review",
+      "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+      "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+      "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+      "Evidence-backed decision awaiting atomic promotion"
+    ],
+    "humanReview": {
+      "reviewer": "antigravity-auditor",
+      "reasoning": "Confirmed delta via official vendor documentation",
+      "verified": true,
+      "decision": "APPROVE",
+      "evidence": [
+        {
+          "type": "OFFICIAL_VENDOR_PORTAL",
+          "id": "5155756524-01"
+        }
+      ]
+    },
+    "promotedAt": "2026-09-18T17:28:57.991Z",
+    "promotedBy": "antigravity-auditor",
+    "postConfidenceScore": 0.95,
+    "confidenceHistory": [
+      {
+        "timestamp": "2026-09-18T17:28:57.991Z",
+        "from": 0.95,
+        "to": 0.95,
+        "reason": "Confirmed delta via official vendor documentation",
+        "evidenceIds": [
+          "5155756524-01"
+        ]
+      }
+    ]
+  }
+]

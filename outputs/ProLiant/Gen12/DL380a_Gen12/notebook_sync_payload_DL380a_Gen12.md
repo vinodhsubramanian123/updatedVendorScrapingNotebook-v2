@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-18T17:17:28.376Z
+**Sync Timestamp**: 2026-09-18T17:34:47.010Z
 
 **Total Verified SKUs**: `662` (`450` Hardware + `212` Services)
 
-**Total Synced KnowledgeDeltas**: `4`
+**Total Synced KnowledgeDeltas**: `8`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -47,6 +47,26 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 4. **[DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
    - **Rule**: Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.
    - **Affected SKU**: `HU4B2A30C4W` | **Required Dependency**: `N/A`
+
+5. **[DELTA-1789752537004-v9j6p] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Observed price drift on P74700-B21 (memory)
+   - **Affected SKU**: `P74700-B21` | **Required Dependency**: `N/A`
+   - 💡 **Human Engineer Rationale**: *"Manual price drift reconciliation from phase 15 audit"*
+
+6. **[DELTA-1789752537592-otj9t] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Observed price drift on S4A91C (drive)
+   - **Affected SKU**: `S4A91C` | **Required Dependency**: `N/A`
+   - 💡 **Human Engineer Rationale**: *"Manual price drift reconciliation from phase 15 audit"*
+
+7. **[DELTA-1789752537783-790yf] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Observed price drift on HA113A1 (support)
+   - **Affected SKU**: `HA113A1` | **Required Dependency**: `N/A`
+   - 💡 **Human Engineer Rationale**: *"Manual price drift reconciliation from phase 15 audit"*
+
+8. **[DELTA-1789752537975-31r35] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
+   - **Rule**: Observed price drift on HU4B2A30C4W (service)
+   - **Affected SKU**: `HU4B2A30C4W` | **Required Dependency**: `N/A`
+   - 💡 **Human Engineer Rationale**: *"Manual price drift reconciliation from phase 15 audit"*
 
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry

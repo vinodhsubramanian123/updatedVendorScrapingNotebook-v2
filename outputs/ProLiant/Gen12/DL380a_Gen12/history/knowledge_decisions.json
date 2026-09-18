@@ -7,5 +7,230 @@
     "decidedAt": "2026-09-18T07:34:27.022Z",
     "reviewer": "SYSTEM_AUTONOMOUS_GATE",
     "reasoning": "Self-dependency cycle detected: R2E09A requires R2E09A"
+  },
+  {
+    "decisionId": "DECISION_1789752443081_92a9882376_AUTO_REJECT",
+    "deltaId": "DELTA-1789752443075-dzl6i",
+    "knowledgeFingerprint": "92a9882376e9c8bf7159e105e71bfe92432492c28e06076559fa941dee89c0fb",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:27:23.081Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "Invalid HPE SKU syntax: HA113A1 5A6"
+  },
+  {
+    "decisionId": "DECISION_1789752465825_55d46c7d05_AUTO_REJECT",
+    "deltaId": "DELTA-1789752465815-syprz",
+    "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:27:45.825Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752465844_1e9d00353f_AUTO_REJECT",
+    "deltaId": "DELTA-1789752465840-9rhwm",
+    "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:27:45.844Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752465866_82b64b6852_AUTO_REJECT",
+    "deltaId": "DELTA-1789752465854-9zpqd",
+    "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:27:45.866Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752465889_13a4130061_AUTO_REJECT",
+    "deltaId": "DELTA-1789752465880-pf8ac",
+    "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:27:45.889Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752481443_55d46c7d05_AUTO_REJECT",
+    "deltaId": "DELTA-1789752481421-em6ya",
+    "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:28:01.443Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752481469_1e9d00353f_AUTO_REJECT",
+    "deltaId": "DELTA-1789752481462-fk99k",
+    "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:28:01.469Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752481495_82b64b6852_AUTO_REJECT",
+    "deltaId": "DELTA-1789752481488-vy4s5",
+    "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:28:01.495Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752481513_13a4130061_AUTO_REJECT",
+    "deltaId": "DELTA-1789752481507-zq0sw",
+    "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T17:28:01.513Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "INV-24 Violation: Delta cites forbidden customer/quote source matching 'quote'"
+  },
+  {
+    "decisionId": "DECISION_1789752537029_55d46c7d05_PENDING",
+    "quarantineId": "QUARANTINE_55d46c7d05d0c059",
+    "deltaId": "DELTA-1789752537004-v9j6p",
+    "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+    "decision": "APPROVAL_VALIDATED_PENDING_ACTIVATION",
+    "decidedAt": "2026-09-18T17:28:57.029Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "proposedPostConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537046_55d46c7d05",
+    "quarantineId": "QUARANTINE_55d46c7d05d0c059",
+    "deltaId": "DELTA-1789752537004-v9j6p",
+    "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+    "decision": "PROMOTED",
+    "decidedAt": "2026-09-18T17:28:57.029Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "postConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537613_1e9d00353f_PENDING",
+    "quarantineId": "QUARANTINE_1e9d00353f4dc525",
+    "deltaId": "DELTA-1789752537592-otj9t",
+    "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+    "decision": "APPROVAL_VALIDATED_PENDING_ACTIVATION",
+    "decidedAt": "2026-09-18T17:28:57.613Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "proposedPostConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537628_1e9d00353f",
+    "quarantineId": "QUARANTINE_1e9d00353f4dc525",
+    "deltaId": "DELTA-1789752537592-otj9t",
+    "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+    "decision": "PROMOTED",
+    "decidedAt": "2026-09-18T17:28:57.613Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "postConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537799_82b64b6852_PENDING",
+    "quarantineId": "QUARANTINE_82b64b6852109a8c",
+    "deltaId": "DELTA-1789752537783-790yf",
+    "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+    "decision": "APPROVAL_VALIDATED_PENDING_ACTIVATION",
+    "decidedAt": "2026-09-18T17:28:57.799Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "proposedPostConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537818_82b64b6852",
+    "quarantineId": "QUARANTINE_82b64b6852109a8c",
+    "deltaId": "DELTA-1789752537783-790yf",
+    "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+    "decision": "PROMOTED",
+    "decidedAt": "2026-09-18T17:28:57.799Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "postConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752537991_13a4130061_PENDING",
+    "quarantineId": "QUARANTINE_13a413006139592a",
+    "deltaId": "DELTA-1789752537975-31r35",
+    "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+    "decision": "APPROVAL_VALIDATED_PENDING_ACTIVATION",
+    "decidedAt": "2026-09-18T17:28:57.991Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "proposedPostConfidenceScore": 0.95
+  },
+  {
+    "decisionId": "DECISION_1789752538031_13a4130061",
+    "quarantineId": "QUARANTINE_13a413006139592a",
+    "deltaId": "DELTA-1789752537975-31r35",
+    "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+    "decision": "PROMOTED",
+    "decidedAt": "2026-09-18T17:28:57.991Z",
+    "reviewer": "antigravity-auditor",
+    "reasoning": "Confirmed delta via official vendor documentation",
+    "evidence": [
+      {
+        "type": "OFFICIAL_VENDOR_PORTAL",
+        "id": "5155756524-01"
+      }
+    ],
+    "preConfidenceScore": 0.95,
+    "postConfidenceScore": 0.95
   }
 ]
