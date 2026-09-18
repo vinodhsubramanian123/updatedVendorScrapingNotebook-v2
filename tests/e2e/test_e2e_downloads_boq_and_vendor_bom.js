@@ -95,6 +95,7 @@ async function runE2ETest() {
   page.on('console', msg => {
     if (msg.type() === 'error') {
       const text = msg.text();
+      // Exclude expected HTTP status noise: 404 (missing resources), 409 (conflicts)
       if (!text.includes('favicon') && !text.includes('404') && !text.includes('409')) {
         consoleErrors.push(`[Browser Console Error] ${text}`);
       }
@@ -364,8 +365,8 @@ async function runE2ETest() {
       await page.waitForTimeout(600);
     }
 
-    // Wait for server idle and ensure button is enabled, then click
-    for (let w = 0; w < 20; w++) {
+    // Wait for server idle — poll for up to 20 seconds (40 × 500ms) to handle cold-start latency
+    for (let w = 0; w < 40; w++) {
       const isIdle = await page.evaluate(async () => {
         try {
           const r = await fetch('/api/health');
@@ -377,13 +378,23 @@ async function runE2ETest() {
       await page.waitForTimeout(500);
     }
 
-    await page.waitForSelector('button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])', { timeout: 15000 }).catch(() => {});
-    const reconcileModalBtn = await page.$('button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])') || await page.$('button:has-text("Reconcile Partner Quote")');
+    // Use a generous 25s timeout; the selector already guards for :not([disabled])
+    await page.waitForSelector(
+      'button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])',
+      { timeout: 25000 }
+    ).catch(() => {});
+    const reconcileModalBtn =
+      await page.$('button:has-text("Reconcile Partner Quote"):not([disabled]), button:has-text("Reconcile with Partner Quote"):not([disabled]), button:has-text("Reconcile Quote"):not([disabled])') ||
+      await page.$('button:has-text("Reconcile Partner Quote")');
     if (reconcileModalBtn) {
       await reconcileModalBtn.scrollIntoViewIfNeeded().catch(() => {});
-      await reconcileModalBtn.click();
+      // Use a 5s bounded click to avoid hard 30s Playwright default timeout
+      await reconcileModalBtn.click({ timeout: 5000 }).catch(() => {
+        console.log('  ⚠️ Reconcile button click advisory — button may be disabled mid-evaluation; skipping modal interaction.');
+      });
       await page.waitForTimeout(1000);
     }
+
 
     // Read the vendor BOM from Downloads and format as SKU lines
     const { evaluateBOQMultiAspect } = require('../../scripts/lib/boq/boq_evaluator.js');
@@ -406,7 +417,7 @@ async function runE2ETest() {
       await page.waitForTimeout(1500);
     }
 
-    // Verify reconciliation results rendered
+    // Verify reconciliation results rendered — advisory: passes even if modal was skipped (cold-start)
     await page.waitForSelector('text=Reconciliation Audit Report', { timeout: 10000 }).catch(() => {});
     const auditRendered = await page.evaluate(() => {
       const text = document.body.innerText;
@@ -418,8 +429,17 @@ async function runE2ETest() {
     });
 
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, '06_partner_reconciliation.png') });
-    testResults.push({ name: '5. Partner Quote Reconciliation & Delta Audit', passed: auditRendered, durationMs: Date.now() - step5Start });
-    console.log(`  ✅ Partner Quote Reconciliation audit complete (Auto-inserted P69728-F21 identified)`);
+    testResults.push({
+      name: '5. Partner Quote Reconciliation & Delta Audit',
+      passed: Boolean(auditRendered),
+      durationMs: Date.now() - step5Start
+    });
+    if (auditRendered) {
+      console.log(`  ✅ Partner Quote Reconciliation audit complete (Auto-inserted P69728-F21 identified)`);
+    } else {
+      console.log(`  ❌ Partner Quote Reconciliation audit failed: Audit report was not rendered`);
+      gaps.push('Step 5: Reconciliation audit report was not rendered');
+    }
 
     // Close Stage 3 modal
     const modalClose3 = await page.$('button[aria-label="Close modal"]');
@@ -547,9 +567,18 @@ async function runE2ETest() {
       return await res.json();
     }, vendorEval);
 
-    const exportOk = !!(exportRes.filename || exportRes.downloadPath);
-    testResults.push({ name: '9. Master Excel Workbook Export', passed: exportOk, durationMs: Date.now() - step9Start });
-    console.log(`  ✅ Master Excel Workbook generated: ${exportRes.filename || exportRes.downloadPath || 'Success'}`);
+    const exportOk = Boolean(exportRes.filename || exportRes.downloadPath);
+    testResults.push({
+      name: '9. Master Excel Workbook Export',
+      passed: exportOk,
+      durationMs: Date.now() - step9Start
+    });
+    if (exportOk) {
+      console.log(`  ✅ Master Excel Workbook generated: ${exportRes.filename || exportRes.downloadPath}`);
+    } else {
+      console.log(`  ❌ Master Excel Workbook export failed: No file generated`);
+      gaps.push('Step 9: Master Excel Workbook export returned no filename');
+    }
 
   } catch (err) {
     gaps.push(`E2E Failure: ${err.message}`);
@@ -573,7 +602,9 @@ async function runE2ETest() {
   console.log('📊 COMPLETE E2E HEADLESS BROWSER TEST RESULTS');
   console.log('================================================================');
   testResults.forEach(r => {
-    console.log(`  ${r.passed ? '✅' : '❌'} ${r.name} (${r.durationMs}ms)`);
+    const icon = r.passed ? '✅' : '❌';
+    const advisory = r.advisory ? ` [⚠️ ADVISORY: ${r.advisory}]` : '';
+    console.log(`  ${icon} ${r.name} (${r.durationMs}ms)${advisory}`);
   });
   console.log('----------------------------------------------------------------');
   console.log(`  Passed Tests    : ${passedCount}/${totalCount} (${((passedCount/totalCount)*100).toFixed(1)}%)`);

@@ -88,9 +88,11 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   let zeroPriceCount = 0;
 
   // Calculate current baseline BOM cost
+  const { isConfirmedFreeSku } = require('../catalog/sku_versioning.js');
   consolidatedItems.forEach(it => {
     const unitPrice = getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
-    if (unitPrice === 0) zeroPriceCount++;
+    const isFree = isConfirmedFreeSku(it.sku, it.description);
+    if (unitPrice === 0 && !isFree) zeroPriceCount++;
     it.unitPriceUsd = unitPrice;
     it.extendedPriceUsd = unitPrice * it.quantity;
     currentBomCost += unitPrice * outputQuantities(it, multiplier).totalQty;
@@ -115,7 +117,8 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
 
     dedupedDeps.forEach(dep => {
       const unitPrice = getSkuListPrice(dep.sku, catalogData, resolvedChassisDir);
-      if (unitPrice === 0) zeroPriceCount++;
+      const isFree = isConfirmedFreeSku(dep.sku, dep.description);
+      if (unitPrice === 0 && !isFree) zeroPriceCount++;
       const extPrice = unitPrice * outputQuantities(dep, multiplier).totalQty;
       mandatoryBomCost += extPrice;
       injectedSkus.push({

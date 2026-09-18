@@ -18,6 +18,8 @@
     }
   },
   "scripts": {
+    "open:deliverables": "node scripts/maintenance/open_deliverables.js",
+    "open:excel": "node scripts/maintenance/open_deliverables.js --excel",
     "restore:env": "node scripts/maintenance/restore_env.js",
     "dev": "node dashboard/server.cjs",
     "start": "node dashboard/server.cjs",

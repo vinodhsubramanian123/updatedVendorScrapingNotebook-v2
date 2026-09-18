@@ -293,13 +293,19 @@ function ingestAndConsolidateBoq(options) {
     productConfirmed
   });
   items = requirementResolution.resolvedItems;
-  const configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
-  items = configurationContext.items;
+  let configurationContext;
+  try {
+    configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
+    items = configurationContext.items;
+  } catch (err) {
+    if (err.code !== 'CONFIGURATION_OWNERSHIP_AMBIGUOUS') throw err;
+    configurationContext = { items, multiplier: 1, ownershipEvidence: 'AMBIGUOUS_OWNERSHIP_RAW' };
+  }
 
   return {
     items,
     configurationContext,
-    serverCount: configurationContext.multiplier,
+    serverCount: configurationContext.multiplier || 1,
     inputFile,
     chassisDir,
     chassisPrefix,

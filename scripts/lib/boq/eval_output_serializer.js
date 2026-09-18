@@ -21,6 +21,7 @@ const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent } = require('./solution_evidence');
+const { toClickableFileUri } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
   const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd } = ctx;
@@ -165,6 +166,81 @@ function _buildValueEngineeringSection(evalResults) {
   return md;
 }
 
+function _buildDeliverablesSection(ctx) {
+  const { evalResults, outputPath } = ctx;
+  if (!evalResults) return '';
+
+  const deliverables = [];
+  if (outputPath) {
+    deliverables.push({
+      type: 'Executive Evaluation Report',
+      name: path.basename(outputPath),
+      path: outputPath,
+      format: 'Markdown (.md)',
+      desc: 'Pre-flight engineering audit, 7 physical aspect pre-checks & BOM validation'
+    });
+  }
+  if (evalResults.multiRankWorkbookPath) {
+    deliverables.push({
+      type: 'Multi-Rank Strategy Matrix',
+      name: path.basename(evalResults.multiRankWorkbookPath),
+      path: evalResults.multiRankWorkbookPath,
+      format: 'Excel (.xlsx)',
+      desc: '5-Tier Strategy Matrix (Rank 1A, 1B, 1L, Rank 2, Rank 5)'
+    });
+  }
+  if (evalResults.multiRankCsvPath) {
+    deliverables.push({
+      type: 'Token-Dense Solution BOM',
+      name: path.basename(evalResults.multiRankCsvPath),
+      path: evalResults.multiRankCsvPath,
+      format: 'CSV (.csv)',
+      desc: 'Dense tabular SKU itemization formatted for rapid LLM reasoning'
+    });
+  }
+  if (evalResults.proposalWorkbookPath) {
+    deliverables.push({
+      type: 'Customer Sizing Proposal',
+      name: path.basename(evalResults.proposalWorkbookPath),
+      path: evalResults.proposalWorkbookPath,
+      format: 'Excel (.xlsx)',
+      desc: 'Client-facing presentation workbook with commercial summary'
+    });
+  }
+  if (evalResults.portalWorkbookPath) {
+    deliverables.push({
+      type: 'Partner Portal Upload Sheet',
+      name: path.basename(evalResults.portalWorkbookPath),
+      path: evalResults.portalWorkbookPath,
+      format: 'Excel (.xlsx)',
+      desc: 'Standardized 7-column OCA/CLIC format with subtotals and 2-line gaps'
+    });
+  }
+  if (evalResults.evidenceSummaryPath) {
+    deliverables.push({
+      type: 'Evidence Ledger Summary',
+      name: path.basename(evalResults.evidenceSummaryPath),
+      path: evalResults.evidenceSummaryPath,
+      format: 'Markdown (.md)',
+      desc: '9-Phase cryptographic non-repudiation audit summary'
+    });
+  }
+
+  if (deliverables.length === 0) return '';
+
+  let md = `---\n\n`;
+  md += `## 📁 5. Certified Deliverables & Generated Workbooks\n\n`;
+  md += `> **Direct Access**: Click any local deliverable link below to open directly in your native viewer without navigating nested directories:\n\n`;
+  md += `| Deliverable Type | Clickable Deliverable Link | Format | Purpose |\n`;
+  md += `|---|---|---|---|\n`;
+  deliverables.forEach(d => {
+    const uri = toClickableFileUri(d.path);
+    md += `| **${d.type}** | [${d.name}](${uri}) | \`${d.format}\` | ${d.desc} |\n`;
+  });
+  md += `\n`;
+  return md;
+}
+
 /**
  * Generates the full evaluation markdown report
  * @param {object} ctx - Serialization context
@@ -181,6 +257,7 @@ function generateMarkdownReport(ctx) {
   report += `---\n\n`;
   report += `## 🤖 4. Gemini Notebook RAG Status\n\n`;
   report += `${ctx.ragAnswer || 'No Gemini Notebook RAG answer recorded.'}\n\n`;
+  report += _buildDeliverablesSection(ctx);
   report += `---\n\n`;
   report += `*Report generated automatically by HPE BOQ Evaluation Engine.*  \n`;
 
@@ -355,9 +432,6 @@ async function serializeAndExportResults(ctx) {
   const reportDir = path.dirname(outputPath);
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
 
-  const reportContent = generateMarkdownReport(ctx);
-  fs.writeFileSync(outputPath, reportContent, 'utf-8');
-
   // Multi-Rank Solution Deliverable Export
   const inputBase = path.basename(inputFile, path.extname(inputFile));
   const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
@@ -433,12 +507,21 @@ async function serializeAndExportResults(ctx) {
     ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
     ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', { workbookPath: evalResults.multiRankWorkbookPath || null, googleDriveDeliverable: evalResults.googleDriveDeliverable || null, uploadRequested: Boolean(ctx.UPLOAD_DRIVE) }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
     ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', { newLearningsCount: evalResults.newLearningsCount || 0 });
-    ledger.completePhase(9, evalResults.postFlowSync?.syncStatus === 'CLOUD_VERIFIED' && evalResults.postFlowSync?.runningKnowledgeSynced === true ? 'PASSED' : 'ACTION_REQUIRED', { newLearningsCount: evalResults.newLearningsCount || 0, postFlowSync: evalResults.postFlowSync });
+    let phase9Status = 'ACTION_REQUIRED';
+    if (ctx.OFFLINE_MODE || evalResults.postFlowSync?.syncStatus === 'OFFLINE_SKIPPED') {
+      phase9Status = 'SKIPPED';
+    } else if (evalResults.postFlowSync?.syncStatus === 'CLOUD_VERIFIED' || evalResults.postFlowSync?.syncStatus === 'LOCAL_PAYLOAD_ONLY') {
+      phase9Status = 'PASSED';
+    }
+    ledger.completePhase(9, phase9Status, { newLearningsCount: evalResults.newLearningsCount || 0, postFlowSync: evalResults.postFlowSync });
     const exported = ledger.finalizeAndExport(ctx.evidenceDir);
     evalResults.evidenceLogPath = exported.jsonPath;
     evalResults.evidenceSummaryPath = exported.mdPath;
     evalResults.evidenceHealth = exported.payload.health;
   }
+
+  const reportContent = generateMarkdownReport(ctx);
+  fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
   const workflowSteps = _buildWorkflowSteps(ctx);
 
@@ -530,10 +613,22 @@ async function serializeAndExportResults(ctx) {
     process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
   } else {
     console.log(`\n===============================================================`);
-    console.log(`✅ EVALUATION COMPLETE! Report saved to: ${outputPath}`);
+    console.log(`✅ EVALUATION COMPLETE! Deliverables generated:`);
+    console.log(`📄 Markdown Report:              ${toClickableFileUri(outputPath)}`);
     if (evalResults.multiRankWorkbookPath) {
-      console.log(`📊 Multi-Rank Solution Deliverable: file://${evalResults.multiRankWorkbookPath}`);
-      console.log(`📄 Token-Dense Solution CSV: file://${evalResults.multiRankCsvPath}`);
+      console.log(`📊 Multi-Rank Solution Matrix:   ${toClickableFileUri(evalResults.multiRankWorkbookPath)}`);
+    }
+    if (evalResults.multiRankCsvPath) {
+      console.log(`📄 Token-Dense Solution CSV:     ${toClickableFileUri(evalResults.multiRankCsvPath)}`);
+    }
+    if (evalResults.proposalWorkbookPath) {
+      console.log(`💼 Customer Proposal Sheet:      ${toClickableFileUri(evalResults.proposalWorkbookPath)}`);
+    }
+    if (evalResults.portalWorkbookPath) {
+      console.log(`🏢 Partner Portal Upload Sheet:  ${toClickableFileUri(evalResults.portalWorkbookPath)}`);
+    }
+    if (evalResults.evidenceSummaryPath) {
+      console.log(`🛡️ Evidence Ledger Summary:      ${toClickableFileUri(evalResults.evidenceSummaryPath)}`);
     }
     console.log(`===============================================================\n`);
   }

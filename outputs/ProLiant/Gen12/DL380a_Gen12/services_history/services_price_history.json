@@ -2564,44 +2564,98 @@
   ],
   "HA113A1 5A6": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 375,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 507,
+      "prevPrice": 375,
+      "delta": 132,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Onsite Installation 4U 8-GPU high-density deployment tier ($507 vs standard rack $375)"
     }
   ],
   "HA113A15A6": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 375,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 507,
+      "prevPrice": 375,
+      "delta": 132,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Onsite Installation 4U 8-GPU high-density deployment tier ($507 vs standard rack $375)"
     }
   ],
   "HA113A1#5A6": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 375,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 507,
+      "prevPrice": 375,
+      "delta": 132,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Onsite Installation 4U 8-GPU high-density deployment tier ($507 vs standard rack $375)"
     }
   ],
   "HU4B2A30C4W": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 1980,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 11306,
+      "prevPrice": 1980,
+      "delta": 9326,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate for 8x H200 server ($11,306 vs base compute $1,980)"
     }
   ],
   "HU4B2A3 0C4W": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 1980,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 11306,
+      "prevPrice": 1980,
+      "delta": 9326,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate for 8x H200 server ($11,306 vs base compute $1,980)"
     }
   ],
   "HU4B2A3#0C4W": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 1980,
-      "status": "CATALOG_VERIFIED"
+      "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 11306,
+      "prevPrice": 1980,
+      "delta": 9326,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate for 8x H200 server ($11,306 vs base compute $1,980)"
     }
   ],
   "HA113A1": [

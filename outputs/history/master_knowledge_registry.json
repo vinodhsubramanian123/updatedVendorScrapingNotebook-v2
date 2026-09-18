@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-18T12:47:13.669Z",
-  "lastUpdated": "2026-09-18T12:47:13.669Z",
-  "totalLearnedRules": 68,
-  "totalDeduplicatedRules": 68,
+  "generatedAt": "2026-09-18T17:18:38.601Z",
+  "lastUpdated": "2026-09-18T17:18:38.601Z",
+  "totalLearnedRules": 69,
+  "totalDeduplicatedRules": 69,
   "productFamiliesSynced": [
     "DL145",
     "DL380",
@@ -15,7 +15,7 @@
   "counts": {
     "universal": 0,
     "familyGen": 0,
-    "chassisSpecific": 68
+    "chassisSpecific": 69
   },
   "universalRules": [],
   "familyGenRules": [],
@@ -449,6 +449,30 @@
         "validatedAt": "2026-09-06",
         "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
         "result": "SUPPORTED"
+      },
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01",
+      "timestamp": "2026-09-18T15:45:00.000Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Live authenticated HPE OCA quote 5155756524-01 pricing alignment: Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate ($11,306.00/unit), Onsite Install 4U 8-GPU tier ($507.00/unit), NVLink Bridge S4A91C manufacturer list ($2,170.00/unit), and GPU cable P74700-B21 ($114.00/unit). Total quote BOM: $30,406,340.00 USD.",
+      "errorType": "COMMERCIAL_PRICING_ALIGNMENT",
+      "ruleType": "LIVE_QUOTE_RECONCILIATION",
+      "affectedSku": "HU4B2A30C4W",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "DL380a Gen12 GPU Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "validation": {
+        "validatedAt": "2026-09-18",
+        "sourceId": "HPE_DL380a_H200_Server_Configuration_5155756524-01 (2).xlsx",
+        "result": "CONFIRMED_MATCH: Evaluated BOQ BOM total matches official quote $30,406,340.00 USD exactly (0.000% variance across all 55 items)."
       },
       "vendor": "HPE",
       "pillar": "SERVER",

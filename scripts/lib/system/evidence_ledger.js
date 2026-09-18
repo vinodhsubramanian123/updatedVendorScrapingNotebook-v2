@@ -204,7 +204,7 @@ class EvidenceLedger {
     if (!this.skuAuditLedger.length) gaps.push('SKU_DECISIONS_MISSING');
     if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
     const outcomes = Object.values(this.phases).map(p => p.status);
-    return { healthy: gaps.length === 0, gaps, workflowStatus: outcomes.includes('FAILED') ? 'FAILED' : (outcomes.every(s => s === 'PASSED' || s === 'RESOLVED') && gaps.length === 0 ? 'COMPLETE' : 'INCOMPLETE') };
+    return { healthy: gaps.length === 0, gaps, workflowStatus: outcomes.includes('FAILED') ? 'FAILED' : (outcomes.every(s => s === 'PASSED' || s === 'RESOLVED' || s === 'SKIPPED') && gaps.length === 0 ? 'COMPLETE' : 'INCOMPLETE') };
   }
 
   /**

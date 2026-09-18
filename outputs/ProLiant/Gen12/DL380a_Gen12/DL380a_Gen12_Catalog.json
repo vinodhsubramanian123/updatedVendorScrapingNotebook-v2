@@ -6658,7 +6658,7 @@
           "Product #": "P74700-B21",
           "Description": "HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit",
           "Current Qty": "0",
-          "Unit Price (USD)": "118.99",
+          "Unit Price (USD)": "114",
           "Extended Price (USD)": "0",
           "Start Date": "11/04/2024",
           "Discontinued Date": "02/29/2028",
@@ -6674,14 +6674,14 @@
           "vendorAttributes": {
             "Extended Price (USD)": "0"
           },
-          "listPrice": 118.99,
-          "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-10: (no price)",
-          "priceUsd": "118.99"
+          "listPrice": 114,
+          "Previous List Price (USD)": "$118.99",
+          "Attribute Deltas": "Price adjusted to official live quote",
+          "Diff Status": "PRICE_CHANGED",
+          "Price Change (USD)": "-$4.99",
+          "Price Change (%)": "-4.19%",
+          "Price History Trail": "2026-09-10: $118.99 → 2026-09-18: $114.00 (▼)",
+          "priceUsd": "114"
         },
         {
           "Product #": "P83526-B21",
@@ -6743,7 +6743,7 @@
           "Product #": "S4A91C",
           "Description": "NVIDIA 4-way NVLink Bridge for H200 NVL",
           "Current Qty": "0",
-          "Unit Price (USD)": "2279.68",
+          "Unit Price (USD)": "2170",
           "Extended Price (USD)": "0",
           "Start Date": "02/03/2025",
           "Discontinued Date": "12/31/2027",
@@ -6759,14 +6759,14 @@
           "vendorAttributes": {
             "Extended Price (USD)": "0"
           },
-          "listPrice": 2279.68,
-          "Diff Status": "ADDED",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-09-13: (no price)",
-          "priceUsd": "2279.68"
+          "listPrice": 2170,
+          "Diff Status": "PRICE_CHANGED",
+          "Previous List Price (USD)": "$2279.68",
+          "Price Change (USD)": "-$109.68",
+          "Price Change (%)": "-4.81%",
+          "Attribute Deltas": "Price adjusted to official live quote",
+          "Price History Trail": "2026-09-10: $2279.68 → 2026-09-18: $2170.00 (▼)",
+          "priceUsd": "2170"
         }
       ]
     },

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-18T12:47:13.722Z
+**Sync Timestamp**: 2026-09-18T17:17:28.376Z
 
 **Total Verified SKUs**: `662` (`450` Hardware + `212` Services)
 
-**Total Synced KnowledgeDeltas**: `3`
+**Total Synced KnowledgeDeltas**: `4`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -43,6 +43,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 3. **[DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
    - **Rule**: Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.
    - **Affected SKU**: `P76706-B21` | **Required Dependency**: `N/A`
+
+4. **[DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
+   - **Rule**: Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.
+   - **Affected SKU**: `HU4B2A30C4W` | **Required Dependency**: `N/A`
 
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry

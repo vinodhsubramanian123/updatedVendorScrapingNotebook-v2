@@ -27,28 +27,38 @@ function ambiguity(message) {
   return error;
 }
 
-function isGlobalItem(it) {
+function isGlobalItem(it, multiplier = 1) {
   if (it.quantityScope) return it.quantityScope === 'global';
-  return /\b(?:spare|order.level|bulk accessory|lift handle)\b/i.test(it.description || '') ||
-    /^(?:HPE )?(?:Installation Service|3Y Tech Care Basic Service)$/i.test(it.description || '');
+  if (/\b(?:spare|order.level|bulk accessory|lift handle)\b/i.test(it.description || '') ||
+    /^(?:HPE )?(?:Installation Service|3Y Tech Care Basic Service)$/i.test(it.description || '')) {
+    return true;
+  }
+  // Transceivers or cables that cannot divide evenly into the configuration multiplier are order-level infrastructure
+  if (multiplier > 1 && /\btransceiver\b/i.test(it.description || '')) {
+    const raw = Number(it.quantity ?? it.qty ?? 1);
+    if (!Number.isInteger(raw / multiplier)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function normalizeConfiguration(items) {
-  const local = items.filter(it => !isGlobalItem(it));
+  const anchors = items.filter(isCtoBaseChassis);
+  const anchor = anchors[0];
+  const multiplier = Number(anchor?.configurationMultiplier ?? anchor?.quantity ?? 1);
+  const local = items.filter(it => !isGlobalItem(it, multiplier));
   const owners = new Set(local.map(it => it.configurationId).filter(Boolean));
-  const anchors = local.filter(isCtoBaseChassis);
   const nested = local.some(it => it.parentId || it.subParentId || /synergy.*(?:frame|enclosure)|(?:frame|enclosure).*synergy/i.test(it.description || ''));
   if (owners.size > 1 || anchors.length > 1 || nested) {
     throw ambiguity('Multiple configurations or parent/sub-parent hierarchy require separate owned base BOMs; no multiplier was applied.');
   }
-  const anchor = anchors[0];
-  const multiplier = Number(anchor?.configurationMultiplier ?? anchor?.quantity ?? 1);
   if (!Number.isInteger(multiplier) || multiplier < 1) throw ambiguity('Invalid configuration count.');
   const configurationId = anchor?.configurationId || [...owners][0] || 'configuration-1';
   const normalized = items.map(it => {
     const raw = Number(it.quantity ?? it.qty ?? 1);
     if (!Number.isInteger(raw) || raw < 1) throw ambiguity(`Invalid quantity for ${it.sku}.`);
-    const global = isGlobalItem(it);
+    const global = isGlobalItem(it, multiplier);
     if (global) return { ...it, quantityScope: 'global', quantityBasis: 'total', configurationMultiplier: 1, atomicQuantity: raw, totalQuantity: raw, isIntegerDivisor: true };
     if (it.configurationId && it.configurationId !== configurationId) throw ambiguity(`Foreign owner for ${it.sku}.`);
     const base = it.quantityBasis === 'base' ? raw : raw / multiplier;

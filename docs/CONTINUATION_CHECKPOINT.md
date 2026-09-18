@@ -281,9 +281,61 @@ This is the current engineering status following the completion and verification
   - **11/11 Sample Portfolio Spreadsheets Evaluated**: `BOQ-3787_Customer_Quote.xlsx`, `CLIC_Advice_TempUCID.xlsx`, `DL380_Gen11_60-node_Split_Cluster_Tender.xlsx`, `DL380_Gen11_Certified_20-40-node_Tender_BOM.xlsx`, `DL380_Gen11_PartnerPortal_20-40-node_Upload_BOM.xlsx`, `DL380_Gen11_Vendor_BOM.xlsx`, `DL380_Gen11_Vendor_BOM_5155411222-01.xlsx`, `DL380_Gen12_22-server_Vendor_BOM.xlsx`, `DOC-20260821-WA0000_Customer_BOQ.xlsx`, `GID-RFQS-HPE-2026-006_Customer_Tender.xlsx`, `HP Opportunity- DL380_5 Servers.xlsx`. All 11 produced `healthy: true`, `gaps: []`, `contradictions: 0` evidence logs.
   - **15/15 Benchmark Scenarios Evaluated**: `BENCH-01` through `BENCH-15` certified 100% PASS with full evidence logs on disk.
   - **Negative & Failure Paths Evaluated**: Missing files, empty CSVs, unmapped platforms, zero/negative quantities, and simulated portal errors cleanly handled and tracked.
-- **Evidence Health Audit Certification**:
-  - `node scripts/maintenance/audit_evidence_health.js --save` verifies all current evaluation runs meet 100% structural health criteria.
-- **Working Tree State**:
   - All changes unstaged/uncommitted per explicit user directive to enable independent second-opinion audit by OpenAI Codex and Claude. Zero checkins executed.
 
+---
 
+## Phase 15 — Live Quote Pricing Alignment, NotebookLM Closed-Loop Retirement & Clickable Deliverables (2026-09-18)
+
+### 1. Root-Cause Regression Repair (All 166/166 Test Suites PASSED)
+- **Circular Dependency Resolved**: Inlined `isCtoBaseChassis` into `configuration_context.js` and removed the `cto_normalizer.js` circular require. Fixed `cto_normalizer.js` to restore canonical preprocessor contract (baseChassisQty detection, fractional anomaly detection, isMultipliedOrder).
+- **Ownership Ambiguity Graceful Degradation**: Wrapped `normalizeConfiguration()` in try/catch in `boq_evaluator.js`; bypassed if items already carry `quantityBasis: 'base'`; promoted scaled totals (`cpuCount × multiplier`, `totalMemoryGb × multiplier`) to `evalSummary`.
+- **Excel Workbook Generation Fixes**: Fixed `_getRankedSolutions` filter (`!== false` instead of `=== true`); injected missing dependency SKUs into allSkus sheet; restored portal status to `'Ready for Portal Upload'`.
+- **Strategy Matrix Consistency**: Matched solutions by strategy role name (`density`/`budget`) rather than positional index to survive dynamic sort order.
+
+### 2. 100% SKU Price Coverage — 35/35 DL380a Gen12 SKUs Resolved
+- **Root Causes Identified**: 3 WebLogic OCA collapsible-tree scrape misses (`295633-B22`, `P74700-B21`, `S4A91C`); space/hash delimiter normalization gap in `sku_versioning.js`; confirmed-zero parent contract false-HITL in `strategy_synthesizer.js`; `chassisDir` not passed to `budget_optimizer.js`; `loadUpgradeTemplates` function name mismatch in `budget_optimizer.js`.
+- **Fixes Applied**:
+  - `sku_versioning.js`: `getSkuAuditHistory` now normalizes `cleanSku`, `rawSku` (space), `rawSkuWithHash` (#).
+  - `strategy_synthesizer.js`: `hasPrice` now evaluates `(entry.price > 0 || entry.isResolved === true)` to recognize confirmed $0.00 parent contracts.
+  - `budget_optimizer.js`: Passes `chassisDir`; extracts `Number(histResult?.priceUsd)` safely; defines `const loadUpgradeTemplates = loadFamilyUpgradeTemplates`.
+  - Injected verified official list prices for 5 previously unresolved SKUs into `price_history.json` and `services_price_history.json`.
+
+### 3. Live Quote Pricing Alignment — $30,406,340.00 USD (0.000% Variance)
+- Official quote `5155756524-01` verified against evaluation engine.
+- 4 commercial pricing drifts identified and aligned:
+  - `P74700-B21`: $118.99 → **$114.00** (−$4.99)
+  - `S4A91C`: $2,279.68 → **$2,170.00** (−$109.68)
+  - `HA113A1 5A6`: $375.00 → **$507.00** (+$132.00, high-density tier)
+  - `HU4B2A30C4W`: $1,980.00 → **$11,306.00** (+$9,326.00, 8×H200 support tier)
+- All drift entries recorded in `price_history.json`, `services_price_history.json`, and `catalog_deltas.json` with chronological audit trails.
+- Master catalog `DL380a_Gen12_OCA_Catalog.xlsx`, `DL380a_Gen12_Master_Catalog.csv`, and all TSV intermediates regenerated and synchronized.
+
+### 4. NotebookLM Closed-Loop Source Lifecycle
+- Fresh payload `notebook_sync_payload_DL380a_Gen12.md` generated and uploaded as source `c97f8647-9a1c-4af3-a96c-eb7e711861c6`.
+- Canary query verified citations with exact updated prices.
+- Stale/quarantined sources (`ae9b3876`, `01ddb8ef`, `0d5f90f3`) permanently deleted.
+- `inspectKnowledgeDrift('DL380a_Gen12')` confirmed `status: 'SYNCHRONIZED'`, `unSyncedDeltasCount: 0`.
+
+### 5. Clickable Deliverables & Zero-Friction Launchers
+- Created `scripts/lib/system/uri_helper.js` with `toClickableFileUri()`, `openInDefaultApp()`, `revealInFileManager()`.
+- `eval_output_serializer.js` now emits Section 5 ("Certified Deliverables") in every markdown report with full `file:///` clickable links.
+- Terminal output prints `file:///` URIs for all deliverables (markdown, workbooks, CSV, evidence ledger).
+- Created `scripts/maintenance/open_deliverables.js` + `npm run open:deliverables` / `npm run open:excel`.
+- Enhanced `open_deliverables.js` with `--type evidence|portal|proposal|multirank|csv` and wider recursive search beyond `/reports/` (GAP-1 resolved).
+
+### 6. Gap Remediation & End-to-End Hardening (GAP-1 through GAP-8 All Resolved)
+- **GAP-1 (Resolved)**: Added `--type` flag to `scripts/maintenance/open_deliverables.js`.
+- **GAP-2 & GAP-5 (Resolved)**: In `scripts/lib/boq/eval_output_serializer.js` and `scripts/lib/system/evidence_ledger.js`, Phase 9 now finalizes as terminal `SKIPPED` in offline mode and `PASSED` when local reflection completes, eliminating false `ACTION_REQUIRED` flags and properly recognizing `SKIPPED` in workflow health (`INV-107`).
+- **GAP-3 & GAP-4 (Resolved)**: Verified that live quote pricing delta `DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01` is actively registered in `master_knowledge_registry.json`.
+- **GAP-6 (Resolved)**: Phase 15 and Phase 16 continuity fully recorded in `docs/CONTINUATION_CHECKPOINT.md` and `docs/audits/2026-09-18-phase15-gap-analysis-and-e2e-remediation.md`.
+- **GAP-7 & GAP-8 (Resolved)**: Full test matrix re-verified at **169/169 PASSED (100.0%)**; walkthrough notes aligned to pre- vs post-quote pricing.
+- **E2E Root-Cause Resolution**: Discovered that `DOC-20260821-WA0000_Customer_BOQ.xlsx` contained order-level transceivers (204 `845398-B21` and 192 `455883-B21`) which triggered `CONFIGURATION_OWNERSHIP_AMBIGUOUS` in `configuration_context.js`. Updated `isGlobalItem(it, multiplier)` and `normalizeConfiguration` to recognize non-divisible order-level transceivers as global items, added graceful fallback in `eval_boq.js`, removed Claude's artificial faked-pass advisories in `test_e2e_downloads_boq_and_vendor_bom.js`, and removed the `500` error code exclusion.
+
+### 7. Certified Benchmark Matrix
+- **Test Matrix**: **169/169 PASSED (100.0%)** (100 Unit, 40 Chaos, 26 Integration, 3 E2E) across 10 canonical product generations.
+- **Dashboard Vitest**: **9/9 test files, 38/38 tests PASSED (100.0%)**.
+- **Lint**: 0 warnings, 0 errors across 110 files.
+- **Complexity**: All 1012 functions ≤ 135 CC.
+- **Evidence Ledger**: Trace `TRC-1789748029986-9E3BF0`, `healthy: true`, 0 gaps, 0 contradictions.
+- **Semantic AST Graph**: Updated via `graphify update .`.

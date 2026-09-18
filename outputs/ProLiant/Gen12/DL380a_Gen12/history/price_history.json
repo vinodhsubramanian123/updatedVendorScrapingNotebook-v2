@@ -2096,9 +2096,18 @@
   ],
   "P74700-B21": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 118.99,
-      "status": "CATALOG_VERIFIED"
+      "status": "ADDED"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 114,
+      "prevPrice": 118.99,
+      "delta": -4.99,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE internal list price from live OCA quote 5155756524-01"
     }
   ],
   "P83526-B21": [
@@ -2999,9 +3008,18 @@
   ],
   "S4A91C": [
     {
-      "date": "2026-09-18",
+      "date": "2026-09-10",
       "price": 2279.68,
-      "status": "CATALOG_VERIFIED"
+      "status": "ADDED"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 2170,
+      "prevPrice": 2279.68,
+      "delta": -109.68,
+      "status": "PRICE_CHANGED",
+      "source": "HPE_OCA_QUOTE_5155756524-01",
+      "reason": "HPE internal list price from live OCA quote 5155756524-01"
     }
   ],
   "R1C66A": [

@@ -361,7 +361,7 @@ function parseSkuLines(lines) {
 
     // Accumulate items into itemMap
     for (const item of extractedRows) {
-      if (isGlobalItem(item)) item.quantityScope = 'global';
+      if (isGlobalItem(item, currentMultiplier)) item.quantityScope = 'global';
       const totalQty = item.quantity * (item.quantityScope === 'global' ? 1 : currentMultiplier);
       const configurationId = item.configurationId || (currentCluster ? `configuration-${currentCluster.configIndex}` : undefined);
       const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.sku}`;

@@ -752,5 +752,7 @@ module.exports = {
   getHistoricalBoqPricing,
   compareBoqPricingAcrossTimeline,
   recordVersionSnapshot,
+  isConfirmedFreeSku,
+  CONFIRMED_ZERO_PARENT_CONTRACTS,
   _clearCatalogPriceCache
 };
