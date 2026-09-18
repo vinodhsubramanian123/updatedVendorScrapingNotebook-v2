@@ -2,6 +2,7 @@
 const XLSX = require('xlsx-js-style');
 const fs = require('fs');
 const path = require('path');
+const { outputQuantities } = require('./configuration_context');
 const { solutionFingerprint, candidateReviewCurrent } = require('./solution_evidence');
 
 function rankReviewBadge(evaluation, candidate) {
@@ -14,7 +15,7 @@ function generateRankedPortalWorkbook(evaluation, exportPath) {
   const workbook = XLSX.utils.book_new();
   const candidates = _getRankedSolutions(evaluation);
   for (const candidate of candidates) {
-    const candidateWorkbook = generatePartnerPortalUploadBOM([{ name: candidate.name, multiplier: evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1, items: candidate.skuPartsList || [] }]);
+    const candidateWorkbook = generatePartnerPortalUploadBOM([{ name: candidate.name, multiplier: evaluation.clusterSizing?.serverCount || evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1, items: candidate.skuPartsList || [] }]);
     XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[candidateWorkbook.SheetNames[0]], `Rank ${candidate.rank}`);
   }
   if (exportPath) XLSX.writeFile(workbook, exportPath);
@@ -24,7 +25,7 @@ function generateRankedPortalWorkbook(evaluation, exportPath) {
 function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
   const wb = XLSX.utils.book_new();
   const tier = rankTier || 1;
-  const rankedSolution = evalResults.conflictGraph?.rankedSolutions?.find(s => s.rank === tier) || null;
+  const rankedSolution = _getRankedSolutions(evalResults).find(s => s.rank === tier) || null;
   let allSkus = rankedSolution?.skuList || rankedSolution?.skuPartsList || [];
 
   if (allSkus.length === 0 && evalResults.items) {
@@ -35,6 +36,16 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
       category: 'Mandatory Aspect Fix'
     }));
     allSkus = [...evalResults.items.map(it => ({ ...it, isFixInjected: false })), ...fixes];
+  } else if (!allSkus.some(s => s.isFixInjected || s.category === 'Mandatory Aspect Fix') && (evalResults.conflictGraph?.resolvedFixes?.length || evalResults.missingDependencies?.length)) {
+    const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
+      ...f,
+      sku: f.sku || f.key,
+      isFixInjected: true,
+      category: 'Mandatory Aspect Fix'
+    }));
+    const existingSkus = new Set(allSkus.map(s => s.sku));
+    const fixesToAdd = fixes.filter(f => !existingSkus.has(f.sku));
+    allSkus = [...allSkus.map(it => ({ ...it, isFixInjected: it.isFixInjected || false })), ...fixesToAdd];
   }
 
   // Data mapping
@@ -63,11 +74,13 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
     ['Base BOM Cost', evalResults.budgetOptimization?.currentBomCostUsd || 0],
     ['Fix Cost', rankedSolution?.budgetBreakdown?.fixCost || 0],
     ['Strategy Add-on Cost', rankedSolution?.budgetBreakdown?.strategyAddonCost || 0],
-    ['Total Estimated CapEx', rankedSolution?.estimatedCostUsd || 0],
+    ['Total Estimated CapEx', rankedSolution?.totalOrderCostUsd || rankedSolution?.estimatedCostUsd || 0],
     [],
     ['NotebookLM RAG Reasoning'],
     [rankedSolution?.reasoning || 'N/A']
   ];
+  summaryData.push(['Validation', 'PORTAL VALIDATION PENDING']);
+  summaryData.push(['Pricing completeness', rankedSolution?.pricingComplete === false ? `INCOMPLETE — ${rankedSolution.priceUnavailableSkus?.length || 0} SKU(s) unresolved` : 'Consult line pricing evidence']);
   
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
   // Apply formatting
@@ -90,17 +103,17 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
     skus.forEach(s => {
       const uPrice = s.unitPriceUsd || 0;
       let pricingRole = 'Standard Option';
-      if (uPrice === 0) pricingRole = '✅ Zero-Cost / Included ($0.00)';
+      if (uPrice === 0) pricingRole = 'PRICE UNAVAILABLE / ZERO PRICE UNCONFIRMED';
       else if (uPrice <= 1) pricingRole = 'ℹ️ Nominal Factory Enablement ($1.00)';
       else if (s.isFixInjected) pricingRole = '⚡ Mandatory Rule Fix';
       
       data.push([
         s.sku,
-        s.quantity,
+        outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty,
         s.description || '',
         s.category || 'Standard',
         uPrice,
-        { t: 'n', f: `B${rowNum}*E${rowNum}` }, // Formula for extended price
+        { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice },
         pricingRole
       ]);
       rowNum++;
@@ -174,8 +187,8 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
   createSkusSheet(missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.');
   createSkusSheet(strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.');
 
-  XLSX.writeFile(wb, exportPath);
-  return exportPath;
+  if (exportPath) XLSX.writeFile(wb, exportPath);
+  return exportPath || wb;
 }
 
 /**
@@ -234,11 +247,12 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
     if (Array.isArray(clusters.clusters) && clusters.clusters.length > 0) {
       clusterList = clusters.clusters;
     } else {
-      const rankedSolution = clusters.conflictGraph?.rankedSolutions?.find(s => s.rank === 1);
+      const serverCount = clusters.clusterSizing?.serverCount || clusters.clusterSizing?.totalNodes || clusters.serverCount || clusters.multiplier || 1;
+      const rankedSolution = _getRankedSolutions(clusters)[0];
       const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || clusters.parsedItems || clusters.items || [];
       clusterList = [{
         name: clusters.chassis || 'Server_Cluster',
-        multiplier: clusters.multiplier || 1,
+        multiplier: serverCount,
         items: Array.isArray(items) ? items : []
       }];
     }
@@ -268,17 +282,17 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
     const items = cluster.items || cluster.parts || cluster.skuPartsList || [];
 
     items.forEach(it => {
-      const perServerQty = it.quantity || it.qty || 1;
+      const { perNodeQty: perServerQty, nodeMult: nodeMultiplier } = outputQuantities(it, mult);
       const unitPrice = it.unitPriceUsd || it.price || it.unitPrice || 0;
-      const ext = perServerQty * mult * unitPrice;
+      const ext = perServerQty * nodeMultiplier * unitPrice;
       configSubtotal += ext;
 
-      const portalStatus = it.portalStatus || it.clicStatus || (cluster.isClicValidated ? '100% Validated in CLIC' : 'Ready for Portal Upload');
+      const portalStatus = (it.portalStatus || it.clicStatus || (cluster.isClicValidated ? '100% Validated in CLIC' : 'Ready for Portal Upload')) + (it.priceKnown === false || unitPrice === 0 ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
 
       portalData.push([
         it.sku || it['Product #'] || '',
         perServerQty,
-        mult,
+        nodeMultiplier,
         it.description || it.desc || '',
         unitPrice,
         ext,
@@ -398,21 +412,19 @@ function _getWorkbookStyles() {
 }
 
 function _getRankedSolutions(evalResults) {
-  let rankedSolutions = evalResults.conflictGraph?.recommendedSolutions || evalResults.conflictGraph?.rankedSolutions || [];
+  const graph = evalResults.conflictGraph || {};
+  let rankedSolutions = Array.isArray(graph.recommendedSolutions)
+    ? graph.recommendedSolutions
+    : (graph.rankedSolutions || []).filter(s => s.physicalMathClean !== false && s.isUniqueBom !== false && s.isParetoOptimal !== false);
   if (!Array.isArray(rankedSolutions) || rankedSolutions.length === 0) {
     const isClean = evalResults.isMathClean === true && evalResults.conflictGraph?.isWholeSolutionValid === true && Array.isArray(evalResults.aspectChecks) && evalResults.aspectChecks.length >= 7 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
-    const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
-      ...f,
-      sku: f.sku || f.key,
-      isFixInjected: true,
-      category: 'Mandatory Aspect Fix'
-    }));
     const baseItems = (evalResults.items || []).map(it => ({ ...it, isFixInjected: false }));
     rankedSolutions = [{
       rank: 1,
       name: isClean ? 'Customer Intent Preserved (Deterministic Verified)' : 'Customer Intent (Unresolved Physical Gaps - Draft)',
       reasoning: isClean ? 'Baseline configuration with all mandatory 7-aspect hardware dependency kits satisfied.' : 'Uncertified baseline configuration with pending physical requirements or conflicts.',
       estimatedCostUsd: evalResults.budgetOptimization?.currentBomCostUsd || 0,
+      totalOrderCostUsd: baseItems.reduce((sum, it) => sum + outputQuantities(it, evalResults.clusterSizing?.serverCount || 1).totalQty * (it.unitPriceUsd || 0), 0),
       skuPartsList: baseItems,
       tradeoffMetrics: { intentAlignment: isClean ? '100%' : 'PENDING_RESOLUTION' },
       isDraft: !isClean,
@@ -463,10 +475,10 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
     summaryData.push([
       `Rank ${s.rank}`,
       s.name || `Strategy Rank ${s.rank}`,
-      s.estimatedCostUsd || 0,
+      s.totalOrderCostUsd ?? s.estimatedCostUsd ?? 0,
       s.budgetBreakdown?.fixCost || 0,
       s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING'),
-      buildStatus
+      buildStatus + (s.pricingComplete === false ? `; INCOMPLETE — ${s.priceUnavailableSkus?.length || 0} SKU(s) unresolved` : '')
     ]);
   });
 
@@ -594,49 +606,20 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
   let rankSubtotal = 0;
 
   items.forEach((it) => {
-    const perNodeQty = it.quantity || 1;
-    const totalQty = perNodeQty * serverCount;
-    const unitPrice = it.unitPriceUsd || it.price || 0;
+    const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
+      const unitPrice = it.unitPriceUsd || it.price || 0;
     const extPrice = totalQty * unitPrice;
     rankSubtotal += extPrice;
 
     const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
-    const isAddon = Boolean(it.category === 'Strategy Add-on');
     const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
     const role = it.role || it.category || 'Standard Option';
     const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
 
-    const isCloud = evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED';
-    let nlmBadge = isCloud ? '🛡️ NLM Grounded (Active Catalog Option)' : (evalResults.cloudGroundingStatus === 'CLOUD_FAILED' ? '❌ NLM Query Failed' : 'Local Rule Grounded (Active Catalog)');
-    if (isModernized) {
-      nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Rule 81354490: 5th Gen Emerald Rapids + DDR5-5600)' : 'Local Modernization (Rule 81354490)';
-    } else if (isFix) {
-      nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Grounded Mandatory Kit)' : 'Local Rule Mandatory Kit';
-    } else if (isAddon) {
-      nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Supported Headroom Add-on)' : 'Local Strategy Tier Add-on';
-    }
-
-    let guardrailTrace = 'Evals Checked: Form factor, socket, power, cooling envelope verified against QuickSpecs baseline';
-    if (isModernized) {
-      if (role.toLowerCase().includes('processor') || (it.description && it.description.toLowerCase().includes('xeon'))) {
-        guardrailTrace = 'Checked: 4th Gen Sapphire Rapids -> Evaluated: 5th Gen Emerald Rapids Modernization matching TDP & socket -> Modernized Rank 2/3/5';
-      } else if (role.toLowerCase().includes('memory') || (it.description && it.description.toLowerCase().includes('ddr5'))) {
-        guardrailTrace = 'Coupled Upgrade: DDR5-4800 -> DDR5-5600 Smart FIO Kit (INV-42: Synchronized memory speed, eliminates BTO-to-FIO fix bloat)';
-      } else {
-        guardrailTrace = 'Modernized Platform Subsystem: Upgraded to active current-generation architecture';
-      }
-    } else if (isFix) {
-      guardrailTrace = 'Evals Checked: 7-aspect physical rules engine detected missing hardware requirement -> Injected mandatory enablement kit';
-    } else if (it.sku && it.sku.startsWith('P496')) {
-      guardrailTrace = 'Checked: 4th Gen Sapphire Rapids (Retained in Rank 1 to strictly preserve customer drafted baseline intent)';
-    }
-
-    const status = it.clicStatus || (s.isClicValidated ? '100% Validated in CLIC' : (isFix ? 'Mandatory Rule Fix' : (isAddon ? 'Strategy Tier Add-on' : (isModernized ? 'Modernized Platform Hardware' : 'Local Rule Checked'))));
-
     rankData.push([
       it.sku || it['Product #'] || '',
       perNodeQty,
-      serverCount,
+      nodeMult,
       { t: 'n', f: `B${rowNum}*C${rowNum}`, v: totalQty },
       it.description || it.desc || '',
       role,
@@ -731,7 +714,7 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
 function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassisId = '', options = {}) {
   const wb = XLSX.utils.book_new();
   const chassis = chassisId || evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis';
-  const serverCount = evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
+  const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
   const styles = _getWorkbookStyles();
 
   const rankedSolutions = _getRankedSolutions(evalResults);
@@ -771,7 +754,7 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
  * @returns {string} CSV string content
  */
 function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}) {
-  const serverCount = evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
+  const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
   const rankedSolutions = _getRankedSolutions(evalResults);
 
   const headers = [
@@ -811,60 +794,29 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
   solutions.forEach(s => {
     const items = s.skuPartsList || s.skuList || [];
     items.forEach(it => {
-      const perNodeQty = it.quantity || 1;
-      const totalQty = perNodeQty * serverCount;
+      const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
       const unitPrice = it.unitPriceUsd || it.price || 0;
       const extPrice = totalQty * unitPrice;
       const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
-      const isAddon = Boolean(it.category === 'Strategy Add-on');
       const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
       const role = it.role || it.category || 'Standard Option';
       const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
 
-      // Gemini NotebookLM Verification Badge
-      const isCloud = evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED';
-      let nlmBadge = isCloud ? '🛡️ NLM Grounded (Active Catalog Option)' : (evalResults.cloudGroundingStatus === 'CLOUD_FAILED' ? '❌ NLM Query Failed' : 'Local Rule Grounded (Active Catalog)');
-      if (isModernized) {
-        nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Rule 81354490: 5th Gen Emerald Rapids + DDR5-5600)' : 'Local Modernization (Rule 81354490)';
-      } else if (isFix) {
-        nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Grounded Mandatory Kit)' : 'Local Rule Mandatory Kit';
-      } else if (isAddon) {
-        nlmBadge = isCloud ? '🛡️ NLM Verified (QuickSpecs Supported Headroom Add-on)' : 'Local Strategy Tier Add-on';
-      }
-
-      // Agentic Guardrail & Evals Trace
-      let guardrailTrace = 'Evals Checked: Form factor, socket, power, cooling envelope verified against QuickSpecs baseline';
-      if (isModernized) {
-        if (role.toLowerCase().includes('processor') || (it.description && it.description.toLowerCase().includes('xeon'))) {
-          guardrailTrace = 'Checked: 4th Gen Sapphire Rapids -> Evaluated: 5th Gen Emerald Rapids Modernization matching TDP & socket -> Modernized Rank 2/3/5';
-        } else if (role.toLowerCase().includes('memory') || (it.description && it.description.toLowerCase().includes('ddr5'))) {
-          guardrailTrace = 'Coupled Upgrade: DDR5-4800 -> DDR5-5600 Smart FIO Kit (INV-42: Synchronized memory speed, eliminates BTO-to-FIO fix bloat)';
-        } else {
-          guardrailTrace = 'Modernized Platform Subsystem: Upgraded to active current-generation architecture';
-        }
-      } else if (isFix) {
-        guardrailTrace = 'Evals Checked: 7-aspect physical rules engine detected missing hardware requirement -> Injected mandatory enablement kit';
-      } else if (it.sku && it.sku.startsWith('P496')) {
-        guardrailTrace = 'Checked: 4th Gen Sapphire Rapids (Retained in Rank 1 to strictly preserve customer drafted baseline intent)';
-      }
-
-      const status = it.clicStatus || (s.isClicValidated ? '100% Validated in CLIC' : (isFix ? 'Mandatory Rule Fix' : (isAddon ? 'Strategy Tier Add-on' : (isModernized ? 'Modernized Platform Hardware' : 'Local Rule Checked'))));
-
-      rows.push([
+        rows.push([
         escapeCsvCell(`Rank ${s.rank}`),
         escapeCsvCell(s.name || `Strategy Rank ${s.rank}`),
         escapeCsvCell(it.sku || it['Product #'] || ''),
         escapeCsvCell(perNodeQty),
-        escapeCsvCell(serverCount),
+        escapeCsvCell(nodeMult),
         escapeCsvCell(totalQty),
         escapeCsvCell(it.description || it.desc || ''),
         escapeCsvCell(role),
-        escapeCsvCell(unitPrice.toFixed(2)),
-        escapeCsvCell(extPrice.toFixed(2)),
+        escapeCsvCell(unitPrice),
+        escapeCsvCell(extPrice),
         escapeCsvCell(rationale),
         escapeCsvCell(rankReviewBadge(evalResults, s)),
-        escapeCsvCell(it.reasoning || s.reasoning || 'No candidate validation evidence recorded'),
-        escapeCsvCell(s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'DRAFT; VALIDATION REQUIRED')
+        escapeCsvCell(s.reasoning || 'No candidate validation evidence recorded'),
+        escapeCsvCell('PORTAL VALIDATION PENDING'),
       ].join(','));
     });
   });

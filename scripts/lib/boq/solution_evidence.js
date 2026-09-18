@@ -1,12 +1,18 @@
 'use strict';
 const crypto = require('crypto');
+const { outputQuantities } = require('./configuration_context');
+
+function manifestQuantities(part, multiplier) {
+  try { return outputQuantities(part, multiplier); }
+  catch { return { perNodeQty: null, nodeMult: null, totalQty: null }; }
+}
 
 function solutionManifest(evaluation) {
   const candidates = evaluation.conflictGraph?.recommendedSolutions || evaluation.conflictGraph?.rankedSolutions || [];
   return candidates.map(candidate => ({
     rank: candidate.rank,
-    nodeCount: evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1,
-    parts: (candidate.skuPartsList || candidate.skuList || []).map(part => ({ sku: String(part.sku || part['Product #'] || '').trim(), quantity: Number(part.quantity ?? part.qty) })).sort((a, b) => a.sku.localeCompare(b.sku) || a.quantity - b.quantity)
+    nodeCount: evaluation.clusterSizing?.serverCount || evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1,
+    parts: (candidate.skuPartsList || candidate.skuList || []).map(part => ({ sku: String(part.sku || part['Product #'] || '').trim(), quantity: Number(part.quantity ?? part.qty), quantityScope: part.quantityScope || 'configuration', configurationId: part.configurationId || null, ...manifestQuantities(part, evaluation.clusterSizing?.serverCount || evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1) })).sort((a, b) => a.sku.localeCompare(b.sku) || a.quantity - b.quantity)
   })).sort((a, b) => String(a.rank).localeCompare(String(b.rank)));
 }
 
@@ -14,6 +20,9 @@ function solutionFingerprint(evaluation) {
   const baseline = (evaluation.items || []).map(part => ({
     sku: String(part.sku || part['Product #'] || '').trim(),
     quantity: Number(part.quantity ?? part.qty),
+    quantityScope: part.quantityScope,
+    configurationId: part.configurationId,
+    configurationMultiplier: part.configurationMultiplier,
     description: part.description || ''
   })).sort((a, b) => a.sku.localeCompare(b.sku) || a.quantity - b.quantity);
   return crypto.createHash('sha256').update(JSON.stringify({
@@ -27,7 +36,7 @@ function solutionFingerprint(evaluation) {
 function candidateReviewCurrent(evaluation) {
   const review = evaluation.ephemeralSourceValidation;
   const manifest = solutionManifest(evaluation);
-  const valid = manifest.length > 0 && manifest.every(candidate => Number.isSafeInteger(candidate.nodeCount) && candidate.nodeCount > 0 && candidate.parts.length > 0 && candidate.parts.every(part => part.sku && Number.isSafeInteger(part.quantity) && part.quantity > 0));
+  const valid = manifest.length > 0 && manifest.every(candidate => Number.isSafeInteger(candidate.nodeCount) && candidate.nodeCount > 0 && candidate.parts.length > 0 && candidate.parts.every(part => part.sku && Number.isSafeInteger(part.quantity) && part.quantity > 0 && Number.isSafeInteger(part.totalQty) && part.totalQty > 0));
   return valid && review?.success === true && review.manifestSha256 === solutionFingerprint(evaluation);
 }
 

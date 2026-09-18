@@ -14,6 +14,7 @@
  */
 
 const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('../catalog/sku.js');
+const { isGlobalItem } = require('./configuration_context');
 
 /**
  * Parse an array of text lines, extracting and consolidating valid HPE SKU items.
@@ -102,12 +103,14 @@ function detectHeaderColumnMap(line, delimiter) {
     if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text') {
       map.desc = idx;
     }
-    if (col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty')) {
+    if (!['quantity scope', 'quantity basis'].includes(col) && (col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty'))) {
       map.qty = idx;
     }
     if (col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis') {
       map.price = idx;
     }
+    const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
+    if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
   });
 
   return (map.sku !== -1 || map.desc !== -1 || map.qty !== -1) ? map : null;
@@ -117,14 +120,15 @@ function detectHeaderColumnMap(line, delimiter) {
  * Extracts SKU, quantity, description, and price from a structured delimited row.
  */
 function extractStructuredSkuRow(parts, activeColumnMap) {
+  const lookupSku = value => cleanBaseSKU(String(value || '').replace(/^(H[A-Z0-9]+)\s+[A-Z0-9]{3,}$/i, '$1'));
   let skuIndex = activeColumnMap && activeColumnMap.sku !== -1 ? activeColumnMap.sku : -1;
   const descIndex = activeColumnMap && activeColumnMap.desc !== -1 ? activeColumnMap.desc : -1;
   const qtyIndex = activeColumnMap && activeColumnMap.qty !== -1 ? activeColumnMap.qty : -1;
   const priceIndex = activeColumnMap && activeColumnMap.price !== -1 ? activeColumnMap.price : -1;
 
-  if (skuIndex === -1 || !parts[skuIndex] || !isValidHpeSKU(cleanBaseSKU(parts[skuIndex]))) {
+  if (skuIndex === -1 || !parts[skuIndex] || !isValidHpeSKU(lookupSku(parts[skuIndex]))) {
     for (let i = 0; i < parts.length; i++) {
-      const clean = cleanBaseSKU(parts[i]);
+      const clean = lookupSku(parts[i]);
       if (clean && isValidHpeSKU(clean)) {
         skuIndex = i;
         break;
@@ -135,7 +139,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   if (skuIndex === -1) return null;
 
   const rawSkuPart = parts[skuIndex];
-  const cleanSku = cleanBaseSKU(rawSkuPart);
+  const cleanSku = lookupSku(rawSkuPart);
   if (!cleanSku || !isValidHpeSKU(cleanSku)) return null;
 
   // Find Quantity
@@ -193,7 +197,10 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   const isFioLine = rawSkuPart.includes('0D1') || rawSkuPart.includes('B19') || rawDescPart.toLowerCase().includes('factory integrated');
 
   return {
-    sku: cleanSku,
+    ...Object.fromEntries(['configurationId', 'parentId', 'subParentId', 'quantityScope', 'quantityBasis']
+      .filter(key => activeColumnMap?.[key] !== undefined)
+      .map(key => [key, parts[activeColumnMap[key]]])),
+    sku: /^H[A-Z0-9]+\s+[A-Z0-9]{3,}$/i.test(rawSkuPart.trim()) ? rawSkuPart.trim() : cleanSku,
     description: rawDescPart && !rawDescPart.toLowerCase().includes('factory integrated') ? rawDescPart : cleanSku,
     quantity: lineQty,
     unitPriceUsd: unitPriceUsd || 0,
@@ -354,12 +361,15 @@ function parseSkuLines(lines) {
 
     // Accumulate items into itemMap
     for (const item of extractedRows) {
-      const totalQty = item.quantity * currentMultiplier;
+      if (isGlobalItem(item)) item.quantityScope = 'global';
+      const totalQty = item.quantity * (item.quantityScope === 'global' ? 1 : currentMultiplier);
+      const configurationId = item.configurationId || (currentCluster ? `configuration-${currentCluster.configIndex}` : undefined);
+      const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.sku}`;
       if (currentCluster) {
         currentCluster.items.push({ ...item });
       }
-      if (itemMap.has(item.sku)) {
-        const existing = itemMap.get(item.sku);
+      if (itemMap.has(itemKey)) {
+        const existing = itemMap.get(itemKey);
         if (item.isFactoryIntegrated) {
           existing.isFactoryIntegrated = true;
         } else {
@@ -370,8 +380,11 @@ function parseSkuLines(lines) {
           existing.extendedPriceUsd = existing.unitPriceUsd * existing.quantity;
         }
       } else {
-        itemMap.set(item.sku, {
+        itemMap.set(itemKey, {
+          ...item,
           sku: item.sku,
+          configurationId,
+          quantityBasis: item.quantityBasis || 'total',
           description: item.description,
           quantity: totalQty,
           unitPriceUsd: item.unitPriceUsd || 0,

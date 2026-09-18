@@ -35,9 +35,7 @@ function isCtoBaseChassis(it) {
     desc.includes('cto server') ||
     desc.includes('cto chassis') ||
     desc.includes('base server') ||
-    desc.includes('base enclosure') ||
-    desc.includes('8 double wide') ||
-    desc.includes('8 sff')
+    desc.includes('base enclosure')
   ) {
     return true;
   }
@@ -99,7 +97,10 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
         atomicQuantity: 1,
         totalQuantity: baseChassisQty > 1 ? baseChassisQty : effectiveMultiplier,
         isBaseChassis: true,
-        isIntegerDivisor: true
+        isIntegerDivisor: true,
+        perNodeQuantity: 1,
+        quantityBasis: 'base',
+        configurationMultiplier: effectiveMultiplier
       };
     }
 
@@ -115,7 +116,7 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
         if (!isInteger && !isService) {
           hasNonIntegerDivisor = true;
           ctoAnomalies.push({
-            type: 'NON_INTEGER_CTO_DIVISOR_ANOMALY',
+            type: 'CONFIGURATION_OWNERSHIP_AMBIGUOUS',
             sku: it.sku,
             description: it.description,
             totalQty: totalQ,
@@ -129,8 +130,11 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
           ...it,
           atomicQuantity: isInteger ? atomicQtyRaw : (isService ? totalQ : parseFloat(atomicQtyRaw.toFixed(2))),
           totalQuantity: totalQ,
+          perNodeQuantity: isInteger ? atomicQtyRaw : totalQ,
           isMultipliedByCto: true,
-          isIntegerDivisor: isInteger || isService
+          isIntegerDivisor: isInteger || isService,
+          quantityBasis: isInteger ? 'base' : 'total',
+          configurationMultiplier: effectiveMultiplier
         };
       } else {
         // Child item quantity in input is per-unit atomic -> compute total batch quantity
@@ -138,8 +142,11 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
           ...it,
           atomicQuantity: totalQ,
           totalQuantity: totalQ * effectiveMultiplier,
+          perNodeQuantity: totalQ,
           isMultipliedByCto: true,
-          isIntegerDivisor: true
+          isIntegerDivisor: true,
+          quantityBasis: 'base',
+          configurationMultiplier: effectiveMultiplier
         };
       }
     } else {
@@ -147,14 +154,24 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
         ...it,
         atomicQuantity: totalQ,
         totalQuantity: totalQ,
+        perNodeQuantity: totalQ,
         isMultipliedByCto: false,
-        isIntegerDivisor: true
+        isIntegerDivisor: true,
+        quantityBasis: 'base',
+        configurationMultiplier: 1
       };
     }
   });
 
+  const finalItems = hasNonIntegerDivisor ? items : normalizedItems;
+
   return {
-    items: normalizedItems,
+    items: finalItems,
+    configurationContext: {
+      items: finalItems,
+      multiplier: effectiveMultiplier,
+      configurationId: 'configuration-1'
+    },
     baseChassisSku: baseChassisItem ? baseChassisItem.sku : null,
     baseChassisQty: effectiveMultiplier,
     isMultipliedOrder: effectiveMultiplier > 1,

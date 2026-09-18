@@ -6316,6 +6316,50 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Price History Trail": "2026-09-10: (no price)"
+        },
+        {
+          "Product #": "HA113A1 5A6",
+          "sku": "HA113A1 5A6",
+          "Description": "HPE Proliant DL/ML Install SVC",
+          "description": "HPE Proliant DL/ML Install SVC",
+          "Unit Price (USD)": "375",
+          "priceUsd": "375",
+          "listPrice": 375,
+          "Option Type": "Service",
+          "Lifecycle Status": "Active"
+        },
+        {
+          "Product #": "HA113A15A6",
+          "sku": "HA113A15A6",
+          "Description": "HPE Proliant DL/ML Install SVC",
+          "description": "HPE Proliant DL/ML Install SVC",
+          "Unit Price (USD)": "375",
+          "priceUsd": "375",
+          "listPrice": 375,
+          "Option Type": "Service",
+          "Lifecycle Status": "Active"
+        },
+        {
+          "Product #": "HU4B2A30C4W",
+          "sku": "HU4B2A30C4W",
+          "Description": "HPE HPE DL380a Gen12 Support",
+          "description": "HPE HPE DL380a Gen12 Support",
+          "Unit Price (USD)": "1980",
+          "priceUsd": "1980",
+          "listPrice": 1980,
+          "Option Type": "Service",
+          "Lifecycle Status": "Active"
+        },
+        {
+          "Product #": "HU4B2A3 0C4W",
+          "sku": "HU4B2A3 0C4W",
+          "Description": "HPE HPE DL380a Gen12 Support",
+          "description": "HPE HPE DL380a Gen12 Support",
+          "Unit Price (USD)": "1980",
+          "priceUsd": "1980",
+          "listPrice": 1980,
+          "Option Type": "Service",
+          "Lifecycle Status": "Active"
         }
       ]
     },

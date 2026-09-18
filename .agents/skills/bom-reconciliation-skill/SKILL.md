@@ -21,10 +21,14 @@ graph TD
     A --> E["4. Part Substitutions (Alternative CPU, Storage, Controller)"]
 ```
 
-### 1. Direct Part Number & Quantity Alignment
-- Validates identical part numbers across both documents.
-- Checks quantity multipliers ($N$-node tender multiplication vs single-node base configuration).
-- Flags fractional anomalies or quantity discrepancies.
+### 1. Direct Part Number & Quantity Alignment (`INV-117`)
+- **Quantity as Physical Anchor (Rule 6)**: The CTO base chassis quantity serves as the cluster node multiplier anchor ($N = \text{serverCount}$).
+- **Pre-Multiplied BOQ Normalization (Rule 38)**: Decomposes pre-multiplied cluster tenders into single-node base configurations ($Q_{\text{node}} = Q_{\text{total}} / N$) to enable 1-to-1 reconciliation against vendor per-node quotes.
+- **Hardware Spec Neutralization (Rules 5 & 43)**: Neutralizes embedded hardware specification strings (`x8`, `x16`, `4x`, `#`, `Gen5`) so regex extractors do not misinterpret them as quantity multipliers.
+- **Service Quarantining (Rule 44)**: Filters out service SKUs and install descriptions (e.g. `HA113A1 5A6` "HPE Proliant DL/ML Install SVC") to prevent false detection as server chassis.
+- **Spares & Services Immunity (Rules 4 & 36)**: Protects order-level services (`HA113A1`), warranties (`HU4B2A3`), spares, and bulk accessories (`804943-B21` lift handles) from division/multiplication (`nodeMult = 1`).
+- **Section Breakdown Pricing Invariant (Rules 15 & 33)**: Extended totals are derived strictly formulaically ($\sum Q_{\text{node}} \times N \times \text{UnitPrice}$) rather than copied from raw text.
+- Flags fractional anomalies, missing multipliers, or quantity discrepancies.
 
 ### 2. Omitted / Missing Customer Hardware
 - Flags critical customer requirements that the vendor omitted from the quote (e.g. customer specified 2x 100GbE NICs, but vendor only quoted 1x 25GbE NIC).

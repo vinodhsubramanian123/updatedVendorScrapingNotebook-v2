@@ -61,7 +61,8 @@ function extractWorkloadDna(items = []) {
     }
 
     // GPU Profile
-    if (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('rtx') || desc.includes('h200') || desc.includes('l40s') || desc.includes('l4') || desc.includes('accelerator') || desc.includes('h100') || desc.includes('a100')) {
+    if (!/cable|bridge|enablement|riser|fan|heatsink|switchboard|configuration/.test(desc) &&
+      (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('rtx') || desc.includes('h200') || desc.includes('l40s') || desc.includes('l4') || desc.includes('accelerator') || desc.includes('h100') || desc.includes('a100'))) {
       hasGpu = true;
       if (!gpuModels.includes(it.description)) {
         gpuModels.push(it.description);

@@ -583,6 +583,28 @@ The system leverages Google Jules for background code review, test generation, a
 102. **Error Trace Correlation in Machine-Parseable Output (`INV-111`)**:
     - Evaluator error handlers (both in `runEvaluationPipelineWithinTrace` and `main().catch()`) must attach `traceId` and `evidenceLogPath` and emit them inside `__EVAL_RESULT_JSON__{ status: 'ERROR', error: ..., data: { traceId, evidenceLogPath } }__EVAL_RESULT_JSON__` even on fatal pre-flight failures.
 
+103. **Direct Catalog Option Table Schema Traversal (`INV-112`)**:
+    - Option tables in HPE OCA scraped catalogs are structured under `catalogData.entries[].skus[]`. Catalog intelligence parsers must iterate directly over entries and nested skus rather than assuming a `categories` object, extracting `parentCategory`, `subCategory`, `lifecycleStatus`, and `listPrice`.
+
+104. **Chassis-Scoped Historical Pricing Partitioning (`INV-113`)**:
+    - Historical price trail records are partitioned strictly per product chassis at `outputs/{Family}/{Gen}/{Model}/history/price_history.json`. Queries must dynamically resolve the target model directory via `catalog_discovery.js` instead of assuming a global history file.
+
+105. **Strict-Mode Variable Scope Hoisting in Multi-Branch Dispatchers (`INV-114`)**:
+    - In `'use strict'` dispatchers and `switch` statements, variables referenced across conditional branches (`chassisInfo`, `context`) must be hoisted to block or function scope before branching on file vs in-memory items, preventing temporal dead zone `ReferenceError` hazards.
+
+106. **Position-Independent CLI Argument Parsing (`INV-115`)**:
+    - Command-line evaluators (`eval_boq.js`) must scan for non-flag tokens and support explicit `--file <path>`, ensuring option flags (`--offline`, `--json`, `--chassis`) placed before the target file do not trigger false "file not found" errors.
+
+107. **Full 9-Phase Terminal Evidence Lifecycle for Presales Sizing (`INV-116`)**:
+    - Presales pipelines that generate an `EvidenceLedger` (`RFP_SIZING_TO_BOM`) must advance all 9 phases to a terminal status (`PASSED`, `ACTION_REQUIRED`, or `RESOLVED`), cryptographically fingerprint customer requirements (`CUSTOMER_INPUT` SHA-256), and log candidate SKUs in `skuAuditLedger`, guaranteeing 100% healthy evidence logs (`healthy: true`, `gaps: []`).
+
+108. **Pre-Processing Single-Node Base Unit BOM Normalization & Multiplier Preservation Invariant (`INV-117`)**:
+    - **Single-Compute Normalization Anchor**: All customer tenders, quotes, RFP sheets, or multi-node BOQs (whether arriving as `.csv`, `.xlsx`, OCR scanned PDF, or images) must first undergo pre-flight sanitization and single-compute normalization. When input quantities represent an aggregated multi-node cluster ($N > 1$ chassis), items must be decomposed into a **Base Unit BOM** (representing exactly 1 server compute node) and an isolated **Node Multiplier** ($N = \text{serverCount}$).
+    - **Physical Aspect Check Boundaries**: Physical engineering sanity checkers (compute/thermal, memory channel, PCIe riser slot budget, drive count & SAS/Tri-Mode expander threshold, power supply redundancy & envelope, networking OCP slot capacity) must **ONLY** evaluate the Base Unit BOM (1 server node) or per-node normalized counts ($Q_{\text{node}} = Q_{\text{total}} / N$). Single-server hardware capacity limits must NEVER be evaluated against pre-multiplied cluster totals, which triggers false expander, riser, and cable violations that corrupt Rank 1 recommendations.
+    - **Multiplier Preservation in Enterprise Portals**: Downstream deliverables (HPE One Config Advanced / CLIC Partner Portal sheets, 5-Tier Strategy Workbooks, executive BOM summaries) must preserve the Base Unit BOM with the exact integer node multiplier (`Set = N` or `Qty = Q_node`, `Multiplier = N`). `Total CapEx` is strictly computed via formulaic rollups ($\sum Q_{\text{node}} \times N \times \text{UnitPrice}$) without double-multiplication.
+    - **Spares, Cluster-Level Services, and Accessory Immunity**: Order-level installation services (e.g. `HA113A1` Onsite Installation), cluster-wide spares, chassis accessories (e.g. `804943-B21` 4x Lift Handle), and non-node SaaS subscriptions are immune to node division/multiplication and must remain scoped at `nodeMult = 1` or cluster level.
+    - **Hardware Spec & Multiplier Neutralization**: Pre-processing tokenizers must neutralize hardware specification suffixes (such as `x8`, `x16`, `4x`, `#`, `Gen5`) in descriptions and model strings to prevent false parsing as quantity multipliers. Services and accessories with OEM product names (e.g. `HA113A1 5A6` "HPE Proliant DL/ML Install SVC") must never be detected as server chassis or drive cages.
+
 ## 7. Cognitive Mandates for Autonomous Agents (Root Cause Prevention)
 To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never repeat the blind spots identified in the 2026-09-17 audit, all agents MUST adhere to these cognitive mandates:
 1. **Adversarial Negative-Path Thinking**: For every feature or gate, test missing, empty, corrupt, and boundary inputs first. A failure or missing check must NEVER become a success claim.

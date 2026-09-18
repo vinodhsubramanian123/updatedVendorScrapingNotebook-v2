@@ -107,12 +107,19 @@ function createPriceResolver(targetDir) {
       const price = Number(historical?.priceUsd);
       resolved.set(clean, {
         price: Number.isFinite(price) && price > 0 ? price : 0,
-        status: historical?.status || 'NO_PRICE_RECORDED'
+        status: historical?.status || 'NO_PRICE_RECORDED',
+        isResolved: historical?.isResolved === true
       });
     }
     return resolved.get(clean).price;
   };
-  getPrice.hasPrice = sku => getPrice(sku) > 0;
+  getPrice.hasPrice = sku => {
+    const clean = cleanBaseSKU(sku);
+    if (!clean) return false;
+    getPrice(sku);
+    const entry = resolved.get(clean);
+    return entry ? (entry.price > 0 || entry.isResolved === true) : false;
+  };
   getPrice.status = sku => {
     getPrice(sku);
     return resolved.get(cleanBaseSKU(sku))?.status || 'NO_PRICE_RECORDED';
@@ -332,6 +339,7 @@ function buildRank3PcieStorageBranchParts(ctx) {
 // -----------------------------------------------------------------------------
 function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
   const requestedSkuSet = new Set(items.map(it => cleanBaseSKU(it.sku)).filter(Boolean));
+  const requestedQuantities = new Map(items.map(it => [cleanBaseSKU(it.sku), Number(it.quantity || 1)]));
 
   rawCandidates.forEach(cand => {
     const matchedCount = cand.skuPartsList.filter(p => requestedSkuSet.has(cleanBaseSKU(p.sku))).length;
@@ -339,12 +347,14 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
     cand.intentMatchRatio = parseFloat(matchRatio.toFixed(2));
     cand.dynamicScore = parseFloat(((matchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
     cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
+    const candidateQuantities = new Map(cand.skuPartsList.map(it => [cleanBaseSKU(it.sku), Number(it.quantity || 1)]));
+    cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
+      .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
   });
 
   rawCandidates.sort((a, b) => {
-    if (a.rank !== undefined && b.rank !== undefined && a.rank !== b.rank) {
-      return a.rank - b.rank;
-    }
+    if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
+    if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
     if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
     if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
       return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
@@ -423,7 +433,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
     omittedSkus.forEach(() => {
       weightedEditDistance += 0.8;
     });
-    weightedEditDistance = parseFloat(weightedEditDistance.toFixed(2));
+    weightedEditDistance = parseFloat((weightedEditDistance + (cand.quantityDelta || 0)).toFixed(2));
 
     const riskScore = (cand.aspectErrors?.length || 0) * 10 + (cand.changesCount || 0);
 
@@ -435,6 +445,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
       addedSkus: addedSkus.slice(0, 5),
       omittedSkus: omittedSkus.slice(0, 5),
       weightedEditDistance,
+      quantityDelta: cand.quantityDelta || 0,
       riskScore,
       disruptionScore: Math.min(100, Math.round(weightedEditDistance * 20)),
       isClosestRoute: idx <= 2,
@@ -563,7 +574,10 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
   const fanSku = mandatory.HIGH_PERF_FAN_KIT?.sku || 'P48820-B21';
   const fanName = mandatory.HIGH_PERF_FAN_KIT?.name || 'HPE High Performance Fan Kit';
   const hasHighPerfFan = partSkus.has(cleanBaseSKU(fanSku)) ||
-    updatedParts.some(p => (p.description || '').toLowerCase().includes('high performance fan'));
+    updatedParts.some(p => {
+      const d = (p.description || '').toLowerCase();
+      return d.includes('high performance fan') || d.includes('fan module') || d.includes('fan kit');
+    });
 
   if ((highTdpCpu || hasGpu) && !hasHighPerfFan) {
     const fanPrice = getPrice(fanSku);
@@ -753,10 +767,10 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Determine Rank 1 title and nature
   const isStraightforwardWinner = fixes.length === 0 && (!evalResults.errors || evalResults.errors.length === 0);
   const rank1Name = isStraightforwardWinner
-    ? 'Rank 1: Straightforward Winner (100% Valid as Drafted)'
+    ? 'Rank 1: Customer Configuration (Local Rules Passed)'
     : 'Rank 1: Customer Workload Intent Preserved (Optimal Match)';
   const rank1Reasoning = isStraightforwardWinner
-    ? 'Customer BOQ is 100% buildable as drafted. Zero additions, removals, or replacements required.'
+    ? 'Normalized customer configuration passes local rules without additions, removals, or replacements. PORTAL VALIDATION PENDING.'
     : 'Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.';
 
   // Rank 2: Least-Delta Alternative Path (when troublesome SKU causes cascades) or Standardized CTO Baseline

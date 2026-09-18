@@ -13,7 +13,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv, generateRankedPortalWorkbook } = require('./generate_boq_xlsx.js');
+const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv, generateRankedPortalWorkbook, generateProfessionalBOQ } = require('./generate_boq_xlsx.js');
+const { outputQuantities } = require('./configuration_context');
 const { formatNotebookQueryPayload } = require('./boq_evaluator.js');
 const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
@@ -30,6 +31,7 @@ function _buildHeaderSection(ctx) {
   md += `**Target BOQ File**: \`${inputFile}\`  \n`;
   md += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
   md += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
+  md += `**Quantity basis**: Physical validation and category figures describe 1 base configuration; requested configurations: ${evalResults.configurationContext?.multiplier || 1}. Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.\n`;
   md += `**Quantitative Confidence Score**: \`${evalResults.confidence?.score ?? 'UNKNOWN'} / 1.00\` (model confidence; not a portal certification)  \n`;
   if (targetBudgetUsd > 0) {
     md += `**Target CapEx Budget**: \`$${targetBudgetUsd.toLocaleString()} USD\`  \n`;
@@ -40,10 +42,11 @@ function _buildHeaderSection(ctx) {
 
 function _buildItemsSection(items, budgetOpt) {
   let md = `## 📋 1. Consolidated BOQ Hardware Items (${items.length})\n\n`;
-  md += `| # | Product # (SKU) | Consolidated Qty | Description | Est. Unit Price (USD) | Extended Price (USD) |\n`;
+  md += `| # | Product # (SKU) | Total Order Qty | Description | Est. Unit Price (USD) | Extended Price (USD) |\n`;
   md += `|---|---|---|---|---|---|\n`;
   items.forEach((it, idx) => {
-    md += `| ${idx + 1} | \`${it.sku}\` | ${it.quantity} | ${it.description} | \$${(it.unitPriceUsd || 0).toLocaleString()} | \$${(it.extendedPriceUsd || 0).toLocaleString()} |\n`;
+    const { totalQty } = outputQuantities(it);
+    md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${(it.unitPriceUsd || 0).toLocaleString()} | \$${(totalQty * (it.unitPriceUsd || 0)).toLocaleString()} |\n`;
   });
   md += `\n**Current Baseline BOM Total**: \`$${(budgetOpt?.currentBomCostUsd || 0).toLocaleString()} USD\`\n\n`;
   md += `---\n\n`;
@@ -105,11 +108,11 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
   md += `- **Memory Density Ratio**: \`${dna.totalMemoryGb || 0} GB Total RAM\` (\`${dna.gbPerCore || 0} GB/Core\`)  \n`;
   md += `- **Storage I/O Profile**: \`${dna.storageWorkload || 'READ_INTENSIVE'} (${dna.storageType || 'SATA/NVMe'})\`  \n\n`;
 
-  if (graph.rankedSolutions && graph.rankedSolutions.length > 0) {
+  if (graph.recommendedSolutions && graph.recommendedSolutions.length > 0) {
     md += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
     md += `|---|---|---|---|---|---|---|\n`;
-    graph.rankedSolutions.forEach(rs => {
-      md += `| **Rank ${rs.rank}** | ${rs.name} | \`${rs.score}\` | \$${rs.estimatedCostUsd.toLocaleString()} | ${rs.workloadDnaMatch} | ${rs.changesCount} | ${rs.reasoning} |\n`;
+    graph.recommendedSolutions.forEach(rs => {
+      md += `| **Rank ${rs.rank}** | ${rs.name} | \`${rs.score}\` | \$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd).toLocaleString()} | ${rs.workloadDnaMatch} | ${rs.changesCount} | ${rs.reasoning} |\n`;
     });
     md += `\n`;
   }
@@ -121,6 +124,7 @@ function _buildBudgetSection(budgetOpt, targetBudgetUsd) {
   let md = `---\n\n`;
   md += `## 💰 3. Budget-Constrained Optimization & Golden Rule Assurance\n\n`;
   md += `${budgetOpt.goldenRuleSummary || ''}\n\n`;
+  if (budgetOpt.hasZeroPriceSkus) md += `**PRICING INCOMPLETE — ${budgetOpt.zeroPriceCount} SKU(s) unresolved or zero price unconfirmed. Totals are known-price subtotals, not complete quotations.**\n\n`;
   md += `- **Mandatory Buildable Cost**: \`$${(budgetOpt.mandatoryBomCostUsd || 0).toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
 
   if (budgetOpt.isBudgetExceeded) {
@@ -370,6 +374,9 @@ async function serializeAndExportResults(ctx) {
     });
     evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
     evalResults.multiRankCsvPath = multiRankCsvPath;
+    const proposalPath = path.join(reportDir, `${fileSuffix}_Proposal.xlsx`);
+    generateProfessionalBOQ(evalResults, proposalPath, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
+    evalResults.proposalWorkbookPath = proposalPath;
     const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
     generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
     evalResults.portalWorkbookPath = portalWorkbookPath;

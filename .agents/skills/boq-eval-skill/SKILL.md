@@ -39,9 +39,13 @@ While the React Dashboard provides an exceptional visual interface for reviewing
    - Asserts `isCatalogCertified(chassisId)` before parsing component lines or running physical math.
    - Verifies that `outputs/{Family}/{Gen}/{Model}/` contains `*_Catalog.json` (with `totalUniqueSKUs > 0`) and `*_OCA_Catalog.xlsx`.
    - If the catalog does not exist or has 0 SKUs, halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent to trigger `oca-portal-navigator` $\rightarrow$ `oca-catalog-scraper` to establish ground truth rather than proceeding on hallucinated or ungrounded data.
-1. **Intake, Ingestion & CTO Normalization**:
-   - Extracts base chassis and CTO multipliers (e.g. resolving a 5x server order into an atomic 1-unit profile).
-   - Identifies and excludes non-BOM documentation tabs (Cover pages, T&Cs, Readmes) using `isNonBomSheet` (`INV-63`).
+1. **Intake, Ingestion & Single-Compute Normalization (`INV-117`)**:
+   - **Physical Anchor (Rule 6)**: The CTO base chassis line item quantity serves as the physical anchor defining the cluster multiplier ($N = \text{serverCount}$).
+   - **Pre-Multiplied BOQ Guard (Rule 38)**: Decomposes aggregated multi-node tenders ($N > 1$) into an atomic **Base Unit BOM** ($Q_{\text{node}} = Q_{\text{total}} / N$) and an isolated multiplier ($N$). Physical engineering checkers (7 aspects) evaluate ONLY the Base Unit BOM, preventing false capacity violations.
+   - **Hardware Spec String Neutralization (Rules 5 & 43)**: Hardware descriptions embedding technical specification tokens like `x8`, `x16`, `4x`, `#`, `Gen5` (e.g. `804943-B21` "HPE ProLiant 4x Lift Handle Option Kit", `P74690-B21` "DL380a Gen12 Rear 3x16 Slot FIO Kit") are neutralized during pre-processing to prevent regex parsers from treating spec notations as quantity multipliers.
+   - **Service & Install Item Exclusion (Rule 44)**: OEM services like `HA113A1 5A6` ("HPE Proliant DL/ML Install SVC") containing chassis-like acronyms ("DL", "ML") are quarantined to prevent misclassification as server compute nodes.
+   - **Spares & Order-Level Services Immunity (Rules 4 & 36)**: Order-level installation services (`HA113A1`), break-fix warranties (`HU4B2A3`), spares, and bulk accessories (`804943-B21` lift handles) remain scoped at `nodeMult = 1` and are never divided across nodes.
+   - **Non-BOM Sheet Filtering**: Excludes non-BOM documentation tabs (Cover pages, T&Cs, Readmes) using `isNonBomSheet` (`INV-63`).
    - **Strict Model Separation (`DL380a_Gen12` vs `DL380_Gen12`)**: `DL380a_Gen12` is a dedicated AI accelerator server supporting up to 8DW/16SW GPUs (`P75008-B21`/`P75002-B21` GPU Mode choices, `S3U30C` H200 GPUs, captive GPU risers). Quotes/BOQs specifying "DL380a" or GPU server SKUs MUST evaluate strictly against `outputs/ProLiant/Gen12/DL380a_Gen12` and dedicated NotebookLM notebook `DL380a` (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Never route to standard `DL380_Gen12`.
 2. **Deterministic 7-Aspect Physical Pre-Flight Math**:
    - Executes $O(1)$ indexed checks across: (1) Compute & Thermal TDP, (2) Memory Channel symmetry (1DPC/2DPC), (3) Storage Tri-Mode controllers & drive cages, (4) Networking & OCP slot constraints, (5) PCIe Riser card & slot capacity, (6) Power redundancy & -48VDC telco lug kits, (7) Support services & OS physical core multiplier licensing (`INV-28`).

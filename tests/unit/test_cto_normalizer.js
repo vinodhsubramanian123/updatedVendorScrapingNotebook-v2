@@ -13,18 +13,9 @@ function runTests() {
   ];
 
   const resultFractional = detectAndNormalizeAtomicCto(itemsWithFractional);
-  assert.strictEqual(resultFractional.baseChassisQty, 2, 'Should detect 2 chassis');
-  assert.strictEqual(resultFractional.isMultipliedOrder, true, 'Should mark as multiplied order');
-  assert.strictEqual(resultFractional.hasNonIntegerDivisor, true, 'Should detect non-integer divisor');
-
-  const cpuItemFractional = resultFractional.items.find(i => i.sku === 'P49033-B21');
-  assert.strictEqual(cpuItemFractional.atomicQuantity, 2.5, 'Should calculate fractional atomic quantity');
-  assert.strictEqual(cpuItemFractional.isIntegerDivisor, false, 'Should flag non-integer divisor for CPU');
-
-  const ramItemFractional = resultFractional.items.find(i => i.sku === 'P43331-B21');
-  assert.strictEqual(ramItemFractional.atomicQuantity, 8, 'Should calculate integer atomic quantity');
-  assert.strictEqual(ramItemFractional.isIntegerDivisor, true, 'Should not flag non-integer divisor for RAM');
-
+  assert.strictEqual(resultFractional.hasNonIntegerDivisor, true);
+  assert.strictEqual(resultFractional.ctoAnomalies[0].type, 'CONFIGURATION_OWNERSHIP_AMBIGUOUS');
+  assert.deepStrictEqual(resultFractional.items, itemsWithFractional, 'Do not publish partial normalization of an ambiguous configuration');
 
   console.log('▶ Test: detectAndNormalizeAtomicCto with Explicit Multiplier Header');
   // Simulating where chassis is listed with Qty 1, but header had "5x Nodes"

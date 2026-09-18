@@ -85,6 +85,13 @@ function getSkuAuditHistory(targetSku, chassisDir) {
     snapshotOccurrences: []
   };
 
+  const rawSku = String(targetSku || '').trim();
+  const rawSkuWithHash = rawSku.replace(/\s+/g, '#');
+  const findInMap = (histObj) => {
+    if (!histObj || typeof histObj !== 'object') return null;
+    return histObj[cleanSku] || histObj[rawSku] || histObj[rawSkuWithHash] || null;
+  };
+
   if (!fs.existsSync(historyDir)) {
     return auditResult;
   }
@@ -94,12 +101,64 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   if (fs.existsSync(priceHistoryPath)) {
     try {
       const priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
-      if (priceHistory[cleanSku]) {
-        auditResult.priceTimeline = priceHistory[cleanSku];
+      const found = findInMap(priceHistory);
+      if (found) {
+        auditResult.priceTimeline = found;
       }
     } catch (err) {
       console.warn(`[sku_versioning] Error reading price_history.json: ${err.message}`);
     }
+  }
+
+  // 1b. Read services price history
+  const servicesHistoryDir = path.join(resolvedChassisDir, 'services_history');
+  const servicesPriceHistoryPath = path.join(servicesHistoryDir, 'services_price_history.json');
+  if (fs.existsSync(servicesPriceHistoryPath)) {
+    try {
+      const sPriceHistory = JSON.parse(fs.readFileSync(servicesPriceHistoryPath, 'utf-8'));
+      const sFound = findInMap(sPriceHistory);
+      if (sFound && (auditResult.priceTimeline.length === 0 || auditResult.priceTimeline.every(e => !e.price || e.price <= 0))) {
+        auditResult.priceTimeline = sFound;
+      }
+    } catch (err) {
+      console.warn(`[sku_versioning] Error reading services_price_history.json: ${err.message}`);
+    }
+  }
+
+  // 1c. Cross-chassis fallback within same product generation (e.g. DL380_Gen12 <-> DL380a_Gen12 <-> DL580_Gen12)
+  if (resolvedChassisDir && (auditResult.priceTimeline.length === 0 || auditResult.priceTimeline.every(e => !e.price || e.price <= 0))) {
+    try {
+      const parentDir = path.dirname(resolvedChassisDir);
+      if (fs.existsSync(parentDir)) {
+        const peerDirs = fs.readdirSync(parentDir, { withFileTypes: true })
+          .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== resolvedChassisDir)
+          .map(d => path.join(parentDir, d.name));
+        for (const peer of peerDirs) {
+          const peerPriceHistoryPath = path.join(peer, 'history', 'price_history.json');
+          if (fs.existsSync(peerPriceHistoryPath)) {
+            try {
+              const pHist = JSON.parse(fs.readFileSync(peerPriceHistoryPath, 'utf-8'));
+              const pFound = findInMap(pHist);
+              if (pFound && pFound.some(e => Number(e.price) > 0)) {
+                auditResult.priceTimeline = pFound;
+                break;
+              }
+            } catch (_) {}
+          }
+          const peerServicesPath = path.join(peer, 'services_history', 'services_price_history.json');
+          if (fs.existsSync(peerServicesPath)) {
+            try {
+              const spHist = JSON.parse(fs.readFileSync(peerServicesPath, 'utf-8'));
+              const spFound = findInMap(spHist);
+              if (spFound && spFound.some(e => Number(e.price) > 0)) {
+                auditResult.priceTimeline = spFound;
+                break;
+              }
+            } catch (_) {}
+          }
+        }
+      }
+    } catch (_) {}
   }
 
   // 2. Read attribute mutations
@@ -245,11 +304,15 @@ function formatMonthLabel(isoDate) {
   return `${monthNames[mIdx]} ${year}`;
 }
 
+const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(['HA113A1', 'HU4B2A3']);
+
 function isConfirmedFreeSku(sku, description) {
-  const s = String(sku || '').toUpperCase();
+  const s = String(sku || '').toUpperCase().trim();
+  const baseSku = s.split(' ')[0].replace(/[^a-zA-Z0-9]/g, '');
+  if (CONFIRMED_ZERO_PARENT_CONTRACTS.has(baseSku)) return true;
   const d = String(description || '').toUpperCase();
   // FIO enablement triggers, zero dollar configs, CE mark removal
-  if (s === 'P35876-B21') return true;
+  if (s === 'P35876-B21' || s === 'S1A05A') return true;
   if (s.endsWith('-F21') || s.includes('#0D1')) return true;
   if (d.includes('ENABLEMENT') && (d.includes('FIO') || d.includes('ZERO') || d.includes('CONFIG'))) return true;
   if (d.includes('FACTORY INTEGRATED') && d.includes('KIT')) return true;
@@ -286,46 +349,97 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
 
-  if (priceTimeline.length === 0) {
-    // If no price timeline in history, check current catalog fallback price
-    let fallbackPrice = 0;
-    const catalogPath = path.join(dir, `${path.basename(dir)}_Catalog.json`);
-    if (fs.existsSync(catalogPath)) {
-      try {
-        if (!catalogPriceCache.has(catalogPath)) {
-          const cat = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-          const map = new Map();
-          const entries = Array.isArray(cat.entries) ? cat.entries : [];
-          entries.forEach(e => {
-            const skus = Array.isArray(e.skus) ? e.skus : [];
-            skus.forEach(s => map.set(s.sku || s['Product #'], s));
+  const checkFileForSkuPrice = (filePath) => {
+    if (!filePath || !fs.existsSync(filePath)) return 0;
+    try {
+      if (!catalogPriceCache.has(filePath)) {
+        const cat = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        const map = new Map();
+        const entries = Array.isArray(cat.entries) ? cat.entries : [];
+        entries.forEach(e => {
+          const skus = Array.isArray(e.skus) ? e.skus : [];
+          skus.forEach(s => {
+            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9\-]/g, '').trim();
+            if (k) map.set(k, s);
           });
-          catalogPriceCache.set(catalogPath, map);
+        });
+        if (Array.isArray(cat.skus)) {
+          cat.skus.forEach(s => {
+            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9\-]/g, '').trim();
+            if (k) map.set(k, s);
+          });
         }
-        const match = catalogPriceCache.get(catalogPath).get(cleanSku);
-        if (match) {
-          fallbackPrice = parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || 0).replace(/[^0-9.]/g, '')) || 0;
+        catalogPriceCache.set(filePath, map);
+      }
+      const match = catalogPriceCache.get(filePath).get(cleanSku);
+      if (match) {
+        return parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || match['Unit List Price (USD)'] || match.price || 0).replace(/[^0-9.]/g, '')) || 0;
+      }
+    } catch (_) {}
+    return 0;
+  };
+
+  const hasTimelinePrice = priceTimeline.length > 0 && priceTimeline.some(e => Number(e.price) > 0);
+
+  if (!hasTimelinePrice) {
+    // If no positive price timeline in history, check current catalog, services, and peer fallback price
+    let fallbackPrice = checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Catalog.json`));
+    if (fallbackPrice <= 0) {
+      fallbackPrice = checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Services.json`));
+    }
+    if (fallbackPrice <= 0 && dir) {
+      try {
+        const parentDir = path.dirname(dir);
+        if (fs.existsSync(parentDir)) {
+          const peers = fs.readdirSync(parentDir, { withFileTypes: true })
+            .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== dir)
+            .map(d => path.join(parentDir, d.name));
+          for (const peer of peers) {
+            fallbackPrice = checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Catalog.json`));
+            if (fallbackPrice > 0) break;
+            fallbackPrice = checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Services.json`));
+            if (fallbackPrice > 0) break;
+          }
         }
-      } catch (_) { /* ignore fallback read error */ }
+      } catch (_) {}
     }
 
-    const isFree = isConfirmedFreeSku(cleanSku, audit.description);
-    const category = fallbackPrice > 0 ? 'CURRENT_CATALOG_PRICE' : (isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'NO_PRICE_RECORDED');
-    const confidence = fallbackPrice > 0 ? 'HIGH' : (isFree ? 'HIGH' : 'UNRESOLVED');
-    return {
-      sku: cleanSku,
-      targetDate: normalizedDate,
-      effectiveDate: normalizedDate,
-      priceUsd: fallbackPrice,
-      currency: 'USD',
-      status: fallbackPrice > 0 ? 'CURRENT_PRICE' : (isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED'),
-      pricingCategory: category,
-      quoteConfidence: confidence,
-      isResolved: confidence !== 'UNRESOLVED',
-      sourceDirectory: dir,
-      isDiscontinued: audit.currentStatus === 'DISCONTINUED',
-      priceTrail: audit.priceTimeline
-    };
+    if (fallbackPrice > 0) {
+      return {
+        sku: cleanSku,
+        targetDate: normalizedDate,
+        effectiveDate: normalizedDate,
+        priceUsd: fallbackPrice,
+        currency: 'USD',
+        status: 'CURRENT_PRICE',
+        pricingCategory: 'CURRENT_CATALOG_PRICE',
+        quoteConfidence: 'HIGH',
+        isResolved: true,
+        sourceDirectory: dir,
+        isDiscontinued: audit.currentStatus === 'DISCONTINUED',
+        priceTrail: audit.priceTimeline
+      };
+    }
+
+    if (priceTimeline.length === 0) {
+      const isFree = isConfirmedFreeSku(cleanSku, audit.description);
+      const category = isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'NO_PRICE_RECORDED';
+      const confidence = isFree ? 'HIGH' : 'UNRESOLVED';
+      return {
+        sku: cleanSku,
+        targetDate: normalizedDate,
+        effectiveDate: normalizedDate,
+        priceUsd: 0,
+        currency: 'USD',
+        status: isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED',
+        pricingCategory: category,
+        quoteConfidence: confidence,
+        isResolved: confidence !== 'UNRESOLVED',
+        sourceDirectory: dir,
+        isDiscontinued: audit.currentStatus === 'DISCONTINUED',
+        priceTrail: audit.priceTimeline
+      };
+    }
   }
 
   // Sort chronological ascending

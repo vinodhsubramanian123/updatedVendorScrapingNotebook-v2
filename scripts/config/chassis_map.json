@@ -998,17 +998,17 @@
       "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" }
     },
     "ProLiant_DL380a_Gen12": {
-      "highPerfFanKit": { "sku": "P56950-B21", "name": "HPE ProLiant DL380a Gen12 High Performance Counter-Rotating Fan Kit" },
+      "highPerfFanKit": { "sku": "P79656-B21", "name": "HPE ProLiant Compute DL380a Gen12 Front Chassis Fan Module Kit" },
       "highPerfHeatsink": { "sku": "P48818-B21", "name": "HPE ProLiant DL380a Gen12 High Performance Heatsink" },
       "noDriveFioKit": { "sku": "873763-B21", "name": "HPE ProLiant Compute No Drive Configuration FIO Kit" },
       "dcLugKit": { "sku": "P36877-B21", "name": "HPE 1600W -48VDC Power Cable Lug Kit" },
-      "smartStorageBattery": { "sku": "P01366-B21", "name": "HPE 96W Smart Storage Battery" },
-      "controllerCableKit": { "sku": "P76456-B21", "name": "HPE ProLiant DL380 Gen12 Controller Cable Kit" },
+      "smartStorageBattery": { "sku": "P01367-B21", "name": "HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit" },
+      "controllerCableKit": { "sku": "P76700-B21", "name": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit" },
       "gpuPowerCableKit": { "sku": "P74700-B21", "name": "HPE ProLiant DL380a Gen12 GPU 16-pin FIO Cable Kit" },
       "genericCage": { "sku": "P74710-B21", "name": "HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit" },
       "premiumCage": { "sku": "P74712-B21", "name": "HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit" },
       "ceRemovalKit": { "sku": "P35876-B21", "name": "HPE CE Mark Removal FIO Enablement Kit" },
-      "bootDeviceEnablement": { "sku": "P74755-B21", "name": "HPE ProLiant DL380 Gen12 NS204i-u Boot Device Enablement Kit" }
+      "bootDeviceEnablement": { "sku": "P75284-B21", "name": "HPE DL380a Gen12 NS204i-u Front Cage Kit" }
     },
     "ProLiant_DL145_Gen11": {
       "highPerfFanKit": { "sku": "P71965-B21", "name": "HPE ProLiant DL145 Gen11 High Performance Fan Kit" },

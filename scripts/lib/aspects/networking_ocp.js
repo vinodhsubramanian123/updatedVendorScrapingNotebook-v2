@@ -63,7 +63,7 @@ function tallyOcpAndCables(tally, it, desc, sku, qty, role, mandatorySkus = {}) 
   }
 }
 
-function tallyFcHbas(tally, desc, qty, role) {
+function tallyFcHbas(tally, desc, sku, qty, role) {
   const isFcRole = role === 'Fibre Channel HBA' || role === 'Host Bus Adapter' || desc.includes('fc hba') || desc.includes('fibre channel host bus adapter') || desc.includes('fibre channel');
   if (!isFcRole) return;
 
@@ -73,8 +73,22 @@ function tallyFcHbas(tally, desc, qty, role) {
     if (desc.includes('1-port') || desc.includes('1p') || desc.match(/1\s*-?port/i)) ports = 1;
     if (desc.includes('4-port') || desc.includes('4p') || desc.match(/4\s*-?port/i)) ports = 4;
 
-    if (desc.includes('32gb')) tally.fcHbaPortCount32Gb += (ports * qty);
-    else if (desc.includes('64gb')) tally.fcHbaPortCount64Gb += (ports * qty);
+    const totalPorts = ports * qty;
+    const cleanSku = cleanBaseSKU(sku);
+    // HPE SN1610Q / SN1610E include optical transceivers pre-installed in the box per HPE QuickSpecs
+    const includesTransceivers = cleanSku === 'R2E09A' || cleanSku === 'R2E08A' || cleanSku === 'R2J62A' || cleanSku === 'R2J63A';
+
+    if (desc.includes('32gb')) {
+      tally.fcHbaPortCount32Gb += totalPorts;
+      if (includesTransceivers) {
+        tally.includedTransceiverCount32Gb += totalPorts;
+      }
+    } else if (desc.includes('64gb')) {
+      tally.fcHbaPortCount64Gb += totalPorts;
+      if (includesTransceivers) {
+        tally.includedTransceiverCount64Gb += totalPorts;
+      }
+    }
   }
 }
 
@@ -96,7 +110,7 @@ function tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role) {
 }
 
 function tallyFcHbasAndSan(tally, desc, sku, qty, role) {
-  tallyFcHbas(tally, desc, qty, role);
+  tallyFcHbas(tally, desc, sku, qty, role);
   tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role);
 }
 
@@ -137,6 +151,8 @@ function tallyNetworkingItems(items, skuCategoryMap, mandatorySkus = {}) {
     fcHbaPortCount64Gb: 0,
     transceiverCount32Gb: 0,
     transceiverCount64Gb: 0,
+    includedTransceiverCount32Gb: 0,
+    includedTransceiverCount64Gb: 0,
     sanSwitchCount: 0,
     opticalPatchCableCount: 0,
     activeOpticalTransceiverCount: 0,
@@ -161,9 +177,11 @@ function tallyNetworkingItems(items, skuCategoryMap, mandatorySkus = {}) {
 }
 
 function validateSanTransceivers(t) {
+  const effective32Gb = t.transceiverCount32Gb + (t.includedTransceiverCount32Gb || 0);
+  const effective64Gb = t.transceiverCount64Gb + (t.includedTransceiverCount64Gb || 0);
   return {
-    isMissing32GbTransceivers: t.fcHbaPortCount32Gb > t.transceiverCount32Gb,
-    isMissing64GbTransceivers: t.fcHbaPortCount64Gb > t.transceiverCount64Gb,
+    isMissing32GbTransceivers: t.fcHbaPortCount32Gb > effective32Gb,
+    isMissing64GbTransceivers: t.fcHbaPortCount64Gb > effective64Gb,
     isMissingOpticalPatchCables: t.activeOpticalTransceiverCount > t.opticalPatchCableCount,
     hasSanSinglePointOfFailure: t.fcHbaCount > 0 && t.sanSwitchCount === 1
   };
@@ -203,7 +221,7 @@ function validateSynergyFabrics(synergyInterconnects, synergyMezzCards) {
   return { hasSynergyFabricMismatch, synergyFabricErrors };
 }
 
-function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}) {
+function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   let maxOcpSlots = 2;
   if (catalogData && catalogData.entries) {
     const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
@@ -217,6 +235,7 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}) {
 
   const san = validateSanTransceivers(t);
   const synergy = validateSynergyFabrics(t.synergyInterconnects, t.synergyMezzCards);
+  const nodes = Math.max(1, serverCount || 1);
 
   return {
     fcHbaCount: t.fcHbaCount,
@@ -236,7 +255,7 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}) {
     hasOcpAdapter: t.hasOcpAdapter,
     ocpAdapterCount: t.ocpAdapterCount,
     maxOcpSlots,
-    isExceedingOcpSlots: t.ocpAdapterCount > maxOcpSlots,
+    isExceedingOcpSlots: t.ocpAdapterCount > (maxOcpSlots * nodes),
     hasCpu1Ocp2Cable: t.hasCpu1Ocp2Cable,
     hasCpu2Ocp2Cable: t.hasCpu2Ocp2Cable,
     hasConflictingOcpCables: t.hasCpu1Ocp2Cable && t.hasCpu2Ocp2Cable,

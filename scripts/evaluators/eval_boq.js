@@ -293,9 +293,13 @@ function ingestAndConsolidateBoq(options) {
     productConfirmed
   });
   items = requirementResolution.resolvedItems;
+  const configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
+  items = configurationContext.items;
 
   return {
     items,
+    configurationContext,
+    serverCount: configurationContext.multiplier,
     inputFile,
     chassisDir,
     chassisPrefix,
@@ -703,6 +707,7 @@ async function runEvaluationPipelineWithinTrace(options) {
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
   );
+  ingestCtx.items = evalResults.items || ingestCtx.items;
   (evalResults.missingDependencies || []).forEach(dep => {
     evidenceLedger.recordActiveRuleReached({
       ruleId: dep.ruleId || 'PHYSICAL_ASPECT_DEP',
@@ -734,7 +739,8 @@ async function runEvaluationPipelineWithinTrace(options) {
   evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
   const tMatrixStart = Date.now();
   emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
-  const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData);
+  const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData, ingestCtx.chassisDir);
+  evalResults.budgetOptimization = budgetOpt;
   const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
   const confidenceScore = evalResults.confidence?.score ?? 1.0;
   const isLowConfidence = confidenceScore < 0.55 || Boolean(evalResults.confidence?.isHitlTriggered);
@@ -794,10 +800,15 @@ async function runEvaluationPipelineWithinTrace(options) {
     candidate.customerDistance = { changedLines: delta.length, changedUnits: delta.reduce((sum, row) => sum + Math.abs(row.after - row.before), 0), metric: 'SKU quantity delta; functional preservation requires independent candidate review' };
   }
   if (evalResults.conflictGraph?.recommendedSolutions) {
-    evalResults.conflictGraph.recommendedSolutions = (evalResults.conflictGraph.rankedSolutions || [])
-      .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false)
+    const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
+      .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false && candidate.isParetoOptimal !== false);
+    const closestUnits = Math.min(...validCandidates.map(candidate => candidate.customerDistance.changedUnits));
+    const distanceWindow = Math.max(1, Math.ceil(ingestCtx.items.filter(item => item.quantityScope !== 'global').length * 0.15));
+    evalResults.conflictGraph.recommendedSolutions = validCandidates
+      .filter(candidate => candidate.customerDistance.changedUnits <= closestUnits + distanceWindow)
       .sort((a, b) => a.customerDistance.changedLines - b.customerDistance.changedLines || a.customerDistance.changedUnits - b.customerDistance.changedUnits || a.rank - b.rank)
-      .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1 }));
+      .slice(0, 3)
+      .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1, name: candidate.name.replace(/^Rank \d+:/, `Rank ${index + 1}:`) }));
   }
   evidenceLedger.phases.phase_6.outputSummary.candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
     rank: candidate.rank,

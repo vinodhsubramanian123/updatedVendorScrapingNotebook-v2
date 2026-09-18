@@ -99,10 +99,12 @@ P43322-B21, 4, "HPE 16GB 1Rx8 PC5-4800B-R Smart Kit"
     const uniqueRanks = new Set(rankIds);
     assert(uniqueRanks.size === 5, 'Ranks contain zero duplicate rank IDs');
     
-    // Check CapEx consistency (Rank 4 >= Rank 3 >= Rank 2 >= Rank 1/5 etc)
-    const costRank4 = ranks.find(r => r.rank === 4)?.estimatedCostUsd || 0;
+    // Check CapEx consistency (Maximum Density >= Rank 3 >= Budget Minimized etc)
+    const maxDensityCand = ranks.find(r => r.name.toLowerCase().includes('density')) || ranks.find(r => r.rank === 4);
+    const budgetCand = ranks.find(r => r.name.toLowerCase().includes('budget') || r.name.toLowerCase().includes('capex')) || ranks.find(r => r.rank === 5);
+    const costRank4 = maxDensityCand?.estimatedCostUsd || 0;
     const costRank3 = ranks.find(r => r.rank === 3)?.estimatedCostUsd || 0;
-    const costRank5 = ranks.find(r => r.rank === 5)?.estimatedCostUsd || 0;
+    const costRank5 = budgetCand?.estimatedCostUsd || 0;
     assert(costRank4 >= costRank3, 'Rank 4 (Maximum Density) cost is greater than or equal to Rank 3');
     assert(costRank4 >= costRank5, 'Rank 4 cost is greater than or equal to Rank 5 (Budget Minimized)');
     

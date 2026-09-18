@@ -79,7 +79,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 
 ## 5. Technical Invariants & Epistemic Rules Reference
 To conserve context tokens, detailed specifications and negative-path implementations are modularized:
-- **Complete Invariant Catalog (INV-1 through INV-116)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
+- **Complete Invariant Catalog (INV-1 through INV-117)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
 - **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 14)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
 - **Consolidated Documentation**:
   - [`docs/DIRECTORY_STRUCTURE.md`](file:///docs/DIRECTORY_STRUCTURE.md): Canonical repository directory mapping.

@@ -6658,7 +6658,7 @@
           "Product #": "P74700-B21",
           "Description": "HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit",
           "Current Qty": "0",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "118.99",
           "Extended Price (USD)": "0",
           "Start Date": "11/04/2024",
           "Discontinued Date": "02/29/2028",
@@ -6674,13 +6674,14 @@
           "vendorAttributes": {
             "Extended Price (USD)": "0"
           },
-          "listPrice": 0,
+          "listPrice": 118.99,
           "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-10: (no price)"
+          "Price History Trail": "2026-09-10: (no price)",
+          "priceUsd": "118.99"
         },
         {
           "Product #": "P83526-B21",
@@ -6742,7 +6743,7 @@
           "Product #": "S4A91C",
           "Description": "NVIDIA 4-way NVLink Bridge for H200 NVL",
           "Current Qty": "0",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "2279.68",
           "Extended Price (USD)": "0",
           "Start Date": "02/03/2025",
           "Discontinued Date": "12/31/2027",
@@ -6758,13 +6759,14 @@
           "vendorAttributes": {
             "Extended Price (USD)": "0"
           },
-          "listPrice": 0,
+          "listPrice": 2279.68,
           "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-09-13: (no price)"
+          "Price History Trail": "2026-09-13: (no price)",
+          "priceUsd": "2279.68"
         }
       ]
     },
@@ -7190,7 +7192,7 @@
           "Product #": "295633-B22",
           "Description": "HPE C19 - C20 WW 250V 16Amp 2.5m Jumper Cord",
           "Current Qty": "0",
-          "Unit Price (USD)": "0",
+          "Unit Price (USD)": "102.00",
           "Extended Price (USD)": "0",
           "HPE Recommended": "",
           "Start Date": "12/01/2002",
@@ -7207,13 +7209,14 @@
           "vendorAttributes": {
             "Extended Price (USD)": "0"
           },
-          "listPrice": 0,
+          "listPrice": 102,
           "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
           "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-10: (no price)"
+          "Price History Trail": "2026-09-10: (no price)",
+          "priceUsd": "102.00"
         },
         {
           "Product #": "AF593A",

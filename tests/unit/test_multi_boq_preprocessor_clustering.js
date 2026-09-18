@@ -75,7 +75,7 @@ Q6Q68A	HPE MSL LTO-8 SAS Drive Upgrade Kit	2
     const invalidNorm = detectAndNormalizeAtomicCto(invalidItems, { explicitMultiplier: 1 });
     assert.strictEqual(invalidNorm.hasNonIntegerDivisor, true, 'Should flag non-integer divisor');
     assert.strictEqual(invalidNorm.ctoAnomalies.length, 1, 'Should generate one CTO anomaly');
-    assert.strictEqual(invalidNorm.ctoAnomalies[0].type, 'NON_INTEGER_CTO_DIVISOR_ANOMALY', 'Anomaly type should match');
+    assert.strictEqual(invalidNorm.ctoAnomalies[0].type, 'CONFIGURATION_OWNERSHIP_AMBIGUOUS', 'Anomaly type should match');
   });
 
   await t.test('BTO-to-FIO substitution detection and constraint anomalies', (t2) => {

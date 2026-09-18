@@ -36,20 +36,9 @@ test('CTO Normalizer and Variation Clusterer Boundary Tests', async (t) => {
     const options = { explicitMultiplier: 3 };
     const res = detectAndNormalizeAtomicCto(items, options);
     
-    assert.strictEqual(res.baseChassisQty, 2);
-    assert.strictEqual(res.isMultipliedOrder, true);
     assert.strictEqual(res.hasNonIntegerDivisor, true);
-    assert.strictEqual(res.ctoAnomalies.length, 1);
-    assert.strictEqual(res.ctoAnomalies[0].type, 'NON_INTEGER_CTO_DIVISOR_ANOMALY');
-    assert.strictEqual(res.ctoAnomalies[0].perUnitQty, 2.5);
-    
-    const cpuItem = res.items.find(i => i.sku === 'P49145-B21');
-    assert.strictEqual(cpuItem.atomicQuantity, 2.5);
-    assert.strictEqual(cpuItem.isIntegerDivisor, false);
-
-    const ramItem = res.items.find(i => i.sku === 'P43322-B21');
-    assert.strictEqual(ramItem.atomicQuantity, 4);
-    assert.strictEqual(ramItem.isIntegerDivisor, true);
+    assert.strictEqual(res.ctoAnomalies[0].type, 'CONFIGURATION_OWNERSHIP_AMBIGUOUS');
+    assert.deepStrictEqual(res.items, items, 'Ambiguous quantities must remain unchanged, not become fractional CPUs');
   });
 
   await t.test('(3) unicode punctuation normalization', () => {
@@ -67,8 +56,8 @@ test('CTO Normalizer and Variation Clusterer Boundary Tests', async (t) => {
   await t.test('(4) deduplication across split line items with varied quantity rolls', () => {
     const items = [
       { sku: 'P76706-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO', quantity: 1 },
-      { sku: 'P11111', description: 'CPU', quantity: 6 },
-      { sku: 'P22222', description: 'RAM', quantity: 24 }
+      { sku: 'P11111', description: 'CPU', quantity: 6, quantityBasis: 'total' },
+      { sku: 'P22222', description: 'RAM', quantity: 24, quantityBasis: 'total' }
     ];
     const options = { explicitMultiplier: 3 };
     const res = detectAndNormalizeAtomicCto(items, options);

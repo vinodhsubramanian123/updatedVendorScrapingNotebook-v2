@@ -1,0 +1,11 @@
+[
+  {
+    "decisionId": "DECISION_1789716867022_78ffbd9510_AUTO_REJECT",
+    "deltaId": "DELTA-1789716867012-m2se3",
+    "knowledgeFingerprint": "78ffbd9510ef6d97cf125a8e757aa88b3947e7a0adf84c9d1a204a54d9bbd5fa",
+    "decision": "AUTO_REJECTED",
+    "decidedAt": "2026-09-18T07:34:27.022Z",
+    "reviewer": "SYSTEM_AUTONOMOUS_GATE",
+    "reasoning": "Self-dependency cycle detected: R2E09A requires R2E09A"
+  }
+]

@@ -2561,5 +2561,61 @@
       "price": 0,
       "status": "BASELINE"
     }
+  ],
+  "HA113A1 5A6": [
+    {
+      "date": "2026-09-18",
+      "price": 375,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HA113A15A6": [
+    {
+      "date": "2026-09-18",
+      "price": 375,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HA113A1#5A6": [
+    {
+      "date": "2026-09-18",
+      "price": 375,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HU4B2A30C4W": [
+    {
+      "date": "2026-09-18",
+      "price": 1980,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HU4B2A3 0C4W": [
+    {
+      "date": "2026-09-18",
+      "price": 1980,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HU4B2A3#0C4W": [
+    {
+      "date": "2026-09-18",
+      "price": 1980,
+      "status": "CATALOG_VERIFIED"
+    }
+  ],
+  "HA113A1": [
+    {
+      "date": "2026-09-18",
+      "price": 0,
+      "status": "CONFIRMED_ZERO_PARENT"
+    }
+  ],
+  "HU4B2A3": [
+    {
+      "date": "2026-09-18",
+      "price": 0,
+      "status": "CONFIRMED_ZERO_PARENT"
+    }
   ]
 }

@@ -88,6 +88,7 @@ function tallyStorageCablingAndBatteries(tally, it, desc, sku, batterySku, noDri
     tally.conflictingCableItems.push(it);
   }
   if (desc.includes('storage controller enablement cable') || desc.includes('controller enablement cable') || desc.includes('controller enablement kit') ||
+      desc.includes('tri-mode pcie fio cable kit') || desc.includes('nvme to tri-mode') || sku === 'P76700-B21' || sku === 'P01367-B21' || desc.includes('with 260mm cable') ||
       (mandatorySkus?.CONTROLLER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.CONTROLLER_CABLE_KIT.sku))) {
     tally.hasOcpCable = true;
   }
@@ -99,7 +100,7 @@ function tallyStorageCablingAndBatteries(tally, it, desc, sku, batterySku, noDri
       (mandatorySkus?.TRI_MODE_SWITCH?.sku && sku === cleanBaseSKU(mandatorySkus.TRI_MODE_SWITCH.sku))) {
     tally.hasTriModeSwitch = true;
   }
-  if (sku === batterySku || desc.includes('smart storage battery') || desc.includes('hybrid capacitor') ||
+  if (sku === batterySku || sku === 'P01367-B21' || sku === 'P01366-B21' || (desc.includes('smart storage') && desc.includes('battery')) || desc.includes('lithium-ion battery') || desc.includes('hybrid capacitor') ||
       (mandatorySkus?.SMART_STORAGE_BATTERY?.sku && sku === cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY.sku))) {
     tally.hasSmartBattery = true;
   }
@@ -231,12 +232,14 @@ function validateStoreEverStorage(t) {
   };
 }
 
-function validateStorageCablingAndBackplane(t) {
+function validateStorageCablingAndBackplane(t, serverCount = 1) {
+  const nodes = Math.max(1, serverCount || 1);
+  const perNodeDrives = t.driveCount / nodes;
   const controllerDirectCapacity = t.hasStorageController ? (t.has16PortController ? 16 : 8) : 0;
   const isServerChassis = !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && !t.msl3040BaseModuleCount;
   return {
     controllerDirectCapacity,
-    needsSasExpander: t.hasStorageController && t.driveCount > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
+    needsSasExpander: t.hasStorageController && perNodeDrives > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
     hasIncompatibleYCable: t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage),
     needsCapacitorCable: t.hasSmartBattery && !t.hasOcpCable,
     needsDriveCageForController: isServerChassis && !t.isLffChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage,
@@ -244,7 +247,7 @@ function validateStorageCablingAndBackplane(t) {
   };
 }
 
-function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
+function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   const batterySku = cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY?.sku || 'P01366-B21');
   const noDriveSku = cleanBaseSKU(mandatorySkus.NO_DRIVE_FIO_KIT?.sku || '873763-B21');
   const skuCategoryMap = buildSkuCategoryMap(catalogData);
@@ -257,7 +260,7 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}) {
   // Alletra & StoreEver sub-aspect validations
   const alletra = validateAlletraStorage(t);
   const storeEver = validateStoreEverStorage(t);
-  const cabling = validateStorageCablingAndBackplane(t);
+  const cabling = validateStorageCablingAndBackplane(t, serverCount);
 
   return {
     driveCount: t.driveCount,
