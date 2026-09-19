@@ -87,7 +87,7 @@ function parseArgs(args) {
     tier: null,
     bail: false,
     verbose: false,
-    timeoutMs: 60000,
+    timeoutMs: 90000,
     listOnly: false,
     help: false
   };

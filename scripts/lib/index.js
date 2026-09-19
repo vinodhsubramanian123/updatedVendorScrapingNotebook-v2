@@ -29,6 +29,7 @@ module.exports = {
 
   // Physical Aspect Checkers Subsystem
   aspects: {
+    registry: require('./aspects/aspect_registry.js'),
     computeThermal: require('./aspects/compute_thermal.js'),
     memoryChannel: require('./aspects/memory_channel.js'),
     storageTriMode: require('./aspects/storage_tri_mode.js'),
@@ -78,7 +79,8 @@ module.exports = {
     activeKnowledgeRouter: require('./catalog/active_knowledge_router.js'),
     classificationDiagnostics: require('./catalog/classification_diagnostics.js'),
     lifecycle: require('./catalog/lifecycle.js'),
-    productScope: require('./catalog/product_scope.js')
+    productScope: require('./catalog/product_scope.js'),
+    freshnessGuard: require('./catalog/catalog_freshness_guard.js')
   },
 
   // RAG & Multimodal AI Subsystem
@@ -108,7 +110,8 @@ module.exports = {
     cdp: require('./scraper/cdp.js'),
     domExtract: require('./scraper/dom_extract.js'),
     navigateOca: require('./scraper/navigate_oca.js'),
-    browserLauncher: require('./scraper/browser_launcher.js')
+    browserLauncher: require('./scraper/browser_launcher.js'),
+    adapter: require('./scraper/vendor_scraper_adapter.js')
   },
 
   // Feedback & Learning Subsystem
@@ -124,5 +127,21 @@ module.exports = {
     ctoNormalizer: require('./preprocessor/cto_normalizer.js'),
     variationClusterer: require('./preprocessor/variation_clusterer.js'),
     feedbackPersister: require('./preprocessor/feedback_persister.js')
+  },
+
+  // Declarative Lifecycle Subsystem
+  lifecycle: {
+    engine: require('./lifecycle/lifecycle_engine.js')
+  },
+
+  // Canonical Orchestrator Subsystem
+  orchestrator: {
+    evaluationOrchestrator: require('./orchestrator/evaluation_orchestrator.js')
+  },
+
+  // Vendor-Agnostic Hardware Taxonomy Subsystem
+  taxonomy: {
+    schema: require('./taxonomy/vendor_agnostic_schema.js'),
+    resolver: require('./taxonomy/sku_resolver.js')
   }
 };

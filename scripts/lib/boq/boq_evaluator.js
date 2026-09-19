@@ -91,7 +91,7 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
     ? rawInput
     : '';
 
-  if (targetPath && (targetPath.endsWith('.xlsx') || targetPath.endsWith('.xls'))) {
+  if (targetPath && (/\.xlsx?$/i.test(targetPath))) {
     const workbook = xlsx.readFile(targetPath);
     let sheetNames = [];
     if (targetSheet) {
@@ -193,14 +193,21 @@ function validateNetworkingRules(ctx) {
     mathDeductions.push(reason);
   }
 
+  const { resolveComponentByRole } = require('../taxonomy/sku_resolver.js');
+  const res32 = resolveComponentByRole(ctx.catalogData, { role: 'Transceiver', specs: { speedGb: 32, protocol: 'fibre channel' }, preferredSku: 'AJ718A' });
+  const res64 = resolveComponentByRole(ctx.catalogData, { role: 'Transceiver', specs: { speedGb: 64, protocol: 'fibre channel' }, preferredSku: 'R7W32A' });
+
   if (network.isMissing32GbTransceivers) {
     const reason = `SAN Networking Math: 32Gb Fibre Channel HBAs (${network.fcHbaPortCount32Gb} ports) require 32Gb SFP28/SFP+ optical transceivers. Found ${network.transceiverCount32Gb}.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'FC_32GB_TRANSCEIVER',
       rule: 'Fibre Channel Optical Transceiver Requirement',
-      sku: 'AJ718A',
-      description: 'HPE 32Gb Short Wave B-Series SFP+ Transceiver',
+      sku: (res32.isResolved && res32.sku) ? res32.sku : null,
+      isResolved: Boolean(res32.isResolved && res32.sku),
+      requirementTag: res32.requirementTag || 'REQUIREMENT_TRANSCEIVER_32GB',
+      description: res32.description || '32Gb Short Wave SFP+ Transceiver Enablement Requirement',
+      price: res32.hasPrice ? res32.price : null,
       quantity: Math.max(0, network.fcHbaPortCount32Gb - network.transceiverCount32Gb),
       reasoning: reason
     });
@@ -211,8 +218,11 @@ function validateNetworkingRules(ctx) {
     missingDependencies.push({
       key: 'FC_64GB_TRANSCEIVER',
       rule: '64Gb Fibre Channel Optical Transceiver Requirement',
-      sku: 'R7W32A',
-      description: 'HPE 64Gb Short Wave SFP56 Transceiver',
+      sku: (res64.isResolved && res64.sku) ? res64.sku : null,
+      isResolved: Boolean(res64.isResolved && res64.sku),
+      requirementTag: res64.requirementTag || 'REQUIREMENT_TRANSCEIVER_64GB',
+      description: res64.description || '64Gb Short Wave SFP56 Transceiver Enablement Requirement',
+      price: res64.hasPrice ? res64.price : null,
       quantity: Math.max(0, network.fcHbaPortCount64Gb - network.transceiverCount64Gb),
       reasoning: reason
     });
@@ -821,7 +831,7 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
     const includedMap = fullMap.chassis_included_components || {};
     const baseKey = chassisInfo.baseSku
       || Object.keys(includedMap).find(key => key === chassisInfo.sku || includedMap[key].model === chassisInfo.model);
-    chassisDefaults = (baseKey && includedMap[baseKey]?.includedComponents) || [];
+    chassisDefaults = ((baseKey && includedMap[baseKey]?.includedComponents) || []).filter(component => component.isVerified === true && component.sourceCitation && /^[a-f0-9]{64}$/i.test(component.evidence?.artifactSha256 || '') && component.evidence?.page && component.evidence?.baseSku === baseKey);
 
     for (const item of chassisDefaults.length > 0 ? items : []) {
       const description = (item.description || '').toLowerCase();
@@ -839,12 +849,27 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
         || (isLomNic && component.category === 'Network Adapter')
       );
       if (!includedDefault) continue;
-      const advisory = `Chassis Default Advisory: SKU ${clean} (${item.description}) is already factory-included with base chassis ${baseKey} (${includedDefault.description}). Redundant line item not required unless explicitly ordered as a spare.`;
+
+      // F19: If includedDefault is not verified or lacks source citation, suppress definitive redundant omission advice
+      if (includedDefault.isVerified !== true || !includedDefault.sourceCitation || !includedDefault.evidence?.artifactSha256 || !includedDefault.evidence?.page || includedDefault.evidence?.baseSku !== baseKey) {
+        continue;
+      }
+
+      // F19: Distinguish management NIC from host network connectivity
+      if (includedDefault.isManagementOnly) {
+        const advisory = `Chassis Default Advisory: Base chassis ${baseKey} includes factory-embedded management port (${includedDefault.description}${includedDefault.sourceCitation ? ' per ' + includedDefault.sourceCitation : ''}). Production host networking adapters remain required.`;
+        warnings.push(advisory);
+        continue;
+      }
+
+      const citation = includedDefault.sourceCitation ? ` per ${includedDefault.sourceCitation}` : '';
+      const advisory = `Chassis Default Advisory: SKU ${clean} (${item.description}) is already factory-included with base chassis ${baseKey} (${includedDefault.description}${citation}). Redundant line item not required unless explicitly ordered as a spare.`;
       warnings.push(advisory);
       redundantDefaults.push({
         sku: clean,
         description: item.description,
         includedDefault: includedDefault.description,
+        sourceCitation: includedDefault.sourceCitation || null,
         advisory
       });
     }
@@ -871,6 +896,9 @@ function buildAspectChecks(ctx) {
       iconType: 'Cpu',
       defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
       status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      formula: compute.thermalEquationFormula || `maxCpuTdpWatts (${compute.maxCpuTdpWatts}W) <= ${HIGH_TDP_THRESHOLD_WATTS}W`,
+      equation: compute.thermalEquationFormula || `maxCpuTdpWatts (${compute.maxCpuTdpWatts}W) <= ${HIGH_TDP_THRESHOLD_WATTS}W`,
+      operands: { maxCpuTdpWatts: compute.maxCpuTdpWatts, thresholdWatts: HIGH_TDP_THRESHOLD_WATTS, hasHighPerfFans: compute.hasHighPerfFans, hasHeatsinks: compute.hasHeatsinks, fanKitCount: compute.fanKitCount },
       detail: compute.fanKitExceedsMax
         ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
         : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
@@ -885,6 +913,9 @@ function buildAspectChecks(ctx) {
       iconType: 'Memory',
       defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
       status: (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
+      formula: `${memory.memoryCount} DIMMs / ${compute.cpuCount || 2} CPUs = ${memory.dimmsPerCpu} DIMMs/socket (Channels: ${memory.channelsPerCpu})`,
+      equation: `${memory.memoryCount} DIMMs / ${compute.cpuCount || 2} CPUs = ${memory.dimmsPerCpu} DIMMs/socket (Channels: ${memory.channelsPerCpu})`,
+      operands: { memoryCount: memory.memoryCount, cpuCount: compute.cpuCount || 2, dimmsPerCpu: memory.dimmsPerCpu, channelsPerCpu: memory.channelsPerCpu, isSupported: memory.isSupportedPopulation, isBalanced: memory.isBalancedChannel },
       detail: memory.hasBtoMemoryInCto
         ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
         : (memory.memoryCount > 0 && !memory.isSupportedPopulation)
@@ -899,6 +930,9 @@ function buildAspectChecks(ctx) {
       iconType: 'HardDrive',
       defaultRule: 'Storage controller, drive cage & cable kit compatibility checks (CLIC Rules 81354627 & 81354632)',
       status: storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
+      formula: `driveCount: ${storage.driveCount}, controllerCount: ${storage.hasStorageController ? 1 : 0}, smartBattery: ${storage.hasSmartBattery ? 1 : 0}`,
+      equation: `driveCount: ${storage.driveCount}, controllerCount: ${storage.hasStorageController ? 1 : 0}, smartBattery: ${storage.hasSmartBattery ? 1 : 0}`,
+      operands: { driveCount: storage.driveCount, hasStorageController: storage.hasStorageController, hasSmartBattery: storage.hasSmartBattery, hasNoDriveKit: storage.hasNoDriveKit },
       detail: storage.hasIncompatibleYCable
         ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`
         : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
@@ -913,6 +947,9 @@ function buildAspectChecks(ctx) {
       iconType: 'Layers',
       defaultRule: 'PCIe slot capacity, active riser cabling & slot expansion rules (CLIC Rules 81016755 & 81354683)',
       status: isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
+      formula: `requiredCards: ${pcie.requiredPcieCards} <= activeSlots: ${activePcieSlotsClusterMax} (Total: ${pcieSlotsClusterMax})`,
+      equation: `requiredCards: ${pcie.requiredPcieCards} <= activeSlots: ${activePcieSlotsClusterMax} (Total: ${pcieSlotsClusterMax})`,
+      operands: { requiredCards: pcie.requiredPcieCards, activeSlots: activePcieSlotsClusterMax, totalSlots: pcieSlotsClusterMax, gpuCount: pcie.gpuCount },
       detail: isExceedingActivePcie
         ? `PCIe Active Slot Math Failed (CLIC Rule 81016755): ${pcie.requiredPcieCards} required cards exceeds ${activePcieSlotsClusterMax} electrically cabled active slots. Slot 1 and/or Slot 4 require Riser Cable Kits (${mandatorySkus?.PRIMARY_CABLE_KIT?.sku || 'PRIMARY_CABLE_KIT'} / ${mandatorySkus?.SECONDARY_CABLE_KIT?.sku || 'SECONDARY_CABLE_KIT'}).`
         : isExceedingPcie
@@ -927,6 +964,9 @@ function buildAspectChecks(ctx) {
       iconType: 'Zap',
       defaultRule: 'OCP 3.0 network adapter slots and port allocation rules (CLIC Rule 81355854)',
       status: isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
+      formula: `ocpAdapters: ${network.ocpAdapterCount} <= maxSlots: ${ocpSlotsClusterMax}`,
+      equation: `ocpAdapters: ${network.ocpAdapterCount} <= maxSlots: ${ocpSlotsClusterMax}`,
+      operands: { ocpAdapterCount: network.ocpAdapterCount, ocpSlotsClusterMax, networkPortsCount: network.networkPortsCount },
       detail: network.hasConflictingOcpCables
         ? `CLIC Rule 81355854 Failed: CPU1 to OCP2 (${mandatorySkus?.CPU1_OCP_CABLE?.sku || 'CPU1_OCP'}) and CPU2 to OCP2 (${mandatorySkus?.CPU2_OCP_CABLE?.sku || 'CPU2_OCP'}) enablement kits cannot be selected together.`
         : isExceedingOcp
@@ -939,6 +979,9 @@ function buildAspectChecks(ctx) {
       iconType: 'Power',
       defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
       status: (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
+      formula: `psuCount: ${power.psuCount}, maxWattage: ${power.maxPsuWattage || 800}W, estNodeWattage: ${power.estimatedNodeWattage || 0}W`,
+      equation: `psuCount: ${power.psuCount}, maxWattage: ${power.maxPsuWattage || 800}W, estNodeWattage: ${power.estimatedNodeWattage || 0}W`,
+      operands: { psuCount: power.psuCount, maxWattage: power.maxPsuWattage || 800, estNodeWattage: power.estimatedNodeWattage || 0, isDc: power.hasDcPowerSupply, hasDcLugKit: power.hasDcLugKit },
       detail: power.hasDcPowerSupply && !power.hasDcLugKit
         ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.'
         : power.hasDl380aGpuPsuShortage
@@ -953,6 +996,9 @@ function buildAspectChecks(ctx) {
       status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
         ? 'WARN'
         : (!support.hasSupportService ? 'WARN' : 'PASS'),
+      formula: `licensedCores: ${support.totalWindowsLicensedCores || 0}/${support.requiredWindowsCores || 0}, hasSupport: ${Boolean(support.hasSupportService)}`,
+      equation: `licensedCores: ${support.totalWindowsLicensedCores || 0}/${support.requiredWindowsCores || 0}, hasSupport: ${Boolean(support.hasSupportService)}`,
+      operands: { hasSupportService: Boolean(support.hasSupportService), windowsDeficit: support.missingCoreLicenses || 0, vmwareDeficit: support.missingVmwareCores || 0 },
       detail: support.needsAdditionalWindowsCores
         ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
         : support.needsAdditionalVmwareCores

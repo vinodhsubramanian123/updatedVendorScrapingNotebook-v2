@@ -9,6 +9,7 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 function isGpuComponent(role, desc) {
   if (desc.includes('fio configuration')) return false;
   if (desc.includes('bridge') || desc.includes('nvlink')) return false;
+  if (desc.includes('cable') || desc.includes('cord')) return false;
   if (role === 'GPU / Accelerator') return true;
   return desc.includes('nvidia') || desc.includes('a100') || desc.includes('l40s') || 
          desc.includes('h100') || desc.includes('l4') || desc.includes('a16') || 

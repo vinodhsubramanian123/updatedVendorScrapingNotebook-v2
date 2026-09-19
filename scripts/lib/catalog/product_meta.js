@@ -7,6 +7,7 @@
  */
 
 const FAMILY_PATTERNS = [
+  { family: 'ProLiant', pattern: /proliant|\b[DMR]L\s*\d{3}\b/i },
   { family: 'Synergy', pattern: /synergy|\bSY\d{3}\b/i },
   { family: 'Alletra', pattern: /alletra/i },
   { family: 'Nimble', pattern: /nimble/i },
@@ -17,14 +18,21 @@ const FAMILY_PATTERNS = [
   { family: 'Superdome', pattern: /superdome/i },
   { family: 'Edgeline', pattern: /edgeline/i },
   { family: 'SimpliVity', pattern: /simplivity/i },
-  { family: 'Aruba', pattern: /aruba/i }
+  { family: 'Aruba', pattern: /aruba/i },
+  { family: 'PowerEdge', pattern: /poweredge|\b(r[6789]\d{2}|c6\d{3})\b/i },
+  { family: 'PowerStore', pattern: /powerstore/i },
+  { family: 'PowerVault', pattern: /powervault/i },
+  { family: 'UCS', pattern: /cisco\s*ucs|\b(c220|c240|b200)\b/i },
+  { family: 'Nexus', pattern: /nexus|\bn9k\b/i },
+  { family: 'ThinkSystem', pattern: /thinksystem|\bsr\d{3}\b/i }
 ];
 
 function detectProductFamily(fullText) {
   for (const { family, pattern } of FAMILY_PATTERNS) {
     if (pattern.test(fullText)) return family;
   }
-  return 'ProLiant';
+  if (/gen\d+|hpe/i.test(fullText)) return 'ProLiant';
+  return 'General';
 }
 
 function parseProductMeta(rawText, pageTitle = '') {
@@ -81,26 +89,28 @@ function parseProductMeta(rawText, pageTitle = '') {
   return { family, gen, cleanName };
 }
 
-// Declarative fallback component mapping table
+// Declarative fallback component mapping table with hierarchical weight priority
+// Highest weights: Chassis, Specific Accessories (Battery, Transceiver, Cable Kit), Processor, Memory -> GPUs, Storage & Controllers -> Adapters & Fabric -> Infrastructure & Support
 const DEFAULT_ROLE_MAPPINGS = [
   { role: 'Base Chassis', keywords: ['chassis cto', 'cto server', 'base chassis', 'configure-to-order server', 'configure-to-order compute module', 'configure-to-order chassis', 'base system', 'compute module', 'frame cto', 'cto chassis', 'cto rack'] },
+  { role: 'Storage Battery', keywords: ['smart storage battery', 'battery', 'lithium-ion battery', 'bbu', 'supercapacitor', 'energy storage'] },
+  { role: 'Transceiver', keywords: ['transceiver', 'optical transceiver', 'sfp28 sr', 'sfp28 lr', 'qsfp28 sr', 'qsfp28 lr', 'sfp56', 'qsfp56', 'qsfp-dd', 'direct attach', 'dac cable', 'active optical cable', 'aoc cable'] },
+  { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'power cord', 'jumper cord', 'lug kit', 'box 1/2 cable', 'enablement kit', 'fiber optic', 'om3', 'om4', 'lc to lc', 'serial cable', 'side-by-side cable', 'nvlink bridge', 'nvlink', 'riser cable', 'gpu aux cable', 'internal cable kit', 'controller cable'] },
   { role: 'Processor', keywords: ['processor', 'xeon', 'epyc'] },
-  { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5', 'ddr4', 'dimm blank'] },
-  { role: 'Transceiver', keywords: ['transceiver', 'sfp28 sr', 'optical transceiver', 'qsfp28', 'sfp56', 'qsfp56'] },
-  { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'power cord', 'jumper cord', 'lug kit', 'box 1/2 cable', 'direct attach', 'enablement kit', 'fiber optic', 'om3', 'om4', 'lc to lc', 'serial cable', 'side-by-side cable', 'nvlink bridge', 'nvlink'] },
-  { role: 'Storage Battery', keywords: ['battery', 'smart storage battery', 'lithium-ion battery'] },
-  { role: 'Boot Device', keywords: ['boot device', 'ns204i', 'boot optimized'] },
-  { role: 'Power Supply', keywords: ['power', 'power supply', 'flex slot', '-48vdc', 'pdu', 'jumper cord', 'power cord'] },
+  { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5', 'ddr4', 'dimm blank', 'mrdimm', 'lrdimm'] },
   { role: 'GPU / Accelerator', keywords: ['gpu', 'accelerator', 'nvidia', 'tesla', 'quadro', 'radeon', 'rtx'] },
-  { role: 'PCIe Riser', keywords: ['riser', 'riser kit', 'primary riser', 'secondary riser', 'tertiary riser', 'retimer', 'paddle card', 'pcie rear', 'rear fio kit'] },
+  { role: 'Storage Controller', keywords: ['storage controller', 'controller', 'raid', 'mr416i', 'sr932i', 'smart array', 'vroc', 'megaraid', 'smartraid', 'tri-mode controller'] },
+  { role: 'Boot Device', keywords: ['boot device', 'ns204i-u', 'ns204i-p', 'boot optimized', 'boss-s', 'm.2 boot'] },
+  { role: 'Drive Cage / Drive', keywords: ['drive', 'cage', 'hdd', 'ssd', 'nvme', 'media bay', 'drive blank', 'no drive', 'drive enclosure', 'edsff'] },
   { role: 'Fibre Channel HBA', keywords: ['fibre channel', 'host bus adapter', 'hba', 'qlogic', 'emulex'] },
-  { role: 'Storage Controller', keywords: ['storage controller', 'controller', 'raid', 'mr416i', 'sr932i', 'smart array', 'vroc', 'megaraid', 'smartraid'] },
   { role: 'Network Adapter', keywords: ['network', 'ethernet', 'ocp', 'adapter', 'bcm57', 'e810', 'mellanox', 'broadcom'] },
-  { role: 'Drive Cage / Drive', keywords: ['drive', 'cage', 'hdd', 'ssd', 'nvme', 'media bay', 'drive blank', 'no drive', 'drive enclosure'] },
-  { role: 'Cooling / Thermal', keywords: ['fan', 'cooling', 'fan kit', 'heatsink', 'heat sink', 'cold plate', 'liquid cooling'] },
-  { role: 'Service & Support', keywords: ['support', 'service', 'tech care', 'warranty', 'pointnext', 'installation', 'startup', 'deployment'] },
+  { role: 'PCIe Riser', keywords: ['riser', 'riser kit', 'primary riser', 'secondary riser', 'tertiary riser', 'retimer', 'paddle card', 'pcie rear', 'rear fio kit'] },
+  { role: 'Cooling / Thermal', keywords: ['cold plate', 'liquid cooling', 'direct liquid cooling', 'dlc module', 'fan kit', 'fan', 'cooling', 'heatsink', 'heat sink'] },
+  { role: 'Security & Platform Trust', keywords: ['tpm', 'trusted platform module', 'intrusion detection', 'chassis intrusion', 'security bezel', 'bezel lock', 'key manager'] },
+  { role: 'Power Supply', keywords: ['flex slot', '-48vdc', 'hot plug power supply', 'titanium power', 'platinum power', 'power supply', 'ps kit'] },
   { role: 'Operating System / License', keywords: ['software', 'operating system', 'windows server', 'red hat', 'suse', 'license', 'oneview', 'e-ltu', 'vmware', 'ilo', 'certificate', 'password fio', 'ras os control', 'flexible ltu'] },
-  { role: 'Chassis Infrastructure', keywords: ['infrastructure', 'bezel', 'rail', 'management arm', 'cma', 'insight display', 'blank kit', 'localization', 'ambient temperature', 'tracking', 'supply chain', 'ce mark', 'energy star', 'fio trigger', 'security kit', 'tpm'] }
+  { role: 'Service & Support', keywords: ['support', 'service', 'tech care', 'warranty', 'pointnext', 'installation', 'startup', 'deployment'] },
+  { role: 'Chassis Infrastructure', keywords: ['infrastructure', 'bezel', 'rail', 'management arm', 'cma', 'insight display', 'blank kit', 'localization', 'ambient temperature', 'tracking', 'supply chain', 'ce mark', 'energy star', 'fio trigger', 'security kit'] }
 ];
 
 const INFRASTRUCTURE_KEYWORDS = ['rail', 'cable management', 'cma', 'insight display', 'bezel kit', 'blank kit'];
@@ -143,9 +153,23 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
     return 'Base Chassis';
   }
 
-  // Product profiles are additive overrides. A narrowly scoped profile (for
-  // example one that only adds new controller model names) must not erase the
-  // universal drive, power, cable, boot, GPU, and software classifiers.
+  // Explicit guard: Storage Battery (must precede Cable Kit and Controllers)
+  if (desc.includes('smart storage battery') || (desc.includes('battery') && (desc.includes('storage') || desc.includes('controller') || desc.includes('bbu') || desc.includes('capacitor')))) {
+    return 'Storage Battery';
+  }
+
+  // Explicit guard: Transceivers & Optical interconnects (must precede Network Adapters)
+  if (desc.includes('transceiver') || desc.includes('optical transceiver') || desc.includes('dac cable') || desc.includes('direct attach copper') || desc.includes('active optical cable')) {
+    return 'Transceiver';
+  }
+
+  // Explicit guard: Cable Kits (must not be swallowed by parent controllers, risers, GPUs)
+  if (/\b(?:cable\s*kit|internal\s*cable|power\s*cable|power\s*cord|jumper\s*cord|lug\s*kit|splitter\s*cable|y-cable|aux\s*cable|riser\s*cable|sas\s*cable|sata\s*cable|gpu\s*aux)\b/i.test(desc) ||
+      (desc.includes('cable') && (desc.includes('controller') || desc.includes('riser') || desc.includes('gpu') || desc.includes('storage')))) {
+    return 'Cable Kit';
+  }
+
+  // Product profiles are additive overrides.
   const profileMappings = profile && profile.component_mapping
     ? profile.component_mapping
     : {};
@@ -160,13 +184,17 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
 
   for (const { role, keywords } of mappings) {
     if (role === 'Base Chassis') continue; // Handled by explicit guard above
+    if (role === 'GPU / Accelerator' && (desc.includes('cable') || desc.includes('cord'))) continue;
+    if (role === 'Network Adapter' && (desc.includes('enablement') || desc.includes('cable') || desc.includes('cord') || desc.includes('transceiver'))) continue;
+    if (role === 'Storage Controller' && (desc.includes('cable') || desc.includes('cord') || desc.includes('battery'))) continue;
+    if (role === 'PCIe Riser' && (desc.includes('cable') || desc.includes('cord'))) continue;
     if (keywords.some(k => cat.includes(k) || desc.includes(k))) {
       return role;
     }
   }
 
-  // Regex check for service SKUs
-  if (/^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc)) {
+  // Regex check for service SKUs across vendors (HPE Pointnext, Dell ProSupport, Cisco SmartNet)
+  if (/^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc) || /^803-[a-z0-9]+/i.test(desc) || /^con-snt/i.test(desc) || desc.includes('prosupport') || desc.includes('smartnet') || desc.includes('pointnext')) {
     return 'Service & Support';
   }
 

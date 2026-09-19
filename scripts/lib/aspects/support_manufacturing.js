@@ -282,7 +282,8 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   const nodes = Math.max(1, parseInt(serverCount, 10) || 1);
   const t = tallySupportItems(items, catalogData);
 
-  const detectedCpuCores = t.parsedCpuCores > 0 ? t.parsedCpuCores : (totalSocketCores || 0);
+  const effectiveCores = (typeof totalSocketCores === 'number' && !isNaN(totalSocketCores) && totalSocketCores > 0) ? totalSocketCores : 0;
+  const detectedCpuCores = t.parsedCpuCores > 0 ? t.parsedCpuCores : effectiveCores;
   const win = computeWindowsLicensing(nodes, detectedCpuCores, t.windowsBaseLicenses, t.windowsAddonCores, t.hasWindowsServer);
   const vmware = computeVmwareLicensing(t.targetVmwareCores, t.detectedCpuSockets, t.vmwareLicensedCores, t.hasVmware);
   const linux = computeLinuxLicensing(t.detectedCpuSockets, t.linuxSubscriptions, t.hasLinux);

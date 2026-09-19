@@ -1,21 +1,30 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const lib = require('../lib/index.js');
-const { evaluateBOQMultiAspect } = lib.boq.evaluator;
-const { loadTelemetry } = lib.system.telemetry;
-const { safeWriteJsonAtomic } = lib.system.fsCompat;
-const { listAllCatalogs } = lib.catalog.discovery;
-const geminiRotator = lib.system.geminiRotator;
+const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+const { loadTelemetry } = require('../lib/system/telemetry.js');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+const geminiRotator = require('../lib/system/gemini_rotator.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 
-async function generateAdversarialBOQ(targetChassis = 'DL380_Gen12_SFF') {
-  const prompt = `You are an Adversarial BOQ Generator for HPE enterprise server hardware.
-Target chassis model: ${targetChassis}.
+function getDefaultChassis() {
+  try {
+    const catalogs = listAllCatalogs();
+    return catalogs.length > 0 ? catalogs[0].id : 'DL380_Gen12';
+  } catch (_) {
+    return 'DL380_Gen12';
+  }
+}
+
+async function generateAdversarialBOQ(targetChassis = null) {
+  const selectedChassis = targetChassis || getDefaultChassis();
+  const prompt = `You are an Adversarial BOQ Generator for enterprise server hardware.
+Target chassis model: ${selectedChassis}.
 Generate a JSON array of BOQ items representing a highly complex, subtly incorrect server configuration designed to stress-test physical constraint checkers.
 Examples of subtle hardware flaws:
 - Insert Gen11 DDR4 memory or incompatible DDR5 speeds into a Gen12 chassis.
@@ -150,8 +159,16 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error("Adversarial agent error:", err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error("Adversarial agent error:", err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  generateAdversarialBOQ,
+  updateAdversarialTelemetry,
+  runAdversarialAgent
+};
 

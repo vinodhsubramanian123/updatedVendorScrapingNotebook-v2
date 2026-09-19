@@ -127,7 +127,7 @@ function tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role) {
 
   // Standard Network Adapters
   const isAdapter = role === 'Network Adapter' || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('nic') || desc.includes('sfp28') || desc.includes('baset') || desc.includes('flr');
-  if (isAdapter && !desc.includes('interconnect') && !desc.includes('switch') && !desc.includes('transceiver') && !desc.includes('cable') && !desc.includes('mezzanine')) {
+  if (isAdapter && !desc.includes('interconnect') && !desc.includes('switch') && !desc.includes('transceiver') && !desc.includes('cable') && !desc.includes('mezzanine') && !desc.includes('enablement')) {
     if (desc.includes('ocp') || desc.includes('flr') || desc.includes('standup')) {
       tally.hasOcpAdapter = true;
       tally.ocpAdapterCount += qty;

@@ -263,5 +263,6 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
 
 module.exports = {
   classifyWorkloadProfile,
-  analyzeDealValueEngineering
+  analyzeDealValueEngineering,
+  evaluateDealOptimizations: analyzeDealValueEngineering
 };

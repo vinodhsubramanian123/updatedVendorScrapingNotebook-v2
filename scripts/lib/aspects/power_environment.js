@@ -125,7 +125,7 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus 
       tally.synergyTitanium2650wCount += (it.quantity || it.qty || 1);
     }
   }
-  if (sku === dcLugSku || desc.includes('lug kit') || desc.includes('cable lug') ||
+  if ((dcLugSku && sku === dcLugSku) || desc.includes('lug kit') || desc.includes('cable lug') ||
       (mandatorySkus?.DC_LUG_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.DC_LUG_KIT.sku))) {
     tally.hasDcLugKit = true;
   }
@@ -192,7 +192,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
   };
 
   let totalHardwareWatts = 0;
-  const dcLugSku = cleanBaseSKU(mandatorySkus.DC_LUG_KIT?.sku || 'P36877-B21');
+  const { resolveComponentByRole } = require('../taxonomy/sku_resolver.js');
+  const resolvedDcLug = resolveComponentByRole(catalogData, { role: 'Cable Kit', keywords: ['dc lug', 'lug kit'], preferredSku: mandatorySkus.DC_LUG_KIT?.sku });
+  const dcLugSku = cleanBaseSKU(resolvedDcLug.sku || mandatorySkus.DC_LUG_KIT?.sku || '');
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {

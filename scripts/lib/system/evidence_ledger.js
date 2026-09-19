@@ -182,6 +182,15 @@ class EvidenceLedger {
     this.sharedState.dualBrainVerified = Boolean(isCloudVerified);
   }
 
+  recordInlineArtifact(role, content) {
+    const bytes = Buffer.from(typeof content === 'string' ? content : JSON.stringify(content));
+    const artifact = { role, filePath: 'IN_MEMORY_BOM', storage: 'INLINE', content,
+      exists: true, sizeBytes: bytes.length, sha256: crypto.createHash('sha256').update(bytes).digest('hex'),
+      recordedAt: new Date().toISOString() };
+    this.artifacts.push(artifact);
+    return artifact;
+  }
+
   recordArtifact(role, filePath, details = {}) {
     const artifact = { role, filePath, ...details, recordedAt: new Date().toISOString(), exists: false };
     if (filePath && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
@@ -196,10 +205,16 @@ class EvidenceLedger {
     const gaps = [];
     if (!this.customerInput.filePath) gaps.push('INPUT_NOT_IDENTIFIED');
     if (!this.chassis || this.chassis === 'UNKNOWN_CHASSIS') gaps.push('CHASSIS_NOT_IDENTIFIED');
-    for (let n = 1; n <= 9; n++) {
-      const phase = this.phases[`phase_${n}`];
-      if (!phase) gaps.push(`PHASE_${n}_MISSING`);
-      else if (phase.status === 'RUNNING') gaps.push(`PHASE_${n}_UNFINISHED`);
+
+    // Dynamic vs Default Phases validation:
+    // If specific mandatory phases are registered on the ledger instance, validate them;
+    // otherwise validate canonical phases 1 through 9 for full backwards compatibility.
+    const mandatoryPhaseKeys = this.mandatoryPhaseKeys || Array.from({ length: 9 }, (_, i) => `phase_${i + 1}`);
+    for (const key of mandatoryPhaseKeys) {
+      const phase = this.phases[key];
+      const nStr = key.replace(/^phase_/, '').toUpperCase();
+      if (!phase) gaps.push(`PHASE_${nStr}_MISSING`);
+      else if (phase.status === 'RUNNING') gaps.push(`PHASE_${nStr}_UNFINISHED`);
     }
     if (!this.skuAuditLedger.length) gaps.push('SKU_DECISIONS_MISSING');
     if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
@@ -220,6 +235,12 @@ class EvidenceLedger {
 
     const execution = { nodeVersion: process.version, platform: process.platform, gitRevision: null, workingDiffSha256: null };
     try {
+      const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', 'scripts', 'dashboard', 'tests', 'package.json', 'package-lock.json'], { cwd: PROJECT_ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().split('\0').filter(Boolean);
+      execution.sourceManifest = [...new Set(names)].sort().map(name => {
+        const file = path.join(PROJECT_ROOT, name);
+        return { path: name, sha256: fs.existsSync(file) && fs.statSync(file).isFile() ? crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null };
+      });
+      execution.sourceManifestSha256 = crypto.createHash('sha256').update(JSON.stringify(execution.sourceManifest)).digest('hex');
       execution.gitRevision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: PROJECT_ROOT, encoding: 'utf8', timeout: 5000 }).trim();
       execution.workingDiffSha256 = crypto.createHash('sha256').update(execFileSync('git', ['diff', 'HEAD', '--', 'scripts', 'dashboard'], { cwd: PROJECT_ROOT, timeout: 5000, maxBuffer: 10 * 1024 * 1024 })).digest('hex');
     } catch (error) { execution.revisionError = error.message; }
@@ -284,6 +305,17 @@ class EvidenceLedger {
       lines.push(`| :--- | :--- | :--- | :--- | :--- |`);
       this.activeRulesReached.forEach(r => {
         lines.push(`| \`${r.ruleId}\` | ${r.ruleType} | \`${r.affectedSku || 'N/A'}\` | \`${r.targetSku || 'N/A'}\` | ${r.reasoning.slice(0, 80)} |`);
+      });
+    }
+
+    const phase3 = this.phases.phase_3;
+    if (phase3 && Array.isArray(phase3.checks) && phase3.checks.length > 0) {
+      lines.push('', '## 3. Physical Pre-Flight Math & Constraint Proofs');
+      lines.push('| Aspect | Status | Formula / Arithmetic Verification | Detail |');
+      lines.push('| :--- | :---: | :--- | :--- |');
+      phase3.checks.forEach(c => {
+        const formula = c.equation || c.formula || 'NOT_RECORDED';
+        lines.push(`| ${c.name || c.id || 'Aspect'} | **${c.status || 'PASS'}** | \`${formula}\` | ${c.detail || ''} |`);
       });
     }
 

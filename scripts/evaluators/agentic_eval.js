@@ -2,11 +2,10 @@
 const fs = require('fs');
 const path = require('path');
 const { GoogleGenAI, Type } = require('@google/genai');
-const lib = require('../lib/index.js');
-const { parseAndConsolidateBOQ, evaluateBOQMultiAspect } = lib.boq.evaluator;
-const { executeNotebookQuery } = lib.rag.notebookQuery;
-const { queryLocalKnowledgeBase } = lib.rag.localSearch;
-const { processPortalFeedback } = lib.feedback.loop;
+const { parseAndConsolidateBOQ, evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
+const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
+const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 

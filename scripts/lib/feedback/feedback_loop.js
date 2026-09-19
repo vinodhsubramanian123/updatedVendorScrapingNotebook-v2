@@ -95,6 +95,7 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     requiredDependencySku: options.requiredDependencySku || classification.requiredSku,
     ruleUpdate: options.ruleUpdate || classification.rawMessage,
     humanReasoning: options.humanReasoning || null,
+    ...(options.pricingObservation ? { pricingObservation: options.pricingObservation } : {}),
     sourceAgent: options.sourceAgent || 'PORTAL_OBSERVATION',
     source: options.source || 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
     citations: Array.isArray(options.citations) ? options.citations : [],
@@ -263,8 +264,130 @@ function calculateConfidenceScore(boqItems, evalResults) {
   };
 }
 
+/**
+ * Auto-promotes verified price drift items from live vendor quotes into the active knowledge registry.
+ * Preserves governance quarantine: autonomous drift records land in quarantine awaiting human approval
+ * unless explicitly verified by human review metadata.
+ * @param {string} chassisDir Target chassis output directory
+ * @param {Array<object>} driftItems Array of { sku, priceUsd, quoteId, region, currency, sourceArtifactHash, reasoning, catalogVersion }
+ * @param {object} [metadata={}] Optional run-level metadata { quoteId, quoteSha256, catalogVersion, humanReview }
+ * @returns {object} Structured promotion and quarantine receipts
+ */
+function promotePriceDriftDeltas(chassisDir, driftItems = [], metadata = {}) {
+  const emptyRes = {
+    promotedCount: 0,
+    quarantinedCount: 0,
+    totalProcessed: 0,
+    receipts: [],
+    status: 'NO_DELTAS'
+  };
+
+  if (!chassisDir || !Array.isArray(driftItems) || driftItems.length === 0) {
+    return emptyRes;
+  }
+
+  let activatedCount = 0;
+  let quarantinedCount = 0;
+  let rejectedCount = 0;
+  const receipts = [];
+
+  for (const item of driftItems) {
+    if (!item?.sku || !Number.isFinite(item.priceUsd) || item.priceUsd < 0) {
+      rejectedCount++;
+      receipts.push({ sku: item?.sku || null, governanceStatus: 'REJECTED', error: 'SKU and finite nonnegative quote price are required' });
+      continue;
+    }
+
+    const quoteId = item.quoteId || metadata.quoteId || 'UNKNOWN_QUOTE';
+    const quoteSha256 = item.sourceArtifactHash || metadata.quoteSha256 || null;
+    const currency = item.currency || metadata.currency || null;
+    const region = item.region || metadata.region || null;
+    const catalogVersion = item.catalogVersion || metadata.catalogVersion || 'UNKNOWN';
+
+    // Governance: only label as humanReview if explicit human reviewer metadata is supplied
+    const humanReview = metadata.humanReview || item.humanReview || null;
+
+    try {
+      const delta = processPortalFeedback(
+        `Pricing alignment: SKU ${item.sku} quote price $${item.priceUsd} ${currency} (Quote: ${quoteId})`,
+        chassisDir,
+        {
+          affectedSku: item.sku,
+          requiredDependencySku: null,
+          ruleUpdate: `Pricing aligned from vendor quote ${quoteId} for SKU ${item.sku} ($${item.priceUsd} ${currency})`,
+          humanReasoning: item.reasoning || `Vendor quote price observation for ${item.sku}`,
+          sourceAgent: 'PRICING_ALIGNMENT_ENGINE',
+          source: 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
+          citations: quoteSha256 ? [`sha256:${quoteSha256}`] : [],
+          preConfidenceScore: 0.95,
+          scopeTaxonomy: 'CHASSIS_SPECIFIC',
+          pricingObservation: { quoteId, sourceArtifactHash: quoteSha256, currency, region, catalogVersion, price: item.priceUsd },
+          catalogVersion,
+          region,
+          currency,
+          humanReview: humanReview,
+          autonomousReview: !humanReview ? {
+            agent: 'PRICING_ALIGNMENT_ENGINE',
+            quoteId,
+            quoteSha256,
+            timestamp: new Date().toISOString()
+          } : null
+        }
+      );
+
+      const status = delta?.governanceStatus || delta?.status || 'UNKNOWN';
+      const receipt = {
+        sku: item.sku,
+        priceUsd: item.priceUsd,
+        currency,
+        quoteId,
+        governanceStatus: status,
+        quarantineId: delta?.quarantineId || null,
+        knowledgeFingerprint: delta?.knowledgeFingerprint || null,
+        timestamp: new Date().toISOString()
+      };
+
+      receipts.push(receipt);
+
+      if (status === 'ACTIVE') {
+        activatedCount++;
+      } else if (status === 'QUARANTINED' || status === 'PENDING_HUMAN_REVIEW') {
+        quarantinedCount++;
+      } else {
+        rejectedCount++;
+      }
+    } catch (e) {
+      const logger = require('../system/pipeline_logger.js');
+      logger.warn('FEEDBACK_LOOP', `Failed to process price drift for SKU ${item.sku}: ${e.message}`);
+      rejectedCount++;
+      receipts.push({ sku: item.sku, governanceStatus: 'FAILED', error: e.message });
+    }
+  }
+
+  const totalProcessed = receipts.length;
+  let status = 'NO_DELTAS';
+  if (activatedCount > 0 && quarantinedCount === 0) {
+    status = 'ACTIVATED';
+  } else if (activatedCount > 0 && quarantinedCount > 0) {
+    status = 'PARTIAL';
+  } else if (quarantinedCount > 0) {
+    status = 'QUARANTINED';
+  }
+
+  if (rejectedCount) status = activatedCount || quarantinedCount ? 'PARTIAL' : 'REJECTED';
+  return {
+    rejectedCount,
+    promotedCount: activatedCount,
+    quarantinedCount,
+    totalProcessed,
+    receipts,
+    status
+  };
+}
+
 module.exports = {
   classifyPortalError,
   processPortalFeedback,
-  calculateConfidenceScore
+  calculateConfidenceScore,
+  promotePriceDriftDeltas
 };

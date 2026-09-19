@@ -501,27 +501,58 @@ async function serializeAndExportResults(ctx) {
 
   const ledger = evalResults.evidenceLedger;
   if (ledger) {
-    ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
+
     ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
     ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
     ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
     ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', { workbookPath: evalResults.multiRankWorkbookPath || null, googleDriveDeliverable: evalResults.googleDriveDeliverable || null, uploadRequested: Boolean(ctx.UPLOAD_DRIVE) }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
     ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', { newLearningsCount: evalResults.newLearningsCount || 0 });
     let phase9Status = 'ACTION_REQUIRED';
-    if (ctx.OFFLINE_MODE || evalResults.postFlowSync?.syncStatus === 'OFFLINE_SKIPPED') {
+    const sync = evalResults.postFlowSync;
+    const isOffline = Boolean(ctx.OFFLINE_MODE || ctx.DEFER_RAG);
+    const syncRequested = Boolean(ctx.SYNC_RAG);
+
+    if (isOffline || (!syncRequested && !sync)) {
       phase9Status = 'SKIPPED';
-    } else if (evalResults.postFlowSync?.syncStatus === 'CLOUD_VERIFIED' || evalResults.postFlowSync?.syncStatus === 'LOCAL_PAYLOAD_ONLY') {
+    } else if (sync?.success === false || sync?.error || sync?.syncStatus === 'FAILED') {
+      phase9Status = 'ACTION_REQUIRED';
+    } else if (sync?.success === true && sync?.syncStatus === 'CLOUD_VERIFIED') {
+      phase9Status = 'PASSED';
+    } else if (!syncRequested && sync?.success === true && sync?.syncStatus === 'LOCAL_PAYLOAD_ONLY') {
       phase9Status = 'PASSED';
     }
-    ledger.completePhase(9, phase9Status, { newLearningsCount: evalResults.newLearningsCount || 0, postFlowSync: evalResults.postFlowSync });
+    ledger.completePhase(9, phase9Status, {
+      newLearningsCount: evalResults.newLearningsCount || 0,
+      postFlowSync: evalResults.postFlowSync || null,
+      priceDrift: evalResults.priceDriftResult || null,
+      syncRequested,
+      isOffline
+    });
+
+  }
+
+  if (ledger) {
+    const evidenceDir = ctx.evidenceDir || path.resolve(__dirname, '../../../outputs/history/evidence_logs');
+    evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
+    evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
+    evalResults.evidenceHealth = ledger.getHealth();
+  }
+  const reportContent = generateMarkdownReport(ctx);
+  fs.writeFileSync(outputPath, reportContent, 'utf-8');
+  if (ledger) {
+    ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
+    const requiredArtifacts = ['ANALYSIS_REPORT', 'RANKED_WORKBOOK', 'RANKED_CSV', 'PARTNER_PORTAL_WORKBOOK'];
+    const missing = requiredArtifacts.filter(role => !ledger.artifacts.some(artifact => artifact.role === role && artifact.exists && artifact.sha256));
+    if (missing.length) {
+      evalResults.deliveryError = `Missing deliverable artifacts: ${missing.join(', ')}`;
+      ledger.completePhase(8, 'FAILED', { missingArtifacts: missing }, [], [], [evalResults.deliveryError]);
+    }
     const exported = ledger.finalizeAndExport(ctx.evidenceDir);
     evalResults.evidenceLogPath = exported.jsonPath;
     evalResults.evidenceSummaryPath = exported.mdPath;
     evalResults.evidenceHealth = exported.payload.health;
   }
 
-  const reportContent = generateMarkdownReport(ctx);
-  fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
   const workflowSteps = _buildWorkflowSteps(ctx);
 

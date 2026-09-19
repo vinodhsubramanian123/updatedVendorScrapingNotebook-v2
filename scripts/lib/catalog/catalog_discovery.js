@@ -574,7 +574,8 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
   } catch (error) {
     return { certified: false, catalogPath: matched.catalogJsonPath, xlsxPath: matched.xlsxPath, reason: `Invalid master workbook: ${error.message}` };
   }
-  if (!meta.scrapeDate || !/^\d{4}-\d{2}-\d{2}$/.test(meta.scrapeDate)) {
+  const normalizedMeta = require('./catalog_freshness_guard.js').normalizeCatalogMetadata(meta);
+  if (!normalizedMeta.scrapeDate || !/^\d{4}-\d{2}-\d{2}$/.test(normalizedMeta.scrapeDate)) {
     return {
       certified: false,
       catalogDir: matched.catalogDir,
@@ -598,13 +599,40 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
+  const { auditCatalogFreshness, verifyTabularIntegrity } = require('./catalog_freshness_guard.js');
+  const tabularCheck = verifyTabularIntegrity(catalogContent);
+  if (!tabularCheck.isValid) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Tabular integrity failure: ${tabularCheck.errors.join('; ')}`
+    };
+  }
+
+  const freshness = auditCatalogFreshness(catalogContent);
+  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(freshness.freshnessStatus)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Catalog freshness ${freshness.freshnessStatus}: ${freshness.advisories.join('; ')}`
+    };
+  }
+
   return {
     certified: true,
     catalogDir: matched.catalogDir,
     catalogPath: matched.catalogJsonPath,
     xlsxPath: matched.xlsxPath,
     skuCount: matched.skuCount,
-    scrapeDate: meta.scrapeDate
+    scrapeDate: meta.scrapeDate,
+    freshness,
+    integrity: tabularCheck
   };
 }
 

@@ -215,12 +215,15 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
       const startTime = Date.now();
       const currentTimeout = timeoutMs + (attempt > 1 ? 60000 : 0); // Add 60s buffer on retry
       const budgetMin = Math.round(currentTimeout / 60000);
+      const skuCount = options.context?.skus?.length || options.context?.items?.length || 0;
+      const chassisName = options.context?.chassis || 'Target Solution';
+      const focusDetail = skuCount > 0 ? `validating full solution (${skuCount} SKUs) across QuickSpecs topology` : `deep grounding synthesis`;
 
-      logger.info('NOTEBOOK_QUERY', `🚀 Dispatching Cloud Notebook query to [${targetNotebookId.slice(0, 8)}...] (Attempt ${attempt}/${maxAttempts}, Timeout Budget: ${budgetMin}m / ${Math.round(currentTimeout / 1000)}s)...`);
+      logger.info('NOTEBOOK_QUERY', `🚀 Dispatching Cloud Notebook query to [${targetNotebookId.slice(0, 8)}...] for ${chassisName} (${focusDetail}) (Attempt ${attempt}/${maxAttempts}, Timeout Budget: ${budgetMin}m / ${Math.round(currentTimeout / 1000)}s)...`);
 
       const heartbeat = setInterval(() => {
         const elapsedMs = Date.now() - startTime;
-        logger.info('NOTEBOOK_QUERY', `⏳ NotebookLM deep synthesis in progress... [Elapsed: ${formatQueryDuration(elapsedMs)} / Timeout Budget: ${budgetMin}m] (Notebook: ${targetNotebookId.slice(0, 8)}...)`);
+        logger.info('NOTEBOOK_QUERY', `⏳ NotebookLM deep synthesis in progress: ${focusDetail} [Elapsed: ${formatQueryDuration(elapsedMs)} / Timeout Budget: ${budgetMin}m] (Notebook: ${targetNotebookId.slice(0, 8)}...)`);
       }, 15000);
       if (typeof heartbeat.unref === 'function') heartbeat.unref();
 
@@ -239,7 +242,7 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
         if (err) {
           const isTimeout = err.killed || err.code === 'ETIMEDOUT' || (err.message && err.message.includes('timeout'));
           if (isTimeout) {
-            logger.warn('NOTEBOOK_QUERY', `⏱️ Cloud query attempt ${attempt}/${maxAttempts} reached timeout limit after ${timeTaken}.`);
+            logger.warn('NOTEBOOK_QUERY', `⏱️ Cloud query attempt ${attempt}/${maxAttempts} reached timeout limit after ${timeTaken} during validation of ${skuCount} SKUs.`);
           }
 
           const isRetryable = attempt < maxAttempts && (

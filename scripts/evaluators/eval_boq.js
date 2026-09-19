@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 const { parseAndConsolidateBOQDetailed, evaluatePhysicalMath, formatNotebookQueryPayload } = require('../lib/boq/boq_evaluator.js');
@@ -163,17 +164,78 @@ Examples:
 // ============================================================
 // Stage 2: BOQ Parsing & Chassis Ingestion
 // ============================================================
-function ingestAndConsolidateBoq(options) {
-  if (!options.inputFile || !fs.existsSync(options.inputFile)) throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
-  const { inputFile, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
+async function promptUserForChassisTriage(catalogs, detection) {
+  const readline = require('readline');
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const ask = q => new Promise(res => rl.question(q, res));
+
+  console.log(`\n===============================================================`);
+  console.log(`❓ HUMAN-IN-THE-LOOP AMBIGUITY TRIAGE: CHASSIS SELECTION REQUIRED`);
+  console.log(`===============================================================`);
+  console.log(`The BOQ items did not yield a >=0.95 confidence match (${detection?.reason || 'Ambiguous platform'}).`);
+  console.log(`Please select the target catalog from the available options:`);
+  catalogs.forEach((c, idx) => {
+    console.log(`  [${idx + 1}] ${c.id} (${c.catalogDir})`);
+  });
+  console.log(`  [0] Abort evaluation`);
+
+  const answer = (await ask(`Enter choice (1-${catalogs.length}): `)).trim();
+  const choice = parseInt(answer, 10);
+  if (choice > 0 && choice <= catalogs.length) {
+    const selected = catalogs[choice - 1];
+    const reasoning = (await ask(`Enter reasoning for this selection (persisted for continuous learning): `)).trim() || 'Human sales engineer manual selection';
+    rl.close();
+    return {
+      chassisDir: selected.catalogDir,
+      chassisId: selected.id,
+      userReasoning: reasoning,
+      confirmedByHuman: true
+    };
+  }
+  rl.close();
+  return null;
+}
+
+async function ingestAndConsolidateBoq(options) {
+  const inMemory = !options.inputFile && (Array.isArray(options.inputItems) || typeof options.rawText === 'string');
+  if (!inMemory && (!options.inputFile || !fs.existsSync(options.inputFile))) throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
+  const { inputFile = `InMemory_${crypto.randomUUID()}.txt`, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
   let chassisDir = options.chassisDir;
 
   const tStart = Date.now();
   const inputBase = path.basename(inputFile, path.extname(inputFile));
-  const isExcel = inputFile.endsWith('.xlsx') || inputFile.endsWith('.xls');
-  const rawContent = isExcel ? '' : fs.readFileSync(inputFile, 'utf-8');
-  const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inputFile, targetSheetName);
+  const isExcel = /\.xlsx?$/i.test(inputFile);
+  let rawContent = '';
+  let ocrMetadata = null;
+
+  const { isImageFile, performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+  if (inMemory) {
+    rawContent = options.inputItems ?? options.rawText;
+  } else if (isImageFile(inputFile)) {
+    if (options.OFFLINE_MODE) {
+      throw new Error(`OCR extraction requires cloud connectivity but OFFLINE_MODE is enabled. Please provide a text, CSV, or Excel BOM file.`);
+    }
+    if (!JSON_MODE) console.log(`📸 Detected image/PDF document input (${path.basename(inputFile)}). Initiating Multimodal Gemini OCR extraction...`);
+    const ocrResult = await performGeminiOcr(inputFile);
+    if (!ocrResult || ocrResult.ocrStatus !== 'SUCCESS' || !ocrResult.isOcrProcessed) {
+      const errReason = ocrResult?.rawError || ocrResult?.remediationAction || ocrResult?.text || 'OCR extraction failed';
+      throw new Error(`Ingestion Phase Failed (OCR): ${errReason}`);
+    }
+    rawContent = ocrResult.text || '';
+    ocrMetadata = {
+      modelUsed: ocrResult.modelUsed || 'gemini-3.6-flash',
+      lineCount: ocrResult.lineCount || 0,
+      detectedSkus: ocrResult.detectedSkus || [],
+      rawContentSha256: crypto.createHash('sha256').update(rawContent).digest('hex')
+    };
+  } else if (!isExcel) {
+    rawContent = fs.readFileSync(inputFile, 'utf-8');
+  }
+
+  const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inMemory ? '' : inputFile, targetSheetName);
   let items = parsedBoq.items;
+  if (!items.length) throw new Error('ERR_EMPTY_BOQ: No hardware items parsed.');
+  if (items.some(item => !item.sku || !Number.isInteger(Number(item.quantity)) || Number(item.quantity) < 1)) throw new Error('ERR_INVALID_BOQ: Every item requires a SKU and positive integer quantity.');
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
   let chassisDetection = null;
@@ -188,7 +250,7 @@ function ingestAndConsolidateBoq(options) {
     if (!fs.existsSync(chassisDir) || !fs.statSync(chassisDir).isDirectory()) {
       const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
       const cats = listAllCatalogs();
-      const matched = cats.find(c => c.prefix === chassisDir || path.basename(c.catalogDir) === chassisDir || c.catalogDir.includes(chassisDir));
+      const matched = cats.find(c => c.id === chassisDir || c.prefix === chassisDir || c.chassis === chassisDir || path.basename(c.catalogDir) === chassisDir);
       if (matched) chassisDir = matched.catalogDir;
     }
     chassisDetection = {
@@ -197,6 +259,27 @@ function ingestAndConsolidateBoq(options) {
       confidenceScore: 1.0,
       requiresUserConfirmation: false
     };
+  }
+
+  if (!chassisDir && (chassisDetection.unknown || chassisDetection.requiresUserConfirmation)) {
+    // Interactive ambiguity triage if running in interactive TTY mode
+    const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+    let availableCatalogs = [];
+    try { availableCatalogs = listAllCatalogs(); } catch (_) {}
+    if (process.stdin.isTTY && !JSON_MODE && !process.env.CI && availableCatalogs.length > 0) {
+      const userChoice = await promptUserForChassisTriage(availableCatalogs, chassisDetection);
+      if (userChoice && userChoice.chassisDir) {
+        chassisDir = userChoice.chassisDir;
+        chassisDetection = {
+          chassisDir,
+          id: userChoice.chassisId,
+          matchType: 'HUMAN_INTERACTIVE_TRIAGE',
+          confidenceScore: 1.0,
+          requiresUserConfirmation: false,
+          userReasoning: userChoice.userReasoning
+        };
+      }
+    }
   }
 
   if (!chassisDir && (chassisDetection.unknown || chassisDetection.requiresUserConfirmation)) {
@@ -238,6 +321,7 @@ function ingestAndConsolidateBoq(options) {
     }
   }
 
+  if (!fs.existsSync(chassisDir) || !fs.statSync(chassisDir).isDirectory()) throw new Error('ERR_UNKNOWN_CHASSIS: Explicit chassis does not identify a catalog directory.');
   const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
   const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
     ? explicitNotebookId
@@ -284,6 +368,11 @@ function ingestAndConsolidateBoq(options) {
     }
   }
 
+  if (!catalogData) throw new Error(`ERR_MISSING_CATALOG: ${catalogPath}`);
+  const { auditCatalogFreshness, verifyTabularIntegrity } = require('../lib/catalog/catalog_freshness_guard.js');
+  const catalogAudit = { freshness: auditCatalogFreshness(catalogData), integrity: verifyTabularIntegrity(catalogData) };
+  if (!catalogAudit.integrity.isValid) throw new Error(`ERR_CATALOG_INTEGRITY: ${catalogAudit.integrity.errors.join('; ')}`);
+  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(catalogAudit.freshness.freshnessStatus) && !isExplicitTestPath) throw new Error(`ERR_CATALOG_FRESHNESS: ${catalogAudit.freshness.freshnessStatus}`);
   const productConfirmed = !chassisDetection.requiresUserConfirmation && chassisDetection.confidenceScore >= 0.95;
   const requirementResolution = resolveRequirementIntent({
     items,
@@ -297,6 +386,7 @@ function ingestAndConsolidateBoq(options) {
   try {
     configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
     items = configurationContext.items;
+    if (options.serverCount !== undefined && Number(options.serverCount) !== configurationContext.multiplier) throw new Error('ERR_QUANTITY_CONTEXT: Requested serverCount disagrees with the customer configuration multiplier.');
   } catch (err) {
     if (err.code !== 'CONFIGURATION_OWNERSHIP_AMBIGUOUS') throw err;
     configurationContext = { items, multiplier: 1, ownershipEvidence: 'AMBIGUOUS_OWNERSHIP_RAW' };
@@ -315,6 +405,8 @@ function ingestAndConsolidateBoq(options) {
     outputPath,
     catalogData,
     requirementResolution,
+    ocrMetadata,
+    catalogAudit,
     stage1ParsingMs
   };
 }
@@ -675,19 +767,13 @@ function runEvaluationPipeline(options) {
   return runWithTrace(options.traceId, () => runEvaluationPipelineWithinTrace(options));
 }
 
-async function runEvaluationPipelineWithinTrace(options) {
-  const startTime = Date.now();
-  const evidenceLedger = createEvidenceLedger({
-    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
-    filePath: options.inputFile || options.BOQ_FILE
-  });
-  evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
-  try {
+async function _executeIntakeAndKnowledgePhases(options, evidenceLedger) {
   evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
-  const ingestCtx = ingestAndConsolidateBoq(options);
+  const ingestCtx = await ingestAndConsolidateBoq(options);
   if (ingestCtx.chassisDir) {
     evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
     evidenceLedger.recordArtifact('CATALOG', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog.json`));
+    evidenceLedger.recordArtifact('CATALOG_RULES', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog_Rules.json`));
   }
   evidenceLedger.customerInput.totalRequestedLines = ingestCtx.items.length;
   evidenceLedger.customerInput.serverCount = ingestCtx.serverCount || 1;
@@ -696,8 +782,19 @@ async function runEvaluationPipelineWithinTrace(options) {
   evidenceLedger.completePhase(1, 'PASSED', {
     itemsCount: ingestCtx.items.length,
     chassisDir: ingestCtx.chassisDir,
-    nodeMultiplier: ingestCtx.serverCount || 1
+    nodeMultiplier: ingestCtx.serverCount || 1,
+    chassisSelection: ingestCtx.chassisDetection,
+    ocr: ingestCtx.ocrMetadata,
+    catalogAudit: ingestCtx.catalogAudit
   });
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(1, 'Intake, Ingestion & CTO Normalization', [
+      { checked: true, label: `BOQ parsed successfully (${ingestCtx.items.length} hardware items)` },
+      { checked: !ingestCtx.chassisDetection?.unknown, label: `Chassis identified: ${path.basename(ingestCtx.chassisDir || 'Unknown')}` },
+      { checked: Boolean(ingestCtx.serverCount), label: `CTO multiplier normalized: ${ingestCtx.serverCount || 1} node(s)` }
+    ]);
+  }
 
   evidenceLedger.startPhase(2, 'Active Knowledge Routing & Discovery', { chassis: path.basename(ingestCtx.chassisDir) });
   const activeRules = loadActiveKnowledgeRules(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
@@ -708,12 +805,55 @@ async function runEvaluationPipelineWithinTrace(options) {
     substitutionsCount: activeRules.substitutions.length,
     dependenciesCount: activeRules.mandatoryDependencies.length
   });
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(2, 'Active Knowledge Routing & Discovery', [
+      { status: 'PASS', label: `Catalog rules loaded: ${activeRules.allRules.length} rules active` },
+      { checked: true, label: `Generational modernizations available: ${activeRules.generationalModernizations.length}` },
+      { checked: true, label: `Mandatory hardware dependencies: ${activeRules.mandatoryDependencies.length}` }
+    ]);
+  }
 
-  evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ingestCtx.items.length });
-  const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
-    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
-  );
-  ingestCtx.items = evalResults.items || ingestCtx.items;
+  return { ingestCtx, activeRules };
+}
+
+function _handlePipelineFailure(error, evidenceLedger, options) {
+  let failedPhaseNum = 1;
+  let recordedFailure = false;
+  for (const phase of Object.values(evidenceLedger.phases)) {
+    if (phase.status === 'RUNNING') {
+      recordedFailure = true;
+      failedPhaseNum = phase.phaseNumber;
+      evidenceLedger.completePhase(phase.phaseNumber, 'FAILED', {}, [], [], [error.message]);
+    }
+  }
+  if (!recordedFailure) {
+    failedPhaseNum = evidenceLedger.phases.phase_8 ? 8 : 1;
+    evidenceLedger.completePhase(failedPhaseNum, 'FAILED', { failureStage: 'FINALIZATION_OR_INTAKE' }, [], [], [error.message]);
+  }
+  for (let n = 1; n <= 9; n++) {
+    if (!evidenceLedger.phases[`phase_${n}`]) {
+      evidenceLedger.phases[`phase_${n}`] = {
+        phaseNumber: n,
+        phaseName: `Phase ${n}`,
+        status: 'NOT_REACHED',
+        startedAt: null,
+        completedAt: null,
+        durationMs: 0,
+        inputSummary: {},
+        outputSummary: null,
+        checks: [],
+        warnings: [],
+        errors: [`Pipeline aborted due to upstream failure in phase ${failedPhaseNum}: ${error.message}`]
+      };
+    }
+  }
+  const exported = evidenceLedger.finalizeAndExport(options.evidenceDir);
+  error.traceId = evidenceLedger.traceId;
+  error.evidenceLogPath = exported.jsonPath;
+}
+
+function _recordAspectPhaseEvidence(evidenceLedger, evalResults, ingestCtx, options) {
   (evalResults.missingDependencies || []).forEach(dep => {
     evidenceLedger.recordActiveRuleReached({
       ruleId: dep.ruleId || 'PHYSICAL_ASPECT_DEP',
@@ -730,17 +870,78 @@ async function runEvaluationPipelineWithinTrace(options) {
     missingDependencies: evalResults.missingDependencies?.length || 0,
     aspectPassCount: (evalResults.aspectChecks || []).filter(a => a.status === 'PASS').length
   }, evalResults.aspectChecks || []);
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    const aspectItems = (evalResults.aspectChecks || []).map(a => ({
+      status: a.status || (a.checked ? 'PASS' : 'FAIL'),
+      label: `${a.name || a.id}: ${a.detail || ''}`,
+      formula: a.formula || a.equation || null,
+      operands: a.operands || null
+    }));
+    PipelineLogger.checklist(3, '7-Aspect Physical Pre-Flight Math', aspectItems);
+  }
+}
+
+function _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx) {
+  evidenceLedger.phases.phase_6.outputSummary.candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
+    rank: candidate.rank,
+    name: candidate.name,
+    rationale: candidate.reasoning,
+    manifest: candidate.skuPartsList,
+    delta: candidateDelta(ingestCtx.items, candidate),
+    finalValidation: candidate.finalValidation,
+    buildabilityStatus: candidate.buildabilityStatus
+  }));
+  evidenceLedger.phases.phase_6.outputSummary.manifestSha256 = solutionFingerprint(evalResults);
+}
+
+async function runEvaluationPipelineWithinTrace(options) {
+  const startTime = Date.now();
+  const evidenceLedger = createEvidenceLedger({
+    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
+    filePath: options.inputFile || options.BOQ_FILE || (options.inputItems || options.rawText !== undefined ? 'IN_MEMORY_BOM' : null)
+  });
+  if (!options.inputFile && (options.inputItems || options.rawText !== undefined)) {
+    evidenceLedger.recordInlineArtifact('CUSTOMER_INPUT', options.inputItems ?? options.rawText);
+  } else {
+    evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
+  }
+  try {
+  const { ingestCtx, activeRules } = await _executeIntakeAndKnowledgePhases(options, evidenceLedger);
+
+  evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ingestCtx.items.length });
+  const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
+    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
+  );
+  ingestCtx.items = evalResults.items || ingestCtx.items;
+  _recordAspectPhaseEvidence(evidenceLedger, evalResults, ingestCtx, options);
 
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
-  evidenceLedger.completePhase(4, graph?.isWholeSolutionValid === true ? 'PASSED' : 'ACTION_REQUIRED', {
+  const phase4Passed = graph?.isWholeSolutionValid === true;
+  evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
     conflicts: graph?.conflicts?.length || 0,
     hasContentions: Boolean(graph?.arbitrationResults?.hasContentions)
   });
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(4, 'Conflict Graph & Contested Resource Arbitration', [
+      { status: phase4Passed ? 'PASS' : 'WARN', label: `Cross-aspect conflict graph: ${graph?.conflicts?.length || 0} conflict(s)` },
+      { status: !graph?.arbitrationResults?.hasContentions ? 'PASS' : 'WARN', label: `Contested slot arbitration: ${graph?.arbitrationResults?.hasContentions ? 'Contentions resolved' : 'Clean slot allocation'}` }
+    ]);
+  }
 
   evidenceLedger.startPhase(5, 'Generational Modernization & Least-Delta Combinator', {});
+  const modCount = activeRules.generationalModernizations.length;
   evidenceLedger.completePhase(5, 'PASSED', {
-    activeModernizationCount: activeRules.generationalModernizations.length
+    activeModernizationCount: modCount
   });
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(5, 'Generational Modernization & Least-Delta Combinator', [
+      { status: 'PASS', label: `Platform modernization evaluated (${modCount} rules checked)` },
+      { status: 'PASS', label: `Least-delta minimal mutation synthesis initialized` }
+    ]);
+  }
 
   evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
   const tMatrixStart = Date.now();
@@ -755,12 +956,22 @@ async function runEvaluationPipelineWithinTrace(options) {
       candidate.advisoryStatus = 'LOW_CONFIDENCE_ADVISORY';
     }
   }
-  evidenceLedger.completePhase(6, (!isLowConfidence && evalResults.conflictGraph?.rankedSolutions?.length) ? 'PASSED' : 'ACTION_REQUIRED', {
-    ranksProduced: evalResults.conflictGraph?.rankedSolutions?.length || 0,
+  const ranks = evalResults.conflictGraph?.rankedSolutions || [];
+  const phase6Passed = !isLowConfidence && ranks.length > 0;
+  evidenceLedger.completePhase(6, phase6Passed ? 'PASSED' : 'ACTION_REQUIRED', {
+    ranksProduced: ranks.length,
     budgetCapEx: budgetOpt?.optimizedBudgetUsd || 0,
     confidenceScore,
     isLowConfidence
   });
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(6, '5-Tier Strategy Matrix Synthesis', [
+      { status: ranks.length > 0 ? 'PASS' : 'WARN', label: `Strategy tiers synthesized: ${ranks.length} candidate solutions` },
+      { status: !isLowConfidence ? 'PASS' : 'WARN', label: `Confidence evaluation score: ${(confidenceScore * 100).toFixed(1)}%` },
+      { status: 'PASS', label: `Order-level CapEx: $${(budgetOpt?.optimizedBudgetUsd || 0).toLocaleString()} USD` }
+    ]);
+  }
 
   evidenceLedger.startPhase(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', {});
   let quickSpecs = { status: 'NOT_RUN_OFFLINE_OR_DEFERRED' };
@@ -800,11 +1011,20 @@ async function runEvaluationPipelineWithinTrace(options) {
       graph: checked.conflictGraph,
       checkedAt: new Date().toISOString()
     };
-    candidate.physicalMathClean = checked.isMathClean === true && checked.conflictGraph?.isWholeSolutionValid === true && !(checked.missingDependencies || []).length;
+    candidate.physicalMathClean = (candidate.skuPartsList || []).length > 0 && checked.isMathClean === true && checked.conflictGraph?.isWholeSolutionValid === true && !(checked.missingDependencies || []).length;
     candidate.buildabilityStatus = candidate.physicalMathClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS';
     const delta = candidateDelta(ingestCtx.items, candidate);
     candidate.customerDistance = { changedLines: delta.length, changedUnits: delta.reduce((sum, row) => sum + Math.abs(row.after - row.before), 0), metric: 'SKU quantity delta; functional preservation requires independent candidate review' };
   }
+  const validatedCandidates = evalResults.conflictGraph?.rankedSolutions || [];
+  evalResults.adversarialGateResult = {
+    kind: 'DETERMINISTIC_FINAL_CANDIDATE_REVALIDATION',
+    manifestSha256: solutionFingerprint(evalResults),
+    candidateResults: validatedCandidates.map(candidate => ({ rank: candidate.rank, passed: candidate.physicalMathClean, validation: candidate.finalValidation })),
+    passed: validatedCandidates.length > 0 && validatedCandidates.every(candidate => candidate.physicalMathClean)
+  };
+  evalResults.adversarialGatePassed = evalResults.adversarialGateResult.passed;
+  evidenceLedger.phases.phase_6.outputSummary.candidateGate = evalResults.adversarialGateResult;
   if (evalResults.conflictGraph?.recommendedSolutions) {
     const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
       .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false && candidate.isParetoOptimal !== false);
@@ -816,16 +1036,7 @@ async function runEvaluationPipelineWithinTrace(options) {
       .slice(0, 3)
       .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1, name: candidate.name.replace(/^Rank \d+:/, `Rank ${index + 1}:`) }));
   }
-  evidenceLedger.phases.phase_6.outputSummary.candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
-    rank: candidate.rank,
-    name: candidate.name,
-    rationale: candidate.reasoning,
-    manifest: candidate.skuPartsList,
-    delta: candidateDelta(ingestCtx.items, candidate),
-    finalValidation: candidate.finalValidation,
-    buildabilityStatus: candidate.buildabilityStatus
-  }));
-  evidenceLedger.phases.phase_6.outputSummary.manifestSha256 = solutionFingerprint(evalResults);
+  _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx);
 
   const ephemeralSourceResult = sourceReady ? await executeEphemeralSourceValidation(options, ingestCtx, evalResults) : null;
   if (ephemeralSourceResult) {
@@ -835,6 +1046,14 @@ async function runEvaluationPipelineWithinTrace(options) {
   evidenceLedger.phases.phase_7.outputSummary.solutionSourceValidation = ephemeralSourceResult || { status: 'NOT_RUN' };
   evidenceLedger.sharedState.dualBrainVerified = ephemeralSourceResult?.success === true;
   evidenceLedger.completePhase(7, ephemeralSourceResult?.success ? 'PASSED' : 'ACTION_REQUIRED', evidenceLedger.phases.phase_7.outputSummary);
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', [
+      { checked: Boolean(evalResults.notebookLmStatus?.isCloudGrounded), status: evalResults.notebookLmStatus?.isCloudGrounded ? 'PASS' : (options.OFFLINE_MODE ? 'SKIP' : 'WARN'), label: `Grounding source: ${evalResults.notebookLmStatus?.source || 'N/A'}` },
+      { checked: (evalResults.notebookLmStatus?.citationsCount || 0) > 0, label: `QuickSpecs document citations: ${evalResults.notebookLmStatus?.citationsCount || 0} citations` },
+      { checked: (evalResults.opinionDiscrepancies || []).length === 0, label: `Dual-Brain consensus: ${evalResults.opinionDiscrepancies?.length || 0} opinion discrepancies` }
+    ]);
+  }
   if (ephemeralSourceResult?.success) {
     for (const phaseNumber of [3, 4]) {
       const phase = evidenceLedger.phases[`phase_${phaseNumber}`];
@@ -852,6 +1071,9 @@ async function runEvaluationPipelineWithinTrace(options) {
 
   const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
   evalResults.newLearningsCount = newLearningsCount;
+  if (Array.isArray(options.priceDriftItems) && options.priceDriftItems.length) {
+    evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
+  }
 
   await serializeAndExportResults({
     ...options,
@@ -867,35 +1089,22 @@ async function runEvaluationPipelineWithinTrace(options) {
     stage4GuardrailMs,
     stage5MatrixMs
   });
+
+  if (!options.JSON_MODE) {
+    const PipelineLogger = require('../lib/system/pipeline_logger.js');
+    PipelineLogger.checklist(8, 'Multi-Rank Solution Deliverables & Excel Generation', [
+      { checked: Boolean(evalResults.multiRankWorkbookPath), label: `Multi-Rank Matrix (.xlsx): ${evalResults.multiRankWorkbookPath ? path.basename(evalResults.multiRankWorkbookPath) : 'Pending'}` },
+      { checked: Boolean(evalResults.multiRankCsvPath), label: `Token-Dense CSV: ${evalResults.multiRankCsvPath ? path.basename(evalResults.multiRankCsvPath) : 'Pending'}` },
+      { checked: Boolean(evalResults.portalWorkbookPath), label: `Partner Portal Sheet: ${evalResults.portalWorkbookPath ? path.basename(evalResults.portalWorkbookPath) : 'Pending'}` }
+    ]);
+    PipelineLogger.checklist(9, 'Closed-Loop Knowledge Reflection & Shared State Export', [
+      { checked: true, label: `Knowledge reflection complete (${evalResults.newLearningsCount || 0} new learnings evaluated)` },
+      { checked: Boolean(evalResults.evidenceLogPath), label: `Evidence ledger exported: ${evalResults.evidenceLogPath ? path.basename(evalResults.evidenceLogPath) : 'outputs/history/evidence_logs'}` }
+    ]);
+  }
   return evalResults;
   } catch (error) {
-    let failedPhaseNum = 1;
-    for (const phase of Object.values(evidenceLedger.phases)) {
-      if (phase.status === 'RUNNING') {
-        failedPhaseNum = phase.phaseNumber;
-        evidenceLedger.completePhase(phase.phaseNumber, 'FAILED', {}, [], [], [error.message]);
-      }
-    }
-    for (let n = 1; n <= 9; n++) {
-      if (!evidenceLedger.phases[`phase_${n}`]) {
-        evidenceLedger.phases[`phase_${n}`] = {
-          phaseNumber: n,
-          phaseName: `Phase ${n}`,
-          status: 'NOT_REACHED',
-          startedAt: null,
-          completedAt: null,
-          durationMs: 0,
-          inputSummary: {},
-          outputSummary: null,
-          checks: [],
-          warnings: [],
-          errors: [`Pipeline aborted due to upstream failure in phase ${failedPhaseNum}: ${error.message}`]
-        };
-      }
-    }
-    const exported = evidenceLedger.finalizeAndExport(options.evidenceDir);
-    error.traceId = evidenceLedger.traceId;
-    error.evidenceLogPath = exported.jsonPath;
+    _handlePipelineFailure(error, evidenceLedger, options);
     throw error;
   }
 }

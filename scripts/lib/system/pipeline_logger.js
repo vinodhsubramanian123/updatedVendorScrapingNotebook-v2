@@ -228,6 +228,8 @@ function log(level, context, message, extra) {
     process.stderr.write(formatted + '\n');
   } else if (level === 'warn') {
     process.stderr.write(formatted + '\n');
+  } else if (process.argv.includes('--json') || process.env.STRUCTURED_PROGRESS) {
+    process.stderr.write(formatted + '\n');
   } else {
     process.stdout.write(formatted + '\n');
   }
@@ -237,5 +239,41 @@ PipelineLogger.info  = (context, message, extra) => log('info',  context, messag
 PipelineLogger.warn  = (context, message, extra) => log('warn',  context, message, extra);
 PipelineLogger.error = (context, message, extra) => log('error', context, message, extra);
 PipelineLogger.debug = (context, message, extra) => log('debug', context, message, extra);
+PipelineLogger.checklist = (phaseNum, phaseName, checklistItems = []) => {
+  if (LOG_LEVELS['info'] < CURRENT_LEVEL) return;
+  const ts = new Date().toISOString();
+  const header = `[${ts}] [CHECK] [Phase ${phaseNum}: ${phaseName}]`;
+  log('info', 'CHECKLIST', header);
+
+  for (const item of (Array.isArray(checklistItems) ? checklistItems : [])) {
+    if (!item) continue;
+    const itemStatus = String(item.status || '').toUpperCase();
+    const hasFailStatus = itemStatus === 'FAIL' || itemStatus === 'FAILED';
+    const isFalseChecked = item.checked === false;
+    const isTrueChecked = item.checked === true;
+
+    let mark = '❌ [FAIL]';
+    if (isTrueChecked && hasFailStatus) {
+      // Contradictory checklist input: checked=true but status=FAIL
+      mark = '❌ [CONTRADICTION_FAIL]';
+      log('error', 'CHECKLIST', `Contradictory checklist item in [Phase ${phaseNum}: ${phaseName}]: checked=true but status=${item.status} for '${item.label}'`);
+    } else if (hasFailStatus || (isFalseChecked && (!itemStatus || itemStatus === 'PASS'))) {
+      mark = '❌ [FAIL]';
+    } else if (itemStatus === 'WARN' || itemStatus === 'WARNING' || itemStatus === 'ACTION_REQUIRED') {
+      mark = '⚠️ [WARN]';
+    } else if (itemStatus === 'SKIP' || itemStatus === 'SKIPPED') {
+      mark = '⏩ [SKIP]';
+    } else if (itemStatus === 'PASS' || (isTrueChecked && !item.status)) {
+      mark = '✅ [PASS]';
+    } else {
+      mark = '❓ [UNKNOWN]';
+    }
+
+    const formula = item.formula || item.equation ? ` | Formula: ${item.formula || item.equation}` : '';
+    const operands = item.operands ? ` | Operands: ${typeof item.operands === 'object' ? JSON.stringify(item.operands) : item.operands}` : '';
+    const details = item.details ? ` (${item.details})` : '';
+    log('info', 'CHECKLIST', `${mark} ${item.label || 'Unnamed check'}${details}${formula}${operands}`);
+  }
+};
 
 module.exports = PipelineLogger;

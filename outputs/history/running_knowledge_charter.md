@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-18T17:31:12.349Z  
-**Total Deduplicated Learned Rules:** 73  
+**Last Synchronized:** 2026-09-19T14:53:45.242Z  
+**Total Deduplicated Learned Rules:** 76  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **73**.
+Total verified rules indexed in this build: **76**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -181,14 +181,6 @@ Total verified rules indexed in this build: **73**.
 | 🏛️ FAMILY | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `write-cach` | `P48918-B21` | write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |
@@ -226,6 +218,14 @@ Total verified rules indexed in this build: **73**.
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P74573-B21` | `P74792-B21` | • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 / Constraint: learned (Intel Xeon 6730P 250W  | 1x |
 | 🏛️ FAMILY | `DL380_Gen12` | `undefined` | `P10180-B21` | `P51181-B21` | P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P76453-B21` | `P48918-B21` | 3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
 | 🏛️ FAMILY | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 🏛️ FAMILY | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 🏛️ FAMILY | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |
@@ -237,6 +237,9 @@ Total verified rules indexed in this build: **73**.
 | 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
 | 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*

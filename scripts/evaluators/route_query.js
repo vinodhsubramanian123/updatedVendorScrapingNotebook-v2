@@ -33,21 +33,16 @@ function getBaseChassisSku(chassisKey = '') {
       }
     }
   } catch (_) {}
-  const fallback = {
-    'DL380_Gen12': 'P73282-B21',
-    'DL380_Gen11': 'P52534-B21',
-    'DL360_Gen11': 'P52499-B21',
-    'DL380a_Gen12': 'P76706-B21',
-    'DL145_Gen11': 'P71964-B21',
-    'DL580_Gen12': 'P73282-B21',
-    'SY480_Gen12': '864273-B21',
-    'MSL3040_Tape': 'Q6Q67A'
-  };
-  return fallback[chassisKey] || null;
+  try {
+    const catalogs = listAllCatalogs();
+    const found = catalogs.find(c => c.id.toLowerCase() === chassisKey.toLowerCase() || c.chassis?.toLowerCase() === chassisKey.toLowerCase());
+    if (found?.baseSku) return found.baseSku;
+  } catch (_) {}
+  return null;
 }
 
 function getChassisCatalog(queryText = '', context = {}) {
-  const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase();
+  const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase().replace(/_/g, ' ');
 
   // 1. Explicit unsupported check
   if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
@@ -72,45 +67,98 @@ function getChassisCatalog(queryText = '', context = {}) {
 
   // Direct ID check if chassisName or model was passed
   if (context.chassisName || context.model) {
-    const target = (context.chassisName || context.model).toLowerCase();
-    matchedCatalog = catalogs.find(c => c.id.toLowerCase() === target || c.chassis.toLowerCase() === target);
+    const target = (context.chassisName || context.model).toLowerCase().trim();
+    matchedCatalog = catalogs.find(c => c.id.toLowerCase() === target || c.chassis?.toLowerCase() === target);
   }
+
+  // Model/Platform definition table with explicit tokens and boundary patterns
+  const PLATFORM_SIGNATURES = [
+    { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a)\b/i },
+    { key: 'dl380', pattern: /\b(?:dl\s*380|dl380)\b(?!a\b)/i },
+    { key: 'dl360', pattern: /\b(?:dl\s*360|dl360)\b/i },
+    { key: 'dl145', pattern: /\b(?:dl\s*145|dl145)\b/i },
+    { key: 'dl580', pattern: /\b(?:dl\s*580|dl580)\b/i },
+    { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute)\b/i },
+    { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i },
+    { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i },
+    { key: 'msl3040', pattern: /\b(?:msl\s*3040|msl3040|storeever|tape\s*library|tape\s*automation)\b/i },
+    { key: 'gx5000', pattern: /\b(?:gx\s*5000|gx5000|cray\s*rack|gx\s*general)\b/i }
+  ];
+
+  // Parse explicit generation from text (e.g. Gen11, Gen 11, Gen12, Gen 12)
+  const explicitGenMatch = text.match(/\bgen\s*(\d+)\b/i);
+  const explicitGen = explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null;
+
+  if (matchedCatalog && explicitGen && !matchedCatalog.id.toLowerCase().includes(explicitGen.toLowerCase())) {
+    return { chassisKey: 'GENERATION_MISMATCH', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Explicit product and requested generation disagree.' };
+  }
+  const requestedGenerations = new Set([...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]));
+  if (requestedGenerations.size > 1) return { chassisKey: 'AMBIGUOUS_QUERY', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Multiple generations require separate configurations.' };
 
   if (!matchedCatalog) {
-    // Specific model checks to prevent general substring collision
-    if (/\bdl\s*380\s*a\b/i.test(text) || text.includes('dl380a')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl380a'));
-    } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen11') || text.includes('gen 11'))) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen11');
-    } else if ((text.includes('dl380') || text.includes('dl 380')) && (text.includes('gen12') || text.includes('gen 12'))) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen12');
-    } else if (text.includes('dl360') || text.includes('dl 360')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl360'));
-    } else if (/\bdl\s*145\b/i.test(text) || text.includes('dl145')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl145'));
-    } else if (/\bdl\s*580\b/i.test(text) || text.includes('dl580')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('dl580'));
-    } else if (text.includes('synergy') || text.includes('sy480') || text.includes('sy 480')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('sy480'));
-    } else if (text.includes('msl3040') || text.includes('msl 3040') || text.includes('tape')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('msl3040'));
-    } else if (text.includes('alletra') || text.includes('b10000')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('alletra'));
-    } else if (text.includes('cray') || text.includes('gx5000') || text.includes('gx 5000')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase().includes('gx5000'));
-    } else if (text.includes('dl380') || text.includes('dl 380')) {
-      matchedCatalog = catalogs.find(c => c.id.toLowerCase() === 'dl380_gen12');
-    } else {
-      // Dynamic fallback for any other catalog in the portfolio
-      matchedCatalog = catalogs.find(c => {
-        const idLower = c.id.toLowerCase().replace(/_/g, ' ');
-        return text.includes(c.id.toLowerCase()) || text.includes(idLower);
+    const matchedPlatforms = PLATFORM_SIGNATURES.filter(p => p.pattern.test(text));
+
+    if (matchedPlatforms.length === 1) {
+      const platform = matchedPlatforms[0];
+      const candidates = catalogs.filter(c => {
+        const idLower = c.id.toLowerCase();
+        if (platform.key === 'dl380') return idLower.startsWith('dl380_');
+        if (platform.key === 'dl380a') return idLower.startsWith('dl380a_');
+        if (platform.key === 'dl360') return idLower.startsWith('dl360_');
+        if (platform.key === 'dl145') return idLower.startsWith('dl145_');
+        if (platform.key === 'dl580') return idLower.startsWith('dl580_');
+        if (platform.key === 'sy480') return idLower.startsWith('sy480_');
+        if (platform.key === 'sy100gb') return idLower.startsWith('sy100gb');
+        if (platform.key === 'alletra') return idLower.startsWith('alletra');
+        if (platform.key === 'msl3040') return idLower.startsWith('msl3040');
+        if (platform.key === 'gx5000') return idLower.startsWith('gx5000');
+        return false;
       });
+
+      if (candidates.length === 1) {
+        const cand = candidates[0];
+        if (explicitGen && !cand.id.includes(explicitGen)) {
+          return {
+            chassisKey: `${platform.key.toUpperCase()}_${explicitGen}_UNSUPPORTED`,
+            catalogDir: null,
+            catalogPath: null,
+            catalogData: null,
+            isAmbiguous: true,
+            error: `${platform.key.toUpperCase()} ${explicitGen} is not available in portfolio.`
+          };
+        }
+        matchedCatalog = cand;
+      } else if (candidates.length > 1) {
+        if (explicitGen) {
+          matchedCatalog = candidates.find(c => c.id.includes(explicitGen));
+          if (!matchedCatalog) {
+            return {
+              chassisKey: `${platform.key.toUpperCase()}_${explicitGen}_UNSUPPORTED`,
+              catalogDir: null,
+              catalogPath: null,
+              catalogData: null,
+              isAmbiguous: true,
+              error: `${platform.key.toUpperCase()} ${explicitGen} is not available in portfolio.`
+            };
+          }
+        } else {
+          // Documented default policy: when generation is absent after model identification, prefer Gen12
+          const preferred = candidates.filter(c => c.id.includes('Gen12'));
+          matchedCatalog = preferred.length === 1 ? preferred[0] : null;
+        }
+      }
+    } else if (matchedPlatforms.length > 1) {
+      return {
+        chassisKey: 'AMBIGUOUS_QUERY',
+        catalogDir: null,
+        catalogPath: null,
+        catalogData: null,
+        isAmbiguous: true,
+        error: `Multiple hardware platforms matched query text: ${matchedPlatforms.map(p => p.key.toUpperCase()).join(', ')}. Please specify a single target model.`,
+        availableCatalogs: catalogs.map(c => c.id)
+      };
     }
   }
-
-  const explicitGeneration = text.match(/\bgen\s*(\d+)\b/i)?.[1];
-  if (matchedCatalog && explicitGeneration && !new RegExp(`(?:^|_)Gen${explicitGeneration}(?:_|$)`, 'i').test(matchedCatalog.id)) matchedCatalog = null;
 
   if (!matchedCatalog) {
     return {

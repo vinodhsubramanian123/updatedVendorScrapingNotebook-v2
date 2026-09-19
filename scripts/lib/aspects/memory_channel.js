@@ -10,7 +10,9 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   const chWidth = Math.max(1, parseInt(channelWidth, 10) || 8);
   let memoryCount = 0;
   let totalMemoryGb = 0;
-  let cpuCount = passedCpuCount;
+  const hasExplicitCpuCount = (typeof passedCpuCount === 'number' && passedCpuCount > 0);
+  let cpuCount = hasExplicitCpuCount ? passedCpuCount : 0;
+  const activeCatalog = (typeof passedCpuCount === 'object' && passedCpuCount !== null) ? passedCpuCount : catalogData;
   let hasDdr4Memory = false;
   let hasDdr5Memory = false;
   let hasRdimm = false;
@@ -18,7 +20,7 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   let hasMrdimm = false;
   const btoMemoryViolations = [];
   const memoryItems = [];
-  const skuIndex = buildCatalogSkuIndex(catalogData);
+  const skuIndex = buildCatalogSkuIndex(activeCatalog);
 
   // Check if chassis in items is CTO if not explicitly passed
   const isCto = isCtoChassis || items.some(it => {
@@ -69,8 +71,10 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
         });
       }
     }
-    if (!passedCpuCount && (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc'))) {
-      cpuCount += (it.quantity || 1);
+    if (!hasExplicitCpuCount && (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cpu'))) {
+      if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cable')) {
+        cpuCount += (it.quantity || 1);
+      }
     }
   }
 

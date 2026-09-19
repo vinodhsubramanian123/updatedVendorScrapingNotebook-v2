@@ -45,7 +45,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | Presales / Engineering Intent | Primary Dynamic Skill | Implementation Script / Service |
 | :--- | :--- | :--- |
 | **Customer BOQ / Hardware BOM Evaluation** | [`boq-eval-skill`](file:///.agents/skills/boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` |
-| **Multi-Node Cluster Sizing (42U Rack/Power)** | [`multi-cluster-tender-skill`](file:///.agents/skills/multi-cluster-tender-skill/SKILL.md) | `scripts/evaluators/multi_cluster_splitter.js` |
+| **Multi-Node Cluster Sizing (42U Rack/Power)** | [`multi-cluster-tender-skill`](file:///.agents/skills/multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` |
 | **Natural Language RFP Sizing (No SKUs)** | [`rfp-sizing-synthesizer`](file:///.agents/skills/rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Tender vs. Vendor Quote Reconciliation** | [`bom-reconciliation-skill`](file:///.agents/skills/bom-reconciliation-skill/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Scanned PDF / Image Quote Ingestion** | [`ocr-quote-ingestion-skill`](file:///.agents/skills/ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` |

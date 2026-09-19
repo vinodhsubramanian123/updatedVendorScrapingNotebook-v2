@@ -1718,3 +1718,6 @@ Rather than applying brittle one-off regexes or hardcoded price patches, the arc
   - All 7 Physical Aspects: **100% PASS**.
   - Dual-Brain Deliverables: Proposal XLSX, MultiRank XLSX, MultiRank CSV, and Markdown report generated cleanly.
 
+## 2026-09-19 — Evaluation evidence and remediation lessons
+
+Read the [session index](audits/2026-09-19-session-index.md) before continuing this work. It links the full audit, completed remediation, Antigravity validation, source-manifest verification, and additional evidence-log findings. Keep the three post-review quick wins explicit; do not confuse a passing response-shape test with successful hardware evaluation, or a local payload with remote notebook synchronization.

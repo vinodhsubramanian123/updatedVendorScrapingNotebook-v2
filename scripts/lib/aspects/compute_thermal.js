@@ -23,8 +23,8 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
       role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
-    if (role === 'Processor' || /^p\d{5}-b21$/i.test(it.sku)) {
-      if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
+    if (role === 'Processor' || desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || /^p\d{5}-b21$/i.test(it.sku)) {
+      if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || role === 'Processor') {
         cpuCount += (it.quantity || 1);
         if (sku) uniqueCpuSkus.add(sku);
         const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
@@ -95,8 +95,9 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     isDl380aAccelerator,
     uniqueCpuSkus: Array.from(uniqueCpuSkus),
     hasMixedCpuModels: (serverCount === 1 || !serverCount) && uniqueCpuSkus.size > 1,
-    // High TDP (> 185W) mandates High-Performance Fan Kit + Heatsink
-    needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)
+    // High TDP (> 185W or theta threshold) mandates High-Performance Fan Kit + Heatsink
+    needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks),
+    thermalEquationFormula: `maxCpuTdpWatts (${maxCpuTdpWatts}W) > 185W => needsHighPerfCooling = ${maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)}`
   };
 }
 

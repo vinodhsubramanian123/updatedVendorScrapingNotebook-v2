@@ -47,20 +47,23 @@ vendorNotebookSolution/
 │   │   ├── conflict/                      ← Conflict graph, least_delta_combinator.js, decision_trace.js & strategy synthesis
 │   │   ├── feedback/                      ← HITL feedback capture & learning queue
 │   │   ├── notebook/                      ← NotebookLM RAG, knowledge extractor & sanitizer
+│   │   ├── lifecycle/                     ← Declarative lifecycle engine & dynamic phase execution
 │   │   ├── ocr/                           ← Gemini Vision OCR service & table parser
+│   │   ├── orchestrator/                  ← Unified canonical evaluation pipeline orchestrator
 │   │   ├── preprocessor/                  ← CTO normalizer, variation clusterer & feedback persister
 │   │   ├── prompts/                       ← Guardrail prompt templates for agentic LLM loops
 │   │   ├── rag/                           ← Dual-brain local RAG & agentic guardrails
-│   │   ├── scraper/                       ← CDP connection kernel & DOM extractors
+│   │   ├── scraper/                       ← CDP connection kernel, DOM extractors & multi-vendor adapters
 │   │   ├── sync/                          ← Knowledge payload builder & drift sync hook
 │   │   ├── system/                        ← Telemetry, atomic FS, key rotator, Zod schemas & error envelope
+│   │   ├── taxonomy/                      ← Vendor-agnostic hardware schema, domain classifier & parameterized equations
 │   │   └── index.js                       ← Master barrel re-export
 │   └── README.md                          ← Scripts directory guide
 │
-├── tests/                                 ← 158 isolated test suites across 4 tiers (100% PASS)
-│   ├── unit/                              ← 92 suites: aspect math, least-delta, decision traces, deal optimizer, query router
-│   ├── chaos/                             ← 38 suites: chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
-│   ├── integration/                       ← 25 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
+├── tests/                                 ← 171 isolated test suites across 4 tiers (100% PASS)
+│   ├── unit/                              ← 105 suites: aspect registry, vendor-agnostic schema, sku resolver, lifecycle engine, query router
+│   ├── chaos/                             ← 40 suites: chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
+│   ├── integration/                       ← 26 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
 │   ├── e2e/                               ← 3 suites: headless browser UI automation, downloads & live CLIC flows
 │   ├── fixtures/                          ← 15 Benchmark CSVs (BENCH-01 to BENCH-15), sample quotes & raw DOM snapshots
 │   └── README.md                          ← Test execution & benchmark index

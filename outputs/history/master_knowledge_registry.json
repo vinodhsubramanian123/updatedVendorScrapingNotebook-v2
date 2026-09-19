@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-18T17:36:02.480Z",
-  "lastUpdated": "2026-09-18T17:36:02.480Z",
-  "totalLearnedRules": 73,
-  "totalDeduplicatedRules": 73,
+  "generatedAt": "2026-09-19T14:58:44.393Z",
+  "lastUpdated": "2026-09-19T14:58:44.393Z",
+  "totalLearnedRules": 76,
+  "totalDeduplicatedRules": 76,
   "productFamiliesSynced": [
     "DL145",
     "DL380",
@@ -13,11 +13,81 @@
     "SY480"
   ],
   "counts": {
-    "universal": 0,
+    "universal": 3,
     "familyGen": 0,
     "chassisSpecific": 73
   },
-  "universalRules": [],
+  "universalRules": [
+    {
+      "deltaId": "DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION",
+      "timestamp": "2026-09-11T16:00:00.000Z",
+      "chassis": "GLOBAL",
+      "rawMessage": "In multi-icon solutions across all HPE products, OCA CLIC validation attributes child container/chassis service and configuration errors to Item 0100/01 (the first line in the solution tree, Rule 81039677) regardless of where the error actually resides. Never assume the first line is the root cause; inspect child icon containers directly.",
+      "errorType": "PORTAL_VALIDATION_ATTRIBUTION",
+      "ruleType": "ERROR_DIAGNOSTIC_ATTRIBUTION",
+      "affectedSku": "SOLUTION_TREE_ITEM_0100_01",
+      "requiredDependencySku": null,
+      "ruleUpdate": "When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item.",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Vendor-wide across all HPE multi-tier configurations (ProLiant + Synergy + Alletra + Cray).",
+      "solutionType": "Multi-Chassis Hybrid Solution",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "provenance": "clic_verified_gemini_oca_record",
+      "ucid": "5155640958-01",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "productId": "GLOBAL"
+    },
+    {
+      "deltaId": "DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION",
+      "timestamp": "2026-09-11T16:00:00.000Z",
+      "chassis": "GLOBAL",
+      "rawMessage": "Across all HPE configurations mixing rack servers (DL380) with modular chassis (Synergy frames) or storage (Alletra), NEVER check 'Apply to all icons inside solution' for support or deployment services. Support tiers must be established independently per icon to prevent chassis-level support options from corrupting server containers.",
+      "errorType": "CROSS_CHASSIS_SUPPORT_POLLUTION",
+      "ruleType": "ICON_SUPPORT_ISOLATION",
+      "affectedSku": "HU4B2A3",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Configure support services independently per icon container. Never broadcast support attributes across diverse product families.",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Vendor-wide across all HPE multi-tier solutions.",
+      "solutionType": "Multi-Chassis Hybrid Solution",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "provenance": "clic_verified_gemini_oca_record",
+      "ucid": "5155640958-01",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "productId": "GLOBAL"
+    },
+    {
+      "deltaId": "DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH",
+      "timestamp": "2026-09-11T16:00:00.000Z",
+      "chassis": "GLOBAL",
+      "rawMessage": "When WebLogic OCA gets stuck in contradictory or persistent service rule errors after modifying service lines, the backend pricing/rule engine has a stale session cache. Setting Support to 'No Support' / 'No Installation' and clicking Check flushes the corrupted backend rule cache, allowing clean re-application of the desired support tier with auto-balanced quantities.",
+      "errorType": "PORTAL_CACHE_STALENESS",
+      "ruleType": "SESSION_RECOVERY_PROTOCOL",
+      "affectedSku": "HU4B2A3",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic.",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Vendor-wide across all HPE OCA configuration sessions.",
+      "solutionType": "Universal OCA Session Recovery",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "provenance": "clic_verified_gemini_oca_record",
+      "ucid": "5155640958-01",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "productId": "GLOBAL"
+    }
+  ],
   "familyGenRules": [],
   "chassisSpecificRules": [
     {
@@ -383,381 +453,6 @@
       "generation": "Gen11",
       "productId": "DL380_Gen11",
       "solutionType": "DL380_Gen11 CTO Server"
-    },
-    {
-      "deltaId": "DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY",
-      "timestamp": "2026-09-03T18:30:00.000Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Rule 81016788: 4SFF drive cage (P74710-B21) and 4EDSFF drive cage (P74712-B21) cannot be populated simultaneously in DL380a front storage bay.",
-      "errorType": "MUTUAL_EXCLUSION",
-      "ruleType": "STORAGE_COLLISION",
-      "affectedSku": "P74710-B21",
-      "requiredDependencySku": null,
-      "ruleUpdate": "DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "DL380a Gen12 GPU Server",
-      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-      "validation": {
-        "validatedAt": "2026-09-06",
-        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
-        "result": "SUPPORTED: QuickSpecs explicitly says mixing drive cages is not allowed."
-      },
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA_DL380A_GEN12_DUAL_CPU_HOMOGENEOUS",
-      "timestamp": "2026-09-06T00:00:00.000Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Official QuickSpecs: DL380a Gen12 supports dual-processor configurations only and does not support mixing processor models.",
-      "errorType": "PROCESSOR_TOPOLOGY",
-      "ruleType": "PROCESSOR_POPULATION",
-      "affectedSku": "P76706-B21",
-      "requiredDependencySku": null,
-      "ruleUpdate": "DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupported.",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "DL380a Gen12 GPU Server",
-      "status": "VERIFIED",
-      "validation": {
-        "validatedAt": "2026-09-06",
-        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
-        "result": "SUPPORTED"
-      },
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX",
-      "timestamp": "2026-09-06T00:00:00.000Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Official QuickSpecs power matrix for double-wide GPU configurations.",
-      "errorType": "POWER_CAPACITY_VIOLATION",
-      "ruleType": "POWER_REDUNDANCY",
-      "affectedSku": "P76706-B21",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "DL380a Gen12 GPU Server",
-      "status": "VERIFIED",
-      "validation": {
-        "validatedAt": "2026-09-06",
-        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
-        "result": "SUPPORTED"
-      },
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01",
-      "timestamp": "2026-09-18T15:45:00.000Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Live authenticated HPE OCA quote 5155756524-01 pricing alignment: Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate ($11,306.00/unit), Onsite Install 4U 8-GPU tier ($507.00/unit), NVLink Bridge S4A91C manufacturer list ($2,170.00/unit), and GPU cable P74700-B21 ($114.00/unit). Total quote BOM: $30,406,340.00 USD.",
-      "errorType": "COMMERCIAL_PRICING_ALIGNMENT",
-      "ruleType": "LIVE_QUOTE_RECONCILIATION",
-      "affectedSku": "HU4B2A30C4W",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.",
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "DL380a Gen12 GPU Server",
-      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-      "validation": {
-        "validatedAt": "2026-09-18",
-        "sourceId": "HPE_DL380a_H200_Server_Configuration_5155756524-01 (2).xlsx",
-        "result": "CONFIRMED_MATCH: Evaluated BOQ BOM total matches official quote $30,406,340.00 USD exactly (0.000% variance across all 55 items)."
-      },
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA-1789752537004-v9j6p",
-      "traceId": null,
-      "timestamp": "2026-09-18T17:28:57.003Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Price drift detected for P74700-B21: required for solution accuracy",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "P74700-B21",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Observed price drift on P74700-B21 (memory)",
-      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
-      "sourceAgent": "PORTAL_OBSERVATION",
-      "source": "HUMAN_AUDITOR",
-      "citations": [
-        "HPE OCA Verified Data 5155756524-01"
-      ],
-      "guardrailTurn": null,
-      "preConfidenceScore": 0.95,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "PROMOTED",
-      "scope": "CHASSIS_SPECIFIC",
-      "confidenceScore": 0.95,
-      "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
-      "validatedAt": "2026-09-18T17:28:57.029Z",
-      "governanceStatus": "ACTIVE",
-      "quarantineId": "QUARANTINE_55d46c7d05d0c059",
-      "firstSeenAt": "2026-09-18T17:27:23.051Z",
-      "lastSeenAt": "2026-09-18T17:28:57.015Z",
-      "observationCount": 3,
-      "quarantinedAt": "2026-09-18T17:28:57.015Z",
-      "quarantineReasons": [
-        "Automated learning has no traceable source citation; held for evidence review",
-        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
-        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
-        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
-        "Evidence-backed decision awaiting atomic promotion"
-      ],
-      "humanReview": {
-        "reviewer": "antigravity-auditor",
-        "reasoning": "Confirmed delta via official vendor documentation",
-        "verified": true,
-        "decision": "APPROVE",
-        "evidence": [
-          {
-            "type": "OFFICIAL_VENDOR_PORTAL",
-            "id": "5155756524-01"
-          }
-        ]
-      },
-      "promotedAt": "2026-09-18T17:28:57.029Z",
-      "promotedBy": "antigravity-auditor",
-      "postConfidenceScore": 0.95,
-      "confidenceHistory": [
-        {
-          "timestamp": "2026-09-18T17:28:57.029Z",
-          "from": 0.95,
-          "to": 0.95,
-          "reason": "Confirmed delta via official vendor documentation",
-          "evidenceIds": [
-            "5155756524-01"
-          ]
-        }
-      ],
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA-1789752537592-otj9t",
-      "traceId": null,
-      "timestamp": "2026-09-18T17:28:57.592Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Price drift detected for S4A91C: required for solution accuracy",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "S4A91C",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Observed price drift on S4A91C (drive)",
-      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
-      "sourceAgent": "PORTAL_OBSERVATION",
-      "source": "HUMAN_AUDITOR",
-      "citations": [
-        "HPE OCA Verified Data 5155756524-01"
-      ],
-      "guardrailTurn": null,
-      "preConfidenceScore": 0.95,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "PROMOTED",
-      "scope": "CHASSIS_SPECIFIC",
-      "confidenceScore": 0.95,
-      "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
-      "validatedAt": "2026-09-18T17:28:57.613Z",
-      "governanceStatus": "ACTIVE",
-      "quarantineId": "QUARANTINE_1e9d00353f4dc525",
-      "firstSeenAt": "2026-09-18T17:27:23.068Z",
-      "lastSeenAt": "2026-09-18T17:28:57.602Z",
-      "observationCount": 3,
-      "quarantinedAt": "2026-09-18T17:28:57.602Z",
-      "quarantineReasons": [
-        "Automated learning has no traceable source citation; held for evidence review",
-        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
-        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
-        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
-        "Evidence-backed decision awaiting atomic promotion"
-      ],
-      "humanReview": {
-        "reviewer": "antigravity-auditor",
-        "reasoning": "Confirmed delta via official vendor documentation",
-        "verified": true,
-        "decision": "APPROVE",
-        "evidence": [
-          {
-            "type": "OFFICIAL_VENDOR_PORTAL",
-            "id": "5155756524-01"
-          }
-        ]
-      },
-      "promotedAt": "2026-09-18T17:28:57.613Z",
-      "promotedBy": "antigravity-auditor",
-      "postConfidenceScore": 0.95,
-      "confidenceHistory": [
-        {
-          "timestamp": "2026-09-18T17:28:57.613Z",
-          "from": 0.95,
-          "to": 0.95,
-          "reason": "Confirmed delta via official vendor documentation",
-          "evidenceIds": [
-            "5155756524-01"
-          ]
-        }
-      ],
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA-1789752537783-790yf",
-      "traceId": null,
-      "timestamp": "2026-09-18T17:28:57.783Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Price drift detected for HA113A1: required for solution accuracy",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "HA113A1",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Observed price drift on HA113A1 (support)",
-      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
-      "sourceAgent": "PORTAL_OBSERVATION",
-      "source": "HUMAN_AUDITOR",
-      "citations": [
-        "HPE OCA Verified Data 5155756524-01"
-      ],
-      "guardrailTurn": null,
-      "preConfidenceScore": 0.95,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "PROMOTED",
-      "scope": "CHASSIS_SPECIFIC",
-      "confidenceScore": 0.95,
-      "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
-      "validatedAt": "2026-09-18T17:28:57.799Z",
-      "governanceStatus": "ACTIVE",
-      "quarantineId": "QUARANTINE_82b64b6852109a8c",
-      "firstSeenAt": "2026-09-18T17:28:25.672Z",
-      "lastSeenAt": "2026-09-18T17:28:57.789Z",
-      "observationCount": 2,
-      "quarantinedAt": "2026-09-18T17:28:57.789Z",
-      "quarantineReasons": [
-        "SKU HA113A1 not found in target catalog; held in quarantine for manual verification",
-        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
-        "Evidence-backed decision awaiting atomic promotion"
-      ],
-      "humanReview": {
-        "reviewer": "antigravity-auditor",
-        "reasoning": "Confirmed delta via official vendor documentation",
-        "verified": true,
-        "decision": "APPROVE",
-        "evidence": [
-          {
-            "type": "OFFICIAL_VENDOR_PORTAL",
-            "id": "5155756524-01"
-          }
-        ]
-      },
-      "promotedAt": "2026-09-18T17:28:57.799Z",
-      "promotedBy": "antigravity-auditor",
-      "postConfidenceScore": 0.95,
-      "confidenceHistory": [
-        {
-          "timestamp": "2026-09-18T17:28:57.799Z",
-          "from": 0.95,
-          "to": 0.95,
-          "reason": "Confirmed delta via official vendor documentation",
-          "evidenceIds": [
-            "5155756524-01"
-          ]
-        }
-      ],
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
-    },
-    {
-      "deltaId": "DELTA-1789752537975-31r35",
-      "traceId": null,
-      "timestamp": "2026-09-18T17:28:57.975Z",
-      "chassis": "DL380a_Gen12",
-      "rawMessage": "Price drift detected for HU4B2A30C4W: required for solution accuracy",
-      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
-      "affectedSku": "HU4B2A30C4W",
-      "requiredDependencySku": null,
-      "ruleUpdate": "Observed price drift on HU4B2A30C4W (service)",
-      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
-      "sourceAgent": "PORTAL_OBSERVATION",
-      "source": "HUMAN_AUDITOR",
-      "citations": [
-        "HPE OCA Verified Data 5155756524-01"
-      ],
-      "guardrailTurn": null,
-      "preConfidenceScore": 0.95,
-      "scopeTaxonomy": "CHASSIS_SPECIFIC",
-      "solutionType": "General Server",
-      "status": "PROMOTED",
-      "scope": "CHASSIS_SPECIFIC",
-      "confidenceScore": 0.95,
-      "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
-      "validatedAt": "2026-09-18T17:28:57.991Z",
-      "governanceStatus": "ACTIVE",
-      "quarantineId": "QUARANTINE_13a413006139592a",
-      "firstSeenAt": "2026-09-18T17:27:23.098Z",
-      "lastSeenAt": "2026-09-18T17:28:57.980Z",
-      "observationCount": 3,
-      "quarantinedAt": "2026-09-18T17:28:57.980Z",
-      "quarantineReasons": [
-        "SKU HU4B2A30C4W not found in target catalog; held in quarantine for manual verification",
-        "Automated learning has no traceable source citation; held for evidence review",
-        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
-        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
-        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
-        "Evidence-backed decision awaiting atomic promotion"
-      ],
-      "humanReview": {
-        "reviewer": "antigravity-auditor",
-        "reasoning": "Confirmed delta via official vendor documentation",
-        "verified": true,
-        "decision": "APPROVE",
-        "evidence": [
-          {
-            "type": "OFFICIAL_VENDOR_PORTAL",
-            "id": "5155756524-01"
-          }
-        ]
-      },
-      "promotedAt": "2026-09-18T17:28:57.991Z",
-      "promotedBy": "antigravity-auditor",
-      "postConfidenceScore": 0.95,
-      "confidenceHistory": [
-        {
-          "timestamp": "2026-09-18T17:28:57.991Z",
-          "from": 0.95,
-          "to": 0.95,
-          "reason": "Confirmed delta via official vendor documentation",
-          "evidenceIds": [
-            "5155756524-01"
-          ]
-        }
-      ],
-      "vendor": "HPE",
-      "pillar": "SERVER",
-      "family": "ProLiant",
-      "generation": "Gen12",
-      "productId": "DL380a_Gen12"
     },
     {
       "deltaId": "DELTA_DL380_GEN12_NO_DRIVE_BYPASS",
@@ -1497,6 +1192,381 @@
       "generation": "Gen12",
       "productId": "DL380_Gen12",
       "solutionType": "DL380_Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY",
+      "timestamp": "2026-09-03T18:30:00.000Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Rule 81016788: 4SFF drive cage (P74710-B21) and 4EDSFF drive cage (P74712-B21) cannot be populated simultaneously in DL380a front storage bay.",
+      "errorType": "MUTUAL_EXCLUSION",
+      "ruleType": "STORAGE_COLLISION",
+      "affectedSku": "P74710-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "DL380a Gen12 GPU Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "validation": {
+        "validatedAt": "2026-09-06",
+        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+        "result": "SUPPORTED: QuickSpecs explicitly says mixing drive cages is not allowed."
+      },
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA_DL380A_GEN12_DUAL_CPU_HOMOGENEOUS",
+      "timestamp": "2026-09-06T00:00:00.000Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Official QuickSpecs: DL380a Gen12 supports dual-processor configurations only and does not support mixing processor models.",
+      "errorType": "PROCESSOR_TOPOLOGY",
+      "ruleType": "PROCESSOR_POPULATION",
+      "affectedSku": "P76706-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupported.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "DL380a Gen12 GPU Server",
+      "status": "VERIFIED",
+      "validation": {
+        "validatedAt": "2026-09-06",
+        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+        "result": "SUPPORTED"
+      },
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX",
+      "timestamp": "2026-09-06T00:00:00.000Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Official QuickSpecs power matrix for double-wide GPU configurations.",
+      "errorType": "POWER_CAPACITY_VIOLATION",
+      "ruleType": "POWER_REDUNDANCY",
+      "affectedSku": "P76706-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "DL380a Gen12 GPU Server",
+      "status": "VERIFIED",
+      "validation": {
+        "validatedAt": "2026-09-06",
+        "sourceId": "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
+        "result": "SUPPORTED"
+      },
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01",
+      "timestamp": "2026-09-18T15:45:00.000Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Live authenticated HPE OCA quote 5155756524-01 pricing alignment: Pointnext 3Y Tech Care Basic GPU accelerator tier warranty rate ($11,306.00/unit), Onsite Install 4U 8-GPU tier ($507.00/unit), NVLink Bridge S4A91C manufacturer list ($2,170.00/unit), and GPU cable P74700-B21 ($114.00/unit). Total quote BOM: $30,406,340.00 USD.",
+      "errorType": "COMMERCIAL_PRICING_ALIGNMENT",
+      "ruleType": "LIVE_QUOTE_RECONCILIATION",
+      "affectedSku": "HU4B2A30C4W",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "DL380a Gen12 GPU Server",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "validation": {
+        "validatedAt": "2026-09-18",
+        "sourceId": "HPE_DL380a_H200_Server_Configuration_5155756524-01 (2).xlsx",
+        "result": "CONFIRMED_MATCH: Evaluated BOQ BOM total matches official quote $30,406,340.00 USD exactly (0.000% variance across all 55 items)."
+      },
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA-1789752537004-v9j6p",
+      "traceId": null,
+      "timestamp": "2026-09-18T17:28:57.003Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Price drift detected for P74700-B21: required for solution accuracy",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "P74700-B21",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Observed price drift on P74700-B21 (memory)",
+      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+      "sourceAgent": "PORTAL_OBSERVATION",
+      "source": "HUMAN_AUDITOR",
+      "citations": [
+        "HPE OCA Verified Data 5155756524-01"
+      ],
+      "guardrailTurn": null,
+      "preConfidenceScore": 0.95,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "PROMOTED",
+      "scope": "CHASSIS_SPECIFIC",
+      "confidenceScore": 0.95,
+      "knowledgeFingerprint": "55d46c7d05d0c059d77411fca5fef88b01524ed0261c9198b1ce4007fb314fad",
+      "validatedAt": "2026-09-18T17:28:57.029Z",
+      "governanceStatus": "ACTIVE",
+      "quarantineId": "QUARANTINE_55d46c7d05d0c059",
+      "firstSeenAt": "2026-09-18T17:27:23.051Z",
+      "lastSeenAt": "2026-09-18T17:28:57.015Z",
+      "observationCount": 3,
+      "quarantinedAt": "2026-09-18T17:28:57.015Z",
+      "quarantineReasons": [
+        "Automated learning has no traceable source citation; held for evidence review",
+        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+        "Evidence-backed decision awaiting atomic promotion"
+      ],
+      "humanReview": {
+        "reviewer": "antigravity-auditor",
+        "reasoning": "Confirmed delta via official vendor documentation",
+        "verified": true,
+        "decision": "APPROVE",
+        "evidence": [
+          {
+            "type": "OFFICIAL_VENDOR_PORTAL",
+            "id": "5155756524-01"
+          }
+        ]
+      },
+      "promotedAt": "2026-09-18T17:28:57.029Z",
+      "promotedBy": "antigravity-auditor",
+      "postConfidenceScore": 0.95,
+      "confidenceHistory": [
+        {
+          "timestamp": "2026-09-18T17:28:57.029Z",
+          "from": 0.95,
+          "to": 0.95,
+          "reason": "Confirmed delta via official vendor documentation",
+          "evidenceIds": [
+            "5155756524-01"
+          ]
+        }
+      ],
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA-1789752537592-otj9t",
+      "traceId": null,
+      "timestamp": "2026-09-18T17:28:57.592Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Price drift detected for S4A91C: required for solution accuracy",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "S4A91C",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Observed price drift on S4A91C (drive)",
+      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+      "sourceAgent": "PORTAL_OBSERVATION",
+      "source": "HUMAN_AUDITOR",
+      "citations": [
+        "HPE OCA Verified Data 5155756524-01"
+      ],
+      "guardrailTurn": null,
+      "preConfidenceScore": 0.95,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "PROMOTED",
+      "scope": "CHASSIS_SPECIFIC",
+      "confidenceScore": 0.95,
+      "knowledgeFingerprint": "1e9d00353f4dc5251d42dd2278d3cd6e801629dfed595097ac414fbc72a4e0df",
+      "validatedAt": "2026-09-18T17:28:57.613Z",
+      "governanceStatus": "ACTIVE",
+      "quarantineId": "QUARANTINE_1e9d00353f4dc525",
+      "firstSeenAt": "2026-09-18T17:27:23.068Z",
+      "lastSeenAt": "2026-09-18T17:28:57.602Z",
+      "observationCount": 3,
+      "quarantinedAt": "2026-09-18T17:28:57.602Z",
+      "quarantineReasons": [
+        "Automated learning has no traceable source citation; held for evidence review",
+        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+        "Evidence-backed decision awaiting atomic promotion"
+      ],
+      "humanReview": {
+        "reviewer": "antigravity-auditor",
+        "reasoning": "Confirmed delta via official vendor documentation",
+        "verified": true,
+        "decision": "APPROVE",
+        "evidence": [
+          {
+            "type": "OFFICIAL_VENDOR_PORTAL",
+            "id": "5155756524-01"
+          }
+        ]
+      },
+      "promotedAt": "2026-09-18T17:28:57.613Z",
+      "promotedBy": "antigravity-auditor",
+      "postConfidenceScore": 0.95,
+      "confidenceHistory": [
+        {
+          "timestamp": "2026-09-18T17:28:57.613Z",
+          "from": 0.95,
+          "to": 0.95,
+          "reason": "Confirmed delta via official vendor documentation",
+          "evidenceIds": [
+            "5155756524-01"
+          ]
+        }
+      ],
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA-1789752537783-790yf",
+      "traceId": null,
+      "timestamp": "2026-09-18T17:28:57.783Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Price drift detected for HA113A1: required for solution accuracy",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "HA113A1",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Observed price drift on HA113A1 (support)",
+      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+      "sourceAgent": "PORTAL_OBSERVATION",
+      "source": "HUMAN_AUDITOR",
+      "citations": [
+        "HPE OCA Verified Data 5155756524-01"
+      ],
+      "guardrailTurn": null,
+      "preConfidenceScore": 0.95,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "PROMOTED",
+      "scope": "CHASSIS_SPECIFIC",
+      "confidenceScore": 0.95,
+      "knowledgeFingerprint": "82b64b6852109a8c5ba6d086a61dbd2a9220c2ad985823b3eddbe2433b6619d3",
+      "validatedAt": "2026-09-18T17:28:57.799Z",
+      "governanceStatus": "ACTIVE",
+      "quarantineId": "QUARANTINE_82b64b6852109a8c",
+      "firstSeenAt": "2026-09-18T17:28:25.672Z",
+      "lastSeenAt": "2026-09-18T17:28:57.789Z",
+      "observationCount": 2,
+      "quarantinedAt": "2026-09-18T17:28:57.789Z",
+      "quarantineReasons": [
+        "SKU HA113A1 not found in target catalog; held in quarantine for manual verification",
+        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+        "Evidence-backed decision awaiting atomic promotion"
+      ],
+      "humanReview": {
+        "reviewer": "antigravity-auditor",
+        "reasoning": "Confirmed delta via official vendor documentation",
+        "verified": true,
+        "decision": "APPROVE",
+        "evidence": [
+          {
+            "type": "OFFICIAL_VENDOR_PORTAL",
+            "id": "5155756524-01"
+          }
+        ]
+      },
+      "promotedAt": "2026-09-18T17:28:57.799Z",
+      "promotedBy": "antigravity-auditor",
+      "postConfidenceScore": 0.95,
+      "confidenceHistory": [
+        {
+          "timestamp": "2026-09-18T17:28:57.799Z",
+          "from": 0.95,
+          "to": 0.95,
+          "reason": "Confirmed delta via official vendor documentation",
+          "evidenceIds": [
+            "5155756524-01"
+          ]
+        }
+      ],
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
+    },
+    {
+      "deltaId": "DELTA-1789752537975-31r35",
+      "traceId": null,
+      "timestamp": "2026-09-18T17:28:57.975Z",
+      "chassis": "DL380a_Gen12",
+      "rawMessage": "Price drift detected for HU4B2A30C4W: required for solution accuracy",
+      "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+      "affectedSku": "HU4B2A30C4W",
+      "requiredDependencySku": null,
+      "ruleUpdate": "Observed price drift on HU4B2A30C4W (service)",
+      "humanReasoning": "Manual price drift reconciliation from phase 15 audit",
+      "sourceAgent": "PORTAL_OBSERVATION",
+      "source": "HUMAN_AUDITOR",
+      "citations": [
+        "HPE OCA Verified Data 5155756524-01"
+      ],
+      "guardrailTurn": null,
+      "preConfidenceScore": 0.95,
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "solutionType": "General Server",
+      "status": "PROMOTED",
+      "scope": "CHASSIS_SPECIFIC",
+      "confidenceScore": 0.95,
+      "knowledgeFingerprint": "13a413006139592a06b31b0c2d30dc84d2fc3678a2cd1561fd64ac009ce070fb",
+      "validatedAt": "2026-09-18T17:28:57.991Z",
+      "governanceStatus": "ACTIVE",
+      "quarantineId": "QUARANTINE_13a413006139592a",
+      "firstSeenAt": "2026-09-18T17:27:23.098Z",
+      "lastSeenAt": "2026-09-18T17:28:57.980Z",
+      "observationCount": 3,
+      "quarantinedAt": "2026-09-18T17:28:57.980Z",
+      "quarantineReasons": [
+        "SKU HU4B2A30C4W not found in target catalog; held in quarantine for manual verification",
+        "Automated learning has no traceable source citation; held for evidence review",
+        "Automated source 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' is not eligible for direct promotion",
+        "Confidence score 0.70 is below automatic promotion threshold (0.85)",
+        "Automated source 'HUMAN_AUDITOR' is not eligible for direct promotion",
+        "Evidence-backed decision awaiting atomic promotion"
+      ],
+      "humanReview": {
+        "reviewer": "antigravity-auditor",
+        "reasoning": "Confirmed delta via official vendor documentation",
+        "verified": true,
+        "decision": "APPROVE",
+        "evidence": [
+          {
+            "type": "OFFICIAL_VENDOR_PORTAL",
+            "id": "5155756524-01"
+          }
+        ]
+      },
+      "promotedAt": "2026-09-18T17:28:57.991Z",
+      "promotedBy": "antigravity-auditor",
+      "postConfidenceScore": 0.95,
+      "confidenceHistory": [
+        {
+          "timestamp": "2026-09-18T17:28:57.991Z",
+          "from": 0.95,
+          "to": 0.95,
+          "reason": "Confirmed delta via official vendor documentation",
+          "evidenceIds": [
+            "5155756524-01"
+          ]
+        }
+      ],
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380a_Gen12"
     },
     {
       "deltaId": "DELTA_SYNERGY_FRAME_STARTUP_MATH",
