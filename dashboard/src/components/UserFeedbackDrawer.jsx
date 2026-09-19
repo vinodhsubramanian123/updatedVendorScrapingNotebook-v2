@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, X, Send, CheckCircle2, Loader2 } from 'lucide-react';
 
 export default function UserFeedbackDrawer({ isOpen, onClose }) {
   const [feedbackText, setFeedbackText] = useState('');
   const [category, setCategory] = useState('feature_request');
   const [queueItems, setQueueItems] = useState([]);
   const [copiedPrompt, setCopiedPrompt] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchQueue = async () => {
     try {
@@ -31,8 +32,9 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!feedbackText.trim()) return;
+    if (!feedbackText.trim() || isSubmitting) return;
 
+    setIsSubmitting(true);
     try {
       const res = await fetch('/api/feedback-submit', {
         method: 'POST',
@@ -43,7 +45,11 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
       setCopiedPrompt(data.agentPrompt);
       setFeedbackText('');
       fetchQueue();
-    } catch (err) { console.error('Failed to mark feedback completed:', err); }
+    } catch (err) {
+      console.error('Failed to submit feedback:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleMarkAllCompleted = async () => {
@@ -97,8 +103,13 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
           />
         </div>
 
-        <button type="submit" className="w-full btn-primary justify-center text-xs">
-          <Send className="w-3.5 h-3.5" /> Submit to Feedback Queue
+        <button
+          type="submit"
+          disabled={isSubmitting || !feedbackText.trim()}
+          className="w-full btn-primary justify-center text-xs disabled:opacity-50"
+        >
+          {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+          {isSubmitting ? 'Submitting...' : 'Submit to Feedback Queue'}
         </button>
       </form>
 
