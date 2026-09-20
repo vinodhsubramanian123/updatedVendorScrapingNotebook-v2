@@ -214,7 +214,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "query_notebooklm": {
         const cfg = loadNotebookConfig();
         const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
-        const result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
+        let result;
+        if (!notebookId) {
+          // No notebook mapped or disabled — return degraded mode rather than passing null
+          const { getNotebookDegradedMode, queryLocalKnowledgeBase: _lkb } = require('./lib/sync/knowledge_sync.js');
+          const degradedMode = getNotebookDegradedMode(cfg, args.chassis_id);
+          const localResult = queryLocalKnowledgeBase(args.query, args.chassis_id);
+          result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };
+        } else {
+          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
+        }
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "query_catalog_db": {

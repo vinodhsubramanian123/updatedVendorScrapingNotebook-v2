@@ -163,7 +163,7 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
  */
 function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}, executeQueryFn) {
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-  const chassis = options.context ? options.context.chassis : 'HPE ProLiant DL380 Gen12 SFF';
+  const chassis = (options.context && options.context.chassis) ? options.context.chassis : 'UNSPECIFIED';
   const idempotencyKey = computeIdempotencyKey(notebookId, chassis, sanitizedQuery);
 
   // In-flight and completed query deduplication

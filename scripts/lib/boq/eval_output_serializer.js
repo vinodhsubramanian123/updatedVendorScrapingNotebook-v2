@@ -318,7 +318,7 @@ function _buildWorkflowSteps(ctx) {
       status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN',
       durationMs: stage4GuardrailMs,
       details: stage4GuardrailMs > 0 ? 'Agentic guardrail completed.' : 'Agentic guardrail was not run during the provisional local phase.',
-      metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score || 0.9 }
+      metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score ?? null }
     },
     {
       stepId: 5,
