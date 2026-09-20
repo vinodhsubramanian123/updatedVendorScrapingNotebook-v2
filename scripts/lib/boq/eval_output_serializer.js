@@ -24,7 +24,7 @@ const { candidateReviewCurrent } = require('./solution_evidence');
 const { toClickableFileUri } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
-  const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd } = ctx;
+  const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd, notebookDegradedMode } = ctx;
   const chassisLabel = (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'HPE ProLiant BOQ';
   const notebookLabel = notebookId ? `${chassisLabel} Notebook (\`${notebookId}\`)` : `${chassisLabel} — Local Catalog Rules (no Notebook configured)`;
 
@@ -37,6 +37,18 @@ function _buildHeaderSection(ctx) {
   if (targetBudgetUsd > 0) {
     md += `**Target CapEx Budget**: \`$${targetBudgetUsd.toLocaleString()} USD\`  \n`;
   }
+
+  // Degraded mode banner — must be visible before any result tables
+  if (notebookDegradedMode) {
+    const degradedMessages = {
+      QUERY_DISABLED: '⚠️ **DEGRADED MODE: QUERY_DISABLED** — The NotebookLM notebook for this chassis is explicitly disabled (`queryEnabled: false`). RAG grounding was skipped. Results are based on local rule engine only.',
+      STALE_NOTEBOOK_SYNC: '⚠️ **DEGRADED MODE: STALE_NOTEBOOK_SYNC** — The last cloud sync for this chassis notebook FAILED (check `cloudSyncState` in notebooks.json). The notebook may be out of date. Re-authenticate and re-sync before trusting RAG results.',
+      NO_NOTEBOOK_MAPPED: '⚠️ **DEGRADED MODE: NO_NOTEBOOK_MAPPED** — No NotebookLM notebook is configured for this chassis. RAG grounding was skipped. Results are based on local rule engine only.'
+    };
+    const msg = degradedMessages[notebookDegradedMode] || `⚠️ **DEGRADED MODE: ${notebookDegradedMode}**`;
+    md += `\n> ${msg}\n`;
+  }
+
   md += `\n---\n\n`;
   return md;
 }
@@ -96,7 +108,10 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     md += `| Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |\n`;
     md += `|---|---|---|---|\n`;
     graph.auditLog.forEach(al => {
-      const statusIcon = al.status === 'PASS' ? '✅ PASS' : (al.status === 'FAIL' ? '❌ FAIL' : '⚠️ WARNING');
+      const statusIcon = al.status === 'PASS' ? '✅ PASS'
+        : al.status === 'FAIL' ? '❌ FAIL'
+        : al.status === 'UNEVALUATED' ? '🔲 UNEVALUATED'
+        : '⚠️ WARNING';
       md += `| **${al.level}** | ${al.ruleText} | ${statusIcon} | ${al.details} |\n`;
     });
     md += `\n`;
@@ -573,6 +588,7 @@ async function serializeAndExportResults(ctx) {
         chassisPrefix,
         chassisDetection,
         notebookId,
+        notebookDegradedMode: ctx.notebookDegradedMode || null,
         tracePayloads,
         outputReportPath: outputPath,
         evidenceLogPath: evalResults.evidenceLogPath || null,
@@ -623,7 +639,10 @@ async function serializeAndExportResults(ctx) {
           chassisInfo: graph.chassisInfo,
           workloadDna: graph.workloadDna,
           isWholeSolutionValid: graph.isWholeSolutionValid,
+          // Honest rule accounting (C6 fix) — use broken-out fields not the legacy inflated total
           totalRulesEvaluated: graph.totalRulesEvaluated,
+          rulesApplicable: graph.rulesApplicable ?? null,
+          rulesUnevaluated: graph.rulesUnevaluated ?? null,
           conflicts: graph.conflicts,
           resolvedFixes: graph.resolvedFixes,
           rankedSolutions: graph.rankedSolutions,
@@ -634,6 +653,9 @@ async function serializeAndExportResults(ctx) {
         },
         budgetOptimization: budgetOpt,
         notebookPayload: queryPayload,
+        // Phase 1.2 Fix (C3): ragVerified/ragViolationDetected now wired in eval_boq executeGroundedRagValidation
+        ragVerified: evalResults.ragVerified ?? null,
+        ragViolationDetected: evalResults.ragViolationDetected ?? null,
         multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
         multiRankCsvPath: evalResults.multiRankCsvPath || null,
         ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,

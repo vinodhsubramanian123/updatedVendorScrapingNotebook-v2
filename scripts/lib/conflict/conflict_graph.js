@@ -320,10 +320,10 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
 
 function _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts) {
   for (const rule of catalogData.parsedRules.filter(r => r.level === 'CHASSIS')) {
-    rulesEvaluated.push(rule.ruleText);
     const textLower = rule.ruleText.toLowerCase();
 
     if (textLower.includes('edsff') && chassisInfo.formFactor !== 'EDSFF') {
+      rulesEvaluated.push({ ruleText: rule.ruleText, status: 'APPLICABLE' });
       const matchingItems = fullBomList.filter(it => (it.description || '').toLowerCase().includes('edsff'));
       if (matchingItems.length > 0) {
         const err = `Item '${matchingItems[0].sku}' requires EDSFF chassis, but current build is ${chassisInfo.formFactor}.`;
@@ -333,6 +333,7 @@ function _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, 
         recordAudit('CHASSIS', rule.ruleText, 'PASS', `Compliant: No unsupported EDSFF items selected for ${chassisInfo.formFactor}.`);
       }
     } else if (textLower.includes('8lff') && chassisInfo.formFactor !== '8LFF' && chassisInfo.formFactor !== 'LFF') {
+      rulesEvaluated.push({ ruleText: rule.ruleText, status: 'APPLICABLE' });
       const matchingItems = fullBomList.filter(it => (it.description || '').toLowerCase().includes('8lff') || (it.description || '').toLowerCase().includes('lff drive cage'));
       if (matchingItems.length > 0) {
         const err = `Item '${matchingItems[0].sku}' requires 8LFF chassis, but current build is ${chassisInfo.formFactor}.`;
@@ -341,8 +342,20 @@ function _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, 
       } else {
         recordAudit('CHASSIS', rule.ruleText, 'PASS', `Gated rule verified for ${chassisInfo.formFactor} chassis.`);
       }
+    } else if (textLower.includes('edsff') && chassisInfo.formFactor === 'EDSFF') {
+      // Rule is applicable AND the chassis matches — it is satisfied
+      rulesEvaluated.push({ ruleText: rule.ruleText, status: 'APPLICABLE' });
+      recordAudit('CHASSIS', rule.ruleText, 'PASS', `EDSFF-gated rule satisfied: chassis is ${chassisInfo.formFactor}.`);
+    } else if (textLower.includes('8lff') && (chassisInfo.formFactor === '8LFF' || chassisInfo.formFactor === 'LFF')) {
+      // Rule is applicable AND the chassis matches — it is satisfied
+      rulesEvaluated.push({ ruleText: rule.ruleText, status: 'APPLICABLE' });
+      recordAudit('CHASSIS', rule.ruleText, 'PASS', `LFF-gated rule satisfied: chassis is ${chassisInfo.formFactor}.`);
     } else {
-      recordAudit('CHASSIS', rule.ruleText, 'PASS', `Chassis gate passed for ${chassisInfo.formFactor}.`);
+      // Rule predicate not recognised by the current evaluator — record honestly
+      rulesEvaluated.push({ ruleText: rule.ruleText, status: 'UNEVALUATED' });
+      recordAudit('CHASSIS', rule.ruleText, 'UNEVALUATED',
+        `Rule predicate not recognised by the current evaluator for formFactor=${chassisInfo.formFactor}. ` +
+        `Add a handler or move this rule to the structured IR unparsed[] backlog (see B6).`);
     }
   }
 }
@@ -382,12 +395,12 @@ function _evaluateFixSkuDependencies(depsList, fullBomList, chassisInfo, recordA
         reasoning: `Protects write cache for ${ctrlName}.`
       });
     } else {
-      recordAudit('SKU', `Fix SKU ${fixSku}`, 'PASS', `Validated fix SKU ${fixSku}.`, fixSku);
-      resolvedFixes.push({
-        sku: fixSku,
-        action: 'INJECTED_VALIDATED',
-        reasoning: `Fix SKU ${fixSku} passed graph validation.`
-      });
+      // Fix SKU not matched by any specific handler — record as UNEVALUATED rather than auto-PASS.
+      // An unverified fix SKU should NOT be treated as conflict-free evidence.
+      recordAudit('SKU', `Fix SKU ${fixSku}`, 'UNEVALUATED',
+        `Fix SKU ${fixSku} does not match any recognised pairing rule. ` +
+        `Manual verification required before promotion to resolvedFixes.`, fixSku);
+      // Do NOT push to resolvedFixes — the SKU remains in the deps list for human review.
     }
   });
 }
@@ -487,11 +500,19 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // Generic Dynamic SKU Introspection across full BOM
   const introspectedComponents = fullBomList.map(it => introspectSku(it, catalogData, chassisInfo));
 
+  const applicableRules = rulesEvaluated.filter(r => r.status === 'APPLICABLE');
+  const unevaluatedRules = rulesEvaluated.filter(r => r.status === 'UNEVALUATED');
+
   return {
     chassisInfo,
     workloadDna,
     isWholeSolutionValid,
-    totalRulesEvaluated: rulesEvaluated.length + auditLog.length,
+    // Legacy field kept for backward compat — use the broken-out fields below for accurate reporting
+    totalRulesEvaluated: rulesEvaluated.length,
+    // Honest rule accounting (C6 fix)
+    rulesEvaluated: rulesEvaluated.length,
+    rulesApplicable: applicableRules.length,
+    rulesUnevaluated: unevaluatedRules.length,
     conflicts,
     resolvedFixes,
     unresolvedConflicts,

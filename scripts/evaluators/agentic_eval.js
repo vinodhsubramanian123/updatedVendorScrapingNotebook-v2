@@ -6,6 +6,7 @@ const { parseAndConsolidateBOQ, evaluateBOQMultiAspect } = require('../lib/boq/b
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
+const { loadNotebookConfig, getNotebookIdForChassis } = require('../lib/sync/knowledge_sync.js');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -128,22 +129,44 @@ Never output arbitrary JSON in your final answer, just clear markdown text.`;
             break;
           }
           case 'query_notebooklm': {
-            const payload = {
-              messages: [{ role: 'user', content: args.query }],
-              metadata: { chassisId: args.chassis_id }
-            };
-            result = await executeNotebookQuery(payload);
+            if (!args.query || typeof args.query !== 'string' || !args.query.trim()) {
+              throw new Error('query_notebooklm: args.query must be a non-empty string. Refusing silent default.');
+            }
+            const cfg = loadNotebookConfig();
+            const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
+            if (!notebookId) {
+              // No notebook mapped — use local RAG rather than cross-pollinating with another chassis
+              result = {
+                ...queryLocalKnowledgeBase(args.query, args.chassis_id),
+                source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED',
+                note: `No NotebookLM notebook is mapped for chassis '${args.chassis_id}'. Local RAG used.`
+              };
+            } else {
+              result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
+            }
             break;
           }
 
           case 'record_knowledge_delta': {
-            const outputDir = findCatalogDirectory(args.chassis_id) || path.join(__dirname, '..', '..', 'outputs', 'ProLiant', 'Gen12', args.chassis_id);
+            const outputDir = findCatalogDirectory(args.chassis_id);
+            if (!outputDir) {
+              // Never silently write deltas under a hardcoded family path — that caused
+              // Alletra/Cray/Synergy rules to land under ProLiant/Gen12 and be invisible
+              // on the next eval. Return a structured error instead.
+              result = {
+                error: `Cannot record delta: no catalog directory found for chassis '${args.chassis_id}'. ` +
+                       `Run a scrape for this chassis first so the output directory exists.`,
+                chassisId: args.chassis_id
+              };
+              break;
+            }
             if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
-            result = processPortalFeedback("Agentic rule update", outputDir, {
+            result = processPortalFeedback('Agentic rule update', outputDir, {
               affectedSku: args.affected_sku,
               requiredDependencySku: args.required_sku,
               ruleUpdate: args.rule_update,
-              humanReasoning: "Agentic Guardrail Loop derived from RAG/DB fact-check"
+              humanReasoning: 'Agentic Guardrail Loop derived from RAG/DB fact-check',
+              source: 'AGENTIC_EVAL'
             });
             break;
           }

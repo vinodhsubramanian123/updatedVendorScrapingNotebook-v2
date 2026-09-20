@@ -247,6 +247,15 @@ function calculateConfidenceScore(boqItems, evalResults) {
     deductions.push(`NotebookLM RAG Flagged Conflict: ${evalResults.ragViolationDetected} (-0.15)`);
   }
 
+  // Unevaluated rules reduce confidence: the evaluator cannot confirm or deny those rules apply.
+  // Each unevaluated rule is an epistemic gap. Cap penalty at -0.20.
+  const unevaluated = evalResults?.rulesUnevaluated || 0;
+  if (unevaluated > 0) {
+    const unevalPenalty = Math.min(0.20, unevaluated * 0.05);
+    score -= unevalPenalty;
+    deductions.push(`Unevaluated catalog rules (${unevaluated} rules without a handler) (-${unevalPenalty.toFixed(2)})`);
+  }
+
   // Clamp score between 0.0 and 1.0
   score = Math.max(0.0, Math.min(1.0, parseFloat(score.toFixed(2))));
 

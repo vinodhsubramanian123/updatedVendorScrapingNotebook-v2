@@ -31,6 +31,7 @@ const { runWithTrace } = require('../lib/system/trace_context');
 const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
+const { getNotebookDegradedMode, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -327,6 +328,14 @@ async function ingestAndConsolidateBoq(options) {
     ? explicitNotebookId
     : configuredNotebookId;
 
+  // Resolve degraded mode for this notebook entry so it surfaces in the report header
+  // and JSON payload rather than silently running against a disabled/stale notebook.
+  let notebookDegradedMode = null;
+  try {
+    const nbCfg = loadNotebookConfig();
+    notebookDegradedMode = getNotebookDegradedMode(nbCfg, detectedChassisName);
+  } catch (_) { /* non-fatal */ }
+
   const defaultReportsDir = path.join(chassisDir, 'reports');
   if (!fs.existsSync(defaultReportsDir)) {
     fs.mkdirSync(defaultReportsDir, { recursive: true });
@@ -402,6 +411,7 @@ async function ingestAndConsolidateBoq(options) {
     chassisDetection,
     detectedChassisName,
     notebookId,
+    notebookDegradedMode,
     outputPath,
     catalogData,
     requirementResolution,
@@ -572,6 +582,53 @@ async function executeGroundedRagValidation(ctx) {
   }
   evalResults.ragResult = ragResult;
   evalResults.ragAnswer = ragResult.answer || '';
+
+  // ── Phase 1.2 Fix (C3): Wire ragVerified / ragViolationDetected ──────────────
+  // These fields were read by feedback_loop.calculateConfidenceScore but NEVER
+  // written, making the +0.05 boost and -0.15 penalty completely unreachable.
+  //
+  // ragVerified = true   → cloud-grounded with citations; RAG does NOT flag any
+  //                         violation that local rules missed.
+  // ragViolationDetected → non-null string when RAG explicitly surfaces a conflict
+  //                         the local rule engine did not catch, OR when there is
+  //                         a LOCAL_RULE_OVERRIDE discrepancy.
+  evalResults.ragVerified = false;
+  evalResults.ragViolationDetected = null;
+
+  const isCloudGroundedWithCitations = evalResults.notebookLmStatus.isCloudGrounded &&
+    (evalResults.notebookLmStatus.citationsCount > 0);
+
+  if (isCloudGroundedWithCitations) {
+    const answerLc = (ragResult.answer || '').toLowerCase();
+
+    // Detect RAG-flagged violations: look for explicit conflict language in the answer
+    const violationSignals = [
+      'incompatible', 'not supported', 'conflict detected', 'violation', 'cannot be used',
+      'not compatible', 'requires', 'missing mandatory', 'will not work', 'mismatch'
+    ];
+    const ragFlagsViolation = violationSignals.some(sig => answerLc.includes(sig));
+
+    // Detect LOCAL_RULE_OVERRIDE opinion discrepancy (local errors but RAG claims clean)
+    const hasLocalOverrideDiscrepancy = (evalResults.opinionDiscrepancies || [])
+      .some(d => d.type === 'LOCAL_RULE_OVERRIDE');
+
+    if (hasLocalOverrideDiscrepancy) {
+      // RAG contradicts local rules — this is a violation signal regardless of wording
+      evalResults.ragViolationDetected =
+        'NotebookLM answered "fully compatible" but local rule engine found critical physical errors. ' +
+        'Deterministic aspect checks prevail. Manual review required.';
+    } else if (ragFlagsViolation && (evalResults.errors || []).length === 0) {
+      // RAG caught something local rules missed — surface the RAG answer excerpt
+      const snippet = (ragResult.answer || '').slice(0, 300).replace(/\n/g, ' ');
+      evalResults.ragViolationDetected =
+        `NotebookLM flagged a potential violation not caught by local rules: "${snippet}..."`;
+    } else if (!ragFlagsViolation) {
+      // Cloud-grounded, cited, and no conflict language → verified
+      evalResults.ragVerified = true;
+    }
+  }
+  // ── End Phase 1.2 Fix ────────────────────────────────────────────────────────
+
 
   try {
     // Phase 0 Fix: Only extract learned deltas from verified cloud grounding with citations.

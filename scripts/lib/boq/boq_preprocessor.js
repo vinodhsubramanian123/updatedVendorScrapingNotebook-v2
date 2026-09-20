@@ -313,21 +313,35 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
       chassisName = options.chassisHint;
     }
 
-    // Resolve notebook ID dynamically from notebooks.json
-    let notebookId = '';
+    // Resolve notebook ID dynamically from notebooks.json.
+    // IMPORTANT: Do NOT fall back to defaultNotebookId for an unmapped chassis —
+    // that would cross-pollinate validation (e.g. Alletra BOQ grounded against DL380 QuickSpecs).
+    let notebookId = null;
+    let notebookDegradedMode = null;
     try {
       const configPath = path.join(__dirname, '..', '..', 'config', 'notebooks.json');
       if (fs.existsSync(configPath)) {
         const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
         const cleanChassisKey = chassisName.replace(/\s+/g, '_');
-        if (cfg.notebooks && cfg.notebooks[cleanChassisKey]) {
-          const entry = cfg.notebooks[cleanChassisKey];
-          notebookId = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
-        } else if (cfg.defaultNotebookId) {
-          notebookId = cfg.defaultNotebookId;
+        const entry = cfg.notebooks && cfg.notebooks[cleanChassisKey];
+        if (entry) {
+          if (typeof entry === 'object' && entry !== null) {
+            if (entry.queryEnabled === false) {
+              notebookDegradedMode = 'QUERY_DISABLED';
+            } else if (entry.cloudSyncState === 'FAILED') {
+              notebookDegradedMode = 'STALE_NOTEBOOK_SYNC';
+              notebookId = String(entry.notebookId || '').trim() || null;
+            } else {
+              notebookId = String(entry.notebookId || '').trim() || null;
+            }
+          } else {
+            notebookId = String(entry).trim() || null;
+          }
+        } else {
+          notebookDegradedMode = 'NO_NOTEBOOK_MAPPED';
         }
       }
-    } catch (_) { /* ignore */ }
+    } catch (_) { /* ignore — degraded mode will remain null */ }
 
     const tempVar = {
       configId: v.configId,
@@ -338,6 +352,7 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
       family,
       gen,
       notebookId,
+      notebookDegradedMode,
       itemCount: v.items.length,
       items: ctoNorm.items,
       profile: profile,

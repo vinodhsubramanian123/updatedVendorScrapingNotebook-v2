@@ -38,10 +38,40 @@ function normalizeChassisName(name) {
 function getNotebookIdForChassis(cfg, chassisName) {
   if (cfg && cfg.notebooks && cfg.notebooks[chassisName]) {
     const entry = cfg.notebooks[chassisName];
+    // Respect explicit disabling — never return an ID for a disabled notebook
+    if (typeof entry === 'object' && entry !== null && entry.queryEnabled === false) {
+      return null;
+    }
     const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
     if (id && String(id).trim()) return String(id).trim();
   }
   return (cfg && cfg.defaultNotebookId && String(cfg.defaultNotebookId).trim()) || null;
+}
+
+/**
+ * Returns a degraded-mode flag string when the notebook entry has a known degradation,
+ * or null when the notebook is healthy.
+ *
+ * Possible return values:
+ *   'QUERY_DISABLED'       — queryEnabled === false in notebooks.json
+ *   'STALE_NOTEBOOK_SYNC'  — cloudSyncState === 'FAILED' in notebooks.json
+ *   'NO_NOTEBOOK_MAPPED'   — no entry at all for this chassis
+ *   null                   — notebook is healthy / no degradation detected
+ *
+ * @param {object} cfg           — parsed notebooks.json content
+ * @param {string} chassisName   — normalized chassis key, e.g. 'DL380_Gen12'
+ * @returns {string|null}
+ */
+function getNotebookDegradedMode(cfg, chassisName) {
+  if (!cfg || !cfg.notebooks || !cfg.notebooks[chassisName]) {
+    return 'NO_NOTEBOOK_MAPPED';
+  }
+  const entry = cfg.notebooks[chassisName];
+  if (typeof entry === 'object' && entry !== null) {
+    if (entry.queryEnabled === false) return 'QUERY_DISABLED';
+    if (entry.cloudSyncState === 'FAILED') return 'STALE_NOTEBOOK_SYNC';
+  }
+  return null;
 }
 
 function classifyKnowledgeScope(deltaOrText) {
@@ -333,6 +363,8 @@ module.exports = {
   hasExplicitWideScopeEvidence,
   loadNotebookConfig,
   getNotebookIdForChassis,
+  getNotebookDegradedMode,
   collectAllDeltas,
   normalizeChassisName
 };
+

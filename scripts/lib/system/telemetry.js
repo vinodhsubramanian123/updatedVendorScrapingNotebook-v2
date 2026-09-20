@@ -262,11 +262,18 @@ function recordNotebookConsultationTelemetry(consultation) {
     sanitizedQuery: consultation.sanitizedQuery || consultation.query || '',
     answer: consultation.answer || '',
     citations: consultation.citations || [],
-    durationMs: consultation.durationMs || 120,
+    // Use the real measured duration; null means "not measured" — never fabricate a number.
+    durationMs: (typeof consultation.durationMs === 'number' && consultation.durationMs > 0)
+      ? consultation.durationMs
+      : null,
     scenario: consultation.scenario || 'GENERAL_QUICKSPECS',
-    agreementScore: consultation.agreementScore || (consultation.answer ? 0.95 : 0.5),
+    // agreementScore must come from an actual RAG reconciliation (C3 fix). Until that
+    // is wired, store null rather than the previously fabricated constant 0.95.
+    agreementScore: (typeof consultation.agreementScore === 'number')
+      ? consultation.agreementScore
+      : null,
     nextActionExecuted: consultation.nextActionExecuted || 'DEPENDENCY_VALIDATED',
-    chassis: consultation.chassis || 'HPE ProLiant DL380 Gen12 SFF'
+    chassis: consultation.chassis || 'UNKNOWN'
   };
 
   data.notebookConsultations.unshift(entry);
@@ -277,19 +284,21 @@ function recordNotebookConsultationTelemetry(consultation) {
   // Compute aggregate RAG telemetry metrics across history
   const consultations = data.notebookConsultations;
   const validDurations = consultations.filter(c => typeof c.durationMs === 'number' && c.durationMs > 0);
+  // avgNlmResponseTimeMs is null when no measured durations exist — not 140
   data.avgNlmResponseTimeMs = validDurations.length > 0
     ? Math.round(validDurations.reduce((acc, c) => acc + c.durationMs, 0) / validDurations.length)
-    : 140;
+    : null;
 
   const validScores = consultations.filter(c => typeof c.agreementScore === 'number');
+  // nlmAgreementIndex is null when no scored consultations exist — not 95
   data.nlmAgreementIndex = validScores.length > 0
     ? Math.round((validScores.reduce((acc, c) => acc + c.agreementScore, 0) / validScores.length) * 100)
-    : 95;
+    : null;
 
   const withCitations = consultations.filter(c => Array.isArray(c.citations) && c.citations.length > 0);
   data.nlmCitationMatchRate = consultations.length > 0
     ? Math.round((withCitations.length / consultations.length) * 100)
-    : 100;
+    : null;
 
   const scenarioCounts = {};
   consultations.forEach(c => {

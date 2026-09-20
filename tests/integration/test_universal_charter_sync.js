@@ -95,18 +95,33 @@ async function run() {
   const charterMd = fs.readFileSync(charterPath, 'utf-8');
   assert('Index declares that it is not a NotebookLM source', charterMd.includes('not a NotebookLM source'));
 
-  // ─── TEST 5: Every notebook in notebooks.json resolves to valid notebookId ───
+  // ─── TEST 5: Every notebook in notebooks.json resolves correctly ───
+  // INV-NEW-4: Notebooks with queryEnabled:false MUST return null from getNotebookIdForChassis.
+  // Active notebooks MUST return a valid notebookId (length > 10).
+  // getNotebookDegradedMode MUST surface QUERY_DISABLED / STALE_NOTEBOOK_SYNC where applicable.
   console.log(`\n  [5/5] Notebook Config Resolution\n`);
+  const { getNotebookDegradedMode } = require('../../scripts/lib/sync/knowledge_sync.js');
   const cfg = loadNotebookConfig();
   assert('Notebook config loaded', !!cfg && !!cfg.notebooks);
   if (cfg && cfg.notebooks) {
     const nbNames = Object.keys(cfg.notebooks);
     assert(`notebooks.json has >= 5 registered notebooks`, nbNames.length >= 5, `found ${nbNames.length}`);
     for (const chassisName of nbNames) {
-      const nbId = getNotebookIdForChassis(cfg, chassisName);
-      assert(`${chassisName} resolves to valid notebookId`, !!nbId && nbId.length > 10, nbId);
+      const entry = cfg.notebooks[chassisName];
+      const isDisabled = typeof entry === 'object' && entry !== null && entry.queryEnabled === false;
+      const degradedMode = getNotebookDegradedMode(cfg, chassisName);
+      if (isDisabled) {
+        // Disabled notebooks must return null (INV-NEW-4) and surface QUERY_DISABLED
+        const nbId = getNotebookIdForChassis(cfg, chassisName);
+        assert(`${chassisName} correctly returns null when queryEnabled:false`, nbId === null, `got ${nbId}`);
+        assert(`${chassisName} degraded mode is QUERY_DISABLED`, degradedMode === 'QUERY_DISABLED', degradedMode);
+      } else {
+        const nbId = getNotebookIdForChassis(cfg, chassisName);
+        assert(`${chassisName} resolves to valid notebookId`, !!nbId && nbId.length > 10, nbId);
+      }
     }
   }
+
 
   // ─── SUMMARY ───
   console.log(`\n${C.bold}${C.cyan}================================================================${C.reset}`);
