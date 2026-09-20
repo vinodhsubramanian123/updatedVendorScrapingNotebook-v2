@@ -203,6 +203,7 @@ export default function RankCard({
               </span>
               <button
                 onClick={() => setIsLeastDeltaExpanded(!isLeastDeltaExpanded)}
+                aria-expanded={isLeastDeltaExpanded}
                 className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
               >
                 {isLeastDeltaExpanded ? 'Hide' : 'Details'}
@@ -254,6 +255,7 @@ export default function RankCard({
               </span>
               <button
                 onClick={() => setIsDecisionTraceExpanded(!isDecisionTraceExpanded)}
+                aria-expanded={isDecisionTraceExpanded}
                 className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
               >
                 <span>{tier.decisionTrace.length} Decision{tier.decisionTrace.length === 1 ? '' : 's'}</span>
