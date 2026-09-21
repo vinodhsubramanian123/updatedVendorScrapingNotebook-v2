@@ -53,6 +53,7 @@ export default function WorkflowHeader({
         </button>
 
         <button
+          aria-expanded={isExpanded}
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
           title={isExpanded ? 'Collapse Workflow' : 'Expand Workflow'}
