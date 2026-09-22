@@ -1653,5 +1653,40 @@
         "name": "HPE Cray Drive Blank Kit"
       }
     }
+  },
+  "product_bundle_compositions": [
+    {
+      "productId": "SN3600B_FC",
+      "baseSku": "R7R97A",
+      "physicalPorts": 24,
+      "baseActivePorts": 8,
+      "baseIncludedOptics": 8,
+      "upgrades": {
+        "R7M09A": {
+          "activePorts": 8,
+          "includedOptics": 8
+        }
+      },
+      "opticsPacks": {
+        "R6W26A": 8,
+        "R6B12A": 1
+      },
+      "evidence": {
+        "sourceId": "41012991-4c8a-48d8-a024-bb6dc33f5037",
+        "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+        "document": "a00000578enw, V25, 16-February-2026",
+        "section": "Configuration Information: Step 1 Base Configuration; Step 2 Options; Port On Demand Kits; Key Features and Benefits",
+        "artifactPath": "outputs/SAN/FC/SN3600B_FC/evidence/quickspecs_notebook_source.json",
+        "artifactSha256": "0f55b46b9b45aadccf42bbd13bf8b9eb6470d205afd648a779df85e06b6f31da"
+      }
+    }
+  ],
+  "SN3600B_FC": {
+    "family": "SAN",
+    "gen": "FC",
+    "model": "SN3600B",
+    "formFactor": "1U",
+    "baseSku": "R7R97A",
+    "productId": "SN3600B_FC"
   }
 }

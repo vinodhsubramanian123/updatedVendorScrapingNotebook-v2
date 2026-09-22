@@ -333,6 +333,19 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg);
   md += _buildAttributeHistorySection(attributeHistory);
   md += _buildSameProductVariantSection(chassisName, targetIdentity);
+  // Publish vendor-observed service evidence separately from customer inputs.
+  // The receipt is fresh, complete, and icon-scoped; this does not certify a
+  // future candidate or make its complete customer manifest an authority.
+  const receipt = require('../boq/portal_receipt').readPortalReceipt(targetDir);
+  const baseSku = cfg.notebooks?.[chassisName]?.baseSku;
+  if (receipt && baseSku && receipt.rows.some(row => row.sku === baseSku)) {
+    const serviceRows = receipt.rows.filter(row => /\bservice\b/i.test(row.description || ''));
+    if (serviceRows.length) {
+      md += `\n## Live OCA product-qualified service observations\n\nProduct ${baseSku}; captured ${receipt.capturedAt}. Source: authenticated HPE OCA Components service editor and complete CLIC acceptance. Receipt SHA-256: ${receipt.checkSha256}. This dated evidence proves the following services were accepted for this product; future availability and any changed configuration require a new live check.\n\n`;
+      md += '| Service SKU | Vendor description | Captured unit list USD |\n|---|---|---:|\n';
+      for (const row of serviceRows) md += `| ${row.sku} | ${row.description} | ${row.unitPriceUsd} |\n`;
+    }
+  }
 
   // Write payload file
   const safeFilename = `notebook_sync_payload_${chassisName}.md`;

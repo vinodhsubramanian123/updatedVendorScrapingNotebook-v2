@@ -1,0 +1,374 @@
+{
+  "version": "1.0.0",
+  "chassis": "SN3600B_FC",
+  "generatedAt": "2026-09-22T02:35:27.505Z",
+  "executionDurationMs": 604,
+  "summary": {
+    "totalRawTables": 34,
+    "validProductTables": 22,
+    "skippedTablesCount": 14,
+    "totalExtractedSKUs": 58,
+    "totalUniqueSKUs": 58,
+    "totalRulesExtracted": 12,
+    "chassisVariantsCount": 1
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 0,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 1,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 2,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 3,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 17,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 18,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 19,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 20,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 22,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 23,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 24,
+      "reason": "Solution hierarchy BOM summary table",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 25,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 27,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 33,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    }
+  ],
+  "tableDecisions": [
+    {
+      "tableIndex": 5,
+      "subCategory": "Active Port Transceivers",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Port Upgrade Bundle",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 6,
+      "subCategory": "16Gb Transceivers",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 7,
+      "subCategory": "32Gb Transceivers",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 8,
+      "subCategory": "System Options",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 24",
+      "minQty": 0,
+      "maxQty": 24,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 9,
+      "subCategory": "Power Cords for Wall Outlets",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 24,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 10,
+      "subCategory": "OM3 LC-LC type connectors cable",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 11,
+      "subCategory": "Premier Flex OM4",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 14,
+      "subCategory": "Port Upgrade Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Fibre Channel HBA",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 15,
+      "subCategory": "SANnav - New License",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 16,
+      "subCategory": "SANnav - Renewal License",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 26,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 3,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 28,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 9,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 29,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 30,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 31,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 3,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 32,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 7,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 34,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 35,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 36,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 38,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 6,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 39,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 2,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 41,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 1,
+    "Networking": 16,
+    "Drive Enclosures / Drives": 1,
+    "Cables & Enablement Kits": 39,
+    "Software & Licenses": 1
+  },
+  "chassisVariantsMatrix": {
+    "R7R97A": {
+      "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  }
+}

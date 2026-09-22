@@ -1,0 +1,44 @@
+[
+  {
+    "deltaId": "OWNER_STANDARD_3Y_BASIC",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_STANDARD_3Y_BASIC",
+      "ruleType": "SUPPORT_POLICY",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T08:08:13.975Z"
+    }
+  },
+  {
+    "deltaId": "OWNER_ICON_SERVICE_ISOLATION",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_ICON_SERVICE_ISOLATION",
+      "ruleType": "ICON_SUPPORT_ISOLATION",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T08:08:13.990Z"
+    }
+  },
+  {
+    "deltaId": "OWNER_OCA_EXPIRED_SESSION",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_OCA_EXPIRED_SESSION",
+      "ruleType": "SESSION_RECOVERY_PROTOCOL",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T08:08:14.005Z"
+    }
+  }
+]

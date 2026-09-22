@@ -65,6 +65,10 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
   }
 
   let clean = queryStr.trim();
+  // Internal structured validation is sent as an execFile argument, never shell
+  // code. Preserve its JSON schema and candidate manifest rather than replacing
+  // the task with a generic hardware question. Customer text remains untrusted.
+  if (context.structuredValidation === true) return stripAnsi(clean);
 
   const skuMatches = Array.from(clean.matchAll(/([A-Z0-9]{5,6}-[A-Z0-9]{2,3})/g)).map(m => m[1]);
   if (Array.isArray(context.skus)) {
@@ -72,7 +76,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
   }
   const uniqueSkus = Array.from(new Set(skuMatches));
 
-  const containsCode = SCRIPTING_PATTERNS.some(pattern => pattern.test(clean)) ||
+  const containsCode = SCRIPTING_PATTERNS.some(pattern => { pattern.lastIndex = 0; return pattern.test(clean); }) ||
     clean.includes('const fs') ||
     clean.includes('require(') ||
     clean.includes('function(') ||

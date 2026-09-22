@@ -252,73 +252,25 @@ async function dismissDOMModals(ws) {
  * and column/date options (Show PLC dates, Show Obsolete Date, Show extra columns).
  */
 async function expandSections(ws) {
-  await dismissDOMModals(ws);
   await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      // 1. Expand all collapsed sections, accordions, and headers
-      Array.from(document.querySelectorAll('a, button, span, div.expander, .section_header, .accordion_header, .ui-accordion-header, [class*="expander"], [class*="collapse"], [data-toggle="collapse"]')).forEach(el => {
-        const t = (el.innerText || el.textContent || '').trim();
-        if (t === 'Expand All' || t === 'Expand Subsections' || t === 'Expand' || el.classList.contains('collapsed') || el.classList.contains('ui-state-default')) {
-          el.click();
-        }
-      });
-
-      // 2. Click toolbar option toggles for complete column visibility & dispatch change
-      ['show_extra_columns', 'show_dates', 'show_obsolete_date', 'show_cost', 'show_price'].forEach(id => {
+      const visible = el => !!el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden';
+      const expandAll = Array.from(document.querySelectorAll('a, button, span')).find(el => visible(el) && (el.innerText || '').trim() === 'Expand All');
+      if (expandAll) expandAll.click();
+      else Array.from(document.querySelectorAll('.accordion_header.collapsed, .section_header.collapsed')).filter(visible).forEach(el => el.click());
+      for (const id of ['show_extra_columns', 'show_dates', 'show_obsolete_date', 'show_price']) {
         const el = document.getElementById(id);
-        if (el && !el.classList.contains('active') && !el.checked) {
-          el.click();
-          el.checked = true;
-          el.dispatchEvent(new Event('change', { bubbles: true }));
-          if (typeof jQuery !== 'undefined') {
-            jQuery(el).prop('checked', true).trigger('change');
-          }
-        }
-      });
-
-      // 3. Ensure 'View HPE Recommended only' is NOT filtering out valid options
-      const recOnly = document.querySelector('#view_recommended_only, [id*="recommended_only"], input[name*="recommended"]');
-      if (recOnly && recOnly.checked) {
-        recOnly.click();
-        recOnly.checked = false;
-        recOnly.dispatchEvent(new Event('change', { bubbles: true }));
-        if (typeof jQuery !== 'undefined') jQuery(recOnly).prop('checked', false).trigger('change');
+        if (el && visible(el) && !el.classList.contains('active') && !el.checked) el.click();
       }
-
-      // 4. Find and check all showmore checkboxes (native + jQuery dispatch)
-      const showmoreInputs = Array.from(document.querySelectorAll('input[type="checkbox"][id*="showmore"], input[type="checkbox"][name*="showmore"], input[type="checkbox"][id*="show_"], input[type="checkbox"][id*="expand"], input[type="checkbox"][id*="subchoice"]'));
-      showmoreInputs.forEach(i => {
-        if (!i.checked) {
-          i.checked = true;
-          i.click();
-          i.dispatchEvent(new Event('change', { bubbles: true }));
-          if (typeof jQuery !== 'undefined') {
-            jQuery(i).prop('checked', true).trigger('change');
-          }
-        }
-      });
-
-      // 5. Click any remaining label/span wrappers and sub-choice triggers
-      document.querySelectorAll('label[for*="showmore"], label[for*="show_"], .showmore_container, a.showmore, span.showmore_text, a[id*="showmore"], [class*="subchoice_trigger"], [onclick*="Choice"], [onclick*="SubChoice"], [onclick*="showMore"], [onclick*="expand"]').forEach(el => {
-        el.click();
-      });
-
-      // 6. Dynamic Mode & Sub-Choice Option Revealer:
-      // For choice groups that gate dependent option tables (e.g. GPU Mode on DL380a, controller mode, riser choice)
-      const choiceRadios = Array.from(document.querySelectorAll('input[type="radio"][id*="Choice"], input[type="radio"][name*="Choice"], input[type="radio"][id*="mode"], input[type="radio"][name*="mode"], .choice_radio'));
-      choiceRadios.forEach(radio => {
-        const name = radio.name;
-        const group = name ? document.querySelectorAll('input[name="' + name + '"]') : [radio];
-        const hasSelected = Array.from(group).some(r => r.checked);
-        if (!hasSelected) {
-          radio.click();
-          radio.checked = true;
-          radio.dispatchEvent(new Event('change', { bubbles: true }));
-          if (typeof jQuery !== 'undefined') jQuery(radio).trigger('change');
-        }
-      });
-    })()`,
-    returnByValue: true
+      const rec = document.querySelector('#view_recommended_only, [id*="recommended_only"]');
+      if (rec && visible(rec) && rec.checked) rec.click();
+      for (const el of document.querySelectorAll('input[type="checkbox"][id*="showmore"]')) {
+        const label = document.querySelector('label[for="' + el.id + '"]');
+        if (!el.checked && (visible(el) || (label && visible(label)))) el.click();
+      }
+      // Expansion must not select hardware modes, service levels, or controls
+      // in hidden tabs. Those invoke stale server widgets and mutate the BOM.
+    })()`, returnByValue: true
   });
   await sleep(1500);
 }

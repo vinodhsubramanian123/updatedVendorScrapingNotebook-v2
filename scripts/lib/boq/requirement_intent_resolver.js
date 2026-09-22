@@ -136,7 +136,7 @@ function extractRequirementIntent(rawLines) {
   };
 }
 
-function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], catalogData = null, productConfirmed = false } = {}) {
+function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], catalogData = null, productConfirmed = false, vendorQualifiedServices = [] } = {}) {
   const intent = extractRequirementIntent(rawLines);
   const candidates = flattenCatalog(catalogData);
   const skuIndex = buildCatalogSkuIndex(catalogData);
@@ -159,6 +159,13 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
   ];
   const resolutions = targets.map(target => {
     const suspectedSku = target.suspectedPartTokens?.[0] || target.sourceItem?.sku || '';
+    if (target.sourceItem && /\b(service|support)\b/i.test(target.sourceItem.description || '')) {
+      const qualified = vendorQualifiedServices.some(row => row.sku === target.sourceItem.sku && Number(row.quantity) === Number(target.sourceItem.quantity));
+      return { input: target.line, suspectedSku, expectedRole: 'Support / Service',
+        candidates: [], confidence: qualified ? 1 : 0, status: qualified ? 'AUTO_RESOLVED' : 'SERVICE_QUALIFICATION_PENDING',
+        evidenceSource: qualified ? 'EXACT_PRODUCT_LIVE_SERVICE_RECEIPT' : null,
+        appliedSku: null, sourceItem: target.sourceItem };
+    }
     const roleInference = inferExpectedRole(target.line, intent.requestedRoles, coveredRoles);
     const ranked = candidates
       .map(candidate => scoreCandidate(candidate, target.line, suspectedSku, roleInference))
@@ -210,6 +217,7 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
   const requiresHumanClarification = !productConfirmed || resolutions.some(r => r.status !== 'AUTO_RESOLVED') || (items.length === 0 && missingRoles.length > 0);
   return {
     intent,
+    supportPolicy: require('./support_policy').resolveSupportPolicy(items),
     resolvedItems,
     resolutions,
     categoryCoverage: { coveredRoles: Array.from(coveredRoles), missingRoles },

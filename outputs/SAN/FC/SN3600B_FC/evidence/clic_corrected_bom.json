@@ -1,0 +1,191 @@
+{
+  "capturedAt": "2026-09-22T07:57:57.405Z",
+  "source": "Live authenticated HPE OCA solution BOM",
+  "text": "Home\nConfigure\n❯\nOCA Config 2\nWork-In-Progress\nConfig Status\nWarning\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n17 - 21 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 62,636.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\nSummary\nComponents\nPower\nBOM\nCustomer Intent\nServices\nBOM Details for OCA Config 2\nHardware\tUSD61,206.00\tSupport\tUSD950.00\nServices\tUSD480.00\tSoftware\tUSD0.00\nTotal\tUSD62,636.00\n\nExpand AllCollapse All\nSolution SummaryExport ExcelRemove HPE Support ServicesCLIC CheckBOM Diff\nOverall Discontinuance Date: 06/30/2027.\nHierarchy\n\t\nQty\n\t\nProduct #\n\t\nProduct Description\n\t\nCLIC Status\n\t\nConfig Name\n\t\nStart\n\t\nDisc\n\t\nUnit Price (USD)\n\t\nExt. Price (USD)\n\n     (1)\t1\tR7R97A\tHPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch\t\tSN3600B/CN3360B Switch #1\t06/07/2021\t06/30/2027\t19,746.00\t19,746.00\n     (1)\t2\tR7M09A\tHPE SN3600B 32Gb 8-port Short Wave SFP28 Fibre Channel Upgrade License with Transceiver Kit\t\tSN3600B/CN3360B Switch #1\t08/04/2021\t03/31/2028\t19,950.00\t39,900.00\n     (1)\t1\tHX2M2E\tHPE 3 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\t\tSN3600B/CN3360B Switch #1\t05/01/2021\t12/31/2050\t950.00\t950.00\n     (1)\t1\tU5988E\tHPE Installation Storage Switches Service\t\tSN3600B/CN3360B Switch #1\t12/05/2018\t12/31/2050\t480.00\t480.00\n     (1)\t8\tQK735A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable\t\tSN3600B/CN3360B Switch #1\t03/03/2017\t11/30/2028\t195.00\t1,560.00\nCLIC Check\nLive chat",
+  "tables": [
+    {
+      "tableIndex": 0,
+      "tableId": "comps_tree",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Components",
+          "Description",
+          "Quoted",
+          "Unquoted",
+          "IQ Deployed",
+          "Qty",
+          "UCID",
+          "Price",
+          "Status",
+          "Details",
+          "CI Info",
+          "Services"
+        ],
+        [
+          "OCA Config 2",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "TempUCID",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Icon #1 - OCA Config 2Icon ID: I155853915-01EDT: 14 - 18 days",
+          "Icon Container",
+          "1",
+          "0",
+          "0",
+          "1",
+          "",
+          "USD62,636.00",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "SN3600B/CN3360B Switch #1R7R97A",
+          "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+          "1",
+          "0",
+          "0",
+          "1",
+          "76BCE96D2C334BA34C72B0951A056151",
+          "USD62,636.00",
+          "",
+          "",
+          "",
+          "Select Your Own"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 1,
+      "tableId": "bom_config_details_table",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Hardware",
+          "USD61,206.00",
+          "Support",
+          "USD950.00"
+        ],
+        [
+          "Services",
+          "USD480.00",
+          "Software",
+          "USD0.00"
+        ],
+        [
+          "Total",
+          "USD62,636.00"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "tableId": "",
+      "rowCount": 1,
+      "rows": [
+        [
+          "Hierarchy",
+          "Qty",
+          "Product #",
+          "Product Description",
+          "CLIC Status",
+          "Config Name",
+          "Start",
+          "Disc",
+          "Unit Price (USD)",
+          "Ext. Price (USD)"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "tableId": "bom_grid0FD8C95900C0BC9A763E06F34A67ECDC52",
+      "rowCount": 6,
+      "rows": [
+        [
+          "Hierarchy",
+          "Qty",
+          "Product #",
+          "Product Description",
+          "CLIC Status",
+          "Config Name",
+          "Start",
+          "Disc",
+          "Unit Price (USD)",
+          "Ext. Price (USD)"
+        ],
+        [
+          "(1)",
+          "1",
+          "R7R97A",
+          "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+          "",
+          "SN3600B/CN3360B Switch #1",
+          "06/07/2021",
+          "06/30/2027",
+          "19,746.00",
+          "19,746.00"
+        ],
+        [
+          "(1)",
+          "2",
+          "R7M09A",
+          "HPE SN3600B 32Gb 8-port Short Wave SFP28 Fibre Channel Upgrade License with Transceiver Kit",
+          "",
+          "SN3600B/CN3360B Switch #1",
+          "08/04/2021",
+          "03/31/2028",
+          "19,950.00",
+          "39,900.00"
+        ],
+        [
+          "(1)",
+          "1",
+          "HX2M2E",
+          "HPE 3 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service",
+          "",
+          "SN3600B/CN3360B Switch #1",
+          "05/01/2021",
+          "12/31/2050",
+          "950.00",
+          "950.00"
+        ],
+        [
+          "(1)",
+          "1",
+          "U5988E",
+          "HPE Installation Storage Switches Service",
+          "",
+          "SN3600B/CN3360B Switch #1",
+          "12/05/2018",
+          "12/31/2050",
+          "480.00",
+          "480.00"
+        ],
+        [
+          "(1)",
+          "8",
+          "QK735A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
+          "",
+          "SN3600B/CN3360B Switch #1",
+          "03/03/2017",
+          "11/30/2028",
+          "195.00",
+          "1,560.00"
+        ]
+      ]
+    }
+  ]
+}

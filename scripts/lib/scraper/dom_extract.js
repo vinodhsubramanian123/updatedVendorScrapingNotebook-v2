@@ -25,8 +25,14 @@ async function extractChunkedText(ws, sendCommand, chunkSize = 50000, maxRetries
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     const textLenRes = await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
-        const isLoading = !!document.querySelector('.loading, .spinner, #loading_indicator, [class*="loading"]');
-        const text = document.body ? document.body.innerText : '';
+        const documents = [document];
+        for (let i = 0; i < documents.length; i++) {
+          for (const frame of documents[i].querySelectorAll('iframe')) {
+            try { if (frame.contentDocument && !documents.includes(frame.contentDocument)) documents.push(frame.contentDocument); } catch (_) {}
+          }
+        }
+        const isLoading = documents.some(doc => Array.from(doc.querySelectorAll('.loading, .spinner, #loading_indicator')).some(el => el.getClientRects().length));
+        const text = documents.map(doc => doc.body?.innerText || '').filter(Boolean).join('\\n');
         globalThis.__ocaBodyTextSnapshot = text;
         return { length: text.length, isLoading };
       })()`,
@@ -95,10 +101,12 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
       tables.forEach((table, idx) => {
         const rows = [];
         table.querySelectorAll('tr').forEach(tr => {
+          if (tr.closest('table') !== table) return;
           const cells = [];
           const badgeSpan = tr.querySelector('.td_prod');
           const badge = badgeSpan ? (badgeSpan.innerText || badgeSpan.textContent || '').trim() : '';
           tr.querySelectorAll('td, th').forEach(cell => {
+            if (cell.parentElement !== tr || cell.querySelector('table')) return;
             const pidSpan = cell.querySelector('._pid, .item_prod span._pid');
             if (pidSpan) {
               const pid = (pidSpan.innerText || pidSpan.textContent || '').trim();
@@ -110,7 +118,7 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
           });
           if (cells.length > 0 && cells.some(c => c.length > 0)) rows.push(cells);
         });
-        if (rows.length > 0) result.push({ tableIndex: idx, rowCount: rows.length, rows });
+        if (rows.length > 0) result.push({ tableIndex: idx, tableId: table.id || '', rowCount: rows.length, rows });
       });
       return JSON.stringify(result);
     })()`,

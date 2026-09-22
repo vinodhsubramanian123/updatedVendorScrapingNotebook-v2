@@ -137,3 +137,8 @@ When completing a multi-cluster tender evaluation, the agent MUST present:
    ```
 3. **Discrete 7-Aspect Certification for EACH Cluster**:
    Confirm that every individual cluster passes 100% buildability with 0 errors before presenting the overall tender solution.
+
+
+### Icon-owned SLA selection (owner learning, 2026-09-22)
+
+Use **Components → target icon → Services (right-hand icon controls) → Edit → exact dropdown selection**. The aggregate Services page can behave inconsistently. Leave both “apply to all icons” and “apply to all nodes” unchecked unless the user explicitly requests bulk application. Store service SKU, suffix, term, tier and retention with the owning icon/configuration ID. Defaults are resolved independently for each icon; never propagate one icon’s SLA to another. Verify the per-icon BOM and complete solution BOM, then rerun CLIC for the final manifest. This applies to mixed server/storage/networking configurations, including DL380 and Synergy.

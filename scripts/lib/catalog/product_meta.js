@@ -7,6 +7,7 @@
  */
 
 const FAMILY_PATTERNS = [
+  { family: 'SAN', pattern: /\bsn\s*\d{4}[a-z]\b|fibre\s+channel\s+switch/i },
   { family: 'ProLiant', pattern: /proliant|\b[DMR]L\s*\d{3}\b/i },
   { family: 'Synergy', pattern: /synergy|\bSY\d{3}\b/i },
   { family: 'Alletra', pattern: /alletra/i },
@@ -36,19 +37,20 @@ function detectProductFamily(fullText) {
 }
 
 function parseProductMeta(rawText, pageTitle = '') {
-  const fullText = `${rawText || ''} ${pageTitle || ''}`;
+  const fullText = `${rawText || ''} ${pageTitle || ''}`.replace(/_/g, ' ');
 
   // 1. Generation Detection
   const genMatch = fullText.match(/Gen\d+(?:Plus)?/i);
   let gen = genMatch ? genMatch[0] : 'General';
   if (gen === 'General' && /tape|msl|storeever/i.test(fullText)) gen = 'Tape';
   if (gen === 'General' && /alletra|nimble|storeonce|msa|simplivity/i.test(fullText)) gen = 'Storage';
+  if (gen === 'General' && /\bsn\s*\d{4}[a-z]\b|fibre\s+channel\s+switch/i.test(fullText)) gen = 'FC';
 
   // 2. Family Detection
   const family = detectProductFamily(fullText);
 
   // 3. Model & Form Factor Detection
-  const modelMatch = fullText.match(/\b(DL\s*\d{3}\s*a?|ML\s*\d{3}|RL\s*\d{3}|SY\s*\d{3}|Synergy\s*\d+|GX\s*\d{4}|MicroServer|MSL\s*\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
+  const modelMatch = fullText.match(/\b(SN\s*\d{4}[a-z]|DL\s*\d{3}\s*a?|ML\s*\d{3}|RL\s*\d{3}|SY\s*\d{3}|Synergy\s*\d+|GX\s*\d{4}|MicroServer|MSL\s*\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
   const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
   const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
   const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
@@ -56,6 +58,7 @@ function parseProductMeta(rawText, pageTitle = '') {
   let cleanName = '';
   if (modelMatch) {
     let model = modelMatch[0].trim();
+    if (/^SN\s*\d{4}[a-z]$/i.test(model)) model = model.replace(/\s+/g, '').toUpperCase();
     if (/^DL\s*(\d{3})\s*(a?)$/i.test(model)) {
       const m = model.match(/^DL\s*(\d{3})\s*(a?)$/i);
       model = `DL${m[1]}${m[2] ? m[2].toLowerCase() : ''}`;
@@ -68,7 +71,7 @@ function parseProductMeta(rawText, pageTitle = '') {
     if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
     if (/^Synergy_(\d{3})$/i.test(model)) model = model.replace(/^Synergy_/i, 'SY');
     const isRackOrBlade = /^(?:DL|ML|RL|SY)\d/i.test(model);
-    const ff  = !isRackOrBlade && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
+    const ff  = !isRackOrBlade && family !== 'SAN' && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
     cleanName = `${model}${gen && gen !== 'General' ? '_' + gen : ''}${ff ? '_' + ff : ''}`;
   } else {
     cleanName = rawText
@@ -142,6 +145,10 @@ function isBaseChassis(desc) {
 function classifyComponentRole(categoryName = '', itemDescription = '', profile = null) {
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
+
+  // Bundled optics in a switch description do not make the switch an optic.
+  if (/\b(?:fibre channel|fc)\s+switch\b/i.test(desc) && !/\b(support|service|upgrade|license|kit)\b/i.test(desc)) return 'SAN Switch';
+  if (/\bupgrade\s+license\s+with\s+transceiver\s+kit\b/i.test(desc)) return 'Port Upgrade Bundle';
 
   // Explicit guard: Infrastructure accessories
   if (isChassisInfrastructure(desc)) {

@@ -58,7 +58,7 @@ function loadFamilyUpgradeTemplates(chassisFamily = 'ProLiant') {
     if (fs.existsSync(templatePath)) {
       const allTemplates = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
       const families = allTemplates.families || allTemplates;
-      return families[chassisFamily] || families['ProLiant'] || [];
+      return families[chassisFamily] || [];
     }
   } catch (err) {
     console.warn(`[budget_optimizer] Warning: Failed to load budget upgrade templates: ${err.message}`);
@@ -86,12 +86,17 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   const multiplier = evalResults?.configurationContext?.multiplier || 1;
   let currentBomCost = 0;
   let zeroPriceCount = 0;
+  const { readPortalReceipt, normalizeSku } = require('./portal_receipt');
+  const portalReceipt = resolvedChassisDir ? readPortalReceipt(resolvedChassisDir) : null;
 
   // Calculate current baseline BOM cost
   const { isConfirmedFreeSku } = require('../catalog/sku_versioning.js');
   consolidatedItems.forEach(it => {
-    const unitPrice = getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
-    const isFree = isConfirmedFreeSku(it.sku, it.description);
+    if (it.inputUnitPriceUsd === undefined) it.inputUnitPriceUsd = it.unitPriceUsd ?? null;
+    const receiptRow = portalReceipt?.rows.find(row => row.sku === normalizeSku(it.sku) && row.quantity === outputQuantities(it, multiplier).totalQty);
+    const unitPrice = receiptRow ? receiptRow.unitPriceUsd : getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
+    const isFree = receiptRow ? unitPrice === 0 : isConfirmedFreeSku(it.sku, it.description);
+    if (receiptRow) { it.priceSource = `Live OCA BOM ${portalReceipt.capturedAt}`; it.isConfirmedZeroPrice = isFree; }
     if (unitPrice === 0 && !isFree) zeroPriceCount++;
     it.unitPriceUsd = unitPrice;
     it.extendedPriceUsd = unitPrice * it.quantity;

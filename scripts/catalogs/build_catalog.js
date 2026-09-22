@@ -199,6 +199,7 @@ function isServiceCategoryEntry(e) {
 }
 
 function isServiceSkuRow(sku) {
+  if (isClearlyPhysicalSkuRow(sku)) return false;
   return sku?.optionType === 'Service' || sku?.['Option Type'] === 'Service' ||
     isServiceSku(sku?.sku || sku?.['Product #'] || '');
 }
@@ -632,7 +633,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     const cellIdx = hi + offset;
     if (header && cellIdx < row.length) {
       const normalizedHeader = String(header).trim().toLowerCase();
-      if (normalizedHeader === 'list price' || normalizedHeader === 'price' || normalizedHeader === 'price (usd)' || normalizedHeader === 'cost (usd)' || normalizedHeader === 'cost') {
+      if (normalizedHeader === 'list price' || normalizedHeader === 'list price (usd)' || normalizedHeader === 'price' || normalizedHeader === 'price (usd)') {
         header = 'Unit Price (USD)';
       } else if (normalizedHeader === 'product description') {
         header = 'Description';
@@ -679,7 +680,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   const pn = rawPN.toUpperCase();
   obj['Product #'] = pn;
   obj.sku = pn;
-  obj['Option Type'] = classifyOptionType(pn);
+  obj['Option Type'] = isClearlyPhysicalSkuRow(obj) && classifyOptionType(pn) === 'Service' ? 'Standard' : classifyOptionType(pn);
   obj['CLIC Status'] = lifecycleStatus;
   obj['Lifecycle Status'] = lifecycleStatus;
   obj.lifecycleStatus = lifecycleStatus;
@@ -724,9 +725,9 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[\$,]/g, '').trim();
   const hasPriceHeader = headers.some(h => {
     const nh = String(h).trim().toLowerCase();
-    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'cost (usd)' || nh === 'list price' || nh === 'price' || nh === 'cost';
+    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'list price (usd)' || nh === 'list price' || nh === 'price';
   });
-  if (isNaN(parseFloat(priceStr)) || priceStr === pn || parseFloat(priceStr) < 0) {
+  if (!/^\d+(?:\.\d{1,2})?$/.test(priceStr) || priceStr === pn) {
     // Only attempt fallback if a price-type header existed but the value was bad.
     // If the OCA page simply didn't render a price column, record $0.00 and let
     // history/chassis_map backfill handle it. This prevents picking up Bus Width,
@@ -738,7 +739,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
         const p = raw.replace(/[\$,]/g, '').trim();
         // Must look like a price: has $, comma separator, or decimal cents
         const looksLikePrice = raw.includes('$') || raw.includes(',') || /^\d+\.\d{2}$/.test(p);
-        return p && looksLikePrice && !isNaN(parseFloat(p)) && parseFloat(p) >= 0 && c !== pn
+        return p && looksLikePrice && /^\d+(?:\.\d{1,2})?$/.test(p) && c !== pn
           && p !== qtyVal && !/^[A-Z]\d{5}/.test(raw);
       });
       priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
@@ -930,7 +931,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
 
       if (hasProductHeader || hasDescHeader) {
         headerIdx = ri;
-        headers   = row.filter(h => h.length > 0).map(h => h === 'Product Description' ? 'Description' : h);
+        headers   = row.map(h => h === 'Product Description' ? 'Description' : h);
         break;
       } else {
         const text = row.join(' ').trim();
@@ -1157,8 +1158,8 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       'Lifecycle Status': discovered?.status || 'Active',
       lifecycleStatus: discovered?.status || 'Active',
       Availability: discovered?.availability || 'Available in OCA product catalog',
-      'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || 'EDT 17 - 21 days',
-      'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'OCA standard configuration estimate',
+      'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '',
+      'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
       'Start Date': discovered?.startDate || mapInfo?.startDate || '',
       'Discontinued Date': discovered?.discontinuedDate || '',
       provenance: chassisDiscovery?.source || 'HPE OCA product catalog metadata'
@@ -1202,7 +1203,8 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
   const expected = parseProductMeta(chassisLabel).cleanName;
   const observed = parseProductMeta(text).cleanName;
-  if (expected !== observed || !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text)) return false;
+  const isSanBase = parseProductMeta(text).family === 'SAN' && /\bswitch\b/i.test(text) && !/\b(upgrade|license|support|service|kit)\b/i.test(text);
+  if (expected !== observed || (!isSanBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
   return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
 }
 
@@ -1249,7 +1251,7 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
     // Authoritative chassis_map listPrice must take precedence over unverified/stale historicalPrice
     const price = currentPrice > 0 ? currentPrice : (mapPrice > 0 ? mapPrice : (historicalPrice > 0 ? historicalPrice : 0));
     const isSelectedVariant = cleanBaseSKU(chassisDiscovery.selectedSku || '') === productNumber;
-    const leadTime = candidate.leadTime || (isSelectedVariant ? (chassisDiscovery.deliveryEstimate || 'EDT 17 - 21 days') : '');
+    const leadTime = candidate.leadTime || (isSelectedVariant ? (chassisDiscovery.deliveryEstimate || '') : '');
     bySku.set(productNumber, {
       'Product #': productNumber,
       sku: productNumber,
@@ -1264,7 +1266,7 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
       lifecycleStatus: candidate.status || 'Active',
       Availability: candidate.availability || 'Available in OCA product catalog',
       'Lead Time': leadTime,
-      'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate') : '',
+      'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate') : 'Not published by OCA',
       'Start Date': candidate.startDate || previous['Start Date'] || '',
       'Discontinued Date': candidate.discontinuedDate || previous['Discontinued Date'] || '',
       provenance: chassisDiscovery.source || 'HPE OCA product search'

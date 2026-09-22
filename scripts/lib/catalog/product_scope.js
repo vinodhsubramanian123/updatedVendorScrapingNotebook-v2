@@ -11,7 +11,7 @@ function normalize(value) {
 function inferPillar(family) {
   const normalized = normalize(family);
   if (['alletra', 'nimble', 'storeonce', 'msa', 'storeever'].includes(normalized)) return 'STORAGE';
-  if (normalized === 'aruba') return 'NETWORKING';
+  if (['aruba', 'san'].includes(normalized)) return 'NETWORKING';
   if (['proliant', 'synergy', 'cray', 'superdome', 'edgeline', 'simplivity'].includes(normalized)) return 'SERVER';
   return 'UNKNOWN';
 }
@@ -48,6 +48,9 @@ function resolveProductIdentity(identifier, config = {}) {
 
   // 1. Direct normalized match
   let match = Object.entries(notebooks).find(([key]) => normalize(baseProductId(key)) === requestedNorm);
+  if (!match && requestedNorm) {
+    match = Object.entries(notebooks).find(([, entry]) => entry?.baseSku && normalize(entry.baseSku) === requestedNorm);
+  }
 
   // 2. Product alias fallback
   if (!match && PRODUCT_ALIASES[requestedNorm] && notebooks[PRODUCT_ALIASES[requestedNorm]]) {

@@ -42,7 +42,7 @@ function isValidHpeSKU(skuStr) {
   if (/pat0|00300|core|recovery|simplified|rowcount|context/i.test(clean)) return false;
   if (COMMON_WORDS_FILTER.test(clean)) return false;
   // Filter out server model family names (e.g. DL360, DL380, DL380a, DL145, DL580, ML350, SY480) which are not part numbers
-  if (/^(?:DL|ML|SY|GX|BL|XL|RL|SL)\d{2,4}[A-Z]?$/i.test(clean)) return false;
+  if (/^(?:DL|ML|SY|GX|BL|XL|RL|SL|SN|CN)\d{2,4}[A-Z]?$/i.test(clean)) return false;
   if (!HPE_SKU_REGEX.test(clean)) return false;
 
   // Filter out spec strings (DDR5-6400, DDR4-3200, CAS-52, SFP-10G) and non-HPE vendor prefixes

@@ -13,6 +13,8 @@ const path = require('path');
 const { cleanBaseSKU, isValidHpeSKU } = require('./sku.js');
 const { SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
 const logger = require('../system/pipeline_logger.js');
+const { resolveProductIdentity, ruleAppliesToProduct } = require('./product_scope');
+const notebookConfig = require('../../config/notebooks.json');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const MASTER_REGISTRY_PATH = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
@@ -72,6 +74,8 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
   const rawDeltas = Array.isArray(options?.rawDeltas) ? options.rawDeltas : _loadRawDeltasFromDisk(chassisDir);
   const targetChassis = String(chassisVariant || (chassisDir ? path.basename(chassisDir) : '')).toLowerCase();
 
+  const targetIdentity = resolveProductIdentity(chassisDir ? path.basename(chassisDir) : targetChassis, notebookConfig);
+
   const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
   const isGen11Target = targetChassis.includes('gen11') || targetChassis.includes('g11');
 
@@ -103,8 +107,11 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
       continue;
     }
 
+    // Apply the same product firewall used by notebook synchronization.
+    if (targetIdentity && !ruleAppliesToProduct(delta, targetIdentity, notebookConfig)) continue;
+
     // Gate 2: Generation & Family Isolation Firewall (INV-48)
-    if (scope !== 'UNIVERSAL_VENDOR' && scope !== 'UNIVERSAL') {
+    if (!targetIdentity && scope !== 'UNIVERSAL_VENDOR' && scope !== 'UNIVERSAL') {
       const deltaChassis = String(delta.chassis || '').toLowerCase();
       const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
       const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');

@@ -79,6 +79,7 @@ Options:
   --json                       Machine-parseable JSON output mode
   --defer-rag                  Return local result and let the dashboard own the cloud job
   --budget <usd>               Target CapEx budget in USD
+  --support-default            Apply owner standard 3-year Basic using an exact live product-qualified receipt
   --simulate-portal-error ".." Simulate a portal rejection error
   --output-dir <dir>           Output directory for feedback deltas
 
@@ -151,6 +152,7 @@ Examples:
     SYNC_RAG,
     SHEET_VALIDATION,
     UPLOAD_DRIVE,
+    applySupportDefault: args.includes('--support-default'),
     explicitNotebookId,
     chassisDir,
     targetSheetName,
@@ -383,13 +385,20 @@ async function ingestAndConsolidateBoq(options) {
   if (!catalogAudit.integrity.isValid) throw new Error(`ERR_CATALOG_INTEGRITY: ${catalogAudit.integrity.errors.join('; ')}`);
   if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(catalogAudit.freshness.freshnessStatus) && !isExplicitTestPath) throw new Error(`ERR_CATALOG_FRESHNESS: ${catalogAudit.freshness.freshnessStatus}`);
   const productConfirmed = !chassisDetection.requiresUserConfirmation && chassisDetection.confidenceScore >= 0.95;
+  let supportPolicyChange = null;
+  if (options.applySupportDefault) {
+    supportPolicyChange = require('../lib/boq/support_policy').applyRequestedDefaultSupport(items, chassisDir);
+    items = supportPolicyChange.items;
+  }
   const requirementResolution = resolveRequirementIntent({
     items,
     unresolvedRequirements: parsedBoq.unresolvedRequirements,
     rawLines: parsedBoq.rawLines,
     catalogData,
-    productConfirmed
+    productConfirmed,
+    vendorQualifiedServices: supportPolicyChange?.items.filter(row => row.supportPolicySource === 'EXPLICIT_STANDARD_DEFAULT') || []
   });
+  if (supportPolicyChange) requirementResolution.supportPolicyChange = supportPolicyChange;
   items = requirementResolution.resolvedItems;
   let configurationContext;
   try {
@@ -440,7 +449,7 @@ function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, req
     console.log(`\n⚡ Phase 2: Modular ${evalResults.aspectChecks ? evalResults.aspectChecks.length : 'Multi'}-Aspect Physical Pre-Checks Completed:`);
     if (evalResults.aspectChecks && Array.isArray(evalResults.aspectChecks)) {
       evalResults.aspectChecks.forEach(asp => {
-        console.log(`  ${asp.id}. ${asp.name.padEnd(25)} : ${asp.status === 'PASS' ? '✅ PASS' : '❌ FAIL'} — ${asp.detail}`);
+        console.log(`  ${asp.id}. ${asp.name.padEnd(25)} : ${asp.status === 'PASS' ? '✅ PASS' : asp.status === 'FAIL' ? '❌ FAIL' : asp.status} — ${asp.detail}`);
       });
     } else {
       console.log(`  1. Compute & Thermal : ${evalResults.cpuCount} CPUs (Max TDP: ${evalResults.maxCpuTdpWatts}W) | High-Perf Fans: ${evalResults.hasHighPerfFans ? '✅' : '❌'}`);
@@ -680,8 +689,9 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
 
     const guardrailResult = await runAgenticGuardrail(items, chassisDir);
+    evalResults.agenticReviewStatus = guardrailResult.error || /"error"\s*:|UNAVAILABLE|RESOURCE_EXHAUSTED/.test(guardrailResult.text || '') ? 'UNAVAILABLE' : 'ADVISORY_RETURNED';
     if (!JSON_MODE) {
-      console.log('✅ Agentic Output:');
+      console.log('Agentic review response (inspect for errors; response is not a verification badge):');
       console.log(guardrailResult.text || guardrailResult.error);
     }
     evalResults.agenticExplanation = guardrailResult.text || null;
@@ -922,10 +932,13 @@ function _recordAspectPhaseEvidence(evidenceLedger, evalResults, ingestCtx, opti
       scopeTaxonomy: 'CHASSIS_SPECIFIC'
     });
   });
-  const aspectPhaseStatus = (evalResults.isMathClean === true && evalResults.aspectChecks?.length > 0 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0)) ? 'PASSED' : 'ACTION_REQUIRED';
+  const correctedCandidate = evalResults.conflictGraph?.rankedSolutions?.find(candidate => candidate.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt && candidate.physicalMathClean && candidate.removedSkus?.length);
+  const applicableAspectsPassed = evalResults.aspectChecks?.length > 0 && evalResults.aspectChecks.every(a => a.status === 'PASS' || a.status === 'NOT_APPLICABLE' || (correctedCandidate && a.name === 'Bundled Optics Billing' && a.status === 'WARN'));
+  const aspectPhaseStatus = (evalResults.isMathClean === true && applicableAspectsPassed && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0)) ? 'PASSED' : 'ACTION_REQUIRED';
   evidenceLedger.completePhase(3, aspectPhaseStatus, {
     missingDependencies: evalResults.missingDependencies?.length || 0,
-    aspectPassCount: (evalResults.aspectChecks || []).filter(a => a.status === 'PASS').length
+    aspectPassCount: (evalResults.aspectChecks || []).filter(a => a.status === 'PASS').length,
+    baselineWarningsResolvedByCandidate: correctedCandidate ? { rank: correctedCandidate.rank, removedSkus: correctedCandidate.removedSkus, receiptAt: correctedCandidate.portalReceipt.capturedAt } : null
   }, evalResults.aspectChecks || []);
   if (!options.JSON_MODE) {
     const PipelineLogger = require('../lib/system/pipeline_logger.js');
@@ -1017,7 +1030,7 @@ async function runEvaluationPipelineWithinTrace(options) {
   const phase6Passed = !isLowConfidence && ranks.length > 0;
   evidenceLedger.completePhase(6, phase6Passed ? 'PASSED' : 'ACTION_REQUIRED', {
     ranksProduced: ranks.length,
-    budgetCapEx: budgetOpt?.optimizedBudgetUsd || 0,
+    budgetCapEx: budgetOpt?.hasZeroPriceSkus ? null : budgetOpt?.mandatoryBomCostUsd ?? null,
     confidenceScore,
     isLowConfidence
   });
@@ -1026,7 +1039,7 @@ async function runEvaluationPipelineWithinTrace(options) {
     PipelineLogger.checklist(6, '5-Tier Strategy Matrix Synthesis', [
       { status: ranks.length > 0 ? 'PASS' : 'WARN', label: `Strategy tiers synthesized: ${ranks.length} candidate solutions` },
       { status: !isLowConfidence ? 'PASS' : 'WARN', label: `Confidence evaluation score: ${(confidenceScore * 100).toFixed(1)}%` },
-      { status: 'PASS', label: `Order-level CapEx: $${(budgetOpt?.optimizedBudgetUsd || 0).toLocaleString()} USD` }
+      { status: budgetOpt?.hasZeroPriceSkus ? 'WARN' : 'PASS', label: `Order-level ${budgetOpt?.hasZeroPriceSkus ? 'known-price subtotal (INCOMPLETE)' : 'CapEx'}: ${(budgetOpt?.mandatoryBomCostUsd || 0).toLocaleString()} USD` }
     ]);
   }
 

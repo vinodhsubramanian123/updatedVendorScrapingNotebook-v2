@@ -460,3 +460,13 @@ To ensure that neither humans nor autonomous agents repeat the blind spots ident
 5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (165+ suites), `npm run lint` (0 warnings on 110 files), and complexity gates ($CC \le 135$).
 
 
+
+
+### Solution-owner support default (2026-09-22)
+
+For server, storage and networking solutions, attempt **3-year HPE Tech Care Basic** unless the customer/user explicitly requests a different support level or term. Preserve explicit alternatives. Resolve the exact product-specific service and suffix through live OCA; never reuse a generic server Care Pack for another family. Prefer Basic without retention. If the exact product only offers Basic with a retention option, record that availability evidence and preserve the exact CDMR/GDMR designation rather than silently upgrading to Essential. Keep installation separate and only where requested. Revalidate CLIC after support changes; prior receipts do not transfer to changed manifests.
+
+
+### Icon-owned SLA selection (owner learning, 2026-09-22)
+
+Use **Components → target icon → Services (right-hand icon controls) → Edit → exact dropdown selection**. The aggregate Services page can behave inconsistently. Leave both “apply to all icons” and “apply to all nodes” unchecked unless the user explicitly requests bulk application. Store service SKU, suffix, term, tier and retention with the owning icon/configuration ID. Defaults are resolved independently for each icon; never propagate one icon’s SLA to another. Verify the per-icon BOM and complete solution BOM, then rerun CLIC for the final manifest. This applies to mixed server/storage/networking configurations, including DL380 and Synergy.

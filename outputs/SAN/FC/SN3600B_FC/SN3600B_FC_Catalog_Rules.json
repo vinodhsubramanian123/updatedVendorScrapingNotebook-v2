@@ -1,0 +1,248 @@
+{
+  "metadata": {
+    "chassis": "SN3600B FC",
+    "model": "SN3600B_FC",
+    "family": "SAN",
+    "generation": "FC",
+    "scrapeDate": "2026-09-22",
+    "scrapeTimestamp": "2026-09-22T02:35:27.880Z",
+    "totalSubcategories": 9,
+    "totalUniqueSKUs": 58,
+    "totalTables": 9,
+    "diffSummary": {
+      "added": 1,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 34,
+      "priceAndAttributeChanged": 22,
+      "unchanged": 1,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-09-22.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-09-22",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 0,
+          "totalPrice": 0,
+          "minPrice": 0,
+          "maxPrice": 0,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            }
+          },
+          "avgPrice": 0
+        },
+        "Networking": {
+          "totalSKUs": 16,
+          "totalPrice": 183701,
+          "minPrice": 417,
+          "maxPrice": 35170,
+          "subcategories": {
+            "Active Port Transceivers": {
+              "totalSKUs": 2,
+              "totalPrice": 32901,
+              "avgPrice": 16450.5
+            },
+            "16Gb Transceivers": {
+              "totalSKUs": 7,
+              "totalPrice": 60246,
+              "avgPrice": 8606.57142857143
+            },
+            "32Gb Transceivers": {
+              "totalSKUs": 7,
+              "totalPrice": 90554,
+              "avgPrice": 12936.285714285714
+            }
+          },
+          "avgPrice": 11481.3125
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 1,
+          "totalPrice": 436,
+          "minPrice": 436,
+          "maxPrice": 436,
+          "subcategories": {
+            "System Options": {
+              "totalSKUs": 1,
+              "totalPrice": 436,
+              "avgPrice": 436
+            }
+          },
+          "avgPrice": 436
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 38,
+          "totalPrice": 6686,
+          "minPrice": 30,
+          "maxPrice": 2000,
+          "subcategories": {
+            "Power Cords for Wall Outlets": {
+              "totalSKUs": 23,
+              "totalPrice": 1758,
+              "avgPrice": 76.43478260869566
+            },
+            "OM3 LC-LC type connectors cable": {
+              "totalSKUs": 7,
+              "totalPrice": 968,
+              "avgPrice": 138.28571428571428
+            },
+            "Premier Flex OM4": {
+              "totalSKUs": 8,
+              "totalPrice": 3960,
+              "avgPrice": 495
+            }
+          },
+          "avgPrice": 175.94736842105263
+        },
+        "Software & Licenses": {
+          "totalSKUs": 1,
+          "totalPrice": 11806,
+          "minPrice": 11806,
+          "maxPrice": 11806,
+          "subcategories": {
+            "Port Upgrade Licenses": {
+              "totalSKUs": 1,
+              "totalPrice": 11806,
+              "avgPrice": 11806
+            }
+          },
+          "avgPrice": 11806
+        }
+      }
+    },
+    "incrementalStats": {
+      "totalScrapedSkus": 58,
+      "unchangedSkusCount": 34,
+      "modifiedSkusCount": 23,
+      "addedSkusCount": 1,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 5100,
+      "estimatedProcessingTimeSavedMs": 6800
+    },
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-09-22T02:35:28.049Z"
+  },
+  "chassisVariants": [
+    {
+      "sku": "R7R97A",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "startDate": "2026-09-21",
+      "discontinuedDate": "05/31/2028",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "sourceSnapshot": "catalog_2026-09-22.json"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "R7R97A": {
+      "sku": "R7R97A",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "startDate": "2026-09-21",
+      "discontinuedDate": "05/31/2028",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "sourceSnapshot": "catalog_2026-09-22.json"
+    }
+  },
+  "subcategories": [],
+  "rules": [
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Active Port Transceivers",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Active Port Transceivers: no max"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "16Gb Transceivers",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for 16Gb Transceivers: no max"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "32Gb Transceivers",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for 32Gb Transceivers: no max"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "System Options",
+      "constraint": "max 24",
+      "maxQty": 24,
+      "rule": "Selection constraint for System Options: max 24"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords for Wall Outlets",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Power Cords for Wall Outlets: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "OM3 LC-LC type connectors cable",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for OM3 LC-LC type connectors cable: no max"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Premier Flex OM4",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Premier Flex OM4: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Port Upgrade Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Port Upgrade Licenses: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SANnav - New License",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SANnav - New License: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SANnav - Renewal License",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SANnav - Renewal License: no max"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "System Options",
+      "constraint": "optional",
+      "maxQty": -3,
+      "rule": "Selection constraint for System Options: optional"
+    }
+  ]
+}

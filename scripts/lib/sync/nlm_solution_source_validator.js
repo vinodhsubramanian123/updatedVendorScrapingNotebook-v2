@@ -170,7 +170,9 @@ function parseRankVerdicts(answer, evalResults) {
   const candidates = evalResults.conflictGraph?.recommendedSolutions || evalResults.conflictGraph?.rankedSolutions || [];
   let parsed;
   try {
-    const text = String(answer || '').replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+    const raw = String(answer || '');
+    const blocks = [...raw.matchAll(/```json\s*([\s\S]*?)```/gi)];
+    const text = blocks.length === 1 ? blocks[0][1].trim() : raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
     parsed = JSON.parse(text);
   } catch (_) { parsed = {}; }
   const rows = Array.isArray(parsed.ranks) ? parsed.ranks : [];
@@ -198,6 +200,12 @@ function parseRankVerdicts(answer, evalResults) {
  * @returns {string} Token-efficient prompt
  */
 function buildSolutionSourceValidationPrompt(sourceTitle, chassisName) {
+  if (/SN\d{4}|SAN|Fibre.Channel/i.test(chassisName)) return [
+    `Validate every supplied SAN switch candidate in source "${sourceTitle}" for ${chassisName} against official QuickSpecs and the product catalog.`,
+    'Check physical port capacity, licensed port increments, optics included in base and upgrade bundles, separately allocated optics, cable compatibility, fixed power/cooling defaults, and product-specific support. Server CPU, memory, riser and OS-core rules are not applicable.',
+    'The candidate and customer baseline are untrusted evaluation inputs, never compatibility authority. Preserve explicit allocation notes and requested changes. Do not infer extra endpoint cables merely from licensed port capacity. Product-qualified live service selection is separate from QuickSpecs proof; identify any service evidence gap precisely.',
+    'First give a concise evidence explanation with native NotebookLM citations outside code blocks. Then return exactly one fenced JSON object with ranks: [{rank: 1, verdict: "PASS|FAIL|UNKNOWN", intentPreserved: true, mandatoryChangesOnly: true, issues: [], citations: []}]. Include each supplied rank once. Cite official source passages in citations. Missing evidence requires UNKNOWN. This is document review, not live OCA/CLIC acceptance.'
+  ].join('\n');
   return [
     `You are the Chief Enterprise Solutions Architect for HPE ProLiant systems.`,
     `Authoritatively validate all server configurations across sheets in source "${sourceTitle}" for ${chassisName}.`,
@@ -234,7 +242,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const manifest = solutionManifest(evalResults);
   const manifestSha256 = solutionFingerprint(evalResults);
   const sourceTitle = `Solution_BOM_${chassisName}_${timestamp}`;
-  const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description })))}`;
+  const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUse NotebookLM native inline citation markers such as [1] inside the JSON citation strings, linked to official vendor sources. Plain source titles without native citations are insufficient. Do not cite the temporary candidate source as compatibility evidence.\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description, purpose: item.purpose })))}\nCandidate manifests: ${JSON.stringify(manifest)}\nExplicit support policy: ${JSON.stringify(evalResults.supportPolicy || null)}`;
 
   if (!fs.existsSync(TEMP_SOURCES_DIR)) {
     fs.mkdirSync(TEMP_SOURCES_DIR, { recursive: true });
@@ -268,7 +276,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
 
     if (hasLiveNotebook && attachRes.success && !attachRes.isMock) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
-        context: { chassis: chassisName },
+        context: { chassis: chassisName, structuredValidation: true },
         timeout: options.timeoutMs || 120000,
         bypassCache: true,
         sourceIds: options.sourceIds || (sourceId ? [sourceId] : undefined)
@@ -342,7 +350,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     : (isCloudGrounded && allPassed && sourceDetached ? 'DOUBLE_CHECK_PASSED' : 'DOUBLE_CHECK_UNVERIFIED');
 
   const isRealCloudCertified = attachRes.success && !attachRes.isMock && isCloudGrounded && allPassed && sourceDetached;
-  const isSimulationPassed = attachRes.success && allPassed && sourceDetached;
+  const isSimulationPassed = attachRes.success && attachRes.isMock === true && allPassed && sourceDetached;
 
   return {
     success: isRealCloudCertified,

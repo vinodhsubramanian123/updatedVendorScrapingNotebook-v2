@@ -682,6 +682,7 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
  * Synthesize 5-Tier Strategic Resolution Matrix based on Workload DNA and Multi-Metric Tradeoffs.
  */
 function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResults = {}, chassisInfo = {}, targetDir = '', options = {}) {
+  if (chassisInfo.family === 'SAN') return evalResults.conflictGraph?.rankedSolutions || [];
   const dna = extractWorkloadDna(items);
   const { loadedCatalog } = loadCatalogAndPrices(targetDir);
   const getPrice = createPriceResolver(targetDir);

@@ -85,3 +85,7 @@ Sheet 1 (`Executive Summary & Aspects`) must include the **Dual-Brain & Notebook
 - [catalog-intelligence-skill](../catalog-intelligence-skill/SKILL.md) — Price trails and lifecycle state changes
 - [workbook-generator-skill](../workbook-generator-skill/SKILL.md) — 12-column multi-rank solution deliverable generator
 
+
+### Registry and evidence continuity (2026-09-22)
+
+Both knowledge-sync writers must use buildMasterKnowledgeRegistry so product-scope corrections cannot be undone by a later writer. Durable learned rules belong in catalog_deltas.json, not only generated registry files. Record new owner lessons via recordAndCertifyLearnedRule and retain reachability evidence. A fresh complete vendor receipt may contribute dated product-qualified service observations to the product sync payload; a customer BOQ must not be promoted as an authoritative source.

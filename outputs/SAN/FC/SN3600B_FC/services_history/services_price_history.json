@@ -1,0 +1,702 @@
+{
+  "Q1Z10AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 7223,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P47AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 135058,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P50AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 324137,
+      "status": "BASELINE"
+    }
+  ],
+  "R4P31AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 540233,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P45AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 36018,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P48AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 86443,
+      "status": "BASELINE"
+    }
+  ],
+  "R4P29AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 144076,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P46AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 90047,
+      "status": "BASELINE"
+    }
+  ],
+  "R3P49AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 216111,
+      "status": "BASELINE"
+    }
+  ],
+  "R4P30AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 360192,
+      "status": "BASELINE"
+    }
+  ],
+  "S1S58AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 135058,
+      "status": "BASELINE"
+    }
+  ],
+  "S1S52AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 36018,
+      "status": "BASELINE"
+    }
+  ],
+  "S1S55AAE": [
+    {
+      "date": "2026-09-22",
+      "price": 90047,
+      "status": "BASELINE"
+    }
+  ],
+  "H29BWA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H29BXA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "HA875A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD0A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JT1A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NRA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NRA5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NSA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NTA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H42ZHA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H42ZJA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H42ZKA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JT2A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H29BRA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H29BSA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NLA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NMA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NNA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NPA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NQA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NQA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NQA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "AG629A": [
+    {
+      "date": "2026-09-22",
+      "price": 25,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F75A": [
+    {
+      "date": "2026-09-22",
+      "price": 466,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F74A": [
+    {
+      "date": "2026-09-22",
+      "price": 350,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F76A": [
+    {
+      "date": "2026-09-22",
+      "price": 758,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F79A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F78A": [
+    {
+      "date": "2026-09-22",
+      "price": 350,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F69A": [
+    {
+      "date": "2026-09-22",
+      "price": 289,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F80A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F82A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "P1F71A": [
+    {
+      "date": "2026-09-22",
+      "price": 292,
+      "status": "BASELINE"
+    }
+  ],
+  "BQ337A": [
+    {
+      "date": "2026-09-22",
+      "price": 100,
+      "status": "BASELINE"
+    }
+  ],
+  "BQ335A": [
+    {
+      "date": "2026-09-22",
+      "price": 44,
+      "status": "BASELINE"
+    }
+  ],
+  "AG628A": [
+    {
+      "date": "2026-09-22",
+      "price": 816,
+      "status": "BASELINE"
+    }
+  ],
+  "G1H96A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "G1H97A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "G1H98A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "G1H99A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD1A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD7A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30RVA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H33XSA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H33XTA2": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H33XVA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H33XWA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H33XXA5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NVA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "HA0Z0A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "HR2R4A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "HR2R5A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD9A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H1WU9A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H1WV0A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H1XF9A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H1XG0A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H1XG7A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H2S79A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H2S81A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H29BQA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30SBA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30SCA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30SLA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30SMA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H30SNA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36NRA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36PBA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36PCA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H36PDA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H42ZQA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H42ZRA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H43BCA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H44MDA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H44NJA1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "HU7D2A1": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD4A1008E": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H0JD4A10BK5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SGA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SGA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SGA5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SHA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SHA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SHA5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SJA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SJA4": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SJA5": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "H46SKA3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "BASELINE"
+    }
+  ]
+}

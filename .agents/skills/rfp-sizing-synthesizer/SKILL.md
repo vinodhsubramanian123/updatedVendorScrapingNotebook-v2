@@ -184,3 +184,8 @@ Pre-Flight Sizing Verification:
   Result: 9/10 PASSED, 1 WARNING → Proceeding to eval_boq.js
 ```
 
+
+
+### Solution-owner support default (2026-09-22)
+
+For server, storage and networking solutions, attempt **3-year HPE Tech Care Basic** unless the customer/user explicitly requests a different support level or term. Preserve explicit alternatives. Resolve the exact product-specific service and suffix through live OCA; never reuse a generic server Care Pack for another family. Prefer Basic without retention. If the exact product only offers Basic with a retention option, record that availability evidence and preserve the exact CDMR/GDMR designation rather than silently upgrading to Essential. Keep installation separate and only where requested. Revalidate CLIC after support changes; prior receipts do not transfer to changed manifests.

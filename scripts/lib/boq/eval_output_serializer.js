@@ -59,9 +59,9 @@ function _buildItemsSection(items, budgetOpt) {
   md += `|---|---|---|---|---|---|\n`;
   items.forEach((it, idx) => {
     const { totalQty } = outputQuantities(it);
-    md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${(it.unitPriceUsd || 0).toLocaleString()} | \$${(totalQty * (it.unitPriceUsd || 0)).toLocaleString()} |\n`;
+    md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${it.unitPriceUsd > 0 ? it.unitPriceUsd.toLocaleString() : 'UNRESOLVED'} | \$${it.unitPriceUsd > 0 ? (totalQty * it.unitPriceUsd).toLocaleString() : 'UNRESOLVED'} |\n`;
   });
-  md += `\n**Current Baseline BOM Total**: \`$${(budgetOpt?.currentBomCostUsd || 0).toLocaleString()} USD\`\n\n`;
+  md += `\n**Current Baseline ${budgetOpt?.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'BOM Total'}**: \`$${(budgetOpt?.currentBomCostUsd || 0).toLocaleString()} USD\`\n\n`;
   md += `---\n\n`;
   return md;
 }
@@ -71,7 +71,7 @@ function _buildAspectsSection(evalResults) {
   let md = `## ⚡ 2. Modular ${aspectCount}-Aspect Physical Pre-Checks\n\n`;
   if (evalResults.aspectChecks && Array.isArray(evalResults.aspectChecks)) {
     evalResults.aspectChecks.forEach(asp => {
-      md += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : '❌ VIOLATION'} — ${asp.detail}\n`;
+      md += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : asp.status === 'FAIL' ? '❌ VIOLATION' : asp.status} — ${asp.detail}\n`;
     });
     md += `\n`;
   } else {
@@ -94,6 +94,7 @@ function _buildAspectsSection(evalResults) {
 }
 
 function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
+  if (graph.chassisInfo?.family === 'SAN') return `## SAN Configuration Scope\n\nFixed Fibre Channel switch; server CPU, memory, drive and riser rules do not apply. Bundle composition is verified against retained official evidence. Live exact-configuration acceptance remains pending.\n\n`;
   let md = `## 1. Workload Fingerprint & Intent Analysis  \n`;
   md += `- **Detected Chassis Variant**: \`${graph.chassisInfo ? graph.chassisInfo.model : (chassisDir.split('/').pop() || 'Unknown')}\`  \n`;
   md += `- **Primary Workload DNA**: \`${graph.workloadDna ? graph.workloadDna.workloadDescription : 'Balanced Enterprise'}\`  \n`;
@@ -141,7 +142,7 @@ function _buildBudgetSection(budgetOpt, targetBudgetUsd) {
   md += `## 💰 3. Budget-Constrained Optimization & Golden Rule Assurance\n\n`;
   md += `${budgetOpt.goldenRuleSummary || ''}\n\n`;
   if (budgetOpt.hasZeroPriceSkus) md += `**PRICING INCOMPLETE — ${budgetOpt.zeroPriceCount} SKU(s) unresolved or zero price unconfirmed. Totals are known-price subtotals, not complete quotations.**\n\n`;
-  md += `- **Mandatory Buildable Cost**: \`$${(budgetOpt.mandatoryBomCostUsd || 0).toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
+  md += `- **${budgetOpt.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'Mandatory Component Cost'}**: \`$${(budgetOpt.mandatoryBomCostUsd || 0).toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
 
   if (budgetOpt.isBudgetExceeded) {
     md += `- **Minimum Budget Overrun Delta**: \`+$${budgetOpt.budgetOverrunUsd.toLocaleString()} USD\`\n`;
@@ -263,14 +264,33 @@ function _buildDeliverablesSection(ctx) {
  */
 function generateMarkdownReport(ctx) {
   let report = _buildHeaderSection(ctx);
+  const accepted = ctx.evalResults.conflictGraph?.rankedSolutions?.find(candidate => candidate.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt);
+  if (accepted) {
+    report = report.replace('Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.', 'Order-level rows retain their own quantities. The corrected candidate below has an exact live CLIC receipt; the original BOQ is not that accepted manifest.');
+    report += `## Corrected configuration — live vendor receipt\n\nCLIC accepted at **${accepted.portalReceipt.capturedAt}**: zero unbuildables, errors, warnings and process-control issues. Live OCA list total: **$${accepted.portalReceipt.totalUsd.toLocaleString()} USD**. This is list pricing, not a discounted commercial quote.\n\n`;
+    report += '| SKU | Qty | Unit list USD | Extended USD |\n|---|---:|---:|---:|\n';
+    for (const part of accepted.skuPartsList) report += `| ${part.sku} | ${part.quantity} | ${part.unitPriceUsd.toLocaleString()} | ${part.extendedPriceUsd.toLocaleString()} |\n`;
+    report += `\nRemoved redundant optics: ${(accepted.removedSkus || []).join(', ') || 'none'}. Base and two upgrade kits supply 24 optics for 24 licensed ports.\n\n`;
+    const change = ctx.evalResults.requirementResolution?.supportPolicyChange;
+    if (change) report += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is CDMR as labelled by OCA. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
+    report += `Receipt artifacts: [CLIC response](evidence/clic_corrected_configuration.json), [complete solution BOM](evidence/clic_corrected_bom.json).\n\n`;
+  }
   report += _buildItemsSection(ctx.items, ctx.budgetOpt);
   report += _buildAspectsSection(ctx.evalResults);
   report += _buildWorkloadSection(ctx.graph, ctx.chassisDir, ctx.chassisDetection);
   report += _buildBudgetSection(ctx.budgetOpt, ctx.targetBudgetUsd);
+  if (accepted) {
+    report = report.replace('Live exact-configuration acceptance remains pending.', 'The corrected candidate above matches the live CLIC receipt.');
+    report = report.replace('Consolidated BOQ Hardware Items', 'Baseline Items Before Optics Correction');
+    report = report.replace('showing mandatory buildable cost only.', 'showing the baseline cost before optics correction; the accepted corrected total is shown above.');
+    report = report.replace('Mandatory Component Cost', 'Baseline Cost Before Optics Correction');
+    report = report.replace('(Includes all direct SKU fixes)', '(Includes the redundant optics pack; exclude it from the corrected order)');
+  }
   report += _buildValueEngineeringSection(ctx.evalResults);
 
   report += `---\n\n`;
   report += `## 🤖 4. Gemini Notebook RAG Status\n\n`;
+  if (ctx.evalResults.agenticReviewStatus === 'UNAVAILABLE') report += '**Separate agentic model review:** unavailable (provider error). This is not a successful independent model review; NotebookLM document grounding and live CLIC acceptance are reported separately.\n\n';
   report += `${ctx.ragAnswer || 'No Gemini Notebook RAG answer recorded.'}\n\n`;
   report += _buildDeliverablesSection(ctx);
   report += `---\n\n`;
@@ -447,6 +467,24 @@ async function serializeAndExportResults(ctx) {
   const reportDir = path.dirname(outputPath);
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
 
+  // Post-flow sync
+  try {
+    const autoUpload = !ctx.OFFLINE_MODE && !ctx.DEFER_RAG;
+    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: autoUpload });
+    evalResults.postFlowSync = syncResult;
+    if (!syncResult.success) {
+      const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
+      if (!evalResults.warnings) evalResults.warnings = [];
+      evalResults.warnings.push(syncWarning);
+      if (!JSON_MODE) console.log(`\n${syncWarning}`);
+    }
+  } catch (syncErr) {
+    logger.error('EVAL_OUTPUT_SERIALIZER', `Post-flow sync failed hard: ${syncErr.message}`);
+    evalResults.postFlowSync = { success: false, error: syncErr.message };
+    if (!evalResults.warnings) evalResults.warnings = [];
+    evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
+  }
+
   // Multi-Rank Solution Deliverable Export
   const inputBase = path.basename(inputFile, path.extname(inputFile));
   const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
@@ -472,24 +510,6 @@ async function serializeAndExportResults(ctx) {
   } catch (sheetErr) {
     logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
     evalResults.deliveryError = sheetErr.message;
-  }
-
-  // Post-flow sync
-  try {
-    const autoUpload = !ctx.OFFLINE_MODE && !ctx.DEFER_RAG;
-    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: autoUpload });
-    evalResults.postFlowSync = syncResult;
-    if (!syncResult.success) {
-      const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;
-      if (!evalResults.warnings) evalResults.warnings = [];
-      evalResults.warnings.push(syncWarning);
-      if (!JSON_MODE) console.log(`\n${syncWarning}`);
-    }
-  } catch (syncErr) {
-    logger.error('EVAL_OUTPUT_SERIALIZER', `Post-flow sync failed hard: ${syncErr.message}`);
-    evalResults.postFlowSync = { success: false, error: syncErr.message };
-    if (!evalResults.warnings) evalResults.warnings = [];
-    evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
   }
 
   evalResults.stageBreakdown = {

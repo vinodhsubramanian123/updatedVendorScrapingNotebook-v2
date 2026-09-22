@@ -965,3 +965,7 @@ When using Gemini NotebookLM for HPE server architecture, QuickSpecs grounding, 
   4. Grounded citations and rule additions are captured by `extractKnowledgeFromRagAnswer` into persistent `KnowledgeDelta` records.
   5. The temporary source is **immediately detached** via `source_delete` (`INV-24`), ensuring zero permanent customer BOQ contamination of vendor QuickSpecs baselines.
 
+
+### Structured candidate grounding (SN3600B remediation, 2026-09-22)
+
+Use the canonical ephemeral validator. Internal candidate prompts must set structuredValidation context so JSON schemas, manifests and allocation notes survive sanitation. Apply product-specific checks; fixed SAN switches do not need server CPU/DIMM/riser rules. Request cited prose outside code blocks followed by one fenced JSON verdict. A model PASS with source names alone remains UNVERIFIED. A real unverified response is not MOCK_VERIFIED. Always detach the temporary source. Source identity from the vetted allow-list takes precedence over customer/quote keywords inside official vendor passages; unknown customer sources remain forbidden authority.

@@ -344,7 +344,8 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     onsiteInstallItems: t.onsiteInstallItems,
     remoteInstallItems: t.remoteInstallItems,
     serverCount: nodes,
-    defaultSupportSku: 'HU4B2A3',
+    defaultSupportSku: null,
+    supportPolicy: require('../boq/support_policy').resolveSupportPolicy(items),
     defaultManagementSku: null
   };
 }

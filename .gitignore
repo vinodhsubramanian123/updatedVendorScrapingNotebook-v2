@@ -30,6 +30,14 @@ outputs/history/*
 !outputs/StoreEver/**
 !outputs/Synergy/
 !outputs/Synergy/**
+!outputs/SAN/
+!outputs/SAN/**
+!outputs/history/catalog_deltas.json
+
+# SAN workflow evidence is durable; browser logs and partial captures are not.
+outputs/SAN/**/*.log
+outputs/SAN/**/intermittent_scraps/
+outputs/SAN/**/evidence/portal_recovery_state.json
 
 # Re-ignore ephemeral / noisy runtime paths
 outputs/**/reports/

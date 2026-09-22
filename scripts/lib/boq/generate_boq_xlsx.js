@@ -5,6 +5,10 @@ const path = require('path');
 const { outputQuantities } = require('./configuration_context');
 const { solutionFingerprint, candidateReviewCurrent } = require('./solution_evidence');
 
+function portalLabel(candidate) {
+  return candidate?.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt ? `CLIC ACCEPTED — ${candidate.portalReceipt.capturedAt}` : 'PORTAL VALIDATION PENDING';
+}
+
 function rankReviewBadge(evaluation, candidate) {
   const review = evaluation.ephemeralSourceValidation;
   const verdict = review?.rankVerdicts?.find(row => String(row.rank) === String(candidate.rank));
@@ -74,13 +78,13 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
     ['Base BOM Cost', evalResults.budgetOptimization?.currentBomCostUsd || 0],
     ['Fix Cost', rankedSolution?.budgetBreakdown?.fixCost || 0],
     ['Strategy Add-on Cost', rankedSolution?.budgetBreakdown?.strategyAddonCost || 0],
-    ['Total Estimated CapEx', rankedSolution?.totalOrderCostUsd || rankedSolution?.estimatedCostUsd || 0],
+    ['Total Estimated CapEx', rankedSolution?.pricingComplete === false ? 'INCOMPLETE' : rankedSolution?.totalOrderCostUsd ?? rankedSolution?.estimatedCostUsd ?? 'UNRESOLVED'],
     [],
     ['NotebookLM RAG Reasoning'],
     [rankedSolution?.reasoning || 'N/A']
   ];
-  summaryData.push(['Validation', 'PORTAL VALIDATION PENDING']);
-  summaryData.push(['Pricing completeness', rankedSolution?.pricingComplete === false ? `INCOMPLETE — ${rankedSolution.priceUnavailableSkus?.length || 0} SKU(s) unresolved` : 'Consult line pricing evidence']);
+  summaryData.push(['Validation', portalLabel(rankedSolution)]);
+  summaryData.push(['Pricing completeness', rankedSolution?.pricingComplete === false ? `INCOMPLETE — ${(rankedSolution.priceUnavailableSkus || rankedSolution.unresolvedPriceSkus)?.length || 0} SKU(s) unresolved` : 'Consult line pricing evidence']);
   
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
   // Apply formatting
@@ -112,8 +116,8 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
         outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty,
         s.description || '',
         s.category || 'Standard',
-        uPrice,
-        { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice },
+        uPrice > 0 ? uPrice : 'UNRESOLVED',
+        uPrice > 0 ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice } : 'UNRESOLVED',
         pricingRole
       ]);
       rowNum++;
@@ -123,7 +127,7 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
       data.push([emptyMessage, '', '', '', '', '', '']);
     } else {
       // Add Total row
-      data.push(['TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
+      data.push([skus.some(item => !(item.unitPriceUsd > 0)) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
     }
 
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -294,14 +298,14 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
         perServerQty,
         nodeMultiplier,
         it.description || it.desc || '',
-        unitPrice,
-        ext,
+        unitPrice > 0 ? unitPrice : 'UNRESOLVED',
+        unitPrice > 0 ? ext : 'UNRESOLVED',
         portalStatus
       ]);
     });
 
     grandTotal += configSubtotal;
-    portalData.push(['', '', `CONFIG #${cIdx + 1} SUBTOTAL:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
+    portalData.push(['', '', `CONFIG #${cIdx + 1} ${items.some(item => !(item.unitPriceUsd > 0)) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'SUBTOTAL'}:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
   });
 
   if (clusterList.length > 1) {
@@ -413,6 +417,11 @@ function _getWorkbookStyles() {
 
 function _getRankedSolutions(evalResults) {
   const graph = evalResults.conflictGraph || {};
+  // Preserve the actual advisory manifest for fixed SAN appliances even while
+  // exact vendor acceptance is pending. Never replace it with an empty fallback.
+  if (evalResults.productType === 'SAN' && graph.rankedSolutions?.length) {
+    return graph.rankedSolutions.map(candidate => ({ ...candidate, isDraft: candidate.portalValidationStatus !== 'CLIC_ACCEPTED', isCertified: false }));
+  }
   let rankedSolutions = Array.isArray(graph.recommendedSolutions)
     ? graph.recommendedSolutions
     : (graph.rankedSolutions || []).filter(s => s.physicalMathClean !== false && s.isUniqueBom !== false && s.isParetoOptimal !== false);
@@ -451,8 +460,8 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
     ['SOLUTION METRICS & EVALUATION STATUS'],
     ['Target Server / Chassis', chassis],
     ['Total Server Nodes', serverCount],
-    ['Overall Physical Build Status', evalResults.isMathClean === true ? 'LOCAL_RULE_CHECKED — PORTAL VALIDATION PENDING' : 'ACTION REQUIRED — UNVERIFIED OR PHYSICAL GAPS'],
-    ['Dual-Brain Verification Badge', candidateReviewCurrent(evalResults) ? 'CANDIDATE DOCUMENT REVIEW PASSED — PORTAL VALIDATION PENDING' : 'CANDIDATE REVIEW NOT VERIFIED'],
+    ['Overall Physical Build Status', evalResults.isMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(rankedSolutions[0]) : 'ACTION REQUIRED — UNVERIFIED OR PHYSICAL GAPS'],
+    ['Dual-Brain Verification Badge', candidateReviewCurrent(evalResults) ? 'CANDIDATE DOCUMENT REVIEW PASSED; ' + portalLabel(rankedSolutions[0]) : 'CANDIDATE REVIEW NOT VERIFIED'],
     ['NotebookLM Knowledge Tier', evalResults.notebookLmStatus?.groundingTier || (evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? 'TIER_1_LIVE_CLOUD_GROUNDED' : 'TIER_2_VERIFIED_LOCAL_SAFETY_NET')],
     ['QuickSpecs Citations Verified', evalResults.notebookLmStatus?.citationsCount ? `${evalResults.notebookLmStatus.citationsCount} Authoritative Citations` : 'Deterministic Catalog Grounding'],
     ['Evaluation Timestamp', evalResults.metadata?.generatedAt || new Date().toISOString()],
@@ -462,7 +471,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
   ];
 
   rankedSolutions.forEach(s => {
-    let buildStatus = s.buildabilityStatus;
+    let buildStatus = s.portalValidationStatus === 'CLIC_ACCEPTED' ? portalLabel(s) : s.buildabilityStatus;
     if (!buildStatus) {
       if (s.isClicValidated === true) {
         buildStatus = '100% Factory Buildable in CLIC';
@@ -475,10 +484,10 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
     summaryData.push([
       `Rank ${s.rank}`,
       s.name || `Strategy Rank ${s.rank}`,
-      s.totalOrderCostUsd ?? s.estimatedCostUsd ?? 0,
+      s.pricingComplete === false ? 'INCOMPLETE' : s.totalOrderCostUsd ?? s.estimatedCostUsd ?? 'UNRESOLVED',
       s.budgetBreakdown?.fixCost || 0,
       s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING'),
-      buildStatus + (s.pricingComplete === false ? `; INCOMPLETE — ${s.priceUnavailableSkus?.length || 0} SKU(s) unresolved` : '')
+      buildStatus + (s.pricingComplete === false ? `; INCOMPLETE — ${(s.priceUnavailableSkus || s.unresolvedPriceSkus)?.length || 0} SKU(s) unresolved` : '')
     ]);
   });
 
@@ -584,7 +593,7 @@ function _styleSummarySheet(wsSummary, summaryData, styles) {
 function _buildRankSheetData(s, serverCount, evalResults = {}) {
   const rankData = [];
   rankData.push([`HPE SOLUTION SPECIFICATION — RANK ${s.rank}: ${s.name || ''}`]);
-  rankData.push([`Estimated CapEx: $${(s.estimatedCostUsd || 0).toLocaleString()} | Alignment: ${s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING')} | Server Nodes: ${serverCount}`]);
+  rankData.push([`Estimated CapEx: $${s.pricingComplete === false ? 'INCOMPLETE' : (s.estimatedCostUsd ?? 'UNRESOLVED').toLocaleString()} | Alignment: ${s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING')} | Server Nodes: ${serverCount}`]);
   rankData.push([
     'Part No',
     'Per-Node Qty',
@@ -623,19 +632,19 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
       { t: 'n', f: `B${rowNum}*C${rowNum}`, v: totalQty },
       it.description || it.desc || '',
       role,
-      unitPrice,
-      { t: 'n', f: `D${rowNum}*G${rowNum}`, v: extPrice },
+      unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
+      unitPrice > 0 || it.isConfirmedZeroPrice === true ? { t: 'n', f: `D${rowNum}*G${rowNum}`, v: extPrice } : 'UNRESOLVED',
       rationale,
       rankReviewBadge(evalResults, s),
       it.reasoning || s.reasoning || 'No candidate validation evidence recorded',
-      s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'DRAFT; VALIDATION REQUIRED'
+      s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(s) : 'DRAFT; ' + portalLabel(s)
     ]);
     rowNum++;
   });
 
   // Subtotal Row
   rankData.push([
-    'SUBTOTAL / ESTIMATED CAPEX',
+    s.pricingComplete === false ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'SUBTOTAL / ESTIMATED CAPEX',
     '',
     '',
     '',
@@ -646,7 +655,7 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
     `${serverCount} Node(s)`,
     rankReviewBadge(evalResults, s),
     s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED' : 'UNVERIFIED',
-    'PORTAL VALIDATION PENDING'
+    portalLabel(s)
   ]);
 
   return { rankData, items };
@@ -816,7 +825,7 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
         escapeCsvCell(rationale),
         escapeCsvCell(rankReviewBadge(evalResults, s)),
         escapeCsvCell(s.reasoning || 'No candidate validation evidence recorded'),
-        escapeCsvCell('PORTAL VALIDATION PENDING'),
+        escapeCsvCell(portalLabel(s)),
       ].join(','));
     });
   });

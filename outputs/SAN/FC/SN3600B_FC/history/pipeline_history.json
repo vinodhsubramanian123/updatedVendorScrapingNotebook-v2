@@ -1,0 +1,190 @@
+[
+  {
+    "summary": {
+      "runId": "run_SN3600B_FC_1790044527504",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-09-22T02:35:27.502Z",
+      "endTime": "2026-09-22T02:35:28.091Z",
+      "durationMs": 589,
+      "durationSec": "0.59",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 58,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 58,
+      "validationStats": {
+        "totalEntries": 9,
+        "totalSKUs": 58,
+        "validSKUs": 58,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 2,
+        "priceErrors": 0,
+        "ruleCount": 9,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-22T02:35:27.505Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-09-22T02:35:28.012Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 9,
+          "totalUniqueSKUs": 58,
+          "incrementalStats": {
+            "totalScrapedSkus": 58,
+            "unchangedSkusCount": 34,
+            "modifiedSkusCount": 23,
+            "addedSkusCount": 1,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 5100,
+            "estimatedProcessingTimeSavedMs": 6800
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-22T02:35:28.014Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 9,
+            "totalSKUs": 58,
+            "validSKUs": 58,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 2,
+            "priceErrors": 0,
+            "ruleCount": 9,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-22T02:35:28.091Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 58,
+      "classified": 58,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SN3600B_FC_1789994485462",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-09-21T12:41:25.458Z",
+      "endTime": "2026-09-21T12:41:25.887Z",
+      "durationMs": 429,
+      "durationSec": "0.43",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 57,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 57,
+      "validationStats": {
+        "totalEntries": 9,
+        "totalSKUs": 57,
+        "validSKUs": 57,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 24,
+        "priceErrors": 0,
+        "ruleCount": 9,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-09-21T12:41:25.463Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-09-21T12:41:25.819Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 9,
+          "totalUniqueSKUs": 57,
+          "incrementalStats": {
+            "totalScrapedSkus": 0,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-21T12:41:25.822Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 9,
+            "totalSKUs": 57,
+            "validSKUs": 57,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 24,
+            "priceErrors": 0,
+            "ruleCount": 9,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-21T12:41:25.887Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 57,
+      "classified": 57,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

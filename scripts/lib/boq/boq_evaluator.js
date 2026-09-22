@@ -122,7 +122,11 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
     }
     sheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];
-      const csvText = xlsx.utils.sheet_to_csv(sheet);
+      const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+      const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number)|sku)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity)$/i.test(String(cell).trim())));
+      // Report titles may contain model names resembling orderable SKUs.
+      // When a structured BOM header exists, never ingest the cover rows.
+      const csvText = xlsx.utils.sheet_to_csv(headerRow >= 0 ? xlsx.utils.aoa_to_sheet(rows.slice(headerRow)) : sheet);
       lines.push(...csvText.split(/\r?\n/));
     });
   } else if (Array.isArray(rawInput)) {
@@ -1109,6 +1113,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   }
 
   const chassisInfo = detectChassisVariant(items);
+  if (chassisInfo.family === 'SAN') {
+    return require('./san_switch_evaluator').evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, getCachedChassisMap().product_bundle_compositions || [], options);
+  }
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
   // Detect server / chassis node count for multi-node orders
@@ -1236,6 +1243,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   validateMemoryRules(ctx);
 
   const aspectChecks = buildAspectChecks(ctx);
+  const { evaluateBundleComposition } = require('./bundle_composition');
+  const bundleComposition = evaluateBundleComposition(items, getCachedChassisMap().product_bundle_compositions || [], path.basename(targetDir));
+  for (const bundle of bundleComposition) warnings.push(...bundle.warnings);
   const formFactorRU = chassisInfo.formFactor === '1U' ? 1 : 
                        chassisInfo.formFactor === '4U' ? 4 : 2;
   const architecturalRationale = buildArchitecturalRationale(ctx);
@@ -1297,7 +1307,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     chassisDefaults,
     redundantDefaults,
     aspectChecks,
-    genericDomainAudit
+    genericDomainAudit,
+    bundleComposition
   };
 
   let conflictGraphResults = { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
@@ -1351,6 +1362,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     clusterSizing: evalSummary.clusterSizing,
     aspectChecks,
     genericDomainAudit,
+    bundleComposition,
     conflictGraph: conflictGraphResults
   };
 }
@@ -1371,6 +1383,9 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   }
   if (fixes.length > 0) {
     queryText += `\nProposed Auxiliary Fixes: ${fixes.map(f => f.sku).join(', ')}.`;
+  }
+  if (evalResults.bundleComposition?.length) {
+    queryText += `\nBundle accounting: ${JSON.stringify(evalResults.bundleComposition)}. Confirm exact base and upgrade inclusions from official sources; distinguish installed optics from spares or remote endpoints. Never add server components to a fixed SAN switch.`;
   }
   if (rankedSolutions && rankedSolutions.length > 0) {
     const rankSummary = rankedSolutions.slice(0, 3).map(r => `Rank ${r.rank} (${r.tierTitle}): $${r.estimatedCapex || 0}`).join(' | ');

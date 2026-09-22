@@ -1,8 +1,45 @@
 {
-  "lastRun": "2026-09-20T18:10:12.768Z",
+  "lastRun": "2026-09-21T07:34:25.024Z",
   "totalRun": 172,
-  "totalPassed": 172,
-  "totalFailed": 0,
-  "totalDurationMs": 531169,
-  "failures": []
+  "totalPassed": 168,
+  "totalFailed": 4,
+  "totalDurationMs": 857386,
+  "failures": [
+    {
+      "testFile": "tests/unit/test_guardrail_prompts.js",
+      "durationMs": 583,
+      "exitCode": 1,
+      "errorSummary": "test at tests\\unit\\test_guardrail_prompts.js:88:14\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n      at TestContext.<anonymous> \u001b[90m(C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\\u001b[39mtests\\unit\\test_guardrail_prompts.js:90:14\u001b[90m)\u001b[39m\n  \u001b[90m    at Test.runInAsyncScope (node:async_hooks:227:14)\u001b[39m\n  \u001b[90m    at Test.run (node:internal/test_runner/test:1382:25)\u001b[39m\n  \u001b[90m    at Test.start (node:internal/test_runner/test:1242:17)\u001b[39m\n  \u001b[90m    at TestContext.test (node:internal/test_runner/test:394:20)\u001b[39m\n      at TestContext.<anonymous> \u001b[90m(C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\\u001b[39mtests\\unit\\test_guardrail_prompts.js:88:14\u001b[90m)\u001b[39m\n  \u001b[90m    at Test.runInAsyncScope (node:async_hooks:227:14)\u001b[39m\n  \u001b[90m    at Test.run (node:internal/test_runner/test:1382:25)\u001b[39m\n  \u001b[90m    at Test.start (node:internal/test_runner/test:1242:17)\u001b[39m\n  \u001b[90m    at TestContext.test (node:internal/test_runner/test:394:20)\u001b[39m {\n    actual: \u001b[32m'What are the hardware configuration rules and QuickSpecs specifications for HPE Server (chassis unspecified)?'\u001b[39m,\n    expected: \u001b[32m'What are the hardware configuration rules and QuickSpecs specifications for HPE ProLiant DL380 Gen12 SFF?'\u001b[39m,\ntest at tests\\unit\\test_guardrail_prompts.js:96:14",
+      "rerunCommand": "node tests/unit/test_guardrail_prompts.js",
+      "isolatedTestCommand": "npm run test:isolated -- tests/unit/test_guardrail_prompts.js",
+      "timestamp": "2026-09-21T07:21:37.744Z"
+    },
+    {
+      "testFile": "tests/unit/test_notebook_query_utils.js",
+      "durationMs": 550,
+      "exitCode": 1,
+      "errorSummary": "❌ [FAIL] Test 3: Clean natural language query is preserved\n   Details: Result: \"For ProLiant General HPE Server (chassis unspecified) Server: What are the memory channels and DIMM placement rules for HPE ProLiant DL380 Gen12 SFF?\"",
+      "rerunCommand": "node tests/unit/test_notebook_query_utils.js",
+      "isolatedTestCommand": "npm run test:isolated -- tests/unit/test_notebook_query_utils.js",
+      "timestamp": "2026-09-21T07:22:02.778Z"
+    },
+    {
+      "testFile": "tests/chaos/test_edge_cases.js",
+      "durationMs": 90080,
+      "exitCode": 124,
+      "errorSummary": "Execution timed out after 90000ms",
+      "rerunCommand": "node tests/chaos/test_edge_cases.js",
+      "isolatedTestCommand": "npm run test:isolated -- tests/chaos/test_edge_cases.js",
+      "timestamp": "2026-09-21T07:25:59.535Z"
+    },
+    {
+      "testFile": "tests/integration/test_boq_eval_benchmarks.js",
+      "durationMs": 90085,
+      "exitCode": 124,
+      "errorSummary": "Execution timed out after 90000ms",
+      "rerunCommand": "node tests/integration/test_boq_eval_benchmarks.js",
+      "isolatedTestCommand": "npm run test:isolated -- tests/integration/test_boq_eval_benchmarks.js",
+      "timestamp": "2026-09-21T07:29:24.459Z"
+    }
+  ]
 }

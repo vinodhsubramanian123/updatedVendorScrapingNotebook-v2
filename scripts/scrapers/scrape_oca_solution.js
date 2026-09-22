@@ -110,6 +110,10 @@ async function auditAndPromoteStaging({
   });
 
   const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
+  const evidenceDir = path.join(liveOutputDir, 'evidence');
+  if (fs.existsSync(evidenceDir)) {
+    require('../lib/system/fs_compat.js').copyDirRecursive(evidenceDir, path.join(outputDir, 'evidence'));
+  }
   promoteStagingDirectory(outputDir, liveOutputDir);
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
@@ -563,18 +567,26 @@ async function main() {
 
     await expandSections(ws);
     await sleep(3000);
+    // Retain the rendered menu before hidden tabs replace its prices with zero.
+    // A later hidden copy is not a new price observation.
+    const menuTables = await extractTablesAsRows(ws);
+    const menuText = (await extractChunkedText(ws, 50000)).fullText;
 
     // Multi-Tab Support Services & Configured BOM Check
     await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
+      expression: `(async () => {
         const tabsToClick = Array.from(document.querySelectorAll('a, button, div.tab_header')).filter(el => 
           /${targetTabsRegex}/i.test((el.innerText || '').trim()) && 
-          !el.href?.includes('menu') && !el.classList.contains('active')
+          el.getClientRects().length && el.classList.contains('ui-tabs-anchor') && !el.href?.includes('menu') && !el.classList.contains('active')
         );
-        tabsToClick.forEach(tab => tab.click());
+        for (const tab of tabsToClick) {
+          tab.click();
+          await new Promise(resolve => setTimeout(resolve, 1500));
+        }
         return tabsToClick.length;
       })()`,
-      returnByValue: true
+      returnByValue: true,
+      awaitPromise: true
     });
     await sleep(2500);
     await expandSections(ws);
@@ -629,6 +641,10 @@ async function main() {
     // Shared table extraction as row arrays
     console.log('Extracting tables (row arrays)...');
     tables = await extractTablesAsRows(ws);
+    const tableKey = table => table.tableId || JSON.stringify((table.rows || []).map(row => row.slice(0, 3)));
+    const menuKeys = new Set(menuTables.map(tableKey));
+    tables = [...menuTables, ...tables.filter(table => !menuKeys.has(tableKey(table)))];
+    fullText = `${menuText}\n${fullText}`;
     console.log(`Extracted ${tables.length} tables.`);
     const tableDerivedText = deriveTextFromTables(tables);
     let textExtractionMode = 'FULL_BODY_TEXT';
@@ -686,7 +702,7 @@ async function main() {
       const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
 
       const edtMatch = fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
-      const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : 'EDT 17 - 21 days';
+      const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
 
       if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
         chassisDiscovery = {

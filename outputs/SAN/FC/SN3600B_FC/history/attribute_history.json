@@ -1,0 +1,562 @@
+[
+  {
+    "date": "2026-09-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK725A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6B11A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6B21A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "P9H29A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "P9H32A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R0Q23A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "N9Y63A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF571A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "SG579A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "SK792A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"1,560.00\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-22",
+    "productNumber": "Q1Z11BAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Port Upgrade Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"0\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  }
+]

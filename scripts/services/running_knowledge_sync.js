@@ -26,7 +26,6 @@ const {
 } = require('./google_sheets_service.js');
 const {
   buildMasterKnowledgeRegistry,
-  collectAllDeltas,
   classifyKnowledgeScope
 } = require('../lib/sync/knowledge_sync.js');
 
@@ -535,52 +534,11 @@ async function syncRunningKnowledge(options = {}) {
 
   // 2. Discover and deduplicate all local knowledge delta files
   logger.info('RUNNING_KNOWLEDGE', 'Discovering local catalog_deltas.json files...');
-  const deduplicatedRules = collectAllDeltas();
-  logger.info('RUNNING_KNOWLEDGE', `Deduplicated to ${deduplicatedRules.length} unique rules.`);
-
-  // 4. Update master_knowledge_registry.json locally
-  logger.info('RUNNING_KNOWLEDGE', 'Updating master_knowledge_registry.json...');
-  const universalRules = deduplicatedRules.filter(r => r.scopeTaxonomy === 'UNIVERSAL_VENDOR' || r.scopeTaxonomy === 'UNIVERSAL');
-  const familyGenRules = deduplicatedRules.filter(r => r.scopeTaxonomy === 'FAMILY_GEN');
-  const chassisSpecificRules = deduplicatedRules.filter(r => r.scopeTaxonomy !== 'UNIVERSAL_VENDOR' && r.scopeTaxonomy !== 'UNIVERSAL' && r.scopeTaxonomy !== 'FAMILY_GEN');
-
-  // Derive productFamiliesSynced dynamically from actual chassis coverage (C2 fix)
-  const familySet = new Set();
-  for (const r of deduplicatedRules) {
-    const chassis = normalizeChassisName(r.chassis || 'GLOBAL');
-    if (chassis === 'GLOBAL') continue;
-    // Extract product family from chassis name pattern
-    if (/DL380a/i.test(chassis)) familySet.add('DL380a');
-    else if (/DL380/i.test(chassis)) familySet.add('DL380');
-    else if (/DL145/i.test(chassis)) familySet.add('DL145');
-    else if (/DL580/i.test(chassis)) familySet.add('DL580');
-    else if (/MSL/i.test(chassis)) familySet.add('MSL3040');
-    else if (/Alletra/i.test(chassis)) familySet.add('Alletra');
-    else if (/SY100|Synergy/i.test(chassis)) familySet.add('Synergy');
-    else if (/GX5000|Cray/i.test(chassis)) familySet.add('Cray');
-    else familySet.add(chassis);
-  }
-
-  const registryPayload = {
-    registryVersion: '2.2.0',
-    schemaVersion: '1.0',
-    generatedAt: new Date().toISOString(),
-    lastUpdated: new Date().toISOString(),
-    totalLearnedRules: deduplicatedRules.length,
-    productFamiliesSynced: [...familySet].sort(),
-    counts: {
-      universal: universalRules.length,
-      familyGen: familyGenRules.length,
-      chassisSpecific: chassisSpecificRules.length
-    },
-    universalRules,
-    familyGenRules,
-    chassisSpecificRules
-  };
-
-  const registryPath = path.join(HISTORY_DIR, 'master_knowledge_registry.json');
-  safeWriteJsonAtomic(registryPath, registryPayload);
-  logger.info('RUNNING_KNOWLEDGE', `Saved ${registryPath} with ${deduplicatedRules.length} rules.`);
+  // One registry builder owns evidence scope normalization for every writer.
+  const registryPayload = buildMasterKnowledgeRegistry({ persist: true });
+  const { universalRules, familyGenRules, chassisSpecificRules } = registryPayload;
+  const deduplicatedRules = [...universalRules, ...familyGenRules, ...chassisSpecificRules];
+  logger.info('RUNNING_KNOWLEDGE', `Saved scoped registry with ${deduplicatedRules.length} unique rules.`);
 
   // 5. Generate Running Knowledge Charter Markdown and Universal Charter Markdown
   logger.info('RUNNING_KNOWLEDGE', 'Generating Master Running Knowledge Charter Markdown...');

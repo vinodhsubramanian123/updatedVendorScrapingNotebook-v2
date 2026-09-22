@@ -93,19 +93,23 @@ function tallyFcHbas(tally, desc, sku, qty, role) {
 }
 
 function tallyTransceiversAndSanSwitches(tally, desc, sku, qty, role) {
-  const isTransceiverRole = role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp');
+  const isSwitch = role === 'SAN Switch' || /\b(?:san|fibre channel|fc)\s+switch\b/i.test(desc);
+  const isBundle = role === 'Port Upgrade Bundle' || /\bupgrade\s+license\s+with\s+transceiver\s+kit\b/i.test(desc);
+  const isTransceiverRole = !isSwitch && !isBundle && (role === 'Transceiver' || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp'));
   if (isTransceiverRole) {
+    const packSize = Number(desc.match(/\b(\d+)\s*-?\s*pack\b/i)?.[1] || 1);
+    const opticQty = qty * packSize;
     if (desc.includes('32gb') || desc.includes('32g fc') || desc.includes('32gbs') || desc.includes('32g')) {
-      tally.transceiverCount32Gb += qty;
-      tally.activeOpticalTransceiverCount += qty;
+      tally.transceiverCount32Gb += opticQty;
+      tally.activeOpticalTransceiverCount += opticQty;
     }
     if (desc.includes('64gb') || desc.includes('64g fc') || desc.includes('64gbs') || desc.includes('64g')) {
-      tally.transceiverCount64Gb += qty;
-      tally.activeOpticalTransceiverCount += qty;
+      tally.transceiverCount64Gb += opticQty;
+      tally.activeOpticalTransceiverCount += opticQty;
     }
   }
-  if (desc.includes('san switch') || desc.includes('fibre channel switch')) tally.sanSwitchCount += qty;
-  if (desc.includes('om4') && desc.includes('lc-lc') && desc.includes('cable')) tally.opticalPatchCableCount += qty;
+  if (isSwitch) tally.sanSwitchCount += qty;
+  if (desc.includes('om4') && /lc[-/]lc/i.test(desc) && desc.includes('cable')) tally.opticalPatchCableCount += qty;
   if (desc.includes('100gb qsfp28 to 4x 25gb sfp28') || (desc.includes('100gb') && desc.includes('breakout'))) tally.qsfp28BreakoutCableCount += qty;
 }
 

@@ -54,7 +54,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Enterprise Workload Matching & DNA** | [`workload-dna-skill`](file:///.agents/skills/workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` |
 | **Post-Buildability Deal CapEx/OpEx Optimization**| [`value-engineering-skill`](file:///.agents/skills/value-engineering-skill/SKILL.md) | `scripts/lib/boq/budget_optimizer.js` |
 | **Standardized 7-Column Portals & Workbooks** | [`workbook-generator-skill`](file:///.agents/skills/workbook-generator-skill/SKILL.md) | `scripts/catalogs/generate_interactive_matrix.js` |
-| **Cloud NotebookLM Grounding & Strict SKU Gate**| [`nlm-skill`](file:///.agents/skills/nlm-skill/SKILL.md) | `scripts/lib/rag/nlm_solution_source_validator.js`|
+| **Cloud NotebookLM Grounding & Strict SKU Gate**| [`nlm-skill`](file:///.agents/skills/nlm-skill/SKILL.md) | `scripts/lib/sync/nlm_solution_source_validator.js`|
 | **Autonomous Knowledge Sync & Drift Guard** | [`knowledge-sync-skill`](file:///.agents/skills/knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/post_flow_sync.js` |
 | **Live WebLogic OCA Portal Scraping** | [`oca-catalog-scraper`](file:///.agents/skills/oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
 | **Partner Portal SSO & Hands-Free CDP** | [`oca-portal-navigator`](file:///.agents/skills/oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
@@ -86,3 +86,7 @@ To conserve context tokens, detailed specifications and negative-path implementa
   - [`docs/ARCHITECTURE_AND_DESIGN.md`](file:///docs/ARCHITECTURE_AND_DESIGN.md): Core Dual-Brain architecture and data contracts.
   - [`docs/WORKFLOWS_AND_LEARNINGS.md`](file:///docs/WORKFLOWS_AND_LEARNINGS.md): E2E pipelines, agentic guardrails, and continuous benchmarking.
   - [`docs/DEVELOPER_GUIDE.md`](file:///docs/DEVELOPER_GUIDE.md): Local development, testing matrix, and API handling.
+
+## SN3600B workflow continuation and universal support policy (2026-09-22)
+
+For the completed SAN reference workflow, read `docs/audits/2026-09-21-sn3600b-workflow-remediation.md` before changing the configuration. It records the canonical command, exact receipt, fixes and remaining evidence limits. Default all server/storage/networking solutions to product-qualified 3-year Tech Care Basic unless explicitly overridden. Select services independently from Components → owning icon → Services → Edit with both apply-to-all controls off. Never reuse a receipt after changing its manifest or after its freshness window. Use the structured ephemeral NotebookLM validator and native vendor citations; a prose-only model PASS is not grounded verification. Persist new lessons through the continuous-learning API and use the shared scoped registry builder.

@@ -120,7 +120,10 @@ function validateGroundingCitations(processedResult, context = {}) {
   const citedSourceIds = allSources.map(sourceId).filter(Boolean).map(String);
   const authoritativeSourceIds = new Set((context.authoritativeSourceIds || []).filter(Boolean).map(String));
 
-  const hasForbiddenSource = allSourceTexts.some(txt => FORBIDDEN_SOURCE_PATTERN.test(txt));
+  // A vetted vendor source may discuss customer requirements or quotations.
+  // Source identity takes precedence over keywords inside a cited passage.
+  // Unknown/customer source IDs retain the fail-closed contamination gate.
+  const hasForbiddenSource = allSources.some(value => !authoritativeSourceIds.has(String(sourceId(value))) && FORBIDDEN_SOURCE_PATTERN.test(sourceText(value)));
 
   if (hasForbiddenSource) {
     processedResult.groundingVerification = 'REJECTED_FORBIDDEN_SOURCE';

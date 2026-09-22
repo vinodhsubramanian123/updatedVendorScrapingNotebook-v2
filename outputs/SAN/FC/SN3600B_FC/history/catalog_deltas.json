@@ -1,0 +1,44 @@
+[
+  {
+    "deltaId": "OWNER_STANDARD_3Y_BASIC",
+    "timestamp": "2026-09-22T08:08:13.957Z",
+    "chassis": "GLOBAL",
+    "ruleType": "SUPPORT_POLICY",
+    "ruleUpdate": "Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is requested. Qualify the exact SKU for each product. Preserve the exact retention label; SN3600B exposes HX2M2E Basic with CDMR. This is a commercial preference, not vendor compatibility evidence.",
+    "rawMessage": "Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is requested. Qualify the exact SKU for each product. Preserve the exact retention label; SN3600B exposes HX2M2E Basic with CDMR. This is a commercial preference, not vendor compatibility evidence.",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Explicit solution-owner workflow policy across HPE product families, 2026-09-22; not a hardware compatibility claim.",
+    "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "OWNER_ICON_SERVICE_ISOLATION",
+    "timestamp": "2026-09-22T08:08:13.976Z",
+    "chassis": "GLOBAL",
+    "ruleType": "ICON_SUPPORT_ISOLATION",
+    "ruleUpdate": "Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.",
+    "rawMessage": "Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Explicit solution-owner workflow policy across HPE product families, 2026-09-22; not a hardware compatibility claim.",
+    "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "OWNER_OCA_EXPIRED_SESSION",
+    "timestamp": "2026-09-22T08:08:13.991Z",
+    "chassis": "GLOBAL",
+    "ruleType": "SESSION_RECOVERY_PROTOCOL",
+    "ruleUpdate": "When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.",
+    "rawMessage": "When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Explicit solution-owner workflow policy across HPE product families, 2026-09-22; not a hardware compatibility claim.",
+    "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "capturedAt": "2026-09-22T07:56:54.492Z",
+  "source": "Live OCA Components node service editor",
+  "productSku": "R7R97A",
+  "text": "Home\nConfigure\n❯\nOCA Config 2\nWork-In-Progress\nConfig Status\nWarning\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n17 - 21 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 22,256.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nSN3600B/CN3360B Switch #1\nSummary\nComponents\nMenu\nLayout\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nBasic\nStandard\nOptimized\nSelect Your Own\nNo Support\naaS:  No\nProduct Number:\nR7R97A\nQuantity:\n1\n \nInstall Level:\nU5988E - HPE Installation Storage Switches Service\nAfter Hours/Weekends/Holidays Hardware Installation\n \nSupport Level:\nDuration\nSelect\nData Protection\nAll Available Services\nClear All\nHX2M2E - HPE 3 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2M5E - HPE 3 Year Tech Care Essential SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2M6E - HPE 3 Year Tech Care Essential wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2M7E - HPE 3 Year Tech Care Critical SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2M8E - HPE 3 Year Tech Care Critical wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2M9E - HPE 4 Year Tech Care Basic SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N0E - HPE 4 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N3E - HPE 4 Year Tech Care Essential SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N4E - HPE 4 Year Tech Care Essential wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N5E - HPE 4 Year Tech Care Critical SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N6E - HPE 4 Year Tech Care Critical wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N7E - HPE 5 Year Tech Care Basic SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2N8E - HPE 5 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2P1E - HPE 5 Year Tech Care Essential SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2P2E - HPE 5 Year Tech Care Essential wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2P3E - HPE 5 Year Tech Care Critical SN3600B 24/8 8p 32Gb SW SFP Switch Service\n\n\nHX2P4E - HPE 5 Year Tech Care Critical wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service\nApply the displayed Install level and Support level to all Icons inside the solution where available\nApply the displayed Install level and Support level to all nodes inside the Current Icon where available\nOK\n\n\nCLIC Check\nLive chat",
+  "choices": [
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_0",
+      "checked": true,
+      "label": "HX2M2E - HPE 3 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service"
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_applyCbx",
+      "checked": false,
+      "label": "Apply the displayed Install level and Support level to all Icons inside the solution where available"
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_applyCbxIcon",
+      "checked": false,
+      "label": "Apply the displayed Install level and Support level to all nodes inside the Current Icon where available"
+    }
+  ],
+  "installOptions": [
+    {
+      "value": "U5988E",
+      "text": "U5988E - HPE Installation Storage Switches Service"
+    },
+    {
+      "value": "-1",
+      "text": "No Installation"
+    }
+  ]
+}

@@ -29,12 +29,21 @@ function normalizeProductText(value) {
 function extractModelGeneration(value) {
   const normalized = normalizeProductText(value);
   const withSy = normalized.replace(/\bsynergy\b/g, 'sy');
-  const model = withSy.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
+  const model = withSy.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra|sn)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
   const generation = withSy.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
   return { model, generation };
 }
 
 function isExactProductCandidate(query, candidate) {
+  // Fixed SAN switches are configurable products without a server CTO label.
+  // Require the explicit orderable SKU so 24/8 and 24/24 bundles cannot swap.
+  const exactSku = String(query).trim().toUpperCase() === String(candidate.sku || '').trim().toUpperCase();
+  const fixedSanSwitch = /\bsn\s*\d{4}[a-z]\b/i.test(candidate.text || '') &&
+    /\bswitch\b/i.test(candidate.text || '') &&
+    !/\b(upgrade|license|transceiver\s+kit|support|service)\b/i.test(candidate.text || '');
+  if (exactSku && fixedSanSwitch) {
+    return !candidate.isTaa && !candidate.isGta && !/(?:\btaa\b|#gta\b)/i.test(candidate.text || '');
+  }
   const expected = extractModelGeneration(query);
   const observed = extractModelGeneration(candidate.text);
   const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
@@ -75,6 +84,10 @@ function getPageTargets() {
   });
 }
 
+function safeNavigationLabel(value) {
+  return String(value || '').split(/[?#]/)[0];
+}
+
 function closePageTarget(targetId) {
   return new Promise((resolve, reject) => {
     const req = http.get(`http://localhost:${CDP_PORT}/json/close/${encodeURIComponent(targetId)}`, res => {
@@ -93,11 +106,10 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
   const checkState = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const pageText = (document.body?.innerText || '').slice(0, 25000);
-      const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(pageText) ||
-        Boolean(document.querySelector('img[src*="lock"], .lock-icon, [class*="logout"]'));
+      const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(pageText);
       const hasException = Boolean(
-        document.querySelector('.dqe-error, .dqe-alert, .ui-dialog-titlebar-close, .modal-error, [class*="error-dialog"]') ||
-        /an unexpected error has occurred|exception occurred|internal server error|weblogic bridge message/i.test(pageText)
+        Array.from(document.querySelectorAll('.dqe-error, .modal-error, [class*="error-dialog"]')).some(el => el.getClientRects().length) ||
+        /an unexpected error has occurred|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(pageText)
       );
       const hasMenu = Boolean(
         document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
@@ -156,6 +168,7 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
  * Searches for chassis query on OCA catalog landing page and navigates into configuration.
  */
 async function searchAndConfigureChassis(ws, query, ocaTarget) {
+  await sendCommand(ws, 'Page.bringToFront');
   console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
   const navExpr = String.raw`
     (async function() {
@@ -168,6 +181,13 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
       const prodCatOption = Array.from(document.querySelectorAll('.dqe-menu-item, .item-title')).find(el => (el.innerText || '').includes('Product Catalog'));
       if (prodCatOption) {
         prodCatOption.click();
+        await new Promise(r => setTimeout(r, 600));
+      }
+      // Product Catalog is also an AI data source; selecting it alone does
+      // not disable generative search. Exact SKU discovery needs classic mode.
+      const aiToggle = document.querySelector('#ai_toggle_switch');
+      if (aiToggle?.checked) {
+        aiToggle.click();
         await new Promise(r => setTimeout(r, 600));
       }
 
@@ -185,12 +205,8 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
 
       async function runSearch(q) {
         searchInput.focus();
-        searchInput.value = '';
-        for (const char of q) {
-          searchInput.value += char;
-          searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: char, inputType: 'insertText' }));
-          await new Promise(r => setTimeout(r, 60));
-        }
+        searchInput.value = q;
+        searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: q, inputType: 'insertText' }));
         searchInput.dispatchEvent(new Event('change', { bubbles: true }));
         
         if (window.jQuery) {
@@ -276,8 +292,15 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
         return result;
       }
 
-      await runSearch(${JSON.stringify(query)});
       let candidates = extractCandidates();
+      if (!candidates.some(candidate => candidate.sku === ${JSON.stringify(query.toUpperCase())})) {
+        await runSearch(${JSON.stringify(query)});
+        candidates = extractCandidates();
+      }
+      for (let attempt = 0; !candidates.length && attempt < 60; attempt++) {
+        await new Promise(r => setTimeout(r, 1000));
+        candidates = extractCandidates();
+      }
       if (!candidates.length && ${JSON.stringify(query)}.includes(' ')) {
         const fallbackQuery = ${JSON.stringify(query)}.split(/\s+/)[0];
         await runSearch(fallbackQuery);
@@ -296,7 +319,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
     expression: navExpr,
     awaitPromise: true,
     returnByValue: true
-  });
+  }, 120000);
 
   const discovery = discoveryRes?.result?.value || {};
   const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
@@ -324,28 +347,29 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
   const selected = eligibleCandidates[0];
   if (!selected) {
     ws.close();
-    throw new Error(
+    const error = new Error(
       `No exact standard CTO base model found for query "${query}".\n` +
       `Discovered candidates (${candidates.length}):\n` +
       candidates.slice(0, 10).map(c => ` - ${c.sku || 'NO_SKU'} | ${c.text} (CTO=${c.isCto}, TAA=${c.isTaa}, GTA=${c.isGta}, BTO=${c.isBto})`).join('\n')
     );
+    error.code = 'OCA_PRODUCT_NOT_FOUND';
+    throw error;
   }
 
   console.log(`🎯 Selected standard CTO base: ${selected.sku} - "${selected.text}" (Price: $${selected.listPriceUsd || 0})`);
 
   const selectAndClickExpr = String.raw`
     (async function() {
-      const card = document.querySelector(${JSON.stringify(selected.cardSelector)});
+      let card = document.querySelector(${JSON.stringify(selected.cardSelector)});
       if (!card) return { success: false, reason: 'CARD_NOT_FOUND' };
 
       if (${JSON.stringify(selected.type)} === 'dropdown-option') {
         const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
         if (productSelect) {
           productSelect.value = ${JSON.stringify(selected.optionValue)};
-          productSelect.dispatchEvent(new Event('change', { bubbles: true }));
           if (window.jQuery) {
             window.jQuery(productSelect).trigger('change');
-          }
+          } else productSelect.dispatchEvent(new Event('change', { bubbles: true }));
           await new Promise(r => setTimeout(r, 2500));
         }
 
@@ -366,9 +390,27 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
         await new Promise(r => setTimeout(r, 1000));
       }
 
-      const button = card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn') ||
-                     document.querySelector('.dqe-customize-btn');
+      // AJAX search results can replace the card after selection. Reacquire
+      // by exact SKU and verify the selected value before clicking anything.
+      if (${JSON.stringify(selected.type)} === 'dropdown-option') {
+        for (let attempt = 0; attempt < 30; attempt++) {
+          const liveSelect = Array.from(document.querySelectorAll('select.dqe-products')).find(el => Array.from(el.options).some(opt => opt.value === ${JSON.stringify(selected.optionValue)}));
+          if (liveSelect) {
+            card = liveSelect.closest('.cto-card, .dqe-card, .card-type-catalog') || card;
+            if (liveSelect.value !== ${JSON.stringify(selected.optionValue)}) {
+              liveSelect.value = ${JSON.stringify(selected.optionValue)};
+              if (window.jQuery) window.jQuery(liveSelect).trigger('change');
+              else liveSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            const liveButton = card.querySelector('.dqe-customize-btn');
+            if (liveButton && !liveButton.disabled && !liveButton.classList.contains('dqe-disabled')) break;
+          }
+          await new Promise(r => setTimeout(r, 500));
+        }
+      }
+      const button = card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn');
       if (!button) return { success: false, reason: 'CUSTOMIZE_BUTTON_NOT_FOUND' };
+      if (!card.isConnected || button.disabled || button.classList.contains('dqe-disabled')) return { success: false, reason: 'CUSTOMIZE_NOT_READY' };
 
       button.scrollIntoView({ block: 'center' });
       await new Promise(r => setTimeout(r, 400));
@@ -377,11 +419,17 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
     })()
   `;
 
-  await sendCommand(ws, 'Runtime.evaluate', {
+  const selectionResult = await sendCommand(ws, 'Runtime.evaluate', {
     expression: selectAndClickExpr,
     awaitPromise: true,
     returnByValue: true
   });
+  if (!selectionResult.result?.value?.success) {
+    ws.close();
+    const error = new Error(`Exact product selection failed: ${selectionResult.result?.value?.reason || 'unknown'}`);
+    error.code = 'OCA_SELECTION_FAILED';
+    throw error;
+  }
 
   ws.close();
   console.log(`⏳ Waiting for WebLogic configuration workspace to load...`);
@@ -397,7 +445,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
         const testWs = await connectWS(activeTarget.webSocketDebuggerUrl);
         const isReadyOrIntermediate = await waitForDOMPredicate(testWs, `Boolean(
           document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table') ||
-          Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]')).some(el => /customize|configure/i.test((el.innerText || el.value || '').trim())) ||
+          Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]')).some(el => !el.matches('.dqe-customize-btn') && !el.closest('.cto-card') && /^(customize|configure)$/i.test((el.innerText || el.value || '').trim())) ||
           document.querySelectorAll('table').length > 20
         )`, 3000, 500);
         testWs.close();
@@ -417,7 +465,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
         const expectedSku = ${JSON.stringify(selected.sku.toLowerCase())};
         if (expectedSku && !body.includes(expectedSku)) return false;
         const button = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'))
-          .find(el => /customize|configure/i.test((el.innerText || el.value || '').trim()));
+          .find(el => !el.matches('.dqe-customize-btn') && !el.closest('.cto-card') && el.getClientRects().length && /^(customize|configure)$/i.test((el.innerText || el.value || '').trim()));
         if (!button) return false;
         button.click();
         return true;
@@ -448,11 +496,9 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
       returnByValue: true
     });
     deliveryEstimate = deliveryResult?.result?.value || '';
+    const ready = await waitForDOMPredicate(summaryWs, `Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table'))`, 30000, 500);
     summaryWs.close();
-  }
-
-  if (!deliveryEstimate) {
-    deliveryEstimate = 'EDT 17 - 21 days';
+    if (!ready) throw new Error('OCA_CONFIG_NOT_READY: Product was selected but no configuration menu appeared; recover through Partner Portal.');
   }
 
   eligibleCandidates.forEach(cand => {
@@ -481,11 +527,12 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
  * Automatically signs into HPE Partner Portal using auto-saved credentials in Chrome profile.
  */
 async function performAutomatedSignIn(partnerTarget) {
-  console.log(`🔐 [AUTO_LOGIN] Initiating automated sign-in on ${partnerTarget.url}...`);
+  console.log(`🔐 [AUTO_LOGIN] Initiating automated sign-in on ${safeNavigationLabel(partnerTarget.url)}...`);
   let ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
+  await sendCommand(ws, 'Page.bringToFront');
 
   const portalUser = process.env.HPE_PORTAL_USER || 'hpeconfig@swiftline-uae.com';
-  const portalPass = process.env.HPE_PORTAL_PASS || 'Amch1Mumb@2';
+  const portalPass = process.env.HPE_PORTAL_PASS || ''; // Otherwise use the profile's saved credential.
 
   try {
     // 1. Fill email input & click #oktaSignInBtn
@@ -494,6 +541,7 @@ async function performAutomatedSignIn(partnerTarget) {
       try {
         const emailState = await sendCommand(ws, 'Runtime.evaluate', {
           expression: `(() => {
+            if (Array.from(document.querySelectorAll('input[type="password"]')).some(el => el.getClientRects().length)) return { passwordReady: true };
             const cookieBtn = document.querySelector('#truste-consent-button, #truste-consent-close, .truste_popframe, #truste-consent-required');
             if (cookieBtn) cookieBtn.click();
 
@@ -507,12 +555,21 @@ async function performAutomatedSignIn(partnerTarget) {
           returnByValue: true
         });
 
+        if (emailState?.result?.value?.passwordReady) {
+          emailSubmitted = true;
+          break;
+        }
         if (emailState?.result?.value?.found) {
           await sendCommand(ws, 'Input.insertText', { text: portalUser });
           await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
               const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
               if (emailInput) {
+                // Background tabs can lose focus between focus() and insertText.
+                // Verify the field itself before dispatching the form events.
+                if (emailInput.value !== ${JSON.stringify(portalUser)}) {
+                  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(emailInput, ${JSON.stringify(portalUser)});
+                }
                 emailInput.dispatchEvent(new Event('input', { bubbles: true }));
                 emailInput.dispatchEvent(new Event('change', { bubbles: true }));
               }
@@ -531,10 +588,10 @@ async function performAutomatedSignIn(partnerTarget) {
           });
 
           if (btnCoords?.result?.value?.x) {
-            const { x, y } = btnCoords.result.value;
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
-            console.log(`   Submitted email (${portalUser}) via Sign in button.`);
+            await sendCommand(ws, 'Runtime.evaluate', {
+              expression: `document.querySelector('#oktaSignInBtn, button.btn-sign-in')?.click()`
+            });
+            console.log('   Submitted email via Sign in button.');
             emailSubmitted = true;
             break;
           }
@@ -545,27 +602,31 @@ async function performAutomatedSignIn(partnerTarget) {
 
     // 2. Wait for credential / password page and submit password
     let passwordSubmitted = false;
-    for (let passAttempt = 0; passAttempt < 30 && !passwordSubmitted; passAttempt++) {
+    for (let passAttempt = 0; passAttempt < 180 && !passwordSubmitted; passAttempt++) {
       try {
         const passState = await sendCommand(ws, 'Runtime.evaluate', {
           expression: `(() => {
-            const passInput = document.querySelector('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password');
+            if (location.pathname.includes('/group/prp')) return { authenticated: true };
+            const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
             if (!passInput) {
               // If we are on /login and email input was cleared, re-fill email
               const emailAgain = document.querySelector('#oktaEmailInput');
-              if (emailAgain && (!emailAgain.value || emailAgain.value.trim() === '')) {
+              if (emailAgain && emailAgain.getClientRects().length && (!emailAgain.value || ${passAttempt > 0 && passAttempt % 15 === 0})) {
+                emailAgain.value = '';
+                emailAgain.focus();
                 return { needsEmail: true };
               }
               return { found: false };
             }
             passInput.focus();
-            passInput.value = '';
-            return { found: true };
+            if (${JSON.stringify(Boolean(portalPass))}) passInput.value = '';
+            return { found: Boolean(${JSON.stringify(Boolean(portalPass))} || passInput.value) };
           })()`,
           returnByValue: true
         });
 
         const stateVal = passState?.result?.value;
+        if (stateVal?.authenticated) break;
         if (stateVal?.needsEmail) {
           await sendCommand(ws, 'Input.insertText', { text: portalUser });
           const retryBtn = await sendCommand(ws, 'Runtime.evaluate', {
@@ -583,11 +644,12 @@ async function performAutomatedSignIn(partnerTarget) {
             await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
           }
         } else if (stateVal?.found) {
-          await sendCommand(ws, 'Input.insertText', { text: portalPass });
+          if (portalPass) await sendCommand(ws, 'Input.insertText', { text: portalPass });
           await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
-              const passInput = document.querySelector('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password');
+              const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
               if (passInput) {
+                if (${JSON.stringify(Boolean(portalPass))}) Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(passInput, ${JSON.stringify(portalPass)});
                 passInput.dispatchEvent(new Event('input', { bubbles: true }));
                 passInput.dispatchEvent(new Event('change', { bubbles: true }));
               }
@@ -596,7 +658,7 @@ async function performAutomatedSignIn(partnerTarget) {
 
           const submitCoords = await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
-              const btn = document.querySelector('#onepass-submit-btn, button.submit-btn, #okta-signin-submit, button[type="submit"]');
+              const btn = Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length);
               if (!btn) return null;
               const rect = btn.getBoundingClientRect();
               btn.focus();
@@ -606,9 +668,9 @@ async function performAutomatedSignIn(partnerTarget) {
           });
 
           if (submitCoords?.result?.value?.x) {
-            const { x, y } = submitCoords.result.value;
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+            await sendCommand(ws, 'Runtime.evaluate', {
+              expression: `Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length)?.click()`
+            });
             console.log(`   Submitted password via onepass-submit-btn.`);
             passwordSubmitted = true;
             break;
@@ -642,7 +704,7 @@ async function performAutomatedSignIn(partnerTarget) {
     // If an OCA tab is already opened by the user or redirect, prioritize it directly
     const directOcaTarget = pages.find(t => t.url && t.url.includes('oca.ext.hpe.com') && !isSeismicTarget(t));
     if (directOcaTarget) {
-      console.log(`🎉 [OCA_DETECTED] One Config Advanced tab detected at: ${directOcaTarget.url}`);
+      console.log(`🎉 [OCA_DETECTED] One Config Advanced tab detected at: ${safeNavigationLabel(directOcaTarget.url)}`);
       return directOcaTarget;
     }
 
@@ -655,7 +717,7 @@ async function performAutomatedSignIn(partnerTarget) {
       (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
     );
     if (homeTarget) {
-      console.log(`🎉 [AUTH_SUCCESS] Successfully authenticated into HPE Partner Portal at: ${homeTarget.url}`);
+      console.log(`🎉 [AUTH_SUCCESS] Successfully authenticated into HPE Partner Portal at: ${safeNavigationLabel(homeTarget.url)}`);
       return homeTarget;
     }
   }
@@ -667,7 +729,7 @@ async function performAutomatedSignIn(partnerTarget) {
  * Handles launching the OCA tool when browser is on Partner Portal tab.
  */
 async function handlePartnerPortalLaunch(partnerTarget, query, options) {
-  console.log(`🌐 Found active HPE Partner Portal tab at: ${partnerTarget.url} (title: "${partnerTarget.title}")`);
+  console.log(`🌐 Found active HPE Partner Portal tab at: ${safeNavigationLabel(partnerTarget.url)} (title: "${safeNavigationLabel(partnerTarget.title)}")`);
 
   let isLoginPage = partnerTarget.url.includes('/web/prp') ||
                     partnerTarget.url.includes('login') || 
@@ -712,7 +774,7 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   );
 
   if (activePortalTarget && activePortalTarget.url && activePortalTarget.url.includes('oca.ext.hpe.com')) {
-    console.log(`⚡ Direct OCA tab active at: ${activePortalTarget.url}. Navigating directly to "${query}"...`);
+    console.log(`⚡ Direct OCA tab active at: ${safeNavigationLabel(activePortalTarget.url)}. Navigating directly to "${query}"...`);
     return navigateToOCAChassis(query, { ...options, existingTarget: activePortalTarget });
   }
 
@@ -776,6 +838,13 @@ async function waitForBrowserSession(query, options) {
   await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
 
   let waitAttempts = 0;
+  const initialPages = await getPageTargets();
+  if (!initialPages.some(t => /(?:partner|oca\.ext)\.hpe\.com/.test(t.url || ''))) {
+    // Chrome may already be running after an OCA handoff consumed Tab 1.
+    // The launcher intentionally does nothing in that case; create Tab 1 here.
+    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
+    if (!response.ok) throw new Error(`Unable to reopen Partner Portal tab: HTTP ${response.status}`);
+  }
   while (waitAttempts < 60) {
     await new Promise(r => setTimeout(r, 3000));
     waitAttempts++;
@@ -805,7 +874,7 @@ function isSeismicTarget(t) {
 async function pruneSeismicTabs(pages) {
   for (const t of pages || []) {
     if (isSeismicTarget(t) && t.id) {
-      console.log(`🧹 [SEISMIC_PRUNE] Closing unwanted Seismic sales collateral tab: [${t.id}] ${t.url}`);
+      console.log(`🧹 [SEISMIC_PRUNE] Closing unwanted Seismic sales collateral tab: [${t.id}] ${safeNavigationLabel(t.url)}`);
       try {
         await closePageTarget(t.id);
       } catch (_) {}
@@ -832,25 +901,34 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
 
   const pages = await getPageTargets();
   await pruneSeismicTabs(pages);
+  // OCA may reuse the Partner Portal tab. Keep a portal tab alive before
+  // closing OCA; closing Chrome's last tab terminates the CDP browser.
+  if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
+    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
+    if (!response.ok) throw new Error('Unable to open Partner Portal for session recovery.');
+  }
 
   const ocaTarget = !options.forceFreshSession ? pages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com')) : null;
   if (ocaTarget) {
     const ocaUrlLower = (ocaTarget.url || '').toLowerCase();
-    const ocaTitleLower = (ocaTarget.title || '').toLowerCase();
     const isLoggedOutUrl = ocaUrlLower.includes('/logout') ||
       ocaUrlLower.includes('login_error') ||
-      ocaUrlLower.includes('session_expired') ||
-      ocaUrlLower.includes('ocainternallogin') ||
-      ocaTitleLower.includes('external oca');
+      ocaUrlLower.includes('session_expired');
     if (isLoggedOutUrl) {
-      console.warn(`🚨 [STALE_SESSION] OCA tab [${ocaTarget.id}] is at logged-out/error URL: ${ocaTarget.url}. As OCA cannot be reloaded in-place, closing tab and recovering via Partner Portal...`);
+      console.warn(`🚨 [STALE_SESSION] OCA tab [${ocaTarget.id}] is at logged-out/error URL: ${safeNavigationLabel(ocaTarget.url)}. As OCA cannot be reloaded in-place, closing tab and recovering via Partner Portal...`);
       try { await closePageTarget(ocaTarget.id); } catch (_) {}
       await new Promise(r => setTimeout(r, 1000));
       return recoverAndLaunchFreshOCA(query, options);
     }
 
-    console.log(`✅ Found active OCA tab: [${ocaTarget.id}] ${ocaTarget.title}`);
+    console.log(`✅ Found active OCA tab: [${ocaTarget.id}] ${safeNavigationLabel(ocaTarget.title)}`);
     try {
+      if (ocaUrlLower.includes('ocainternallogin')) {
+        const handoffWs = await connectWS(ocaTarget.webSocketDebuggerUrl);
+        try {
+          await waitForDOMPredicate(handoffWs, `Boolean(document.querySelector('#searchProductInput, #search-config, #extended_overview_menu')) || /you are logged out|session expired|login failed/i.test(document.body?.innerText || '')`, 90000, 1000);
+        } finally { handoffWs.close(); }
+      }
       const menuCheck = await checkActiveMenuTab(ocaTarget, query, options);
       if (menuCheck.handled) {
         if (menuCheck.isStaleOrLoggedOut) {
@@ -863,6 +941,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
       }
       return await searchAndConfigureChassis(menuCheck.ws, query, ocaTarget);
     } catch (ocaErr) {
+      if (['OCA_PRODUCT_NOT_FOUND', 'OCA_SELECTION_FAILED'].includes(ocaErr.code)) throw ocaErr;
       console.warn(`⚠️ [RECOVERY] OCA interaction error: ${ocaErr.message}. Re-establishing session via Partner Portal...`);
       try { await closePageTarget(ocaTarget.id); } catch (_) {}
       await new Promise(r => setTimeout(r, 2000));
@@ -893,6 +972,9 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
  * Never attempts in-place OCA page reloads which break WebLogic session state.
  */
 async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = {}) {
+  const recoveryAttempt = (options.recoveryAttempt || 0) + 1;
+  if (recoveryAttempt > 2) throw new Error('OCA_RECOVERY_EXHAUSTED: two fresh Partner Portal sessions failed; retain pending vendor validation.');
+  options = { ...options, recoveryAttempt };
   const query = String(chassisQuery || 'DL380 Gen12').trim();
   console.log(`\n===============================================================`);
   console.log(`🔄 [INV-89] TAB 1 STALE-SESSION SELF-HEALING RECOVERY`);
@@ -902,9 +984,13 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   // 1. Close any stale, frozen, or broken OCA tabs
   const pages = await getPageTargets();
   await pruneSeismicTabs(pages);
+  if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
+    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
+    if (!response.ok) throw new Error('Unable to keep Partner Portal alive during recovery.');
+  }
   for (const t of pages) {
     if (t.url && t.url.includes('oca.ext.hpe.com')) {
-      console.log(`🧹 Closing stale/broken OCA tab: [${t.id}] ${t.title || t.url}`);
+      console.log(`🧹 Closing stale/broken OCA tab: [${t.id}] ${safeNavigationLabel(t.title || t.url)}`);
       try { await closePageTarget(t.id); } catch (_) {}
     }
   }

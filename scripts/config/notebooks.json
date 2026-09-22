@@ -505,6 +505,38 @@
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "runningKnowledgeVerifiedRevision": "674b5016600cdf5ae80940eb929add4cbaa1c2e131a7432f501d9b74feb524ee",
       "runningKnowledgeVerifiedAt": "2026-09-18T16:19:50.845Z"
+    },
+    "SN3600B_FC": {
+      "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+      "vendor": "HPE",
+      "pillar": "NETWORKING",
+      "family": "SAN",
+      "gen": "FC",
+      "queryEnabled": true,
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "officialSourceIds": [
+        "41012991-4c8a-48d8-a024-bb6dc33f5037"
+      ],
+      "trustedSourceIds": [
+        "41012991-4c8a-48d8-a024-bb6dc33f5037",
+        "9014856e-796e-4f66-bbe0-5937254826dc",
+        "f6ba7fd7-58a9-4565-9cb4-f37e40cc4389"
+      ],
+      "certifiedCatalogSourceIds": [
+        "f6ba7fd7-58a9-4565-9cb4-f37e40cc4389"
+      ],
+      "verifiedLearningSourceIds": [],
+      "baseSku": "R7R97A",
+      "lastSyncedAt": "2026-09-22T13:06:21.853Z",
+      "lastSyncDeltaCount": 6,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncError": null,
+      "lastSyncedSourceName": "SN3600B_FC_OCA_Catalog_2026-09-22",
+      "canonicalKnowledgeSourceIds": [
+        "f6ba7fd7-58a9-4565-9cb4-f37e40cc4389"
+      ],
+      "lastPayloadChecksum": "6437016b7eb9feaafe8d9fbd59b5aba38f46eabb3709a09c1bead56654b8c9a6",
+      "lastSyncedSourceId": "f6ba7fd7-58a9-4565-9cb4-f37e40cc4389"
     }
   },
   "runningKnowledgeDoc": {

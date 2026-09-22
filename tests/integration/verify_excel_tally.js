@@ -345,7 +345,8 @@ async function main() {
       auditResults.checks.push({ status: 'DEGRADED', message: 'Selected CTO chassis delivery estimate missing (legacy catalog)' });
       auditResults.isDegraded = true;
     } else {
-      assert(hasDeliveryEstimate, 'Selected CTO chassis carries the current OCA configuration delivery estimate');
+      const explicitlyUnpublished = chassisRows.every(({ sku }) => !String(sku['Lead Time'] || '').trim() && sku['Lead Time Source'] === 'Not published by OCA');
+      assert(hasDeliveryEstimate || explicitlyUnpublished, 'Selected chassis preserves published OCA delivery estimates or explicitly records unavailable lead time');
     }
 
     const allCanonical = chassisRows.every(({ sku }) => isCanonicalCtoChassisCandidate({

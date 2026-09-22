@@ -111,6 +111,7 @@ function detectHeaderColumnMap(line, delimiter) {
     }
     const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
     if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
+    if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
   });
 
   return (map.sku !== -1 || map.desc !== -1 || map.qty !== -1) ? map : null;
@@ -202,6 +203,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
       .map(key => [key, parts[activeColumnMap[key]]])),
     sku: /^H[A-Z0-9]+\s+[A-Z0-9]{3,}$/i.test(rawSkuPart.trim()) ? rawSkuPart.trim() : cleanSku,
     description: rawDescPart && !rawDescPart.toLowerCase().includes('factory integrated') ? rawDescPart : cleanSku,
+    purpose: activeColumnMap?.purpose !== undefined ? parts[activeColumnMap.purpose] : '',
     quantity: lineQty,
     unitPriceUsd: unitPriceUsd || 0,
     isFactoryIntegrated: isFioLine
