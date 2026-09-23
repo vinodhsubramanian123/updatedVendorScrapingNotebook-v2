@@ -605,6 +605,21 @@ The system leverages Google Jules for background code review, test generation, a
     - **Spares, Cluster-Level Services, and Accessory Immunity**: Order-level installation services (e.g. `HA113A1` Onsite Installation), cluster-wide spares, chassis accessories (e.g. `804943-B21` 4x Lift Handle), and non-node SaaS subscriptions are immune to node division/multiplication and must remain scoped at `nodeMult = 1` or cluster level.
     - **Hardware Spec & Multiplier Neutralization**: Pre-processing tokenizers must neutralize hardware specification suffixes (such as `x8`, `x16`, `4x`, `#`, `Gen5`) in descriptions and model strings to prevent false parsing as quantity multipliers. Services and accessories with OEM product names (e.g. `HA113A1 5A6` "HPE Proliant DL/ML Install SVC") must never be detected as server chassis or drive cages.
 
+109. **Dual OCP Slot Enablement Interconnect Invariant (`INV-118`)**:
+    - When a customer tender or competitor quote (e.g. Dell R770 Riser 6-2) specifies two OCP expansion slots (`1x8/1x16 OCP (G5)` and `2nd OCP x16 (G5)`), the solution engine must provision the internal signal enablement cable kit (`P72203-B21` / `SECONDARY_OCP_SLOT_ENABLEMENT_CABLE`). In HPE DL380 Gen12, OCP Slot A is native, but OCP Slot B requires dedicated CPU1/CPU2 cabling to physically activate the rear secondary OCP port. Removing this cable produces a chassis with an unpowered, dead second OCP port, violating hardware parity.
+
+110. **PCIe Lane-Width Parity & Primary Riser Upgrades Invariant (`INV-119`)**:
+    - When an enterprise RFQ requires multiple full-height x16 Gen5 expansion slots (`Rear 2x16 FH (G5)`), the evaluation engine must upgrade from the factory default primary riser (`x8/x16/x8` at $0) to the all-x16 Gen5 Primary Riser Kit (`P48803-B21` / `PRIMARY_FULL_BANDWIDTH_EXPANSION_RISER`). Relying solely on the default riser delivers only a single x16 slot in the primary position, risking technical disqualification during competitive tender audits.
+
+111. **Rear Boot Storage and Tertiary Riser Containment Invariant (`INV-120`)**:
+    - In 2U enterprise server architectures, rear hot-plug boot storage devices (e.g. `P78279-B21` NS204i-u v2 with `P74755-B21` Rear Mount Kit or Dell BOSS-N1 rear) physically occupy the Tertiary Riser bay (Zone 3 above the power supplies). Tertiary risers and rear boot devices are mutually exclusive. The solution engine must strictly forbid tertiary risers when rear boot enablement kits are present.
+
+112. **Data Storage Drive Preservation Invariant (`INV-121`)**:
+    - When customer tenders explicitly specify local data storage drives (e.g. 3x 960GB SATA Read-Intensive SSDs) alongside storage controllers and drive cages, the evaluation engine MUST NEVER produce an unexpected diskless proposal or drop drives to artificially lower price. Mirrored M.2 boot storage (`NS204i-u`) satisfies only OS boot requirements; local application scratch and data drives must be preserved with exact count, interface, and capacity (`P40498-B21`).
+
+113. **True N+1 Power Redundancy under Accelerator Peak Load Invariant (`INV-122`)**:
+    - Dual-socket servers pairing high-TDP CPUs (>270W each, e.g. 2x Xeon 6760P 330W = 660W) with high-draw PCIe accelerators (>=350W, e.g. 1x H200 NVL 450W) exceed 1,500W system peak electrical draw under full thermal duty cycle. In 1+1 redundant configurations, each individual power supply MUST be sized to sustain full peak load upon single-feed or PSU failure. Sizing dual 1000W PSUs delivers 2000W combined non-redundant power but fails N+1 redundancy; high-wattage Titanium PSUs (e.g. `P44712-B21` 1800W-2200W Titanium) must be mandated.
+
 ## 7. Cognitive Mandates for Autonomous Agents (Root Cause Prevention)
 To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never repeat the blind spots identified in the 2026-09-17 audit, all agents MUST adhere to these cognitive mandates:
 1. **Adversarial Negative-Path Thinking**: For every feature or gate, test missing, empty, corrupt, and boundary inputs first. A failure or missing check must NEVER become a success claim.

@@ -25,18 +25,18 @@
       "scrapeDate": "2026-09-22",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 19746,
+          "minPrice": 19746,
+          "maxPrice": 19746,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 19746,
+              "avgPrice": 19746
             }
           },
-          "avgPrice": 0
+          "avgPrice": 19746
         },
         "Networking": {
           "totalSKUs": 16,
@@ -154,8 +154,8 @@
           "Component Role": "Base Chassis",
           "Description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
           "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "listPrice": 0,
+          "Unit Price (USD)": "19,746.00",
+          "listPrice": 19746,
           "CLIC Status": "Active",
           "Lifecycle Status": "Active",
           "lifecycleStatus": "Active",

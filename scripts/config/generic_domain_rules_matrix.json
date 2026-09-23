@@ -158,6 +158,163 @@
       "recommendation": "Include Factory Integrated No Drive Configuration FIO Kit to pass factory configuration validation."
     },
     {
+      "id": "GDR-SRV-011",
+      "domain": "SERVER",
+      "aspect": "Compute & Thermal",
+      "name": "High Thermal Density Ambient Temperature Derating",
+      "description": "Processors exceeding high TDP (>270W) combined with high-wattage accelerators (>=350W) under air cooling mandate derating maximum recommended ambient temperature to <=25C (or <=20C) to prevent thermal throttling and configurator blocks.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "attributes.tdpWatts", "operator": ">", "value": 270 },
+          { "field": "capabilities.hasGpuAccelerator", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "DERATED_AMBIENT_TEMPERATURE_TRACKING",
+      "recommendation": "Configure ambient temperature tracking to <=25C (or <=20C) rather than standard 27C/30C ambient baselines."
+    },
+    {
+      "id": "GDR-SRV-012",
+      "domain": "SERVER",
+      "aspect": "PCIe & Expansion",
+      "name": "High-Power Accelerator Secondary Riser Airflow Zone Containment",
+      "description": "Double-wide or high-wattage PCIe accelerators in standard 2U servers cannot be installed in Primary Riser bays due to thermal turbulence over power supplies; they strictly mandate Secondary Riser containment where dedicated cooling baffles and unobstructed airflow exist.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasGpuAccelerator", "operator": "==", "value": true },
+          { "field": "capabilities.isStandard2URack", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "SECONDARY_EXPANSION_RISER_KIT",
+      "recommendation": "Inject Secondary Riser Kit (Slots 4-6) to accommodate double-wide/high-power accelerator and satisfy layout routing."
+    },
+    {
+      "id": "GDR-SRV-013",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Internal Storage Controller-to-Backplane Interconnect Cabling",
+      "description": "Pairing a dedicated internal RAID/HBA storage controller with front drive backplanes mandates matching high-speed internal data interconnect cables (Box 1/2 cables) and sideband telemetry cables.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasInternalStorageController", "operator": "==", "value": true },
+          { "field": "capabilities.hasDriveBackplane", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "STORAGE_BACKPLANE_DATA_INTERCONNECT_CABLE",
+      "recommendation": "Include dedicated controller-to-backplane internal PCIe/SAS data cable kit (Quantity matching active drive cage count)."
+    },
+    {
+      "id": "GDR-SRV-014",
+      "domain": "SERVER",
+      "aspect": "Power & Environment",
+      "name": "Modern 16-Pin GPU Auxiliary Power Pinout Matching",
+      "description": "PCIe Gen5 / 12V-2x6 high-draw accelerators mandate matching 16-pin (CEM 5.0) power cables; legacy 8-pin auxiliary power cables cannot be substituted and trigger hard factory blocks.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.has16PinGpuAccelerator",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "GPU_16PIN_AUXILIARY_POWER_CABLE",
+      "recommendation": "Select 16-pin (12V-2x6 / CEM 5.0) GPU auxiliary power cable kit matching accelerator power inlet."
+    },
+    {
+      "id": "GDR-SRV-015",
+      "domain": "SERVER",
+      "aspect": "Networking & Fabric",
+      "name": "Dual OCP Expansion Slot Enablement Interconnect",
+      "description": "Tender configurations requiring a secondary OCP 3.0 slot (2nd OCP Gen5) mandate internal motherboard-to-chassis signal cable enablement to activate the rear secondary OCP port.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.hasDualOcpRequirement",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "SECONDARY_OCP_SLOT_ENABLEMENT_CABLE",
+      "recommendation": "Inject secondary OCP Slot B enablement cable kit to provide active dual OCP Gen5 connectivity."
+    },
+    {
+      "id": "GDR-SRV-016",
+      "domain": "SERVER",
+      "aspect": "PCIe & Expansion",
+      "name": "Multi-Slot x16 Full-Height Primary Riser Bandwidth Matching",
+      "description": "Tender configurations specifying multiple x16 Gen5 Full-Height slots (Rear 2x16 FH) require upgrading the default primary riser (x8/x16/x8) to an all-x16 Gen5 Primary Riser Kit.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.requiresMultiX16PrimaryRiser",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "PRIMARY_FULL_BANDWIDTH_EXPANSION_RISER",
+      "recommendation": "Upgrade default primary riser to all-x16 Gen5 Primary Riser Kit (3x x16) to satisfy tender 2x16 FH requirements."
+    },
+    {
+      "id": "GDR-SRV-017",
+      "domain": "SERVER",
+      "aspect": "PCIe & Expansion",
+      "name": "Rear Boot Storage and Tertiary Riser Mutual Exclusion",
+      "description": "In 2U enterprise chassis, rear-accessible mirrored M.2 boot storage devices physically occupy the Tertiary Riser bay (Zone 3); tertiary risers are strictly barred to prevent mechanical collision.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasRearBootDevice", "operator": "==", "value": true },
+          { "field": "capabilities.hasTertiaryRiser", "operator": "==", "value": true }
+        ]
+      },
+      "requiredCapability": "TERTIARY_RISER_DECONFLICTED",
+      "recommendation": "Rear boot storage devices physically occupy the Tertiary Riser bay; remove Tertiary Riser to prevent physical chassis clash."
+    },
+    {
+      "id": "GDR-SRV-018",
+      "domain": "SERVER",
+      "aspect": "Storage & Tri-Mode",
+      "name": "Data Storage Drive Preservation Invariant",
+      "description": "When customer tenders specify local data drives alongside storage controllers and cages, the configuration must preserve data drives and never produce an unexpected diskless proposal.",
+      "severity": "ERROR",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasDataDriveRequirement", "operator": "==", "value": true },
+          { "field": "metrics.internalDriveCount", "operator": "==", "value": 0 }
+        ]
+      },
+      "requiredCapability": "DATA_STORAGE_DRIVE_PRESERVATION",
+      "recommendation": "Customer specified local data drives; ensure exact drive count, capacity, and interface are provisioned rather than delivering a diskless chassis."
+    },
+    {
+      "id": "GDR-SRV-019",
+      "domain": "SERVER",
+      "aspect": "Power & Environment",
+      "name": "True N+1 Power Redundancy under Accelerator Peak Load",
+      "description": "When server peak power draw exceeds 1,500W due to combined high-TDP CPUs and accelerators, 1+1 redundant power supply sizing must ensure each individual PSU exceeds full peak draw.",
+      "severity": "ERROR",
+      "condition": {
+        "field": "capabilities.hasSinglePsuDeficit",
+        "operator": "==",
+        "value": true
+      },
+      "requiredCapability": "TRUE_N_PLUS_ONE_REDUNDANT_POWER_SUBSYSTEM",
+      "recommendation": "System peak load exceeds 1,500W; size individual PSUs (e.g. 1800W-2200W Titanium) so a single PSU sustains peak load upon power feed failure."
+    },
+    {
+      "id": "GDR-SRV-020",
+      "domain": "SERVER",
+      "aspect": "Rack Infrastructure",
+      "name": "Rack Rail Cable Management Arm (CMA) Completeness",
+      "description": "Sliding rail specifications requiring cable management arms must include matching articulating CMA hardware for structured 42U rack cable dressing.",
+      "severity": "WARNING",
+      "condition": {
+        "and": [
+          { "field": "capabilities.hasSlidingRailKit", "operator": "==", "value": true },
+          { "field": "capabilities.requiresCma", "operator": "==", "value": true },
+          { "field": "capabilities.hasCma", "operator": "==", "value": false }
+        ]
+      },
+      "requiredCapability": "RACK_CABLE_MANAGEMENT_ARM",
+      "recommendation": "Add 2U articulating Cable Management Arm (CMA) to match tender sliding rail with CMA specification."
+    },
+    {
       "id": "GDR-STG-001",
       "domain": "STORAGE",
       "aspect": "Storage Architecture",

@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-23T05:31:06.759Z  
-**Total Deduplicated Learned Rules:** 82  
+**Last Synchronized:** 2026-09-23T19:20:34.320Z  
+**Total Deduplicated Learned Rules:** 94  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **82**.
+Total verified rules indexed in this build: **94**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -235,6 +235,18 @@ Total verified rules indexed in this build: **82**.
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P74573-B21` | `P74792-B21` | • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 / Constraint: learned (Intel Xeon 6730P 250W  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P10180-B21` | `P51181-B21` | P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P76453-B21` | `P48918-B21` | 3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `OPTION_TYPE_SUBSTITUTION` | `P81130-B21` | `P74787-B21` | When HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) is selected, the only supported heatsi | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P81130-B21` | `P79555-B21` | HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) supports processors up to 270W at 30C or up | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P10115-B21` | `P72203-B21` | Rear OCP Slot B on DL380 Gen12 NC chassis is unpowered and logically disconnected by default; configuring an OCP NIC req | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P78279-B21` | `P74755-B21` | HPE NS204i-u v2 480GB NVMe Hot Plug Boot Storage Device (P78279-B21) requires HPE ProLiant Compute DL380 Gen12 NS204i-u  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `S3U30C` | `P93055-B21` | Rule 81392332: P56072-B21 requires to be ordered with supported 8-pin GPUs. H200 NVL mandates P93055-B21 HPE GPU 16-pin  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `S3U30C` | `P51083-B21` | Rule 81394885: 1 qty 8SFF Cage + Processor above 270W + Air Cooled: H200 NVL (S3U30C) is not supported on Primary Riser  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `P76453-B21` | Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2 | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P73282-B21` | `P72203-B21` | Rear OCP Slot B requires P72203-B21 CPU1 to Rear OCP SlotB x8 Cable Kit for physical enablement. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P73282-B21` | `P48803-B21` | Rear 2x16 FH Gen5 compliance requires P48803-B21 HPE DL380 2U x16/x16/x16 Primary Riser Kit. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `P40498-B21` | Customer data storage requirement: 3x P40498-B21 per server node in 8SFF drive cage. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `S3U30C` | `P44712-B21` | Peak power envelope > 1,500W requires dual P44712-B21 1800W-2200W Titanium PSUs for true N+1 redundancy. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `MUTUAL_EXCLUSION` | `P74755-B21` | `P74737-B21` | NS204i-u Rear Mount Kit and Tertiary Riser occupy the same rear bay zone and are mutually exclusive. | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |

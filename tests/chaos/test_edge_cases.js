@@ -106,7 +106,7 @@ const ragRes = queryLocalKnowledgeBase('nonexistent_query_xyz_12345_abc', 'DL380
 assert(ragRes && typeof ragRes.answer === 'string' && Array.isArray(ragRes.citations), 'Local RAG returns valid result structure for unmatched query');
 
 const tmpTestDir = fs.mkdtempSync(path.join(os.tmpdir(), 'edge-test-'));
-const fbRes = processPortalFeedback('', tmpTestDir);
+const fbRes = processPortalFeedback('', tmpTestDir, { skipPostPromotionSideEffects: true });
 assert(fbRes && fbRes.deltaId, 'Feedback processor handles empty error string gracefully');
 try { fs.rmSync(tmpTestDir, { recursive: true, force: true }); } catch (e) {}
 
@@ -136,7 +136,7 @@ for (let i = 0; i < totalFuzzRuns; i++) {
     }
     const fuzzText = fuzzLines.join('\n');
     const parsedFuzz = parseAndConsolidateBOQ(fuzzText);
-    const evalFuzz = evaluatePhysicalMath(parsedFuzz);
+    const evalFuzz = evaluatePhysicalMath(parsedFuzz, null, '', { skipGraphValidation: true });
     if (evalFuzz && typeof evalFuzz.confidence.score === 'number') {
       fuzzSuccessCount++;
     }

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-09-21T07:34:10.106Z
+**Sync Timestamp**: 2026-09-23T19:29:03.331Z
 
 **Total Verified SKUs**: `1022` (`605` Hardware + `417` Services)
 
-**Total Synced KnowledgeDeltas**: `37`
+**Total Synced KnowledgeDeltas**: `58`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -24,7 +24,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
-*No verified universal vendor rules are registered for this product.*
+1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: ERROR_DIAGNOSTIC_ATTRIBUTION)*
+2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: ICON_SUPPORT_ISOLATION)*
+3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix. *(Type: SESSION_RECOVERY_PROTOCOL)*
+4. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
+5. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
+6. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
+7. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
+8. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
+9. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant Gen12)
 
@@ -182,6 +190,54 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 37. **[DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P76453-B21` | **Required Dependency**: `P48918-B21`
+
+38. **[DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P81130-B21` | **Required Dependency**: `P74787-B21`
+
+39. **[DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P81130-B21` | **Required Dependency**: `P79555-B21`
+
+40. **[DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P10115-B21` | **Required Dependency**: `P72203-B21`
+
+41. **[DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P78279-B21` | **Required Dependency**: `P74755-B21`
+
+42. **[DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `S3U30C` | **Required Dependency**: `P93055-B21`
+
+43. **[DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `S3U30C` | **Required Dependency**: `P51083-B21`
+
+44. **[DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P76453-B21`
+
+45. **[DELTA_CLIC_RULE_OCP_SLOTB_P72203-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P72203-B21`
+
+46. **[DELTA_CLIC_RULE_PRIMARY_RISER_2X16_P48803-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P48803-B21`
+
+47. **[DELTA_CLIC_RULE_DATA_SSDS_P40498-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P40498-B21`
+
+48. **[DELTA_CLIC_RULE_TITANIUM_PSU_P44712-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `S3U30C` | **Required Dependency**: `P44712-B21`
+
+49. **[DELTA_PHYSICAL_RULE_TERTIARY_NS204I_MUTUAL_EXCLUSION] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P74755-B21` | **Required Dependency**: `P74737-B21`
 
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry

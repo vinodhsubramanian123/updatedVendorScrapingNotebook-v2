@@ -36,6 +36,7 @@ const IMPORTED_SOURCES_DIR = path.join(HISTORY_DIR, 'imported_sources');
 const NOTEBOOKS_CONFIG_PATH = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
 const RUNNING_CHARTER_PATH = path.join(HISTORY_DIR, 'running_knowledge_charter.md');
 const UNIVERSAL_CHARTER_PATH = path.join(HISTORY_DIR, 'master_universal_knowledge_charter.md');
+const MASTER_REGISTRY_PATH = path.join(HISTORY_DIR, 'master_knowledge_registry.json');
 
 const DEFAULT_DRIVE_FOLDER_ID = '1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-';
 const CHARTER_TITLE = 'HPE AI Studio — Master Running Knowledge & Learnings Charter';
@@ -608,7 +609,7 @@ async function syncRunningKnowledge(options = {}) {
     totalRules: deduplicatedRules.length,
     googleDoc: googleDocResult,
     charterPath: RUNNING_CHARTER_PATH,
-    registryPath
+    registryPath: MASTER_REGISTRY_PATH
   };
 }
 

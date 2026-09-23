@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-09-23T05:31:03.228Z
+**Sync Timestamp**: 2026-09-23T19:29:09.201Z
 
 **Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
 
@@ -72,14 +72,3 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 |--------------------|----------------|------------|-------------|--------------|
 | **SN3600B_FC** | SAN | FC | 1U | `R7R97A` |
 
-
-## Live OCA product-qualified service observations
-
-Product R7R97A; captured 2026-09-22T18:07:43.869Z. Source: authenticated HPE OCA Components service editor and complete CLIC acceptance. Receipt SHA-256: af7f52c450dac9f7b2b3d27686846da35933530a99f4d9a1add8965df00e6625. This dated evidence proves the following services were accepted for this product; future availability and any changed configuration require a new live check.
-
-| Service SKU | Vendor description | Captured unit list USD |
-|---|---|---:|
-| HA113A1 | HPE Installation Service | 0 |
-| HA113A1#5GA | HPE LowEnd SAN/Edge Switch/HAFM Inst SVC | 537 |
-| HU4B3A3 | HPE 3Y Tech Care Basic with Defective Media Retention Service | 0 |
-| HU4B3A3#ZTL | HPE SN3600B 24/8 8p 32G Swch Support | 186 |

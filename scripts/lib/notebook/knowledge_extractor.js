@@ -180,7 +180,11 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     }
 
     // 4. Extract Discrepancy & Differing Opinion Flags (Presales Human Review Trigger)
-    if (pLower.includes('discrepancy') || pLower.includes('contradiction') || pLower.includes('conflict') || pLower.includes('unverified') || pLower.includes('differs from') || pLower.includes('human review')) {
+    const isBaselineOmission = /(?:unverified|untrusted)\s+(?:baseline|input|proposal|quote|request|customer)|(?:correctly|properly)\s+omitted|omitted\s+(?:the\s+)?unverified/i.test(unit);
+    const hasUnverifiedConstraint = (/(?:remains?|is|are)\s+unverified\b/i.test(unit) || /\bunverified\s+(?:constraint|specification|compatibility|support|rule|option|part)\b/i.test(unit)) && !isBaselineOmission;
+    const hasExplicitDiscrepancy = (pLower.includes('discrepancy') || pLower.includes('contradiction') || pLower.includes('conflict') || pLower.includes('differs from') || pLower.includes('human review')) && !isBaselineOmission;
+
+    if (hasExplicitDiscrepancy || hasUnverifiedConstraint) {
       if (validSkus.length >= 1) {
         const flaggedSku = validSkus[0];
         addDelta({

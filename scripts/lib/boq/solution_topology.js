@@ -6,7 +6,7 @@ const { cleanBaseSKU } = require('../catalog/sku');
 
 function topologyRole(description = '') {
   const text = String(description).replace(/_/g, ' ');
-  if (/\b(service|support|svc|installation|upgrade|license|cable|transceiver|adapter|riser|heatsink|fan|power supply|blank|rail|processor|memory|battery|ssd|hdd|kit|bezel|cma|backplane|cage|baffle|cooling|boot device)\b/i.test(text)) return null;
+  if (/\b(service|support|svc|installation|upgrade|license|cable|transceiver|adapter|riser|heatsink|fan|power supply|blank|rail|processor|memory|battery|ssd|hdd|kit|bezel|cma|backplane|cage|baffle|cooling|boot device|tracking|configuration|enablement|switchboard)\b/i.test(text)) return null;
   if (/\b(?:frame|enclosure)\b/i.test(text) && /synergy|blade|composable/i.test(text)) return 'enclosure';
   if (/virtual\s*connect|\binterconnect\b|\bfabric\s+(?:module|switch)\b|\bswitch\b|\b(?:synergy\s+)?vc\s*\d+\s*gb\b|\bsy100gb\s*f32\b/i.test(text)) return 'networking';
   if (/\b(?:tape library|storeever|msl\s*\d+)\b/i.test(text)) return 'archive';
@@ -33,8 +33,10 @@ function resolveSolutionTopology(items = [], chassisInfo = {}, catalogData = nul
   const identityText = `${chassisInfo.model || ''} ${chassisInfo.id || ''} ${catalogData?.metadata?.chassis || ''}`;
   const fallbackRole = topologyRole(identityText);
   if (!roles.length && fallbackRole && !chassisInfo.unknown) roles.push(fallbackRole);
-  const repeatedAppliances = nodes.some(node => node.role !== 'server' && Number(node.quantity) > 1);
-  const domain = roles.length > 1 || nodes.length > 1 || repeatedAppliances || roles.includes('enclosure') ? 'composite' : roles[0] || 'unknown';
+  const nonServerAppliances = nodes.filter(node => node.role !== 'server');
+  const repeatedAppliances = nonServerAppliances.some(node => Number(node.quantity) > 1);
+  const multipleNonServerAppliances = nonServerAppliances.length > 1;
+  const domain = roles.length > 1 || roles.includes('enclosure') || repeatedAppliances || multipleNonServerAppliances ? 'composite' : (roles[0] || (chassisInfo?.unknown ? 'server' : 'unknown'));
   const synergy = /synergy|\bSY(?:480|100Gb)/i.test(identityText) || items.some(item => /synergy/i.test(item.description || ''));
   const relationshipChecks = domain === 'composite' || synergy
     ? ['OWNERSHIP_AND_CONTAINMENT', 'ENCLOSURE_BAY_COMPATIBILITY', 'ADAPTER_TO_FABRIC_MAPPING', 'ENDPOINT_PROTOCOL_SPEED_OPTICS', 'SHARED_POWER_COOLING', 'PER_ICON_SUPPORT'] : [];

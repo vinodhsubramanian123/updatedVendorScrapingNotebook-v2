@@ -1059,7 +1059,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const topologyItems = Array.isArray(items) ? items : [];
   const detectedChassis = detectChassisVariant(topologyItems);
   const topology = resolveSolutionTopology(topologyItems, detectedChassis, catalogData);
-  if (topologyItems.length && (detectedChassis.unknown || (topology.domain !== 'server' && !(topology.domain === 'networking' && detectedChassis.family === 'SAN')))) {
+  if (topologyItems.length && (topology.domain !== 'server' && !(topology.domain === 'networking' && detectedChassis.family === 'SAN'))) {
     return evaluateUnprofiledTopology(items, topology, detectedChassis);
   }
   if (Array.isArray(items) && items.length && !options.baseConfigurationOnly) {

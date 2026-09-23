@@ -9,6 +9,30 @@ const cdp = require('../../scripts/lib/scraper/cdp.js');
 // Save original methods
 const originalHttpGet = http.get;
 const originalSetTimeout = global.setTimeout;
+const originalFetch = global.fetch;
+
+// Mock fetch for CDP /json endpoints
+global.fetch = async function(url, options = {}) {
+  const urlStr = String(url);
+  if (urlStr.includes('9222/json')) {
+    if (urlStr.includes('/json/new?')) {
+      const targetUrl = decodeURIComponent(urlStr.split('/json/new?')[1] || '');
+      const newTarget = {
+        type: 'page',
+        id: `tab-${Date.now()}`,
+        url: targetUrl,
+        title: 'Partner Home',
+        webSocketDebuggerUrl: 'ws://localhost:18999'
+      };
+      return { ok: true, status: 200, json: async () => newTarget, text: async () => JSON.stringify(newTarget) };
+    }
+    return { ok: true, status: 200, json: async () => mockTargets, text: async () => JSON.stringify(mockTargets) };
+  }
+  if (typeof originalFetch === 'function') {
+    return originalFetch(url, options);
+  }
+  return { ok: true, status: 200 };
+};
 
 // Mock setTimeout to speed up the tests
 global.setTimeout = (fn, ms) => {
@@ -66,6 +90,11 @@ async function runTests() {
                 value: true
               }
             }
+          }));
+        } else {
+          ws.send(JSON.stringify({
+            id: req.id,
+            result: {}
           }));
         }
       });
@@ -243,7 +272,22 @@ async function runTests() {
         if (req.method === 'Page.reload') {
           ws.send(JSON.stringify({ id: req.id, result: {} }));
         } else if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
+          if (req.params.expression && req.params.expression.includes('isLoggedOut')) {
+            const isStalePresent = mockTargets.some(t => t.id === 'stale-logged-out-oca');
+            ws.send(JSON.stringify({
+              id: req.id,
+              result: {
+                result: {
+                  value: {
+                    hasMenu: !isStalePresent,
+                    isLoggedOut: isStalePresent,
+                    hasException: false,
+                    pageText: isStalePresent ? 'You are logged out successfully!' : 'HPE ProLiant DL380 Gen12'
+                  }
+                }
+              }
+            }));
+          } else if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: false } } }));
           } else if (req.params.expression && (req.params.expression.toLowerCase().includes('one config advanced') || req.params.expression.includes('187402') || req.params.expression.includes('ocaLink'))) {
             freshTabSpawned = true;
@@ -280,6 +324,7 @@ async function runTests() {
     }
     http.get = originalHttpGet;
     global.setTimeout = originalSetTimeout;
+    global.fetch = originalFetch;
   }
 }
 

@@ -172,3 +172,55 @@ test('Generic Domain Templates - Dynamic Capability Resolution against Live Cata
   assert.ok(resolvedBlank, 'Resolves storage drive blank capability');
   assert.equal(resolvedBlank.sku, 'R0Q21A');
 });
+
+test('Generic Domain Templates - Certified Physical Invariants (Thermal Derating, Riser Containment, Storage Cabling, 16-Pin GPU)', (t) => {
+  const highTdpGpuServer = [
+    { description: 'Intel Xeon 6760P 2.2GHz 64-core 330W Processor', qty: 2, category: 'Processor' },
+    { description: 'NVIDIA H200 NVL 141GB PCIe Accelerator for HPE', qty: 1, category: 'Graphics Options' },
+    { description: 'HPE MR416i-p Gen11 SPDM Storage Controller', qty: 1, category: 'Storage Controller' },
+    { description: 'HPE ProLiant 8SFF x1 Tri-Mode Drive Cage Kit', qty: 1, category: 'Drive Enclosure' },
+    { description: 'HPE ProLiant DL380 2U CTO Chassis', qty: 1, category: 'Base Chassis' }
+  ];
+
+  const result = evaluateGenericDomainRules(highTdpGpuServer, { domain: 'SERVER' });
+  const ruleIds = result.violations.map(v => v.ruleId);
+
+  assert.ok(ruleIds.includes('GDR-SRV-011'), 'Triggers GDR-SRV-011: High thermal density ambient derating requirement');
+  assert.ok(ruleIds.includes('GDR-SRV-012'), 'Triggers GDR-SRV-012: High-power accelerator secondary riser containment');
+  assert.ok(ruleIds.includes('GDR-SRV-013'), 'Triggers GDR-SRV-013: Storage controller-to-backplane interconnect cabling requirement');
+  assert.ok(ruleIds.includes('GDR-SRV-014'), 'Triggers GDR-SRV-014: 16-pin GPU auxiliary power pinout matching');
+});
+
+test('Generic Domain Templates - Certified Physical Invariants (Dual OCP, Primary 2x16 Riser, Boot/Tertiary Exclusion, N+1 Redundancy, Data Drive Preservation, CMA)', (t) => {
+  const tenderClusterItems = [
+    { description: 'PowerEdge R770 server 2U Rackmount', qty: 1, category: 'Base Chassis' },
+    { description: 'Intel Xeon 6 6760P 2.2GHz 64C (330W)', qty: 2, category: 'Processor' },
+    { description: '8* 64GB RDIMM 6400MT/s dual-row DDR5 Smart Memory', qty: 8, category: 'Memory' },
+    { description: 'NVIDIA H200 NVL 141GB (450W)', qty: 1, category: 'Graphics Cards' },
+    { description: 'BOSS-N1 Control Card + 2 M.2 480GB (RAID 1) Rear', qty: 1, category: 'Boot Storage' },
+    { description: 'HPE ProLiant Compute DL380 Gen12 2U x8/x16 Tertiary Riser Kit', qty: 1, category: 'PCIe Risers' },
+    { description: 'Riser configuration 6-2 Rear FH, Rear 2x16 FH (G5), 1x8/1x16 OCP (G5), 2nd OCP x16 (G5)', qty: 1, category: 'PCIe Risers' },
+    { description: '3* 960GB Solid State Drive, SATA, Read-Intensive data storage', qty: 0, category: 'Data Storage' },
+    { description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', qty: 2, category: 'Power Supplies' },
+    { description: 'ReadyRails Sliding Guide Rail with Cable Management Arm', qty: 1, category: 'Rack Rails' }
+  ];
+
+  const result = evaluateGenericDomainRules(tenderClusterItems, {
+    domain: 'SERVER',
+    hasDualOcpRequirement: true,
+    requiresMultiX16PrimaryRiser: true,
+    hasDataDriveRequirement: true,
+    requiresCma: true
+  });
+
+  const ruleIds = result.violations.map(v => v.ruleId);
+  const recIds = result.recommendations.map(r => r.ruleId);
+
+  assert.ok(ruleIds.includes('GDR-SRV-015'), 'Triggers GDR-SRV-015: Dual OCP Slot Enablement Interconnect');
+  assert.ok(ruleIds.includes('GDR-SRV-016'), 'Triggers GDR-SRV-016: Multi-Slot x16 Full-Height Primary Riser Bandwidth Matching');
+  assert.ok(ruleIds.includes('GDR-SRV-017'), 'Triggers GDR-SRV-017: Rear Boot Storage and Tertiary Riser Mutual Exclusion');
+  assert.ok(ruleIds.includes('GDR-SRV-018'), 'Triggers GDR-SRV-018: Data Storage Drive Preservation Invariant');
+  assert.ok(ruleIds.includes('GDR-SRV-019'), 'Triggers GDR-SRV-019: True N+1 Power Redundancy under Accelerator Peak Load');
+  assert.ok(recIds.includes('GDR-SRV-020'), 'Triggers GDR-SRV-020: Rack Rail Cable Management Arm (CMA) Completeness');
+});
+

@@ -305,7 +305,11 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
     });
 
     grandTotal += configSubtotal;
-    portalData.push(['', '', `CONFIG #${cIdx + 1} ${items.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'SUBTOTAL'}:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
+    const hasIncompletePrices = items.some(item => {
+      const p = item.unitPriceUsd || item.price || item.unitPrice || 0;
+      return !(p > 0) && !item.isConfirmedZeroPrice;
+    });
+    portalData.push(['', '', `CONFIG #${cIdx + 1} SUBTOTAL:${hasIncompletePrices ? ' (KNOWN-PRICE INCOMPLETE)' : ''}`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
   });
 
   if (clusterList.length > 1) {

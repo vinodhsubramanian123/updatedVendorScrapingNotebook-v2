@@ -57,7 +57,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
   }
 
   if (!queryStr) {
-    const chassisName = context.chassis || 'HPE Server (chassis unspecified)';
+    const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
     const skus = Array.isArray(context.skus) ? context.skus.slice(0, 12).join(', ') : '';
     return skus
       ? `What are the hardware configuration rules, memory rules, and QuickSpecs specifications for ${chassisName} regarding parts: ${skus}?`
@@ -88,7 +88,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
     });
     clean = clean.replace(/[`"${}$<>;]/g, ' ').replace(/\s+/g, ' ').trim();
 
-    const chassisName = context.chassis || 'HPE Server (chassis unspecified)';
+    const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
     let reconstructed = `What are the hardware configuration rules, physical cable requirements, and QuickSpecs specifications for ${chassisName}?`;
     if (uniqueSkus.length > 0) {
       reconstructed += ` Specifically regarding part numbers: ${uniqueSkus.join(', ')}.`;
@@ -103,7 +103,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
     .replace(/\s+/g, ' ')
     .trim();
 
-  const chassisName = context.chassis || 'HPE Server (chassis unspecified)';
+  const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
 
   let itemDescriptions = [];
   if (Array.isArray(context.items) && context.items.length > 0) {
@@ -144,7 +144,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
 }
 
 function getSanitizationBreakdown(rawQuery, context = {}) {
-  const chassisName = context.chassis || 'HPE Server (chassis unspecified)';
+  const chassisName = context.chassis || 'HPE ProLiant DL380 Gen12 SFF';
   const meta = parseProductMeta(chassisName);
   
   let scope = 'Server';

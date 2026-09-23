@@ -164,13 +164,8 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
   return { handled: false, ws };
 }
 
-/**
- * Searches for chassis query on OCA catalog landing page and navigates into configuration.
- */
-async function searchAndConfigureChassis(ws, query, ocaTarget) {
-  await sendCommand(ws, 'Page.bringToFront');
-  console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
-  const navExpr = String.raw`
+function buildDiscoveryExpression(query) {
+  return String.raw`
     (async function() {
       // Ensure "Product Catalog" search mode is selected if OCA landing shows scope menu
       const aiTrigger = document.querySelector('#dqe_ai_mode_trigger');
@@ -314,51 +309,10 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
       };
     })()
   `;
+}
 
-  const discoveryRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: navExpr,
-    awaitPromise: true,
-    returnByValue: true
-  }, 120000);
-
-  const discovery = discoveryRes?.result?.value || {};
-  const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
-  const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
-  
-  // Sort eligible candidates: prefer standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
-  eligibleCandidates.sort((a, b) => {
-    const aB21 = (a.sku || '').endsWith('-B21') ? 1 : 0;
-    const bB21 = (b.sku || '').endsWith('-B21') ? 1 : 0;
-    if (bB21 !== aB21) return bB21 - aB21;
-
-    const aProLiant = /proliant/i.test(a.text || '') ? 1 : 0;
-    const bProLiant = /proliant/i.test(b.text || '') ? 1 : 0;
-    if (bProLiant !== aProLiant) return bProLiant - aProLiant;
-
-    const a8Sff = /8sff/i.test(a.text || '') ? 1 : 0;
-    const b8Sff = /8sff/i.test(b.text || '') ? 1 : 0;
-    if (b8Sff !== a8Sff) return b8Sff - a8Sff;
-
-    return 0;
-  });
-
-  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} eligible standard CTO base(s)).`);
-
-  const selected = eligibleCandidates[0];
-  if (!selected) {
-    ws.close();
-    const error = new Error(
-      `No exact standard CTO base model found for query "${query}".\n` +
-      `Discovered candidates (${candidates.length}):\n` +
-      candidates.slice(0, 10).map(c => ` - ${c.sku || 'NO_SKU'} | ${c.text} (CTO=${c.isCto}, TAA=${c.isTaa}, GTA=${c.isGta}, BTO=${c.isBto})`).join('\n')
-    );
-    error.code = 'OCA_PRODUCT_NOT_FOUND';
-    throw error;
-  }
-
-  console.log(`🎯 Selected standard CTO base: ${selected.sku} - "${selected.text}" (Price: $${selected.listPriceUsd || 0})`);
-
-  const selectAndClickExpr = String.raw`
+function buildSelectAndClickExpression(selected) {
+  return String.raw`
     (async function() {
       let card = document.querySelector(${JSON.stringify(selected.cardSelector)});
       if (!card) return { success: false, reason: 'CARD_NOT_FOUND' };
@@ -418,6 +372,60 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
       return { success: true, clicked: true };
     })()
   `;
+}
+
+/**
+ * Searches for chassis query on OCA catalog landing page and navigates into configuration.
+ */
+async function searchAndConfigureChassis(ws, query, ocaTarget) {
+  await sendCommand(ws, 'Page.bringToFront');
+  console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
+  const navExpr = buildDiscoveryExpression(query);
+
+  const discoveryRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: navExpr,
+    awaitPromise: true,
+    returnByValue: true
+  }, 120000);
+
+  const discovery = discoveryRes?.result?.value || {};
+  const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
+  const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
+  
+  // Sort eligible candidates: prefer standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
+  eligibleCandidates.sort((a, b) => {
+    const aB21 = (a.sku || '').endsWith('-B21') ? 1 : 0;
+    const bB21 = (b.sku || '').endsWith('-B21') ? 1 : 0;
+    if (bB21 !== aB21) return bB21 - aB21;
+
+    const aProLiant = /proliant/i.test(a.text || '') ? 1 : 0;
+    const bProLiant = /proliant/i.test(b.text || '') ? 1 : 0;
+    if (bProLiant !== aProLiant) return bProLiant - aProLiant;
+
+    const a8Sff = /8sff/i.test(a.text || '') ? 1 : 0;
+    const b8Sff = /8sff/i.test(b.text || '') ? 1 : 0;
+    if (b8Sff !== a8Sff) return b8Sff - a8Sff;
+
+    return 0;
+  });
+
+  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} eligible standard CTO base(s)).`);
+
+  const selected = eligibleCandidates[0];
+  if (!selected) {
+    ws.close();
+    const error = new Error(
+      `No exact standard CTO base model found for query "${query}".\n` +
+      `Discovered candidates (${candidates.length}):\n` +
+      candidates.slice(0, 10).map(c => ` - ${c.sku || 'NO_SKU'} | ${c.text} (CTO=${c.isCto}, TAA=${c.isTaa}, GTA=${c.isGta}, BTO=${c.isBto})`).join('\n')
+    );
+    error.code = 'OCA_PRODUCT_NOT_FOUND';
+    throw error;
+  }
+
+  console.log(`🎯 Selected standard CTO base: ${selected.sku} - "${selected.text}" (Price: $${selected.listPriceUsd || 0})`);
+
+  const selectAndClickExpr = buildSelectAndClickExpression(selected);
 
   const selectionResult = await sendCommand(ws, 'Runtime.evaluate', {
     expression: selectAndClickExpr,
