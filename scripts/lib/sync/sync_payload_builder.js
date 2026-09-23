@@ -108,7 +108,7 @@ function _buildUniversalAndFamilyRulesSection(targetIdentity, universalRules = [
     md += `*No verified universal vendor rules are registered for this product.*\n\n`;
   } else {
     universalRules.forEach((r, idx) => {
-      md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.errorType})*\n`;
+      md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.ruleType || r.errorType || 'ADVISORY'})*\n`;
     });
     md += `\n`;
   }
@@ -339,7 +339,8 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const receipt = require('../boq/portal_receipt').readPortalReceipt(targetDir);
   const baseSku = cfg.notebooks?.[chassisName]?.baseSku;
   if (receipt && baseSku && receipt.rows.some(row => row.sku === baseSku)) {
-    const serviceRows = receipt.rows.filter(row => /\bservice\b/i.test(row.description || ''));
+    const serviceBases = new Set(receipt.rows.filter(row => /\b(service|support|svc|inst(?:all(?:ation)?)?)\b/i.test(row.description || '')).map(row => row.sku.split('#')[0]));
+    const serviceRows = receipt.rows.filter(row => serviceBases.has(row.sku.split('#')[0]));
     if (serviceRows.length) {
       md += `\n## Live OCA product-qualified service observations\n\nProduct ${baseSku}; captured ${receipt.capturedAt}. Source: authenticated HPE OCA Components service editor and complete CLIC acceptance. Receipt SHA-256: ${receipt.checkSha256}. This dated evidence proves the following services were accepted for this product; future availability and any changed configuration require a new live check.\n\n`;
       md += '| Service SKU | Vendor description | Captured unit list USD |\n|---|---|---:|\n';

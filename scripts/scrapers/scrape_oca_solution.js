@@ -224,7 +224,7 @@ function resolveExpectedProductIdentity(targetChassisQuery, notebookConfig) {
     if (derived && derived.family && derived.gen) {
       expectedIdentity = {
         vendor: 'HPE',
-        pillar: inferPillar(derived.family),
+        pillar: inferPillar(derived.family, derived.cleanName),
         family: derived.family,
         generation: derived.gen,
         productId: derived.cleanName

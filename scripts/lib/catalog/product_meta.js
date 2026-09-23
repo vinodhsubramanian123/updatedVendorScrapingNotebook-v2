@@ -25,6 +25,8 @@ const FAMILY_PATTERNS = [
   { family: 'PowerVault', pattern: /powervault/i },
   { family: 'UCS', pattern: /cisco\s*ucs|\b(c220|c240|b200)\b/i },
   { family: 'Nexus', pattern: /nexus|\bn9k\b/i },
+  { family: 'Catalyst', pattern: /catalyst/i },
+  { family: 'Networking', pattern: /ethernet\s+switch|network\s+switch|\brouter\b/i },
   { family: 'ThinkSystem', pattern: /thinksystem|\bsr\d{3}\b/i }
 ];
 
@@ -32,7 +34,6 @@ function detectProductFamily(fullText) {
   for (const { family, pattern } of FAMILY_PATTERNS) {
     if (pattern.test(fullText)) return family;
   }
-  if (/gen\d+|hpe/i.test(fullText)) return 'ProLiant';
   return 'General';
 }
 
@@ -145,6 +146,11 @@ function isBaseChassis(desc) {
 function classifyComponentRole(categoryName = '', itemDescription = '', profile = null) {
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
+
+  if (/\b(service|support|svc|tech care)\b/i.test(desc)) return 'Service & Support';
+  if (/virtual\s*connect|\binterconnect\b|\bvc\s*\d+\s*gb\s*f32\b/i.test(desc) && !/\b(cable|transceiver|adapter|kit)\b/i.test(desc)) return 'Fabric Interconnect';
+  if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter)\b/i.test(desc)) return 'Network Switch';
+  if (/synergy.*\b(frame|enclosure)\b/i.test(desc) && !/\b(kit|blank|rail|cable)\b/i.test(desc)) return 'Composable Enclosure';
 
   // Bundled optics in a switch description do not make the switch an optic.
   if (/\b(?:fibre channel|fc)\s+switch\b/i.test(desc) && !/\b(support|service|upgrade|license|kit)\b/i.test(desc)) return 'SAN Switch';

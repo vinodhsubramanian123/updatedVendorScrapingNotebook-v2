@@ -107,7 +107,7 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
     skus.forEach(s => {
       const uPrice = s.unitPriceUsd || 0;
       let pricingRole = 'Standard Option';
-      if (uPrice === 0) pricingRole = 'PRICE UNAVAILABLE / ZERO PRICE UNCONFIRMED';
+      if (uPrice === 0) pricingRole = s.isConfirmedZeroPrice === true ? 'CONFIRMED ZERO-PRICE SERVICE PARENT' : 'PRICE UNAVAILABLE / ZERO PRICE UNCONFIRMED';
       else if (uPrice <= 1) pricingRole = 'ℹ️ Nominal Factory Enablement ($1.00)';
       else if (s.isFixInjected) pricingRole = '⚡ Mandatory Rule Fix';
       
@@ -116,8 +116,8 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
         outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty,
         s.description || '',
         s.category || 'Standard',
-        uPrice > 0 ? uPrice : 'UNRESOLVED',
-        uPrice > 0 ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice } : 'UNRESOLVED',
+        uPrice > 0 || s.isConfirmedZeroPrice === true ? uPrice : 'UNRESOLVED',
+        uPrice > 0 || s.isConfirmedZeroPrice === true ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice } : 'UNRESOLVED',
         pricingRole
       ]);
       rowNum++;
@@ -127,7 +127,7 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
       data.push([emptyMessage, '', '', '', '', '', '']);
     } else {
       // Add Total row
-      data.push([skus.some(item => !(item.unitPriceUsd > 0)) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
+      data.push([skus.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
     }
 
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -291,21 +291,21 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
       const ext = perServerQty * nodeMultiplier * unitPrice;
       configSubtotal += ext;
 
-      const portalStatus = (it.portalStatus || it.clicStatus || (cluster.isClicValidated ? '100% Validated in CLIC' : 'Ready for Portal Upload')) + (it.priceKnown === false || unitPrice === 0 ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
+      const portalStatus = (it.portalStatus || it.clicStatus || (cluster.isClicValidated ? '100% Validated in CLIC' : 'Ready for Portal Upload')) + (it.priceKnown === false || (unitPrice === 0 && it.isConfirmedZeroPrice !== true) ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
 
       portalData.push([
         it.sku || it['Product #'] || '',
         perServerQty,
         nodeMultiplier,
         it.description || it.desc || '',
-        unitPrice > 0 ? unitPrice : 'UNRESOLVED',
-        unitPrice > 0 ? ext : 'UNRESOLVED',
+        unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
+        unitPrice > 0 || it.isConfirmedZeroPrice === true ? ext : 'UNRESOLVED',
         portalStatus
       ]);
     });
 
     grandTotal += configSubtotal;
-    portalData.push(['', '', `CONFIG #${cIdx + 1} ${items.some(item => !(item.unitPriceUsd > 0)) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'SUBTOTAL'}:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
+    portalData.push(['', '', `CONFIG #${cIdx + 1} ${items.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'SUBTOTAL'}:`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
   });
 
   if (clusterList.length > 1) {

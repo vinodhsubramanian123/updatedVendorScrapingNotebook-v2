@@ -1,0 +1,14 @@
+{
+  "deltaId": "GUARDRAIL_TRANSPORT_RECOVERY",
+  "persisted": true,
+  "certification": {
+    "reachable": true,
+    "ruleId": "GUARDRAIL_TRANSPORT_RECOVERY",
+    "ruleType": "GUARDRAIL_RECOVERY_POLICY",
+    "affectedSku": "",
+    "targetSku": "",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "simulationResult": null,
+    "verifiedAt": "2026-09-23T05:25:37.150Z"
+  }
+}

@@ -159,7 +159,7 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
   ];
   const resolutions = targets.map(target => {
     const suspectedSku = target.suspectedPartTokens?.[0] || target.sourceItem?.sku || '';
-    if (target.sourceItem && /\b(service|support)\b/i.test(target.sourceItem.description || '')) {
+    if (target.sourceItem && /\b(service|support|svc|inst(?:all(?:ation)?)?)\b/i.test(target.sourceItem.description || '')) {
       const qualified = vendorQualifiedServices.some(row => row.sku === target.sourceItem.sku && Number(row.quantity) === Number(target.sourceItem.quantity));
       return { input: target.line, suspectedSku, expectedRole: 'Support / Service',
         candidates: [], confidence: qualified ? 1 : 0, status: qualified ? 'AUTO_RESOLVED' : 'SERVICE_QUALIFICATION_PENDING',

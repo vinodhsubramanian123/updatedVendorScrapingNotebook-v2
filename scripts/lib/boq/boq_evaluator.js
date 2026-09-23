@@ -1053,6 +1053,15 @@ function buildArchitecturalRationale(ctx) {
 }
 
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
+  // Classify before quantity normalization: a frame or another appliance cannot
+  // become a server accessory through an inferred configuration multiplier.
+  const { resolveSolutionTopology, evaluateUnprofiledTopology } = require('./solution_topology');
+  const topologyItems = Array.isArray(items) ? items : [];
+  const detectedChassis = detectChassisVariant(topologyItems);
+  const topology = resolveSolutionTopology(topologyItems, detectedChassis, catalogData);
+  if (topologyItems.length && (detectedChassis.unknown || (topology.domain !== 'server' && !(topology.domain === 'networking' && detectedChassis.family === 'SAN')))) {
+    return evaluateUnprofiledTopology(items, topology, detectedChassis);
+  }
   if (Array.isArray(items) && items.length && !options.baseConfigurationOnly) {
     const { normalizeConfiguration, applyConfigurationContext } = require('./configuration_context');
     // Skip context normalization if items are already tagged as base quantities by the caller
@@ -1114,7 +1123,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
 
   const chassisInfo = detectChassisVariant(items);
   if (chassisInfo.family === 'SAN') {
-    return require('./san_switch_evaluator').evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, getCachedChassisMap().product_bundle_compositions || [], options);
+    return { ...require('./san_switch_evaluator').evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, getCachedChassisMap().product_bundle_compositions || [], options), solutionTopology: topology };
   }
   const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
 
@@ -1183,7 +1192,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   if (!options.skipGraphValidation) {
     try {
       const genericTemplates = require('../catalog/generic_domain_templates.js');
-      const detectedDomain = chassisInfo.family === 'Alletra' ? 'STORAGE' : (chassisInfo.family === 'Synergy' ? 'NETWORKING' : 'SERVER');
+      const detectedDomain = topology.domain.toUpperCase();
       genericDomainAudit = genericTemplates.evaluateGenericDomainRules(items, {
         domain: detectedDomain,
         catalog: catalogData,
@@ -1324,7 +1333,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir, '', { skipSynthesis: options.skipSynthesis === true });
   }
 
-  const isMathClean = errors.length === 0;
+  if (topology.relationshipChecks.length) {
+    const detail = 'Compute component checks do not validate its enclosure, bay, fabric, shared power or endpoint relationships. Resolve the owning solution before whole-solution certification.';
+    warnings.push(detail);
+    aspectChecks.push({ id: 'CROSS_COMPONENT_DEPENDENCIES', name: 'Enclosure and fabric relationships', status: 'NOT_EVALUATED', detail });
+    conflictGraphResults.isWholeSolutionValid = false;
+    conflictGraphResults.unresolvedConflicts = [...(conflictGraphResults.unresolvedConflicts || []), { type: 'TOPOLOGY_CONTEXT_REQUIRED', message: detail }];
+    for (const candidate of conflictGraphResults.rankedSolutions || []) {
+      candidate.validationScope = 'COMPUTE_COMPONENT_ONLY';
+      candidate.relationshipValidationStatus = 'NOT_EVALUATED';
+      candidate.physicalMathClean = false;
+      candidate.isMathClean = false;
+    }
+  }
+  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0;
   const isGraphClean = conflictGraphResults.isWholeSolutionValid;
   const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
 
@@ -1333,6 +1355,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   if (!isGraphClean) confidenceScore -= (conflictGraphResults.conflicts.length * 0.10);
   if (warnings.length > 0) confidenceScore -= (warnings.length * 0.05);
   confidenceScore = Math.max(0.1, parseFloat(confidenceScore.toFixed(2)));
+  if (topology.relationshipChecks.length) confidenceScore = Math.min(confidenceScore, 0.74);
 
   const confidence = {
     score: confidenceScore,
@@ -1350,6 +1373,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
 
   return {
     isMathClean,
+    solutionTopology: topology,
     isGraphClean,
     criticalViolationsCount,
     confidence,

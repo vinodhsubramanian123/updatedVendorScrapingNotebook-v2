@@ -1,16 +1,16 @@
 [
   {
     "deltaId": "OWNER_STANDARD_3Y_BASIC",
-    "timestamp": "2026-09-22T08:08:13.957Z",
+    "timestamp": "2026-09-22T18:11:41.139Z",
     "chassis": "GLOBAL",
     "ruleType": "SUPPORT_POLICY",
-    "ruleUpdate": "Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is requested. Qualify the exact SKU for each product. Preserve the exact retention label; SN3600B exposes HX2M2E Basic with CDMR. This is a commercial preference, not vendor compatibility evidence.",
-    "rawMessage": "Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is requested. Qualify the exact SKU for each product. Preserve the exact retention label; SN3600B exposes HX2M2E Basic with CDMR. This is a commercial preference, not vendor compatibility evidence.",
     "productId": "GLOBAL",
     "scopeTaxonomy": "UNIVERSAL_VENDOR",
     "vendorWideVerified": true,
-    "scopeEvidence": "Explicit solution-owner workflow policy across HPE product families, 2026-09-22; not a hardware compatibility claim.",
+    "scopeEvidence": "Explicit solution-owner workflow policy; no vendor hardware compatibility assertion.",
     "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "ruleUpdate": "Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.",
+    "rawMessage": "Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   },
   {
@@ -39,6 +39,48 @@
     "vendorWideVerified": true,
     "scopeEvidence": "Explicit solution-owner workflow policy across HPE product families, 2026-09-22; not a hardware compatibility claim.",
     "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "OWNER_CLOSEST_REQUIREMENT_RANK",
+    "timestamp": "2026-09-22T18:11:41.175Z",
+    "chassis": "GLOBAL",
+    "ruleType": "CUSTOMER_INTENT_POLICY",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Explicit solution-owner workflow policy; no vendor hardware compatibility assertion.",
+    "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "ruleUpdate": "Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.",
+    "rawMessage": "Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "OWNER_COMPONENT_DOMAIN_ROUTING",
+    "timestamp": "2026-09-22T18:11:41.201Z",
+    "chassis": "GLOBAL",
+    "ruleType": "COMPONENT_DOMAIN_ROUTING",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Explicit solution-owner workflow policy; no vendor hardware compatibility assertion.",
+    "provenance": "SOLUTION_OWNER_INSTRUCTION",
+    "ruleUpdate": "Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.",
+    "rawMessage": "Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "GUARDRAIL_TRANSPORT_RECOVERY",
+    "timestamp": "2026-09-23T05:25:11.508Z",
+    "chassis": "GLOBAL",
+    "ruleType": "GUARDRAIL_RECOVERY_POLICY",
+    "productId": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Shared workflow repair requested by owner; focused fault checks and live Gemini function-call probe on 2026-09-23. Not a vendor hardware rule.",
+    "provenance": "LOCAL_CODE_AND_LIVE_API_VERIFICATION",
+    "ruleUpdate": "Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.",
+    "rawMessage": "Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]

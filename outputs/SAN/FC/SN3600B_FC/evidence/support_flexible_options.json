@@ -1,0 +1,245 @@
+{
+  "capturedAt": "2026-09-22T18:03:30.389Z",
+  "source": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
+  "product": "R7R97A",
+  "text": "Home\nConfigure\n❯\nOCA Config 2\nWork-In-Progress\nConfig Status\nWarning\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n17 - 21 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 24,548.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nSN3600B/CN3360B Switch #1\nSummary\nComponents\nMenu\nLayout\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nBasic\nStandard\nOptimized\nSelect Your Own\nNo Support\naaS:  No\nProduct Number:\nR7R97A\nQuantity:\n1\n \nInstall Level:\nHA113A1 - HPE Installation Service\nAfter Hours/Weekends/Holidays Hardware Installation\n \nSupport Level:\nDuration\nSelect\nData Protection\nAll Available Services\n\n\nComplete Care Add-on Services\nNone\nClear All\nH55VTA3 - HPE 3 Years Tech Care Critical wGDMR Service\n\n\nH55VTA4 - HPE 4 Years Tech Care Critical wGDMR Service\n\n\nH55VTA5 - HPE 5 Years Tech Care Critical wGDMR Service\n\n\nH55VVA3 - HPE 3 Years Tech Care Essential wGDMR Service\n\n\nH55VVA4 - HPE 4 Years Tech Care Essential wGDMR Service\n\n\nH55VVA5 - HPE 5 Years Tech Care Essential wGDMR Service\n\n\nH55VWA3 - HPE 3 Years Tech Care Basic wGDMR Service\n\n\nH55VWA4 - HPE 4 Years Tech Care Basic wGDMR Service\n\n\nH55VWA5 - HPE 5 Years Tech Care Basic wGDMR Service\n\n\nHU4A3A3 - HPE 3Y Tech Care Critical Service\n\n\nHU4A3A4 - HPE 4Y Tech Care Critical Service\n\n\nHU4A3A5 - HPE 5Y Tech Care Critical Service\n\n\nHU4A4A3 - HPE 3Y Tech Care Critical with Defective Media Retention Service\n\n\nHU4A4A4 - HPE 4Y Tech Care Critical with Defective Media Retention Service\n\n\nHU4A4A5 - HPE 5Y Tech Care Critical with Defective Media Retention Service\n\n\nHU4A5A3 - HPE 3Y Tech Care Critical with Comprehensive Defective Material Retention Service\n\n\nHU4A5A4 - HPE 4Y Tech Care Critical with Comprehensive Defective Material Retention Service\n\n\nHU4A5A5 - HPE 5Y Tech Care Critical with Comprehensive Defective Material Retention Service\n\n\nHU4A6A3 - HPE 3Y Tech Care Essential Service\n\n\nHU4A6A4 - HPE 4Y Tech Care Essential Service\n\n\nHU4A6A5 - HPE 5Y Tech Care Essential Service\n\n\nHU4A7A3 - HPE 3Y Tech Care Essential with Defective Media Retention Service\n\n\nHU4A7A4 - HPE 4Y Tech Care Essential with Defective Media Retention Service\n\n\nHU4A7A5 - HPE 5Y Tech Care Essential with Defective Media Retention Service\n\n\nHU4A8A3 - HPE 3Y Tech Care Essential with Comprehensive Defective Material Retention Service\n\n\nHU4A8A4 - HPE 4Y Tech Care Essential with Comprehensive Defective Material Retention Service\n\n\nHU4A8A5 - HPE 5Y Tech Care Essential with Comprehensive Defective Material Retention Service\n\n\nHU4B2A4 - HPE 4Y Tech Care Basic Service\n\n\nHU4B2A5 - HPE 5Y Tech Care Basic Service\n\n\nHU4B3A3 - HPE 3Y Tech Care Basic with Defective Media Retention Service\n\n\nHU4B3A4 - HPE 4Y Tech Care Basic with Defective Media Retention Service\n\n\nHU4B3A5 - HPE 5Y Tech Care Basic with Defective Media Retention Service\n\n\nHU4B4A3 - HPE 3Y Tech Care Basic with Comprehensive Defective Material Retention Service\n\n\nHU4B4A4 - HPE 4Y Tech Care Basic with Comprehensive Defective Material Retention Service\n\n\nHU4B4A5 - HPE 5Y Tech Care Basic with Comprehensive Defective Material Retention Service\nApply the displayed Install level and Support level to all Icons inside the solution where available\nApply the displayed Install level and Support level to all nodes inside the Current Icon where available\nOK\n\n\nCLIC Check\nLive chat",
+  "radios": [
+    {
+      "id": "pizza-tracker-solution-radio",
+      "value": "solution",
+      "checked": true
+    },
+    {
+      "id": "pizza-tracker-price-radio",
+      "value": "price",
+      "checked": false
+    },
+    {
+      "id": "pizza-tracker-quote-radio",
+      "value": "quote",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices__flexible",
+      "value": "flexibleServicesType",
+      "checked": true
+    },
+    {
+      "id": "extended_overview_svc_carePackServices__fixed",
+      "value": "fixedServicesType",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_BasicRadio",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_StandardRadio",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_OptimizedRadio",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_SelectYourOwnRadio",
+      "value": "on",
+      "checked": true
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_NoServiceRadio",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_0",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_1",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_2",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_3",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_4",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_5",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_6",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_7",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_8",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_9",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_10",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_11",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_12",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_13",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_14",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_15",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_16",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_17",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_18",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_19",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_20",
+      "value": "on",
+      "checked": true
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_21",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_22",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_23",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_24",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_25",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_26",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_27",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_28",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_29",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_30",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_31",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_32",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_33",
+      "value": "on",
+      "checked": false
+    },
+    {
+      "id": "extended_overview_svc_carePackServices_update_care_34",
+      "value": "on",
+      "checked": false
+    }
+  ],
+  "applyLabels": [
+    {
+      "id": "",
+      "for": "extended_overview_svc_carePackServices_applyCbx",
+      "text": "Apply the displayed Install level and Support level to all Icons inside the solution where available"
+    },
+    {
+      "id": "",
+      "for": "extended_overview_svc_carePackServices_applyCbxIcon",
+      "text": "Apply the displayed Install level and Support level to all nodes inside the Current Icon where available"
+    }
+  ]
+}

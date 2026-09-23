@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-09-22T13:06:22.033Z
+**Sync Timestamp**: 2026-09-23T05:31:03.228Z
 
 **Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
 
-**Total Synced KnowledgeDeltas**: `6`
+**Total Synced KnowledgeDeltas**: `9`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -24,12 +24,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
-1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: PORTAL_VALIDATION_ATTRIBUTION)*
-2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: CROSS_CHASSIS_SUPPORT_POLLUTION)*
-3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. *(Type: PORTAL_CACHE_STALENESS)*
-4. **[OWNER_STANDARD_3Y_BASIC]**: Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is requested. Qualify the exact SKU for each product. Preserve the exact retention label; SN3600B exposes HX2M2E Basic with CDMR. This is a commercial preference, not vendor compatibility evidence. *(Type: undefined)*
-5. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: undefined)*
-6. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: undefined)*
+1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: ERROR_DIAGNOSTIC_ATTRIBUTION)*
+2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: ICON_SUPPORT_ISOLATION)*
+3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix. *(Type: SESSION_RECOVERY_PROTOCOL)*
+4. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
+5. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
+6. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
+7. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
+8. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
+9. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
 
 ## 🏛️ 2. Family & Generation Rules (SAN FC)
 
@@ -72,9 +75,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## Live OCA product-qualified service observations
 
-Product R7R97A; captured 2026-09-22T07:58:17.037Z. Source: authenticated HPE OCA Components service editor and complete CLIC acceptance. Receipt SHA-256: 9e35ac05fcf539dfe7b3ae7aef003f0a29378317bd9a21871844a8cd26b42f9a. This dated evidence proves the following services were accepted for this product; future availability and any changed configuration require a new live check.
+Product R7R97A; captured 2026-09-22T18:07:43.869Z. Source: authenticated HPE OCA Components service editor and complete CLIC acceptance. Receipt SHA-256: af7f52c450dac9f7b2b3d27686846da35933530a99f4d9a1add8965df00e6625. This dated evidence proves the following services were accepted for this product; future availability and any changed configuration require a new live check.
 
 | Service SKU | Vendor description | Captured unit list USD |
 |---|---|---:|
-| HX2M2E | HPE 3 Year Tech Care Basic wCDMR SN3600B 24/8 8p 32Gb SW SFP Switch Service | 950 |
-| U5988E | HPE Installation Storage Switches Service | 480 |
+| HA113A1 | HPE Installation Service | 0 |
+| HA113A1#5GA | HPE LowEnd SAN/Edge Switch/HAFM Inst SVC | 537 |
+| HU4B3A3 | HPE 3Y Tech Care Basic with Defective Media Retention Service | 0 |
+| HU4B3A3#ZTL | HPE SN3600B 24/8 8p 32G Swch Support | 186 |

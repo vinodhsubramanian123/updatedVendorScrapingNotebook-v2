@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-09-23T05:26:15.724Z",
+  "platform": "win32",
+  "checks": {
+    "portableUriPaths": "PASS_WINDOWS_POSIX_UNC_RESERVED_CHARACTERS",
+    "explicitSupportPolicy": "PASS_EXPLICIT_5Y_ESSENTIAL_PRESERVED_AND_UNSPECIFIED_3Y_BASIC_DEFAULT",
+    "domainRouting": "PASS_SAN_COMPUTE_FABRIC_FRAME_STORAGE_UNKNOWN_AND_MIXED_BOUNDARIES",
+    "guardrailFaultSimulation": "PASS_503_RETRY_MODEL_FALLBACK_HISTORY_429_CLASSIFICATION_DEADLINE",
+    "guardrailLiveFunctionProbe": "PASS_GEMINI_3_6_FLASH_HEALTH_PROBE_RETURNED",
+    "dashboardStatus": "PASS_NORMALIZER_AND_RENDERED_UNAVAILABLE_STATE",
+    "dashboardBuild": "PASS",
+    "domainAccessoryBoundaries": "PASS_BEZEL_IS_NOT_A_BASE_UNKNOWN_SERVER_HAS_NO_DEFAULT_INJECTIONS_EXACT_SAN_BUNDLE_IDENTITY",
+    "structuredRankParser": "PASS_OBJECT_ARRAY_RETAINED_NATIVE_RESPONSE_AND_NEGATIVE_CASES"
+  },
+  "limits": [
+    "No broad regression suites run per owner instruction",
+    "Native macOS/Linux application launch not exercised",
+    "Live canonical guardrail recovered through 503/504 fallback and completed both required tools; final canonical rerun after parser repair remains pending"
+  ]
+}

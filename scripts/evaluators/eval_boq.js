@@ -689,7 +689,11 @@ ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠�
     if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
 
     const guardrailResult = await runAgenticGuardrail(items, chassisDir);
-    evalResults.agenticReviewStatus = guardrailResult.error || /"error"\s*:|UNAVAILABLE|RESOURCE_EXHAUSTED/.test(guardrailResult.text || '') ? 'UNAVAILABLE' : 'ADVISORY_RETURNED';
+    evalResults.agenticReviewStatus = guardrailResult.success === true && !guardrailResult.error ? 'ADVISORY_RETURNED' : 'UNAVAILABLE';
+    evalResults.agenticReview = { status: evalResults.agenticReviewStatus, model: guardrailResult.model || null,
+      recoveryEvents: guardrailResult.recoveryEvents || [], error: guardrailResult.error || null,
+      durationMs: guardrailResult.durationMs || Date.now() - tGuardrailStart,
+      executedToolCalls: guardrailResult.executedToolCalls || [] };
     if (!JSON_MODE) {
       console.log('Agentic review response (inspect for errors; response is not a verification badge):');
       console.log(guardrailResult.text || guardrailResult.error);
@@ -1114,6 +1118,7 @@ async function runEvaluationPipelineWithinTrace(options) {
     evidenceLedger.recordNotebookLmTrace(ephemeralSourceResult.queryPayload, ephemeralSourceResult, ephemeralSourceResult.citations || [], ephemeralSourceResult.success ? 'VERIFIED_GROUNDED' : 'ACTION_REQUIRED');
   }
   evidenceLedger.phases.phase_7.outputSummary.solutionSourceValidation = ephemeralSourceResult || { status: 'NOT_RUN' };
+  evidenceLedger.phases.phase_7.outputSummary.agenticReview = evalResults.agenticReview || { status: 'NOT_RUN' };
   evidenceLedger.sharedState.dualBrainVerified = ephemeralSourceResult?.success === true;
   evidenceLedger.completePhase(7, ephemeralSourceResult?.success ? 'PASSED' : 'ACTION_REQUIRED', evidenceLedger.phases.phase_7.outputSummary);
   if (!options.JSON_MODE) {

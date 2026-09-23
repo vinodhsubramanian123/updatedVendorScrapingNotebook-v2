@@ -92,13 +92,14 @@ async function runHealthHeartbeat() {
     const geminiRotator = require('../lib/system/gemini_rotator.js');
     const keyInfo = geminiRotator.getActiveKey();
     const allKeys = geminiRotator.getAllKeys ? geminiRotator.getAllKeys() : [];
-    if (keyInfo && keyInfo.apiKey) {
-      recordCheck(2, 'Gemini API Key Rotation & Quota Readiness', 'PASS', {
+    if (keyInfo && keyInfo.apiKey && !keyInfo.allExhausted) {
+      recordCheck(2, 'Gemini Key Configuration (live provider not checked)', 'PASS', {
+        providerAvailability: 'NOT_CHECKED',
         totalKeysConfigured: allKeys.length || 1,
         activeKeyIndex: keyInfo.index ?? 0
       });
     } else {
-      recordCheck(2, 'Gemini API Key Rotation & Quota Readiness', 'FAIL', { error: 'No active Gemini API key configured' });
+      recordCheck(2, 'Gemini Key Configuration', 'FAIL', { error: 'No active Gemini API key configured, or all configured keys are exhausted' });
     }
   } catch (err) {
     recordCheck(2, 'Gemini API Key Rotation & Quota Readiness', 'FAIL', { error: err.message });

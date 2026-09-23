@@ -1386,8 +1386,10 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
     metadata: {
       chassis:            filePrefix.replace(/_/g, ' '),
       model:              meta.cleanName || chassisLabel,
-      family:             meta.family || 'ProLiant',
-      generation:         meta.gen || 'Gen12',
+      family:             meta.family || 'General',
+      generation:         meta.gen || 'General',
+      pillar:             require('../lib/catalog/product_scope').inferPillar(meta.family, meta.cleanName || filePrefix),
+      validationScope:    'CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS',
       scrapeDate:         new Date().toISOString().split('T')[0],
       scrapeTimestamp:    new Date().toISOString(),
       totalSubcategories: new Set(entries.map(e => e.subCategory)).size,

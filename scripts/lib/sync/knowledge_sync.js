@@ -266,7 +266,7 @@ function buildMasterKnowledgeRegistry(options = {}) {
   }
 
   if (persist) {
-    try { fs.writeFileSync(masterCharterFile, md, 'utf-8'); } catch (_) {}
+    try { fs.writeFileSync(masterCharterFile, md.replace(/[ \t]+$/gm, '').trimEnd() + '\n', 'utf-8'); } catch (_) {}
   }
 
   return registry;
@@ -367,4 +367,3 @@ module.exports = {
   collectAllDeltas,
   normalizeChassisName
 };
-

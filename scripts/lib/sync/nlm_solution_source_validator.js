@@ -175,11 +175,14 @@ function parseRankVerdicts(answer, evalResults) {
     const text = blocks.length === 1 ? blocks[0][1].trim() : raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
     parsed = JSON.parse(text);
   } catch (_) { parsed = {}; }
-  const rows = Array.isArray(parsed.ranks) ? parsed.ranks : [];
-  const isJsonFormat = Array.isArray(parsed.ranks);
+  const rows = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.ranks) ? parsed.ranks : []);
+  const isJsonFormat = Array.isArray(parsed) || Array.isArray(parsed?.ranks);
+  const hasExactCoverage = rows.length === candidates.length && rows.every(row =>
+    row && typeof row === 'object' && !Array.isArray(row) &&
+    candidates.some(candidate => String(candidate.rank) === String(row.rank)));
   return candidates.map(candidate => {
-    const matches = rows.filter(row => String(row.rank) === String(candidate.rank));
-    const row = matches.length === 1 ? matches[0] : {};
+    const matches = rows.filter(row => row && String(row.rank) === String(candidate.rank));
+    const row = hasExactCoverage && matches.length === 1 ? matches[0] : {};
     const verdict = row.verdict === 'FAIL' ? 'FAIL' : (row.verdict === 'PASS' && row.intentPreserved === true && row.mandatoryChangesOnly === true && Array.isArray(row.issues) && row.issues.length === 0 && Array.isArray(row.citations) && row.citations.length > 0 ? 'PASS' : 'UNKNOWN');
     return {
       rank: candidate.rank,

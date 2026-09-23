@@ -86,3 +86,10 @@
 - **Zero Unverified Checkins**: Never commit or push without explicit user instruction. Keep the working tree clean for independent Codex and Claude peer reviews.
 
 
+
+
+## Guardrail recovery and evidence contract (2026-09-23)
+
+`guardrail_transport.js` bounds each API request, retries transient provider/network failures, and falls back through configured approved models with an auditable recovery record. `GUARDRAIL_FALLBACK_MODELS` defaults to `gemini-3.7-flash,gemini-3.5-flash-lite`; set it empty to disable model fallback. `GUARDRAIL_API_TIMEOUT_MS` defaults to 45000. Ordinary RPM/TPM 429 errors use cooldown and key rotation; only explicit per-day quota evidence locks a key until UTC rollover. Provider 503 does not exhaust keys.
+
+Retries preserve the pre-send conversation and completed tool results; they never rerun side effects. Model fallback uses a plain transcript without cross-model thought signatures. Required local simulation and NotebookLM tool checks must complete before an advisory is returned. Simulation is bound to the selected catalog directory and product identity. Empty, unfinished and failed tool loops are unavailable, not successful review. Dashboard and JSON expose review status/model/recovery independently from native NotebookLM grounding and exact vendor acceptance. Static key configuration health does not prove live provider availability.

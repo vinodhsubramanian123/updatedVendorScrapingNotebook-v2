@@ -4,6 +4,7 @@ import BoqInputZone from './uploader/BoqInputZone';
 import EvaluationProgressSteps from './uploader/EvaluationProgressSteps';
 import PreflightPipelineAudit from './uploader/PreflightPipelineAudit';
 import MultiConfigSplitModal from './uploader/MultiConfigSplitModal';
+import GuardrailReviewStatus from './uploader/GuardrailReviewStatus';
 
 export default function BoqUploader({
   onEvaluateBoq,
@@ -201,7 +202,10 @@ export default function BoqUploader({
 
   const isCertified = Boolean(evalResults)
     && !evalResults.requirementResolution?.requiresHumanClarification
-    && (evalResults.criticalViolationsCount === 0 || evalResults.isMathClean !== false);
+    && evalResults.isMathClean === true
+    && evalResults.criticalViolationsCount === 0
+    && evalResults.ephemeralSourceValidation?.success === true
+    && ['CLIC_ACCEPTED', 'CORRECTED_CANDIDATE_CLIC_ACCEPTED'].includes(evalResults.portalValidationStatus);
 
   return (
     <div className="space-y-6">
@@ -281,17 +285,19 @@ export default function BoqUploader({
                 <span className="badge badge-blue mb-1">BOQ Evaluation Outcome</span>
                 <h3 className="font-bold text-slate-900 text-base">
                   {isCertified
-                    ? 'Certified Buildable Configuration'
+                    ? 'Corrected Candidate Verified'
                     : evalResults.requirementResolution?.requiresHumanClarification
                       ? 'Human Part/Category Confirmation Required'
-                      : 'Physical Constraint Violations Flagged'}
+                      : 'Validation Incomplete or Changes Required'}
                 </h3>
               </div>
             </div>
             <div className="text-right">
               <span className="text-[11px] text-slate-500 font-medium">Confidence Score:</span>
               <p className="font-bold text-emerald-700 text-lg font-mono">
-                {Math.round((evalResults.confidence?.score ?? evalResults.confidenceScore ?? 0.95) * (evalResults.confidenceScore > 1 ? 1 : 100))}%
+                {Number.isFinite(evalResults.confidence?.score ?? evalResults.confidenceScore)
+                  ? `${Math.round((evalResults.confidence?.score ?? evalResults.confidenceScore) * ((evalResults.confidence?.score ?? evalResults.confidenceScore) > 1 ? 1 : 100))}%`
+                  : 'Not assessed'}
               </p>
             </div>
           </div>
@@ -314,6 +320,7 @@ export default function BoqUploader({
             </div>
           )}
 
+          <GuardrailReviewStatus status={evalResults.agenticReviewStatus} review={evalResults.agenticReview} />
           {evalResults.pcieTopology && (
             <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 space-y-2">
               <div className="flex flex-wrap items-center justify-between gap-2">

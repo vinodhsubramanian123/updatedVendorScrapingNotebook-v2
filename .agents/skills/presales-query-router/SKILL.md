@@ -274,3 +274,8 @@ If any gate fails, the agent MUST:
 - **Financial Transparency**: All solutions must include SKU, Description, Qty, Unit List Price, Extended List Price, and Total CapEx Budget in USD.
 - **Execution Tracing**: Every flow MUST produce a structured execution trace per `execution-trace-skill`.
 - **Output Validation**: Every output MUST pass acceptance criteria per `output-validation-skill` before presentation.
+
+
+### Component-domain routing and supported coverage (2026-09-22)
+
+Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.

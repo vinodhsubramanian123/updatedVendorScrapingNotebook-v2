@@ -90,3 +90,11 @@ To conserve context tokens, detailed specifications and negative-path implementa
 ## SN3600B workflow continuation and universal support policy (2026-09-22)
 
 For the completed SAN reference workflow, read `docs/audits/2026-09-21-sn3600b-workflow-remediation.md` before changing the configuration. It records the canonical command, exact receipt, fixes and remaining evidence limits. Default all server/storage/networking solutions to product-qualified 3-year Tech Care Basic unless explicitly overridden. Select services independently from Components → owning icon → Services → Edit with both apply-to-all controls off. Never reuse a receipt after changing its manifest or after its freshness window. Use the structured ephemeral NotebookLM validator and native vendor citations; a prose-only model PASS is not grounded verification. Persist new lessons through the continuous-learning API and use the shared scoped registry builder.
+
+
+### Component-domain routing and supported coverage (2026-09-22)
+
+Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.
+
+
+For current completion state, pending work and the final check-in record, read `docs/audits/SN3600B_CONTINUATION.md`. The shared Gemini guardrail recovery contract is documented in `GEMINI.md`; model availability, advisory completion, NotebookLM grounding and live vendor acceptance are separate evidence states.

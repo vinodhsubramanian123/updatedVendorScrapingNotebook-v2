@@ -21,7 +21,7 @@ const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent } = require('./solution_evidence');
-const { toClickableFileUri } = require('../system/uri_helper.js');
+const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
   const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd, notebookDegradedMode } = ctx;
@@ -59,7 +59,8 @@ function _buildItemsSection(items, budgetOpt) {
   md += `|---|---|---|---|---|---|\n`;
   items.forEach((it, idx) => {
     const { totalQty } = outputQuantities(it);
-    md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${it.unitPriceUsd > 0 ? it.unitPriceUsd.toLocaleString() : 'UNRESOLVED'} | \$${it.unitPriceUsd > 0 ? (totalQty * it.unitPriceUsd).toLocaleString() : 'UNRESOLVED'} |\n`;
+    const priced = it.unitPriceUsd > 0 || (it.unitPriceUsd === 0 && it.isConfirmedZeroPrice === true);
+    md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${priced ? it.unitPriceUsd.toLocaleString() : 'UNRESOLVED'} | \$${priced ? (totalQty * it.unitPriceUsd).toLocaleString() : 'UNRESOLVED'} |\n`;
   });
   md += `\n**Current Baseline ${budgetOpt?.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'BOM Total'}**: \`$${(budgetOpt?.currentBomCostUsd || 0).toLocaleString()} USD\`\n\n`;
   md += `---\n\n`;
@@ -69,6 +70,11 @@ function _buildItemsSection(items, budgetOpt) {
 function _buildAspectsSection(evalResults) {
   const aspectCount = evalResults.aspectChecks ? evalResults.aspectChecks.length : 7;
   let md = `## ⚡ 2. Modular ${aspectCount}-Aspect Physical Pre-Checks\n\n`;
+  const topology = evalResults.solutionTopology;
+  if (topology) {
+    md += `Validation domain: **${topology.domain}**. Scope: **${topology.scope}**.\n\n`;
+    if (topology.relationshipChecks.length) md += `Cross-component checks: **${topology.relationshipStatus}** (${topology.relationshipChecks.join(', ')}). Component results do not certify the complete enclosure/fabric solution.\n\n`;
+  }
   if (evalResults.aspectChecks && Array.isArray(evalResults.aspectChecks)) {
     evalResults.aspectChecks.forEach(asp => {
       md += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : asp.status === 'FAIL' ? '❌ VIOLATION' : asp.status} — ${asp.detail}\n`;
@@ -246,11 +252,11 @@ function _buildDeliverablesSection(ctx) {
 
   let md = `---\n\n`;
   md += `## 📁 5. Certified Deliverables & Generated Workbooks\n\n`;
-  md += `> **Direct Access**: Click any local deliverable link below to open directly in your native viewer without navigating nested directories:\n\n`;
+  md += `> **Direct Access**: Open the deliverables below. Keep the report and its output folders together when moving between computers; a web viewer may download workbooks instead of opening a desktop application:\n\n`;
   md += `| Deliverable Type | Clickable Deliverable Link | Format | Purpose |\n`;
   md += `|---|---|---|---|\n`;
   deliverables.forEach(d => {
-    const uri = toClickableFileUri(d.path);
+    const uri = toReportLink(d.path, outputPath);
     md += `| **${d.type}** | [${d.name}](${uri}) | \`${d.format}\` | ${d.desc} |\n`;
   });
   md += `\n`;
@@ -272,7 +278,7 @@ function generateMarkdownReport(ctx) {
     for (const part of accepted.skuPartsList) report += `| ${part.sku} | ${part.quantity} | ${part.unitPriceUsd.toLocaleString()} | ${part.extendedPriceUsd.toLocaleString()} |\n`;
     report += `\nRemoved redundant optics: ${(accepted.removedSkus || []).join(', ') || 'none'}. Base and two upgrade kits supply 24 optics for 24 licensed ports.\n\n`;
     const change = ctx.evalResults.requirementResolution?.supportPolicyChange;
-    if (change) report += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is CDMR as labelled by OCA. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
+    if (change) report += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is ${change.retention || 'as labelled by OCA'}. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
     report += `Receipt artifacts: [CLIC response](evidence/clic_corrected_configuration.json), [complete solution BOM](evidence/clic_corrected_bom.json).\n\n`;
   }
   report += _buildItemsSection(ctx.items, ctx.budgetOpt);
@@ -290,7 +296,8 @@ function generateMarkdownReport(ctx) {
 
   report += `---\n\n`;
   report += `## 🤖 4. Gemini Notebook RAG Status\n\n`;
-  if (ctx.evalResults.agenticReviewStatus === 'UNAVAILABLE') report += '**Separate agentic model review:** unavailable (provider error). This is not a successful independent model review; NotebookLM document grounding and live CLIC acceptance are reported separately.\n\n';
+  if (ctx.evalResults.agenticReviewStatus === 'UNAVAILABLE') report += '**Separate agentic model review:** unavailable or incomplete. This is not a successful independent model review; NotebookLM document grounding and live CLIC acceptance are reported separately.\n\n';
+  if (ctx.evalResults.agenticReviewStatus === 'ADVISORY_RETURNED') report += `**Separate agentic model review:** advisory returned by ${ctx.evalResults.agenticReview?.model || 'configured model'}; ${ctx.evalResults.agenticReview?.recoveryEvents?.length || 0} recovery events. This advisory is separate from NotebookLM source validation and vendor acceptance.\n\n`;
   report += `${ctx.ragAnswer || 'No Gemini Notebook RAG answer recorded.'}\n\n`;
   report += _buildDeliverablesSection(ctx);
   report += `---\n\n`;
@@ -335,9 +342,9 @@ function _buildWorkflowSteps(ctx) {
       stepId: 4,
       title: 'Agentic AI Cross-Verification',
       subtitle: 'Gemini LLM Dual-Brain Verification',
-      status: stage4GuardrailMs > 0 ? 'COMPLETED' : 'NOT_RUN',
+      status: evalResults.agenticReviewStatus === 'ADVISORY_RETURNED' ? 'COMPLETED' : evalResults.agenticReviewStatus === 'UNAVAILABLE' ? 'WARNING' : 'NOT_RUN',
       durationMs: stage4GuardrailMs,
-      details: stage4GuardrailMs > 0 ? 'Agentic guardrail completed.' : 'Agentic guardrail was not run during the provisional local phase.',
+      details: evalResults.agenticReviewStatus === 'ADVISORY_RETURNED' ? 'Agentic advisory returned.' : evalResults.agenticReviewStatus === 'UNAVAILABLE' ? 'Independent model review is unavailable or incomplete; other evidence remains separate.' : 'Agentic guardrail was not run during the provisional local phase.',
       metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score ?? null }
     },
     {
@@ -567,7 +574,9 @@ async function serializeAndExportResults(ctx) {
   }
 
   if (ledger) {
-    const evidenceDir = ctx.evidenceDir || path.resolve(__dirname, '../../../outputs/history/evidence_logs');
+    // Retain evidence beside its deliverables so a moved checkout keeps links valid.
+    ctx.evidenceDir = path.join(path.dirname(path.resolve(outputPath)), 'evidence');
+    const evidenceDir = ctx.evidenceDir;
     evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
     evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
     evalResults.evidenceHealth = ledger.getHealth();
@@ -632,6 +641,8 @@ async function serializeAndExportResults(ctx) {
         ragAnswer: evalResults.ragAnswer || null,
         ragResult: evalResults.ragResult || null,
         notebookLmStatus: evalResults.notebookLmStatus || null,
+        agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
+        agenticReview: evalResults.agenticReview || null,
         postFlowSync: evalResults.postFlowSync || null,
         needsActions: evalResults.evalSummary?.needsActions || [],
         requirementResolution: evalResults.requirementResolution || null,
@@ -639,6 +650,7 @@ async function serializeAndExportResults(ctx) {
         unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
         totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
         aspectChecks: evalResults.aspectChecks || [],
+        solutionTopology: evalResults.solutionTopology || null,
         stageBreakdown: evalResults.stageBreakdown || {},
         evalResults: {
           ...evalResults,

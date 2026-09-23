@@ -84,7 +84,7 @@ function extractHardwareMetrics(data, inner) {
     hasDcLugKit: inner.hasDcLugKit ?? data.hasDcLugKit,
     hasOcpAdapter: inner.hasOcpAdapter ?? data.hasOcpAdapter,
     hasSupportService: inner.hasSupportService ?? data.hasSupportService,
-    aspectChecks: inner.aspectChecks ?? buildAspectChecksFromEval(inner)
+    aspectChecks: inner.aspectChecks ?? data.aspectChecks ?? buildAspectChecksFromEval(inner)
   };
 }
 
@@ -180,7 +180,14 @@ export function normalizeEvalResult(payload) {
     warnings: inner.warnings ?? data.warnings ?? [],
     missingDependencies: inner.missingDependencies ?? data.missingDependencies ?? [],
     confidence: inner.confidence ?? data.confidence ?? { score: 0, summary: '' },
+    isMathClean: inner.isMathClean ?? data.isMathClean ?? null,
+    criticalViolationsCount: inner.criticalViolationsCount ?? data.criticalViolationsCount ?? null,
+    portalValidationStatus: inner.portalValidationStatus ?? data.portalValidationStatus ?? 'PENDING',
+    ephemeralSourceValidation: inner.ephemeralSourceValidation ?? data.ephemeralSourceValidation ?? null,
     agenticExplanation: inner.agenticExplanation ?? data.agenticExplanation,
+    agenticReviewStatus: inner.agenticReviewStatus ?? data.agenticReviewStatus ?? 'NOT_RUN',
+    agenticReview: inner.agenticReview ?? data.agenticReview ?? null,
+    solutionTopology: inner.solutionTopology ?? data.solutionTopology ?? null,
     ...extractHardwareMetrics(data, inner),
     ...extractConflictAndStrategy(data, inner),
     ...extractProvenanceAndTrace(data, inner),

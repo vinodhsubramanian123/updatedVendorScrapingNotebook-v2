@@ -1,0 +1,44 @@
+[
+  {
+    "deltaId": "OWNER_STANDARD_3Y_BASIC",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_STANDARD_3Y_BASIC",
+      "ruleType": "SUPPORT_POLICY",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T18:11:41.173Z"
+    }
+  },
+  {
+    "deltaId": "OWNER_CLOSEST_REQUIREMENT_RANK",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_CLOSEST_REQUIREMENT_RANK",
+      "ruleType": "CUSTOMER_INTENT_POLICY",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T18:11:41.199Z"
+    }
+  },
+  {
+    "deltaId": "OWNER_COMPONENT_DOMAIN_ROUTING",
+    "persisted": true,
+    "certification": {
+      "reachable": true,
+      "ruleId": "OWNER_COMPONENT_DOMAIN_ROUTING",
+      "ruleType": "COMPONENT_DOMAIN_ROUTING",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-09-22T18:11:41.221Z"
+    }
+  }
+]

@@ -4,7 +4,8 @@
  *
  * Refactored: GAP-A1 Tool Registry, GAP-A2 sendWithRotation(), GAP-A3 extracted prompt.
  */
-const { GoogleGenAI, Type } = require('@google/genai');
+const { Type } = require('@google/genai');
+const fs = require('fs');
 const path = require('path');
 
 const { evaluateBOQMultiAspect } = require('../boq/boq_evaluator.js');
@@ -18,6 +19,7 @@ const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
 const { buildGuardrailSystemPrompt } = require('../prompts/guardrail_prompt.js');
 const geminiRotator = require('../system/gemini_rotator.js');
 const logger = require('../system/pipeline_logger.js');
+const { createChat, sendGuardrailMessage } = require('./guardrail_transport');
 
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
@@ -29,7 +31,16 @@ const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(
   10
 ); // Headroom for every slow NotebookLM call plus local evaluation and synthesis.
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const API_TIMEOUT_MS = Math.max(1000, Number(process.env.GUARDRAIL_API_TIMEOUT_MS) || 45000);
+
+function assertSessionScope(args, ctx) {
+  if (args.chassis_id !== ctx.chassisId) throw new Error(`GUARDRAIL_SCOPE_MISMATCH: expected ${ctx.chassisId}.`);
+}
+
+function failedReview(error, state = {}, details = {}) {
+  return { success: false, status: 'UNAVAILABLE', error: String(error?.message || error),
+    model: state.model || MODEL_NAME, recoveryEvents: state.recoveryEvents || [], ...details };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GAP-A1: Declarative Tool Registry
@@ -64,14 +75,13 @@ function buildToolRegistry(ctx) {
           }
         },
         execute: async (args) => {
+          assertSessionScope(args, ctx);
           const parsedItems = JSON.parse(args.items_json);
-          const result = evaluateBOQMultiAspect(parsedItems, { chassis: args.chassis_id });
+          const result = evaluateBOQMultiAspect(parsedItems, { targetDir: ctx.chassisDir, catalogData: ctx.catalogData, productConfirmed: true });
           if (result?.confidence?.score !== undefined) {
             ctx.latestConfidence = result.confidence.score;
           }
-          if (result?.confidence?.score >= 1.0 && (result?.errors || []).length === 0) {
-            ctx.isOptimalResolved = true;
-          }
+          ctx.isOptimalResolved = result?.isMathClean === true && result?.isGraphClean === true && (result?.errors || []).length === 0;
           return result;
         }
       }
@@ -93,6 +103,7 @@ function buildToolRegistry(ctx) {
           }
         },
         execute: async (args) => {
+          assertSessionScope(args, ctx);
           const maxNlmCalls = parseInt(process.env.GUARDRAIL_NLM_MAX_CALLS || '3', 10);
           ctx.nlmCallCount = (ctx.nlmCallCount || 0) + 1;
           if (ctx.nlmCallCount > maxNlmCalls) {
@@ -126,7 +137,7 @@ function buildToolRegistry(ctx) {
             required: ['chassis_id', 'query']
           }
         },
-        execute: async (args) => queryLocalKnowledgeBase(args.query, args.chassis_id)
+        execute: async (args) => { assertSessionScope(args, ctx); return queryLocalKnowledgeBase(args.query, args.chassis_id); }
       }
     ],
     [
@@ -152,6 +163,7 @@ function buildToolRegistry(ctx) {
          * rather than writing to disk directly. The caller commits it after the loop.
          */
         execute: async (args) => {
+          assertSessionScope(args, ctx);
           const pendingDelta = {
             chassisId: args.chassis_id,
             affectedSku: args.affected_sku,
@@ -226,51 +238,7 @@ function submitGuardrailCandidates(pendingDeltas, dependencies = {}) {
  * @returns {object}  Gemini response object
  */
 async function sendWithRotation(message, rotationState, maxRetries, startTime) {
-  let retries = 0;
-  while (true) {
-    if (Date.now() - startTime > GUARDRAIL_OVERALL_TIMEOUT_MS) {
-      throw new Error(`Agentic Guardrail execution timed out after ${Math.ceil(GUARDRAIL_OVERALL_TIMEOUT_MS / 1000)} seconds.`);
-    }
-    try {
-      const response = await rotationState.chat.sendMessage({ message });
-      geminiRotator.markKeySuccess(rotationState.currentApiKey);
-      return response;
-    } catch (err) {
-      const isRateLimit = err.status === 429 || /quota|resource_exhausted|daily|429/i.test(err.message || '');
-      if (isRateLimit && retries < maxRetries) {
-        logger.warn('AGENTIC_GUARDRAIL', `Rate limit on key ${rotationState.activeKeyInfo.fingerprint}. Rotating.`);
-        geminiRotator.markKeyExhausted(rotationState.currentApiKey, err, { isDailyLimit: true });
-
-        rotationState.activeKeyInfo = geminiRotator.getActiveKey();
-        rotationState.currentApiKey = rotationState.activeKeyInfo.apiKey;
-        logger.warn('AGENTIC_GUARDRAIL', `Promoted key: ${rotationState.activeKeyInfo.fingerprint}`);
-
-        // Rebuild AI client and attempt to preserve chat history
-        rotationState.ai = new GoogleGenAI({ apiKey: rotationState.currentApiKey });
-        let history = [];
-        try { history = await rotationState.chat.getHistory(); } catch (_) {}
-        rotationState.chat = rotationState.ai.chats.create({
-          model: MODEL_NAME,
-          config: {
-            systemInstruction: rotationState.systemInstruction,
-            tools: [{ functionDeclarations: rotationState.toolDeclarations }],
-            temperature: 0.1
-          },
-          history
-        });
-        retries++;
-        continue;
-      }
-      // Non-rate-limit error or retries exhausted — fall through to a brief backoff
-      if (isRateLimit && retries < 3) {
-        logger.warn('AGENTIC_GUARDRAIL', 'Rate limit; waiting 10s before retrying...');
-        await sleep(10000);
-        retries++;
-      } else {
-        throw err;
-      }
-    }
-  }
+  return sendGuardrailMessage(message, rotationState, Math.max(8, maxRetries), startTime + GUARDRAIL_OVERALL_TIMEOUT_MS);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -280,29 +248,36 @@ async function sendWithRotation(message, rotationState, maxRetries, startTime) {
 async function runAgenticGuardrail(items, chassisDir) {
   const startTime = Date.now();
 
-  let activeKeyInfo = geminiRotator.getActiveKey();
+  const activeKeyInfo = geminiRotator.getActiveKey();
   if (!activeKeyInfo || !activeKeyInfo.apiKey) {
-    return { error: 'GEMINI_API_KEY environment variable is required.' };
+    return failedReview('GEMINI_API_KEY environment variable is required.');
   }
+  if (activeKeyInfo.allExhausted) return failedReview('GEMINI_QUOTA_UNAVAILABLE: all configured keys are cooling down or exhausted.');
 
   const chassisId = path.basename(chassisDir);
 
   // Compute pre-guardrail confidence baseline
   let preConfidence = 0.5;
+  let catalogData;
   try {
-    const initialEval = evaluateBOQMultiAspect(items, { chassis: chassisId });
+    const files = fs.readdirSync(chassisDir).filter(file => file.endsWith('_Catalog.json'));
+    if (files.length !== 1) throw new Error('Require one exact catalog in the selected product directory.');
+    catalogData = JSON.parse(fs.readFileSync(path.join(chassisDir, files[0]), 'utf8'));
+    const initialEval = evaluateBOQMultiAspect(items, { targetDir: chassisDir, catalogData, productConfirmed: true });
     preConfidence = initialEval?.confidence?.score ?? 0.5;
   } catch (err) {
-    logger.warn('AGENTIC_GUARDRAIL', `Pre-eval baseline failed for ${chassisId}, defaulting to 0.5.`, err);
+    return failedReview(`GUARDRAIL_CONTEXT_UNAVAILABLE: ${err.message}`);
   }
 
   // ── Session context object shared across tool handlers (closure capture) ──
   const ctx = {
+    chassisId, chassisDir, catalogData,
     latestConfidence: preConfidence,
     preConfidence,
     isOptimalResolved: false,
     turns: 0,
     nlmCallCount: 0,    // Budget cap: max GUARDRAIL_NLM_MAX_CALLS (default 3) NLM queries per session
+    successfulTools: new Set(),
     pendingDeltas: []  // GAP-A4: deltas queued here, committed after loop
   };
 
@@ -317,15 +292,16 @@ async function runAgenticGuardrail(items, chassisDir) {
   const rotationState = {
     currentApiKey: activeKeyInfo.apiKey,
     activeKeyInfo,
-    ai: new GoogleGenAI({ apiKey: activeKeyInfo.apiKey }),
+    model: MODEL_NAME,
+    models: [...new Set([MODEL_NAME, ...(process.env.GUARDRAIL_FALLBACK_MODELS ?? 'gemini-3.7-flash,gemini-3.5-flash-lite').split(',').map(value => value.trim()).filter(Boolean)])],
+    apiTimeoutMs: API_TIMEOUT_MS,
+    recoveryEvents: [],
+    requiredTool: 'simulate_build',
     systemInstruction,
     toolDeclarations,
     chat: null
   };
-  rotationState.chat = rotationState.ai.chats.create({
-    model: MODEL_NAME,
-    config: { systemInstruction, tools: [{ functionDeclarations: toolDeclarations }], temperature: 0.1 }
-  });
+  createChat(rotationState);
 
   const maxRetries = Math.max(3, activeKeyInfo.totalKeys || 5);
   const initialItemsJson = JSON.stringify(items);
@@ -343,10 +319,11 @@ async function runAgenticGuardrail(items, chassisDir) {
       startTime
     );
   } catch (err) {
-    return { error: err.message };
+    return failedReview(err, rotationState);
   }
 
   const executedToolCalls = [];
+  if (!response?.functionCalls?.some(call => call.name === 'simulate_build')) return failedReview('GUARDRAIL_TOOL_REQUIRED: provider did not perform the required local simulation.', rotationState);
 
   // ── Agentic Tool Execution Loop ──────────────────────────────────────────
   while (response.functionCalls && response.functionCalls.length > 0 && ctx.turns < 15) {
@@ -368,6 +345,7 @@ async function runAgenticGuardrail(items, chassisDir) {
       } else {
         try {
           result = await tool.execute(call.args);
+          if (result && !result.error && result.status !== 'ERROR') ctx.successfulTools.add(call.name);
         } catch (e) {
           result = { error: e.message };
         }
@@ -383,23 +361,24 @@ async function runAgenticGuardrail(items, chassisDir) {
     }
 
     // Send tool results back — uses unified rotation helper
+    rotationState.requiredTool = ctx.nlmCallCount === 0 ? 'query_notebooklm' : null;
     try {
       response = await sendWithRotation(toolResponses, rotationState, maxRetries, startTime);
     } catch (err) {
       logger.warn('AGENTIC_GUARDRAIL', 'Agentic loop chat error', err);
-      return { error: err.message, text: response ? response.text : '', turns: ctx.turns, executedToolCalls };
+      return failedReview(err, rotationState, { turns: ctx.turns, executedToolCalls });
     }
 
     // GAP-C2: Deterministic exit if simulate_build resolved 100% buildability
     if (ctx.isOptimalResolved && (!response.functionCalls || response.functionCalls.length === 0)) {
       logger.info('AGENTIC_GUARDRAIL',
-        `Optimal build resolution confirmed (Confidence 1.0). Exiting loop at turn ${ctx.turns}.`);
+        `Local checks resolved; final advisory returned at turn ${ctx.turns}.`);
       break;
     }
   }
 
-  // ── GAP-A4: Submit queued candidates to product-scoped governance ───────
-  const { activatedDeltaCount, quarantinedDeltaCount, rejectedDeltaCount, rejectedCandidateReasons } = submitGuardrailCandidates(ctx.pendingDeltas);
+  if (response?.functionCalls?.length) return failedReview('GUARDRAIL_INCOMPLETE: tool loop ended before a final review.', rotationState, { turns: ctx.turns, executedToolCalls });
+  if (!ctx.successfulTools.has('simulate_build') || !ctx.successfulTools.has('query_notebooklm')) return failedReview('GUARDRAIL_TOOL_REQUIRED: required local and NotebookLM checks were not completed successfully.', rotationState, { turns: ctx.turns, executedToolCalls });
 
   const durationMs = Date.now() - startTime;
   logger.info('AGENTIC_GUARDRAIL',
@@ -418,13 +397,17 @@ async function runAgenticGuardrail(items, chassisDir) {
     }
   }
 
-  if (!extractedText && executedToolCalls.length > 0) {
-    extractedText = `Agentic Guardrail completed in ${ctx.turns} turns, executing ${executedToolCalls.length} verification tools: [${executedToolCalls.join(', ')}]. Candidate observations were routed through product-scoped knowledge governance.`;
-  }
+  if (!extractedText.trim()) return failedReview('GUARDRAIL_EMPTY_RESPONSE: no final review text returned.', rotationState, { turns: ctx.turns, executedToolCalls });
+
+  // Commit observations only after the tool loop and final response complete.
+  const { activatedDeltaCount, quarantinedDeltaCount, rejectedDeltaCount, rejectedCandidateReasons } = submitGuardrailCandidates(ctx.pendingDeltas);
 
   const guardrailSummary = {
     text: extractedText,
     success: true,
+    status: 'ADVISORY_RETURNED',
+    model: rotationState.model,
+    recoveryEvents: rotationState.recoveryEvents,
     turns: ctx.turns,
     executedToolCalls,
     durationMs,

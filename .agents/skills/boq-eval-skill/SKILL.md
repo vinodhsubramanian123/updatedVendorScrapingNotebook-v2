@@ -464,9 +464,14 @@ To ensure that neither humans nor autonomous agents repeat the blind spots ident
 
 ### Solution-owner support default (2026-09-22)
 
-For server, storage and networking solutions, attempt **3-year HPE Tech Care Basic** unless the customer/user explicitly requests a different support level or term. Preserve explicit alternatives. Resolve the exact product-specific service and suffix through live OCA; never reuse a generic server Care Pack for another family. Prefer Basic without retention. If the exact product only offers Basic with a retention option, record that availability evidence and preserve the exact CDMR/GDMR designation rather than silently upgrading to Essential. Keep installation separate and only where requested. Revalidate CLIC after support changes; prior receipts do not transfer to changed manifests.
+For server, storage and networking solutions, attempt **3-year HPE Tech Care Basic** unless the customer/user explicitly requests a different support level or term. Preserve explicit alternatives. Resolve the exact product-specific service and suffix through live OCA; never reuse a generic server Care Pack for another family. Compare both fixed and flexible support. If retention is unspecified, select the cheapest qualified option meeting the requested term and tier; disclose its DMR/CDMR/GDMR designation. Preserve flexible service parent and product suffix together. A fixed-selector omission does not prove that a flexible service is unavailable. Keep installation separate and only where requested. Revalidate CLIC after support changes; prior receipts do not transfer to changed manifests.
 
 
 ### Icon-owned SLA selection (owner learning, 2026-09-22)
 
 Use **Components → target icon → Services (right-hand icon controls) → Edit → exact dropdown selection**. The aggregate Services page can behave inconsistently. Leave both “apply to all icons” and “apply to all nodes” unchecked unless the user explicitly requests bulk application. Store service SKU, suffix, term, tier and retention with the owning icon/configuration ID. Defaults are resolved independently for each icon; never propagate one icon’s SLA to another. Verify the per-icon BOM and complete solution BOM, then rerun CLIC for the final manifest. This applies to mixed server/storage/networking configurations, including DL380 and Synergy.
+
+
+### Component-domain routing and supported coverage (2026-09-22)
+
+Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.

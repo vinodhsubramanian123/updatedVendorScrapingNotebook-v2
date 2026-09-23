@@ -8,11 +8,16 @@ function normalize(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
-function inferPillar(family) {
+function inferPillar(family, productId = '') {
   const normalized = normalize(family);
-  if (['alletra', 'nimble', 'storeonce', 'msa', 'storeever'].includes(normalized)) return 'STORAGE';
-  if (['aruba', 'san'].includes(normalized)) return 'NETWORKING';
-  if (['proliant', 'synergy', 'cray', 'superdome', 'edgeline', 'simplivity'].includes(normalized)) return 'SERVER';
+  if (normalized === 'synergy') {
+    if (/sy100gb|f32|virtual.?connect|interconnect/i.test(productId)) return 'NETWORKING';
+    if (/sy480|synergy.?480|compute/i.test(productId)) return 'SERVER';
+    return 'COMPOSITE';
+  }
+  if (['alletra', 'nimble', 'storeonce', 'msa', 'storeever', 'powerstore', 'powervault'].includes(normalized)) return 'STORAGE';
+  if (['aruba', 'san', 'nexus', 'catalyst', 'networking'].includes(normalized)) return 'NETWORKING';
+  if (['proliant', 'cray', 'superdome', 'edgeline', 'simplivity', 'poweredge', 'ucs', 'thinksystem'].includes(normalized)) return 'SERVER';
   return 'UNKNOWN';
 }
 
@@ -82,7 +87,7 @@ function resolveProductIdentity(identifier, config = {}) {
   const generation = entry.gen || entry.generation || '';
   return {
     vendor: entry.vendor || 'HPE',
-    pillar: entry.pillar || inferPillar(family),
+    pillar: entry.pillar || inferPillar(family, productId),
     family,
     generation,
     productId: baseProductId(productId)

@@ -1,98 +1,61 @@
 'use strict';
-/**
- * scripts/lib/system/uri_helper.js — Cross-Platform Clickable File URI Resolver
- *
- * Generates standards-compliant, machine-agnostic file:/// URLs for deliverables,
- * Excel workbooks, and Markdown reports. Enables single-click file opening in modern IDEs,
- * terminals, and markdown viewers across Windows, Linux, and macOS without hardcoding paths.
- */
-
+/** Portable links for saved reports; native file URLs for local launchers. */
 const path = require('path');
+const { execFile } = require('child_process');
 
-/**
- * Converts a file path into a compliant, clickable file:/// URI machine-agnostically.
- * Works seamlessly across Windows (e.g. file:///C:/path/file.xlsx), macOS, and Linux.
- * Zero hardcoding.
- *
- * @param {string} filePath - Absolute or relative file path
- * @returns {string} Fully qualified, clickable file:/// URI
- */
-function toClickableFileUri(filePath) {
-  if (!filePath || typeof filePath !== 'string') return '';
-  const resolved = path.resolve(filePath).replace(/\\/g, '/');
-  if (resolved.startsWith('/')) {
-    return `file://${resolved}`;
-  }
-  return `file:///${resolved}`;
+const isWindowsPath = value => /^[a-z]:[\\/]/i.test(value) || /^\\\\/.test(value);
+const encodePath = value => value.split('/').map(segment => encodeURIComponent(segment).replace(/[!'()*]/g, char => '%' + char.charCodeAt(0).toString(16).toUpperCase())).join('/');
+function absolutePath(value) {
+  if (isWindowsPath(value)) return path.win32.normalize(value);
+  if (value.startsWith('/')) return path.posix.normalize(value);
+  return path.resolve(value);
 }
 
-/**
- * Opens a file in the operating system's default registered application.
- * Cross-platform (Windows, macOS, Linux), zero hardcoding.
- *
- * @param {string} filePath Target file path
- * @returns {Promise<boolean>} Success boolean
+/** Encode spaces, Unicode and URI/Markdown delimiters, including foreign OS paths. */
+function toClickableFileUri(filePath) {
+  if (!filePath || typeof filePath !== 'string') return '';
+  if (/^file:/i.test(filePath)) return new URL(filePath).href;
+  const resolved = absolutePath(filePath).replace(/\\/g, '/');
+  if (resolved.startsWith('//')) {
+    const [host, ...parts] = resolved.slice(2).split('/');
+    return new URL(`file://${host}/${encodePath(parts.join('/'))}`).href;
+  }
+  if (/^[a-z]:\//i.test(resolved)) return `file:///${resolved.slice(0, 2)}/${encodePath(resolved.slice(3))}`;
+  return `file://${encodePath(resolved)}`;
+}
+
+/** Saved Markdown uses report-relative links so a moved checkout remains usable.
+ * Cross-drive/share targets necessarily fall back to an encoded local file URL.
  */
+function toReportLink(filePath, reportPath) {
+  const target = absolutePath(filePath);
+  const report = absolutePath(reportPath);
+  if (isWindowsPath(target) !== isWindowsPath(report)) return toClickableFileUri(target);
+  const paths = isWindowsPath(target) ? path.win32 : path.posix;
+  const relative = paths.relative(paths.dirname(report), target);
+  if (paths.isAbsolute(relative)) return toClickableFileUri(target);
+  return encodePath(relative.replace(/\\/g, '/'));
+}
+
+function launch(command, args) {
+  return new Promise(resolve => execFile(command, args, { windowsHide: true }, error => resolve(!error)));
+}
+
 function openInDefaultApp(filePath) {
   if (!filePath) return Promise.resolve(false);
   const resolved = path.resolve(filePath);
-  const { exec } = require('child_process');
-  
-  return new Promise((resolve) => {
-    let cmd;
-    if (process.platform === 'win32') {
-      // In Windows, Start-Process or Invoke-Item uses the shell association (e.g. Excel)
-      cmd = `powershell -NoProfile -Command "Start-Process -FilePath '${resolved.replace(/'/g, "''")}'"`;
-    } else if (process.platform === 'darwin') {
-      cmd = `open "${resolved}"`;
-    } else {
-      cmd = `xdg-open "${resolved}"`;
-    }
-
-    exec(cmd, (err) => {
-      if (err) {
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    });
-  });
+  if (process.platform === 'win32') {
+    return launch('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `$ErrorActionPreference = 'Stop'; Invoke-Item -LiteralPath '${resolved.replace(/'/g, "''")}'`]);
+  }
+  return launch(process.platform === 'darwin' ? 'open' : 'xdg-open', [resolved]);
 }
 
-/**
- * Reveals a file or folder in the operating system's native file manager
- * (File Explorer on Windows, Finder on macOS, file manager on Linux).
- *
- * @param {string} filePath Target file or folder path
- * @returns {Promise<boolean>} Success boolean
- */
 function revealInFileManager(filePath) {
   if (!filePath) return Promise.resolve(false);
   const resolved = path.resolve(filePath);
-  const { exec } = require('child_process');
-
-  return new Promise((resolve) => {
-    let cmd;
-    if (process.platform === 'win32') {
-      cmd = `explorer.exe /select,"${resolved}"`;
-    } else if (process.platform === 'darwin') {
-      cmd = `open -R "${resolved}"`;
-    } else {
-      cmd = `xdg-open "${path.dirname(resolved)}"`;
-    }
-
-    exec(cmd, (err) => {
-      if (err) {
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    });
-  });
+  if (process.platform === 'win32') return launch('explorer.exe', [`/select,${resolved}`]);
+  if (process.platform === 'darwin') return launch('open', ['-R', resolved]);
+  return launch('xdg-open', [path.dirname(resolved)]);
 }
 
-module.exports = {
-  toClickableFileUri,
-  openInDefaultApp,
-  revealInFileManager
-};
+module.exports = { toClickableFileUri, toReportLink, openInDefaultApp, revealInFileManager };

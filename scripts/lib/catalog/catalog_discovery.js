@@ -138,7 +138,7 @@ function detectChassisVariant(items, overrideVariant = '') {
     if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };
     if (desc.includes('cray') || desc.includes('gx5000')) return { ...chassisMap['GX5000_General_RACK'], id: 'GX5000_General_RACK' };
     if (desc.includes('sy480') || desc.includes('synergy 480') || (desc.includes('synergy') && (desc.includes('480') || desc.includes('blade') || desc.includes('compute')))) return { ...(chassisMap['SY480_Gen12'] || { family: 'Synergy', gen: 'Gen12', formFactor: 'Compute Module', model: 'SY480 Gen12', baseSku: 'P68217-B21' }), id: 'SY480_Gen12' };
-    if (desc.includes('synergy') || desc.includes('f32') || desc.includes('100gb')) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
+    if (/\b(?:synergy\s+)?(?:vc\s*)?100\s*gb\s*f32\b|synergy.*virtual\s*connect/i.test(desc) && !/\b(service|support|cable|transceiver)\b/i.test(desc)) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
   }
 
   // If no chassis can be identified, trigger Human-in-the-Loop confirmation instead of silent Gen12 assumption

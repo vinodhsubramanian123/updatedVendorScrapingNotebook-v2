@@ -144,3 +144,8 @@ or
 ```
 ⛔ [OUTPUT VALIDATION: 9/12 criteria PASSED, 1 BLOCKED — B5: Financial total mismatch ($45,230 vs $44,890 line item sum). Self-heal attempted: re-resolved 2 SKU prices. Re-validation: PASSED]
 ```
+
+
+### Portable deliverables (2026-09-22)
+
+Saved Markdown deliverables use encoded report-relative links from `toReportLink`; native launchers use `toClickableFileUri`. Retain evidence beside the report. Check that every local target exists, including workbooks with spaces, Unicode, percent signs and parentheses. Cross-drive/share links need encoded file URLs and cannot be made portable without moving their targets. Native app launching on another OS is not certified by path-format checks.

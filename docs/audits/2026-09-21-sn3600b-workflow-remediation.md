@@ -33,7 +33,7 @@ Scope: R7R97A and the supplied Config2_SN3600B_FC_Switch_EVALUATED_BOQ.xlsx. Pre
 - [x] Export sync status after sync completes, avoiding permanently stale SYNC PENDING badges.
 - [x] Verify native-citation review and exact five-line workbook manifest; retain the final trace and commit reviewed changes.
 
-## Accepted vendor configuration
+## Historical fixed Care Pack configuration (superseded below)
 
 Live complete OCA/CLIC receipt captured 2026-09-22T07:58:17.037Z. CLIC overall OK with zero unbuildables, errors, warnings and process-control issues. Evidence is under outputs/SAN/FC/SN3600B_FC/evidence; the prior five-year Essential receipt is superseded.
 
@@ -48,7 +48,7 @@ Live complete OCA/CLIC receipt captured 2026-09-22T07:58:17.037Z. CLIC overall O
 
 R6W26A was redundantly allocated to the eight active base ports, which already include optics. Two R7M09A kits supply the other sixteen licensed ports and optics. The eight requested cables are preserved; licensed port capacity does not invent endpoint demand.
 
-HX2M2E is three-year Tech Care Basic **with CDMR**, not GMR. The live selector showed no plain three-year Basic option for this product. U5988E retains the requested installation. Both apply-to-all controls were off in the owning node's Components/Services editor.
+HX2M2E is three-year Tech Care Basic **with CDMR**, not GMR. The fixed Care Pack selector showed no plain three-year Basic option. This did not establish availability in the flexible service selector; the later correction below supersedes that conclusion. U5988E retains the requested installation. Both apply-to-all controls were off in the owning node's Components/Services editor.
 
 Original customer estimates totalled USD 16,547; the standalone pack's estimated USD 2,800 is not a live savings quote. The final USD 62,636 is current captured OCA list pricing, including the requested support change, not a discounted partner quotation.
 
@@ -76,10 +76,37 @@ The pre-existing test_failure_ledger.json records another runner's four failures
 
 Earlier provisional traces included a phantom title row, incomplete service handling or generic instead of candidate-specific NotebookLM prompts. They are historical diagnostics, not final certifications. The final trace and receipt must be consulted together.
 
-## Final verification record
+## Historical verification record — fixed Care Pack
 
 Canonical final trace: TRC-1790082194547-FF7ABF. All nine phases PASSED, evidence health COMPLETE with no gaps. The final candidate document review PASSED with 15 native citations and confirmed temporary-source detachment. The trace includes the service-qualification and phase-status fixes. The complete CLIC receipt was independently reread after tightening required headers, owner labels and displayed-total reconciliation: five rows, USD 62,636.
 
 Reviewed 29 changed JavaScript files with node --check, parsed 29 changed/new JSON artifacts, and checked diffs (allowing intentional Markdown hard-break spaces). No test suites were run. The semantic code graph was refreshed. Browser profiles, authentication data, logs and partial capture scratch files are excluded from the commit. Pre-existing test/quarantine evidence is preserved.
 
 Additional closure: verified live service rows no longer request clarification merely because they are absent from the main menu catalog. NOT_APPLICABLE checks are not failures; the baseline optics warning is explicitly linked to its receipt-backed corrected candidate. A provider error is reported as unavailable rather than a successful agentic review.
+
+
+## September 22 follow-up: flexible support, portable links and topology routing
+
+The owner clarified that the closest rank must preserve explicit customer requirements with minimal buildability changes. Three-year Basic is the default only when unspecified or when the owner explicitly authorizes an override; that override is authorized for this five-year Essential BOQ. Budget alternatives must disclose deviations.
+
+Live OCA flexible Select Your Own offered HU4B3A3 (3-year Basic with DMR), HU4B4A3 (CDMR) and H55VWA3 (GDMR); plain HU4B2A3 was absent from the observed list. The owner-selected HU4B3A3 + ZTL was accepted with HA113A1 + 5GA installation. Both apply-to-all controls were explicitly unchecked before submission. Support costs $186 and installation $537. Complete seven-line list total is **$61,929**, **$707 less** than the historical fixed configuration ($764 support reduction offset by $57 installation increase). This comparison does not claim every alternative has been priced.
+
+The new complete BOM and CLIC receipt are `evidence/clic_corrected_bom.json` and `evidence/clic_corrected_configuration.json`; CLIC reports zero unbuildables, errors, warnings and process-control issues. The historical fixed receipts are retained as `clic_fixed_cdmr_*`. Service parent and suffix rows now remain together through qualification, exports and NotebookLM service evidence. Vendor-confirmed zero-price parents remain numeric zero; missing prices remain unresolved.
+
+Report links now use encoded relative targets; file launchers use encoded native file URLs and argument-safe OS commands. Evidence exports live beside the report so repository moves do not depend on ignored global history. Focused cases cover Windows, Linux/macOS path syntax, UNC shares, cross-drive fallback, spaces, Unicode and reserved characters. Native Linux/macOS application launch was not exercised on this Windows machine.
+
+See `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` for the implemented domain routing boundary and onboarding requirements. The old all-Synergy-is-networking rule and generic 100Gb-to-F32 inference were removed. Unprofiled storage/networking, unknown and mixed assemblies cannot inherit server checks or receive invented passing ranks. Synergy compute results cannot certify missing enclosure/fabric relationships. This prevents false certification; it does **not** claim complete product-specific validators exist for every vendor or composite solution.
+
+Owner lessons were persisted through the continuous-learning API and confirmed reachable. The historical cache-reset lesson was narrowed so it cannot override Partner Portal recovery for expired OCA sessions. Full regression suites remain delegated to the other runner per owner instruction.
+
+
+## September 23 guardrail and dashboard follow-up
+
+Found and repaired: no 503 retries; all 429 responses misclassified as daily quotas; omitted catalog directory during simulate-build; prose-only model response could skip mandatory tools; incomplete/empty tool loop could report success; workflow completion was inferred from elapsed time; dashboard zero-violation count could certify unknown validation. The transport now has bounded API calls, transient retry, approved model fallback, safe transcript replay and accurate quota classification. Required scoped simulation and NotebookLM calls are enforced, and the UI exposes an advisory independently of source/vendor validation. Unknown evidence never becomes a green certification.
+
+Live model inventory confirmed configured 3.6 Flash and approved fallback models. Focused fault simulation covered transient 503, fallback without tool replay, quota classification and timeout. The intermediate B31E64 run returned a live Gemini advisory but used no tools, exposing the final enforcement gap; it is not the final guardrail verification.
+
+
+### Local follow-up checkpoint, 2026-09-23
+
+Latest A53898 recovered through real Gemini fallback and completed both required tools, but remains INCOMPLETE because the then-current structured validator rejected a top-level JSON array. Parser acceptance and negative cases now pass locally; no historical trace was relabeled. Final canonical rerun and combined validation are assigned in `ANTIGRAVITY_HANDOFF.md`. Current generated outputs are evidence of that incomplete run, not final customer certification.

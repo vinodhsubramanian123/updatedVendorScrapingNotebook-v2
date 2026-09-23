@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-22T13:06:25.577Z  
-**Total Deduplicated Learned Rules:** 79  
+**Last Synchronized:** 2026-09-23T05:31:06.759Z  
+**Total Deduplicated Learned Rules:** 82  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,16 +160,19 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **79**.
+Total verified rules indexed in this build: **82**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
 | 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Flush corrupted OCA support session state by toggling to 'No Support' before reapplying 3Y Tech Care Basic. | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Default server, storage and networking solutions to 3-year HPE Tech Care Basic unless an explicit alternative is request | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
