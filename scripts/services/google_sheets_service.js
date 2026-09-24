@@ -565,18 +565,10 @@ if (require.main === module) {
         console.log(`URL:    ${result.spreadsheetUrl}`);
         console.log(`ID:     ${result.spreadsheetId}`);
       } else if (command === 'login') {
-        const CLIENT_SECRET_PATH = path.join(os.homedir(), '.config', 'gcloud', 'client_secret.json');
-        const loginArgs = ['auth', 'application-default', 'login'];
-        if (fs.existsSync(CLIENT_SECRET_PATH)) {
-          loginArgs.push(`--client-id-file=${CLIENT_SECRET_PATH}`);
-        }
-        loginArgs.push(`--scopes=${SCOPES.join(',')}`);
-        console.log(`Executing autonomous ADC login:\ngcloud ${loginArgs.join(' ')}\n`);
-        const { spawnSync } = require('child_process');
-        const res = spawnSync('gcloud', loginArgs, { stdio: 'inherit' });
-        if (res.status !== 0) {
-          process.exit(res.status || 1);
-        }
+        console.log('Initiating autonomous OAuth2 login flow for Google Drive / Sheets...');
+        const { startOAuthFlow } = require('./autonomous_oauth_flow.js');
+        const port = parseInt(args[1], 10) || 8085;
+        const result = await startOAuthFlow(port);
         console.log('\n[SUCCESS] Login completed. Verifying updated credentials...');
         const updated = await checkGoogleAuth();
         console.log('Authenticated:', updated.authenticated ? 'YES ✅' : 'NO ❌');

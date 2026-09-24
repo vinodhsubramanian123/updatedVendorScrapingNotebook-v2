@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-09-23T19:29:03.331Z
+**Sync Timestamp**: 2026-09-24T07:42:13.979Z
 
 **Total Verified SKUs**: `1022` (`605` Hardware + `417` Services)
 
-**Total Synced KnowledgeDeltas**: `58`
+**Total Synced KnowledgeDeltas**: `53`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -218,26 +218,6 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 44. **[DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P76453-B21`
-
-45. **[DELTA_CLIC_RULE_OCP_SLOTB_P72203-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: undefined
-   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P72203-B21`
-
-46. **[DELTA_CLIC_RULE_PRIMARY_RISER_2X16_P48803-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: undefined
-   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `P48803-B21`
-
-47. **[DELTA_CLIC_RULE_DATA_SSDS_P40498-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: undefined
-   - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P40498-B21`
-
-48. **[DELTA_CLIC_RULE_TITANIUM_PSU_P44712-B21] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: undefined
-   - **Affected SKU**: `S3U30C` | **Required Dependency**: `P44712-B21`
-
-49. **[DELTA_PHYSICAL_RULE_TERTIARY_NS204I_MUTUAL_EXCLUSION] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: undefined
-   - **Affected SKU**: `P74755-B21` | **Required Dependency**: `P74737-B21`
 
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry

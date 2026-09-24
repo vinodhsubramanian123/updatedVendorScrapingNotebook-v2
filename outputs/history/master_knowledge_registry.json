@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-23T19:29:13.438Z",
-  "lastUpdated": "2026-09-23T19:29:13.438Z",
-  "totalLearnedRules": 94,
-  "totalDeduplicatedRules": 94,
+  "generatedAt": "2026-09-24T07:42:23.508Z",
+  "lastUpdated": "2026-09-24T07:42:23.508Z",
+  "totalLearnedRules": 89,
+  "totalDeduplicatedRules": 89,
   "productFamiliesSynced": [
     "DL145",
     "DL380",
@@ -15,7 +15,7 @@
   "counts": {
     "universal": 9,
     "familyGen": 0,
-    "chassisSpecific": 85
+    "chassisSpecific": 80
   },
   "universalRules": [
     {
@@ -1814,7 +1814,6 @@
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-      "timestamp": "2026-09-23T22:30:00.000Z",
       "vendor": "HPE",
       "pillar": "SERVER",
       "family": "ProLiant",

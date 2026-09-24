@@ -48,6 +48,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Multi-Node Cluster Sizing (42U Rack/Power)** | [`multi-cluster-tender-skill`](file:///.agents/skills/multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` |
 | **Natural Language RFP Sizing (No SKUs)** | [`rfp-sizing-synthesizer`](file:///.agents/skills/rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Tender vs. Vendor Quote Reconciliation** | [`bom-reconciliation-skill`](file:///.agents/skills/bom-reconciliation-skill/SKILL.md) | `scripts/evaluators/route_query.js` |
+| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](file:///.agents/skills/cross-vendor-transformation-skill/SKILL.md) | `scripts/lib/boq/cross_vendor_transformer.js` |
 | **Scanned PDF / Image Quote Ingestion** | [`ocr-quote-ingestion-skill`](file:///.agents/skills/ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` |
 | **Least-Delta Alternative Synthesis (Rank 1L)**| [`least-delta-combinator-skill`](file:///.agents/skills/least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/conflict_graph.js` |
 | **Pricing Trends & Lifecycle Status (OB/EOL)** | [`catalog-intelligence-skill`](file:///.agents/skills/catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
@@ -65,6 +66,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Presales Intent Classification & Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Google Jules Autonomous Multi-Agent Protocol** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
 | **Macro 7-Phase Learning Lifecycle** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
+| **Heterogeneous Multi-Domain Tender Modernization** | [`heterogeneous-tender-modernizer`](file:///.agents/skills/heterogeneous-tender-modernizer/SKILL.md) | `scripts/lib/boq/heterogeneous_tender_modernizer.js` |
 | **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
 
 ---

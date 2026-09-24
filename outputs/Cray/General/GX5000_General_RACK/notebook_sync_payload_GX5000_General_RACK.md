@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Cray/General/GX5000_General`
 
-**Sync Timestamp**: 2026-09-23T19:28:52.668Z
+**Sync Timestamp**: 2026-09-24T07:42:05.617Z
 
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)
 

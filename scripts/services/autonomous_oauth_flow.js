@@ -36,7 +36,30 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive'
 ];
 
-async function startOAuthFlow(port = 8085, timeoutMs = 120000) {
+function openUrlInBrowser(targetUrl) {
+  try {
+    if (process.platform === 'win32') {
+      const { spawn } = require('child_process');
+      const ps = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `Start-Process '${targetUrl.replace(/'/g, "''")}'`], {
+        windowsHide: true,
+        stdio: 'ignore',
+        detached: true
+      });
+      ps.unref();
+    } else if (process.platform === 'darwin') {
+      const { spawn } = require('child_process');
+      spawn('open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
+    } else {
+      const { spawn } = require('child_process');
+      spawn('xdg-open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
+    }
+    console.log('[AUTONOMOUS_OAUTH] Auto-launched browser with Google authorization URL.');
+  } catch (err) {
+    console.warn('[AUTONOMOUS_OAUTH] Note: Could not auto-launch browser:', err.message);
+  }
+}
+
+async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
   if (!fs.existsSync(CLIENT_SECRET_PATH)) {
     throw new Error(`Client secret file not found at ${CLIENT_SECRET_PATH}`);
   }
@@ -118,16 +141,22 @@ async function startOAuthFlow(port = 8085, timeoutMs = 120000) {
               universe_domain: 'googleapis.com'
             };
 
-            // Ensure directory exists
-            const adcDir = path.dirname(ADC_PATH);
-            if (!fs.existsSync(adcDir)) {
-              fs.mkdirSync(adcDir, { recursive: true });
-            }
+            // Atomically write ADC to primary and secondary locations if applicable
+            const targetPaths = new Set([ADC_PATH]);
+            const altPath = process.platform === 'win32'
+              ? path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json')
+              : path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'gcloud', 'application_default_credentials.json');
+            targetPaths.add(altPath);
 
-            // Atomically write ADC
-            const tmpAdc = `${ADC_PATH}.tmp.${Date.now()}`;
-            fs.writeFileSync(tmpAdc, JSON.stringify(adcPayload, null, 2), 'utf8');
-            fs.renameSync(tmpAdc, ADC_PATH);
+            for (const p of targetPaths) {
+              const adcDir = path.dirname(p);
+              if (!fs.existsSync(adcDir)) {
+                fs.mkdirSync(adcDir, { recursive: true });
+              }
+              const tmpAdc = `${p}.tmp.${Date.now()}`;
+              fs.writeFileSync(tmpAdc, JSON.stringify(adcPayload, null, 2), 'utf8');
+              fs.renameSync(tmpAdc, p);
+            }
 
             clearTimeout(timer);
             server.close();
@@ -152,9 +181,12 @@ async function startOAuthFlow(port = 8085, timeoutMs = 120000) {
 
     server.listen(port, () => {
       console.log(`[AUTONOMOUS_OAUTH] Local loopback server listening on port ${port}`);
-      console.log(`[AUTONOMOUS_OAUTH] AUTH_URL_START`);
-      console.log(authUrl);
-      console.log(`[AUTONOMOUS_OAUTH] AUTH_URL_END`);
+      console.log(`\n================================================================================`);
+      console.log(`🔗 GOOGLE DRIVE / SHEETS AUTHENTICATION`);
+      console.log(`Please sign in and approve access in your browser:`);
+      console.log(`${authUrl}`);
+      console.log(`================================================================================\n`);
+      openUrlInBrowser(authUrl);
     });
 
     timer = setTimeout(() => {

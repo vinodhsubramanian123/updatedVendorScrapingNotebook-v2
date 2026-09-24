@@ -198,6 +198,53 @@ function classifyQueryIntent(queryText = '', context = {}) {
   const text = String(queryText || '').trim().toLowerCase();
   const filePath = context.filePath || context.file || '';
 
+  // 0. Heterogeneous Tender Modernization & Carrier Fleet Synthesis keywords
+  const isHeterogeneous =
+    text.includes('heterogeneous') ||
+    text.includes('mixed domain') ||
+    text.includes('carrier fleet') ||
+    text.includes('ad-hoc absorption') ||
+    text.includes('dummy server') ||
+    text.includes('tender modernization') ||
+    text.includes('dirty boq') ||
+    text.includes('unbuildable ad-hoc') ||
+    text.includes('loose memory') ||
+    text.includes('spare parts absorption') ||
+    Boolean(context.heterogeneous) ||
+    context.intent === 'HETEROGENEOUS_TENDER_MODERNIZATION';
+
+  if (isHeterogeneous) {
+    return {
+      intent: 'HETEROGENEOUS_TENDER_MODERNIZATION',
+      confidence: 0.98,
+      skillTarget: 'heterogeneous-tender-modernizer',
+      rationale: 'Input requests multi-domain tender modernization, carrier fleet bin-packing, and unbuildable ad-hoc absorption.'
+    };
+  }
+
+  // 0b. Cross-Vendor Architectural Transformation keywords
+  const isCrossVendor =
+    text.includes('dell to hpe') ||
+    text.includes('cisco to hpe') ||
+    text.includes('lenovo to hpe') ||
+    text.includes('poweredge') ||
+    text.includes('cross vendor') ||
+    text.includes('transpile') ||
+    text.includes('competitor quote') ||
+    text.includes('r770') ||
+    text.includes('r760') ||
+    Boolean(context.crossVendor) ||
+    context.intent === 'CROSS_VENDOR_TRANSFORMATION';
+
+  if (isCrossVendor) {
+    return {
+      intent: 'CROSS_VENDOR_TRANSFORMATION',
+      confidence: 0.98,
+      skillTarget: 'cross-vendor-transformation-skill',
+      rationale: 'Input requests cross-vendor architectural transformation and physical parity audit from competitor to target vendor.'
+    };
+  }
+
   // 1. File-based detection
   const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
   if (detectedPath) {
@@ -684,6 +731,68 @@ function _handleBomReconciliation(queryText, context) {
   }
 }
 
+async function _handleHeterogeneousTenderModernization(queryText, context) {
+  const { HeterogeneousTenderModernizer } = require('../lib/boq/heterogeneous_tender_modernizer.js');
+  const modernizer = new HeterogeneousTenderModernizer({
+    strictZeroJargon: true
+  });
+
+  const parsedTables = context.tables || [];
+  const categorized = modernizer.categorizeTenderItems(parsedTables);
+  const carrierFleet = modernizer.synthesizeCarrierFleet(categorized.unbuildableAdHoc);
+  const deliverables = modernizer.buildDualDeliverables(categorized, carrierFleet);
+
+  return {
+    intent: 'HETEROGENEOUS_TENDER_MODERNIZATION',
+    skillTarget: 'heterogeneous-tender-modernizer',
+    status: 'MODERNIZATION_SYNTHESIZED',
+    carrierFleetSummary: {
+      totalPools: carrierFleet.carrierPools.length,
+      pools: carrierFleet.carrierPools.map(p => ({
+        poolId: p.poolId,
+        chassisCount: p.chassisCount,
+        targetMemory: p.targetMemoryCapacity,
+        totalDimms: p.totalDimms,
+        absorbedRequirement: p.absorbedRequirement,
+        nicsProvisioned: p.nics?.totalProvisioned || 0
+      }))
+    },
+    deliverables: {
+      productionSystemsCount: categorized.servers.length + categorized.storage.length + categorized.sanFabric.length + categorized.tapeBackup.length,
+      carrierNodesCount: carrierFleet.carrierPools.reduce((sum, p) => sum + p.chassisCount, 0),
+      rulesEnforced: deliverables.clientMatrix.rulesEnforced
+    },
+    evidenceLedgerCount: modernizer.evidenceLedger.length
+  };
+}
+
+async function _handleCrossVendorTransformation(queryText, context) {
+  const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
+  const targetChassis = context.targetHpeChassis || context.chassisName || 'DL380_Gen12';
+  const qLower = (typeof queryText === 'string' ? queryText : '').toLowerCase();
+  const sourceVendor = context.sourceVendor || (qLower.includes('cisco') ? 'CISCO' : (qLower.includes('lenovo') ? 'LENOVO' : (qLower.includes('supermicro') ? 'SUPERMICRO' : 'DELL')));
+  const nodeCount = context.nodeMultiplier || context.nodes || 1;
+
+  let inputData = context.competitorSpec || queryText;
+  if (context.filePath && fs.existsSync(context.filePath)) {
+    inputData = fs.readFileSync(context.filePath, 'utf8');
+  }
+
+  const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, { nodeMultiplier: nodeCount });
+
+  return {
+    intent: 'CROSS_VENDOR_TRANSFORMATION',
+    skillTarget: 'cross-vendor-transformation-skill',
+    status: 'PARITY_AUDITED_AND_TRANSFORMED',
+    sourceVendor,
+    targetChassis,
+    competitorSpec: transformResult.competitorSpec,
+    auditReport: transformResult.auditReport,
+    strategyMatrix: transformResult.strategyMatrix,
+    recommendedBom: transformResult.recommendedBom
+  };
+}
+
 /**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
@@ -697,6 +806,14 @@ async function executeRoutedQuery(queryText = '', context = {}) {
   let responseData = null;
 
   switch (classification.intent) {
+    case 'CROSS_VENDOR_TRANSFORMATION':
+      responseData = await _handleCrossVendorTransformation(queryText, context);
+      break;
+
+    case 'HETEROGENEOUS_TENDER_MODERNIZATION':
+      responseData = await _handleHeterogeneousTenderModernization(queryText, context);
+      break;
+
     case 'FREEFORM_QA':
       responseData = await _handleFreeformQa(queryText, context);
       break;

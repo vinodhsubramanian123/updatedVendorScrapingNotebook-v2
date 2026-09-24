@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-09-23T19:29:09.201Z
+**Sync Timestamp**: 2026-09-24T07:42:19.325Z
 
 **Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
 
