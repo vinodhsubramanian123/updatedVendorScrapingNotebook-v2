@@ -65,6 +65,7 @@ outputs/test_boqs/
 *.swo
 
 # Scratch / temp
+scratch/
 *.crdownload
 tests/**/temp_*.json
 tests/temp_*.json
