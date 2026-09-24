@@ -1721,3 +1721,60 @@ Rather than applying brittle one-off regexes or hardcoded price patches, the arc
 ## 2026-09-19 — Evaluation evidence and remediation lessons
 
 Read the [session index](audits/2026-09-19-session-index.md) before continuing this work. It links the full audit, completed remediation, Antigravity validation, source-manifest verification, and additional evidence-log findings. Keep the three post-review quick wins explicit; do not confuse a passing response-shape test with successful hardware evaluation, or a local payload with remote notebook synchronization.
+
+---
+
+## 2026-09-24 — Dynamic Header Resolution, Pristine Customer Baseline & Remarks Golden Contract (`INV-123`)
+
+### 1. Root Cause Analysis (RCA): Why Did the In-Place Replacement and Gap Occur?
+1. **Conflation of Deliverable Archetypes**:
+   - Earlier scripts operated under the paradigm of generating a single "upload-ready BOM" where Part Numbers and Quantities were directly rewritten with active factory-integrated SKUs and normalized quantities.
+   - This conflated the **Customer-Facing Tender Reconciliation Master** (where customer data is sacred and must remain untouched) with the **Vendor Configurator Upload Manifest** (which must be 100% buildable factory input).
+2. **Selective vs. Exhaustive Verification Gaps**:
+   - Initial restoration focused only on the 46 rows flagged in the textual diff. It failed to perform a bidirectional mathematical comparison of *all* 320 tender rows against the live configurator exports (UCID 1 & 2).
+   - Consequently, peripheral adjustments (such as Table 10 Row 267 NVMe RAID 1 buffering, Table 14/15 tape drive/cleaning cartridge consolidation across base and expansion, Table 15 cleaning cartridge SKU typo correction, and Table 17 32Gb switch transceivers bundled in switch SKUs) were left with blank remarks.
+3. **Hardcoded Column Assumptions**:
+   - Relying on static column letters (`B, C, D, E, F`) fails when customer spreadsheets arrive with shifted, added, or reordered columns.
+
+### 2. Permanent Architectural Guardrails Codified
+1. **Dynamic Column Header Resolver (`INV-123`)**:
+   - Zero hardcoded column letters or indices. Scripts dynamically parse header rows using semantic regex matching:
+     - Part Number: `/^(p\/?n|part\s*no|part\s*number|sku|product\s*#|item\s*code|material)/i`
+     - Description: `/^(desc|description|item\s*desc|specification|details)/i`
+     - Quantity: `/^(qty|quantity|units?|count|qty\s*per\s*(node|set|server|system))/i`
+     - Multiplier: `/^(set\s*qty|system\s*qty|cluster\s*qty|node\s*multiplier|servers?|system\s*count)/i`
+     - Remarks: `/^(remarks?|comments?|notes?|actions?|proposed)/i`
+   - If Remarks column is absent, it is dynamically appended as the next column without disturbing existing customer data.
+2. **Pristine Customer Baseline**:
+   - Customer columns are strictly immutable. They represent the tender baseline against which compliance is measured.
+3. **The Golden Remarks Contract & Positive Verification**:
+   - **Identical Row (`MATCHED (1:1)`)**: Tagged explicitly with `MATCHED (1:1)` and formatted in soft pastel green (`#E6F4EA` / `#137333`) to provide 100% positive verification without visual noise.
+   - **Variance / Delta Row**: Mandatory whenever a delta exists. Must strictly follow the **Action-First Principle**:
+     `[ACTION: ADDED / REMOVED / SUBSTITUTED / REDUCED / INCREASED / UPDATED] [Proposed Active SKU: ...] [Configured Qty: ...] [Reasoning & Customer Choice: ...]`.
+4. **The Action-First Principle for Executive Scannability**:
+   - Every variance remark must lead with the **primary action verb first** before technical details:
+     - `[SUBSTITUTED / MODERNIZED]`: For obsolete, discontinued, or supply-constrained SKUs replaced by active functional equivalents (e.g. 4th Gen Xeon -> 5th Gen Xeon, DDR5-4800 -> DDR5-5600).
+     - `[REMOVED FROM SERVER BUILD]`: For components omitted from factory CTO chassis builds (e.g., internal storage omitted in SAN-boot compute nodes where boot is on NS204i-u and storage is centralized on SAN, or duplicate controllers/risers). Must explain customer choice: add back if local storage needed, or deduct to save budget. (Never call omitted items "spares").
+     - `[QTY REDUCED]`: For components reduced to meet chassis physical capacity (e.g., fan kits 6 -> 1, PSUs 4 -> 2, battery 3 -> 1, FC HBAs 4 -> 3).
+     - `[QTY BUFFERED]`: For quantities increased to satisfy architectural rules (e.g. RAM 10 -> 12 DIMMs for 8-channel balance, RAID1 NVMe boot mirror).
+     - `[FACTORY INCLUDED / LINE REMOVED]`: For manufacturer free inclusions (e.g., drive blanks `666987-B21` installed by factory free of charge).
+     - `[ABSORBED INTO NEW SERVER POOL]`: For customer loose/ad-hoc items packaged into dedicated carrier servers in Section 2.
+   - Reasoning must be written in crisp, plain-English business terms without ungrounded engineering jargon.
+5. **Commercial Remarks Reconciliation Standard & Dropped vs. Absorbed Pattern (`INV-124`)**:
+   - **Elimination of the "SPARE" Word**: The word "SPARE" must NEVER appear near removed or reduced items. When items cannot physically fit into a chassis (e.g. 4th FC HBA on 1P, NICs on filled risers) or are unneeded (e.g. local SSDs on SAN-boot compute heads), they are simply **DROPPED** from the build. Calling them "spares" creates massive commercial and legal confusion by implying that loose parts were billed or delivered.
+   - **Elimination of Ambiguous Tags**: Ambiguous grey tags like `[SYSTEM ARCHITECTURE]` are replaced by **`MATCHED (1:1)`** for true hardware base arrays, chassis, and licenses.
+   - **The Dropped vs. Absorbed Principle**:
+     - *Dropped Items*: Conclude with `Note: Dropped from factory build; not added to Server Pools A or B.`
+     - *Absorbed Items*: Use `[ABSORBED INTO NEW SERVER POOL]` with exact bidirectional mathematical bridge formulas linking Section 1 ad-hoc asks to Section 2 carrier server pools.
+   - **Standard 6-Color Visual Hierarchy**:
+     - Soft Green (`#E6F4EA` / `#137333`): `MATCHED (1:1)`
+     - Soft Blue (`#E8F0FE` / `#174EA6`): `[MODERNIZED]`
+     - Soft Amber (`#FEF7E0` / `#B06000`): `[QTY REDUCED]`
+     - Soft Teal (`#E0F2F1` / `#00695C`): `[QTY BUFFERED]`
+     - Soft Rose (`#FCE8E6` / `#C5221F`): `[REMOVED FROM SERVER BUILD]` / `[FACTORY INCLUDED / LINE REMOVED]`
+     - Soft Purple (`#F3E8FD` / `#7627BB`): `[ABSORBED INTO NEW SERVER POOL]`
+     - Dark Slate (`#202124` / `#FFFFFF`): Section Headers and Executive Methodology Banner.
+   - **Non-Repudiation Executive Methodology Note**: Appended at rows below Section 2, explaining: (1) Resolution of chassis deficiencies (dropped items), (2) Packaging loose ad-hoc items into certified server pools (absorbed items), (3) Zero double-counting mathematical integrity, (4) 100% manufacturer warranty.
+   - **Dedicated Skill**: Codified in [`.agents/skills/boq-remarks-reconciliation-skill/SKILL.md`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md).
+6. **Automated Bidirectional Parity Assertion**:
+   - Every export must programmatically verify: `(Tender == Configured) XOR (Structured Action-First Remark Exists)`. Zero unremarked variances or untagged remarks are permitted to slip past quality gates.

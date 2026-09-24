@@ -620,6 +620,38 @@ The system leverages Google Jules for background code review, test generation, a
 113. **True N+1 Power Redundancy under Accelerator Peak Load Invariant (`INV-122`)**:
     - Dual-socket servers pairing high-TDP CPUs (>270W each, e.g. 2x Xeon 6760P 330W = 660W) with high-draw PCIe accelerators (>=350W, e.g. 1x H200 NVL 450W) exceed 1,500W system peak electrical draw under full thermal duty cycle. In 1+1 redundant configurations, each individual power supply MUST be sized to sustain full peak load upon single-feed or PSU failure. Sizing dual 1000W PSUs delivers 2000W combined non-redundant power but fails N+1 redundancy; high-wattage Titanium PSUs (e.g. `P44712-B21` 1800W-2200W Titanium) must be mandated.
 
+114. **Dynamic Header Resolution, Pristine Customer Baseline, and Bidirectional Remarks Invariant (`INV-123`)**:
+    - **Zero In-Place Overwrite of Customer Input**: In all customer-facing evaluation, modernization, and reconciliation workbooks, original customer columns (Part Number, Description, Unit Qty, Set/Multiplier Qty, Unit Price) are SACRED and MUST NEVER be modified in-place or deleted.
+    - **Dynamic Column Header Resolver (Anti-Hardcoding)**: The evaluation engine and workbook parser must dynamically discover column headers across arbitrary positions (Columns A through Z, rows 1 through 10) using semantic regex patterns:
+      * Part Number: `/^(p\/?n|part\s*no|part\s*number|sku|product\s*#|item\s*code|material)/i`
+      * Description: `/^(desc|description|item\s*desc|specification|details)/i`
+      * Quantity: `/^(qty|quantity|units?|count|qty\s*per\s*(node|set|server|system))/i`
+      * Multiplier / Set Qty: `/^(set\s*qty|system\s*qty|cluster\s*qty|node\s*multiplier|servers?|system\s*count)/i`
+      * Remarks / Delta: `/^(remarks?|comments?|notes?|actions?|proposed)/i`
+      Never assume fixed column letters (`B, C, D, E, F`) or hardcoded column indexes. If a Remarks column is absent, it must be appended dynamically to the right of the detected data table.
+    - **The Golden Discrepancy & Remarks Contract**:
+      * **Unremarked Row (Blank)**: Strictly certifies that the item is configured 100% identically to the customer tender ask (same active Part Number, same per-node quantity, same total quantity in portal build).
+      * **Remarked Row**: Mandatory whenever a delta exists. Must follow the standardized tag structure:
+        `[Proposed Active SKU: ...] [Configured Qty: ...] [Action: ...]`, where Action explicitly declares one of: **Reduced**, **Removed**, **Replaced / Modernized**, **Increased / Buffered**, **Consolidated**, or **Absorbed into Carrier Fleet**.
+      * **Automated Bidirectional Assertion**: No deliverable may be certified or exported until an automated validator proves: `(Tender == Configured) XOR (Structured Remark Exists)`. Any deviation without a remark is an illegal build gap.
+
+115. **Commercial Remarks Reconciliation Standard & Dropped vs. Absorbed Invariant (`INV-124`)**:
+    - **Standard 7 Commercial Action Tags**: Every remarked row in customer-facing BOQ deliverables MUST open with exactly one of the 7 authorized sales tags: `MATCHED (1:1)`, `[MODERNIZED]`, `[QTY REDUCED]`, `[QTY BUFFERED]`, `[REMOVED FROM SERVER BUILD]`, `[FACTORY INCLUDED / LINE REMOVED]`, or `[ABSORBED INTO NEW SERVER POOL]`.
+    - **Prohibition of "SPARE" near Removed/Reduced Items**: The word "SPARE" is strictly forbidden near removed or reduced lines. Unbuildable components omitted due to physical chassis slot constraints, controller single-OROC limits, or SAN-boot compute head architectures are simply **DROPPED** from the build. Calling them "spares" creates legal and commercial confusion by implying loose parts are delivered or billed.
+    - **Prohibition of Ambiguous System Architecture Tags**: Ambiguous grey tags like `[SYSTEM ARCHITECTURE]` are strictly forbidden. If a SAN storage array (`R0Q74B`), chassis base (`P52534-B21`), or iLO license (`BD505A`) is asked and present in the quote, it must be tagged as `MATCHED (1:1)`.
+    - **The Dropped vs. Absorbed Rule**:
+      * *Dropped Items*: Physical conflicts, duplicate boot devices, extra fan kits, and local drives on SAN-boot compute heads MUST conclude with: `Note: Dropped from factory build; not added to Server Pools A or B.`
+      * *Absorbed Items*: Loose ad-hoc items (memory, drives, NICs, CPUs) packaged into certified carrier server pools (Section 2) MUST state exact source math and destination pool (`[ABSORBED INTO NEW SERVER POOL]`).
+    - **Standard 6-Color Visual Hierarchy**:
+      * `MATCHED (1:1)`: Soft Green (`#E6F4EA` / `#137333` bold).
+      * `[MODERNIZED]`: Soft Blue (`#E8F0FE` / `#174EA6`).
+      * `[QTY REDUCED]`: Soft Amber (`#FEF7E0` / `#B06000`).
+      * `[QTY BUFFERED]`: Soft Teal (`#E0F2F1` / `#00695C`).
+      * `[REMOVED FROM SERVER BUILD]` / `[FACTORY INCLUDED]`: Soft Rose (`#FCE8E6` / `#C5221F`).
+      * `[ABSORBED INTO NEW SERVER POOL]`: Soft Purple (`#F3E8FD` / `#7627BB`).
+      * `SECTION HEADERS / NOTE BANNER`: Dark Slate (`#202124` / `#FFFFFF` bold).
+    - **Non-Repudiation Executive Methodology Note**: Customer-facing deliverables MUST append the 4-point Executive Methodology Note at the bottom, explaining: (1) Resolution of chassis deficiencies (dropped items), (2) Packaging loose ad-hoc items into certified server pools (absorbed items), (3) Zero double-counting mathematical integrity, (4) 100% manufacturer warranty.
+
 ## 7. Cognitive Mandates for Autonomous Agents (Root Cause Prevention)
 To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never repeat the blind spots identified in the 2026-09-17 audit, all agents MUST adhere to these cognitive mandates:
 1. **Adversarial Negative-Path Thinking**: For every feature or gate, test missing, empty, corrupt, and boundary inputs first. A failure or missing check must NEVER become a success claim.

@@ -264,3 +264,10 @@ await call_mcp_tool({
 4. **`INV-NO-PRICES-IN-OCA-UPLOAD`**: OCA upload sheets must have exactly 4 columns (`Qty`, `Product #`, `Description`, `Config Name`) with zero prices and exactly 2 blank lines between servers.
 5. **`INV-CAPACITY-PRECISION`**: Always verify memory part numbers before quoting (`P64705` is 16GB, `P64706` is 32GB, `P64707` is 64GB).
 6. **`INV-LIFECYCLE-HORIZON`**: Recommended replacements must have active factory orderability horizons exceeding the customer tender execution window ($\ge 12-24$ months).
+7. **`INV-DYNAMIC-HEADER-AND-PRISTINE-CUSTOMER-BASELINE` (`INV-123`)**:
+   - **Zero In-Place Overwrite**: Never overwrite or alter customer part numbers, descriptions, or quantities in original tender columns.
+   - **Dynamic Header Resolver**: Discover columns dynamically via semantic regex matching (`/p\/?n|sku/i`, `/desc/i`, `/qty/i`, `/set\s*qty/i`, `/remarks/i`). Never hardcode column letters (`B, C, D, E, F`) or static column indices. If a Remarks column is absent, append it dynamically to the right.
+   - **Golden Remarks Contract**: A blank remark strictly certifies a 100% 1:1 identical match to tender in the portal build. Any item with a modification, reduction, removal, replacement, buffering, consolidation, or carrier absorption MUST carry an explicit structured tag:
+     `[Proposed Active SKU: ...] [Configured Qty: ...] [Action: ...]`.
+   - **Automated Parity Assertion**: Run programmatic verification `(Tender == Configured) XOR (Remark Exists)` before releasing workbooks.
+

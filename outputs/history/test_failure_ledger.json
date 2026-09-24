@@ -1,8 +1,8 @@
 {
-  "lastRun": "2026-09-24T07:42:23.676Z",
-  "totalRun": 173,
-  "totalPassed": 173,
+  "lastRun": "2026-09-24T17:40:26.668Z",
+  "totalRun": 1,
+  "totalPassed": 1,
   "totalFailed": 0,
-  "totalDurationMs": 415032,
+  "totalDurationMs": 8325,
   "failures": []
 }

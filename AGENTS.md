@@ -63,6 +63,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **14-Point Pre-Presentation Acceptance Gate** | [`output-validation-skill`](file:///.agents/skills/output-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Adversarial Chaos & Red-Teaming (10 Modes)** | [`adversarial-validation-skill`](file:///.agents/skills/adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` |
 | **Continuous Learning Reflection & Quarantine** | [`continuous-learning-skill`](file:///.agents/skills/continuous-learning-skill/SKILL.md) | `scripts/lib/feedback/feedback_loop.js` |
+| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scratch/sep2026_tender_scratch/apply_visual_hierarchy_and_colors.js` |
 | **Presales Intent Classification & Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Google Jules Autonomous Multi-Agent Protocol** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
 | **Macro 7-Phase Learning Lifecycle** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |

@@ -132,3 +132,55 @@ When BOM reconciliation runs through the agent harness, it records these steps i
 | 3 | Financial & Compliance Audit | ✅ Prices cross-referenced · ✅ FIO tags checked · ✅ Extras flagged |
 | 4 | Report Assembly | ✅ Net CapEx delta calculated · ✅ 7-column schema compliance |
 
+---
+
+## 🛡️ Dynamic Header Discovery & Pristine Customer Baseline (`INV-123`)
+
+### 1. Dynamic Column Header Discovery (Zero Hardcoding)
+Customer tender sheets arrive in unpredictable tabular layouts. Agents and scripts **MUST NEVER hardcode column letters (`B, C, D, E, F`) or static column indices (`0, 1, 2`)**. Always resolve column locations dynamically using semantic regex dictionaries:
+
+```javascript
+function resolveTenderColumns(headerRow) {
+  const map = { pn: -1, desc: -1, qty: -1, setQty: -1, remarks: -1, price: -1 };
+  headerRow.forEach((val, idx) => {
+    const s = String(val || '').trim();
+    if (/^(p\/?n|part\s*no|part\s*number|sku|product\s*#|item\s*code|material)/i.test(s)) map.pn = idx;
+    else if (/^(desc|description|item\s*desc|specification|details)/i.test(s)) map.desc = idx;
+    else if (/^(qty|quantity|units?|count|qty\s*per\s*(node|set|server|system))/i.test(s)) map.qty = idx;
+    else if (/^(set\s*qty|system\s*qty|cluster\s*qty|node\s*multiplier|servers?|system\s*count)/i.test(s)) map.setQty = idx;
+    else if (/^(remarks?|comments?|notes?|actions?|proposed)/i.test(s)) map.remarks = idx;
+    else if (/^(unit\s*price|list\s*price|price)/i.test(s)) map.price = idx;
+  });
+  // If Remarks column is absent, append it dynamically as next available column
+  if (map.remarks === -1) map.remarks = headerRow.length;
+  return map;
+}
+```
+
+### 2. Sacred Customer Baseline Invariant
+- **Zero In-Place Overwriting**: The customer's original part numbers, descriptions, unit quantities, and multiplier quantities MUST NEVER be altered or replaced in their original columns.
+- **Auditability**: Preserving the customer's raw RFP text side-by-side with proposed modifications enables instant diffing and dispute-free tender defense.
+
+### 3. The Golden Remarks Contract & Action-First Principle
+- **Identical Row (`MATCHED (1:1)`)**: Explicitly tagged `MATCHED (1:1)` with soft green fill (`#E6F4EA`) to provide immediate, unambiguous positive confirmation without visual clutter.
+- **Variance / Delta Row (Action-First Format)**: Mandatory whenever any variance exists. Must strictly lead with the **primary action verb first** before technical descriptions:
+  `[ACTION: ADDED / REMOVED / SUBSTITUTED / REDUCED / INCREASED / UPDATED] [Proposed Active SKU: ...] [Configured Qty: ...] [Plain-English Reasoning & Customer Options: ...]`.
+  - `[SUBSTITUTED / MODERNIZED]`: Replaced obsolete/discontinued SKU with active functional equivalent (e.g. 4th Gen to 5th Gen CPU, DDR5-4800 to DDR5-5600 Smart FIO).
+  - `[REMOVED FROM SERVER BUILD]`: Component omitted from chassis build (e.g. internal drives omitted in SAN-boot compute node where boot is NS204i-u and storage is centralized on SAN; unbuildable duplicate controllers/risers). Must explain customer choice: add back if local storage needed, order as field spare, or deduct to save budget.
+  - `[QTY REDUCED]`: Normalizing fan kits, duplicate PSUs, or single-device slots to meet physical chassis boundaries.
+  - `[QTY BUFFERED / INCREASED]`: Buffered for memory channel balance (e.g. 10 to 12 DIMMs) or RAID1 NVMe boot mirror.
+  - `[ADDED / FACTORY INCLUSION]`: Mandatory enablement kits, brackets, cables, or licenses required for buildability.
+  - `[ABSORBED INTO FLEET]`: Loose tender ad-hoc parts packaged into dedicated carrier servers in Section 2.
+  - `[SYSTEM ARCHITECTURE]`: Chassis base models, cluster sizing, and management profiles.
+
+### 4. Automated Programmatic Parity Assertion
+Before exporting or presenting any tender evaluation workbook, run an automated assertion:
+```javascript
+// Programmatic assertion: Every difference MUST have an action-first remark, and exact match has MATCHED (1:1)
+if (configuredTotal !== tenderTotal && (!remark.trim().startsWith('[') || remark.includes('MATCHED'))) {
+  throw new Error(`Tender Discrepancy Violation at Row ${r}: Configured (${configuredTotal}) != Tender (${tenderTotal}) but Remarks does not lead with an Action tag!`);
+}
+```
+
+
+
