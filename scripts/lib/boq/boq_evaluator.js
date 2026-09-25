@@ -696,13 +696,29 @@ function validateSupportRules(ctx) {
 }
 
 function validateBaseChassisRules(ctx) {
-  const { items, storage, support, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
+  const { items, compute, memory, power, storage, support, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
   const hasBaseChassis = items.some(it => {
     const clean = cleanBaseSKU(it.sku);
     return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
   });
   const hasNoDriveFioKit = items.some(it => cleanBaseSKU(it.sku) === mandatorySkus.NO_DRIVE_FIO_KIT.sku);
   const hasDriveCageKit = storage.hasDriveCage || items.some(it => cleanBaseSKU(it.sku) === 'P75741-B21' || cleanBaseSKU(it.sku) === 'P76449-B21' || cleanBaseSKU(it.sku) === 'P75740-B21' || cleanBaseSKU(it.sku) === 'P48813-B21');
+
+  if (hasBaseChassis && compute && compute.cpuCount === 0) {
+    const reason = `Unbuildable Server Configuration: Server base chassis (${chassisInfo.baseSku || 'CTO'}) requires at least 1 processor (0 CPUs configured).`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (hasBaseChassis && memory && memory.memoryCount === 0) {
+    const reason = `Unbuildable Server Configuration: Server base chassis (${chassisInfo.baseSku || 'CTO'}) requires memory DIMMs (0 RAM configured).`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (hasBaseChassis && power && power.psuCount === 0) {
+    const reason = `Unbuildable Server Configuration: Server base chassis (${chassisInfo.baseSku || 'CTO'}) requires power supplies (0 PSUs configured).`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
 
   if (hasBaseChassis && storage.driveCount === 0 && !hasNoDriveFioKit && !hasDriveCageKit) {
     const reason = `CLIC Rule 81392308: Chassis ${chassisInfo.baseSku || 'CTO'} without drives requires ${mandatorySkus.NO_DRIVE_FIO_KIT.sku} FIO Kit.`;
@@ -717,7 +733,6 @@ function validateBaseChassisRules(ctx) {
       reasoning: reason
     });
   }
-
 }
 
 function validateAlletraRules(ctx) {
@@ -886,12 +901,24 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
 function buildAspectChecks(ctx) {
   const {
     compute, memory, storage, network, pcie, power, support,
-    mandatorySkus, serverCount, hasDriveCageKit,
+    mandatorySkus, serverCount, hasDriveCageKit, hasBaseChassis,
     isExceedingActivePcie, isExceedingPcie, isExceedingOcp,
     cpusPerServer, psuPerServer,
     activePcieSlotsClusterMax, pcieSlotsClusterMax, ocpSlotsClusterMax,
     HIGH_TDP_THRESHOLD_WATTS
   } = ctx;
+
+  // INV-105: Zero-Default Success Guard — subsystem data presence checks.
+  // When critical subsystem data is absent/empty, status MUST be 'UNKNOWN' or 'FAIL' (if chassis requires it).
+  const _computePresent = compute && (compute.cpuCount > 0 || compute.maxCpuTdpWatts > 0);
+  const _memoryPresent = memory && memory.memoryCount > 0;
+  const _storagePresent = storage && (storage.driveCount > 0 || storage.hasNoDriveKit || storage.hasStorageController);
+  // A measured zero-card requirement is valid; absence of telemetry is unknown.
+  const _pciePresent = pcie && Number.isFinite(pcie.requiredPcieCards) && pcie.requiredPcieCards >= 0;
+  // A measured zero-adapter requirement is valid (0 <= maxSlots); absence of telemetry is unknown.
+  const _networkPresent = network && Number.isFinite(network.ocpAdapterCount) && network.ocpAdapterCount >= 0;
+  const _powerPresent = power && power.psuCount > 0;
+  const _supportPresent = support != null;
 
   return [
     {
@@ -899,11 +926,17 @@ function buildAspectChecks(ctx) {
       name: 'Thermal & Compute Math',
       iconType: 'Cpu',
       defaultRule: 'CPU TDP thermal envelope vs cooling kit population rules (CLIC Rule 81354654)',
-      status: ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
+      status: (hasBaseChassis && compute.cpuCount === 0) ? 'FAIL'
+        : !_computePresent ? 'UNKNOWN'
+        : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS',
       formula: compute.thermalEquationFormula || `maxCpuTdpWatts (${compute.maxCpuTdpWatts}W) <= ${HIGH_TDP_THRESHOLD_WATTS}W`,
       equation: compute.thermalEquationFormula || `maxCpuTdpWatts (${compute.maxCpuTdpWatts}W) <= ${HIGH_TDP_THRESHOLD_WATTS}W`,
       operands: { maxCpuTdpWatts: compute.maxCpuTdpWatts, thresholdWatts: HIGH_TDP_THRESHOLD_WATTS, hasHighPerfFans: compute.hasHighPerfFans, hasHeatsinks: compute.hasHeatsinks, fanKitCount: compute.fanKitCount },
-      detail: compute.fanKitExceedsMax
+      detail: (hasBaseChassis && compute.cpuCount === 0)
+        ? 'INV-105: No processor detected in configuration (at least 1 CPU required for server chassis).'
+        : !_computePresent
+        ? 'INV-105: Compute subsystem data absent — cannot evaluate thermal envelope.'
+        : compute.fanKitExceedsMax
         ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
         : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
         ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
@@ -916,11 +949,17 @@ function buildAspectChecks(ctx) {
       name: 'Memory & Channel Balance',
       iconType: 'Memory',
       defaultRule: 'Memory interleaving, channel balance & population rules (CLIC Rules 81354490 & 91001655)',
-      status: (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
+      status: (hasBaseChassis && memory.memoryCount === 0) ? 'FAIL'
+        : !_memoryPresent ? 'UNKNOWN'
+        : (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS',
       formula: `${memory.memoryCount} DIMMs / ${compute.cpuCount || 2} CPUs = ${memory.dimmsPerCpu} DIMMs/socket (Channels: ${memory.channelsPerCpu})`,
       equation: `${memory.memoryCount} DIMMs / ${compute.cpuCount || 2} CPUs = ${memory.dimmsPerCpu} DIMMs/socket (Channels: ${memory.channelsPerCpu})`,
       operands: { memoryCount: memory.memoryCount, cpuCount: compute.cpuCount || 2, dimmsPerCpu: memory.dimmsPerCpu, channelsPerCpu: memory.channelsPerCpu, isSupported: memory.isSupportedPopulation, isBalanced: memory.isBalancedChannel },
-      detail: memory.hasBtoMemoryInCto
+      detail: (hasBaseChassis && memory.memoryCount === 0)
+        ? 'INV-105: No memory modules detected in configuration (memory required for server chassis).'
+        : !_memoryPresent
+        ? 'INV-105: Memory subsystem data absent — cannot evaluate channel balance.'
+        : memory.hasBtoMemoryInCto
         ? `Memory Option Rule Failed (CLIC Rule 91001655): Standalone BTO Memory SKU (${memory.btoMemoryViolations.map(v => v.btoSku).join(', ')}) is restricted in CTO base server. Direct fix: Replace with FIO SKU (${memory.btoMemoryViolations.map(v => v.fioSku).join(', ')}).`
         : (memory.memoryCount > 0 && !memory.isSupportedPopulation)
         ? `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is not balanced or is an unsupported asymmetric count.`
@@ -933,11 +972,14 @@ function buildAspectChecks(ctx) {
       name: 'Storage & Controller Cabling',
       iconType: 'HardDrive',
       defaultRule: 'Storage controller, drive cage & cable kit compatibility checks (CLIC Rules 81354627 & 81354632)',
-      status: storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
+      status: !_storagePresent ? 'UNKNOWN'
+        : storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS',
       formula: `driveCount: ${storage.driveCount}, controllerCount: ${storage.hasStorageController ? 1 : 0}, smartBattery: ${storage.hasSmartBattery ? 1 : 0}`,
       equation: `driveCount: ${storage.driveCount}, controllerCount: ${storage.hasStorageController ? 1 : 0}, smartBattery: ${storage.hasSmartBattery ? 1 : 0}`,
       operands: { driveCount: storage.driveCount, hasStorageController: storage.hasStorageController, hasSmartBattery: storage.hasSmartBattery, hasNoDriveKit: storage.hasNoDriveKit },
-      detail: storage.hasIncompatibleYCable
+      detail: !_storagePresent
+        ? 'INV-105: Storage subsystem data absent — cannot evaluate controller/drive configuration.'
+        : storage.hasIncompatibleYCable
         ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`
         : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
         ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
@@ -950,11 +992,14 @@ function buildAspectChecks(ctx) {
       name: 'PCIe Riser & Slot Expansion Math',
       iconType: 'Layers',
       defaultRule: 'PCIe slot capacity, active riser cabling & slot expansion rules (CLIC Rules 81016755 & 81354683)',
-      status: isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
+      status: !_pciePresent ? 'UNKNOWN'
+        : isExceedingActivePcie || isExceedingPcie || ((pcie.secondaryRiserCount > 0 || pcie.tertiaryRiserCount > 0) && cpusPerServer < 2) ? 'FAIL' : 'PASS',
       formula: `requiredCards: ${pcie.requiredPcieCards} <= activeSlots: ${activePcieSlotsClusterMax} (Total: ${pcieSlotsClusterMax})`,
       equation: `requiredCards: ${pcie.requiredPcieCards} <= activeSlots: ${activePcieSlotsClusterMax} (Total: ${pcieSlotsClusterMax})`,
       operands: { requiredCards: pcie.requiredPcieCards, activeSlots: activePcieSlotsClusterMax, totalSlots: pcieSlotsClusterMax, gpuCount: pcie.gpuCount },
-      detail: isExceedingActivePcie
+      detail: !_pciePresent
+        ? 'INV-105: PCIe subsystem data absent — cannot evaluate slot/riser configuration.'
+        : isExceedingActivePcie
         ? `PCIe Active Slot Math Failed (CLIC Rule 81016755): ${pcie.requiredPcieCards} required cards exceeds ${activePcieSlotsClusterMax} electrically cabled active slots. Slot 1 and/or Slot 4 require Riser Cable Kits (${mandatorySkus?.PRIMARY_CABLE_KIT?.sku || 'PRIMARY_CABLE_KIT'} / ${mandatorySkus?.SECONDARY_CABLE_KIT?.sku || 'SECONDARY_CABLE_KIT'}).`
         : isExceedingPcie
         ? `PCIe Math Failed: ${pcie.requiredPcieCards} required cards exceeds ${pcieSlotsClusterMax} slots.`
@@ -967,26 +1012,37 @@ function buildAspectChecks(ctx) {
       name: 'Networking & OCP Interconnect',
       iconType: 'Zap',
       defaultRule: 'OCP 3.0 network adapter slots and port allocation rules (CLIC Rule 81355854)',
-      status: isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
+      status: !_networkPresent ? 'UNKNOWN'
+        : isExceedingOcp || network.hasConflictingOcpCables ? 'FAIL' : 'PASS',
       formula: `ocpAdapters: ${network.ocpAdapterCount} <= maxSlots: ${ocpSlotsClusterMax}`,
       equation: `ocpAdapters: ${network.ocpAdapterCount} <= maxSlots: ${ocpSlotsClusterMax}`,
       operands: { ocpAdapterCount: network.ocpAdapterCount, ocpSlotsClusterMax, networkPortsCount: network.networkPortsCount },
-      detail: network.hasConflictingOcpCables
+      detail: !_networkPresent
+        ? 'INV-105: Network subsystem data absent — cannot evaluate OCP slot allocation.'
+        : network.hasConflictingOcpCables
         ? `CLIC Rule 81355854 Failed: CPU1 to OCP2 (${mandatorySkus?.CPU1_OCP_CABLE?.sku || 'CPU1_OCP'}) and CPU2 to OCP2 (${mandatorySkus?.CPU2_OCP_CABLE?.sku || 'CPU2_OCP'}) enablement kits cannot be selected together.`
         : isExceedingOcp
         ? `Networking Math Failed: ${network.ocpAdapterCount} OCP adapters exceeds maximum ${ocpSlotsClusterMax} slots.`
-        : `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
+        : network.networkPortsCount > 0
+        ? `Verified ${network.networkPortsCount} active network ports (${network.hasOcpAdapter ? network.ocpAdapterCount + 'x OCP 3.0 NICs' : 'Standard PCIe/LOM NICs'}).`
+        : `Verified 0 OCP adapters fit within ${ocpSlotsClusterMax} available OCP 3.0 slot(s).`
     },
     {
       id: 6,
       name: 'Power & Redundancy Math',
       iconType: 'Power',
       defaultRule: 'Power supply redundancy rating & auxiliary kit requirements',
-      status: (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
+      status: (hasBaseChassis && power.psuCount === 0) ? 'FAIL'
+        : !_powerPresent ? 'UNKNOWN'
+        : (power.hasDcPowerSupply && !power.hasDcLugKit) || power.hasDl380aGpuPsuShortage ? 'FAIL' : 'PASS',
       formula: `psuCount: ${power.psuCount}, maxWattage: ${power.maxPsuWattage || 800}W, estNodeWattage: ${power.estimatedNodeWattage || 0}W`,
       equation: `psuCount: ${power.psuCount}, maxWattage: ${power.maxPsuWattage || 800}W, estNodeWattage: ${power.estimatedNodeWattage || 0}W`,
       operands: { psuCount: power.psuCount, maxWattage: power.maxPsuWattage || 800, estNodeWattage: power.estimatedNodeWattage || 0, isDc: power.hasDcPowerSupply, hasDcLugKit: power.hasDcLugKit },
-      detail: power.hasDcPowerSupply && !power.hasDcLugKit
+      detail: (hasBaseChassis && power.psuCount === 0)
+        ? 'INV-105: No power supplies configured in server chassis.'
+        : !_powerPresent
+        ? 'INV-105: Power subsystem data absent — cannot evaluate PSU redundancy.'
+        : power.hasDcPowerSupply && !power.hasDcLugKit
         ? 'Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.'
         : power.hasDl380aGpuPsuShortage
         ? `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W PSUs per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount}.`
@@ -997,13 +1053,16 @@ function buildAspectChecks(ctx) {
       name: 'Vendor Support Taxonomy & Licensing',
       iconType: 'Award',
       defaultRule: 'Hardware SKU validation, requested support coverage, and OS core multipliers (INV-28, INV-32)',
-      status: support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
+      status: !_supportPresent ? 'UNKNOWN'
+        : support.needsAdditionalWindowsCores || support.needsAdditionalVmwareCores || support.needsAdditionalLinuxSubscriptions
         ? 'WARN'
         : (!support.hasSupportService ? 'WARN' : 'PASS'),
       formula: `licensedCores: ${support.totalWindowsLicensedCores || 0}/${support.requiredWindowsCores || 0}, hasSupport: ${Boolean(support.hasSupportService)}`,
       equation: `licensedCores: ${support.totalWindowsLicensedCores || 0}/${support.requiredWindowsCores || 0}, hasSupport: ${Boolean(support.hasSupportService)}`,
       operands: { hasSupportService: Boolean(support.hasSupportService), windowsDeficit: support.missingCoreLicenses || 0, vmwareDeficit: support.missingVmwareCores || 0 },
-      detail: support.needsAdditionalWindowsCores
+      detail: !_supportPresent
+        ? 'INV-105: Support subsystem data absent — cannot evaluate licensing/support.'
+        : support.needsAdditionalWindowsCores
         ? `Windows OS Licensing Deficit: Requires ${support.missingCoreLicenses} additional core licenses (${support.totalWindowsLicensedCores}/${support.requiredWindowsCores} cores covered).`
         : support.needsAdditionalVmwareCores
         ? `VMware Licensing Deficit: Requires ${support.missingVmwareCores} additional VMware core licenses (${support.vmwareLicensedCores}/${support.requiredVmwareCores} cores covered).`
@@ -1230,12 +1289,16 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const psuPerServer = power.psuCount / serverCount;
   const cpusPerServer = compute.cpuCount / serverCount;
   const hasDriveCageKit = storage.hasDriveCage || items.some(it => (it.description || '').toLowerCase().includes('drive cage') || (it.description || '').toLowerCase().includes('cage kit') || (mandatorySkus?.GENERIC_CAGE?.sku && cleanBaseSKU(it.sku) === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
+  const hasBaseChassis = items.some(it => {
+    const clean = cleanBaseSKU(it.sku);
+    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
+  });
   
   const ctx = {
     items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
     chassisInfo, mandatorySkus, CTO_BASE_SKUS, HIGH_TDP_THRESHOLD_WATTS,
     errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
-    hasDriveCageKit, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
+    hasDriveCageKit, hasBaseChassis, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
     isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
     psuPerServer, cpusPerServer
   };
@@ -1254,9 +1317,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const aspectChecks = buildAspectChecks(ctx);
   const { evaluateBundleComposition } = require('./bundle_composition');
   const bundleComposition = evaluateBundleComposition(items, getCachedChassisMap().product_bundle_compositions || [], path.basename(targetDir));
-  for (const bundle of bundleComposition) warnings.push(...bundle.warnings);
-  const formFactorRU = chassisInfo.formFactor === '1U' ? 1 : 
-                       chassisInfo.formFactor === '4U' ? 4 : 2;
+  const is4U = chassisInfo.formFactor === '4U' || /DL380a|DL384|DL580|4U/i.test(chassisInfo.model || '') || /DL380a|DL384/i.test(chassisInfo.id || '') || /8DW/i.test(chassisInfo.formFactor || '');
+  const is1U = chassisInfo.formFactor === '1U' || /DL360|1U/i.test(chassisInfo.model || '') || /DL360/i.test(chassisInfo.id || '');
+  const isBlade = /blade|compute module/i.test(chassisInfo.formFactor || '') || /SY480|SY100Gb/i.test(chassisInfo.model || '');
+  const formFactorRU = Number.isFinite(chassisInfo.uHeight) ? chassisInfo.uHeight : (isBlade ? 0 : is1U ? 1 : is4U ? 4 : 2);
   const architecturalRationale = buildArchitecturalRationale(ctx);
 
   const evalSummary = {
@@ -1296,8 +1360,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     // Cluster Infrastructure Sizing Matrix
     clusterSizing: {
       serverCount,
-      totalRackUnits: serverCount * formFactorRU,
-      standard42uRacksRequired: Math.ceil((serverCount * formFactorRU) / 42),
+      totalRackUnits: formFactorRU > 0 ? serverCount * formFactorRU : null,
+      standard42uRacksRequired: formFactorRU > 0 ? Math.ceil((serverCount * formFactorRU) / 42) : null,
       totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
       estimatedNodeWattage: power.estimatedNodeWattage,
       railKitCoverage: {
@@ -1346,7 +1410,9 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       candidate.isMathClean = false;
     }
   }
-  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0;
+  // INV-105: isMathClean requires zero errors, zero topology gaps, AND all aspect checks in terminal PASS/WARN (never UNKNOWN/FAIL)
+  const _hasUnknownOrFailAspect = !aspectChecks.length || aspectChecks.some(a => !['PASS', 'WARN', 'NOT_APPLICABLE'].includes(a.status));
+  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0 && !_hasUnknownOrFailAspect;
   const isGraphClean = conflictGraphResults.isWholeSolutionValid;
   const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
 
@@ -1356,6 +1422,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   if (warnings.length > 0) confidenceScore -= (warnings.length * 0.05);
   confidenceScore = Math.max(0.1, parseFloat(confidenceScore.toFixed(2)));
   if (topology.relationshipChecks.length) confidenceScore = Math.min(confidenceScore, 0.74);
+  if (_hasUnknownOrFailAspect) confidenceScore = Math.min(confidenceScore, 0.74);
 
   const confidence = {
     score: confidenceScore,
@@ -1368,7 +1435,12 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   };
 
   if (confidence.confidenceReasons.length === 0) {
-    confidence.confidenceReasons.push('All 7 physical aspects passed deterministic evaluation and graph rules.');
+    const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN');
+    if (unknownAspects.length > 0) {
+      confidence.confidenceReasons.push(`${unknownAspects.length} aspect(s) returned UNKNOWN due to absent subsystem data: ${unknownAspects.map(a => a.name).join(', ')}.`);
+    } else {
+      confidence.confidenceReasons.push('All 7 physical aspects passed deterministic evaluation and graph rules.');
+    }
   }
 
   return {

@@ -163,6 +163,66 @@ function buildCatalogSkuIndex(catalogData) {
   return index;
 }
 
+/**
+ * Classify a SKU across the 3-tier epistemic validation hierarchy (INV-0).
+ *
+ * Tier 0 — Syntactic Validity: Does the string match HPE SKU format patterns?
+ * Tier 2 — Catalog Presence: Is the SKU present in the scoped product catalog?
+ * Tier 2+ — Lifecycle Status: What is the SKU's ordering lifecycle state?
+ *
+ * This function MUST NOT be used to prove live orderability (Tier 3).
+ * Live orderability requires a CLIC/OCA portal acceptance receipt.
+ *
+ * @param {string} sku - The raw SKU string to classify
+ * @param {object|null} [catalogData=null] - Scoped catalog data (optional)
+ * @returns {{ sku: string, cleanSku: string, isSyntacticallyValid: boolean, isCatalogVerified: boolean, lifecycleStatus: string, category: string, optionType: string, isService: boolean }}
+ */
+function classifySkuValidation(sku, catalogData = null) {
+  const cleanSku = cleanBaseSKU(sku);
+  const isSyntacticallyValid = isValidHpeSKU(cleanSku);
+  const optionType = classifyOptionType(sku);
+  const isService = isServiceSku(cleanSku);
+
+  // Default classification: syntax-only (Tier 0)
+  const result = {
+    sku: String(sku || ''),
+    cleanSku,
+    isSyntacticallyValid,
+    isCatalogVerified: false,
+    lifecycleStatus: 'CATALOG_NOT_SUPPLIED',
+    category: 'UNKNOWN',
+    optionType,
+    isService
+  };
+
+  // If syntax is invalid, no further tiers can pass
+  if (!isSyntacticallyValid) {
+    result.lifecycleStatus = 'INVALID_SYNTAX';
+    return result;
+  }
+
+  // If no catalog data provided, we can only confirm syntax — epistemic honesty (INV-0)
+  if (!catalogData) {
+    return result;
+  }
+
+  // Tier 2: Catalog presence check via scoped catalog index
+  const catalogIndex = buildCatalogSkuIndex(catalogData);
+  const catalogEntry = catalogIndex.get(cleanSku);
+
+  if (!catalogEntry) {
+    result.lifecycleStatus = 'NOT_IN_CATALOG';
+    return result;
+  }
+
+  // SKU exists in scoped catalog
+  result.isCatalogVerified = true;
+  result.lifecycleStatus = catalogEntry.lifecycleStatus || 'ACTIVE';
+  result.category = catalogEntry.parentCategory || catalogEntry.subCategory || 'HARDWARE';
+
+  return result;
+}
+
 module.exports = {
   HPE_SKU_REGEX,
   HPE_SKU_EXTRACT_REGEX,
@@ -170,5 +230,6 @@ module.exports = {
   cleanBaseSKU,
   classifyOptionType,
   isServiceSku,
-  buildCatalogSkuIndex
+  buildCatalogSkuIndex,
+  classifySkuValidation
 };

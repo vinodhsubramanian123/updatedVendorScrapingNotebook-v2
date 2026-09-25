@@ -18,11 +18,39 @@ function rankReviewBadge(evaluation, candidate) {
 function generateRankedPortalWorkbook(evaluation, exportPath) {
   const workbook = XLSX.utils.book_new();
   const candidates = _getRankedSolutions(evaluation);
-  for (const candidate of candidates) {
-    const candidateWorkbook = generatePartnerPortalUploadBOM([{ name: candidate.name, multiplier: evaluation.clusterSizing?.serverCount || evaluation.clusterSizing?.totalNodes || evaluation.serverCount || 1, items: candidate.skuPartsList || [] }]);
-    XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[candidateWorkbook.SheetNames[0]], `Rank ${candidate.rank}`);
+  const validCandidates = (candidates || []).filter(candidate => (candidate.skuPartsList || candidate.skuList || []).length > 0);
+  const fallbackItems = evaluation?.items || evaluation?.parsedItems || [];
+
+  if (validCandidates.length > 0) {
+    for (const candidate of validCandidates) {
+      const candidateWorkbook = generatePartnerPortalUploadBOM([{
+        name: candidate.name,
+        multiplier: evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1,
+        items: candidate.skuPartsList || candidate.skuList || []
+      }]);
+      const firstSheet = candidateWorkbook.SheetNames[0];
+      if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
+        XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], `Rank ${candidate.rank}`);
+      }
+    }
+  } else if (Array.isArray(fallbackItems) && fallbackItems.length > 0) {
+    const candidateWorkbook = generatePartnerPortalUploadBOM([{
+      name: evaluation?.chassis || 'Base_Configuration',
+      multiplier: evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1,
+      items: fallbackItems
+    }]);
+    const firstSheet = candidateWorkbook.SheetNames[0];
+    if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
+      XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], 'BOM');
+    }
+  } else {
+    throw new Error('Cannot export a portal workbook without candidate BOM items.');
   }
-  if (exportPath) XLSX.writeFile(workbook, exportPath);
+  if (exportPath && workbook.SheetNames.length > 0) {
+    const outDir = path.dirname(exportPath);
+    if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+    XLSX.writeFile(workbook, exportPath);
+  }
   return workbook;
 }
 
@@ -505,7 +533,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
       summaryData.push([
         `Aspect ${a.id}`,
         a.name,
-        a.status === 'PASS' ? '✅ PASS' : (a.status === 'WARN' ? '⚠️ WARN' : '❌ FAIL'),
+        a.status === 'PASS' ? '✅ PASS' : (a.status === 'WARN' ? '⚠️ WARN' : (a.status === 'UNKNOWN' ? '❓ UNKNOWN' : '❌ FAIL')),
         a.detail || a.defaultRule || ''
       ]);
     });

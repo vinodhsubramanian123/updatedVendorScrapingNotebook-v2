@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL360_Gen11`
 
-**Sync Timestamp**: 2026-09-25T18:15:48.195Z
+**Sync Timestamp**: 2026-09-25T20:36:42.584Z
 
 **Total Verified SKUs**: `1429` (`694` Hardware + `735` Services)
 

@@ -77,7 +77,7 @@ function _buildAspectsSection(evalResults) {
   }
   if (evalResults.aspectChecks && Array.isArray(evalResults.aspectChecks)) {
     evalResults.aspectChecks.forEach(asp => {
-      md += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : asp.status === 'FAIL' ? '❌ VIOLATION' : asp.status} — ${asp.detail}\n`;
+      md += `- **Aspect ${asp.id}: ${asp.name}**: ${asp.status === 'PASS' ? '✅ PASS' : asp.status === 'FAIL' ? '❌ VIOLATION' : asp.status === 'UNKNOWN' ? '❓ UNKNOWN' : asp.status} — ${asp.detail}\n`;
     });
     md += `\n`;
   } else {
@@ -118,6 +118,7 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
       const statusIcon = al.status === 'PASS' ? '✅ PASS'
         : al.status === 'FAIL' ? '❌ FAIL'
         : al.status === 'UNEVALUATED' ? '🔲 UNEVALUATED'
+        : al.status === 'UNKNOWN' ? '❓ UNKNOWN'
         : '⚠️ WARNING';
       md += `| **${al.level}** | ${al.ruleText} | ${statusIcon} | ${al.details} |\n`;
     });
@@ -497,6 +498,10 @@ async function serializeAndExportResults(ctx) {
   const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
   const multiRankWorkbookPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`);
   const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
+
+  if (!evalResults.items && items) {
+    evalResults.items = items;
+  }
 
   try {
     const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));

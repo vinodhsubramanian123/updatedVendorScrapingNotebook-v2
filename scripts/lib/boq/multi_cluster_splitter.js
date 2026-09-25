@@ -227,7 +227,8 @@ function solveDiophantineMultiCluster(clusters, totalQty, options = {}) {
  * Compute infrastructure and facility sizing for a given cluster.
  */
 function computeClusterSizing(multiplier, items, uHeight, railKitSku, railKitDesc) {
-  let psuWattage = 800;
+  let psuWattage = 0;
+  let hasUnknownComponentPower = false;
   let railKitCount = 0;
   let cpuWatts = 0;
   let gpuWatts = 0;
@@ -246,10 +247,18 @@ function computeClusterSizing(multiplier, items, uHeight, railKitSku, railKitDes
     }
     if (desc.includes('processor') || desc.includes('xeon') || it.category === 'Processor') {
       const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
-      cpuWatts += (tdpMatch ? parseInt(tdpMatch[1], 10) : 205) * (it.quantity || 1);
+      if (!tdpMatch) hasUnknownComponentPower = true;
+      cpuWatts += (tdpMatch ? parseInt(tdpMatch[1], 10) : 0) * (it.quantity || 1);
     }
-    if (desc.includes('nvidia') || desc.includes('gpu')) {
-      gpuWatts += 300 * (it.quantity || 1);
+    if (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('accelerator')) {
+      const gpuWattMatch = desc.match(/(\d{2,4})\s*w\b/i);
+      let gWatt = 0;
+      if (gpuWattMatch) {
+        gWatt = parseInt(gpuWattMatch[1], 10);
+      } else {
+        hasUnknownComponentPower = true;
+      }
+      gpuWatts += gWatt * (it.quantity || 1);
     }
     if (desc.includes('memory') || desc.includes('rdimm') || it.category === 'Memory') {
       memWatts += 8 * (it.quantity || 1);
@@ -266,9 +275,14 @@ function computeClusterSizing(multiplier, items, uHeight, railKitSku, railKitDes
 
   return {
     serverCount: multiplier,
-    totalRackUnits: multiplier * uHeight,
-    standard42uRacksRequired: Math.ceil((multiplier * uHeight) / 42),
-    totalFacilityPowerKw: Number(((multiplier * (psuWattage || 800)) / 1000).toFixed(2)),
+    totalRackUnits: uHeight > 0 ? multiplier * uHeight : null,
+    standard42uRacksRequired: uHeight > 0 ? Math.ceil((multiplier * uHeight) / 42) : null,
+    usable42uRacksRequired: null,
+    totalFacilityPowerKw: null,
+    estimatedDrawKw: hasUnknownComponentPower ? null : Number(((multiplier * estimatedNodeWattage) / 1000).toFixed(2)),
+    peakFacilityFeedKw: null,
+    sizingStatus: 'ESTIMATE_SITE_VALIDATION_REQUIRED',
+    powerAssumptions: 'Memory, storage and base-load estimates remain heuristic. PSU capacity is not actual draw. Site rack reserve, redundancy and electrical derating require explicit inputs.',
     railKitCoverage: {
       required: multiplier,
       recommendedSku: railKitSku,
@@ -569,8 +583,14 @@ function analyzeAndPartitionClusters(rawItems, boqName = '') {
     return d.includes('processor') || d.includes('xeon') || c.includes('processor') || c.includes('processors');
   });
 
-  const uHeight = (detectedChassis.model && /DL360|DL145/i.test(detectedChassis.model)) ? 1 : (detectedChassis.model && /DL580/i.test(detectedChassis.model)) ? 4 : 2;
-  const railKitSku = enablementKits.railKit?.sku || 'P52341-B21';
+  const uHeight = Number.isFinite(detectedChassis.uHeight)
+    ? detectedChassis.uHeight
+    : (detectedChassis.formFactor === '1U' || /DL360/i.test(detectedChassis.model || '')
+        ? 1
+        : (/blade|compute module/i.test(detectedChassis.formFactor || '') || /SY480|SY100Gb/i.test(detectedChassis.model || '')
+            ? 0
+            : (/DL380a|DL384|DL580|4U/i.test(detectedChassis.model || '') || detectedChassis.formFactor === '4U' ? 4 : 2)));
+  const railKitSku = enablementKits.railKit?.sku || null;
   const railKitDesc = enablementKits.railKit?.name || `HPE ${detectedChassis.model || 'ProLiant'} Easy Install Rail Kit`;
 
   if (cpuItems.length <= 1) {

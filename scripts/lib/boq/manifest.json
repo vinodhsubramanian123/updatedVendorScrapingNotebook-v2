@@ -11,6 +11,7 @@
     "boq_parser.js",
     "boq_preprocessor.js",
     "budget_optimizer.js",
+    "bom_verifier.js",
     "vendor_bom_verifier.js",
     "generate_boq_xlsx.js"
   ],

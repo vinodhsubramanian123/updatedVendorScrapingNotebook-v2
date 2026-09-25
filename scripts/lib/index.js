@@ -53,6 +53,7 @@ module.exports = {
     budgetOptimizer: require('./boq/budget_optimizer.js'),
     dealOptimizer: require('./boq/deal_optimizer.js'),
     vendorBomVerifier: require('./boq/vendor_bom_verifier.js'),
+    bomVerifier: require('./boq/bom_verifier.js'),
     requirementIntentResolver: require('./boq/requirement_intent_resolver.js'),
     leastDeltaCombinator: require('./conflict/least_delta_combinator.js'),
     cascadingImpactAnalyzer: require('./conflict/cascading_impact_analyzer.js'),

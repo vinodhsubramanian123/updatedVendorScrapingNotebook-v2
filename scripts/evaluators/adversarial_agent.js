@@ -56,9 +56,9 @@ Format each item exactly like this:
     return JSON.parse(cleanedText);
   } catch (err) {
     console.error("Adversarial agent generation failed:", err.message);
-    // Fallback adversarial BOQ for DL380 Gen12
+    // Fallback adversarial BOQ for DL380 Gen12 (injects incompatible Gen11 DDR4 memory)
     return [
-      { sku: "P52559-B21", qty: 1, description: "HPE ProLiant DL380 Gen12 8SFF NC CTO Server" },
+      { sku: "P73282-B21", qty: 1, description: "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server" },
       { sku: "P49610-B21", qty: 2, description: "Intel Xeon-Gold 6430 2.1GHz 32-core 270W Processor" },
       { sku: "P43322-B21", qty: 8, description: "HPE 16GB (1x16GB) Single Rank x8 DDR4-3200 CAS-22-22-22 Registered Smart Memory Kit" }
     ];

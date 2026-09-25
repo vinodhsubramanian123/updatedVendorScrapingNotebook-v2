@@ -54,7 +54,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Pricing Trends & Lifecycle Status (OB/EOL)** | [`catalog-intelligence-skill`](file:///.agents/skills/catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
 | **Enterprise Workload Matching & DNA** | [`workload-dna-skill`](file:///.agents/skills/workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` |
 | **Post-Buildability Deal CapEx/OpEx Optimization**| [`value-engineering-skill`](file:///.agents/skills/value-engineering-skill/SKILL.md) | `scripts/lib/boq/budget_optimizer.js` |
-| **Standardized 7-Column Portals & Workbooks** | [`workbook-generator-skill`](file:///.agents/skills/workbook-generator-skill/SKILL.md) | `scripts/catalogs/generate_interactive_matrix.js` |
+| **Standardized 7-Column Portals & Workbooks** | [`workbook-generator-skill`](file:///.agents/skills/workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` |
 | **Cloud NotebookLM Grounding & Strict SKU Gate**| [`nlm-skill`](file:///.agents/skills/nlm-skill/SKILL.md) | `scripts/lib/sync/nlm_solution_source_validator.js`|
 | **Autonomous Knowledge Sync & Drift Guard** | [`knowledge-sync-skill`](file:///.agents/skills/knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/post_flow_sync.js` |
 | **Live WebLogic OCA Portal Scraping** | [`oca-catalog-scraper`](file:///.agents/skills/oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
@@ -65,10 +65,14 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Continuous Learning Reflection & Quarantine** | [`continuous-learning-skill`](file:///.agents/skills/continuous-learning-skill/SKILL.md) | `scripts/lib/feedback/feedback_loop.js` |
 | **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scripts/lib/boq/commercial_remarks.js` |
 | **Presales Intent Classification & Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
-| **Google Jules Autonomous Multi-Agent Protocol** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
-| **Macro 7-Phase Learning Lifecycle** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
 | **Heterogeneous Multi-Domain Tender Modernization** | [`heterogeneous-tender-modernizer`](file:///.agents/skills/heterogeneous-tender-modernizer/SKILL.md) | `scripts/lib/boq/heterogeneous_tender_modernizer.js` |
 | **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
+
+### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)
+| System Architecture Intent | Primary Protocol Skill | Implementation Service |
+| :--- | :--- | :--- |
+| **Google Jules Asynchronous CI/CD & PR Audits** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
+| **Macro 7-Phase Learning Lifecycle & MCP Server** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
 
 ---
 

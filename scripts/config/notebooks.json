@@ -268,9 +268,10 @@
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit"
     },
     "SY100Gb_F32_Module": {
-      "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
+      "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
       "vendor": "HPE",
       "pillar": "NETWORKING",
+      "sharedEnclosureWarning": "Shares physical Synergy frame notebook context with SY480_Gen12; queries MUST filter by pillar: NETWORKING and Component Role: Interconnect Module to avoid compute-blade conflation (INV-91).",
       "queryEnabled": true,
       "family": "Synergy",
       "gen": "General",
@@ -307,6 +308,7 @@
       "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
       "vendor": "HPE",
       "pillar": "SERVER",
+      "sharedEnclosureWarning": "Shares physical Synergy frame notebook context with SY100Gb_F32_Module; queries MUST filter by pillar: SERVER and Component Role: Compute Module to avoid fabric-interconnect conflation (INV-91).",
       "queryEnabled": true,
       "family": "Synergy",
       "gen": "Gen12",

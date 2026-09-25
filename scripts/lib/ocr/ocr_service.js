@@ -125,9 +125,10 @@ CRITICAL EXTRACTION RULES:
     const extractedText = response.text ? response.text.trim() : '';
     const lines = extractedText.split('\n').filter(l => l.trim().length > 0);
 
-    // Extract all valid SKUs detected in extracted OCR text
-    const skuMatches = Array.from(extractedText.matchAll(/([A-Z0-9]{5,6}-[A-Z0-9]{2,3})/g)).map(m => m[1]);
-    const detectedSkus = Array.from(new Set(skuMatches));
+    // Extract all valid SKUs detected in extracted OCR text (GAP-31 FIX: broadened to match 6-char, AAE, and service SKUs)
+    const skuMatches = Array.from(extractedText.matchAll(/\b([A-Z0-9]{3,8}-[A-Z0-9]{2,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi)).map(m => m[1]);
+    const { isValidHpeSKU } = require('../catalog/sku.js');
+    const detectedSkus = Array.from(new Set(skuMatches.filter(isValidHpeSKU)));
 
     log(`✅ Successfully extracted ${lines.length} lines and ${detectedSkus.length} unique SKU(s) via Gemini OCR.`);
 

@@ -364,6 +364,22 @@
           "optionType": "CTO"
         }
       }
+    },
+    "SAN_FC": {
+      "family": "SAN",
+      "gen": "FC",
+      "modelFamily": "SN3600B FC Switch",
+      "skus": {
+        "R7R97A": {
+          "model": "SN3600B 32Gb FC Switch",
+          "formFactor": "Switch",
+          "family": "SAN",
+          "gen": "FC",
+          "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+          "listPrice": 19746,
+          "optionType": "CTO"
+        }
+      }
     }
   },
   "chassis_base_skus": {
@@ -627,6 +643,15 @@
       "gen": "Tape",
       "description": "HPE StoreEver MSL3040 Scalable Base Module Configure-to-order",
       "listPrice": 4500,
+      "optionType": "CTO"
+    },
+    "R7R97A": {
+      "model": "SN3600B 32Gb FC Switch",
+      "formFactor": "Switch",
+      "family": "SAN",
+      "gen": "FC",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "listPrice": 19746,
       "optionType": "CTO"
     }
   },

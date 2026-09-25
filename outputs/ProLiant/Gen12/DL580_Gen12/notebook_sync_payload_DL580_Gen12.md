@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL580_Gen12`
 
-**Sync Timestamp**: 2026-09-25T18:15:56.558Z
+**Sync Timestamp**: 2026-09-25T20:36:51.007Z
 
 **Total Verified SKUs**: `868` (`485` Hardware + `383` Services)
 
@@ -294,5 +294,5 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
-| DL580_Gen12 | ProLiant | Gen12 | N/A | `N/A` |
+| **DL580_Gen12** | ProLiant | Gen12 | SFF | `P75399-B21` |
 

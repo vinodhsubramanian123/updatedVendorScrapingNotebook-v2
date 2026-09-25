@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-09-25T18:16:00.688Z
+**Sync Timestamp**: 2026-09-25T20:36:56.379Z
 
 **Total Verified SKUs**: `557` (`154` Hardware + `403` Services)
 
@@ -121,5 +121,5 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
-| SY480_Gen12 | Synergy | Gen12 | N/A | `N/A` |
+| **SY480_Gen12** | Synergy | Gen12 | Compute Module | `P68217-B21` |
 

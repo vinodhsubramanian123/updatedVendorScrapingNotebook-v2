@@ -1,6 +1,6 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-09-25T18:16:01.544Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-09-25T20:36:57.341Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
 **Total Verified Knowledge Deltas**: `89` (`9` Universal + `0` Family/Gen + `80` Chassis Specific)
 

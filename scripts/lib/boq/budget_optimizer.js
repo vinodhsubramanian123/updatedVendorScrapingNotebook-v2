@@ -89,6 +89,9 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   const { readPortalReceipt, normalizeSku } = require('./portal_receipt');
   const portalReceipt = resolvedChassisDir ? readPortalReceipt(resolvedChassisDir) : null;
 
+  // GAP-10: Buildability gate — upgrades MUST NOT run on unbuildable configurations
+  const _buildabilityConfirmed = evalResults?.isMathClean === true && evalResults?.isGraphClean === true;
+
   // Calculate current baseline BOM cost
   const { isConfirmedFreeSku } = require('../catalog/sku_versioning.js');
   consolidatedItems.forEach(it => {
@@ -183,6 +186,7 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     hasZeroPriceSkus,
     zeroPriceCount,
     recommendedUpgrades,
+    upgradeStatus: _buildabilityConfirmed ? 'ADVISORY' : 'BASELINE_VALIDATION_REQUIRED',
     goldenRuleSummary
   };
 }

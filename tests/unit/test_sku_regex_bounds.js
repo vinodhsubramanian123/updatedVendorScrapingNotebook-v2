@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 
-const { isValidHpeSKU, cleanBaseSKU, extractHpePartNumbers } = require('../../scripts/lib/catalog/sku');
+const { isValidHpeSKU, cleanBaseSKU, classifySkuValidation } = require('../../scripts/lib/catalog/sku');
 
 test('SKU Bounds — Valid HPE SKU Formats', () => {
   const validSkus = [
@@ -59,3 +59,58 @@ test('SKU Bounds — Invalid Non-SKU Rejection', () => {
     assert.strictEqual(isValidHpeSKU(bad), false, `Invalid token ${bad} must be rejected`);
   }
 });
+
+test('SKU Bounds — 3-Tier Classification (classifySkuValidation)', () => {
+  // Tier 0: Syntax only, no catalog supplied (INV-0 / INV-105)
+  const noCat = classifySkuValidation('P73282-B21');
+  assert.strictEqual(noCat.isSyntacticallyValid, true);
+  assert.strictEqual(noCat.isCatalogVerified, false);
+  assert.strictEqual(noCat.lifecycleStatus, 'CATALOG_NOT_SUPPLIED');
+
+  // Invalid syntax
+  const invalidSyntax = classifySkuValidation('INVALID-SKU-999');
+  assert.strictEqual(invalidSyntax.isSyntacticallyValid, false);
+  assert.strictEqual(invalidSyntax.isCatalogVerified, false);
+  assert.strictEqual(invalidSyntax.lifecycleStatus, 'INVALID_SYNTAX');
+
+  // Tier 2: Scoped Catalog Presence & Lifecycle
+  const mockCatalog = {
+    entries: [
+      {
+        parentCategory: 'Processors',
+        subCategory: 'Intel Xeon 6th Gen',
+        skus: [
+          { 'Product #': 'P73282-B21', Description: 'Intel Xeon 6740E Processor', 'Lifecycle Status': 'Active' },
+          { 'Product #': 'P52534-B21', Description: 'Legacy Processor Option', 'Lifecycle Status': 'OB' }
+        ]
+      }
+    ]
+  };
+
+  const presentActive = classifySkuValidation('P73282-B21', mockCatalog);
+  assert.strictEqual(presentActive.isSyntacticallyValid, true);
+  assert.strictEqual(presentActive.isCatalogVerified, true);
+  assert.strictEqual(presentActive.lifecycleStatus, 'Active');
+  assert.strictEqual(presentActive.category, 'Processors');
+
+  const presentOb = classifySkuValidation('P52534-B21', mockCatalog);
+  assert.strictEqual(presentOb.isSyntacticallyValid, true);
+  assert.strictEqual(presentOb.isCatalogVerified, true);
+  assert.strictEqual(presentOb.lifecycleStatus, 'OB');
+
+  const absentFromCatalog = classifySkuValidation('P99999-B21', mockCatalog);
+  assert.strictEqual(absentFromCatalog.isSyntacticallyValid, true);
+  assert.strictEqual(absentFromCatalog.isCatalogVerified, false);
+  assert.strictEqual(absentFromCatalog.lifecycleStatus, 'NOT_IN_CATALOG');
+
+  // Service SKU classification
+  const service = classifySkuValidation('HU4B2A3');
+  assert.strictEqual(service.isSyntacticallyValid, true);
+  assert.strictEqual(service.isService, true);
+
+  // Software E-LTU classification
+  const software = classifySkuValidation('R7A11AAE');
+  assert.strictEqual(software.isSyntacticallyValid, true);
+  assert.strictEqual(software.optionType, 'Service');
+});
+

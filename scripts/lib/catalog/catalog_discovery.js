@@ -27,15 +27,18 @@ function getChassisMap() {
   if (_chassisMapCache) return _chassisMapCache;
 
   const defaultMap = {
-    "DL380_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "baseSku": "P73282-B21", "model": "DL380 Gen12" },
-    "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
-    "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
-    "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
-    "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
-    "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "baseSku": "R0Q21A", "model": "Alletra Storage System" },
-    "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "baseSku": "P76706-B21", "model": "DL380a Gen12" },
-    "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
-    "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "baseSku": "P71964-B21", "model": "DL145 Gen11" }
+    "DL380_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "uHeight": 2, "baseSku": "P73282-B21", "model": "DL380 Gen12" },
+    "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2, "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
+    "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "uHeight": 3, "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
+    "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "uHeight": 42, "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
+    "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "uHeight": 0, "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
+    "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "uHeight": 4, "baseSku": "R0Q21A", "model": "Alletra Storage System" },
+    "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4, "baseSku": "P76706-B21", "model": "DL380a Gen12" },
+    "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1, "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
+    "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "uHeight": 2, "baseSku": "P71964-B21", "model": "DL145 Gen11" },
+    "DL580_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "SFF", "uHeight": 4, "baseSku": "P75399-B21", "model": "DL580 Gen12" },
+    "SN3600B_FC": { "family": "SAN", "gen": "FC", "formFactor": "Switch", "uHeight": 1, "baseSku": "R7R97A", "model": "SN3600B FC Switch" },
+    "SY480_Gen12": { "family": "Synergy", "gen": "Gen12", "formFactor": "Compute Module", "uHeight": 0, "baseSku": "P68217-B21", "model": "SY480 Gen12" }
   };
 
   const mapPath = path.join(__dirname, '..', '..', 'config', 'chassis_map.json');
@@ -51,18 +54,30 @@ function getChassisMap() {
     }
   }
 
+  const resolveUHeight = (info) => {
+    if (Number.isFinite(info?.uHeight)) return info.uHeight;
+    const m = `${info?.model || ''} ${info?.id || ''} ${info?.formFactor || ''}`.toLowerCase();
+    if (/blade|compute module/i.test(m)) return 0;
+    if (/dl380a|dl384|dl580|4u|8dw/i.test(m)) return 4;
+    if (/msl3040|3u/i.test(m)) return 3;
+    if (/dl360|1u|sn3600b|switch/i.test(m)) return 1;
+    if (/gx5000|42u/i.test(m)) return 42;
+    if (/alletra/i.test(m)) return 4;
+    return 2;
+  };
+
   const aggregated = { ...defaultMap };
   if (loaded.chassis_base_skus && typeof loaded.chassis_base_skus === 'object') {
     for (const [sku, v] of Object.entries(loaded.chassis_base_skus)) {
-      aggregated[sku] = { ...v, baseSku: sku, model: v.model || sku };
+      aggregated[sku] = { ...v, uHeight: resolveUHeight(v), baseSku: sku, model: v.model || sku };
     }
   }
   for (const [k, v] of Object.entries(loaded)) {
     if (k === 'chassis_base_skus' || k === 'chassis_base_skus_by_family_gen') continue;
     if (typeof v === 'string') {
-      aggregated[k] = { model: v, family: "ProLiant", gen: "Gen12", formFactor: "Rack", baseSku: k };
+      aggregated[k] = { model: v, family: "ProLiant", gen: "Gen12", formFactor: "Rack", uHeight: resolveUHeight({ model: v }), baseSku: k };
     } else if (typeof v === 'object' && v !== null) {
-      aggregated[k] = { ...v, baseSku: v.baseSku || k, model: v.model || k };
+      aggregated[k] = { ...v, uHeight: resolveUHeight(v), baseSku: v.baseSku || k, model: v.model || k };
     }
   }
   _chassisMapCache = aggregated;
@@ -118,6 +133,22 @@ function detectChassisVariant(items, overrideVariant = '') {
     }
   }
 
+  // Table-driven platform matchers (GAP-12 / INV-1 Zero-Hardcoding refactor)
+  const PLATFORM_MATCHERS = [
+    { pattern: /\bdl\s*(?:384|380\s*a)\b|dl380a|dl384/i, id: 'DL380a_Gen12' },
+    { pattern: /\bdl\s*145\b|dl145/i, id: 'DL145_Gen11' },
+    { pattern: /\bdl\s*360\b|dl360/i, id: 'DL360_Gen11' },
+    { pattern: /\bdl\s*580\b|dl580/i, id: 'DL580_Gen12' },
+    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*12|gen12)/i, id: 'DL380_Gen12' },
+    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*11|gen11)/i, id: 'DL380_Gen11' },
+    { pattern: /\balletra\b/i, id: 'Alletra_Storage_System' },
+    { pattern: /\bmsl\b|\btape\b/i, id: 'MSL3040_Tape' },
+    { pattern: /\bcray\b|\bgx5000\b/i, id: 'GX5000_General_RACK' },
+    { pattern: /\bsy480\b|synergy\s*480|synergy.*(?:blade|compute)/i, id: 'SY480_Gen12' },
+    { pattern: /(?:synergy\s+)?(?:vc\s*)?100\s*gb\s*f32|synergy.*virtual\s*connect/i, id: 'SY100Gb_F32_Module', exclude: /\b(service|support|cable|transceiver)\b/i },
+    { pattern: /\bsn\s*3600b\b/i, id: 'SN3600B_FC', exclude: /\b(service|support|cable|transceiver|license|upgrade)\b/i }
+  ];
+
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
@@ -127,18 +158,11 @@ function detectChassisVariant(items, overrideVariant = '') {
       if (chassisMap[id]) return { ...chassisMap[id], id };
       return { unknown: true, requiresUserConfirmation: true, id, model: id, family: 'ProLiant', gen: `Gen${explicitPlatform[2]}`, reason: 'Explicit product generation has no mapped catalog' };
     }
-    if (/\bdl\s*384\b/i.test(desc) || desc.includes('dl384')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
-    if (/\bdl\s*380\s*a\b/i.test(desc) || desc.includes('dl380a')) return { ...chassisMap['DL380a_Gen12'], id: 'DL380a_Gen12' };
-    if (/\bdl\s*145\b/i.test(desc) || desc.includes('dl145')) return { ...chassisMap['DL145_Gen11'], id: 'DL145_Gen11' };
-    if (/\bdl\s*360\b/i.test(desc) || desc.includes('dl360')) return { ...(chassisMap['DL360_Gen11'] || { family: 'ProLiant', gen: 'Gen11', formFactor: '8SFF', model: 'DL360 Gen11', baseSku: 'P52499-B21' }), id: 'DL360_Gen11' };
-    if (/\bdl\s*580\b/i.test(desc) || desc.includes('dl580')) return { ...chassisMap['DL580_Gen12'], id: 'DL580_Gen12' };
-    if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen12') || desc.includes('gen 12'))) return { ...chassisMap['DL380_Gen12'], id: 'DL380_Gen12' };
-    if ((/\bdl\s*380\b/i.test(desc) || desc.includes('dl380')) && (desc.includes('gen11') || desc.includes('gen 11'))) return { ...chassisMap['DL380_Gen11'], id: 'DL380_Gen11' };
-    if (desc.includes('alletra')) return { ...chassisMap['Alletra_Storage_System'], id: 'Alletra_Storage_System' };
-    if (desc.includes('msl') || desc.includes('tape')) return { ...chassisMap['MSL3040_Tape'], id: 'MSL3040_Tape' };
-    if (desc.includes('cray') || desc.includes('gx5000')) return { ...chassisMap['GX5000_General_RACK'], id: 'GX5000_General_RACK' };
-    if (desc.includes('sy480') || desc.includes('synergy 480') || (desc.includes('synergy') && (desc.includes('480') || desc.includes('blade') || desc.includes('compute')))) return { ...(chassisMap['SY480_Gen12'] || { family: 'Synergy', gen: 'Gen12', formFactor: 'Compute Module', model: 'SY480 Gen12', baseSku: 'P68217-B21' }), id: 'SY480_Gen12' };
-    if (/\b(?:synergy\s+)?(?:vc\s*)?100\s*gb\s*f32\b|synergy.*virtual\s*connect/i.test(desc) && !/\b(service|support|cable|transceiver)\b/i.test(desc)) return { ...chassisMap['SY100Gb_F32_Module'], id: 'SY100Gb_F32_Module' };
+    for (const matcher of PLATFORM_MATCHERS) {
+      if (matcher.pattern.test(desc) && (!matcher.exclude || !matcher.exclude.test(desc))) {
+        if (chassisMap[matcher.id]) return { ...chassisMap[matcher.id], id: matcher.id };
+      }
+    }
   }
 
   // If no chassis can be identified, trigger Human-in-the-Loop confirmation instead of silent Gen12 assumption
