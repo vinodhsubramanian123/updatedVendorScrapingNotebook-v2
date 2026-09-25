@@ -15,25 +15,28 @@
 
 const GENERIC_DETECTION_PATTERNS = {
   isCpu: (desc = '', sku = '') =>
-    /\b(processor|cpu|xeon|epyc)\b/i.test(desc) || /^P(?:670|671|719|720|747)/i.test(sku),
+    /\b(processor|cpu|xeon|epyc)\b/i.test(desc) && !/\b(cable|heatsink|enablement|bracket|retainer|carrier|thermal|socket\s+cover)\b/i.test(desc),
   isPcieCard: (desc = '', sku = '') =>
     /\b(adapter|hba|nic|pcie card|ethernet)\b/i.test(desc) && !/\b(ocp|mezzanine|flr)\b/i.test(desc),
   isOcp: (desc = '', sku = '') =>
-    /\b(ocp|ocp3|flr)\b/i.test(desc) || /^P(?:10115|51181|7220)/i.test(sku),
+    /\b(ocp|ocp3|flr)\b/i.test(desc) && !/\b(cable|enablement)\b/i.test(desc),
   isStorageController: (desc = '', sku = '') =>
     /\b(smart array|tri-mode|raid controller|storage controller|megaraid|perc)\b/i.test(desc) &&
-    !/\b(battery|cable|bbu)\b/i.test(desc) || /^P(?:58335|47184|757)/i.test(sku),
+    !/\b(battery|cable|bbu)\b/i.test(desc),
   isBattery: (desc = '', sku = '') =>
-    /\b(battery|capacitor|cache battery|smart storage battery|bbu)\b/i.test(desc) || /^P01366/i.test(sku),
+    /\b(battery|capacitor|cache battery|smart storage battery|bbu)\b/i.test(desc) && !/\b(cable|enablement)\b/i.test(desc),
   isMemory: (desc = '', sku = '') =>
-    /\b(memory|dimm|rdimm|lrdimm)\b/i.test(desc) || /^P(?:6470|6997|7487)/i.test(sku),
+    /\b(memory|dimm|rdimm|lrdimm|mrdimm|ddr[45]|registered\s+smart\s+kit)\b/i.test(desc),
   isDrive: (desc = '', sku = '') =>
     /\b(ssd|hdd|nvme|sas|sata|drive)\b/i.test(desc) &&
     !/\b(boot device|ns204i|boss|cage|backplane|tray|cbl)\b/i.test(desc),
   isBootDevice: (desc = '', sku = '') =>
-    /\b(boot device|ns204i|boss|m\.2 boot)\b/i.test(desc) || /^P(?:61852|48183|54542|73722|81160)/i.test(sku)
+    /\b(boot device|ns204i|boss|m\.2 boot)\b/i.test(desc) && !/\b(cable|enablement)\b/i.test(desc)
 };
 
+// Historical product observations, not live orderability or acceptance evidence.
+// Consumers must verify exact scope and current catalog/portal evidence before
+// selecting replacements, support suffixes or manufacturing dependencies.
 const PLATFORM_PROFILES = {
   // --- COMPUTE PLATFORMS (HPE ProLiant) ---
   'HPE_PROLIANT_DL380_GEN11': {
@@ -300,26 +303,19 @@ const PLATFORM_PROFILES = {
 };
 
 /**
- * Retrieve a platform profile by normalized key or fuzzy name.
+ * Retrieve an exact profile or an unambiguous model suffix. Broad family names
+ * and generation-free server names never select a default platform.
  * @param {string} platformKey
  * @returns {object|null}
  */
 function getPlatformProfile(platformKey = '') {
   if (!platformKey) return null;
-  const cleanKey = String(platformKey).toUpperCase().replace(/[-\s]/g, '_');
+  const cleanKey = String(platformKey).trim().toUpperCase().replace(/[-\s]+/g, '_');
   if (PLATFORM_PROFILES[cleanKey]) return PLATFORM_PROFILES[cleanKey];
 
-  for (const [key, profile] of Object.entries(PLATFORM_PROFILES)) {
-    if (cleanKey.includes(key) || key.includes(cleanKey)) return profile;
-    if (cleanKey.includes('DL380') && cleanKey.includes('GEN12') && key.includes('DL380_GEN12')) return profile;
-    if (cleanKey.includes('DL380') && cleanKey.includes('GEN11') && key.includes('DL380_GEN11')) return profile;
-    if (cleanKey.includes('R770') && key.includes('R770')) return profile;
-    if (cleanKey.includes('R760') && key.includes('R760')) return profile;
-    if (cleanKey.includes('MSA') && cleanKey.includes('2060') && key.includes('MSA_2060')) return profile;
-    if ((cleanKey.includes('SN3600B') || cleanKey.includes('3600B')) && key.includes('SN3600B')) return profile;
-    if (cleanKey.includes('MSL3040') && key.includes('MSL3040')) return profile;
-  }
-  return null;
+  if (!/\d/.test(cleanKey)) return null;
+  const matches = Object.entries(PLATFORM_PROFILES).filter(([key]) => key.endsWith(`_${cleanKey}`));
+  return matches.length === 1 ? matches[0][1] : null;
 }
 
 module.exports = {

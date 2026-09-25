@@ -23,6 +23,8 @@ Whenever the user submits a message, file, or quote, classify the input into the
 | **Customer Hardware BOQ / Quote**<br>*(e.g., `.xlsx`, `.csv`, or tabular text containing SKUs/quantities)* | Pre-Flight 7-Aspect BOQ Validation & Matrix Ranking | `boq-eval-skill` | `node scripts/evaluators/eval_boq.js <file>` |
 | **Two BOMs / Discrepancy Comparison**<br>*(e.g., Customer BOQ vs HPE Partner Quote BOM, or Gen11 vs Gen12 migration)* | BOM Reconciliation & Gap Analysis | `bom-reconciliation-skill` | `node scripts/lib/boq/vendor_bom_verifier.js` |
 | **Pricing Drift / Lifecycle / Obsolete SKUs**<br>*(e.g., "What SKUs went obsolete last week?" or "Show price trail for P64707-B21")* | Catalog Intelligence & Price History | `catalog-intelligence-skill` | `price_history.json`, `diff_catalog.js`, `discontinued_skus.json` |
+| **Explicit competitor conversion / equivalence request** | Cross-Vendor Requirement Extraction & Candidate Handoff | `cross-vendor-transformation-skill` | `route_query.js` → `cross_vendor_transformer.js` |
+| **Customer-facing reconciliation remarks** | Commercial Actions & Quantity Bridges | `boq-remarks-reconciliation-skill` | `scripts/lib/boq/commercial_remarks.js` |
 | **Heterogeneous Multi-Domain / Ad-Hoc Tender**<br>*(e.g., mixed servers + storage + switch + tape, or loose unbuildable DIMMs/NICs/drives)* | Heterogeneous Tender Modernization & Carrier Sizing | `heterogeneous-tender-modernizer` | `route_query.js` $\rightarrow$ `heterogeneous_tender_modernizer.js` |
 
 ---

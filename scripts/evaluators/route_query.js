@@ -198,6 +198,12 @@ function classifyQueryIntent(queryText = '', context = {}) {
   const text = String(queryText || '').trim().toLowerCase();
   const filePath = context.filePath || context.file || '';
 
+  // Explicit canonical handoffs must not loop back into competitor detection.
+  if (context.intent === 'RFP_SIZING_TO_BOM') return {
+    intent: context.intent, confidence: 1, skillTarget: 'rfp-sizing-synthesizer',
+    rationale: 'Explicit scoped sizing handoff.'
+  };
+
   // 0. Heterogeneous Tender Modernization & Carrier Fleet Synthesis keywords
   const isHeterogeneous =
     text.includes('heterogeneous') ||
@@ -227,12 +233,10 @@ function classifyQueryIntent(queryText = '', context = {}) {
     text.includes('dell to hpe') ||
     text.includes('cisco to hpe') ||
     text.includes('lenovo to hpe') ||
-    text.includes('poweredge') ||
     text.includes('cross vendor') ||
     text.includes('transpile') ||
     text.includes('competitor quote') ||
-    text.includes('r770') ||
-    text.includes('r760') ||
+    (/convert|equivalent|map|transform/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text)) ||
     Boolean(context.crossVendor) ||
     context.intent === 'CROSS_VENDOR_TRANSFORMATION';
 
@@ -734,10 +738,19 @@ function _handleBomReconciliation(queryText, context) {
 async function _handleHeterogeneousTenderModernization(queryText, context) {
   const { HeterogeneousTenderModernizer } = require('../lib/boq/heterogeneous_tender_modernizer.js');
   const modernizer = new HeterogeneousTenderModernizer({
+    defaultServerPlatform: context.targetPlatform || context.chassisName,
     strictZeroJargon: true
   });
 
-  const parsedTables = context.tables || [];
+  let parsedTables = context.tables;
+  if (!parsedTables && context.filePath && path.extname(context.filePath).toLowerCase() === '.json') {
+    const data = JSON.parse(fs.readFileSync(context.filePath, 'utf8'));
+    parsedTables = data.tables || data;
+  }
+  if (!parsedTables || (Array.isArray(parsedTables) && !parsedTables.length)) return {
+    intent: 'HETEROGENEOUS_TENDER_MODERNIZATION', status: 'STRUCTURED_TENDER_REQUIRED',
+    message: 'Supply nonempty parsed tables with owned items and quantity multipliers. Ingest spreadsheet/PDF files before modernization.'
+  };
   const categorized = modernizer.categorizeTenderItems(parsedTables);
   const carrierFleet = modernizer.synthesizeCarrierFleet(categorized.unbuildableAdHoc);
   const deliverables = modernizer.buildDualDeliverables(categorized, carrierFleet);
@@ -745,7 +758,11 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
   return {
     intent: 'HETEROGENEOUS_TENDER_MODERNIZATION',
     skillTarget: 'heterogeneous-tender-modernizer',
-    status: 'MODERNIZATION_SYNTHESIZED',
+    status: 'DRAFT_VALIDATION_REQUIRED',
+    portalValidationStatus: 'PORTAL VALIDATION PENDING',
+    carrierFleetStatus: carrierFleet.status,
+    unresolvedItems: carrierFleet.unresolvedItems,
+    unresolvedTables: categorized.unresolved,
     carrierFleetSummary: {
       totalPools: carrierFleet.carrierPools.length,
       pools: carrierFleet.carrierPools.map(p => ({
@@ -757,7 +774,8 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
         nicsProvisioned: p.nics?.totalProvisioned || 0
       }))
     },
-    deliverables: {
+    deliverables,
+    deliverableSummary: {
       productionSystemsCount: categorized.servers.length + categorized.storage.length + categorized.sanFabric.length + categorized.tapeBackup.length,
       carrierNodesCount: carrierFleet.carrierPools.reduce((sum, p) => sum + p.chassisCount, 0),
       rulesEnforced: deliverables.clientMatrix.rulesEnforced
@@ -768,22 +786,30 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
 
 async function _handleCrossVendorTransformation(queryText, context) {
   const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
-  const targetChassis = context.targetHpeChassis || context.chassisName || 'DL380_Gen12';
+  const targetChassis = context.targetHpeChassis || context.chassisName || null;
   const qLower = (typeof queryText === 'string' ? queryText : '').toLowerCase();
-  const sourceVendor = context.sourceVendor || (qLower.includes('cisco') ? 'CISCO' : (qLower.includes('lenovo') ? 'LENOVO' : (qLower.includes('supermicro') ? 'SUPERMICRO' : 'DELL')));
-  const nodeCount = context.nodeMultiplier || context.nodes || 1;
+  const sourceVendor = context.sourceVendor || ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => qLower.includes(vendor))?.toUpperCase() || null;
+  const nodeCount = context.nodeMultiplier ?? context.nodes ?? 1;
 
   let inputData = context.competitorSpec || queryText;
-  if (context.filePath && fs.existsSync(context.filePath)) {
-    inputData = fs.readFileSync(context.filePath, 'utf8');
+  if (context.filePath) {
+    const extension = path.extname(context.filePath).toLowerCase();
+    if (!['.txt', '.md', '.json'].includes(extension)) return {
+      intent: 'CROSS_VENDOR_TRANSFORMATION', status: 'STRUCTURED_TENDER_REQUIRED',
+      message: 'Ingest spreadsheets and scanned quotes before transformation; binary files cannot be read as tender text.'
+    };
+    const contents = fs.readFileSync(context.filePath, 'utf8');
+    inputData = extension === '.json' ? JSON.parse(contents) : contents;
   }
 
-  const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, { nodeMultiplier: nodeCount });
+  const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, {
+    nodeMultiplier: nodeCount, targetBom: context.targetBom
+  });
 
   return {
     intent: 'CROSS_VENDOR_TRANSFORMATION',
     skillTarget: 'cross-vendor-transformation-skill',
-    status: 'PARITY_AUDITED_AND_TRANSFORMED',
+    ...transformResult,
     sourceVendor,
     targetChassis,
     competitorSpec: transformResult.competitorSpec,
@@ -875,6 +901,11 @@ if (require.main === module) {
       context.customerFilePath = path.resolve(args[++i]);
     } else if (args[i] === '--chassis' && args[i + 1]) {
       context.chassisName = args[++i];
+    } else if ((args[i] === '--nodes' || args[i] === '--multiplier') && args[i + 1]) {
+      context.nodeMultiplier = parseInt(args[++i], 10);
+      context.nodes = context.nodeMultiplier;
+    } else if ((args[i] === '--platform' || args[i] === '--target-platform') && args[i + 1]) {
+      context.targetPlatform = args[++i];
     } else if (args[i] === '--json') {
       jsonOutput = true;
     } else if (!args[i].startsWith('--')) {
@@ -883,7 +914,7 @@ if (require.main === module) {
   }
 
   if (!queryText && !context.filePath && !context.vendorFilePath) {
-    console.log('Usage: node scripts/evaluators/route_query.js "<query_text>" [--file <path>] [--secondary-file <path>] [--vendor <path>] [--customer <path>] [--chassis <name>] [--json]');
+    console.log('Usage: node scripts/evaluators/route_query.js "<query_text>" [--file <path>] [--secondary-file <path>] [--vendor <path>] [--customer <path>] [--chassis <name>] [--platform <name>] [--nodes <n>] [--json]');
     process.exit(0);
   }
 
