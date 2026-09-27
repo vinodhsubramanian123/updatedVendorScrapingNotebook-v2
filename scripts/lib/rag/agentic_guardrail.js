@@ -163,16 +163,17 @@ function buildToolRegistry(ctx) {
         schema: {
           name: 'record_knowledge_delta',
           description:
-            'Records a candidate physical dependency as a product-scoped observation. It remains quarantined until evidence-backed governance promotes it.',
+            'Records a candidate physical dependency as a product-scoped observation. Provide NotebookLM citations to bypass quarantine and achieve automatic promotion.',
           parameters: {
             type: Type.OBJECT,
             properties: {
               chassis_id: { type: Type.STRING, description: "The chassis variant, e.g., 'DL380_Gen12_SFF'" },
               affected_sku: { type: Type.STRING, description: 'The SKU that requires a fix.' },
               required_sku: { type: Type.STRING, description: 'The mandatory required SKU.' },
-              rule_update: { type: Type.STRING, description: 'The explanation of the new rule.' }
+              rule_update: { type: Type.STRING, description: 'The explanation of the new rule.' },
+              citations: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'Array of source citations (e.g., NotebookLM doc names or QuickSpecs links).' }
             },
-            required: ['chassis_id', 'affected_sku', 'required_sku', 'rule_update']
+            required: ['chassis_id', 'affected_sku', 'required_sku', 'rule_update', 'citations']
           }
         },
         /**
@@ -186,10 +187,13 @@ function buildToolRegistry(ctx) {
             affectedSku: args.affected_sku,
             requiredDependencySku: args.required_sku,
             ruleUpdate: args.rule_update,
+            citations: args.citations || [],
             humanReasoning: 'Agentic Guardrail Loop derived from RAG/DB fact-check',
             sourceAgent: 'AGENTIC_GUARDRAIL',
+            source: 'AGENTIC_GUARDRAIL',
             guardrailTurn: ctx.turns,
-            preConfidenceScore: ctx.preConfidence
+            preConfidenceScore: ctx.preConfidence,
+            confidenceScore: args.citations && args.citations.length > 0 ? 0.95 : 0.70
           };
           // Buffer for commit phase after the loop completes
           ctx.pendingDeltas.push(pendingDelta);

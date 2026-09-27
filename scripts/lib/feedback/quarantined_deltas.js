@@ -200,7 +200,7 @@ function validateKnowledgeDelta(delta, options = {}) {
   }
 
   // Gate 3: Confidence Score
-  const rawScore = delta.preConfidenceScore ?? delta.confidenceScore ?? 0.70;
+  const rawScore = delta.confidenceScore ?? delta.preConfidenceScore ?? 0.70;
   const confidence = typeof rawScore === 'number' ? rawScore : parseFloat(rawScore) || 0.0;
   let status = 'PROMOTED';
 

@@ -109,6 +109,17 @@ function syncRegistry() {
       const gen     = parts[1] || 'General';
       const chassis = parts[2] || fileBase;
 
+      let learnedCount = 0;
+      const deltasPath = path.join(dir, 'history', 'catalog_deltas.json');
+      if (fs.existsSync(deltasPath)) {
+        try {
+          const deltas = JSON.parse(fs.readFileSync(deltasPath, 'utf-8'));
+          learnedCount = Array.isArray(deltas) ? deltas.length : 0;
+        } catch (e) {
+          console.warn(`⚠️ Could not parse catalog_deltas.json in ${dir}:`, e.message);
+        }
+      }
+
       updateScrapedRegistry({
         timestamp:    meta.scrapeDate || new Date().toISOString(),
         solutionName: meta.chassis    || fileBase,
@@ -116,6 +127,7 @@ function syncRegistry() {
         gen,
         chassisName:  chassis,
         skuCount:     meta.totalUniqueSKUs || 0,
+        learnedCount,
         xlsxPath:     fs.existsSync(xlsxPath) ? xlsxPath : jsonPath,
         jsonPath,
         pdfPath:      pdfPath && fs.existsSync(pdfPath) ? pdfPath : null,

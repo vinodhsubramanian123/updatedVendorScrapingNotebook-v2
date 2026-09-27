@@ -17,8 +17,10 @@ const {
   validateKnowledgeDelta,
   saveQuarantinedDelta,
   promoteQuarantinedDelta,
-  buildKnowledgeFingerprint
+  buildKnowledgeFingerprint,
+  getQuarantinedDeltas
 } = require('./quarantined_deltas.js');
+const { recordAndCertifyLearnedRule } = require('./continuous_learning_verifier.js');
 const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 
 /**
@@ -140,6 +142,12 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
   if (!activated) return pending;
   updateCatalogRulesFile(outputDir, activated);
   try {
+    recordAndCertifyLearnedRule(activated, outputDir);
+  } catch (err) {
+    const logger = require('../system/pipeline_logger.js');
+    logger.warn('FEEDBACK_LOOP', `Reachability certification failed: ${err.message}`);
+  }
+  try {
     if (options.skipPostPromotionSideEffects === true) return activated;
     const { recordFeedbackTelemetry } = require('../system/telemetry.js');
     recordFeedbackTelemetry(activated);
@@ -254,6 +262,21 @@ function calculateConfidenceScore(boqItems, evalResults) {
     const unevalPenalty = Math.min(0.20, unevaluated * 0.05);
     score -= unevalPenalty;
     deductions.push(`Unevaluated catalog rules (${unevaluated} rules without a handler) (-${unevalPenalty.toFixed(2)})`);
+  }
+
+  // Check for quarantined rules that target items in this BOQ
+  try {
+    const quarantined = getQuarantinedDeltas();
+    const boqSkus = new Set((boqItems || []).map(i => cleanBaseSKU(i.sku || i.PartNo || '')));
+    const relevantQuarantined = quarantined.filter(q => 
+      boqSkus.has(cleanBaseSKU(q.affectedSku)) || boqSkus.has(cleanBaseSKU(q.requiredDependencySku))
+    );
+    if (relevantQuarantined.length > 0) {
+      score -= 0.30;
+      deductions.push(`Pending quarantined rules target SKUs in this BOQ (${relevantQuarantined.length} unapproved rules) (-0.30)`);
+    }
+  } catch (err) {
+    // Ignore if file doesn't exist yet
   }
 
   // Clamp score between 0.0 and 1.0

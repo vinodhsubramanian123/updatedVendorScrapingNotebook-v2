@@ -27,8 +27,8 @@ function updateScrapedRegistry(info) {
     content =
       `# Master Scraped HPE Product Catalogs Registry\n\n` +
       `## Scraped Product Catalogs\n\n` +
-      `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Excel | JSON | PDF | Output Folder |\n` +
-      `| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |\n`;
+      `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Learned Rules | Excel | JSON | PDF | Output Folder |\n` +
+      `| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n`;
   }
 
   const dateStr  = (info.timestamp || new Date().toISOString()).substring(0, 10);
@@ -43,10 +43,11 @@ function updateScrapedRegistry(info) {
   const relOutputDir  = normOutputDir.replace(/.*\/outputs\//, 'outputs/').replace(/\/+$/, '') + '/';
 
   const skuDisplayCount = info.skuCount !== undefined ? info.skuCount : (info.tablesCount || 0);
+  const learnedCount = info.learnedCount !== undefined ? info.learnedCount : 0;
 
   const newRow =
     `| ${dateStr} | ${info.solutionName || 'OCA Solution'} | ${info.family} | ` +
-    `${info.gen} | \`${info.chassisName}\` | **${skuDisplayCount}** | ` +
+    `${info.gen} | \`${info.chassisName}\` | **${skuDisplayCount}** | **${learnedCount}** | ` +
     `[${path.basename(relXlsx)}](${relXlsx}) | [${path.basename(relJson)}](${relJson}) | ` +
     `${pdfStr} | \`${relOutputDir}\` |\n`;
 
@@ -58,11 +59,16 @@ function updateScrapedRegistry(info) {
     // Update row in place
     lines[existingLineIndex] = newRow.trim();
     content = lines.join('\n');
+    // Simple migration: if file didn't have Learned Rules column, fix header
+    if (!content.includes('| Learned Rules |')) {
+       content = content.replace('| Total SKUs | Excel |', '| Total SKUs | Learned Rules | Excel |');
+       content = content.replace('| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |', '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |');
+    }
     fs.writeFileSync(REGISTRY_PATH, content);
     console.log(`Updated existing row in Master Registry for: ${relOutputDir}`);
   } else {
     // Append new row
-    const divider = '| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |\n';
+    const divider = '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n';
     if (content.includes(divider)) {
       content = content.replace(divider, divider + newRow);
     } else {
