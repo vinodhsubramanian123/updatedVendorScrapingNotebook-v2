@@ -311,7 +311,7 @@ export default function MacroOrchestratorFlow({
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
-                <button onClick={() => setShowLogConsole(!showLogConsole)} className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-[10px] flex items-center gap-1 font-mono transition-colors">
+                <button onClick={() => setShowLogConsole(!showLogConsole)} aria-expanded={showLogConsole} className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-[10px] flex items-center gap-1 font-mono transition-colors">
                   {showLogConsole ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />} {showLogConsole ? 'Hide Logs' : 'View Detailed Logs'}
                 </button>
               </div>
