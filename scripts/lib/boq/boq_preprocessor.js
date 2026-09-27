@@ -37,6 +37,39 @@ const {
 
 const INPUT_FILE_PATTERN = /\.(?:xlsx|xls|csv|tsv|txt)$/i;
 
+/**
+ * Sniff the domain composition of a parsed SKU line list.
+ * Returns a domain breakdown and flags mixed-domain tenders for heterogeneous routing.
+ * @param {Array} parsedLines - Array of item objects with description and sku
+ * @returns {{ isMixedDomain: boolean, activeDomains: string[], domainBuckets: object, primaryDomain: string }}
+ */
+function sniffDomainComposition(parsedLines) {
+  const { topologyRole } = require('./solution_topology.js');
+  const domainBuckets = { server: [], storage: [], networking: [], archive: [], unknown: [] };
+
+  for (const line of (parsedLines || [])) {
+    const desc = String(line.description || line.desc || line.partName || '').toLowerCase();
+    const role = topologyRole(desc);
+    const bucket = role || 'unknown';
+    if (domainBuckets[bucket]) domainBuckets[bucket].push(line.sku || line.partNumber || '');
+    else domainBuckets.unknown.push(line.sku || '');
+  }
+
+  const activeDomains = Object.entries(domainBuckets)
+    .filter(([k, v]) => k !== 'unknown' && v.length > 0)
+    .map(([k]) => k);
+
+  const primaryDomain = activeDomains.sort((a, b) =>
+    domainBuckets[b].length - domainBuckets[a].length)[0] || 'server';
+
+  return {
+    isMixedDomain: activeDomains.length > 1,
+    activeDomains,
+    domainBuckets,
+    primaryDomain
+  };
+}
+
 function resolveBoqInputs(filePathOrRaw, rawTextOrFilePath) {
   const firstIsFile = typeof filePathOrRaw === 'string'
     && INPUT_FILE_PATTERN.test(filePathOrRaw)
@@ -212,7 +245,20 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
     const configBlocks = segmentSheetIntoConfigBlocks(lines, sec.sectionName);
 
     configBlocks.forEach((block, bIdx) => {
-      const { items, multiplier } = parseSkuLines(block.lines);
+      const result = parseSkuLines(block.lines);
+      const { items, multiplier } = result;
+
+      // P2-3: HITL audit step for unmatched SKU tokens
+      if (result.unmatchedSkus && result.unmatchedSkus.length > 0) {
+        addStep('UNMATCHED_SKUS', 'Unmatched SKU Lines Detected',
+          `${result.unmatchedSkus.length} SKU(s) could not be matched to any catalog entry and require manual review`,
+          { unmatchedSkus: result.unmatchedSkus, hitlRequired: true }
+        );
+        auditTrail.hitlRequired = true;
+        auditTrail.hitlReasons = auditTrail.hitlReasons || [];
+        auditTrail.hitlReasons.push(`${result.unmatchedSkus.length} unmatched SKU(s): ${result.unmatchedSkus.map(s => s.rawSku).join(', ')}`);
+      }
+
       if (items.length > 0) {
         rawVariations.push({
           configId: `config_${rawVariations.length + 1}`,
@@ -226,6 +272,18 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
 
   auditTrail.rawInputSummary.totalLines = globalLineCount;
   addStep(3, 'Line-Level Cleaning & Quantity Normalization', `Processed ${globalLineCount} lines across sections. Cleaned SKU items extracted into ${rawVariations.length} configuration variation(s).`);
+
+  // Domain sniff — detect mixed-domain tenders before variation clustering
+  const allParsedItems = rawVariations.flatMap(v => v.items || []);
+  const domainSniff = sniffDomainComposition(allParsedItems);
+  auditTrail.domainSniff = domainSniff;
+  if (domainSniff.isMixedDomain) {
+    addStep('DOMAIN_SNIFF', 'Mixed-Domain Tender Detected',
+      `BOM contains ${domainSniff.activeDomains.join(' + ')} components. Routing heterogeneous domains independently.`,
+      { domainBuckets: domainSniff.domainBuckets, primaryDomain: domainSniff.primaryDomain, requiresHeterogeneousRouter: true }
+    );
+    auditTrail.requiresHeterogeneousRouter = true;
+  }
 
   // Intra-list variant detection if only 1 section with multiple distinct processors
   if (rawVariations.length === 1) {

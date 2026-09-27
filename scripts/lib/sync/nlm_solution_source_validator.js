@@ -57,6 +57,21 @@ function resolveProductNotebookId(chassisInfo) {
         if (val.notebookId && val.queryEnabled !== false) return val.notebookId;
       }
     }
+
+    // Form-factor suffix strip: 'DL380_Gen12_SFF' → 'DL380_Gen12'
+    // Allows new form-factor variants to reuse the base product notebook
+    const FORM_FACTOR_SUFFIXES = /_(8SFF|24SFF|8LFF|12LFF|EDSFF|SFF|LFF|NHP|RACK|MODULE|FRAME|ENCLOSURE)$/i;
+    const strippedName = normalize(name.replace(FORM_FACTOR_SUFFIXES, ''));
+    if (strippedName !== normalize(name)) {
+      for (const [key, val] of Object.entries(notebooks)) {
+        const kNorm = normalize(key.replace(FORM_FACTOR_SUFFIXES, ''));
+        if (strippedName === kNorm && val?.notebookId && val.queryEnabled !== false) {
+          logger.info('NLM_SOURCE_VALIDATOR', `Form-factor suffix stripped: "${name}" → matched notebook for "${key}"`);
+          return val.notebookId;
+        }
+      }
+    }
+
     return null;
   } catch (err) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Failed to read notebooks.json: ${err.message}`);

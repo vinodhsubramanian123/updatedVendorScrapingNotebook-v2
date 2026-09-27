@@ -105,3 +105,11 @@ Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product 
 
 
 For current completion state, pending work and the final check-in record, read `docs/audits/SN3600B_CONTINUATION.md`. The shared Gemini guardrail recovery contract is documented in `GEMINI.md`; model availability, advisory completion, NotebookLM grounding and live vendor acceptance are separate evidence states.
+
+### Conditional SKU Discovery, Domain-Based Testing & Anti-Hallucination Narratives (2026-09-27)
+
+Read `docs/audits/2026-09-27-conditional-sku-and-test-domain-remediation.md` before scraping or modifying evaluation workflows:
+1. **Scraping-Time Conditional Discovery (INV-118)**: Never assume default rendered DOM is exhaustive. Always walk full DOM trees via `extractHiddenElements()` and sweep macro selectors (ambient $\le 27^\circ\text{C}$, 1 vs 2 CPU, backplane, power). Persist trigger gates in `raw_data/conditional_skus.json` and compile into `Catalog_Rules.json` with machine-parseable `thresholdValue`, `conditionOperator`, and `conditionKey`.
+2. **Evaluation Narrative & Anti-Hallucination Audit (INV-119)**: Every customer deliverable must emit the 5-step numbered reasoning narrative (`generateEvaluationNarrative()`). Gated SKUs (e.g. H200 GPU) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L.
+3. **Domain-Segregated Test Matrix (INV-120)**: Run targeted test domains (`npm run test:smoke`, `npm run test:domain:aspects`, `npm run test:domain:boq`, etc.) to conserve tokens and CPU. Never blindly execute the full 168-suite matrix for targeted subsystem changes.
+4. **Knowledge Governance & Degraded Mode**: Degraded notebooks (`cloudSyncState: FAILED`) must disclose `DEGRADED_UNGROUNDED` status via `assertNotebookHealth()`; catalogs older than 72 hours trigger `staleCatalogWarning`.

@@ -74,6 +74,38 @@ function getNotebookDegradedMode(cfg, chassisName) {
   return null;
 }
 
+/**
+ * Emits a structured degradation alert when a notebook has cloudSyncState=FAILED.
+ * Sets the evaluation confidence label to DEGRADED_UNGROUNDED for this chassis.
+ * Called from the knowledge sync coordinator before any cloud query.
+ * @param {object} cfg - parsed notebooks.json
+ * @param {string} chassisName - canonical chassis key
+ * @param {object} loggerRef - pipeline_logger instance
+ * @returns {{ isHealthy: boolean, degradationMode: string|null, confidenceLabel: string }}
+ */
+function assertNotebookHealth(cfg, chassisName, loggerRef) {
+  const degradedMode = getNotebookDegradedMode(cfg, chassisName);
+  if (!degradedMode) {
+    return { isHealthy: true, degradationMode: null, confidenceLabel: 'GROUNDED' };
+  }
+
+  const entry = cfg?.notebooks?.[chassisName];
+  const lastError = (typeof entry === 'object' && entry?.lastSyncError) ? entry.lastSyncError.substring(0, 200) : 'unknown';
+
+  loggerRef.error('KNOWLEDGE_SYNC',
+    `[DEGRADED] Notebook for "${chassisName}" is in degraded mode: ${degradedMode}.\n` +
+    `  Last sync error: ${lastError}\n` +
+    `  Action required: Re-authenticate Google OAuth and re-run: nlm source sync-drive ${chassisName}\n` +
+    `  Evaluation will proceed with LOCAL RAG only — NLM grounding is UNAVAILABLE.`
+  );
+
+  const confidenceLabel = degradedMode === 'NO_NOTEBOOK_MAPPED'
+    ? 'UNGROUNDED_NO_NOTEBOOK'
+    : 'DEGRADED_UNGROUNDED';
+
+  return { isHealthy: false, degradationMode: degradedMode, confidenceLabel };
+}
+
 function classifyKnowledgeScope(deltaOrText) {
   // Accept both a delta object and a raw string (called from knowledge_extractor.js)
   const isString = typeof deltaOrText === 'string';
@@ -364,6 +396,7 @@ module.exports = {
   loadNotebookConfig,
   getNotebookIdForChassis,
   getNotebookDegradedMode,
+  assertNotebookHealth,
   collectAllDeltas,
   normalizeChassisName
 };

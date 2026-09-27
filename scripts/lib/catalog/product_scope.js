@@ -8,16 +8,33 @@ function normalize(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
+const PILLAR_FAMILIES = {
+  SERVER: new Set(['proliant', 'cray', 'superdome', 'edgeline', 'simplivity', 'poweredge', 'ucs', 'thinksystem']),
+  STORAGE: new Set(['alletra', 'nimble', 'storeonce', 'msa', 'storeever', 'powerstore', 'powervault', 'purestorage', 'netapp', 'infinidat']),
+  NETWORKING: new Set(['aruba', 'san', 'nexus', 'catalyst', 'networking', 'juniper', 'arista', 'brocade', 'infiniband'])
+};
+
 function inferPillar(family, productId = '') {
-  const normalized = normalize(family);
-  if (normalized === 'synergy') {
+  const normalizedFamily = normalize(family);
+  const normalizedProductId = normalize(productId);
+
+  // Synergy is a special composite — pillar depends on component role
+  if (normalizedFamily === 'synergy') {
     if (/sy100gb|f32|virtual.?connect|interconnect/i.test(productId)) return 'NETWORKING';
     if (/sy480|synergy.?480|compute/i.test(productId)) return 'SERVER';
     return 'COMPOSITE';
   }
-  if (['alletra', 'nimble', 'storeonce', 'msa', 'storeever', 'powerstore', 'powervault'].includes(normalized)) return 'STORAGE';
-  if (['aruba', 'san', 'nexus', 'catalyst', 'networking'].includes(normalized)) return 'NETWORKING';
-  if (['proliant', 'cray', 'superdome', 'edgeline', 'simplivity', 'poweredge', 'ucs', 'thinksystem'].includes(normalized)) return 'SERVER';
+
+  // Data-driven family-to-pillar lookup
+  for (const [pillar, families] of Object.entries(PILLAR_FAMILIES)) {
+    if (families.has(normalizedFamily)) return pillar;
+  }
+
+  // Product ID heuristics for unrecognized families
+  if (/\b(switch|router|fc-switch|san)\b/i.test(productId)) return 'NETWORKING';
+  if (/\b(storage|array|nas|san-storage|disk)\b/i.test(productId)) return 'STORAGE';
+  if (/\b(server|compute|blade|node)\b/i.test(productId)) return 'SERVER';
+
   return 'UNKNOWN';
 }
 
@@ -172,6 +189,7 @@ function scopeRegistryForProduct(registry, productId, config = {}) {
 }
 
 module.exports = {
+  PILLAR_FAMILIES,
   baseProductId,
   inferPillar,
   normalize,

@@ -1189,6 +1189,47 @@ async function executeRoutedQuery(queryText = '', context = {}) {
   const classification = classifyQueryIntent(queryText, context);
   const startTime = Date.now();
 
+  // ── Classification confidence scoring ───────────────────────────────────
+  // Derive a 0.0-1.0 confidence score based on how the chassis and track were resolved.
+  let confidence = 1.0;
+  let classificationBasis = 'EXPLICIT_CONTEXT';
+
+  const chassisInfoForConf = (() => {
+    try { return getChassisCatalog(queryText, context); } catch (_) { return null; }
+  })();
+
+  if (classification.intent === 'AMBIGUOUS_QUERY' || chassisInfoForConf?.isAmbiguous) {
+    confidence = 0.40;
+    classificationBasis = 'AMBIGUOUS_QUERY';
+  } else if (classification.intent === 'BOQ_EVALUATION') {
+    const hasFile = Boolean(context.filePath || context.file);
+    confidence = hasFile ? 0.95 : 0.90;
+    classificationBasis = hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD';
+  } else if (classification.intent === 'RFP_SIZING_TO_BOM') {
+    // Count sizing-specific keywords to gauge strength
+    const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
+    const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
+    confidence = kwCount >= 3 ? 0.90 : 0.75;
+    classificationBasis = `RFP_SIZING_KEYWORD_COUNT_${kwCount}`;
+  } else if (classification.intent === 'FREEFORM_QA') {
+    confidence = chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? 0.80 : 0.80;
+    classificationBasis = 'FREEFORM_QA_DEFAULT';
+  } else if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+    // Chassis was resolved — refine by how it was matched
+    if (context.chassisName && chassisInfoForConf.chassisKey === (context.chassisName || '').replace(/\s+/g, '_')) {
+      confidence = 1.0;
+      classificationBasis = 'CHASSIS_EXACT_ID_MATCH';
+    } else {
+      // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
+      confidence = 0.90;
+      classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
+    }
+  } else {
+    confidence = classification.confidence || 0.80;
+    classificationBasis = 'CLASSIFIER_SCORE';
+  }
+  // ────────────────────────────────────────────────────────────────────────
+
   let responseData = null;
 
   switch (classification.intent) {
@@ -1338,7 +1379,10 @@ async function executeRoutedQuery(queryText = '', context = {}) {
     result: responseData,
     traceId,
     executionTimeMs: Date.now() - startTime,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    classificationConfidence: confidence, // 0.0-1.0
+    hitlRequired: confidence < 0.80,
+    classificationBasis
   };
 }
 

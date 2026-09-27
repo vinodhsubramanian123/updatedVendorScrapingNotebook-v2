@@ -22,7 +22,9 @@ function computeSkuHash(skuObj) {
   const optType = String(skuObj.optionType || skuObj['Option Type'] || '').trim();
   const qty = String(skuObj.currentQty || skuObj['Current Qty'] || '1').trim();
 
-  const payload = `${pn}|${desc}|${price}|${optType}|${qty}`;
+  const visibility = String(skuObj.visibilityState || 'VISIBLE').trim();
+  const conditionType = String(skuObj.conditionType || '').trim();
+  const payload = `${pn}|${desc}|${price}|${optType}|${qty}|${visibility}|${conditionType}`;
   return crypto.createHash('sha256').update(payload).digest('hex').substring(0, 16);
 }
 

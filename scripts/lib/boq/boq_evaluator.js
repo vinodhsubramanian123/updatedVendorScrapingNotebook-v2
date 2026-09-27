@@ -1516,6 +1516,19 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
 }
 
 function evaluateBOQMultiAspect(filePathOrText, options = {}) {
+  // Catalog freshness pre-flight (Fix X-8)
+  try {
+    const { isCatalogFresh } = require('../catalog/catalog_freshness_guard.js');
+    const catalogDirForFreshness = options.targetDir || options.catalogDir || null;
+    if (catalogDirForFreshness && !isCatalogFresh(catalogDirForFreshness, 72)) {
+      console.warn(`[WARN] [FRESHNESS] Catalog at "${catalogDirForFreshness}" is older than 72 hours. Re-scrape recommended before quoting.`);
+      if (!options.context) options.context = {};
+      options.context.staleCatalogWarning = true;
+    }
+  } catch (_freshnessErr) {
+    // Non-fatal — freshness check must never abort evaluation
+  }
+
   const parsed = parseAndConsolidateBOQDetailed(filePathOrText, options.filePath || '', options.targetSheet || null);
   const requirementResolution = options.catalogData
     ? resolveRequirementIntent({

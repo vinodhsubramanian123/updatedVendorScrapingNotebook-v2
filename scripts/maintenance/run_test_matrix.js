@@ -62,6 +62,65 @@ const TIER_METADATA = {
   }
 };
 
+const DOMAIN_METADATA = {
+  aspects: {
+    id: 'aspects',
+    name: 'Physical Aspect Checks',
+    icon: '⚙️',
+    description: 'Compute thermal, memory channel, storage tri-mode, networking OCP, PCIe riser, power, support',
+    matcher: p => /aspect|thermal|memory_channel|storage_tri_mode|networking_ocp|pcie_riser|power_environment|support/i.test(p)
+  },
+  boq: {
+    id: 'boq',
+    name: 'BOQ & Preprocessor',
+    icon: '📋',
+    description: 'BOQ parsing, CTO normalization, cluster splitting, evaluation benchmarks, excel matrix, domain sniff',
+    matcher: p => /boq|cto|preprocessor|splitter|variation|cluster|excel|bom|unmatched/i.test(p)
+  },
+  scraping: {
+    id: 'scraping',
+    name: 'Portal & DOM Scraping',
+    icon: '🕷️',
+    description: 'CDP navigation, dom extract, conditional sku sweep, oca scraping, clic inspection',
+    matcher: p => /scrap|cdp|dom|clic|ocr|browser|portal|ambient|conditional/i.test(p)
+  },
+  sync: {
+    id: 'sync',
+    name: 'Knowledge Sync & NLM RAG',
+    icon: '🔄',
+    description: 'NotebookLM sync, Google Sheets, QuickSpecs sync, running knowledge, drift inspection',
+    matcher: p => /sync|notebook|rag|knowledge_extractor|drive/i.test(p)
+  },
+  catalog: {
+    id: 'catalog',
+    name: 'Catalog & Rules Intelligence',
+    icon: '📚',
+    description: 'Catalog rules, checksum diff, SKU resolver, registry, product scope, lifecycle, freshness',
+    matcher: p => /catalog|sku|registry|diff|product_scope|rules|pricing|freshness/i.test(p)
+  },
+  conflict: {
+    id: 'conflict',
+    name: 'Conflict Graph & Strategy',
+    icon: '⚖️',
+    description: 'Conflict graph, least-delta combinator, workload DNA, strategy matrix',
+    matcher: p => /conflict|least_delta|strategy|workload|topology/i.test(p)
+  },
+  guardrail: {
+    id: 'guardrail',
+    name: 'Agentic Guardrail & Governance',
+    icon: '🛡️',
+    description: 'Guardrail loop, guardrail transport, rotator, prompts, telemetry, feedback queue',
+    matcher: p => /guardrail|rotator|prompt|telemetry|feedback|invariants|evidence/i.test(p)
+  },
+  smoke: {
+    id: 'smoke',
+    name: 'Fast Smoke Suite',
+    icon: '💨',
+    description: 'Curated fast regression across core subsystems (~10 seconds)',
+    matcher: p => /test_all_system_invariants|test_aspect_compute_thermal|test_boq_preprocessor|test_sync_knowledge|test_schemas|test_conditional_visibility|test_composite_topology|test_knowledge_governance/i.test(p)
+  }
+};
+
 const ORDERED_TIER_KEYS = ['unit', 'chaos', 'integration', 'e2e'];
 
 /**
@@ -85,6 +144,7 @@ function parseArgs(args) {
     isolatedFile: null,
     pattern: null,
     tier: null,
+    domain: null,
     bail: false,
     verbose: false,
     timeoutMs: 120000,
@@ -102,6 +162,8 @@ function parseArgs(args) {
       config.pattern = args[++i];
     } else if (arg === '--tier' || arg === '-T') {
       config.tier = (args[++i] || '').toLowerCase();
+    } else if (arg === '--domain' || arg === '-D') {
+      config.domain = (args[++i] || '').toLowerCase();
     } else if (arg === '--bail' || arg === '-b') {
       config.bail = true;
     } else if (arg === '--verbose' || arg === '-v') {
@@ -346,6 +408,15 @@ Usage:
 
 Options:
   --tier, -T <name>       Filter by tier: unit, chaos, integration, e2e, fast (or quick)
+  --domain, -D <name>     Filter by functional domain:
+                            • aspects   — Compute thermal, memory channel, storage, networking OCP, risers, power, support
+                            • boq       — BOQ parsing, CTO normalization, cluster splitting, variation clustering, excel
+                            • scraping  — CDP navigation, DOM extraction, ambient/conditional sweep, CLIC inspection
+                            • sync      — Knowledge sync, NotebookLM RAG, QuickSpecs sync, running knowledge
+                            • catalog   — Catalog rules, checksum diff, SKU resolver, registry, product scope, freshness
+                            • conflict  — Conflict graph, least-delta combinator, workload DNA, strategy matrix
+                            • guardrail — Agentic guardrail loop, prompts, rotator, telemetry, feedback queue
+                            • smoke     — Fast curated regression suite (~10s)
   --failed-only, -f       Run only test suites that failed in the previous run
   --isolated, -i <file>   Run a single test file in isolation with full verbosity
   --pattern, -p <regex>   Filter tests by regular expression match
@@ -358,6 +429,8 @@ Options:
 NPM Script Equivalents:
   npm test                Run fast deterministic test tiers (unit + chaos + integration)
   npm run test:fast       Run fast deterministic test tiers (unit + chaos + integration)
+  npm run test:smoke      Run curated fast regression suite across core subsystems (~10s)
+  npm run test:domain <d> Run tests for a specific domain (e.g. aspects, boq, scraping, sync, catalog)
   npm run test:unit       Run ONLY pure unit tests (aspect math, schemas, parser)
   npm run test:chaos      Run ONLY chaos & fault injection tests
   npm run test:integration Run ONLY integration & portfolio certification tests
@@ -397,7 +470,15 @@ NPM Script Equivalents:
     console.log(`🔄 Running in FAILED-ONLY ISOLATION MODE: ${targetTests.length} suite(s) to re-test\n`);
   } else {
     targetTests = discoverTests(ROOT_DIR, config.tier);
-    if (config.pattern) {
+    if (config.domain) {
+      const d = DOMAIN_METADATA[config.domain];
+      if (!d) {
+        console.error(`❌ Unknown test domain "${config.domain}". Valid domains: ${Object.keys(DOMAIN_METADATA).join(', ')}`);
+        process.exit(1);
+      }
+      targetTests = targetTests.filter(t => d.matcher(t));
+      console.log(`🎯 Filtered by domain "${d.icon} ${d.name}": ${targetTests.length} suite(s) found\n`);
+    } else if (config.pattern) {
       const reg = new RegExp(config.pattern, 'i');
       targetTests = targetTests.filter(t => reg.test(t));
       console.log(`🔍 Filtered by pattern "${config.pattern}": ${targetTests.length} suite(s) found\n`);

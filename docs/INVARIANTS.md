@@ -665,6 +665,21 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 4. **Zero Optimistic Falsification**: When an external service (LLM, RAG, API) is unavailable or offline, mark the stage as `ACTION_REQUIRED` or `INCOMPLETE`. Never fabricate a synthetic pass.
 5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (165+ suites), `npm run lint` (0 warnings on 110 files), and complexity gates ($CC \le 135$).
 
+## 8. Invariants Catalog Extension (2026-09-27)
+- **INV-118: Universal Scraping-Time Conditional SKU Discovery & Macro Form Sweeping**:
+  - Scrapers must never assume the default rendered DOM is complete. They must traverse all CSS-hidden DOM nodes (`extractHiddenElements()`) and sweep macro form triggers (ambient temperature $\le 27^\circ\text{C}$, 1 vs 2 CPU count, backplane/chassis selection, and AC vs DC power) at scraping time.
+  - Gated SKUs must be recorded in `raw_data/conditional_skus.json` and compiled into `Catalog_Rules.json` with machine-parseable rule types (`AMBIENT_GATE`, `TDP_GATE`), thresholds, and operators.
+  - SHA-256 SKU hashing (`computeSkuHash()`) must include `visibilityState` and `conditionType` so visibility changes trigger catalog diffs and NLM updates.
+
+- **INV-119: Anti-Hallucination Evaluation Narrative & Transparent Evidence Trace**:
+  - All customer evaluations must generate a 5-step numbered reasoning narrative (`generateEvaluationNarrative()`), mapping every BOM component, physical aspect status, triggered catalog rule, and ranked recommendation directly to concrete evidence (QuickSpecs citations, local rules, or live receipts).
+  - Any solution featuring conditionally-visible SKUs (such as an H200 GPU requiring $\le 27^\circ\text{C}$ ambient) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L. It is forbidden to output a silent PASS for conditionally gated components.
+  - Mixed-domain tenders must be automatically sniffed (`sniffDomainComposition()`) and partitioned before variation clustering to prevent cross-domain rule contamination.
+
+- **INV-120: Domain-Segregated Test Matrix Architecture**:
+  - The test matrix runner (`run_test_matrix.js`) must support domain-isolated execution via `--domain` / `-D` (`aspects`, `boq`, `scraping`, `sync`, `catalog`, `conflict`, `guardrail`, `smoke`).
+  - Developers and agents must utilize domain-targeted runs (`npm run test:smoke`, `npm run test:domain <name>`) during active feature development to conserve tokens, memory, and CPU, reserving the full 168-suite matrix for final release certification.
+
 
 
 

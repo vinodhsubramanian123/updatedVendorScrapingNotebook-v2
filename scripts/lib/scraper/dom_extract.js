@@ -177,4 +177,188 @@ async function extractSectionHeaders(ws, sendCommand) {
   }
 }
 
-module.exports = { deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders };
+/**
+ * Extract DOM elements that are currently hidden (display:none / visibility:hidden) but contain product IDs.
+ * Captures SKUs that are conditionally visible (e.g. under ≤27°C ambient or high-TDP CPU trigger).
+ * @param {WebSocket} ws
+ * @param {Function} sendCommand
+ * @returns {Promise<Array<{ sku: string, ruleContext: string, visibilityReason: string, parentClass: string }>>}
+ */
+async function extractHiddenElements(ws, sendCommand) {
+  const result = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const hidden = [];
+      const seen = new Set();
+      // All elements tagged with product ID classes — including those in hidden subtrees
+      const allPidEls = Array.from(document.querySelectorAll('._pid, [class*="_pid"], .item_prod span'));
+      for (const el of allPidEls) {
+        const sku = (el.innerText || el.textContent || '').trim();
+        if (!sku || seen.has(sku)) continue;
+        // Walk up the DOM to determine if this element or any ancestor is hidden
+        let isHidden = false;
+        let ancestor = el;
+        let hiddenAncestor = null;
+        while (ancestor && ancestor !== document.body) {
+          try {
+            const style = window.getComputedStyle(ancestor);
+            if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) === 0) {
+              isHidden = true;
+              hiddenAncestor = ancestor;
+              break;
+            }
+          } catch (_) {}
+          ancestor = ancestor.parentElement;
+        }
+        if (isHidden) {
+          seen.add(sku);
+          // Try to extract adjacent rule text (preceding sibling table header or .td_prod badge)
+          const row = el.closest('tr, .item_row, [data-item-id]');
+          const badge = row ? (row.querySelector('.td_prod')?.innerText || '').trim() : '';
+          const tableHeader = row?.closest('table')?.previousElementSibling;
+          const ruleContext = (tableHeader?.innerText || '').trim().substring(0, 300);
+          hidden.push({
+            sku,
+            badge,
+            ruleContext,
+            visibilityReason: 'HIDDEN_IN_DEFAULT_DOM_STATE',
+            hiddenAncestorClass: hiddenAncestor?.className || '',
+            parentClass: el.parentElement?.className || ''
+          });
+        }
+      }
+      return JSON.stringify(hidden);
+    })()`,
+    returnByValue: true
+  });
+  try {
+    return JSON.parse(result.result?.value || '[]');
+  } catch (e) {
+    console.warn(`[WARN] [DOM_EXTRACT] Failed to parse hidden elements: ${e.message}`);
+    return [];
+  }
+}
+
+/**
+ * Probe ambient-temperature conditional SKU visibility by iterating known OCA threshold values.
+ * For each threshold, simulates the ambient selector change and diffs the visible SKU set.
+ * Returns conditional SKU records for any SKU that appears under a non-default ambient.
+ *
+ * IMPORTANT: Restores original ambient value before returning.
+ *
+ * @param {WebSocket} ws
+ * @param {Function} sendCommand
+ * @param {Array<number>} [thresholds=[35, 30, 27, 25]] Ambient °C values to probe
+ * @returns {Promise<Array<{ sku: string, conditionType: string, operator: string, thresholdDegC: number, visibleAtDefaultC: boolean, evidence: string }>>}
+ */
+async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 30, 27, 25]) {
+  const conditionalSkus = [];
+  const seen = new Set();
+
+  // Detect the ambient selector
+  const selectorRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+      if (!el) return JSON.stringify({ found: false, id: null, currentValue: null, options: [] });
+      return JSON.stringify({
+        found: true,
+        id: el.id || el.name || '',
+        currentValue: el.value,
+        options: Array.from(el.options).map(o => ({ value: o.value, text: o.text.trim() }))
+      });
+    })()`,
+    returnByValue: true
+  });
+
+  let selectorInfo = {};
+  try { selectorInfo = JSON.parse(selectorRes.result?.value || '{}'); } catch (_) {}
+
+  if (!selectorInfo.found) {
+    // No ambient selector found — still capture hidden elements as UNKNOWN_CONDITION
+    const hiddenAtDefault = await extractHiddenElements(ws, sendCommand);
+    for (const item of hiddenAtDefault) {
+      if (!seen.has(item.sku)) {
+        seen.add(item.sku);
+        conditionalSkus.push({
+          ...item,
+          conditionType: 'UNKNOWN_PORTAL_CONDITION',
+          operator: 'unknown',
+          thresholdDegC: null,
+          visibleAtDefaultC: false,
+          evidence: 'SKU hidden in default DOM state; no ambient selector found to probe further'
+        });
+      }
+    }
+    return conditionalSkus;
+  }
+
+  const originalValue = selectorInfo.currentValue;
+  const defaultTemp = parseFloat(originalValue) || 30;
+
+  // Snapshot the default-visible SKU set
+  const defaultVisibleRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).map(e => (e.innerText || '').trim()).filter(Boolean))`,
+    returnByValue: true
+  });
+  let defaultVisible = new Set();
+  try { defaultVisible = new Set(JSON.parse(defaultVisibleRes.result?.value || '[]')); } catch (_) {}
+
+  for (const threshold of thresholds) {
+    if (parseFloat(threshold) === defaultTemp) continue; // skip default
+
+    // Find the matching option value for this threshold
+    const matchingOption = (selectorInfo.options || []).find(o =>
+      parseFloat(o.value) === threshold || o.text.includes(String(threshold)));
+    if (!matchingOption) continue;
+
+    // Set ambient to threshold
+    await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const el = document.querySelector('select[name*="ambient"], select[id*="ambient"]');
+        if (el) { el.value = ${JSON.stringify(matchingOption.value)}; el.dispatchEvent(new Event('change', { bubbles: true })); }
+      })()`,
+      returnByValue: true
+    });
+
+    // Wait for WebLogic re-render
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
+    // Snapshot newly visible SKUs
+    const probeRes = await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).map(e => (e.innerText || '').trim()).filter(Boolean))`,
+      returnByValue: true
+    });
+    let probeVisible = new Set();
+    try { probeVisible = new Set(JSON.parse(probeRes.result?.value || '[]')); } catch (_) {}
+
+    // SKUs that appear at this threshold but NOT at default = conditional SKUs
+    for (const sku of probeVisible) {
+      if (!defaultVisible.has(sku) && !seen.has(sku)) {
+        seen.add(sku);
+        conditionalSkus.push({
+          sku,
+          conditionType: 'AMBIENT_GATE',
+          operator: threshold < defaultTemp ? 'lte' : 'gte',
+          thresholdDegC: threshold,
+          visibleAtDefaultC: false,
+          visibleAt27C: threshold === 27,
+          evidence: `HPE OCA DOM — SKU became visible when ambient selector set to ≤${threshold}°C (default: ${defaultTemp}°C)`,
+          portalVerificationRequired: true
+        });
+      }
+    }
+  }
+
+  // Restore original ambient
+  await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"]');
+      if (el) { el.value = ${JSON.stringify(originalValue)}; el.dispatchEvent(new Event('change', { bubbles: true })); }
+    })()`,
+    returnByValue: true
+  });
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  return conditionalSkus;
+}
+
+module.exports = { deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders, extractHiddenElements, probeConditionalSkuVisibility };

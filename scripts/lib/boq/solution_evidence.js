@@ -16,7 +16,11 @@ function solutionManifest(evaluation) {
   })).sort((a, b) => String(a.rank).localeCompare(String(b.rank)));
 }
 
-function solutionFingerprint(evaluation) {
+function solutionFingerprint(evaluation, catalogData = null) {
+  const catalog = catalogData || evaluation.catalogData || null;
+  const catalogFingerprint = catalog?.metadata?.scrapedAt
+    ? `${catalog.metadata.scrapedAt}_${catalog.metadata.totalUniqueSKUs || 0}`
+    : 'UNKNOWN_CATALOG';
   const baseline = (evaluation.items || []).map(part => ({
     sku: String(part.sku || part['Product #'] || '').trim(),
     quantity: Number(part.quantity ?? part.qty),
@@ -29,7 +33,8 @@ function solutionFingerprint(evaluation) {
     chassis: evaluation.chassis || evaluation.chassisVariant || evaluation.targetChassis || evaluation.detectedChassis || null,
     baseline,
     requirements: evaluation.requirementResolution || null,
-    candidates: solutionManifest(evaluation)
+    candidates: solutionManifest(evaluation),
+    catalogFingerprint
   })).digest('hex');
 }
 

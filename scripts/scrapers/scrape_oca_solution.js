@@ -10,6 +10,7 @@ const { execFileSync } = require('child_process');
 const {
   sendCommand, getOCATarget, connectWS, setupDialogAutoHandler,
   expandSections, deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
+  extractHiddenElements, probeConditionalSkuVisibility,
   sleep
 } = require('../lib/scraper/cdp.js');
 const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
@@ -662,6 +663,23 @@ async function main() {
     const sections = await extractSectionHeaders(ws);
     console.log(`Extracted ${sections.length} DOM section headers.`);
 
+    // ── Conditional SKU Sweep: Probe ambient-temperature gated SKUs ──
+    console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
+    let conditionalSkus = [];
+    try {
+      conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand);
+      if (conditionalSkus.length > 0) {
+        console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-visible SKU(s) (hidden at default ambient):`);
+        for (const cs of conditionalSkus) {
+          console.log(`     • ${cs.sku} — ${cs.conditionType} ${cs.operator} ${cs.thresholdDegC}°C`);
+        }
+      } else {
+        console.log('  ✅ No ambient-gated conditional SKUs detected.');
+      }
+    } catch (sweepErr) {
+      console.warn(`⚠️  Conditional SKU sweep failed (non-fatal): ${sweepErr.message}`);
+    }
+
     // ── Phantom Chassis Guard ──
     const BLOCKED_CHASSIS_NAMES = new Set([
       'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
@@ -759,6 +777,8 @@ async function main() {
       sections,
       tables,
       tableCount: tables.length,
+      conditionalSkus,
+      conditionalSkusCount: conditionalSkus.length,
       chassisDiscovery
     };
     const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
@@ -767,6 +787,16 @@ async function main() {
       safeWriteJsonAtomic(path.join(rawDir, 'chassis_discovery.json'), chassisDiscovery);
     }
     console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
+
+    if (conditionalSkus.length > 0) {
+      safeWriteJsonAtomic(path.join(rawDir, 'conditional_skus.json'), {
+        timestamp: new Date().toISOString(),
+        chassisName: meta.cleanName,
+        totalConditionalSkus: conditionalSkus.length,
+        skus: conditionalSkus
+      });
+      console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
+    }
 
     // QuickSpecs PDF Download
     if (qsLink) {

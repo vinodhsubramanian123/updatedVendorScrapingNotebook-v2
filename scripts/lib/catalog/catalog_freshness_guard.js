@@ -246,8 +246,32 @@ function verifyTabularIntegrity(catalogData) {
   };
 }
 
+/**
+ * Lightweight check if catalog directory has been updated within maxAgeHours.
+ * Returns true if fresh or if mtime cannot be checked. Returns false if older than maxAgeHours.
+ * @param {string} catalogDir
+ * @param {number} [maxAgeHours=72]
+ * @returns {boolean}
+ */
+function isCatalogFresh(catalogDir, maxAgeHours = 72) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    if (!catalogDir || !fs.existsSync(catalogDir)) return true;
+    const prefix = path.basename(catalogDir);
+    const catalogPath = path.join(catalogDir, `${prefix}_Catalog.json`);
+    if (!fs.existsSync(catalogPath)) return true;
+    const stat = fs.statSync(catalogPath);
+    const ageHours = (Date.now() - stat.mtimeMs) / 3600000;
+    return ageHours <= maxAgeHours;
+  } catch (_) {
+    return true;
+  }
+}
+
 module.exports = {
   normalizeCatalogMetadata,
   auditCatalogFreshness,
-  verifyTabularIntegrity
+  verifyTabularIntegrity,
+  isCatalogFresh
 };

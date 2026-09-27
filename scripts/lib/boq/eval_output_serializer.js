@@ -724,8 +724,125 @@ async function serializeAndExportResults(ctx) {
   }
 }
 
+/**
+ * Generate a human-readable, numbered reasoning narrative for an evaluation result.
+ * This is the anti-hallucination transparency layer: every conclusion is traced to
+ * a specific evidence source (catalog rule, aspect check, NLM citation, or portal receipt).
+ *
+ * @param {object} evalResult - Full evaluation result from boq_evaluator.js
+ * @param {object} chassisInfo - Chassis info with model, gen, family
+ * @param {object} [options]
+ * @returns {string} Multi-line markdown narrative
+ */
+function generateEvaluationNarrative(evalResult, chassisInfo, options = {}) {
+  const lines = [];
+  const model = chassisInfo?.cleanName || chassisInfo?.model || 'Unknown Chassis';
+  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+  lines.push(`## Evaluation Reasoning Trace — ${model}`);
+  lines.push(`_Generated: ${now} IST | Evidence-Grounded | Anti-Hallucination Audit Trail_\n`);
+
+  // Step 1: What was detected
+  lines.push('### Step 1 — BOM Detection Summary');
+  const items = evalResult.items || [];
+  const byRole = {};
+  for (const item of items) {
+    const role = item.role || item.componentRole || 'Unknown';
+    byRole[role] = (byRole[role] || 0) + (item.quantity || 1);
+  }
+  if (Object.keys(byRole).length) {
+    for (const [role, qty] of Object.entries(byRole)) {
+      lines.push(`- **${role}**: ${qty} unit(s)`);
+    }
+  } else {
+    lines.push('- No component roles detected in BOM.');
+  }
+
+  // Step 2: Physical aspect check results
+  lines.push('\n### Step 2 — Physical Aspect Check Results (7 Checks)');
+  const aspects = evalResult.evalSummary?.aspectChecks || evalResult.aspectChecks || [];
+  if (aspects.length) {
+    for (const check of aspects) {
+      const icon = check.status === 'PASS' ? '✅' : check.status === 'FAIL' ? '❌' : check.status === 'WARN' ? '⚠️' : '🔲';
+      lines.push(`- ${icon} **${check.name || check.id}** — ${check.status}`);
+      if (check.detail) lines.push(`  > ${String(check.detail).replace(/\n/g, ' ').substring(0, 200)}`);
+      if (check.evidenceSource) lines.push(`  > Evidence: ${check.evidenceSource}`);
+    }
+  } else {
+    lines.push('- No aspect checks recorded.');
+  }
+
+  // Step 3: Conflicts and catalog rules that fired
+  lines.push('\n### Step 3 — Conflicts & Catalog Rules Triggered');
+  const conflicts = evalResult.conflictGraph?.conflicts || evalResult.conflicts || [];
+  const fixes = evalResult.conflictGraph?.resolvedFixes || evalResult.resolvedFixes || [];
+  if (conflicts.length) {
+    for (const c of conflicts) {
+      lines.push(`- ⚠️ **${c.type || 'CONFLICT'}**: ${c.message || c.detail || String(c).substring(0, 200)}`);
+      if (c.rule) lines.push(`  > Rule: \`${c.rule}\``);
+    }
+  } else {
+    lines.push('- No conflicts detected at catalog rule level.');
+  }
+  if (fixes.length) {
+    lines.push('\n**Resolved Fixes Applied:**');
+    for (const f of fixes) {
+      lines.push(`- 🔧 ${f.action || f.type}: ${f.detail || f.message || ''}`);
+    }
+  }
+
+  // Step 4: Ranking and evidence
+  lines.push('\n### Step 4 — Ranked Strategy Matrix & Supporting Evidence');
+  const rankedSolutions = evalResult.conflictGraph?.rankedSolutions || evalResult.rankedSolutions || [];
+  if (rankedSolutions.length) {
+    for (const rank of rankedSolutions) {
+      const verified = rank.nlmCitationVerified ? '🟢 NLM-Grounded' : '🟡 Local-Rule-Only';
+      const portalStatus = rank.portalValidationStatus || 'PENDING';
+      lines.push(`\n**${rank.rank || rank.id || 'Rank ?'}** — ${rank.label || rank.description || ''}`);
+      lines.push(`- Verification: ${verified} | Portal: ${portalStatus}`);
+      if (rank.portalConditionalSkus?.length) {
+        for (const cs of rank.portalConditionalSkus) {
+          lines.push(`- ⚠️ PORTAL_CONDITIONAL: \`${cs.sku}\` requires ambient ${cs.operator} ${cs.thresholdDegC}°C`);
+        }
+      }
+      if (rank.evidenceSummary) lines.push(`- Evidence: ${rank.evidenceSummary}`);
+    }
+  } else {
+    lines.push('- No ranked solutions generated.');
+  }
+
+  // Step 5: Next actions
+  lines.push('\n### Step 5 — Required Customer Actions Before Quoting');
+  const warnings = evalResult.evalSummary?.warnings || evalResult.warnings || [];
+  const errors = evalResult.evalSummary?.errors || evalResult.errors || [];
+  const missing = evalResult.evalSummary?.missingDependencies || evalResult.missingDependencies || [];
+  const portalStatus = evalResult.portalValidationStatus || 'PENDING';
+
+  if (portalStatus !== 'VERIFIED') {
+    lines.push(`- 🔴 **Portal Validation Required**: Live OCA/CLIC verification is ${portalStatus}. Do not quote until VERIFIED.`);
+  }
+  if (missing.length) {
+    for (const dep of missing) {
+      lines.push(`- 🔧 **Missing Dependency**: ${dep.sku || dep.name || JSON.stringify(dep).substring(0, 100)}`);
+    }
+  }
+  if (errors.length) {
+    for (const err of errors) {
+      lines.push(`- ❌ **Error**: ${String(err.message || err).substring(0, 200)}`);
+    }
+  }
+  if (warnings.length === 0 && errors.length === 0 && missing.length === 0 && portalStatus === 'VERIFIED') {
+    lines.push('- ✅ No open actions. This evaluation is complete and portal-verified.');
+  }
+
+  lines.push(`\n---\n_Trace generated by Antigravity Evaluation Engine | Catalog: ${evalResult.catalogVersion || 'unknown'} | NOT a vendor configurator receipt_`);
+
+  return lines.join('\n');
+}
+
 module.exports = {
   generateMarkdownReport,
+  generateEvaluationNarrative,
   handleGoogleDriveUpload,
   serializeAndExportResults
 };

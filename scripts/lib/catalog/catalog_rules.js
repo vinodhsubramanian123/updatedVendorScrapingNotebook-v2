@@ -69,27 +69,37 @@ function getMandatorySkusForChassis(chassisInfo) {
   const gen = (chassisInfo?.gen || '').toLowerCase();
   const isGen12 = gen.includes('12') || model.includes('gen12');
 
+  const normalizeStr = s => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const familyNorm = normalizeStr(family);
+  const modelNorm = normalizeStr(model);
+  const genNorm = normalizeStr(gen);
+
   let kitKey = 'DEFAULT';
-  if (family.includes('alletra')) {
-    kitKey = 'Alletra_Storage';
-  } else if (model.includes('dl380a')) {
-    kitKey = 'ProLiant_DL380a_Gen12';
-  } else if (model.includes('dl145')) {
-    kitKey = 'ProLiant_DL145_Gen11';
-  } else if (model.includes('dl360')) {
-    kitKey = 'ProLiant_DL360_Gen11';
-  } else if (family.includes('synergy')) {
-    kitKey = isGen12 ? 'Synergy_Gen12' : 'Synergy_General';
-  } else if (family.includes('storeever') || model.includes('msl')) {
-    kitKey = 'StoreEver_Tape';
-  } else if (family.includes('cray')) {
-    kitKey = 'Cray_General';
-  } else if (model.includes('dl580')) {
-    kitKey = 'ProLiant_DL580_Gen12';
-  } else if (isGen12) {
-    kitKey = 'ProLiant_Gen12';
-  } else if (gen.includes('11') || model.includes('gen11')) {
-    kitKey = 'ProLiant_Gen11';
+
+  // Data-driven kit routing from chassis_map.json kit_routing.matchers (most-specific first)
+  const matchers = cmap.kit_routing?.matchers || [];
+  for (const m of matchers) {
+    const fMatch = !m.familyPattern || m.familyPattern === '*' || familyNorm.includes(normalizeStr(m.familyPattern));
+    const gMatch = !m.genPattern || m.genPattern === '*' || genNorm.includes(normalizeStr(m.genPattern));
+    const mMatch = !m.modelPattern || m.modelPattern === '*' || modelNorm.includes(normalizeStr(m.modelPattern));
+    if (fMatch && gMatch && mMatch) {
+      kitKey = m.kitKey;
+      break;
+    }
+  }
+
+  // Legacy fallback if kit_routing matchers not present
+  if (kitKey === 'DEFAULT' && matchers.length === 0) {
+    if (familyNorm.includes('alletra')) kitKey = 'Alletra_Storage';
+    else if (modelNorm.includes('dl380a')) kitKey = 'ProLiant_DL380a_Gen12';
+    else if (modelNorm.includes('dl145')) kitKey = 'ProLiant_DL145_Gen11';
+    else if (modelNorm.includes('dl360')) kitKey = 'ProLiant_DL360_Gen11';
+    else if (familyNorm.includes('synergy')) kitKey = genNorm.includes('12') ? 'Synergy_Gen12' : 'Synergy_General';
+    else if (familyNorm.includes('storeever') || modelNorm.includes('msl')) kitKey = 'StoreEver_Tape';
+    else if (familyNorm.includes('cray')) kitKey = 'Cray_General';
+    else if (modelNorm.includes('dl580')) kitKey = 'ProLiant_DL580_Gen12';
+    else if (genNorm.includes('12')) kitKey = 'ProLiant_Gen12';
+    else if (genNorm.includes('11')) kitKey = 'ProLiant_Gen11';
   }
 
   const selectedKit = kits[kitKey] || kits.DEFAULT || {};
@@ -127,6 +137,49 @@ function getMandatorySkusForChassis(chassisInfo) {
 function classifyRule(ruleText, parentCategory = '', subCategory = '') {
   const text = String(ruleText || '').trim();
   const lower = text.toLowerCase();
+
+  // Conditional visibility rules (AMBIENT_GATE, TDP_GATE, CONFIG_TRIGGER)
+  // These must be classified before other level checks as they carry explicit machine-parseable structure.
+  const ambientMatch = lower.match(/ambient\s*(?:temperature)?\s*(?:of|at|below|<=|≤|<|max)?\s*(\d+)\s*°?\s*c/i)
+    || lower.match(/(\d+)\s*°?\s*c\s*(?:ambient|temperature|datacenter)/i);
+  if (ambientMatch || lower.includes('ambient temperature') && lower.match(/(\d+)/)) {
+    const thresholdMatch = text.match(/(\d+)/);
+    const threshold = thresholdMatch ? parseInt(thresholdMatch[1], 10) : null;
+    const operator = lower.includes('below') || lower.includes('<=') || lower.includes('≤') || lower.includes('<') || lower.includes('up to') ? 'lte' : 'gte';
+    return {
+      level: 'CHASSIS',
+      ruleType: 'CONDITIONAL_VISIBILITY',
+      conditionType: 'AMBIENT_GATE',
+      conditionKey: 'ambientTempC',
+      conditionOperator: operator,
+      thresholdValue: threshold,
+      parentCategory,
+      subCategory,
+      ruleText: text,
+      isStrict: true,
+      portalVerificationRequired: true,
+      affectedSkus: [] // Populated by the caller from adjacent SKU context
+    };
+  }
+
+  // TDP-triggered conditional rules
+  if (lower.match(/tdp\s*(?:above|>=|>|over|exceeds)?\s*\d+\s*w/i) || (lower.includes('tdp') && lower.includes('watt'))) {
+    const tdpMatch = text.match(/(\d+)\s*(?:W|watt)/i);
+    return {
+      level: 'CHASSIS',
+      ruleType: 'CONDITIONAL_VISIBILITY',
+      conditionType: 'TDP_GATE',
+      conditionKey: 'cpuTdpWatts',
+      conditionOperator: 'gte',
+      thresholdValue: tdpMatch ? parseInt(tdpMatch[1], 10) : null,
+      parentCategory,
+      subCategory,
+      ruleText: text,
+      isStrict: true,
+      portalVerificationRequired: true,
+      affectedSkus: []
+    };
+  }
 
   let level = 'CATEGORY';
   let ruleType = 'MUTUAL_EXCLUSION';

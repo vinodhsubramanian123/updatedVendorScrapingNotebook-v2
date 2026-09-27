@@ -118,7 +118,24 @@ function buildToolRegistry(ctx) {
           logger.info('AGENTIC_GUARDRAIL', `NLM query #${ctx.nlmCallCount}/${maxNlmCalls}: ${args.query.slice(0, 60)}...`);
           const cfg = loadNotebookConfig();
           const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
-          return executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
+
+          // Enforce pillar isolation for shared-enclosure notebooks (INV-91)
+          let queryText = args.query;
+          const chassisName = args.chassis_id;
+          const resolvedChassisName = chassisName ? chassisName.replace(/\s+/g, '_') : chassisName;
+          const notebookEntry = cfg?.notebooks?.[chassisName] || cfg?.notebooks?.[resolvedChassisName];
+          if (notebookEntry?.sharedEnclosureWarning) {
+            const pillar = notebookEntry.pillar || 'SERVER';
+            const excludedDomain = pillar === 'SERVER' ? 'fabric interconnect / networking modules / SY100Gb F32'
+              : pillar === 'NETWORKING' ? 'compute blades / server modules / SY480'
+              : 'other component types';
+            const pillarPrefix = `IMPORTANT SCOPE RESTRICTION (INV-91): This query is scoped exclusively to pillar: ${pillar} components. ` +
+              `Do NOT reference or return information about ${excludedDomain}. ` +
+              `If the answer requires crossing into a different component domain, explicitly state that a separate scoped query is needed.\n\n`;
+            queryText = pillarPrefix + queryText;
+          }
+
+          return executeNotebookQuery(notebookId, queryText, { context: { chassis: args.chassis_id } });
         }
       }
     ],

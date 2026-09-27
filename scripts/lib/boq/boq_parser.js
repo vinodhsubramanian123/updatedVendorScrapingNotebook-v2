@@ -283,6 +283,7 @@ function parseSkuLines(lines) {
   const clusters = [];
   let currentCluster = null;
   const unresolvedRequirements = [];
+  const unmatchedSkus = []; // P2-3: collect raw SKU tokens that fail catalog matching
 
   for (const rawLine of lines) {
     const line = String(rawLine || '').trim();
@@ -361,6 +362,25 @@ function parseSkuLines(lines) {
       });
     }
 
+    // P2-3: Capture raw lines whose SKU-like tokens failed catalog validation
+    if (extractedRows.length === 0) {
+      // Find all SKU-shaped tokens on this line regardless of validation outcome
+      const rawSkuTokens = (String(line).toUpperCase().match(/\b[A-Z][A-Z0-9]{3,8}(?:-[A-Z0-9]{2,4})?\b/g) || []);
+      for (const rawSkuToken of rawSkuTokens) {
+        const cleaned = cleanBaseSKU(rawSkuToken);
+        // Only record if it looks like it could be a part number (has digits) but didn't validate
+        if (cleaned && /\d/.test(cleaned) && !isValidHpeSKU(cleaned)) {
+          unmatchedSkus.push({
+            rawLine: line,
+            rawSku: rawSkuToken,
+            reason: 'NO_CATALOG_MATCH',
+            confidence: 0.0
+          });
+          break; // one entry per line to avoid flooding
+        }
+      }
+    }
+
     // Accumulate items into itemMap
     for (const item of extractedRows) {
       if (isGlobalItem(item, currentMultiplier)) item.quantityScope = 'global';
@@ -407,7 +427,8 @@ function parseSkuLines(lines) {
     clusters,
     ocrError,
     ocrNotice,
-    unresolvedRequirements
+    unresolvedRequirements,
+    unmatchedSkus
   };
 }
 

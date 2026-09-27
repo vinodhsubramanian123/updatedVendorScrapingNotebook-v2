@@ -17,6 +17,42 @@ const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Check if a SKU is visible in the portal under the default ambient temperature (30°C).
+ * Returns false if the SKU is gated behind an AMBIENT_GATE or TDP_GATE condition
+ * in the Catalog_Rules.json for this chassis.
+ * Returns true if no conditional visibility rule exists (assume visible).
+ * @param {string} sku - Product number to check
+ * @param {string} catalogDir - Path to the catalog directory for this chassis
+ * @returns {{ isVisible: boolean, conditionType: string|null, thresholdDegC: number|null }}
+ */
+function isSkuVisibleAtDefaultAmbient(sku, catalogDir) {
+  if (!sku || !catalogDir) return { isVisible: true, conditionType: null, thresholdDegC: null };
+
+  try {
+    const conditionalSkusPath = require('path').join(catalogDir, 'raw_data', 'conditional_skus.json');
+    if (!require('fs').existsSync(conditionalSkusPath)) {
+      return { isVisible: true, conditionType: null, thresholdDegC: null };
+    }
+    const conditionalData = JSON.parse(require('fs').readFileSync(conditionalSkusPath, 'utf-8'));
+    const cleanSku = require('../catalog/sku').cleanBaseSKU(sku);
+    const match = (conditionalData.skus || []).find(s =>
+      require('../catalog/sku').cleanBaseSKU(s.sku) === cleanSku
+    );
+    if (!match) return { isVisible: true, conditionType: null, thresholdDegC: null };
+    // SKU is in the conditional list — it's hidden at default ambient
+    return {
+      isVisible: false,
+      conditionType: match.conditionType || 'AMBIENT_GATE',
+      thresholdDegC: match.thresholdDegC || null,
+      operator: match.operator || 'lte',
+      evidence: match.evidence || 'Conditional SKU — hidden at default portal ambient temperature'
+    };
+  } catch (_) {
+    return { isVisible: true, conditionType: null, thresholdDegC: null };
+  }
+}
+
 let cachedChassisMap = null;
 function getChassisMap() {
   if (!cachedChassisMap) {
@@ -554,6 +590,24 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
           });
           replacementsCount += 1;
           replacedSkus.push({ from: p.sku, to: trouble.alternativeSku });
+
+          // Check if the substitute is visible at default portal ambient (INV-P2-1)
+          const catalogDir = chassisInfo?.catalogDir || null;
+          const visibility = isSkuVisibleAtDefaultAmbient(trouble.alternativeSku, catalogDir);
+          if (!visibility.isVisible) {
+            // Mark the rank as PORTAL_CONDITIONAL — not directly orderable at default ambient
+            trouble.portalConditionalSkus = trouble.portalConditionalSkus || [];
+            trouble.portalConditionalSkus.push({
+              sku: trouble.alternativeSku,
+              conditionType: visibility.conditionType,
+              thresholdDegC: visibility.thresholdDegC,
+              operator: visibility.operator,
+              note: `This SKU requires non-default portal ambient (${visibility.operator} ${visibility.thresholdDegC}°C) — portal verification mandatory before quoting`
+            });
+            if (!trouble.portalValidationStatus || trouble.portalValidationStatus === 'PASS') {
+              trouble.portalValidationStatus = 'PORTAL_CONDITIONAL';
+            }
+          }
         }
       } else {
         nextParts.push(p);
@@ -627,7 +681,8 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
 module.exports = {
   identifyTroublesomeSkus,
   buildLeastDeltaCandidate,
-  findBestAlternativeInCatalog
+  findBestAlternativeInCatalog,
+  isSkuVisibleAtDefaultAmbient
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

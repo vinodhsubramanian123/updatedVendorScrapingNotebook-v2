@@ -1713,5 +1713,21 @@
     "formFactor": "1U",
     "baseSku": "R7R97A",
     "productId": "SN3600B_FC"
+  },
+  "kit_routing": {
+    "matchers": [
+      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl380a", "kitKey": "ProLiant_DL380a_Gen12" },
+      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl145", "kitKey": "ProLiant_DL145_Gen11" },
+      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen11" },
+      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl580", "kitKey": "ProLiant_DL580_Gen12" },
+      { "familyPattern": "synergy", "genPattern": "gen12", "modelPattern": "*", "kitKey": "Synergy_Gen12" },
+      { "familyPattern": "synergy", "genPattern": "*", "modelPattern": "*", "kitKey": "Synergy_General" },
+      { "familyPattern": "alletra", "genPattern": "*", "modelPattern": "*", "kitKey": "Alletra_Storage" },
+      { "familyPattern": "storeever", "genPattern": "*", "modelPattern": "*", "kitKey": "StoreEver_Tape" },
+      { "familyPattern": "cray", "genPattern": "*", "modelPattern": "*", "kitKey": "Cray_General" },
+      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "*", "kitKey": "ProLiant_Gen12" },
+      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "*", "kitKey": "ProLiant_Gen11" },
+      { "familyPattern": "*", "genPattern": "*", "modelPattern": "*", "kitKey": "DEFAULT" }
+    ]
   }
 }
