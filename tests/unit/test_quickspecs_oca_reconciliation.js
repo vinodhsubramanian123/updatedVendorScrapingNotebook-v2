@@ -144,5 +144,5 @@ test('QuickSpecsRecon — Throws when no catalog JSON found', () => {
 // ── Cleanup ──────────────────────────────────────────────────────────────────
 test('QuickSpecsRecon — Cleanup temp directory', () => {
   fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-  assert.ok(true, 'Temp directory cleaned');
+  assert.strictEqual(fs.existsSync(TEMP_DIR), false, 'Temp directory was not completely cleaned');
 });

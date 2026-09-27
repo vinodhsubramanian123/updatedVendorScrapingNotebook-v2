@@ -49,7 +49,9 @@ The engine is certified cross-platform across **Linux Mint / Ubuntu**, **Windows
 | **Python (>=3.10)** | `sudo apt-get install -y python3 python3-pip` | `winget install Python.Python.3.12` | `brew install python@3.11` (or system python3) |
 | **Google Chrome** | `wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i ...` | Standard installer (`C:\Program Files\Google\Chrome`) | `brew install --cask google-chrome` (`/Applications/Google Chrome.app`) |
 | **CLI Tools (`uv`)** | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` | `brew install uv` (or `curl -LsSf https://astral.sh/uv/install.sh \| sh`) |
-| **NotebookLM & Graphify** | `uv tool install notebooklm-mcp-cli && uv tool install "graphifyy[mcp]"` | `uv tool install notebooklm-mcp-cli` & `uv tool install "graphifyy[mcp]"` | `uv tool install notebooklm-mcp-cli` & `uv tool install "graphifyy[mcp]"` |
+| **NotebookLM & Graphify** | `uv tool install notebooklm-mcp-cli && uv tool install graphifyy` | `uv tool install notebooklm-mcp-cli` & `uv tool install graphifyy` | `uv tool install notebooklm-mcp-cli` & `uv tool install graphifyy` |
+
+> 💡 **CLI Tool Note**: Always install `graphifyy` (without `[mcp]`). `graphifyy` ships pre-compiled wheels providing both `graphify` and `graphify-mcp` executables, avoiding C/OpenSSL compilation issues on older OSes like macOS 12 Monterey or minimal Linux containers without `libssl-dev`.
 
 ---
 
@@ -65,7 +67,7 @@ When switching to any laptop (Linux Mint, Windows, or MacBook Air):
    ```
 
 2. **Download `antigravity_migration_bundle.zip`:**
-   Download the bundle from [Google Drive](https://drive.google.com/file/d/1R3joG9HkIT0BgHvzjqvC38CHS5-wVFkg/view?usp=sharing) and place it in `~/Downloads` (or project root).
+   Download the bundle from Google Drive (or generated via `npm run bundle:env`) and place it in `~/Downloads` (or project root).
 
 3. **Run the autonomous restorer:**
    ```bash
@@ -79,22 +81,34 @@ When switching to any laptop (Linux Mint, Windows, or MacBook Air):
 - 📓 **Google NotebookLM Session**: Restores active session cookies and `auth.json` to `~/.notebooklm-mcp-cli/` so all 35+ `gemini-notebook-mcp` tools connect immediately without re-authenticating in a browser.
 - 🧠 **Master Knowledge Registry & Brain State**: Syncs `master_knowledge_registry.json`, price trails, and quarantined deltas into `outputs/history/`.
 - ⚙️ **Machine-Accurate MCP Configuration**: Dynamically generates `~/.gemini/config/mcp_config.json`, discovering Antigravity built-in extensions (`data-agent-kit`, `notebooks`, `visualization`) and resolving `notebooklm-mcp` and `graphify-mcp` across `~/.local/bin`, `/opt/homebrew/bin`, and `/usr/local/bin`.
-- 🌐 **Headless Browser Setup**: Automatically runs `npx playwright install chromium`.
-- 🛡️ **Autonomous Health Certification**: Runs `npm run guardrail:check` and certifies all 7 enterprise guardrails pass 100%.
+- 🌐 **Browser Setup**: Installs Playwright Chromium (or gracefully binds to system Google Chrome on macOS Monterey).
+- 🐍 **Python CLI Tools**: Ensures `nlm` and `graphify` are installed and reachable.
+- 📊 **Google ADC & Drive/Sheets Check**: Verifies Google Cloud tokens and scopes, alerting if refresh is needed.
+- 🏗️ **Dashboard Build Check**: Verifies `npm run build` succeeds with 0 warnings/errors on host OS.
+- 🛡️ **Autonomous Health Certification**: Runs `npm run guardrail:check` certifying all 8 enterprise guardrails pass 100%.
+
+#### 📦 Creating a Migration Bundle Before Switching Machines:
+```bash
+# Packages all active tokens, ADC, and history into ~/Downloads/antigravity_migration_bundle.zip
+npm run bundle:env
+```
 
 ---
 
 #### 3. Post-Migration Verification & Certification Commands
 
-Run these two commands on the new machine to verify 100% health:
+Run these commands on the new machine to verify 100% health:
 ```bash
-# 1. Verify all 7 system guardrails (Gemini rotator, NotebookLM MCP, physical aspects, atomic FS)
+# 1. Verify all 8 system guardrails (Gemini rotator, NotebookLM MCP, Google ADC, physical aspects, atomic FS)
 npm run guardrail:check
 
-# 2. Run the complete isolated test matrix (all unit, chaos, and integration suites)
+# 2. Verify Google Drive / Sheets token readiness
+npm run auth:check
+
+# 3. Run the complete isolated test matrix (all unit, chaos, and integration suites)
 npm test
 ```
-**Expected Outcome**: 7/7 Guardrails PASS, 162/162 Test Suites PASS (100.0%).
+**Expected Outcome**: 8/8 Guardrails PASS, Google ADC & Drive VALID, 162/162 Test Suites PASS (100.0%).
 
 ## 🚀 Quick Start
 

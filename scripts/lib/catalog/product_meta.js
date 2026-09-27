@@ -301,6 +301,7 @@ module.exports = {
   parseProductMeta,
   classifyComponentRole,
   synthesizeSubcategoryName,
+  isBaseChassis,
   DEFAULT_ROLE_MAPPINGS,
   SUBCATEGORY_SYNTHESIS_RULES
 };

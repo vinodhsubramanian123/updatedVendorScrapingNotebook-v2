@@ -11,6 +11,7 @@ const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
 const http = require('http');
+const { launchPlaywrightChromium } = require('../../scripts/lib/scraper/browser_launcher.js');
 
 const PORT = process.env.PORT || 3000;
 const SERVER_URL = process.env.SERVER_URL || `http://127.0.0.1:${PORT}`;
@@ -51,7 +52,7 @@ async function runTest() {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 }
   });
@@ -192,7 +193,8 @@ async function runTest() {
               await evalResultLocator.waitFor({ state: 'visible', timeout: 25000 });
               successes.push('Evaluation finished and results rendered on modal');
             } catch (e) {
-              smells.push('Evaluation result selector wait timed out');
+              // Gap 3 fix: evaluation timeout is a hard failure, not a soft smell
+              gaps.push('Evaluation result rendering timed out — possible ERR_EMPTY_BOQ or backend failure');
             }
 
             // Close the modal cleanly via Esc or close button
@@ -252,6 +254,13 @@ async function runTest() {
   if (consoleErrors.length === 0) console.log('   • 0 Console Errors!');
   else consoleErrors.forEach(e => console.log(`   • ${e}`));
   console.log('================================================================\n');
+
+  // Gap 3 fix: Hard-fail the test if gaps were detected — no more false greens
+  if (gaps.length > 0) {
+    console.error(`\n❌ TEST FAILED: ${gaps.length} gap(s) detected. See report above.`);
+    return false;
+  }
+  return true;
 }
 
 // Hard wall-clock timeout: must exit within 55s to satisfy the 60s test-runner limit.
@@ -268,12 +277,13 @@ const hardTimer = setTimeout(() => {
 hardTimer.unref(); // Do not keep the event loop alive solely because of this timer
 
 runTest()
-  .then(() => {
+  .then((passed) => {
     clearTimeout(hardTimer);
-    process.exit(0);
+    process.exit(passed ? 0 : 1);
   })
   .catch(err => {
     clearTimeout(hardTimer);
     console.error('Unhandled test error:', err);
     process.exit(1);
   });
+

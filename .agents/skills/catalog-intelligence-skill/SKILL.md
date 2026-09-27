@@ -21,7 +21,7 @@ This skill guides the agent in querying, analyzing, and explaining catalog updat
 - **Deduplication Invariant (`INV-1`)**: Same-day reruns deduplicate by `date` only using a priority table; ghost duplicate entries are forbidden.
 
 ### 2. Resolving SKU Prices
-- Always query prices via `getHistoricalSkuPrice(sku, targetDir)` from [`scripts/lib/catalog/sku_versioning.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/catalog/sku_versioning.js).
+- Always query prices via `getHistoricalSkuPrice(sku, targetDir)` from [`scripts/lib/catalog/sku_versioning.js`](../../scripts/lib/catalog/sku_versioning.js).
 - Never use hardcoded price dictionaries or fabricated mock numbers (`INV-33`).
 - If a price is unavailable, flag as `(INCOMPLETE — N SKU(s) unresolved)` rather than fabricating a $0.00 total.
 

@@ -8,6 +8,7 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 
 const SERVER_URL = 'http://127.0.0.1:3000';
 const CUSTOMER_BOQ = path.resolve(__dirname, '..', 'HP Opportunity- DL380_5 Servers.xlsx');
@@ -35,7 +36,7 @@ async function runAudit() {
     screenshotsCaptured: []
   };
 
-  const browser = await chromium.launch({
+  const browser = await launchPlaywrightChromium(chromium, {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });

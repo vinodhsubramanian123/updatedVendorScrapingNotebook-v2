@@ -316,13 +316,20 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
 
   if (existingIdx >= 0) {
     const existing = list[existingIdx];
+    const newCount = (Number(existing.observationCount) || 1) + 1;
+    const baseScore = Number(existing.confidenceScore || delta.confidenceScore || 0.70);
+    // Reinforce confidence slightly with repeated observations while respecting citation ceiling (< 0.85)
+    const reinforcedScore = Math.min(0.84, Number((baseScore + 0.01 * Math.log2(newCount)).toFixed(2)));
+
     list[existingIdx] = {
       ...existing,
       ...record,
       quarantineId: existing.quarantineId || record.quarantineId,
       firstSeenAt: existing.firstSeenAt || existing.quarantinedAt || now,
       lastSeenAt: now,
-      observationCount: (Number(existing.observationCount) || 1) + 1,
+      observationCount: newCount,
+      confidenceScore: reinforcedScore,
+      candidateForReview: newCount >= 5,
       quarantineReasons: [...new Set([...(existing.quarantineReasons || []), ...reasons])]
     };
   } else {

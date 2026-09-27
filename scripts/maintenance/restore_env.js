@@ -379,13 +379,13 @@ function configureMcpServers(extractedDir, sys) {
 }
 
 // 9. Install Playwright Headless Browser
-function setupPlaywright() {
-  info(`Ensuring Playwright Chromium binary is installed for E2E tests...`);
+function setupPlaywright(sys) {
+  info(`Ensuring Playwright browser support across platforms...`);
   try {
-    execSync('npx playwright install chromium', { cwd: PROJECT_ROOT, stdio: 'inherit' });
-    success(`Playwright Chromium browser installed.`);
+    execSync('node scripts/maintenance/setup_browsers.js', { cwd: PROJECT_ROOT, stdio: 'inherit' });
+    success(`Playwright headless browser verified and ready.`);
   } catch (err) {
-    warn(`Playwright install warning: ${err.message}. Tests may run with system Chrome.`);
+    warn(`Playwright browser setup warning: ${err.message}. Tests will run with system Chrome/Edge.`);
   }
 }
 
@@ -413,29 +413,84 @@ function verifyPythonCliTools(sys) {
   const hasUv = hasCmd('uv');
   if (hasUv) {
     info(`Found 'uv'. Auto-installing missing CLI tools via uv tool...`);
-    if (!hasNlm) execSync('uv tool install notebooklm-mcp-cli', { stdio: 'inherit' });
-    if (!hasGraphify) execSync('uv tool install "graphifyy[mcp]"', { stdio: 'inherit' });
+    if (!hasNlm) {
+      try {
+        execSync('uv tool install notebooklm-mcp-cli', { stdio: 'inherit' });
+      } catch (err) {
+        warn(`uv install of notebooklm-mcp-cli failed: ${err.message}`);
+      }
+    }
+    if (!hasGraphify) {
+      try {
+        execSync('uv tool install graphifyy', { stdio: 'inherit' });
+      } catch (_) {
+        try {
+          execSync('uv tool install "graphifyy[mcp]"', { stdio: 'inherit' });
+        } catch (err) {
+          warn(`uv install of graphifyy failed: ${err.message}`);
+        }
+      }
+    }
   } else {
     info(`Checking pip / python3...`);
     try {
       if (!hasNlm) execSync('python3 -m pip install notebooklm-mcp-cli --quiet', { stdio: 'inherit' });
-      if (!hasGraphify) execSync('python3 -m pip install "graphifyy[mcp]" --quiet', { stdio: 'inherit' });
+      if (!hasGraphify) execSync('python3 -m pip install graphifyy --quiet', { stdio: 'inherit' });
     } catch (_) {
-      warn(`Please ensure 'pip install notebooklm-mcp-cli "graphifyy[mcp]"' or 'uv tool install "graphifyy[mcp]"' is run.`);
+      warn(`Please ensure 'pip install notebooklm-mcp-cli graphifyy' or 'uv tool install graphifyy' is run.`);
     }
   }
 }
 
-// 11. Run System Health Heartbeat
+// Ensure node_modules exists
+function ensureDependencies() {
+  const nodeModulesDir = path.join(PROJECT_ROOT, 'node_modules');
+  if (!fs.existsSync(nodeModulesDir)) {
+    info(`Installing repository node dependencies (npm install)...`);
+    execSync('npm install', { cwd: PROJECT_ROOT, stdio: 'inherit' });
+    success(`Installed node dependencies.`);
+  }
+}
+
+// 11. Verify Google Drive / Sheets Authentication Health
+async function verifyGoogleDriveAccess() {
+  info(`Verifying Google Drive & Sheets ADC authentication health...`);
+  try {
+    const { checkGoogleAuth } = require('../services/google_sheets_service.js');
+    const authStatus = await checkGoogleAuth();
+    if (authStatus.authenticated && authStatus.tokenValid) {
+      success(`Google Cloud ADC & Drive/Sheets access verified (${authStatus.activeAccount || 'Active'}).`);
+    } else {
+      warn(`Google Drive/Sheets token needs refresh: ${authStatus.error || 'Token expired'}`);
+      console.log(`   👉 Run 'npm run auth:drive' to refresh Google tokens via autonomous browser login.`);
+    }
+  } catch (err) {
+    warn(`Google Drive check note: ${err.message}`);
+  }
+}
+
+// 12. Verify Dashboard Production Build
+function verifyDashboardBuild() {
+  info(`Verifying dashboard production build on host OS...`);
+  try {
+    execSync('npm run build', { cwd: PROJECT_ROOT, stdio: 'inherit' });
+    success(`Dashboard production bundle built successfully with 0 errors.`);
+  } catch (err) {
+    warn(`Dashboard build warning: ${err.message}. Run 'npm run build' to inspect.`);
+  }
+}
+
+// 13. Run System Health Heartbeat
 function runVerification() {
-  banner('VERIFYING ENTERPRISE GUARDRAILS');
+  banner('VERIFYING ENTERPRISE GUARDRAILS (8 CHECKS)');
   try {
     execSync('node scripts/maintenance/guardrail_health_check.js', { cwd: PROJECT_ROOT, stdio: 'inherit' });
     banner('🎉 ENVIRONMENT RESTORATION 100% COMPLETE & VERIFIED');
     console.log('You can now start development or evaluate customer BOQs immediately:');
     console.log('  👉 npm run dashboard  (Launches Express + Vite + Listener)');
     console.log('  👉 npm test           (Runs complete test matrix)');
-    console.log('  👉 npm run status     (Displays live portfolio observability)\n');
+    console.log('  👉 npm run status     (Displays live portfolio observability)');
+    console.log('  👉 npm run auth:check (Checks Google Drive / Sheets access)\n');
   } catch (_) {
     warn(`Guardrail check completed with warnings. Check output above.`);
   }
@@ -445,6 +500,8 @@ function runVerification() {
 async function main() {
   banner('ANTIGRAVITY AUTONOMOUS ENVIRONMENT RESTORER');
   const sys = detectSystem();
+  ensureDependencies();
+
   const bundlePath = discoverBundle();
   const extractedDir = extractBundle(bundlePath, sys);
 
@@ -453,8 +510,10 @@ async function main() {
   restoreNotebookLmAuth(extractedDir, sys);
   restoreHistory(extractedDir);
   configureMcpServers(extractedDir, sys);
-  setupPlaywright();
+  setupPlaywright(sys);
   verifyPythonCliTools(sys);
+  await verifyGoogleDriveAccess();
+  verifyDashboardBuild();
   runVerification();
 }
 

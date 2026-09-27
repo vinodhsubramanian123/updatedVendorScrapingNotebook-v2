@@ -38,13 +38,13 @@ test('updateScrapedRegistry', async (t) => {
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
     assert.match(writtenContent, /# Master Scraped HPE Product Catalogs Registry/);
-    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \*\*0\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
   });
 
   await t.test('appends to existing file if entry is not present', (t2) => {
     t2.mock.method(fs, 'existsSync', (p) => true);
     t2.mock.method(fs, 'readFileSync', (p, enc) => {
-      return `# Master Scraped HPE Product Catalogs Registry\n\n## Scraped Product Catalogs\n\n| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Excel | JSON | PDF | Output Folder |\n| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |\n`;
+      return `# Master Scraped HPE Product Catalogs Registry\n\n## Scraped Product Catalogs\n\n| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Learned Rules | Excel | JSON | PDF | Output Folder |\n| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n`;
     });
 
     const info = {
@@ -58,16 +58,16 @@ test('updateScrapedRegistry', async (t) => {
     updateScrapedRegistry(info);
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
-    assert.match(writtenContent, /\| 2023-10-27 \| OCA Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*15\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| Advisory \(No QS Link\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| OCA Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*15\*\* \| \*\*0\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| Advisory \(No QS Link\) \| `outputs\/test\/` \|/);
   });
 
   await t.test('updates existing row if outputDir matches', (t2) => {
     t2.mock.method(fs, 'existsSync', (p) => true);
 
     const existingContent = `# Master Scraped HPE Product Catalogs Registry\n\n` +
-      `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Excel | JSON | PDF | Output Folder |\n` +
-      `| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |\n` +
-      `| 2023-10-26 | Old Solution | OldFam | Gen10 | \`DL360\` | **10** | [old.xlsx](old.xlsx) | [old.json](old.json) | Advisory (No QS Link) | \`outputs/test/\` |\n`;
+      `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Learned Rules | Excel | JSON | PDF | Output Folder |\n` +
+      `| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n` +
+      `| 2023-10-26 | Old Solution | OldFam | Gen10 | \`DL360\` | **10** | **0** | [old.xlsx](old.xlsx) | [old.json](old.json) | Advisory (No QS Link) | \`outputs/test/\` |\n`;
 
     t2.mock.method(fs, 'readFileSync', (p, enc) => existingContent);
 
@@ -75,6 +75,6 @@ test('updateScrapedRegistry', async (t) => {
 
     assert.strictEqual(writtenPath, REGISTRY_PATH);
     assert.doesNotMatch(writtenContent, /Old Solution/);
-    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
+    assert.match(writtenContent, /\| 2023-10-27 \| Test Solution \| ProLiant \| Gen11 \| `DL380` \| \*\*42\*\* \| \*\*0\*\* \| \[catalog\.xlsx\]\((?:outputs\/)?test\/catalog\.xlsx\) \| \[catalog\.json\]\((?:outputs\/)?test\/catalog\.json\) \| \[PDF\]\((?:outputs\/)?test\/advisory\.pdf\) \| `outputs\/test\/` \|/);
   });
 });

@@ -1201,6 +1201,23 @@ But that is **web glassmorphism / frosted-glass approximation**, not official Ap
 
 **Important:** `prefers-reduced-transparency` has uneven browser support; test it. Always provide enough contrast even without blur.
 
+**End of appendices.** Install commands above are reality anchors. The Apple Liquid Glass skeleton is a labeled approximation, not an Apple-issued package. For canonical docs per design system, consult the system's official docs (links in Section 2 plus Appendix B).
+
 ---
 
-**End of appendices.** Install commands above are reality anchors. The Apple Liquid Glass skeleton is a labeled approximation, not an Apple-issued package. For canonical docs per design system, consult the system's official docs (links in Section 2 plus Appendix B).
+## Appendix D: Modular Workflow & Step Architecture (INV-88)
+
+To make adding any main workflow step or sub-step seamless, extensible, and clean:
+1. **Data-Driven Step Registry**: Workflow steps MUST NOT be hard-coded into JSX markup. Define them in a central, typed schema object with:
+   - `id`, `stageNumber`, `phase`, `title`, `subtitle`, `icon`, `badge`
+   - `durationSec` / `durationMs`
+   - `substeps`: Array of sub-step definitions with `id`, `title`, `description`, `evalCriteria`
+   - `statusDerivation(state)`: Pure function computing `READY | RUNNING | COMPLETED | WARNING | FAILED`
+   - `metrics(state)`: Pure function extracting dynamic badges/stats
+   - `action`: Modal target, API trigger, or deep-link navigation
+2. **Substep Hierarchy & Nesting**:
+   - Every parent step can contain an arbitrary list of nested sub-steps.
+   - Sub-steps maintain their own progress tracking (`0% -> 100%`, `substepIndex`), allowing real-time granular progress indication without changing parent component logic.
+3. **Decoupled View Presentation**:
+   - Separate Workflow State / Orchestrator Engine from the Rendering Components (Macro View, Timeline Stepper, Step Simulator, Micro Badges).
+

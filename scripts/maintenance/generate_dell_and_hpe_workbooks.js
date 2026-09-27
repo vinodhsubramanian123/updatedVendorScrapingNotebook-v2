@@ -10,6 +10,7 @@
 const XLSX = require('xlsx-js-style');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 // Common styles
 const headerStyle = {
@@ -186,7 +187,7 @@ function generateDellWorkbook() {
   XLSX.writeFile(wb, filePath);
   console.log('Successfully wrote Dell Excel to:', filePath);
 
-  const downloadsPath = 'C:/Users/latha/Downloads/Dell_PowerEdge_R770_H200_BOQ.xlsx';
+  const downloadsPath = path.join(os.homedir(), 'Downloads', 'Dell_PowerEdge_R770_H200_BOQ.xlsx');
   try {
     fs.copyFileSync(filePath, downloadsPath);
     console.log('Successfully copied to Downloads:', downloadsPath);
@@ -511,8 +512,8 @@ function generateHpeWorkbook() {
 
   // Write to Downloads with fallback
   const downloadsPaths = [
-    'C:/Users/latha/Downloads/HPE_DL380_Gen12_H200_Equivalent_BOQ_v3.xlsx',
-    'C:/Users/latha/Downloads/HPE_DL380_Gen12_H200_Equivalent_BOQ.xlsx'
+    path.join(os.homedir(), 'Downloads', 'HPE_DL380_Gen12_H200_Equivalent_BOQ_v3.xlsx'),
+    path.join(os.homedir(), 'Downloads', 'HPE_DL380_Gen12_H200_Equivalent_BOQ.xlsx')
   ];
 
   for (const dp of downloadsPaths) {

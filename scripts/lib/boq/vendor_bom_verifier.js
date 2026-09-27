@@ -148,8 +148,13 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir) {
   const quarantinedObservations = [];
   const observationErrors = [];
   if (hasDiscrepancies) {
+    const { isBaseChassis } = require('../catalog/product_meta.js');
     discrepancies.addedByVendor.forEach(added => {
       try {
+        // Base CTO server chassis is the container anchor, not an option dependency to learn
+        if (isBaseChassis(added.description || '')) {
+          return;
+        }
         const feedbackMsg = `Vendor Partner Portal auto-inserted SKU ${added.sku} (Qty ${added.quantity}): ${added.description}`;
         const observation = processPortalFeedback(feedbackMsg, chassisDir);
         if (observation.governanceStatus === 'QUARANTINED') quarantinedObservations.push(observation.quarantineId);

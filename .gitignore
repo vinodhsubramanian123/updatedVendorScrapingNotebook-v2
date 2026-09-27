@@ -83,6 +83,7 @@ Desktop.ini
 # ── Ephemeral runtime files ──────────────────────────────────────────
 dashboard.pid
 .env
+*.zip
 .jules/
 .chrome_sso_profile/
 graphify-out/

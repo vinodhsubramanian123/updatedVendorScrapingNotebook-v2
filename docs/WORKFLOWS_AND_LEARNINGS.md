@@ -822,7 +822,8 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - Enterprise RFP spreadsheets commonly begin with administrative lead sheets ("Cover Page", "Terms & Conditions", "Audit Summary", "Readme", "Instructions") before the actual hardware list sheet.
   - Blindly reading `wb.SheetNames[0]` in `multi_cluster_splitter.js` caused parser crashes and empty hardware lists.
 - **Remediation**:
-  - Implemented `isNonBomSheet` keyword filtering against administrative sheet names (`audit`, `architecture`, `terms`, `notes`, `readme`, `compliance`, `matrix`, `instructions`, `cover`), automatically locating the primary BOM data sheet.
+  - Extracted canonical `isNonBomSheet(sheetName)` and `isBomSheet(sheetName)` functions into `scripts/lib/boq/boq_parser.js` as the single source of truth (INV-63). Both `boq_evaluator.js` and `multi_cluster_splitter.js` import and use these — eliminating the previous divergent inline keyword lists.
+  - Uses word-boundary matching with underscore/hyphen normalization to prevent substring collisions (e.g. `spec` inside `aspects`). BOM keywords take priority over non-BOM keywords for hybrid sheet names like "Rank 1 Summary".
 
 ---
 

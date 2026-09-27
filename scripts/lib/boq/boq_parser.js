@@ -17,6 +17,92 @@ const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('../catal
 const { isGlobalItem } = require('./configuration_context');
 
 /**
+ * Canonical non-BOM sheet filter keywords (INV-63).
+ * Single source of truth — consumed by boq_evaluator.js and multi_cluster_splitter.js.
+ * These keywords identify administrative, diagnostic, or metadata sheets that should
+ * NEVER be parsed as hardware BOM data.
+ */
+const NON_BOM_KEYWORDS = [
+  // Documentation / diagnostic sheets
+  'audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix',
+  // System output / generated sheets
+  'messages', 'message', 'advice', 'log', 'logs', 'error', 'errors', 'validation',
+  // Cover / instruction pages
+  'instructions', 'cover', 'overview',
+  // Executive / summary sheets (our own generated workbooks include these)
+  'summary', 'executive', 'aspect',
+  // Changelog / revision tracking
+  'changelog', 'revision', 'history'
+];
+
+/**
+ * Canonical BOM-priority sheet keywords (INV-63).
+ * Sheets matching these keywords are prioritized as the primary BOM data source.
+ */
+const BOM_KEYWORDS = [
+  // Standard BOM / quote terminology
+  'bom', 'quote', 'boq', 'tender', 'hardware', 'parts',
+  // Our own Rank output sheets
+  'rank',
+  // OCA / vendor configuration exports
+  'config', 'configuration',
+  // Domain-partitioned tender sheets
+  'server', 'compute', 'storage', 'networking',
+  // Partner / vendor pricing sheets
+  'pricing', 'line item',
+  // RFP / spec responses
+  'spec', 'specification',
+  // Bill of materials (full phrase)
+  'bill of material'
+];
+
+/**
+ * Check if a keyword matches as a whole word within a lowercased string.
+ * Prevents substring collisions (e.g. 'spec' matching inside 'aspects').
+ * @param {string} lower - Lowercased sheet name
+ * @param {string} kw - Keyword to match
+ * @returns {boolean}
+ */
+function matchesKeyword(lower, kw) {
+  if (lower === kw) return true;
+  // Multi-word keywords use simple includes (e.g. 'bill of material', 'line item')
+  if (kw.includes(' ')) return lower.includes(kw);
+  // Normalize underscores and hyphens to spaces so word boundaries work correctly
+  // (e.g. 'boq_items' becomes 'boq items', allowing \bboq\b to match)
+  const normalized = lower.replace(/[_-]/g, ' ');
+  const regex = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
+  return regex.test(normalized);
+}
+
+/**
+ * Determine if a sheet name represents a non-BOM administrative/documentation sheet.
+ * Uses the canonical NON_BOM_KEYWORDS list (INV-63).
+ *
+ * @param {string} sheetName - The worksheet name
+ * @returns {boolean} True if the sheet should be excluded from BOM parsing
+ */
+function isNonBomSheet(sheetName) {
+  if (!sheetName || typeof sheetName !== 'string') return true;
+  const lower = sheetName.toLowerCase().trim();
+  // If it matches a BOM keyword, it's NOT a non-BOM sheet (BOM takes priority)
+  if (BOM_KEYWORDS.some(kw => matchesKeyword(lower, kw))) return false;
+  return NON_BOM_KEYWORDS.some(kw => matchesKeyword(lower, kw));
+}
+
+/**
+ * Determine if a sheet name is a likely BOM/quote data sheet.
+ * Uses the canonical BOM_KEYWORDS list (INV-63).
+ *
+ * @param {string} sheetName - The worksheet name
+ * @returns {boolean} True if the sheet is a likely BOM data source
+ */
+function isBomSheet(sheetName) {
+  if (!sheetName || typeof sheetName !== 'string') return false;
+  const lower = sheetName.toLowerCase().trim();
+  return BOM_KEYWORDS.some(kw => matchesKeyword(lower, kw));
+}
+
+/**
  * Parse an array of text lines, extracting and consolidating valid HPE SKU items.
  * Handles chassis/node multipliers, structured CSV/TSV columns, option suffixes (0D1/B19), and quantity detection.
  *
@@ -434,5 +520,9 @@ function parseSkuLines(lines) {
 
 module.exports = {
   parseSkuLines,
-  extractSuspectedPartTokens
+  extractSuspectedPartTokens,
+  isNonBomSheet,
+  isBomSheet,
+  NON_BOM_KEYWORDS,
+  BOM_KEYWORDS
 };

@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
+const { launchPlaywrightChromium } = require('../../scripts/lib/scraper/browser_launcher.js');
 
 const PORT = process.env.PORT || 3000;
 const SERVER_URL = `http://127.0.0.1:${PORT}`;
@@ -52,7 +53,7 @@ async function runE2ETest() {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
 

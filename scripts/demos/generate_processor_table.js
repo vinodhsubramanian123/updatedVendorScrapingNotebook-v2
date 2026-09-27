@@ -1,7 +1,9 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { chromium } = require('playwright');
+const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 
 const processors = [
   // Excellent (Immediate Channel Stock)
@@ -131,14 +133,17 @@ ${rowsHtml}
 </html>`;
 
 (async () => {
-  const artifactDir = '/home/vinodh/.gemini/antigravity-ide/brain/21301c73-cf9f-4047-bbce-8304bb330c8b';
+  const artifactDir = path.join(os.homedir(), '.gemini', 'antigravity-ide', 'brain');
+  if (!fs.existsSync(artifactDir)) {
+    fs.mkdirSync(artifactDir, { recursive: true });
+  }
   const htmlPath = path.join(artifactDir, 'intel_xeon_6_series.html');
   const pngPath = path.join(artifactDir, 'intel_xeon_6_series_processors.png');
   
   fs.writeFileSync(htmlPath, htmlContent, 'utf8');
   console.log('Wrote HTML to:', htmlPath);
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const page = await browser.newPage({ viewport: { width: 1320, height: 1650 } });
   await page.goto('file://' + htmlPath);
   await page.waitForTimeout(600);

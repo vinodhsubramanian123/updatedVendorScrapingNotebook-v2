@@ -12,13 +12,52 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
 
 /**
+ * Maximum entries per telemetry history array before FIFO eviction (Gap 5 fix).
+ * Prevents unbounded file growth. Each array caps independently.
+ */
+const MAX_TELEMETRY_ENTRIES = {
+  history: 100,
+  learnedDeltas: 50,
+  notebookConsultations: 50,
+  cleansingAuditLogs: 50,
+  ocrAuditLogs: 50,
+  exportHistory: 100,
+  reconciliationHistory: 100,
+  guardrailHistory: 50
+};
+
+/**
+ * FIFO-prune all telemetry history arrays to their configured max size.
+ * Called on load to retroactively trim oversized files from previous runs.
+ * @param {object} data - Telemetry payload (mutated in place)
+ * @returns {boolean} True if any pruning occurred
+ */
+function pruneTelemetry(data) {
+  let pruned = false;
+  for (const [key, max] of Object.entries(MAX_TELEMETRY_ENTRIES)) {
+    if (Array.isArray(data[key]) && data[key].length > max) {
+      data[key] = data[key].slice(0, max);
+      pruned = true;
+    }
+  }
+  return pruned;
+}
+
+/**
  * Read existing telemetry data or initialize default telemetry object.
+ * Applies FIFO pruning on load to cap unbounded growth (Gap 5).
  * @returns {object} Telemetry payload
  */
 function loadTelemetry() {
   if (fs.existsSync(TELEMETRY_FILE)) {
     try {
-      return JSON.parse(fs.readFileSync(TELEMETRY_FILE, 'utf-8'));
+      const data = JSON.parse(fs.readFileSync(TELEMETRY_FILE, 'utf-8'));
+      // Retroactive FIFO pruning on load (Gap 5 fix)
+      if (pruneTelemetry(data)) {
+        data.lastUpdated = new Date().toISOString();
+        safeWriteJsonAtomic(TELEMETRY_FILE, data);
+      }
+      return data;
     } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'telemetry.js', _); }
   }
   return {
@@ -114,14 +153,14 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     warningsCount: (evalResults.warnings || []).length,
     missingDependenciesCount: (evalResults.missingDependencies || []).length,
     graphRulesEvaluated: graph.totalRulesEvaluated || 33,
-    graphWholeSolutionValid: graph.isWholeSolutionValid !== false,
+    graphWholeSolutionValid: graph.isWholeSolutionValid === true,
     stageBreakdown,
     domainMap,
     ragFallbackUsed: evalResults.ragFallbackUsed || false,
     notebookLmMode: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.source) || (evalResults.ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'NOTEBOOK_LM_CLOUD'),
     notebookLmSourcesUsed: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.sourcesUsed) || [],
     notebookLmCitationsCount: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.citationsCount) || 0,
-    cloudGroundingConfirmed: evalResults.notebookLmStatus ? evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' : !evalResults.ragFallbackUsed,
+    cloudGroundingConfirmed: Boolean(evalResults.notebookLmStatus && evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' && !evalResults.ragFallbackUsed),
     groundingIntegrity: evalResults.notebookLmStatus?.isCloudGrounded ? '100%_CLOUD_GROUNDED' : (evalResults.ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES'),
     silentFallbackDetected: Boolean(evalResults.ragFallbackUsed && !evalResults.notebookLmStatus?.diagnostic),
     // Learning loop sync status for this run
@@ -508,6 +547,8 @@ function recordGuardrailTelemetry(guardrailResult, chassisId = 'Unknown_Chassis'
 
 module.exports = {
   loadTelemetry,
+  pruneTelemetry,
+  MAX_TELEMETRY_ENTRIES,
   recordEvaluationTelemetry,
   recordFeedbackTelemetry,
   recordNotebookConsultationTelemetry,

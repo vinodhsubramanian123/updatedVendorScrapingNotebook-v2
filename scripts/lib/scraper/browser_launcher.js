@@ -177,9 +177,52 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
   }
 }
 
+/**
+ * Launch Playwright Chromium or system Chrome with cross-platform fallback.
+ * Works seamlessly on macOS Monterey (Darwin <= 21), Linux, and Windows.
+ * @param {any} chromium - Playwright chromium module
+ * @param {object} [options={}] - Browser launch options
+ * @returns {Promise<any>}
+ */
+async function launchPlaywrightChromium(chromium, options = {}) {
+  try {
+    return await chromium.launch(options);
+  } catch (err) {
+    // Tier 1: Try built-in 'chrome' channel (official Google Chrome on macOS, Linux, and Windows)
+    try {
+      return await chromium.launch({ ...options, channel: 'chrome' });
+    } catch (_) {}
+
+    // Tier 2: Try built-in 'msedge' channel (pre-installed on Windows 10/11)
+    if (process.platform === 'win32') {
+      try {
+        return await chromium.launch({ ...options, channel: 'msedge' });
+      } catch (_) {}
+    }
+
+    // Tier 3: Try resolving specific system binary path
+    const chromeBin = findChromeExecutable();
+    if (chromeBin && (chromeBin.includes('/') || chromeBin.includes('\\')) && fs.existsSync(chromeBin)) {
+      try {
+        return await chromium.launch({ ...options, executablePath: chromeBin });
+      } catch (_) {}
+    }
+
+    throw new Error(
+      `Failed to launch browser across all methods (Playwright Chromium, system Chrome, Edge).\n` +
+      `Original error: ${err.message}\n` +
+      `Remediation:\n` +
+      `  - Linux / Windows / Modern macOS: Run 'npx playwright install chromium'\n` +
+      `  - macOS Monterey: Ensure Google Chrome is installed in /Applications/Google Chrome.app\n`
+    );
+  }
+}
+
 module.exports = {
   isCdpAlive,
   findChromeExecutable,
   ensureChromeBrowserRunning,
+  launchPlaywrightChromium,
   PROFILE_DIR
 };
+

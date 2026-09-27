@@ -9,13 +9,17 @@ const path = require('path');
 const fs = require('fs');
 
 const { spawn } = require('child_process');
-const http = require('http');
+const os = require('os');
+const { launchPlaywrightChromium } = require('../../scripts/lib/scraper/browser_launcher.js');
 
 const PORT = process.env.PORT || 3000;
 const SERVER_URL = process.env.SERVER_URL || `http://127.0.0.1:${PORT}`;
-const CUSTOMER_BOQ_PATH = fs.existsSync('/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx')
-  ? '/home/vinodh/vendorNotebookSolution/HP Opportunity- DL380_5 Servers.xlsx'
-  : path.join(__dirname, '..', 'fixtures', 'samples', 'HP Opportunity- DL380_5 Servers.xlsx');
+const candidateBoqRoot = path.join(__dirname, '..', '..', 'HP Opportunity- DL380_5 Servers.xlsx');
+const candidateBoqHome = path.join(os.homedir(), 'HP Opportunity- DL380_5 Servers.xlsx');
+const candidateBoqFixture = path.join(__dirname, '..', 'fixtures', 'samples', 'HP Opportunity- DL380_5 Servers.xlsx');
+const CUSTOMER_BOQ_PATH = fs.existsSync(candidateBoqRoot)
+  ? candidateBoqRoot
+  : (fs.existsSync(candidateBoqHome) ? candidateBoqHome : candidateBoqFixture);
 
 function isServerRunning(url) {
   return new Promise(resolve => {
@@ -52,7 +56,7 @@ async function runCustomerBoqFlow() {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();
 

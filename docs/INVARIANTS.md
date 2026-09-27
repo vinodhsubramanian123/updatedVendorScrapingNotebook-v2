@@ -334,8 +334,12 @@ The system leverages Google Jules for background code review, test generation, a
     - The engine MUST NEVER use loose prefix checks like `.startsWith('90')` on raw SKU strings, which cause false-positive EOL flags on standard production hardware SKUs that begin with the digits "90".
 
 54. **Enterprise Tender Multi-Cluster Sheet Preprocessing & Documentation Filtering Protocol (`INV-63`)**:
-    - Enterprise tender workbooks frequently lead with non-BOM documentation sheets preceding the actual hardware list (e.g. "Cover Page", "Terms & Conditions", "Audit Summary", "Compliance Matrix", "Instructions", "Readme").
-    - `multi_cluster_splitter.js` MUST NOT blindly parse `wb.SheetNames[0]`. It MUST filter candidate sheets using non-BOM keywords (`audit`, `architecture`, `terms`, `notes`, `readme`, `compliance`, `matrix`, `instructions`, `cover`) to locate the primary BOM data sheet dynamically.
+    - Enterprise tender workbooks frequently lead with non-BOM documentation sheets preceding the actual hardware list (e.g. "Cover Page", "Terms & Conditions", "Audit Summary", "Compliance Matrix", "Instructions", "Readme", "Executive Summary").
+    - The canonical `isNonBomSheet(sheetName)` and `isBomSheet(sheetName)` functions in `scripts/lib/boq/boq_parser.js` are the **single source of truth** for sheet classification. Both `boq_evaluator.js` and `multi_cluster_splitter.js` MUST import and use these canonical functions — never inline keyword lists.
+    - **BOM keywords take priority**: If a sheet name matches both a BOM keyword and a non-BOM keyword (e.g. "Rank 1 Summary"), the BOM keyword wins and the sheet is parsed as data.
+    - **Word-boundary matching**: Keywords match as whole words only (with underscore/hyphen normalization) to prevent substring collisions (e.g. `spec` must not match inside `aspects`).
+    - Non-BOM keywords: `audit`, `architecture`, `terms`, `notes`, `readme`, `compliance`, `matrix`, `messages`, `message`, `advice`, `log`, `logs`, `error`, `errors`, `validation`, `instructions`, `cover`, `overview`, `summary`, `executive`, `aspect`, `changelog`, `revision`, `history`.
+    - BOM-priority keywords: `bom`, `quote`, `boq`, `tender`, `hardware`, `parts`, `rank`, `config`, `configuration`, `server`, `compute`, `storage`, `networking`, `pricing`, `line item`, `spec`, `specification`, `bill of material`.
 
 55. **Frontend Canonical Product Taxonomy & Invariant INV-36 Adherence (`INV-64`)**:
     - All frontend hooks, selector components, and API routes (`useCatalogs.js`, `ChassisSelector.jsx`, `App.jsx`, `dashboard/routes/evaluation.cjs`) MUST standardize on canonical generation model directories (e.g. `'DL380_Gen12'`) per Invariant INV-36.

@@ -24,15 +24,20 @@ const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
 
+const os = require('os');
+const { launchPlaywrightChromium } = require('../../scripts/lib/scraper/browser_launcher.js');
+
 const PORT = process.env.PORT || 3000;
 const SERVER_URL = `http://127.0.0.1:${PORT}`;
 
-const BOQ_DOWNLOADS_PATH = fs.existsSync('/home/vinodh/Downloads/DOC-20260821-WA0000.xlsx')
-  ? '/home/vinodh/Downloads/DOC-20260821-WA0000.xlsx'
+const candidateBoq = path.join(os.homedir(), 'Downloads', 'DOC-20260821-WA0000.xlsx');
+const BOQ_DOWNLOADS_PATH = fs.existsSync(candidateBoq)
+  ? candidateBoq
   : path.join(__dirname, '../fixtures', 'samples', 'DOC-20260821-WA0000_Customer_BOQ.xlsx');
 
-const VENDOR_BOM_DOWNLOADS_PATH = fs.existsSync('/home/vinodh/Downloads/DL380_Gen12_22-server_Xeon_6730P-2-5GHz_32-core_transceivers_64Gb_5155272299-01.xlsx')
-  ? '/home/vinodh/Downloads/DL380_Gen12_22-server_Xeon_6730P-2-5GHz_32-core_transceivers_64Gb_5155272299-01.xlsx'
+const candidateVendorBom = path.join(os.homedir(), 'Downloads', 'DL380_Gen12_22-server_Xeon_6730P-2-5GHz_32-core_transceivers_64Gb_5155272299-01.xlsx');
+const VENDOR_BOM_DOWNLOADS_PATH = fs.existsSync(candidateVendorBom)
+  ? candidateVendorBom
   : path.join(__dirname, '../fixtures', 'samples', 'DL380_Gen12_22-server_Vendor_BOM.xlsx');
 
 const SCREENSHOT_DIR = path.join(__dirname, '../..', 'outputs', 'history', 'screenshots_e2e');
@@ -78,7 +83,7 @@ async function runE2ETest() {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
   }
 
-  const browser = await chromium.launch({
+  const browser = await launchPlaywrightChromium(chromium, {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });

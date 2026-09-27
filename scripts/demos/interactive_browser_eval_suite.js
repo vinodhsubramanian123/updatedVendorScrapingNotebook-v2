@@ -11,6 +11,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const SERVER_URL = 'http://127.0.0.1:3000';
@@ -20,7 +21,7 @@ async function runBrowserEvalSuite() {
   console.log('🌐 EXECUTING FULL INTERACTIVE BROWSER UI/UX & WORKFLOW AUDIT');
   console.log('================================================================\n');
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
 

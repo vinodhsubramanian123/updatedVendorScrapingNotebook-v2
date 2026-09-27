@@ -20,7 +20,7 @@ const { cleanBaseSKU } = require('../catalog/sku.js');
 const { getMandatorySkusForChassis, DEFAULT_MANDATORY_SKUS } = require('../catalog/catalog_rules.js');
 const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('../conflict/conflict_graph.js');
 const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
-const { parseSkuLines } = require('./boq_parser.js');
+const { parseSkuLines, isNonBomSheet, isBomSheet } = require('./boq_parser.js');
 const { resolveRequirementIntent } = require('./requirement_intent_resolver.js');
 
 let _cachedChassisMap = null;
@@ -101,22 +101,14 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
         throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
       }
     } else {
-      // Prioritize dedicated BOM/Quote sheets if present
-      const bomKeywords = ['bom', 'quote', 'boq', 'tender', 'hardware', 'parts'];
-      const preferredSheet = workbook.SheetNames.find(name => {
-        const lower = name.toLowerCase();
-        return bomKeywords.some(kw => lower === kw || lower.includes(kw));
-      });
+      // Prioritize dedicated BOM/Quote sheets if present (INV-63 canonical filter)
+      const preferredSheet = workbook.SheetNames.find(name => isBomSheet(name));
 
       if (preferredSheet) {
         sheetNames = [preferredSheet];
       } else {
-        // Skip non-BOM documentation / diagnostic sheets (Audit, Messages, Errors, Architecture, Compliance)
-        const nonBomKeywords = ['audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix', 'messages', 'message', 'advice', 'log', 'logs', 'error', 'errors', 'validation'];
-        const candidateSheets = workbook.SheetNames.filter(name => {
-          const lower = name.toLowerCase();
-          return !nonBomKeywords.some(kw => lower.includes(kw));
-        });
+        // Skip non-BOM documentation / diagnostic sheets using canonical filter (INV-63)
+        const candidateSheets = workbook.SheetNames.filter(name => !isNonBomSheet(name));
         sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
       }
     }

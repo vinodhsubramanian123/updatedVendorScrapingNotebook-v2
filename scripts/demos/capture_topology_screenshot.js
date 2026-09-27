@@ -10,13 +10,15 @@ const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
 const http = require('http');
+const os = require('os');
+const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 
 const PORT = 3000;
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const SERVER_URL = `http://127.0.0.1:${PORT}`;
 const BOQ_FILE = path.join(PROJECT_ROOT, 'HP Opportunity- DL380_5 Servers.xlsx');
 const OUTPUT_IMG = path.join(PROJECT_ROOT, 'outputs', 'history', 'visual_boq_topology_screenshot.png');
-const ARTIFACTS_DIR = '/home/vinodh/.gemini/antigravity-ide/brain/8064941a-87d2-4f88-9126-5f0e45bda912';
+const ARTIFACTS_DIR = path.join(os.homedir(), '.gemini', 'antigravity-ide', 'brain');
 
 function isServerRunning(url) {
   return new Promise(resolve => {
@@ -44,7 +46,7 @@ async function capture() {
     }
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchPlaywrightChromium(chromium, { headless: true });
   const context = await browser.newContext({ viewport: { width: 1600, height: 1100 } });
   const page = await context.newPage();
 

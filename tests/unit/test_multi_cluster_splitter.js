@@ -14,9 +14,15 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { extractRawItemsFromWorkbook, analyzeAndPartitionClusters, splitAndWriteClusterWorkbooks } = require('../../scripts/lib/boq/multi_cluster_splitter.js');
 
-const SAMPLE_BOQ = '/home/vinodh/Downloads/GID-RFQS-HPE-2026-006.xlsx';
+const candidateBoqs = [
+  path.join(os.homedir(), 'Downloads', 'GID-RFQS-HPE-2026-006.xlsx'),
+  path.join(__dirname, '..', 'fixtures', 'samples', 'GID-RFQS-HPE-2026-006.xlsx'),
+  path.join(__dirname, '..', 'fixtures', 'GID-RFQS-HPE-2026-006.xlsx')
+];
+const SAMPLE_BOQ = candidateBoqs.find(p => fs.existsSync(p)) || candidateBoqs[0];
 
 describe('Multi-Cluster BOQ Splitter Engine', () => {
   it('should extract all raw items from customer tender spreadsheet', () => {

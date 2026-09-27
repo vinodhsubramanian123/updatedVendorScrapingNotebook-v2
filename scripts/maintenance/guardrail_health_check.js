@@ -2,7 +2,7 @@
 /**
  * scripts/maintenance/guardrail_health_check.js — Automated 7-Guardrail System Heartbeat
  *
- * Fast (<3s) non-destructive pre-flight diagnostic certifying all 7 enterprise guardrails:
+ * Fast (<3s) non-destructive pre-flight diagnostic certifying all 8 enterprise guardrails:
  * 1. NotebookLM MCP / CLI Connection & OAuth Profile Health
  * 2. Gemini Multi-Key Rotation & API Readiness
  * 3. Deterministic Physical Aspect Math Engine
@@ -10,6 +10,7 @@
  * 5. Atomic File System Compatibility & Concurrency Safety (INV-16)
  * 6. Dynamic Chassis Map & CTO Variant Integrity
  * 7. Telemetry Ledger Observability & Grounding Integrity Tracking
+ * 8. Google Cloud ADC & Autonomous Drive/Sheets Token Health
  */
 
 const fs = require('fs');
@@ -184,8 +185,26 @@ async function runHealthHeartbeat() {
     recordCheck(7, 'Telemetry Ledger Observability & Grounding Audit Tracking', 'FAIL', { error: err.message });
   }
 
+  // Guardrail 8: Google Cloud ADC & Autonomous Drive/Sheets Token Health
+  try {
+    const { checkGoogleAuth } = require('../services/google_sheets_service.js');
+    const authStatus = await checkGoogleAuth();
+    if (authStatus.authenticated && authStatus.tokenValid) {
+      recordCheck(8, 'Google Cloud ADC & Drive/Sheets Access', 'PASS', {
+        account: authStatus.activeAccount,
+        daysRemaining: authStatus.daysRemaining
+      });
+    } else {
+      recordCheck(8, 'Google Cloud ADC & Drive/Sheets Access', 'FAIL', {
+        error: authStatus.error || 'OAuth token invalid or expired. Run "npm run auth:drive" to refresh.'
+      });
+    }
+  } catch (err) {
+    recordCheck(8, 'Google Cloud ADC & Drive/Sheets Access', 'FAIL', { error: err.message });
+  }
+
   console.log('\n===============================================================');
-  console.log(`📊 HEARTBEAT SUMMARY: ${RESULTS.passedCount}/7 PASSED (${RESULTS.overallStatus})`);
+  console.log(`📊 HEARTBEAT SUMMARY: ${RESULTS.passedCount}/8 PASSED (${RESULTS.overallStatus})`);
   console.log('===============================================================\n');
 
   if (RESULTS.failedCount > 0) {

@@ -24,6 +24,7 @@ try {
 
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { detectChassisVariant, getChassisMap } = require('../catalog/catalog_discovery.js');
+const { isNonBomSheet } = require('./boq_parser.js');
 
 /**
  * Robustly find a valid HPE SKU within text with multiple tokens.
@@ -48,11 +49,8 @@ function findValidSkuInText(text) {
  */
 function extractRawItemsFromWorkbook(filePath) {
   const wb = XLSX.readFile(filePath);
-  const nonBomKeywords = ['audit', 'architecture', 'terms', 'notes', 'readme', 'compliance', 'matrix', 'instructions', 'cover'];
-  const candidateSheets = wb.SheetNames.filter(name => {
-    const lower = name.toLowerCase();
-    return !nonBomKeywords.some(kw => lower.includes(kw));
-  });
+  // Use canonical non-BOM sheet filter (INV-63)
+  const candidateSheets = wb.SheetNames.filter(name => !isNonBomSheet(name));
   const sheetName = candidateSheets.length > 0 ? candidateSheets[0] : wb.SheetNames[0];
   const sheet = wb.Sheets[sheetName];
   const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
