@@ -61,7 +61,10 @@ sequenceDiagram
 
 ---
 
-## 4. Current State & Certified Products (Last Audited: 2026-09-12)
+## 4. Current State & Certified Products (Benchmark Snapshot)
+
+> [!NOTE]
+> **Dynamic Registry SSOT (`INV-2`)**: The SKU counts below reflect the historical certified benchmark snapshot (2026-09-12). Live promoted SKU counts drift with vendor portal updates and MUST ALWAYS be read dynamically from `outputs/SCRAPED_CATALOGS.md` or `catalog.json.metadata.totalUniqueSKUs` — never assumed from static documentation tables.
 
 | Product | Family | Output Prefix | Unique SKUs | Sheets | Audit | NotebookLM Sync |
 |---------|--------|---------------|-------------|--------|-------|-----------------|

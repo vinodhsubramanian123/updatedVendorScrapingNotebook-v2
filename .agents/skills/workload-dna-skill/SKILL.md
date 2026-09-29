@@ -1,6 +1,12 @@
 ---
 name: workload-dna-skill
-description: Use this skill to classify enterprise workload DNA (SAP HANA, VMware vSphere/VCF, VDI, Microsoft SQL, High-Frequency Trading, AI/LLM Inference, Big Data) and match hardware architectures to application performance requirements. Optimizes NUMA node balance, memory channel interleaving bandwidth (1DPC vs 2DPC), and arbitrates contested physical slots.
+description: >-
+  Classify enterprise workload DNA (SAP HANA, VMware vSphere/VCF, VDI, Microsoft SQL,
+  High-Frequency Trading, AI/LLM Inference, Big Data) and match hardware architectures
+  to application performance requirements. Optimizes NUMA node balance and memory channel
+  interleaving (1DPC vs 2DPC). **ALSO call when a BOQ contains contested physical slots
+  (e.g. both an OCP NIC and OCP storage controller on a 1-OCP-slot chassis) — this skill
+  arbitrates the slot collision and pivots components.**
 ---
 
 # Workload DNA Profiler & Application Sizing Matcher Skill (`workload-dna-skill`)

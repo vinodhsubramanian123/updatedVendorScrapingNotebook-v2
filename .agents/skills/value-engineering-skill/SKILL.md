@@ -9,6 +9,18 @@ description: Use this skill to evaluate post-buildability CapEx/OpEx optimizatio
 
 > **Critical Ordering Invariant**: Value engineering MUST run AFTER buildability is confirmed. Never optimize a configuration that hasn't passed the 7-aspect pre-flight checks — you'd be optimizing something that can't be built.
 
+## ⛔ Mandatory Buildability Hard Gate (INV-76)
+
+Before executing any value engineering analysis, assert that the target configuration is 100% buildable:
+
+```
+GATE-VE1: Assert eval_boq.js output contains:
+  overallBuildability === true (or buildable === true)
+  If buildability is false or missing:
+    emit [ERR_VE_ON_UNBUILDABLE: Value engineering cannot run on unbuildable configurations.]
+    Return immediately — NEVER optimize an unbuildable BOM.
+```
+
 ---
 
 ## ⚡ Trigger Conditions

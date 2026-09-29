@@ -33,6 +33,10 @@ The engine operates through 4 sequential steps:
 
 ### 1. Root-Cause Troublesome SKU Introspection (`cascading_impact_analyzer.js`)
 - Traces dependency edges backwards from injected fix kits to find the common parent SKU.
+- **Empty Result / Exit Path**: If `identifyTroublesomeSKUs()` returns an empty array:
+  - Emit: `[LEAST_DELTA: No cascading troublesome SKUs detected — Rank 1 configuration is already minimal. Standard Rank 1 is optimal.]`
+  - Record execution trace step with status `SKIPPED` and `reason: "NO_CASCADING_BLOAT"`.
+  - Do NOT generate a redundant Rank 1L that is identical to Rank 1.
 - Identifies whether the cascade is caused by:
   - `STORAGE_EXPANDER_CASCADE`: 8-port controller driving $>8$ drives.
   - `CONTESTED_OCP_SLOT_COLLISION`: OCP storage controller blocking an OCP NIC.

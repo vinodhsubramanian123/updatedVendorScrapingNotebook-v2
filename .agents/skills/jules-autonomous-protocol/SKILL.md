@@ -1,11 +1,11 @@
 ---
 name: jules-autonomous-protocol
 description: >-
-  Definitive, zero-gap autonomous Google Jules multi-agent lifecycle.
-  Covers: MCP-first tool usage, boundary task dispatch, proactive heartbeat cron,
-  two-way unblocking with plan approval, code review & diff extraction,
-  PR verification & merge, branch pruning, session archival, and new task creation.
-  This skill eliminates ALL manual human relay and ensures the agent never goes idle.
+  **Google Jules CI/CD Agent Lifecycle ONLY** — autonomous protocol for dispatching,
+  monitoring, unblocking, code reviewing, PR merging, and pruning background Jules tasks.
+  NOT for customer BOQ evaluation, presales routing, or general pipeline orchestration
+  (use boq-eval-skill or orchestrator-workflow-skill instead). INV-72: Jules is strictly
+  excluded from customer BOQ flows.
 ---
 
 # Google Jules Autonomous Multi-Agent Protocol (Definitive Edition)
@@ -341,7 +341,7 @@ call_mcp_tool(jules, list_sessions, {pageSize: 20})
 # 9. Scan for gaps → dispatch new sessions if needed (Stage 8)
 
 # 10. Re-schedule heartbeat OR declare completion
-schedule(DurationSeconds=120, TimerCondition="never",
+schedule(DurationSeconds=60, TimerCondition="never",  # 60s heartbeat per Section 4 MANDATE (F1, F9)
   Prompt="Jules Heartbeat: Full lifecycle check...")
 ```
 

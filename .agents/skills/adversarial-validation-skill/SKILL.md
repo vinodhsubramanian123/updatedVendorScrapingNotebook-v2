@@ -44,6 +44,7 @@ Every candidate BOM is audited against these 10 failure injection patterns:
 | **8** | **Memory Channel Speed Throttling & Mixing** | Mixing RDIMM with 3DS RDIMM, or mixing x4 and x8 bit-widths, degrades memory bus from 6400 MT/s to 4400 MT/s or causes boot failure. | Normalize to uniform capacity and bit-width (all x4). |
 | **9** | **-48VDC Telco Power Lug Kit Omission** | Ordering DC power supplies (`P17023-B21`) without terminal lug kits prevents physical connection to DC power distribution frames. | Inject DC Lug Kit `P36877-B21`. |
 | **10** | **OS Physical Core Multiplier License Deficit** | Windows Server and VMware vSphere are licensed per physical socket core (Windows: $\ge 16$ cores/server; VMware: $\ge 16$ cores/socket) (`INV-28`). | Calculate total socket cores (`cpuCount * coresPerCpu`) and ensure base + add-on packs cover 100% of cores. |
+| **11** | **Anti-Hallucination & Gated SKU Audit** | Conditional options (H200 GPU, ambient $\le 27^\circ\text{C}$, 2P backplane) presented without gate disclosure, or missing reasoning narrative (`INV-118`, `INV-119`). | Assert 5-step numbered reasoning (`generateEvaluationNarrative()`); flag gated SKUs explicitly as `PORTAL_CONDITIONAL` on Rank 1L. |
 
 ---
 

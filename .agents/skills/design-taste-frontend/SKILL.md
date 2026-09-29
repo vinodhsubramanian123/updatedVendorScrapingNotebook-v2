@@ -8,7 +8,23 @@ description: Anti-slop frontend skill for landing pages, portfolios, and redesig
 > Landing pages, portfolios, and redesigns. Not dashboards, not data tables, not multi-step product UI.
 > Every rule below is **contextual**. None of it fires automatically. First read the brief, then pull only what fits.
 
+## 🧭 Quick Navigation (Token-Efficient Modular Loading)
+> **Agent Guideline**: Do not read all 1,224 lines for isolated tasks. Load only the specific section needed:
+
+| Purpose / Task | Target Section |
+|---|---|
+| Brief inference & aesthetic direction | **§0 Brief Inference** & **§1 Design Systems** |
+| Typography pairings & font scale | **§2 Typography** |
+| Color palettes & contrast rules | **§3 Color System** |
+| Layout grids, whitespace & hierarchy | **§4 Layout & Composition** |
+| Micro-interactions & animations | **§5 Motion & Interaction** |
+| Asset generation, icons & imagery | **§6 Visual Assets** |
+| Accessibility & responsive bounds | **§7 Accessibility & Pre-Flight** |
+| Anti-patterns & generic templates | **§8 Anti-Patterns to Ban** |
+
 ---
+
+
 
 ## 0. BRIEF INFERENCE (Read the Room Before Anything Else)
 

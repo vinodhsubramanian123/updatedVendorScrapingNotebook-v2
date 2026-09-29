@@ -7,7 +7,20 @@ description: Plan mixed-domain hardware tenders and explicitly requested loose-c
 
 Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md`. Route by owned component role, not table title or product family. Mixed assemblies, unknown components and containment gaps remain unresolved; do not run them through server defaults.
 
+## ⛔ HALT Conditions
+
+```
+HALT-HTM1: If context.targetPlatform (or --chassis) is undefined or unambiguous profile lookup fails:
+  emit [ERR_NO_TARGET_PLATFORM] — Cannot modernize tender without an explicit target platform.
+  Do NOT infer a default model. State the target platform (e.g. 'HPE ProLiant DL380 Gen12')
+  and halt execution until specified.
+
+HALT-HTM2: If context.tables is empty or contains 0 items across all groups:
+  emit [ERR_EMPTY_TENDER_TABLES] and HALT — cannot plan fleet on empty input.
+```
+
 ## Inputs and execution
+
 
 Use `scripts/evaluators/route_query.js` with heterogeneous intent. Supply `context.tables` or a JSON `--file` containing table groups. Each group has `items`, an optional stable `id`, and an explicit `multiplier` (defaults to one). Each item needs `quantity` or `qty`. Preserve original part numbers, descriptions, prices, notes and requested quantities. Ingest Excel/PDF through the appropriate existing ingestion skill before this route; it does not read binary workbooks itself.
 

@@ -70,23 +70,24 @@ node scripts/lib/sync/knowledge_sync.js --json
 
 ---
 
-## 5. Active Target Notebook Registry (`scripts/config/notebooks.json`)
+## 5. Target Notebook Registry Resolution (`scripts/config/notebooks.json`)
 
-| Product Identifier | Product Family | Generation | Target Cloud Notebook ID | Notebook Title |
-| :--- | :--- | :--- | :--- | :--- |
-| `DL380_Gen12` / `DL380_Gen12_SFF` | ProLiant | Gen12 | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Dl 380 Spec Gen 12* |
-| `DL380_Gen11` | ProLiant | Gen11 | `d37fa851-90cb-45b7-a8e1-78488a0bc6e6` | *DL380 Gen 11* |
-| `DL380a_Gen12` | ProLiant | Gen12 | `b233ec88-4682-4164-a801-3ee6ca649dc1` | *DL380a* (Dedicated AI GPU Server) |
-| `DL145_Gen11` | ProLiant | Gen11 | `7a48061a-331a-429b-8477-7e0473491714` | *Dl145* (Edge Compute) |
-| `DL580_Gen12` | ProLiant | Gen12 | `3f5344ce-da79-4f6d-a131-f303d1e43dc3` | *DL580 Gen 12* (4-Socket Mission Critical) |
-| `SY480_Gen12` / `SY100Gb_F32_Module` | Synergy | Gen12/Gen | `49a3c69e-115f-4332-9454-c5d4f2941327` | *Synergy 12000 Frame* |
-| `Alletra_Storage_System` | Alletra | Storage | `a67629ba-3434-42ab-b465-bd6d71852198` | *HPE Alletra Storage MP QuickSpecs* |
-| `MSL3040_Tape` | StoreEver | Tape | `644020e5-42f9-4c4b-95cc-fcf82122685c` | *HPE StoreEver MSL3040 Tape Library* |
-| `GX5000_General_RACK` | Cray | General | `86c93203-6b76-439a-b7ab-33ad782e3178` | *GX5000 Supercomputing Rack* |
-| **Default Fallback** | Universal | All | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | *Default Knowledge Hub* |
+> [!IMPORTANT]
+> **Single Source of Truth (SSOT)**: The canonical mapping of product identities to cloud NotebookLM notebooks is maintained in `scripts/config/notebooks.json`. Never hardcode static UUID literals in operational scripts or agent instructions. Always resolve dynamically via `getNotebookId(chassisId)` or read directly from `scripts/config/notebooks.json`.
+
+Supported products dynamically mapped in `scripts/config/notebooks.json`:
+- `DL380_Gen12` / `DL380_Gen12_SFF` (ProLiant Gen12) → *Dl 380 Spec Gen 12*
+- `DL380_Gen11` (ProLiant Gen11) → *DL380 Gen 11*
+- `DL380a_Gen12` (ProLiant Gen12 AI Accelerator) → *DL380a* (Dedicated AI GPU Server)
+- `DL145_Gen11` (ProLiant Gen11 Edge Compute) → *Dl145*
+- `DL580_Gen12` (ProLiant Gen12 4-Socket Mission Critical) → *DL580 Gen 12*
+- `SY480_Gen12` / `SY100Gb_F32_Module` (Synergy 12000 Frame) → *Synergy 12000 Frame*
+- `Alletra_Storage_System` (Storage MP) → *HPE Alletra Storage MP QuickSpecs*
+- `MSL3040_Tape` (StoreEver Tape) → *HPE StoreEver MSL3040 Tape Library*
+- `GX5000_General_RACK` (Cray Supercomputing) → *GX5000 Supercomputing Rack*
 
 > [!NOTE]
-> **Strict Product Firewall (`INV-79` & `INV-72`)**: `DL380a_Gen12` is a distinct AI GPU architecture with its own dedicated notebook (`b233ec88-4682-4164-a801-3ee6ca649dc1`). Inquiries, catalogs, or knowledge sync operations for "DL380a" or "DL 380a" MUST NEVER route to standard `DL380_Gen12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`).
+> **Strict Product Firewall (`INV-79` & `INV-72`)**: `DL380a_Gen12` is a distinct AI GPU architecture with its own dedicated notebook. Inquiries, catalogs, or knowledge sync operations for "DL380a" or "DL 380a" MUST NEVER route to standard `DL380_Gen12`. Always check `notebooks.json` before querying.
 
 ---
 

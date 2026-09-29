@@ -1,6 +1,10 @@
 ---
 name: orchestrator-workflow-skill
-description: Macro-orchestration skill managing the 6-stage continuous learning lifecycle across scraping, knowledge sync, BOQ evaluation, Notebook RAG, HITL trial, and feedback learning.
+description: >-
+  **Macro Continuous Learning Lifecycle Orchestrator** — manages the 6-stage lifecycle
+  across scraping, knowledge sync, BOQ evaluation, Notebook RAG, HITL trial, and feedback learning.
+  Directs sub-skill delegation across the entire pipeline.
+  For Google Jules background CI/CD and PR audits, see jules-autonomous-protocol.
 ---
 
 # Orchestrator Workflow Skill — End-to-End Autonomous Lifecycle (`orchestrator-workflow-skill`)
@@ -131,8 +135,11 @@ graph TD
 | **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 14-point acceptance criteria check. |
 | **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../scripts/lib/rag/agentic_guardrail.js). |
 | **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js). |
-| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) & [`frontend-design`](../frontend-design/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
+| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
 | **Dynamic Semantic Graph** | `graphify` | Dynamic semantic graph & AST navigation: [`graphify-out/`](../../../graphify-out/). |
+| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) | Per-product-gen metadata freshness, BOQ-triggered resync, atomic commit contract: [`product_metadata_manager.js`](../../../scripts/lib/catalog/product_metadata_manager.js). |
+| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md) | CLIC Advice parsing, divergent path resolution (Rank 1A/1B), SHA-256 receipt binding (INV-107): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
+| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](../conditional-sku-discovery-skill/SKILL.md) | Full DOM walk, 8-sweep macro selector, `Catalog_Rules.json` compilation, PORTAL_CONDITIONAL flagging (INV-118/119): [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
 
 ---
 
@@ -210,7 +217,10 @@ To maximize velocity and offload heavy validation without human friction:
 
 ---
 
-## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-46`)
+## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-120`)
+
+> [!NOTE]
+> **Complete Invariant Catalog Reference**: The complete, authoritative catalog of all 120 technical invariants (INV-1 through INV-120) is maintained in [`docs/INVARIANTS.md`](../../../docs/INVARIANTS.md). The table below highlights the foundational execution invariants for fast agent reference:
 
 | Invariant ID | Title | Summary & Guardrail Contract |
 | :--- | :--- | :--- |

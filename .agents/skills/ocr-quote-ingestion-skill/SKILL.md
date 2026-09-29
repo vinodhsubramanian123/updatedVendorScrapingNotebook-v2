@@ -53,6 +53,13 @@ The OCR engine operates through 4 robust stages:
 ### 4. Direct Handoff into BOQ Evaluator
 - Emits temporary `.csv` or `.xlsx` file into `outputs/temp/ocr_extracted_{timestamp}.csv` or directly returns `items` array for in-memory evaluation.
 
+### 5. Multi-Page PDF & Table Boundary Stitching Strategy
+When customer quotes arrive as multi-page PDFs (e.g. 5–20 page tenders):
+- **Page-by-Page Extraction**: Ingest pages sequentially or in small parallel batches to prevent vision model token truncation.
+- **Repeated Header Deduplication**: Filter out repeated column headers (e.g. "Part No", "Description", "Qty") appearing at the top of each page.
+- **Subtotal & Footer Pruning**: Strip intermediate page subtotals ("Page 1 of 4", "Subtotal Carry Forward") before passing rows to `eval_boq.js` to prevent duplicate quantity accumulation (`INV-60`).
+- **Split-Row Stitching**: If a multi-line description spans a page break, stitch the text fragments before constructing the final SKU row object.
+
 ---
 
 ## 💻 CLI Commands & Direct Execution

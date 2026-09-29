@@ -1,6 +1,11 @@
 ---
 name: nlm-skill
-description: "Expert guide for the Gemini Notebook (formerly Google NotebookLM) CLI (`nlm`) and MCP server - interfaces for Gemini Notebook. Use this skill when users want to interact with Gemini Notebook programmatically, including: creating/managing notebooks, adding sources (URLs, YouTube, text, Google Drive), generating content (podcasts, reports, quizzes, flashcards, mind maps, slides, infographics, videos, data tables), conducting research, chatting with sources, or automating Gemini Notebook workflows. Triggers on mentions of \"nlm\", \"notebooklm\", \"Gemini Notebook\", \"podcast generation\", \"audio overview\", \"refactor document\", \"critique draft\", or any Gemini Notebook-related automation task."
+description: >-
+  Expert guide for Gemini Notebook (NotebookLM) CLI (`nlm`) and MCP server (`gemini-notebook-mcp`).
+  **PRESALES USAGE**: Grounded Cloud RAG queries against official vendor QuickSpecs and master
+  catalogs (see Section 'HPE Presales RAG Quality Gate').
+  **GENERAL USAGE**: Managing notebooks, sources, research, studio artifacts, podcasts.
+  Do NOT invoke for standard BOQ/RFP evaluation unless NotebookLM RAG grounding is required.
 version: "0.9.6"
 ---
 
@@ -19,6 +24,10 @@ This skill provides comprehensive guidance for using Gemini Notebook via both th
 1. **MCP Tools (Default & Primary)**: Use `call_mcp_tool` with server `gemini-notebook-mcp` (e.g. `notebook_query`, `cross_notebook_query`, `notebook_list`, `source_add`). Execute autonomously.
 2. **CLI Tools (Fallback)**: If MCP tools are unavailable, execute `nlm` commands via Bash.
 3. **Zero Human Waiting**: Run all queries and syncing operations in the background without interactive user confirmations.
+
+> 🧭 **Presales & BOQ Evaluation Fast-Path**: If you are validating an HPE server, storage, or networking configuration against QuickSpecs, **skip ahead to [HPE Presales RAG Quality Gate](#-hpe-presales-rag-quality-gate--hitl-escalation-protocol)** at line ~930. Do NOT execute general studio CLI commands or read media workflows during BOQ evaluation flows (`INV-72`).
+
+---
 
 ## Quick Reference
 

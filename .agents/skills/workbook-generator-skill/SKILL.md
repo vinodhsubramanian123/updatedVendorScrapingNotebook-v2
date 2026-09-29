@@ -30,7 +30,7 @@ Activate this skill whenever:
 
 ### 1. Standardized 7-Column Partner Portal Upload Schema (`INV-32`, `INV-37`)
 Required for direct automated reconciliation and CLIC import:
-- **Columns**: `['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`
+- **Columns**: `['Part No', 'Qty', 'Set', 'Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']`
 - **FIO Suffixes**: Internal components carry `#0D1` / `-F21` to compile cleanly inside CTO chassis containers (`INV-25`).
 - **Cluster Formatting**:
   - Each cluster starts with a clear header: `CONFIG #1: DL380 Gen12 8SFF Compute Node (16x Servers)`.

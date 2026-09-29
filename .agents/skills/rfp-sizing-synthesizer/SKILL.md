@@ -54,6 +54,10 @@ When a customer or sales engineer provides a tender wishlist without HPE part nu
   - If drive count $> 8$ on a single 8-port controller, inject SAS Expander `P48835-B21`.
 
 ### 5. GPU Accelerator Density Arbitration & Auxiliary Power (DL380a Gen12) (`INV-84`)
+
+> [!NOTE]
+> **Dynamic Catalog SKU Verification**: The part numbers in this section (`S3U30C`, `P75008-B21`, `P75005-B21`, `P74700-B21`, etc.) reflect the certified DL380a Gen12 baseline. Prior to final deliverable generation, always verify active orderability, current pricing, and lifecycle status against `outputs/ProLiant/Gen12/DL380a_Gen12/catalog.json` via `getHistoricalSkuPrice()` — accelerator options evolve with vendor releases.
+
 - **H200 NVL Parallel Sub-Path Sizing (8DW vs. 10DW)**:
   - DL380a Gen12 supports both 8DW and 10DW accelerator topologies.
   - When customer requests "max H200s", the synthesizer generates **two valid, buildable sub-paths**:

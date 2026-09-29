@@ -1,9 +1,28 @@
 ---
 name: boq-eval-skill
-description: Use this skill for validating customer BOQs, hardware lists, Excel quotes (.xlsx/.xls/.csv), or proposal tables against vendor-agnostic product specs (HPE, Cisco, Dell, Alletra, etc.) and running 7-aspect physical pre-checks. For freeform Q&A, sizing without SKUs, or BOM comparison, see presales-query-router.
+description: >-
+  **HPE-ONLY evaluation** of customer BOQs, hardware lists, and Excel quotes (.xlsx/.xls/.csv)
+  against HPE ProLiant/Synergy/Alletra/Cray/StoreEver catalogs using 7-aspect physical
+  pre-checks. For Cisco/Dell/cross-vendor work, use cross-vendor-transformation-skill.
+  For freeform Q&A or sizing without SKUs, use presales-query-router.
+  **ALWAYS called via presales-query-router first for intent classification — do NOT invoke
+  directly from raw user input without routing.**
 ---
 
-# Pre-Flight BOQ Evaluation & Closed-Loop Feedback Skill (`boq-eval-skill`)
+## 📖 NAVIGATION GUIDE (Token-Efficient Loading)
+> Load only the section you need to avoid guardrail overload on this large skill.
+
+| Task | Read |
+|---|---|
+| Evaluating a customer BOQ file | Sections 0–3 (entry points, stages, 7 aspects) |
+| RAG grounding & NotebookLM queries | Section 4 |
+| Invariant reference (INV-24 to INV-111) | Section 5 — jump to specific INV number |
+| Cognitive mandates & audit rules | Section 6 |
+| Support defaults & domain routing | Section 7 (learnings at end of file) |
+
+---
+
+
 
 > 🧭 **Intent Routing Notice**: If the user's input is a freeform conversational question without a file or table, or an unstructured RFP requirement without SKUs, consult [`presales-query-router`](../presales-query-router/SKILL.md) to select the optimal track. Use this skill when concrete part numbers (SKUs) or tabular tender documents are provided.
 

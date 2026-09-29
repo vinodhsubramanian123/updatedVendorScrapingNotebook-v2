@@ -41,7 +41,7 @@ Every output, regardless of track, MUST pass these universal checks:
 | B10 | **Cluster Sizing (if multi-node)** | If tender has >1 server node, output includes: Total RU, Rack Count, Peak kW, Rail Kit coverage (`INV-29`) | 🟡 WARN |
 | B11 | **Delta Report Present** | Output contains "Customer Asked → We Produced" delta comparison showing additions, removals, and substitutions | 🟡 WARN |
 | B12 | **Mandatory Accessories Injected** | Secondary heatsink, fan kits, controller cables, and enablement kits are present where required by INV-26 through INV-31 | 🔴 BLOCK |
-| B13 | **Adversarial Self-Validation Clean** | Output passes automated adversarial sanity checks against enterprise edge-case failure modes (zero compromise on quality) | 🔴 BLOCK |
+| B13 | **Adversarial Self-Validation Clean** | Output passes automated adversarial sanity checks against 10 enterprise edge-case failure modes (`INV-106`). If adversarial check is `undefined`, unexecuted, or `NOT_RUN`, evaluates strictly as 🔴 BLOCK (never defaults to pass) with `[VALIDATION_B13: Adversarial check not executed — OUTPUT BLOCKED]` | 🔴 BLOCK |
 | B14 | **HITL Escalation on Uncertainty** | Any low-confidence RAG answer, conflicting source, or unmapped SKU was escalated to human operator with options | 🔴 BLOCK |
 | B15 | **Proactive Presales Consultation Gate** | Output proactively presents the key qualifying questions (workload type, electrical facility, networking fabric) and next-step actions without waiting for user prompts | 🟡 WARN |
 | B16 | **Google Drive & ADC Health Gate** | If cloud deliverable or Google Drive upload requested, verify token validity and lifespan via `ensureGoogleAuthValid({ autoHeal: true })` before presentation. If expired or expiring within 48h, auto-heal autonomously (`npm run auth:heal` / `npm run auth:drive`) without human in loop (`INV-90`) | 🔴 BLOCK |
@@ -126,6 +126,7 @@ When a BLOCK criterion fails, the agent SHOULD attempt these remediation strateg
 | B2 (No Ranked Solution) | Relax constraints and attempt Rank 5 (Budget Minimized) synthesis |
 | R1 (Unresolved Roles) | Query NotebookLM for the missing component category to find candidate SKUs |
 | B12 (Missing Accessories) | Re-run conflict graph with expanded mandatory SKU injection |
+| B13 (Adversarial Check Missing) | Execute adversarial test harness via `node scripts/evaluators/adversarial_agent.js` and re-validate |
 
 ---
 

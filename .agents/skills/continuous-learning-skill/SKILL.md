@@ -49,6 +49,10 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
      - `advisories`: Mixing rules, isolation gates.
   3. The `strategy_synthesizer.js` and `least_delta_combinator.js` actively apply the rule to produce candidate ranks.
 
+- ⛔ **Reachability Fail-Hard Gate**: If `verifyKnowledgeReachability()` returns `reachableCount === 0` for a product profile that has known KnowledgeDeltas recorded on disk:
+  - Emit: `[ERR_KNOWLEDGE_UNREACHABLE: Learned rules exist in catalog_deltas.json but active_knowledge_router found 0 reachable rules for chassis <id>.]`
+  - Action: Halt evaluation until reachability is restored via `npm run knowledge:rebuild` or taxonomy fix. Never proceed with evaluation in a degraded state where learned rules are silently dropped.
+
 ### 3. Chronological Evidence Logging
 - Every production BOQ evaluation must export:
   - `outputs/history/evidence_logs/evidence_log_{traceId}.json` (machine-readable shared state across all 9 phases).

@@ -52,6 +52,8 @@ For any cluster where $N > 1$:
 4. **High-Line 200V–240V Utility Power Derating**:
    If estimated node power draw exceeds $800\text{W}$, alert the customer to derate below 110V/120V circuits and mandate high-line 200V–240V C13/C14 PDUs (`INV-29`).
 5. **Rail Kit Coverage**:
+   Ensure exactly 1 Easy Install Rail Kit (e.g. `P52341-B21` / `P52343-B21`) is allocated per server node; flag as an omission if rail kit count is less than the total chassis node count (`INV-29`).
+
 ### 4. Universal Infrastructure Decomposition Archetypes (Server, Storage & Networking)
 
 The multi-cluster decomposition engine operates generically across all enterprise domains with zero hardcoding of cluster counts, multipliers, or quantities:

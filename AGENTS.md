@@ -66,6 +66,9 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scripts/lib/boq/commercial_remarks.js` |
 | **Presales Intent Classification & Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
 | **Heterogeneous Multi-Domain Tender Modernization** | [`heterogeneous-tender-modernizer`](file:///.agents/skills/heterogeneous-tender-modernizer/SKILL.md) | `scripts/lib/boq/heterogeneous_tender_modernizer.js` |
+| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](file:///.agents/skills/degraded-mode-skill/SKILL.md) | `scripts/lib/catalog/product_metadata_manager.js` |
+| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
+| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
 | **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
 
 ### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)

@@ -1,6 +1,10 @@
 ---
 name: catalog-intelligence-skill
-description: Use this skill to explore catalog pricing history, price trends, SKU lifecycle state changes (Obsolete, Direct Ship, 90-Day Warning, EOL), and newly added hardware options across product generations.
+description: >-
+  Explore catalog pricing history, price trends, SKU lifecycle state changes (Obsolete,
+  Direct Ship, 90-Day Warning, EOL), and newly added hardware options across product generations.
+  **Call THIS skill (not boq-eval-skill) for standalone lifecycle status, price history,
+  or OB/EOL questions about specific SKUs outside the context of a full BOQ evaluation.**
 ---
 
 # Catalog Intelligence, Price Trails & Lifecycle State Skill (`catalog-intelligence-skill`)

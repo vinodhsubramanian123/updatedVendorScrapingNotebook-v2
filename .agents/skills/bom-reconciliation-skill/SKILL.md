@@ -1,6 +1,12 @@
 ---
 name: bom-reconciliation-skill
-description: Use this skill for reconciling and comparing customer-requested BOQs against vendor partner quotes, verifying line-by-line part numbers, quantities, prices, substituted components, unrequested extras, and missing mandatory enablement kits.
+description: >-
+  **COMPARE two BOM documents** — reconcile a customer tender (requirements) against a
+  vendor partner quote, verifying line-by-line part numbers, quantities, prices, substituted
+  components, unrequested extras, and missing mandatory enablement kits. Produces a 4-dimension
+  audit (Direct Matches / Missing Items / Unsolicited Extras / Substitutions) and net CapEx delta.
+  DISTINCT from boq-remarks-reconciliation-skill which ANNOTATES a completed reconciliation
+  with commercial remark columns — do not confuse the two.
 ---
 
 # BOM Reconciliation & Vendor Quote Difference Analyzer (`bom-reconciliation-skill`)
@@ -9,7 +15,23 @@ When sales engineers receive both a customer's original specification and an off
 
 ---
 
-## 🔍 The 4 Reconciliation Audit Dimensions
+## ⛔ Input Gate (Run Before Reconciliation)
+
+Before beginning any reconciliation, assert both input documents contain parseable BOM rows:
+
+```
+GATE-R0: Vendor quote parse → if vendorBomRows.length === 0:
+  emit [ERR_EMPTY_VENDOR_QUOTE] and HALT — do not produce a reconciliation
+  report against an empty or unparseable vendor quote file.
+  Action: Check file format, active sheet, and header row labels.
+
+GATE-R1: Customer tender parse → if customerBomRows.length === 0:
+  emit [ERR_EMPTY_CUSTOMER_TENDER] and HALT.
+```
+
+---
+
+
 
 Every BOM comparison audits 4 distinct categories of variances:
 

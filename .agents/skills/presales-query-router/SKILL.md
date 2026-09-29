@@ -60,12 +60,12 @@ graph TD
 ### Track 1: Freeform Technical Hardware Inquiries
 - **Target**: Answering physical compatibility, maximum memory limits, GPU cooling requirements, cable routing, or slot allocation questions.
 - **Strict Model Separation & Disambiguation (`INV-98`)**:
-  - **`DL380a_Gen12` (AI Accelerator Server)**: 8DW/16SW high-density GPU server; requires dedicated captive GPU risers (`P74685-B21`), GPU Mode FIO configurations (`P75008-B21` 8DW, `P75002-B21` 4DW), and up to 8x 2400W/3200W Titanium PSUs. Uses dedicated NotebookLM notebook `DL380a` (`b233ec88-4682-4164-a801-3ee6ca649dc1`) and catalog `DL380a_Gen12_Catalog.json`.
-  - **`DL380_Gen12` (Standard Enterprise 2U)**: General compute 2U server; uses NotebookLM notebook `Dl 380 Spec Gen 12` (`1d190853-4e9c-48df-aa70-eae66c6f2c1f`) and catalog `DL380_Gen12_Catalog.json`.
-  - **`DL380_Gen11`**: Previous generation 2U server; uses NotebookLM notebook `DL380 Gen 11` (`d37fa851-90cb-45b7-a8e1-78488a0bc6e6`).
+  - **`DL380a_Gen12` (AI Accelerator Server)**: 8DW/16SW high-density GPU server; requires dedicated captive GPU risers (`P74685-B21`), GPU Mode FIO configurations (`P75008-B21` 8DW, `P75002-B21` 4DW), and up to 8x 2400W/3200W Titanium PSUs. Uses dedicated NotebookLM notebook for `DL380a` (resolved dynamically from `scripts/config/notebooks.json`) and catalog `DL380a_Gen12_Catalog.json`.
+  - **`DL380_Gen12` (Standard Enterprise 2U)**: General compute 2U server; uses NotebookLM notebook for `DL380 Gen12` (resolved dynamically from `scripts/config/notebooks.json`) and catalog `DL380_Gen12_Catalog.json`.
+  - **`DL380_Gen11`**: Previous generation 2U server; uses NotebookLM notebook for `DL380 Gen11` (resolved dynamically from `scripts/config/notebooks.json`).
   - **`DL360_Gen11` (1U Dense Compute)**: 1U flagship rack server (base chassis `P52499-B21`); requires dedicated 1U heatsinks, LP/FH riser options, and certified 1U cabling. Catalog `DL360_Gen11_Catalog.json` (619 priced SKUs).
   - **`SY480_Gen12` (Synergy Compute Blade)**: 2-socket compute module (`P68217-B21`) for HPE Synergy 12000 Frame. NEVER conflate with Synergy interconnect modules (`SY100Gb_F32_Module`).
-  - **NEVER** conflate "DL380a" with standard "DL380", or Synergy compute blades with fabric interconnects.
+  - **NEVER** conflate "DL380a" with standard "DL380", or Synergy compute blades with fabric interconnects. Notebook IDs MUST ALWAYS be resolved at runtime via `getNotebookId(chassisId)` from `scripts/config/notebooks.json` — never hardcoded as static UUID literals.
 - **Workflow**:
   1. Identify target server model (e.g. `DL380a_Gen12`, `DL380_Gen12`, `DL380_Gen11`, `DL360_Gen11`, `SY480_Gen12`, `DL145_Gen11`).
   2. Consult Cloud NotebookLM RAG via `notebook_query` (`gemini-notebook-mcp`) grounded in the official QuickSpecs PDF.
