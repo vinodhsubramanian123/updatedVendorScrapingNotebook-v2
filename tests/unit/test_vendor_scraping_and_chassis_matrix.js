@@ -17,7 +17,7 @@ const os = require('os');
 const xlsx = require('xlsx-js-style');
 
 const { generateMainSheet } = require('../../scripts/lib/catalog/catalog_formatter.js');
-const { inferVendor, routeDiscoverCandidates } = require('../../scripts/lib/scraper/vendor_portal_router.js');
+const { inferVendor, getVendorCredentials, routeDiscoverCandidates } = require('../../scripts/lib/scraper/vendor_portal_router.js');
 const { discoverDellChassisCandidates } = require('../../scripts/lib/scraper/navigate_dell.js');
 
 test('HPE Recommended column is present in TSV header and populated on every row', () => {
@@ -149,6 +149,25 @@ test('Multi-Vendor Portal Router isolates HPE, Dell, and Cisco routing', async (
   assert.equal(dellCandidates[0].vendor, 'Dell');
   assert.equal(dellCandidates[0].sku, '210-BFVR');
   assert.equal(dellCandidates[0].eligible, true);
+});
+
+test('getVendorCredentials provides distinct configurations for HPE, Dell, Cisco, and Lenovo', () => {
+  const hpe = getVendorCredentials('HPE');
+  assert.equal(hpe.vendor, 'HPE');
+  assert.ok(hpe.portalUrl.includes('partner.hpe.com'));
+  assert.equal(hpe.username, 'hpeconfig@swiftline-uae.com');
+
+  const dell = getVendorCredentials('Dell');
+  assert.equal(dell.vendor, 'Dell');
+  assert.ok(dell.portalUrl.includes('dell.com'));
+
+  const cisco = getVendorCredentials('Cisco');
+  assert.equal(cisco.vendor, 'Cisco');
+  assert.ok(cisco.portalUrl.includes('cisco.com'));
+
+  const lenovo = getVendorCredentials('Lenovo');
+  assert.equal(lenovo.vendor, 'Lenovo');
+  assert.ok(lenovo.portalUrl.includes('lenovo.com'));
 });
 
 test('Stale Google Sheet and catalog source duplicate detection logic', () => {

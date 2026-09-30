@@ -21,6 +21,12 @@ Critically, this skill formalizes the **Stale-Session Self-Healing Recovery Prot
 | **WebLogic Popup & Window Handling** | Traps on `window.open` tabs | **Dynamic CDP page target discovery across all tabs** |
 | **Recovery from Frozen State** | Requires restarting browser | **Recovers in seconds via Tab 1 Quick Links reload** |
 
+### Vendor Credential Resolution Hierarchy
+Autonomous navigators resolve portal credentials via `vendor_portal_router.getVendorCredentials(vendor)`:
+1. **Environment Override**: `HPE_PORTAL_USER` and `HPE_PORTAL_PASS` in `.env`.
+2. **Default Partner Identity**: Defaults to `hpeconfig@swiftline-uae.com` if `HPE_PORTAL_USER` is unspecified.
+3. **Chrome Profile Session**: When `HPE_PORTAL_PASS` is omitted, Chrome's persistent profile (`--user-data-dir=.chrome_sso_profile`) automatically loads saved passwords and session cookies, eliminating human MFA / interactive prompts entirely.
+
 ---
 
 ## 2. The 12-Step Autonomous Navigation Lifecycle

@@ -84,8 +84,56 @@ async function routeNavigateChassis(ws, query, options = {}) {
   }
 }
 
+/**
+ * Retrieve credentials and portal configuration for target vendor.
+ * Prioritizes environment variables with sensible fallback defaults.
+ *
+ * @param {string} [vendor] Vendor name ('HPE', 'Dell', 'Cisco', 'Lenovo')
+ * @returns {object} { vendor, portalUrl, username, password, hasCredentials }
+ */
+function getVendorCredentials(vendor = 'HPE') {
+  const norm = inferVendor('', vendor);
+  switch (norm) {
+    case 'Dell':
+      return {
+        vendor: 'Dell',
+        portalUrl: process.env.DELL_PORTAL_URL || 'https://www.dell.com/premier',
+        username: process.env.DELL_PORTAL_USER || '',
+        password: process.env.DELL_PORTAL_PASS || '',
+        hasCredentials: Boolean(process.env.DELL_PORTAL_USER)
+      };
+    case 'Cisco':
+      return {
+        vendor: 'Cisco',
+        portalUrl: process.env.CISCO_PORTAL_URL || 'https://apps.cisco.com/Commerce/',
+        username: process.env.CISCO_PORTAL_USER || '',
+        password: process.env.CISCO_PORTAL_PASS || '',
+        hasCredentials: Boolean(process.env.CISCO_PORTAL_USER)
+      };
+    case 'Lenovo':
+      return {
+        vendor: 'Lenovo',
+        portalUrl: process.env.LENOVO_PORTAL_URL || 'https://dcsc.lenovo.com/',
+        username: process.env.LENOVO_PORTAL_USER || '',
+        password: process.env.LENOVO_PORTAL_PASS || '',
+        hasCredentials: Boolean(process.env.LENOVO_PORTAL_USER)
+      };
+    case 'HPE':
+    default:
+      return {
+        vendor: 'HPE',
+        portalUrl: process.env.HPE_PORTAL_URL || 'https://partner.hpe.com/web/prp',
+        username: process.env.HPE_PORTAL_USER || 'hpeconfig@swiftline-uae.com',
+        password: process.env.HPE_PORTAL_PASS || '',
+        hasCredentials: Boolean(process.env.HPE_PORTAL_USER || 'hpeconfig@swiftline-uae.com')
+      };
+  }
+}
+
 module.exports = {
   inferVendor,
+  getVendorCredentials,
   routeDiscoverCandidates,
   routeNavigateChassis
 };
+
