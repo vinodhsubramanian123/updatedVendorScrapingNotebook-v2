@@ -23,7 +23,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../boq/generate_boq_xlsx.js');
 const { extractKnowledgeFromRagAnswer } = require('../notebook/knowledge_extractor.js');
-const { executeNotebookQuery } = require('../notebook/notebook_query_utils.js');
+const { executeNotebookQuery, getCachedRagResult, setCachedRagResult } = require('../notebook/notebook_query_utils.js');
 const logger = require('../system/pipeline_logger.js');
 const { solutionFingerprint, solutionManifest } = require('../boq/solution_evidence');
 
@@ -256,6 +256,16 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const timestamp = Date.now();
   const manifest = solutionManifest(evalResults);
   const manifestSha256 = solutionFingerprint(evalResults);
+  const cacheKey = `solution_validator:${manifestSha256}:${chassisName}`;
+
+  if (!options.bypassCache && manifestSha256) {
+    const cached = getCachedRagResult(cacheKey);
+    if (cached) {
+      logger.info('NLM_SOURCE_VALIDATOR', `Cache HIT for solution manifest ${manifestSha256.slice(0, 12)} (${chassisName}) — skipping duplicate NLM source query.`);
+      return { ...cached, isCached: true };
+    }
+  }
+
   const sourceTitle = `Solution_BOM_${chassisName}_${timestamp}`;
   const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUse NotebookLM native inline citation markers such as [1] inside the JSON citation strings, linked to official vendor sources. Plain source titles without native citations are insufficient. Do not cite the temporary candidate source as compatibility evidence.\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description, purpose: item.purpose })))}\nCandidate manifests: ${JSON.stringify(manifest)}\nExplicit support policy: ${JSON.stringify(evalResults.supportPolicy || null)}`;
 
@@ -367,7 +377,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const isRealCloudCertified = attachRes.success && !attachRes.isMock && isCloudGrounded && allPassed && sourceDetached;
   const isSimulationPassed = attachRes.success && attachRes.isMock === true && allPassed && sourceDetached;
 
-  return {
+  const result = {
     success: isRealCloudCertified,
     simulationPassed: isSimulationPassed,
     operationalStatus: isRealCloudCertified ? 'CLOUD_CERTIFIED' : (isSimulationPassed ? 'MOCK_VERIFIED' : 'UNVERIFIED'),
@@ -388,8 +398,15 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     queryPayload,
     citations,
     extractedDeltas,
-    syncStatus
+    syncStatus,
+    isCached: false
   };
+
+  if (manifestSha256 && (isRealCloudCertified || isSimulationPassed)) {
+    setCachedRagResult(cacheKey, result);
+  }
+
+  return result;
 }
 
 module.exports = {

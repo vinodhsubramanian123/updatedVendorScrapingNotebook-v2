@@ -243,3 +243,67 @@ test('SkuResolver — Invariant Equation: DC Power Lugs & Battery (Discrete Coun
   assert.strictEqual(eqBattGood.isMissing, false);
   assert.strictEqual(eqBattGood.missingBatteryCount, 0);
 });
+
+test('SkuResolver — Rejects near-discontinuation (<90 days) & obsolete candidates in favor of active replacements', () => {
+  const now = Date.now();
+  const pastDate = new Date(now - 30 * 86400000).toISOString().slice(0, 10);
+  const nearDate = new Date(now + 30 * 86400000).toISOString().slice(0, 10);
+  const futureDate = new Date(now + 365 * 86400000).toISOString().slice(0, 10);
+
+  const testCatalog = {
+    entries: [
+      {
+        parentCategory: 'Power Supplies',
+        subCategory: 'HPE Flex Slot Power Supplies',
+        skus: [
+          {
+            'Product #': '865408-B21',
+            sku: '865408-B21',
+            Description: 'HPE 500W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit',
+            listPrice: 199,
+            'Lifecycle Status': 'Active',
+            'Discontinued Date': nearDate, // 30 days remaining (< 90 days) -> Should be rejected
+            'Component Role': 'Power Supply'
+          },
+          {
+            'Product #': '865414-B21',
+            sku: '865414-B21',
+            Description: 'HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit',
+            listPrice: 249,
+            'Lifecycle Status': 'Active',
+            'Discontinued Date': futureDate, // 365 days remaining -> Eligible & preferred
+            'HPE Recommended': 'Yes',
+            'Component Role': 'Power Supply'
+          },
+          {
+            'Product #': '865428-B21',
+            sku: '865428-B21',
+            Description: 'HPE 1600W Flex Slot Platinum Power Supply Kit',
+            listPrice: 399,
+            'Lifecycle Status': 'Obsolete',
+            'Discontinued Date': pastDate, // Past date -> Rejected
+            'Component Role': 'Power Supply'
+          }
+        ]
+      }
+    ]
+  };
+
+  // 1. Attempting to resolve preferred SKU that has near-retirement (<90 days) falls back to healthy replacement
+  const resPreferredNear = resolveComponentByRole(testCatalog, {
+    role: 'Power Supply',
+    preferredSku: '865408-B21'
+  });
+  assert.strictEqual(resPreferredNear.found, true);
+  // Near-retirement SKU rejected, active long-horizon SKU selected
+  assert.strictEqual(resPreferredNear.sku, '865414-B21');
+  assert.strictEqual(resPreferredNear.price, 249);
+
+  // 2. Generic resolution by role selects active long-horizon SKU with HPE Recommended boost
+  const resGeneric = resolveComponentByRole(testCatalog, {
+    role: 'Power Supply'
+  });
+  assert.strictEqual(resGeneric.found, true);
+  assert.strictEqual(resGeneric.sku, '865414-B21');
+});
+

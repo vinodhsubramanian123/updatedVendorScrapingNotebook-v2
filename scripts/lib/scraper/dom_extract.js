@@ -250,7 +250,7 @@ async function extractHiddenElements(ws, sendCommand) {
  * @param {Array<number>} [thresholds=[35, 30, 27, 25]] Ambient °C values to probe
  * @returns {Promise<Array<{ sku: string, conditionType: string, operator: string, thresholdDegC: number, visibleAtDefaultC: boolean, evidence: string }>>}
  */
-async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 30, 27, 25]) {
+async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 30, 27, 25], captureState = null) {
   const conditionalSkus = [];
   const seen = new Set();
 
@@ -292,7 +292,8 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   }
 
   const originalValue = selectorInfo.currentValue;
-  const defaultTemp = parseFloat(originalValue) || 30;
+  const selectedText = selectorInfo.options.find(option => option.value === originalValue)?.text || '';
+  const defaultTemp = Number(selectedText.match(/\d+(?:\.\d+)?/)?.[0] || originalValue);
 
   // Snapshot the default-visible SKU set
   const defaultVisibleRes = await sendCommand(ws, 'Runtime.evaluate', {
@@ -302,6 +303,7 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   let defaultVisible = new Set();
   try { defaultVisible = new Set(JSON.parse(defaultVisibleRes.result?.value || '[]')); } catch (_) {}
 
+  try {
   for (const threshold of thresholds) {
     if (parseFloat(threshold) === defaultTemp) continue; // skip default
 
@@ -313,14 +315,16 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
     // Set ambient to threshold
     await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
-        const el = document.querySelector('select[name*="ambient"], select[id*="ambient"]');
-        if (el) { el.value = ${JSON.stringify(matchingOption.value)}; el.dispatchEvent(new Event('change', { bubbles: true })); }
+        const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+        if (!el) throw new Error('Ambient selector disappeared');
+        el.value = ${JSON.stringify(matchingOption.value)}; el.dispatchEvent(new Event('change', { bubbles: true }));
       })()`,
       returnByValue: true
     });
 
     // Wait for WebLogic re-render
     await new Promise(resolve => setTimeout(resolve, 2500));
+    if (captureState) await captureState({ conditionKey: 'ambient_temp', thresholdValue: threshold });
 
     // Snapshot newly visible SKUs
     const probeRes = await sendCommand(ws, 'Runtime.evaluate', {
@@ -348,15 +352,18 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
     }
   }
 
-  // Restore original ambient
+  } finally {
+  // Restore even after extraction or transport failures; failure propagates.
   await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"]');
-      if (el) { el.value = ${JSON.stringify(originalValue)}; el.dispatchEvent(new Event('change', { bubbles: true })); }
+      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+      if (!el) throw new Error('Ambient selector missing during restoration');
+      el.value = ${JSON.stringify(originalValue)}; el.dispatchEvent(new Event('change', { bubbles: true }));
     })()`,
     returnByValue: true
   });
   await new Promise(resolve => setTimeout(resolve, 1500));
+  }
 
   return conditionalSkus;
 }

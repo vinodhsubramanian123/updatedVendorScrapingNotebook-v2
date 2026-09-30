@@ -160,3 +160,22 @@ npm test
 ### Component-domain routing and supported coverage (2026-09-22)
 
 Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.
+
+---
+
+## 8. Catalog Diff Anomaly Guard, Chassis Options Matrix & Multi-Vendor Scaffolding (`INV-118` - `INV-121`)
+
+1. **Catalog Diff Anomaly & Anti-Corruption Guard**:
+   - `assertDiffAnomalyBounds` in `scripts/lib/catalog/checksum_diff.js` inspects incremental diffs against established catalogs ($\ge 30$ SKUs).
+   - If dropped SKUs exceed 25% of existing inventory, automatic promotion is blocked with `ANOMALOUS_DIFF_SUSPECTED_SCRAPE_FAILURE` and outputs are quarantined in `outputs/history/quarantined_diffs/` unless explicitly overridden via `--force-large-diff`.
+2. **Explicit 'HPE Recommended' Column & Binary Population**:
+   - Mandatory 'HPE Recommended' column populated with explicit `'Yes'` or `'No'` across `Catalog_SKUs.tsv`, JSON catalogs, and generated Excel workbooks (`All SKUs`, `Chassis Variants`, and dynamic category tabs).
+3. **Chassis Options Matrix (Sheet 2c)**:
+   - Evaluates Form Factor, Supported Drive Media, Default Drive Bays, Maximum Expandability, Power Envelopes, Start Dates, Discontinued Dates, and Lifecycle Status.
+4. **Server vs. Storage / Switch Topology Invariants**:
+   - Server chassis variants (e.g. DL380 Gen12 8SFF, 24SFF, 12LFF, 8EDSFF) share the common CPU/RAM/PCIe options pool under variant-conditional constraints.
+   - Storage (Alletra) and Network Switches (SN3600B) have fixed ASICs and dedicated dual-controller canisters, operating on independent physical topologies with dedicated catalogs.
+5. **Multi-Vendor Router & Scaffolding**:
+   - `scripts/lib/scraper/vendor_portal_router.js` isolates vendor portal navigation, dispatching to `navigate_oca.js` for HPE or `navigate_dell.js` for Dell Premier / OSC, ensuring multi-vendor extensibility with zero code intermixing.
+6. **Batch Multi-Product Refresh**:
+   - Run `node scripts/catalogs/ensure_catalogs.js --product DL380_Gen12,DL360_Gen11` to evaluate catalog freshness, acquire exclusive workflow leases, and execute sequential verified refreshes.

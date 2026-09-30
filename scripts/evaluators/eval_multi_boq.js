@@ -107,8 +107,15 @@ async function main() {
   }
 
   const ext = path.extname(inputFile).toLowerCase();
+  if (!OFFLINE_MODE && !process.env.CI && /\.xlsx?$/i.test(ext)) {
+    const { buildRefreshPlan, executeRefreshPlan } = require('../lib/catalog/catalog_refresh_plan.js');
+    const plan = buildRefreshPlan({ filePath: inputFile, products: chassisFlag ? [path.basename(chassisFlag)] : [] });
+    if (!plan.ready) throw new Error(`Catalog preflight unresolved: ${JSON.stringify(plan.unresolved)}`);
+    const refresh = executeRefreshPlan(plan);
+    if (!refresh.success) throw new Error(`Catalog preflight incomplete: ${JSON.stringify(refresh.results)}`);
+  }
   
-  if (ext !== '.xlsx') {
+  if (!['.xlsx', '.xls'].includes(ext)) {
     // If not Excel, it's just a single config text/json file. Run normally.
     if (!JSON_MODE) console.log(`⏩ Not a multi-sheet workbook. Spawning single evaluation...`);
     const res = await evaluateSheetParallel(inputFile, 'Default');
@@ -122,7 +129,8 @@ async function main() {
 
   // Parse Excel to find sheets
   const workbook = XLSX.readFile(inputFile);
-  let sheetNames = workbook.SheetNames;
+  let sheetNames = workbook.SheetNames.filter(name => !require('../lib/boq/boq_parser.js').isNonBomSheet(name));
+  if (!sheetNames.length) throw new Error('No BOQ sheets found');
   
   // Check for Single-Sheet Multi-Cluster Tenders (e.g. GID-RFQS-HPE-2026-006.xlsx)
   const { extractRawItemsFromWorkbook, analyzeAndPartitionClusters, splitAndWriteClusterWorkbooks } = require('../lib/boq/multi_cluster_splitter.js');
@@ -165,8 +173,13 @@ async function main() {
   const startTime = Date.now();
   
   // Spawn parallel evaluations
-  const promises = targetEvaluationFiles.map(t => evaluateSheetParallel(t.filePath, t.sheetName, t.clusterName));
-  const results = await Promise.all(promises);
+  const results = [];
+  // Bound expensive evaluator/cloud work; all products have already been refreshed once.
+  const concurrency = OFFLINE_MODE ? 2 : 1;
+  for (let offset = 0; offset < targetEvaluationFiles.length; offset += concurrency) {
+    results.push(...await Promise.all(targetEvaluationFiles.slice(offset, offset + concurrency)
+      .map(t => evaluateSheetParallel(t.filePath, t.sheetName, t.clusterName))));
+  }
 
   const durationMs = Date.now() - startTime;
 

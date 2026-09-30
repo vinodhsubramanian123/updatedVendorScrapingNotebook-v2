@@ -198,4 +198,22 @@ for (const p of products) {
 "
 ```
 
+---
+
+## 10. Ephemeral Candidate Validation, Manifest Caching & Stale Source Retirement (`INV-121`)
+
+1. **Manifest Fingerprint Caching (`manifestSha256`)**:
+   - Before attaching ephemeral solution CSVs or querying NotebookLM, compute `manifestSha256 = solutionFingerprint(evalResults)`.
+   - Check `getCachedRagResult(cacheKey)`. Identical configuration manifests return verified verdicts immediately (**0 API tokens, 0ms latency**).
+   - Valid verdicts are cached in `rag_cache.json` with a 24-hour TTL.
+
+2. **Transactional Duplicate Sheet & Stale Catalog Retirement**:
+   - `isManagedTitle` identifies all catalog source variants (`_OCA_Catalog_`, `Canonical Knowledge`, `Master Catalog`).
+   - Duplicate detection matches `s.drive_id === canonicalDriveSheetId || s.doc_id === canonicalDriveSheetId`.
+   - Stale predecessor sources are retired transactionally only after candidate readback and Canary verification succeed ($\ge 0.95$ confidence).
+   - **Protected Sources**: Official QuickSpecs PDFs (`officialSourceIds`), verified learning documents (`verifiedLearningSourceIds`), and the shared running knowledge doc (`runningKnowledgeDocId`) are strictly excluded from retirement.
+
+3. **Proactive <90-Day Discontinuation & Obsolete Filtering**:
+   - Hardware components with past discontinuation dates or $< 90$ days remaining are rejected from candidate configurations, with the resolver automatically pivoting to active modern replacements.
+
 

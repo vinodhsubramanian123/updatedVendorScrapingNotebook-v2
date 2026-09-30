@@ -2,7 +2,7 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-27T17:53:41.982Z  
+**Last Synchronized:** 2026-09-30T13:50:08.580Z  
 **Total Deduplicated Learned Rules:** 89  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
@@ -164,15 +164,15 @@ Total verified rules indexed in this build: **89**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
+| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
@@ -190,6 +190,14 @@ Total verified rules indexed in this build: **89**.
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `write-cach` | `P48918-B21` | write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21 | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |
@@ -234,14 +242,6 @@ Total verified rules indexed in this build: **89**.
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `S3U30C` | `P93055-B21` | Rule 81392332: P56072-B21 requires to be ordered with supported 8-pin GPUs. H200 NVL mandates P93055-B21 HPE GPU 16-pin  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `S3U30C` | `P51083-B21` | Rule 81394885: 1 qty 8SFF Cage + Processor above 270W + Air Cooled: H200 NVL (S3U30C) is not supported on Primary Riser  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `P76453-B21` | Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |
@@ -253,17 +253,6 @@ Total verified rules indexed in this build: **89**.
 | 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
 | 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
-
-### 5.2 Deep Audit Structural Learnings (2026-09-28)
-
-| # | Category | Learning | Impact | Evidence |
-|:--|:---------|:---------|:-------|:---------|
-| 90 | `SHEET_CLASSIFICATION` | Sheet classification keywords (`isNonBomSheet`/`isBomSheet`) MUST be canonical — maintained in a single source of truth (`boq_parser.js`). Inline keyword lists in consumers drift silently and cause evaluation failures. | Prevented divergent keyword sets in `boq_evaluator.js` vs `multi_cluster_splitter.js` | INV-63, Gap 1 |
-| 91 | `WORD_BOUNDARY_MATCHING` | Sheet name keyword matching MUST use word-boundary regex with underscore/hyphen normalization. Simple `String.includes()` causes substring collisions (e.g. `spec` matching inside `aspects`, `log` matching inside `changelog`). | Prevented "Executive Summary & Aspects" from being misclassified as a BOM sheet | Gap 2, Gap 4 |
-| 92 | `BOM_PRIORITY_OVERRIDE` | When a sheet name matches BOTH a BOM keyword and a non-BOM keyword, BOM MUST take priority. This prevents functional data sheets like "Rank 1 Summary" or "Hardware Validation" from being excluded. | Ensures our own generated Rank workbooks can be re-evaluated | Gap 2 |
-| 93 | `FALSE_GREEN_PREVENTION` | E2E tests MUST assert on evaluation OUTCOME (items parsed > 0, no FAILED workflow status), not just UI element visibility. Catching errors as soft "smells" instead of hard "gaps" masks real pipeline failures as green tests. | `test_ui_opportunity_boq.js` was reporting PASS while evaluation returned ERR_EMPTY_BOQ | Gap 3 |
-| 94 | `TELEMETRY_ROTATION` | All telemetry history arrays MUST have explicit FIFO rotation caps applied on load. Without caps, `pipeline_telemetry.json` grows unbounded (353KB+). Each array caps independently via `MAX_TELEMETRY_ENTRIES`. | Prevents disk bloat in long-running production environments | Gap 5 |
-| 95 | `EVIDENCE_LOG_HEALTH` | The test matrix MUST include evidence log health assertions that scan recent logs for pipeline crashes (all phases NOT_REACHED), stuck workflows (RUNNING status), and undocumented failures (FAILED with no gaps/errors). | Catches silent regressions that unit tests cannot detect | Gap 6 |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*

@@ -84,7 +84,8 @@ function discoverAllProductCatalogs() {
     }
 
     for (const entry of entries) {
-      if (entry.isDirectory() && !['history', 'temp', 'raw_data', 'intermittent_scraps'].includes(entry.name)) {
+      if (entry.isDirectory() && !entry.isSymbolicLink() && !['history', 'temp', 'raw_data', 'intermittent_scraps'].includes(entry.name)
+          && !/^(staging_|failed_)|_promotion_bak_/.test(entry.name)) {
         scanDir(path.join(current, entry.name));
       }
     }
@@ -97,9 +98,9 @@ function discoverAllProductCatalogs() {
 /**
  * Inspect and extract complete unique metadata for a single product catalog
  */
-function getProductGenerationMetadata(productKeyOrDir) {
-  const discovered = discoverAllProductCatalogs();
+function getProductGenerationMetadata(productKeyOrDir, discovered = discoverAllProductCatalogs()) {
   const target = discovered.find(p => 
+    path.resolve(p.outputDir) === path.resolve(productKeyOrDir) ||
     p.chassisDir.toLowerCase() === productKeyOrDir.toLowerCase() ||
     path.basename(p.catalogPath, '_Catalog.json').toLowerCase() === productKeyOrDir.toLowerCase()
   );
@@ -130,16 +131,18 @@ function getProductGenerationMetadata(productKeyOrDir) {
   }
 
   const normalized = normalizeCatalogMetadata(catalogData.metadata);
-  const freshness = auditCatalogFreshness(catalogData, { staleWarningDays: DEFAULT_CADENCE_DAYS });
+  const freshness = auditCatalogFreshness(catalogData, { staleWarningDays: 3, criticalOutdatedDays: DEFAULT_CADENCE_DAYS });
   const notebookMeta = getProductNotebookMeta(target.chassisDir);
   const sha256 = calculateFileSha256(target.catalogPath);
+  const artifactHashes = Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
+    .map(suffix => [suffix, calculateFileSha256(path.join(target.outputDir, `${path.basename(target.catalogPath, '_Catalog.json')}_${suffix}`))]));
 
   // Check hours elapsed for fast-track alert (<72h warning)
   let ageInHours = null;
   if (normalized.scrapeTimestamp) {
     const elapsedMs = Date.now() - new Date(normalized.scrapeTimestamp).getTime();
     if (elapsedMs >= 0) {
-      ageInHours = Math.floor(elapsedMs / (1000 * 60 * 60));
+      ageInHours = elapsedMs / (1000 * 60 * 60);
     }
   }
 
@@ -163,7 +166,7 @@ function getProductGenerationMetadata(productKeyOrDir) {
     isFresh: freshness.isFresh,
     isStale,
     isCriticalOutdated: freshness.isCriticalOutdated,
-    needsResync: isStale || freshness.freshnessStatus === 'CRITICAL_OUTDATED',
+    needsResync: !freshness.isFresh || ageInHours === null || ageInHours > FAST_TRACK_STALE_HOURS,
     staleWarning72h: ageInHours !== null && ageInHours > FAST_TRACK_STALE_HOURS,
     totalUniqueSKUs: normalized.totalUniqueSKUs,
     totalSubcategories: normalized.totalSubcategories,
@@ -173,7 +176,9 @@ function getProductGenerationMetadata(productKeyOrDir) {
       notebookId: notebookMeta?.notebookId || null,
       lastSyncedAt: notebookMeta?.lastSyncedAt || null,
       queryEnabled: notebookMeta?.queryEnabled !== false,
-      syncState: notebookMeta?.lastSyncedAt ? 'SYNCED' : 'UNSYNCED'
+      syncState: notebookMeta?.cloudSyncState || 'UNSYNCED',
+      catalogMatches: notebookMeta?.lastCatalogSha256 === sha256 && Object.entries(artifactHashes)
+        .every(([name, value]) => value && notebookMeta?.lastArtifactHashes?.[name] === value)
     },
     advisories: freshness.advisories
   };
@@ -192,7 +197,7 @@ function refreshMasterProductMetadata() {
   };
 
   for (const item of discovered) {
-    const meta = getProductGenerationMetadata(item.chassisDir);
+    const meta = getProductGenerationMetadata(item.chassisDir, discovered);
     registry.products[meta.productKey] = meta;
   }
 
@@ -219,7 +224,18 @@ function commitSuccessfulResyncMetadata(params) {
   }
 
   const catalogSha256 = calculateFileSha256(catalogPath);
-  const now = scrapeTimestamp || new Date().toISOString();
+  const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+  const capture = normalizeCatalogMetadata(catalog.metadata).scrapeTimestamp;
+  if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now()
+      || (scrapeTimestamp && Date.parse(scrapeTimestamp) !== Date.parse(capture))) {
+    throw new Error('[ATOMIC_GUARD] Invalid or mismatched vendor capture timestamp');
+  }
+  const actualCount = require('./catalog_capture_receipt.js').skuSet(catalog).size;
+  if (!actualCount || actualCount !== Number(catalog.metadata.totalUniqueSKUs)
+      || (uniqueSKUs !== undefined && uniqueSKUs !== actualCount)) {
+    throw new Error('[ATOMIC_GUARD] Catalog SKU count does not match promoted content');
+  }
+  const now = new Date(capture).toISOString();
   const dateStr = now.split('T')[0];
 
   let masterRegistry = { schemaVersion: '2.0', products: {} };
@@ -232,21 +248,18 @@ function commitSuccessfulResyncMetadata(params) {
   }
 
   const productMeta = getProductGenerationMetadata(productKey);
+  if (!productMeta.exists || path.resolve(productMeta.catalogPath) !== path.resolve(catalogPath)) {
+    throw new Error('[ATOMIC_GUARD] Product does not resolve to the promoted catalog');
+  }
 
   const updatedRecord = {
     ...productMeta,
     productKey,
     scrapeDate: dateStr,
     scrapeTimestamp: now,
-    ageInDays: 0,
-    ageInHours: 0,
-    freshnessStatus: 'FRESH',
-    isFresh: true,
-    isStale: false,
-    needsResync: false,
-    totalUniqueSKUs: uniqueSKUs || productMeta.totalUniqueSKUs,
+    totalUniqueSKUs: actualCount,
     catalogSha256,
-    lastPromotedAt: now,
+    lastPromotedAt: new Date().toISOString(),
     promotionVerified: true
   };
 

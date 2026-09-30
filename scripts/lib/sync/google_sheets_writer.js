@@ -67,14 +67,17 @@ function toChangeRows(targetDir, options = {}) {
     rows.push(row);
   };
   const attributeHistory = readJsonIfPresent(path.join(historyDir, 'attribute_history.json'), []);
-  const servicesAttributeHistory = readJsonIfPresent(path.join(historyDir, 'services_attribute_history.json'), []);
+  const servicesHistoryDir = path.join(targetDir, 'services_history');
+  const servicesAttributeHistory = readJsonIfPresent(path.join(servicesHistoryDir, 'services_attribute_history.json'),
+    readJsonIfPresent(path.join(historyDir, 'services_attribute_history.json'), []));
   const allAttributes = [
     ...(Array.isArray(attributeHistory) ? attributeHistory : []),
     ...(Array.isArray(servicesAttributeHistory) ? servicesAttributeHistory : [])
   ];
 
   const priceHistory = readJsonIfPresent(path.join(historyDir, 'price_history.json'), {});
-  const servicesPriceHistory = readJsonIfPresent(path.join(historyDir, 'services_price_history.json'), {});
+  const servicesPriceHistory = readJsonIfPresent(path.join(servicesHistoryDir, 'services_price_history.json'),
+    readJsonIfPresent(path.join(historyDir, 'services_price_history.json'), {}));
   const catalogDeltas = readJsonIfPresent(path.join(historyDir, 'catalog_deltas.json'), []);
   const discontinued = readJsonIfPresent(path.join(historyDir, 'discontinued_skus.json'), {});
   const allowedSkus = options.allowedSkus instanceof Set ? options.allowedSkus : null;
@@ -145,13 +148,23 @@ function buildKnowledgeWorkbookDatasets(csvPath, learningPath, options = {}) {
   const normalizedLearning = normalizeLearningText(fs.readFileSync(learningPath, 'utf8'));
   const learningRows = [['Canonical Verified Product Learnings'], ...normalizedLearning.split('\n').map(line => [line])];
   const targetDir = options.targetDir || path.dirname(csvPath);
+  const workbookPath = path.join(targetDir, `${options.chassisName}_OCA_Catalog.xlsx`);
+  let workbookTabs = [];
+  if (options.chassisName) {
+    if (!fs.existsSync(workbookPath)) throw new Error('Complete master workbook is required for product cloud sync');
+    const workbook = xlsx.readFile(workbookPath);
+    workbookTabs = workbook.SheetNames.map(title => ({ title,
+      rows: xlsx.utils.sheet_to_json(workbook.Sheets[title], { header: 1, raw: false, defval: '' }) }));
+    if (!workbookTabs.some(tab => tab.title === 'All SKUs')) throw new Error('Master workbook lacks All SKUs');
+  }
   const changeRows = toChangeRows(targetDir, { allowedSkus });
   const fingerprints = {
     catalog: stableRowsFingerprint(catalogRows),
     learnings: sha256(normalizedLearning),
-    changes: stableRowsFingerprint(changeRows)
+    changes: stableRowsFingerprint(changeRows),
+    workbook: stableRowsFingerprint(workbookTabs)
   };
-  fingerprints.combined = sha256(`${fingerprints.catalog}:${fingerprints.learnings}:${fingerprints.changes}`);
+  fingerprints.combined = sha256(`${fingerprints.catalog}:${fingerprints.learnings}:${fingerprints.changes}:${fingerprints.workbook}`);
   const metadataRows = [
     ['Key', 'Value'],
     ['Product', options.chassisName || path.basename(targetDir)],
@@ -160,9 +173,11 @@ function buildKnowledgeWorkbookDatasets(csvPath, learningPath, options = {}) {
     ['Verified Learnings SHA-256', fingerprints.learnings],
     ['Change Log SHA-256', fingerprints.changes],
     ['Combined Content SHA-256', fingerprints.combined],
+    ['Master Workbook SHA-256', fingerprints.workbook],
+    ['Master Workbook Sheet Count', workbookTabs.length],
     ['Source Policy', 'Official vendor + certified scrape + verified KnowledgeDelta only']
   ];
-  return { catalogRows, learningRows, changeRows, metadataRows, fingerprints };
+  return { catalogRows, learningRows, changeRows, metadataRows, fingerprints, workbookTabs };
 }
 
 function quoteSheetTitle(title) {
@@ -176,8 +191,10 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
     [tabs.catalog, datasets.catalogRows],
     [tabs.learnings, datasets.learningRows],
     [tabs.changes, datasets.changeRows],
-    [tabs.metadata, datasets.metadataRows]
+    [tabs.metadata, datasets.metadataRows],
+    ...(datasets.workbookTabs || []).map(tab => [tab.title, tab.rows])
   ];
+  if (new Set(tabRows.map(([title]) => title)).size !== tabRows.length) throw new Error('Duplicate managed workbook tab titles');
   const auth = options.auth || new GoogleAuth({ scopes: [SHEETS_SCOPE] });
   const client = options.client || await auth.getClient();
   const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}`;

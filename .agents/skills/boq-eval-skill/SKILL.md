@@ -54,9 +54,10 @@ While the React Dashboard provides an exceptional visual interface for reviewing
 ---
 
 ### 🔄 The 8 Atomic Steps of the BOQ Evaluation Journey
-0. **Scraped Catalog Grounding Gate (`INV-96`)**:
+0. **Scraped Catalog Grounding & Freshness Gate (`INV-96`, `INV-118`)**:
    - Asserts `isCatalogCertified(chassisId)` before parsing component lines or running physical math.
    - Verifies that `outputs/{Family}/{Gen}/{Model}/` contains `*_Catalog.json` (with `totalUniqueSKUs > 0`) and `*_OCA_Catalog.xlsx`.
+   - **Catalog Freshness Verification**: Runs `node scripts/catalogs/ensure_catalogs.js --product <chassis>`. If the catalog exceeds the 72-hour fast-track freshness threshold or cloud sync state is degraded (`cloudSyncState: FAILED`), the evaluator flags `staleCatalogWarning` and routes via `degraded-mode-skill` $\rightarrow$ `oca-portal-navigator` $\rightarrow$ `oca-catalog-scraper` to resync live ground truth before proceeding.
    - If the catalog does not exist or has 0 SKUs, halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent to trigger `oca-portal-navigator` $\rightarrow$ `oca-catalog-scraper` to establish ground truth rather than proceeding on hallucinated or ungrounded data.
 1. **Intake, Ingestion & Single-Compute Normalization (`INV-117`)**:
    - Detailed normalization specifications are codified in [`references/workbook_intake_rules.md`](references/workbook_intake_rules.md).

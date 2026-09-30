@@ -251,8 +251,12 @@ async function main() {
     }
     assert(lifecycleRows.length === currentHardwareRows.length, `Lifecycle status coverage is 100% (${lifecycleRows.length}/${currentHardwareRows.length})`);
     assert(explicitAvailabilityRows.length / denominator >= 0.50, `Explicit OCA availability coverage is >=50% (${explicitAvailabilityRows.length}/${currentHardwareRows.length}); unpublished rows remain explicitly unknown`);
-    assert(startDateRows.length / denominator >= 0.95, `Start-date coverage is >=95% (${startDateRows.length}/${currentHardwareRows.length})`);
-    assert(discontinuedDateRows.length / denominator >= 0.95, `Discontinued-date coverage is >=95% (${discontinuedDateRows.length}/${currentHardwareRows.length})`);
+    auditResults.lifecycleDateCoverage = {
+      totalRows: currentHardwareRows.length,
+      publishedStartDates: startDateRows.length,
+      publishedDiscontinuedDates: discontinuedDateRows.length,
+      policy: 'Unpublished vendor dates remain unknown; capture dates and predicted EOL are not substitutes'
+    };
   }
 
   // ── AUDIT 4B: Price Sanity & Anti-Fabrication Guardrail (INV-94) ────────────

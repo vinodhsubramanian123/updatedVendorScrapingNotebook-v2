@@ -5,6 +5,10 @@
 **Explicit exclusions:** `dashboard/**`, `tests/**`, test implementation, UI behavior, and historical output certification.  
 **Change status:** Planning only. No production code was changed by this review.
 
+**Post-check-in reconciliation (2026-09-29):** This plan and the three new operational skills (`degraded-mode-skill`, `clic-portal-validation-skill`, and `conditional-sku-discovery-skill`) entered the repository together in commit `a3fcfb1`. There are no later commits to reconcile. The additions strengthen the intended contracts but do not yet establish the corresponding runtime capabilities; the plan below now records those gaps explicitly. The commit's reported test/complexity results are historical evidence from that check-in, not an independent validation by this review.
+
+**Companion test-quality review:** [`2026-09-29-core-test-quality-gap-analysis.md`](./2026-09-29-core-test-quality-gap-analysis.md) maps the production findings to missing, misleading, duplicated, or false-green test coverage. Its Test Phases A–G are part of this remediation plan; production changes are not complete until their corresponding executable contracts exist.
+
 ## 1. Executive conclusion
 
 The repository contains strong individual controls, but they are not enforced through one production execution boundary. The canonical nine-phase evaluator exists, yet several customer-query handlers, the MCP server, workbook flow, adversarial flow, and legacy agentic entry point call lower-level evaluators directly. As a result, the same BOM can receive different ingestion, evidence, grounding, candidate revalidation, output validation, learning, synchronization, and delivery treatment depending on its entry point or input representation.
@@ -89,6 +93,9 @@ Examples:
 - BOQ reconciliation allows an empty customer baseline although the skill now mandates both non-empty inputs.
 - Cross-vendor transformation does not enforce a certified target catalog before producing its draft.
 - Execution trace, output validation, NotebookLM grounding, adversarial validation, continuous learning, and sync are modeled partly as user-selectable intents instead of mandatory workflow middleware where applicable.
+- `degraded-mode-skill` documents `assertNotebookHealth()` in `nlm_solution_source_validator.js` with an async single-argument contract, while the actual synchronous function is in `knowledge_sync.js`, has a different signature/result shape, and has no production caller.
+- `clic-portal-validation-skill` documents structured extraction/classification APIs in `navigate_oca.js`; the live parser instead exposes `parseClicAdviceExcel()` and `parseLiveCdpModal()` from `parse_clic_modal.js`, and it does not issue a receipt bound to the solution fingerprint.
+- `conditional-sku-discovery-skill` specifies an eight-dimension macro sweep and references `extractHiddenElements()` from `navigate_oca.js`; production currently implements only an ambient-temperature sweep through `dom_extract.js`, and sweep failure is non-fatal.
 
 **Required fix:** create a machine-readable workflow/skill registry containing input schema, required capabilities, stage DAG, halt policy, evidence requirements, handler, acceptance profile, delivery policy, and next-stage handoff. Generate or validate documentation against this registry; do not rely on prose as executable wiring.
 
@@ -104,14 +111,16 @@ Examples:
 
 **Required fix:** define and validate `ReconciliationRequest`, `NormalizedBom`, and `ReconciliationResult` schemas; require two non-empty baselines for comparison mode; create a separately named one-file catalog audit mode; never infer catalog presence from SKU syntax.
 
-#### F-05: Catalog freshness is fail-open and its warning is lost
+#### F-05: Catalog freshness policy is split, and bypass paths remain fail-open
 
-- `isCatalogFresh()` returns `true` for a missing directory, missing catalog, or any exception.
+- The canonical file-backed pipeline already runs `auditCatalogFreshness()` and rejects `UNKNOWN`, `INVALID_FUTURE_DATE`, and `CRITICAL_OUTDATED` states (outside explicit test paths). This protection must be preserved.
+- Direct callers of `evaluateBOQMultiAspect()` bypass that gate and reach `isCatalogFresh()`, which returns `true` for a missing directory, missing catalog, or any exception.
 - `evaluateBOQMultiAspect()` catches freshness errors, mutates `options.context.staleCatalogWarning`, and does not copy that state into the returned result.
+- Three policies now coexist: the canonical 30/90-day audit thresholds, the low-level 72-hour boolean helper, and `product_metadata_manager.js` with a 30-day status plus a separate 72-hour warning. In the metadata manager a catalog older than 72 hours can set `staleWarning72h: true` while leaving `needsResync: false`.
 
-**Impact:** missing/unreadable evidence can be reported as fresh, and stale warnings can disappear.
+**Impact:** the canonical path is safer than bypass paths, so input route changes freshness semantics; missing/unreadable evidence can still be reported as fresh, warnings can disappear, and resynchronization policy is ambiguous.
 
-**Required fix:** replace the boolean with a typed result: `FRESH | STALE | MISSING | UNREADABLE | UNKNOWN`, including timestamp, age, path, and reason. `MISSING`, `UNREADABLE`, and `UNKNOWN` are never success. Carry the result through evidence, acceptance, narrative, and delivery policy.
+**Required fix:** establish one injected freshness policy and typed result: `FRESH | WARNING | STALE | CRITICAL | MISSING | UNREADABLE | UNKNOWN`, including timestamp, age, threshold policy/version, path, and reason. `MISSING`, `UNREADABLE`, and `UNKNOWN` are never success. Carry the result through evidence, degraded-mode handling, acceptance, narrative, synchronization, and delivery policy.
 
 #### F-06: Evidence phases sometimes record execution claims rather than proven work
 
@@ -192,8 +201,20 @@ Examples include rail SKU/description, fallback wattage, form-factor regexes, CT
 - The barrel groups conflict modules under `boq`, mixing domains.
 - Root contains historical plans/handoffs and a Windows `.cmd` helper despite the documented strict hierarchy.
 - Customer-specific maintenance scripts contain absolute `/home/vinodh/Downloads/...` paths and behave like retained one-off scripts.
+- The new `product_metadata_manager.js` is not called or exported by a production owner, independently walks the outputs tree instead of using canonical catalog discovery, and therefore creates another unintegrated source of product/catalog state.
 
 **Required fix:** make manifests generated/validated from actual module ownership, move historical root documents into `docs/audits` or `docs/archive`, move reusable commands behind portable Node CLIs, and quarantine/delete customer-specific one-offs after reference and retention review.
+
+#### F-13A: Product metadata lifecycle is not yet safe as a source of truth
+
+- `product_metadata_manager.js` keys and resolves products primarily by directory basename/fuzzy normalized ID, which can collide across family, generation, region, or products with similar names.
+- `commitSuccessfulResyncMetadata()` trusts caller-provided audit booleans, checks only that a catalog exists, and then writes `promotionVerified: true`; it does not itself verify the staged catalog fingerprint, SKU count, staged audit evidence, live promotion, or NotebookLM synchronization.
+- A corrupt master registry is silently replaced with an empty structure and may then be overwritten, losing recoverable metadata.
+- Registry updates have no lock or compare-and-merge policy, and the helper's recursive discovery duplicates `catalog_discovery.js`.
+
+**Impact:** an orphan helper can later be wired as authoritative state while permitting identity collisions, optimistic promotion claims, lost registry data, and concurrent update races.
+
+**Required fix:** do not wire this helper directly as a second source of truth. Move its useful lifecycle fields behind the canonical product identity/catalog registry, require exact composite identity and evidence-derived promotion, preserve/quarantine corrupt state, use atomic locked compare-and-merge, and make catalog promotion plus NotebookLM synchronization separate explicit states.
 
 #### F-14: Portability is inconsistent
 
@@ -245,6 +266,9 @@ Broad graph queries start from tests, dashboard, outputs, and docs even when the
 | Adversarial validation | Standalone/random and naming conflation | Deterministic candidate gate plus separate reproducible red-team workflow |
 | Continuous learning | Feedback path exists | Post-acceptance proposal only; promotion remains independently evidenced |
 | Knowledge sync | Implemented with local/cloud states | Terminal stage with explicit policy; no success collapse |
+| Degraded mode | Skill contract exists; notebook health function is in a different module/signature and is unwired | Universal evidence-policy gate using one health/freshness contract; disclose degraded state without inventing verification |
+| CLIC portal validation | Modal parsers and a basic receipt reader exist; advertised APIs and exact solution-fingerprint receipt binding do not | Dedicated Tier 3 adapter/stage; classify advice separately from learning and bind immutable receipt to exact scoped manifest/configuration |
+| Conditional SKU discovery | Hidden DOM extraction plus ambient sweep exists; the documented eight-dimension sweep is not implemented | Catalog-ingestion capability with an explicit sweep coverage manifest; implement supported selectors or narrow the skill claim |
 
 ## 6. Target architecture
 
@@ -264,14 +288,16 @@ Ingestion -> NormalizedRequirements + NormalizedBom + ownership/quantity model
 Workflow Kernel (stage DAG + typed transitions)
   1 Intake/validation
   2 Scope/catalog/freshness
-  3 Deterministic domain checks
-  4 Cross-component/conflict checks
-  5 Candidate synthesis (including least-delta)
-  6 Independent candidate revalidation
-  7 Document grounding / agentic advisory
-  8 Acceptance gate
-  9 Delivery authorization + artifact generation
- 10 Learning proposal + synchronization
+  3 Degraded-mode policy decision
+  4 Deterministic domain checks
+  5 Cross-component/conflict checks
+  6 Candidate synthesis (including least-delta)
+  7 Independent candidate revalidation
+  8 Document grounding / agentic advisory
+  9 Pre-presentation acceptance gate
+ 10 Tier 3 portal acceptance (policy-required or explicitly PENDING)
+ 11 Delivery authorization + artifact generation
+ 12 Learning proposal + synchronization
         |
         v
 WorkflowResult (no ambiguous generic success)
@@ -293,7 +319,9 @@ WorkflowResult (no ambiguous generic success)
 - `EvidenceState<T>` (`VERIFIED`, `MISSING`, `STALE`, `UNREADABLE`, `DEGRADED`, `NOT_APPLICABLE`)
 - `StageResult<T>` with separate execution and outcome fields
 - `CandidateManifest` with fingerprint and customer-distance delta
+- `CatalogEvidence` with one versioned freshness policy and conditional-discovery coverage
 - `AcceptanceProfile` and `AcceptanceDecision`
+- `PortalReceipt` bound to exact product scope, configuration ownership, manifest fingerprint, and freshness window
 - `DeliveryAuthorization`
 - `WorkflowResult`
 - `DomainError` taxonomy and stable error codes
@@ -307,6 +335,7 @@ WorkflowResult (no ambiguous generic success)
 3. Define the result/status/error schemas and stage transition rules before moving code.
 4. Add deprecation annotations to bypass APIs; do not delete yet.
 5. Define the exact list of customer-facing entry points and expected workflow definition for each.
+6. Inventory every API named by a skill and classify it as `IMPLEMENTED`, `PARTIAL`, `UNWIRED`, or `ABSENT`; skills may not claim an executable capability without a matching exported runtime contract.
 
 **Exit criteria:** every production call site has an owner and migration destination; no ambiguous `success` semantics remain in the proposed contracts.
 
@@ -321,6 +350,7 @@ WorkflowResult (no ambiguous generic success)
    - primary workflows;
    - enrichers;
    - universal gates.
+6. Add degraded-mode evaluation as a universal policy gate driven by typed catalog, notebook, citation, and portal evidence—not by prose or a caller-selected boolean.
 
 **Exit criteria:** a workflow cannot call delivery unless every required predecessor emitted a valid terminal result.
 
@@ -344,6 +374,16 @@ WorkflowResult (no ambiguous generic success)
 
 **Exit criteria:** registering a domain/profile changes the real evaluator without editing the orchestrator; missing capability never becomes PASS.
 
+### Phase 3A — Unify catalog lifecycle and conditional discovery
+
+1. Select `catalog_discovery.js` plus exact `ProductIdentity` as the discovery authority; fold in useful metadata lifecycle fields instead of maintaining a second recursive scanner.
+2. Replace the three freshness interpretations with one versioned policy consumed by evaluation, degraded mode, synchronization, and metadata reporting.
+3. Require conditional-discovery output to include the selectors attempted, values covered, DOM extraction method, failures, and an explicit completeness state.
+4. Implement the supported macro dimensions from the skill or narrow the skill contract to the actually supported ambient sweep; do not silently equate partial coverage with exhaustive discovery.
+5. Derive promotion/resync state from retained staged-audit, fingerprint, SKU-count, live-promotion, and sync evidence. Quarantine corrupt registries and use locked atomic compare-and-merge.
+
+**Exit criteria:** one product identity, discovery owner, freshness policy, and promotion ledger govern catalog use; partial conditional discovery is visible and cannot certify completeness.
+
 ### Phase 4 — Repair reconciliation and transformation workflows
 
 1. Introduce strict two-BOM reconciliation contracts and separately named catalog-audit mode.
@@ -360,9 +400,11 @@ WorkflowResult (no ambiguous generic success)
 2. Validate profile coverage at startup/build time.
 3. Run acceptance after candidate/document checks and before any customer artifact export.
 4. Require `DeliveryAuthorization` in workbook/report/Sheets adapters.
-5. Keep OCA/CLIC acceptance independent and always visible.
+5. Add a dedicated Tier 3 OCA/CLIC stage after the immutable candidate manifest is finalized and before presentation authorization when portal proof is required by policy.
+6. Separate modal extraction, deterministic advice classification, receipt creation, and learning proposal. A receipt must bind exact product scope, configuration ownership, manifest fingerprint, portal transaction ID, timestamp, and freshness window.
+7. Where live portal validation is unavailable or not required for diagnostic output, preserve `PORTAL VALIDATION PENDING`; never reuse a receipt after manifest change or expiry.
 
-**Exit criteria:** rejected/incomplete workflows can emit diagnostic evidence but cannot emit presentation-authorized artifacts.
+**Exit criteria:** rejected/incomplete workflows can emit diagnostic evidence but cannot emit presentation-authorized artifacts; no stale or differently scoped portal receipt can authorize delivery.
 
 ### Phase 6 — Harden evidence, agentic, and learning semantics
 
@@ -459,10 +501,13 @@ To minimize regression risk, implement as small reviewable batches:
 4. **Pre-delivery acceptance** — block exporters without authorization.
 5. **Reconciliation repair** — strict input and catalog evidence.
 6. **Registry-driven aspects** — checker ownership migration.
-7. **Skill workflow migrations** — OCR, RFP, cross-vendor, heterogeneous, multi-cluster, enrichers.
-8. **Agentic/adversarial cleanup** — remove duplicate loop and split semantics.
-9. **Dead code/folder cleanup** — only after graph/caller proof.
-10. **Portability/config cleanup** — runtime paths and machine-state separation.
+7. **Catalog lifecycle convergence** — one identity/discovery/freshness policy and safe metadata promotion.
+8. **Conditional discovery parity** — coverage manifest plus implemented-or-narrowed skill contract.
+9. **Tier 3 portal adapter** — deterministic classification and exact receipt binding.
+10. **Skill workflow migrations** — OCR, RFP, cross-vendor, heterogeneous, multi-cluster, enrichers.
+11. **Agentic/adversarial cleanup** — remove duplicate loop and split semantics.
+12. **Dead code/folder cleanup** — only after graph/caller proof.
+13. **Portability/config cleanup** — runtime paths and machine-state separation.
 
 Each batch must include:
 
@@ -495,15 +540,24 @@ The remediation is complete only when all of the following are true:
 14. Runtime behavior is independent of OS and current working directory.
 15. Skills, workflow registry, subsystem manifests, docs, and graph agree.
 16. Dead code is removed only after caller proof; historical evidence remains preserved.
+17. Every API named by an operational skill exists with the documented module, signature, result schema, and enforced caller—or the skill is explicitly marked planned/partial.
+18. Catalog freshness, degraded mode, resync, and promotion share one versioned policy and evidence model.
+19. Conditional discovery reports exactly which macro dimensions were swept; partial coverage cannot be represented as exhaustive.
+20. Tier 3 receipts are immutable, freshness-bounded, and tied to the exact scoped candidate manifest and configuration ownership.
+21. The core test profile fails on zero selection, unexpected skip, missing result summary, or absent required capability coverage.
+22. Every supported intent and operational skill has routing-to-handler-to-stage evidence tests, not label-only assertions.
+23. Safety-critical mutations for stage bypass, false PASS, acceptance bypass, stale receipt, evidence loss, and learning self-promotion are detected.
 
 ## 10. Recommended starting point
 
-Begin with Phases 0–2, not folder moves. The highest-value first implementation is:
+Begin with Phases 0–2, then Phase 3A before integrating the new metadata/degraded-mode helpers. Do not start with folder moves. The highest-value first implementation is:
 
 1. define `WorkflowResult`, `StageResult`, `EvidenceState`, and error contracts;
 2. make `runCanonicalEvaluation` the required BOQ application boundary;
 3. migrate router item input and MCP input to that boundary;
 4. move acceptance before export;
-5. remove the router's optional synthetic ledger for evaluation paths.
+5. remove the router's optional synthetic ledger for evaluation paths;
+6. define one exact `ProductIdentity` and catalog evidence/freshness contract before wiring `product_metadata_manager.js`;
+7. mark the three new skills' runtime capabilities as partial until their documented APIs and enforcement paths exist.
 
-That sequence closes the largest silent-skip surface while preserving the current deterministic rule engine for later registry refactoring.
+That sequence closes the largest silent-skip surface, prevents new documentation from being mistaken for executable coverage, and preserves the current deterministic rule engine for later registry refactoring.

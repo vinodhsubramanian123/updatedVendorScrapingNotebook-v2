@@ -94,22 +94,21 @@ function auditCatalogFreshness(catalogData, options = {}) {
   let freshnessStatus = 'UNKNOWN';
 
   if (normMeta.scrapeDate) {
-    const scrapeTime = new Date(normMeta.scrapeDate).getTime();
+    const scrapeTime = new Date(normMeta.scrapeTimestamp || normMeta.scrapeDate).getTime();
     if (!isNaN(scrapeTime)) {
       if (/^\d{4}-\d{2}-\d{2}$/.test(normMeta.scrapeDate) && new Date(scrapeTime).toISOString().slice(0, 10) !== normMeta.scrapeDate) {
         return { chassis: normMeta.chassis, normalizedMetadata: normMeta, ageInDays: null, freshnessStatus: 'UNKNOWN', isFresh: false, isStale: false, isCriticalOutdated: false, advisories: ['Invalid calendar date'] };
       }
       const diffMs = refDate.getTime() - scrapeTime;
-      // Buffer of 24 hours for timezone boundaries
-      if (diffMs < -86400000) {
+      if (diffMs < 0) {
         freshnessStatus = 'INVALID_FUTURE_DATE';
         advisories.push(`Catalog scrapeDate '${normMeta.scrapeDate}' is in the future relative to reference date.`);
       } else {
         ageInDays = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
-        if (ageInDays > criticalDays) {
+        if (diffMs > criticalDays * 86400000) {
           freshnessStatus = 'CRITICAL_OUTDATED';
           advisories.push(`Catalog scrape for ${normMeta.chassis} is ${ageInDays} days old (> ${criticalDays} days). Price and option drift likely.`);
-        } else if (ageInDays > staleDays) {
+        } else if (diffMs > staleDays * 86400000) {
           freshnessStatus = 'STALE_WARNING';
           advisories.push(`Catalog scrape for ${normMeta.chassis} is ${ageInDays} days old (> ${staleDays} days). Refresh recommended.`);
         } else {
@@ -248,7 +247,8 @@ function verifyTabularIntegrity(catalogData) {
 
 /**
  * Lightweight check if catalog directory has been updated within maxAgeHours.
- * Returns true if fresh or if mtime cannot be checked. Returns false if older than maxAgeHours.
+ * Uses the vendor capture timestamp, never the rebuild/copy modification time.
+ * Missing, malformed or future capture evidence is not fresh.
  * @param {string} catalogDir
  * @param {number} [maxAgeHours=72]
  * @returns {boolean}
@@ -257,15 +257,17 @@ function isCatalogFresh(catalogDir, maxAgeHours = 72) {
   try {
     const fs = require('fs');
     const path = require('path');
-    if (!catalogDir || !fs.existsSync(catalogDir)) return true;
+    if (!catalogDir || !fs.existsSync(catalogDir)) return false;
     const prefix = path.basename(catalogDir);
     const catalogPath = path.join(catalogDir, `${prefix}_Catalog.json`);
-    if (!fs.existsSync(catalogPath)) return true;
-    const stat = fs.statSync(catalogPath);
-    const ageHours = (Date.now() - stat.mtimeMs) / 3600000;
-    return ageHours <= maxAgeHours;
+    if (!fs.existsSync(catalogPath)) return false;
+    const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+    const capture = safeDate(normalizeCatalogMetadata(catalog.metadata).scrapeTimestamp);
+    if (!capture || !Number.isFinite(maxAgeHours) || maxAgeHours < 0) return false;
+    const ageHours = (Date.now() - capture.getTime()) / 3600000;
+    return ageHours >= 0 && ageHours <= maxAgeHours;
   } catch (_) {
-    return true;
+    return false;
   }
 }
 

@@ -45,7 +45,7 @@ function getNotebookIdForChassis(cfg, chassisName) {
     const id = (typeof entry === 'object' && entry !== null) ? entry.notebookId : entry;
     if (id && String(id).trim()) return String(id).trim();
   }
-  return (cfg && cfg.defaultNotebookId && String(cfg.defaultNotebookId).trim()) || null;
+  return null;
 }
 
 /**
@@ -70,6 +70,9 @@ function getNotebookDegradedMode(cfg, chassisName) {
   if (typeof entry === 'object' && entry !== null) {
     if (entry.queryEnabled === false) return 'QUERY_DISABLED';
     if (entry.cloudSyncState === 'FAILED') return 'STALE_NOTEBOOK_SYNC';
+    if (entry.cloudSyncState !== 'VERIFIED' || !entry.lastSyncedAt) return 'UNVERIFIED_NOTEBOOK_SYNC';
+  } else {
+    return 'UNVERIFIED_NOTEBOOK_SYNC';
   }
   return null;
 }
@@ -351,9 +354,12 @@ async function main() {
     });
   }
 
+  const complete = AUTO_UPLOAD && results.length > 0 && results.every(result => result.uploadResult?.success === true);
+  if (AUTO_UPLOAD && !complete) process.exitCode = 1;
+
   if (JSON_MODE) {
     process.stdout.write(JSON.stringify({
-      status: 'SUCCESS',
+      status: complete ? 'CLOUD_VERIFIED' : AUTO_UPLOAD ? 'CLOUD_FAILED' : 'LOCAL_PAYLOAD_ONLY',
       data: { masterRegistry: registry, results }
     }));
     return;
@@ -375,7 +381,7 @@ async function main() {
   });
 
   console.log('\n================================================================');
-  console.log('🎉 KNOWLEDGE SYNC COMPLETE — AGENT & NOTEBOOK 100% IN SYNC');
+  console.log(complete ? 'Knowledge sync cloud verification complete.' : 'Knowledge sync remains local-only or incomplete; inspect per-product results.');
   console.log('================================================================\n');
 }
 

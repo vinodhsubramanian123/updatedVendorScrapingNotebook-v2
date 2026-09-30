@@ -19,6 +19,11 @@ function createFixture() {
   const csvPath = path.join(targetDir, 'Example_Master_Catalog.csv');
   const learningPath = path.join(targetDir, 'notebook_sync_payload_Example.md');
   fs.writeFileSync(csvPath, 'Product #,Description,List Price\nP12345-B21,Example option,100\n');
+  const xlsx = require('xlsx-js-style');
+  const workbook = xlsx.read(fs.readFileSync(csvPath, 'utf8'), { type: 'string' });
+  const sheet = workbook.Sheets[workbook.SheetNames[0]];
+  workbook.SheetNames = ['All SKUs']; workbook.Sheets = { 'All SKUs': sheet };
+  xlsx.writeFile(workbook, path.join(targetDir, 'Example_OCA_Catalog.xlsx'));
   fs.writeFileSync(learningPath, '# Verified Learnings\n\n**Sync Timestamp**: 2026-09-06T01:00:00.000Z  \n\nRule A');
   fs.writeFileSync(path.join(historyDir, 'attribute_history.json'), JSON.stringify([
     { timestamp: '2026-09-06', sku: 'P12345-B21', field: 'Status', oldValue: '90', newValue: 'Active' },

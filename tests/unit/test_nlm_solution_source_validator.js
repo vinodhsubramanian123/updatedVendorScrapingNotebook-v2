@@ -109,4 +109,41 @@ describe('NotebookLM Ephemeral Solution Source Validation Suite', () => {
     assert.ok(fs.existsSync(res.csvPath), 'Multi-rank solution CSV must exist on disk');
     assert.ok(res.ragAnswer.length > 50, 'RAG answer must provide grounded technical validation');
   });
+
+  test('6. validateSolutionWithEphemeralSource utilizes manifest caching to skip redundant queries', async () => {
+    const sampleEvalResults = {
+      chassis: 'DL380_Gen12',
+      items: [{ sku: 'P52534-B21', quantity: 1, description: 'HPE ProLiant DL380 Gen11 8SFF Server', unitPriceUsd: 2500 }],
+      conflictGraph: {
+        rankedSolutions: [{
+          rank: 1,
+          name: 'Intent Preserved',
+          skuPartsList: [{ sku: 'P52534-B21', quantity: 1, unitPriceUsd: 2500 }]
+        }]
+      }
+    };
+
+    const { solutionFingerprint } = require('../../scripts/lib/boq/solution_evidence.js');
+    const { setCachedRagResult } = require('../../scripts/lib/notebook/notebook_query_utils.js');
+    const fp = solutionFingerprint(sampleEvalResults);
+    const key = `solution_validator:${fp}:DL380_Gen12`;
+
+    // Pre-seed cache
+    setCachedRagResult(key, {
+      success: true,
+      simulationPassed: true,
+      operationalStatus: 'MOCK_VERIFIED',
+      manifestSha256: fp,
+      doubleCheckVerdict: 'DOUBLE_CHECK_PASSED'
+    });
+
+    const res = await validateSolutionWithEphemeralSource(sampleEvalResults, {
+      isMock: true,
+      notebookId: 'nb-mock-test'
+    });
+
+    assert.strictEqual(res.isCached, true, 'Result should be served from cache');
+    assert.strictEqual(res.manifestSha256, fp);
+    assert.strictEqual(res.doubleCheckVerdict, 'DOUBLE_CHECK_PASSED');
+  });
 });

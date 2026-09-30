@@ -88,13 +88,17 @@ graph TD
 
 ### Track 3: Customer BOQ Pre-Flight Evaluation
 - **Target**: Input is an Excel spreadsheet (`.xlsx`), CSV, or structured text BOM.
-- **Pre-Flight Scrape Gate (`INV-96`)**: Prior to parsing and aspect evaluation, verify that the target solution catalog exists on disk and is certified via `isCatalogCertified()`. If un-scraped, halt immediately with `[ERR_UNSCRAPED_SOLUTION]` and trigger/instruct `oca-catalog-scraper`. Never proceed with ungrounded evaluations or silent chassis fallbacks.
+- **Pre-Flight Scrape Gate & Freshness Prerequisite (`INV-96`, `INV-118`)**:
+  - Prior to parsing and aspect evaluation, verify that the target solution catalog exists on disk, is certified via `isCatalogCertified()`, and is fresh ($<72$h threshold) via `ensure_catalogs.js`.
+  - If un-scraped or stale ($>72$h), trigger `degraded-mode-skill` $\rightarrow$ `oca-portal-navigator` $\rightarrow$ `oca-catalog-scraper` to establish live ground truth before running physical checks.
+  - Never proceed with ungrounded evaluations, unverified cloud RAG, or silent chassis fallbacks.
 - **Workflow**:
-  1. Follow `boq-eval-skill` completely (Step 0: Scraped Catalog Grounding Gate).
-  2. Normalize CTO server quantities ($N$-unit divided into 1-unit atomic profile).
-  3. Run deterministic 7-aspect physical math ($O(1)$ indexing).
-  4. Synthesize 5-Tier Strategy Matrix (Rank 1: Intent Preserved to Rank 5: Budget Minimized).
-  5. Autonomous Strategy Double-Check (`INV-97`): Ground synthesized multi-rank solutions against Cloud NotebookLM QuickSpecs and emit full financial itemization.
+  1. Prerequisite: Verify catalog freshness and NLM sync (`node scripts/catalogs/ensure_catalogs.js --product <chassis>`).
+  2. Follow `boq-eval-skill` completely (Step 0: Scraped Catalog Grounding Gate).
+  3. Normalize CTO server quantities ($N$-unit divided into 1-unit atomic profile).
+  4. Run deterministic 7-aspect physical math ($O(1)$ indexing).
+  5. Synthesize 5-Tier Strategy Matrix (Rank 1: Intent Preserved to Rank 5: Budget Minimized).
+  6. Autonomous Strategy Double-Check (`INV-97`): Ground synthesized multi-rank solutions against Cloud NotebookLM QuickSpecs and emit full financial itemization.
 
 
 ### Track 4: BOM Reconciliation & Gap Audit

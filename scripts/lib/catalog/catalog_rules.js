@@ -322,7 +322,9 @@ function loadCatalogRules(targetDir) {
     });
   } else if (Array.isArray(rawData.rules)) {
     rawData.rules.forEach(r => {
-      parsedRules.push(classifyRule(r.rule || r.ruleText, r.parentCategory, r.subCategory));
+      parsedRules.push(r.ruleType === 'CONDITIONAL_VISIBILITY'
+        ? { ...r, ruleText: r.ruleText || r.rule }
+        : classifyRule(r.rule || r.ruleText, r.parentCategory, r.subCategory));
     });
   } else if (Array.isArray(rawData.entries)) {
     // Extract from entries array if catalog JSON

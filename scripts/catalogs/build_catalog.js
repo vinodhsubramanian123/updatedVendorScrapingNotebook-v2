@@ -11,7 +11,7 @@ const fs   = require('fs');
 const path = require('path');
 const { processCatalogDiff } = require('../lib/catalog/diff_catalog.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
-const { computeIncrementalDifferential } = require('../lib/catalog/checksum_diff.js');
+const { computeIncrementalDifferential, assertDiffAnomalyBounds } = require('../lib/catalog/checksum_diff.js');
 const { recordVersionSnapshot } = require('../lib/catalog/sku_versioning.js');
 const { cleanBaseSKU, classifyOptionType, isServiceSku, isValidHpeSKU } = require('../lib/catalog/sku.js');
 const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('../lib/catalog/catalog_formatter.js');
@@ -323,6 +323,11 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   diagnostics.setRawTableCount(tables.length);
 
   const meta = parseProductMeta(chassisLabel);
+  const capturedAt = rawData.timestamp || rawData.scrapeTimestamp;
+  if (!capturedAt || !Number.isFinite(new Date(capturedAt).getTime()) || new Date(capturedAt).getTime() > Date.now()) {
+    throw new Error('ERR_CAPTURE_TIMESTAMP: Raw vendor capture requires a valid, non-future timestamp; rebuilding cannot establish freshness.');
+  }
+  meta.scrapeTimestamp = new Date(capturedAt).toISOString();
   const profile = await loadProfile(meta.family, meta.gen);
 
   console.log(`Loaded Raw Scrape Payload:`);
@@ -707,12 +712,22 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   if (!descText || descText.length < 5 || descText === pn) {
     descText = `HPE ProLiant Server Option (${pn})`;
   }
-  obj['Description'] = descText;
+  let hpeRecommended = obj['HPE Recommended'] || obj['Recommended'] || '';
+  if (/yes|true|recommended/i.test(hpeRecommended)) {
+    hpeRecommended = 'Yes';
+  } else if (/no|false/i.test(hpeRecommended)) {
+    hpeRecommended = 'No';
+  } else if (obj['Option Type'] === 'CTO' || /cto server|configure-to-order/i.test(descText)) {
+    hpeRecommended = 'Yes';
+  } else {
+    hpeRecommended = 'No';
+  }
+  obj['HPE Recommended'] = hpeRecommended;
 
   const canonicalKeys = new Set([
     'Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Price (USD)', 'Price',
     'Option Type', 'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date',
-    'Availability', 'Lead Time', 'Lead Time Source'
+    'Availability', 'Lead Time', 'Lead Time Source', 'HPE Recommended'
   ]);
   obj.vendorAttributes = Object.fromEntries(Object.entries(obj).filter(([key, value]) =>
     !canonicalKeys.has(key) && !['sku', 'lifecycleStatus', 'lifecycleBadge'].includes(key) && String(value ?? '').trim()
@@ -1157,6 +1172,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       'CLIC Status': discovered?.status || 'Active',
       'Lifecycle Status': discovered?.status || 'Active',
       lifecycleStatus: discovered?.status || 'Active',
+      'HPE Recommended': 'Yes',
       Availability: discovered?.availability || 'Available in OCA product catalog',
       'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '',
       'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
@@ -1185,6 +1201,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
           'CLIC Status': 'Active',
           'Lifecycle Status': 'Active',
           lifecycleStatus: 'Active',
+          'HPE Recommended': 'Yes',
           Availability: 'Available in active OCA configuration',
           'Lead Time': chassisDiscovery?.deliveryEstimate || '',
           'Lead Time Source': chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
@@ -1390,8 +1407,9 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
       generation:         meta.gen || 'General',
       pillar:             require('../lib/catalog/product_scope').inferPillar(meta.family, meta.cleanName || filePrefix),
       validationScope:    'CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS',
-      scrapeDate:         new Date().toISOString().split('T')[0],
-      scrapeTimestamp:    new Date().toISOString(),
+      scrapeDate:         meta.scrapeTimestamp ? meta.scrapeTimestamp.split('T')[0] : null,
+      scrapeTimestamp:    meta.scrapeTimestamp || null,
+      builtAt:            new Date().toISOString(),
       totalSubcategories: new Set(entries.map(e => e.subCategory)).size,
       totalUniqueSKUs:    getUniqueSkuCount(entries),
       totalTables:        entries.length
@@ -1422,22 +1440,8 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
 
   await injectChassisVariantsFromHistory(hardwareEntries, targetDir, chassisLabel, baseSKU, tables, chassisDiscovery, meta);
 
-  const scrapeDate = new Date().toISOString().split('T')[0];
-  const defaultDiscontinuedDate = (meta.gen === 'Gen12' || (chassisLabel || '').includes('Gen12'))
-    ? '06/30/2029'
-    : ((meta.family || '').toLowerCase().includes('tape') ? '09/30/2027' : '05/31/2028');
-
-  for (const entry of [...hardwareEntries, ...cleanServicesEntries]) {
-    for (const sku of entry.skus || []) {
-      if (!sku['Start Date'] || !/^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Start Date']).trim())) {
-        sku['Start Date'] = scrapeDate;
-      }
-      if (!sku['Discontinued Date'] || !/^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$/.test(String(sku['Discontinued Date']).trim())) {
-        const isObsolete = /obsolete|end of life|discontinued|removed/i.test(String(sku['Lifecycle Status'] || sku['CLIC Status'] || ''));
-        sku['Discontinued Date'] = isObsolete ? scrapeDate : defaultDiscontinuedDate;
-      }
-    }
-  }
+  // Preserve unpublished lifecycle dates. Observation dates belong in history,
+  // never in vendor Start/Discontinued Date fields.
 
   const catalogObj = buildCatalogObject(hardwareEntries, filePrefix, meta, chassisLabel, subcatList);
   const servicesCatalogObj = buildCatalogObject(cleanServicesEntries, filePrefix, meta, chassisLabel, subcatList);
@@ -1473,9 +1477,20 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
   }
   const incrementalDiff = computeIncrementalDifferential(catalogObj.entries, existingCatalogForDiff);
   if (incrementalDiff.isIncremental) {
-    console.log(`  ⚡ [INCREMENTAL_DIFF] Checksum Analysis: ${incrementalDiff.stats.unchangedSkusCount} Unchanged, ${incrementalDiff.stats.modifiedSkusCount} Modified, ${incrementalDiff.stats.addedSkusCount} Added.`);
-    console.log(`  💰 [TOKEN_SAVINGS] Skipped re-classification for ${incrementalDiff.stats.unchangedSkusCount} SKUs (~${incrementalDiff.stats.estimatedTokensSaved} API tokens saved).`);
+    console.log(`  ⚡ [INCREMENTAL_DIFF] Checksum Analysis: ${incrementalDiff.stats.unchangedSkusCount} Unchanged, ${incrementalDiff.stats.modifiedSkusCount} Modified, ${incrementalDiff.stats.addedSkusCount} Added, ${incrementalDiff.stats.removedSkusCount} Removed.`);
+    console.log(`  [INCREMENTAL_DIFF] ${incrementalDiff.stats.unchangedSkusCount} unchanged SKUs; classification already ran locally. No measured API-token savings claimed.`);
     enrichedCatalog.metadata.incrementalStats = incrementalDiff.stats;
+
+    // Check for anomalous drops / silent scrape truncation (INV-118/INV-119 guard)
+    const anomalyCheck = assertDiffAnomalyBounds(incrementalDiff, existingCatalogForDiff, {
+      allowLargeDiff: process.argv.includes('--force-large-diff') || process.env.FORCE_LARGE_CATALOG_DIFF === '1'
+    });
+    if (!anomalyCheck.isSafe) {
+      pipelineLogger.logError(anomalyCheck.message);
+      console.error(`\n❌ [ANOMALY_GUARD] ${anomalyCheck.message}`);
+      throw new Error(anomalyCheck.message);
+    }
+    console.log(`  🛡️ [ANOMALY_GUARD] Diff Anomaly Check: ${anomalyCheck.status} (${anomalyCheck.message})`);
   }
 
   recordVersionSnapshot(enrichedCatalog, historyDir);
@@ -1544,6 +1559,8 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
       listPrice: parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
       listPriceFormatted: `$${(parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
       optionType: r['Option Type'] || 'CTO',
+      hpeRecommended: 'Yes',
+      'HPE Recommended': 'Yes',
       startDate: r['Start Date'] || '',
       discontinuedDate: r['Discontinued Date'] || '',
       constraint: r['Constraint Text'] || 'max 1 — Mandatory Base Chassis Selection',
@@ -1602,6 +1619,8 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
                 listPrice: parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
                 listPriceFormatted: `$${(parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
                 optionType: s['Option Type'] || s.optionType || 'CTO',
+                hpeRecommended: 'Yes',
+                'HPE Recommended': 'Yes',
                 startDate: s['Start Date'] || s.startDate || '',
                 discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
                 constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
@@ -1663,12 +1682,13 @@ async function exportCatalogArtifacts(ctx) {
   })));
 
   const dedupeMap = new Map();
-  [...combinedRules, ...existingLearnedRules].forEach(r => {
+  [...(ctx.networkRules || []), ...(ctx.conditionalRules || []), ...combinedRules, ...existingLearnedRules].forEach(r => {
     const ruleText = r.rule || r.description || '';
     if (!ruleText || ruleText.length < 5) return;
     const key = `${r.parentCategory}|${r.subCategory}|${ruleText.trim()}`;
     if (!dedupeMap.has(key)) {
       dedupeMap.set(key, {
+        ...r,
         parentCategory: r.parentCategory,
         subCategory: r.subCategory,
         constraint: r.constraint || '',
@@ -1758,6 +1778,18 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   const { hardwareEntries, cleanServicesEntries } = synthesizeCatalogEntries(
     ctx.tables, ctx.fullText, subcatList, ctx.historyPriceMap, ctx.diagnostics, ctx.profile, ctx.IS_VERBOSE
   );
+  ctx.conditionalRules = require('../lib/catalog/conditional_discovery.js').applyConditionalDiscovery(
+    [...hardwareEntries, ...cleanServicesEntries], ctx.rawData.conditionalSkus || []);
+  ctx.networkRules = (ctx.rawData.networkSniffedRules || []).map(r => ({
+    parentCategory: r.parentCategory || 'System Options',
+    subCategory: r.subCategory || 'Configuration Rules',
+    constraint: r.constraint || r.rule,
+    maxQty: r.maxQty || '',
+    rule: r.rule,
+    ruleType: r.ruleType || 'DYNAMIC_RULE',
+    affectedSkus: r.affectedSkus || [],
+    source: 'BACKEND_NETWORK_SNIFFER'
+  }));
 
   const { enrichedCatalog, enrichedServicesCatalog, validationResult } = await reconcilePriceAndLifecycleHistory(
     hardwareEntries, cleanServicesEntries, subcatList, ctx.targetDir, ctx.filePrefix, ctx.meta, ctx.chassisLabel, ctx.pipelineLogger, ctx.baseSKU, ctx.tables, ctx.chassisDiscovery

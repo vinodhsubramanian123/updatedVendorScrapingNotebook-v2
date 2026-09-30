@@ -72,7 +72,9 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     // 2. Generate updated sync payload for target chassis
     const autoUpload = opts.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : opts.autoUploadNLM === true;
     const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
-      confirmSourceRetirement: opts.confirmSourceRetirement === true,
+      confirmSourceRetirement: opts.confirmSourceRetirement !== undefined
+        ? opts.confirmSourceRetirement === true
+        : (flowType === 'SCRAPE' || process.env.AUTO_RETIRE_STALE_SOURCES === '1'),
       targetDir: opts.targetDir
     });
     

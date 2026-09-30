@@ -42,6 +42,7 @@ return; }
       if (msg.id !== id) return;
       cleanup();
       if (msg.error) reject(new Error(`CDP error [${method}]: ${JSON.stringify(msg.error)}`));
+      else if (msg.result?.exceptionDetails) reject(new Error(`CDP page evaluation failed [${method}]`));
       else resolve(msg.result);
     };
 
@@ -369,12 +370,147 @@ async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, interva
   return false;
 }
 
+/**
+ * Extract rules from captured WebLogic/CLIC network JSON payloads
+ */
+function extractRulesFromNetworkPayload(data, capturedRules, sourceUrl) {
+  if (!data || typeof data !== 'object') return;
+
+  const ruleArrays = [
+    data.rules, data.ruleList, data.adviceList, data.messages, data.conflicts, data.validations
+  ].filter(Array.isArray);
+
+  for (const arr of ruleArrays) {
+    for (const item of arr) {
+      if (!item || typeof item !== 'object') continue;
+      const ruleText = String(item.description || item.message || item.rule || item.text || '').trim();
+      if (!ruleText || ruleText.length < 5) continue;
+
+      const affectedSkus = [];
+      if (Array.isArray(item.affectedSkus)) affectedSkus.push(...item.affectedSkus);
+      if (item.sku || item.partNumber || item.itemId) affectedSkus.push(item.sku || item.partNumber || item.itemId);
+      const foundSkus = ruleText.match(/\b[A-Z0-9]{5,}-[A-Z0-9]{2,3}\b/g) || [];
+      for (const s of foundSkus) {
+        if (!affectedSkus.includes(s)) affectedSkus.push(s);
+      }
+
+      capturedRules.push({
+        level: item.level || 'CHASSIS',
+        ruleType: item.ruleType || item.type || (ruleText.toLowerCase().includes('require') ? 'REQUIRED_DEPENDENCY' : 'MUTUAL_EXCLUSION'),
+        affectedSkus,
+        constraint: item.constraint || ruleText,
+        rule: ruleText,
+        source: 'BACKEND_NETWORK_SNIFFER',
+        sourceUrl: sourceUrl ? sourceUrl.substring(0, 150) : 'REST_API'
+      });
+    }
+  }
+
+  if (Array.isArray(data.items)) {
+    for (const it of data.items) {
+      const pn = it.partNumber || it.sku;
+      if (!pn) continue;
+      if (Array.isArray(it.exclusiveItems) && it.exclusiveItems.length > 0) {
+        capturedRules.push({
+          level: 'CHASSIS',
+          ruleType: 'MUTUAL_EXCLUSION',
+          affectedSkus: [pn, ...it.exclusiveItems],
+          constraint: `${pn} is mutually exclusive with ${it.exclusiveItems.join(', ')}`,
+          rule: `${pn} conflicts with ${it.exclusiveItems.join(', ')}`,
+          source: 'BACKEND_NETWORK_SNIFFER'
+        });
+      }
+      if (Array.isArray(it.requiredItems) && it.requiredItems.length > 0) {
+        capturedRules.push({
+          level: 'CHASSIS',
+          ruleType: 'REQUIRED_DEPENDENCY',
+          affectedSkus: [pn, ...it.requiredItems],
+          constraint: `${pn} requires ${it.requiredItems.join(', ')}`,
+          rule: `${pn} requires ${it.requiredItems.join(', ')}`,
+          source: 'BACKEND_NETWORK_SNIFFER'
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Enables CDP Network tracking to sniff and capture backend REST/AJAX JSON payloads (configurator advice, rules, constraint matrices).
+ * @param {WebSocket} ws
+ * @param {object} [options]
+ * @returns {Promise<{ getCapturedPayloads: Function, getCapturedRules: Function, detach: Function }>}
+ */
+async function setupNetworkSniffer(ws, options = {}) {
+  try {
+    await sendCommand(ws, 'Network.enable');
+  } catch (e) {
+    console.warn(`[WARN] [CDP_NETWORK] Could not enable Network domain: ${e.message}`);
+    return {
+      getCapturedPayloads: () => [],
+      getCapturedRules: () => [],
+      detach: async () => {}
+    };
+  }
+
+  const capturedResponses = [];
+  const capturedRules = [];
+
+  const messageHandler = async (raw) => {
+    try {
+      const msg = JSON.parse(raw.toString());
+      if (msg.method === 'Network.responseReceived') {
+        const { requestId, response } = msg.params || {};
+        const url = (response?.url || '').toLowerCase();
+        const mimeType = (response?.mimeType || '').toLowerCase();
+
+        const isRuleEndpoint = url.includes('/configurator/') ||
+                               url.includes('/clic/') ||
+                               url.includes('/rules/') ||
+                               url.includes('/advice/') ||
+                               url.includes('/solution/') ||
+                               url.includes('/item/');
+
+        const isJson = mimeType.includes('application/json') || mimeType.includes('text/x-json') || mimeType.includes('text/json');
+
+        if (isRuleEndpoint || isJson) {
+          try {
+            const bodyRes = await sendCommand(ws, 'Network.getResponseBody', { requestId }, 8000);
+            if (bodyRes?.body) {
+              const parsed = JSON.parse(bodyRes.body);
+              capturedResponses.push({ url, status: response.status, data: parsed, timestamp: new Date().toISOString() });
+              extractRulesFromNetworkPayload(parsed, capturedRules, response.url);
+            }
+          } catch (_) {
+            // Stream not ready or non-json body
+          }
+        }
+      }
+    } catch (_) {}
+  };
+
+  ws.on('message', messageHandler);
+
+  const detach = async () => {
+    ws.removeListener('message', messageHandler);
+    try {
+      await sendCommand(ws, 'Network.disable');
+    } catch (_) {}
+  };
+
+  return {
+    getCapturedPayloads: () => [...capturedResponses],
+    getCapturedRules: () => [...capturedRules],
+    detach
+  };
+}
+
 module.exports = {
   sendCommand,
   getOCATarget,
   getAnyPageTarget,
   connectWS,
   setupDialogAutoHandler,
+  setupNetworkSniffer,
   dismissDOMModals,
   expandSections,
   assertExpansionThreshold,
@@ -383,6 +519,8 @@ module.exports = {
   waitForDOMPredicate,
   CDP_PORT,
   deriveTextFromTables: domExtract.deriveTextFromTables,
+  extractHiddenElements: domExtract.extractHiddenElements,
+  probeConditionalSkuVisibility: domExtract.probeConditionalSkuVisibility,
   extractChunkedText: (ws, chunkSize) => domExtract.extractChunkedText(ws, sendCommand, chunkSize),
   extractTablesAsRows: (ws, scopeSelector) => domExtract.extractTablesAsRows(ws, sendCommand, scopeSelector),
   extractSectionHeaders: (ws) => domExtract.extractSectionHeaders(ws, sendCommand)

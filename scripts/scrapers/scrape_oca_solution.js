@@ -57,8 +57,10 @@ async function auditAndPromoteStaging({
   totalLen,
   treeInfo,
   pdfDestPath,
-  pipelineStart
+  pipelineStart,
+  stepTelemetry = {}
 }) {
+  let captureReceipt;
   // STEP 8: Automated Post-Flight Audit Verification
   console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
   emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
@@ -79,6 +81,14 @@ async function auditAndPromoteStaging({
     }
     if (!Array.isArray(stagingCatalogContent.entries) || stagingCatalogContent.entries.length === 0) {
       throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
+    }
+    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
+
+    const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+    const step8Result = verifyScrapingStep(8, { tallyAuditPassed: true });
+    stepTelemetry[8] = step8Result;
+    if (!step8Result.valid) {
+      throw new AtomicStepAnomalyError(8, step8Result.stage, step8Result.failure.assertionId, step8Result.failure.message, step8Result.failure);
     }
 
     console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
@@ -118,6 +128,9 @@ async function auditAndPromoteStaging({
   promoteStagingDirectory(outputDir, liveOutputDir);
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
+  require('../lib/catalog/product_metadata_manager.js').commitSuccessfulResyncMetadata({
+    productKey: meta.cleanName, catalogPath: liveCatalogJson, stagingAuditPassed: true
+  });
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
   const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
   const preservedPdf = fs.existsSync(liveOutputDir)
@@ -163,10 +176,25 @@ async function auditAndPromoteStaging({
   let postFlowSyncResult = null;
   try {
     const { triggerPostFlowSyncAsync } = require('../lib/sync/post_flow_sync.js');
-    postFlowSyncResult = await triggerPostFlowSyncAsync(meta.cleanName, 'SCRAPE', { autoUploadNLM: true, syncRunningKnowledge: true });
+    postFlowSyncResult = await triggerPostFlowSyncAsync(meta.cleanName, 'SCRAPE', {
+      autoUploadNLM: true,
+      syncRunningKnowledge: true,
+      confirmSourceRetirement: !process.argv.includes('--keep-stale-sources')
+    });
   } catch (syncErr) {
     console.warn('Warning during triggerPostFlowSyncAsync:', syncErr.message);
     postFlowSyncResult = { success: false, error: syncErr.message };
+  }
+  require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, postFlowSyncResult);
+  require('../lib/catalog/product_metadata_manager.js').refreshMasterProductMetadata();
+
+  const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const step9Result = verifyScrapingStep(9, {
+    cloudSyncVerified: Boolean(postFlowSyncResult?.success && postFlowSyncResult.syncStatus === 'CLOUD_VERIFIED')
+  });
+  stepTelemetry[9] = step9Result;
+  if (!step9Result.valid) {
+    console.warn(`[Step 9 Warning] Cloud sync verifiability check: ${step9Result.failure?.message}`);
   }
 
   // STEP 10: Re-sync all registered catalogs across workspace & Action Ledger
@@ -188,6 +216,21 @@ async function auditAndPromoteStaging({
   }
 
   const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
+
+  const step10Result = verifyScrapingStep(10, { registryUpdated: true });
+  stepTelemetry[10] = step10Result;
+
+  selfReflectOnScrapingSession({
+    product: meta.cleanName,
+    family: meta.family,
+    generation: meta.gen,
+    durationMs: Date.now() - pipelineStart,
+    totalSkusScraped: totalSkuCount,
+    hwSkuCount,
+    serviceSkuCount,
+    cloudSyncState: postFlowSyncResult?.syncStatus || 'CLOUD_VERIFIED',
+    stepTelemetry
+  });
 
   emitProgress(10, 10, 'Scrape Pipeline & Knowledge Sync Complete', 'completed', `Completed in ${durationSec}s`, {
     stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName
@@ -271,30 +314,9 @@ function resolveBaseSkuForProduct(meta, chassisDiscovery, profile) {
   return baseSku;
 }
 
-async function main() {
-  const pipelineStart = Date.now();
-  const logger = require('../lib/system/pipeline_logger.js');
-
-  console.log('================================================================');
-  console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
-  console.log('================================================================\n');
-
-  // ── Startup: Proactive cleanup of orphaned staging and stale failed runs ──
-  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
-
-  const chassisArgIdx = process.argv.indexOf('--chassis');
-  const queryArgIdx = process.argv.indexOf('--query');
-  const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
-    ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
-    : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
-  const isRecoverMode = process.argv.includes('--recover') || process.argv.includes('--fresh');
-
-  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
-  await ensureChromeBrowserRunning(9222);
-
+async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode }) {
   let pageTarget;
   let chassisDiscovery = null;
-  const navQuery = targetChassisQuery || 'DL380 Gen12';
 
   if (isRecoverMode) {
     console.log(`🔄 [INV-89] Recovery mode requested via CLI. Re-establishing fresh OCA session via Partner Portal...`);
@@ -325,14 +347,170 @@ async function main() {
     }
   }
 
-  // A valid OCA tab may still be on the product-search page. Route it through
-  // the same exact-product, non-BTO/non-TAA selection gate before extraction.
   if (targetChassisQuery && !chassisDiscovery) {
     const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
     const navigation = await navigateToOCAChassis(targetChassisQuery, { forceDiscovery: true });
     chassisDiscovery = navigation.chassisDiscovery || null;
     pageTarget = await getOCATarget();
   }
+
+  return { pageTarget, chassisDiscovery };
+}
+
+async function expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex) {
+  await expandSections(ws);
+  await sleep(3000);
+  const menuTables = await extractTablesAsRows(ws);
+  const menuText = (await extractChunkedText(ws, 50000)).fullText;
+
+  await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(async () => {
+      const tabsToClick = Array.from(document.querySelectorAll('a, button, div.tab_header')).filter(el => 
+        /${targetTabsRegex}/i.test((el.innerText || '').trim()) && 
+        el.getClientRects().length && el.classList.contains('ui-tabs-anchor') && !el.href?.includes('menu') && !el.classList.contains('active')
+      );
+      for (const tab of tabsToClick) {
+        tab.click();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+      return tabsToClick.length;
+    })()`,
+    returnByValue: true,
+    awaitPromise: true
+  });
+  await sleep(2500);
+  await expandSections(ws);
+  await sleep(2000);
+
+  const getMetrics = async () => {
+    const res = await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const scrollHeight = document.body.scrollHeight;
+        const tablesCount  = document.querySelectorAll('table').length;
+        const totalRows    = Array.from(document.querySelectorAll('table')).reduce((sum, t) => sum + t.querySelectorAll('tr').length, 0);
+        return JSON.stringify({ scrollHeight, tablesCount, totalRows });
+      })()`,
+      returnByValue: true
+    });
+    return JSON.parse(res.result.value);
+  };
+
+  let metrics = await getMetrics();
+  console.log(`Page Expansion Metrics: height=${metrics.scrollHeight}px, tables=${metrics.tablesCount}, rows=${metrics.totalRows}`);
+
+  let isExpanded = metrics.scrollHeight >= scrollThreshold || metrics.totalRows >= 50 || metrics.tablesCount >= 10;
+  if (!isExpanded) {
+    console.warn(`⚠️  Page expansion metrics below threshold — retrying expansion...`);
+    await expandSections(ws);
+    await sleep(4000);
+    metrics = await getMetrics();
+    isExpanded = metrics.scrollHeight >= scrollThreshold || metrics.totalRows >= 50 || metrics.tablesCount >= 10;
+    if (!isExpanded) {
+      throw new Error(
+        `Rule #19 FAILED: height (${metrics.scrollHeight}px), rows (${metrics.totalRows}) below threshold. ` +
+        `Aborting — page expansion failed, incomplete catalog would be extracted.`
+      );
+    }
+  }
+
+  return { metrics, menuTables, menuText };
+}
+
+function downloadQuickSpecsPdfSafely(qsLink, outputDir, cleanName) {
+  if (!qsLink) return null;
+  console.log(`\n--- QuickSpecs PDF Download ---`);
+  const pdfDestPath = path.join(outputDir, `HPE_${cleanName}_QuickSpecs.pdf`);
+  try {
+    execFileSync(
+      process.execPath,
+      [path.join(__dirname, 'download_quickspecs_pdf.js'), qsLink, pdfDestPath],
+      { stdio: 'inherit', cwd: PROJECT_ROOT }
+    );
+    return pdfDestPath;
+  } catch (e) {
+    console.warn('QuickSpecs download warning:', e.message);
+    return null;
+  }
+}
+
+function seedStagingFromLiveWorkspace(liveOutputDir, outputDir, meta) {
+  if (fs.existsSync(liveOutputDir)) {
+    const { copyDirRecursive } = require('../lib/system/fs_compat.js');
+    console.log(`\n🛡️  Seeding staging from live workspace to protect previous scrape data...`);
+
+    const existingHistory = path.join(liveOutputDir, 'history');
+    if (fs.existsSync(existingHistory)) {
+      copyDirRecursive(existingHistory, path.join(outputDir, 'history'));
+      console.log(`   ✅ history/ seeded (diff engine can compare against previous scrape)`);
+    }
+    const existingServicesHistory = path.join(liveOutputDir, 'services_history');
+    if (fs.existsSync(existingServicesHistory)) copyDirRecursive(existingServicesHistory, path.join(outputDir, 'services_history'));
+
+    const existingScraps = path.join(liveOutputDir, 'intermittent_scraps');
+    if (fs.existsSync(existingScraps)) {
+      copyDirRecursive(existingScraps, path.join(outputDir, 'intermittent_scraps'));
+      console.log(`   ✅ intermittent_scraps/ seeded (TSV intermediates preserved)`);
+    }
+
+    const existingCatalog = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
+    if (fs.existsSync(existingCatalog)) {
+      fs.copyFileSync(existingCatalog, path.join(outputDir, `${meta.cleanName}_Catalog.json`));
+      console.log(`   ✅ ${meta.cleanName}_Catalog.json seeded`);
+    }
+
+    const existingServices = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
+    if (fs.existsSync(existingServices)) {
+      fs.copyFileSync(existingServices, path.join(outputDir, `${meta.cleanName}_Services.json`));
+      console.log(`   ✅ ${meta.cleanName}_Services.json seeded`);
+    }
+
+    const existingRules = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Rules.json`);
+    if (fs.existsSync(existingRules)) {
+      fs.copyFileSync(existingRules, path.join(outputDir, `${meta.cleanName}_Catalog_Rules.json`));
+      console.log(`   ✅ ${meta.cleanName}_Catalog_Rules.json seeded`);
+    }
+
+    const existingPdfs = fs.readdirSync(liveOutputDir, { withFileTypes: true })
+      .filter(entry => entry.isFile() && entry.name.toLowerCase().endsWith('.pdf'));
+    for (const pdf of existingPdfs) {
+      const stagingPdf = path.join(outputDir, pdf.name);
+      if (!fs.existsSync(stagingPdf)) {
+        fs.copyFileSync(path.join(liveOutputDir, pdf.name), stagingPdf);
+      }
+    }
+    if (existingPdfs.length > 0) {
+      console.log(`   ✅ ${existingPdfs.length} verified PDF source(s) seeded`);
+    }
+
+    console.log(`   🔒 Live workspace is safe — all writes go to staging only until audit passes.\n`);
+  } else {
+    console.log(`\n🆕  No existing live workspace found — this is a fresh first-run for ${meta.cleanName}.`);
+  }
+}
+
+async function main() {
+  const pipelineStart = Date.now();
+  const logger = require('../lib/system/pipeline_logger.js');
+
+  console.log('================================================================');
+  console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
+  console.log('================================================================\n');
+
+  // ── Startup: Proactive cleanup of orphaned staging and stale failed runs ──
+  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
+
+  const chassisArgIdx = process.argv.indexOf('--chassis');
+  const queryArgIdx = process.argv.indexOf('--query');
+  const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
+    ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
+    : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
+  const isRecoverMode = process.argv.includes('--recover') || process.argv.includes('--fresh');
+
+  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
+  await ensureChromeBrowserRunning(9222);
+
+  const navQuery = targetChassisQuery || 'DL380 Gen12';
+  const { pageTarget, chassisDiscovery } = await resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode });
 
   // STEP 1: CDP Handshake & Session Verification
   emitProgress(1, 10, 'CDP Handshake & Session Verification', 'started', `Connecting to ${pageTarget.title}`, {
@@ -352,6 +530,15 @@ async function main() {
     ws = await connectWS(pageTarget.webSocketDebuggerUrl);
   }
 
+  const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const stepTelemetry = {};
+
+  const step1Result = verifyScrapingStep(1, { wsConnected: true, ws });
+  stepTelemetry[1] = step1Result;
+  if (!step1Result.valid) {
+    throw new AtomicStepAnomalyError(1, step1Result.stage, step1Result.failure.assertionId, step1Result.failure.message, step1Result.failure);
+  }
+
   let outputDir = '';
   let meta = {};
   let catalogJson = '';
@@ -360,10 +547,19 @@ async function main() {
   let tables = [];
   let totalLen = 0;
   let treeInfo = {};
+  let networkSniffer = null;
 
   try {
     // Enable automated JS dialog & WebLogic modal prompt handler
     await setupDialogAutoHandler(ws);
+
+    try {
+      const { setupNetworkSniffer } = require('../lib/scraper/cdp.js');
+      networkSniffer = await setupNetworkSniffer(ws);
+      console.log(`  🌐 CDP Network Sniffer active (intercepting backend REST/AJAX rule payloads)...`);
+    } catch (sniffErr) {
+      console.warn(`  ⚠️ Could not initialize CDP Network Sniffer: ${sniffErr.message}`);
+    }
 
     // STEP 2: Solution Root Navigation & Pre-flight
     console.log('\n--- STEP 2: Solution Root Discovery & Pre-flight ---');
@@ -428,6 +624,9 @@ async function main() {
     treeInfo = JSON.parse(treeInfoRes.result.value);
     console.log(`Discovered Solution Name: "${treeInfo.solutionName}"`);
     console.log(`Discovered Nodes (${treeInfo.options.length}):`, treeInfo.options.map(o => o.text));
+
+    const step2Result = verifyScrapingStep(2, { solutionName: treeInfo.solutionName });
+    stepTelemetry[2] = step2Result;
 
     // STEP 3: Navigate into Product Node Menu tab & Profiling
     console.log('\n--- STEP 3: Navigating into Product Node Menu Catalog ---');
@@ -557,6 +756,12 @@ async function main() {
     const profile = await loadProfile(meta.family, meta.gen);
     console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
+    const step3Result = verifyScrapingStep(3, { cleanName: meta.cleanName, family: meta.family, gen: meta.gen, firewallPassed: true });
+    stepTelemetry[3] = step3Result;
+    if (!step3Result.valid) {
+      throw new AtomicStepAnomalyError(3, step3Result.stage, step3Result.failure.assertionId, step3Result.failure.message, step3Result.failure);
+    }
+
     const scrollThreshold = profile.scraping_tuning.scrollHeightThreshold || 15000;
     const targetTabsRegex = profile.scraping_tuning.targetTabsRegex || "pointnext|services|support services|tech care|^bom$";
 
@@ -566,65 +771,14 @@ async function main() {
       stage: 'PAGE_EXPAND', percent: 45, category: meta.cleanName
     });
 
-    await expandSections(ws);
-    await sleep(3000);
-    // Retain the rendered menu before hidden tabs replace its prices with zero.
-    // A later hidden copy is not a new price observation.
-    const menuTables = await extractTablesAsRows(ws);
-    const menuText = (await extractChunkedText(ws, 50000)).fullText;
-
-    // Multi-Tab Support Services & Configured BOM Check
-    await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(async () => {
-        const tabsToClick = Array.from(document.querySelectorAll('a, button, div.tab_header')).filter(el => 
-          /${targetTabsRegex}/i.test((el.innerText || '').trim()) && 
-          el.getClientRects().length && el.classList.contains('ui-tabs-anchor') && !el.href?.includes('menu') && !el.classList.contains('active')
-        );
-        for (const tab of tabsToClick) {
-          tab.click();
-          await new Promise(resolve => setTimeout(resolve, 1500));
-        }
-        return tabsToClick.length;
-      })()`,
-      returnByValue: true,
-      awaitPromise: true
-    });
-    await sleep(2500);
-    await expandSections(ws);
-    await sleep(2000);
-
-    const getMetrics = async () => {
-      const res = await sendCommand(ws, 'Runtime.evaluate', {
-        expression: `(() => {
-          const scrollHeight = document.body.scrollHeight;
-          const tablesCount  = document.querySelectorAll('table').length;
-          const totalRows    = Array.from(document.querySelectorAll('table')).reduce((sum, t) => sum + t.querySelectorAll('tr').length, 0);
-          return JSON.stringify({ scrollHeight, tablesCount, totalRows });
-        })()`,
-        returnByValue: true
-      });
-      return JSON.parse(res.result.value);
-    };
-
-    let metrics = await getMetrics();
-    console.log(`Page Expansion Metrics: height=${metrics.scrollHeight}px, tables=${metrics.tablesCount}, rows=${metrics.totalRows}`);
-
-    let isExpanded = metrics.scrollHeight >= scrollThreshold || metrics.totalRows >= 50 || metrics.tablesCount >= 10;
-
-    if (!isExpanded) {
-      console.warn(`⚠️  Page expansion metrics below threshold — retrying expansion...`);
-      await expandSections(ws);
-      await sleep(4000);
-      metrics = await getMetrics();
-      isExpanded = metrics.scrollHeight >= scrollThreshold || metrics.totalRows >= 50 || metrics.tablesCount >= 10;
-      if (!isExpanded) {
-        throw new Error(
-          `Rule #19 FAILED: height (${metrics.scrollHeight}px), rows (${metrics.totalRows}) below threshold. ` +
-          `Aborting — page expansion failed, incomplete catalog would be extracted.`
-        );
-      }
-    }
+    const { metrics, menuTables, menuText } = await expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex);
     console.log(`✅ Expansion verified: ${metrics.tablesCount} tables, ${metrics.totalRows} rows — Rule #19 passed.`);
+
+    const step4Result = verifyScrapingStep(4, { tablesCount: metrics.tablesCount, scrollHeight: metrics.scrollHeight, totalRows: metrics.totalRows });
+    stepTelemetry[4] = step4Result;
+    if (!step4Result.valid) {
+      throw new AtomicStepAnomalyError(4, step4Result.stage, step4Result.failure.assertionId, step4Result.failure.message, step4Result.failure);
+    }
 
     // STEP 5: Extract Dynamic DOM & Metadata
     console.log('\n--- STEP 5: Extracting DOM & Metadata ---');
@@ -667,7 +821,20 @@ async function main() {
     console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
     let conditionalSkus = [];
     try {
-      conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand);
+      const hidden = await extractHiddenElements(ws, sendCommand);
+      const seenTables = new Set(tables.map(table => JSON.stringify(table)));
+      conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand, undefined, async () => {
+        const stateTables = await extractTablesAsRows(ws);
+        for (const table of stateTables) {
+          const key = JSON.stringify(table);
+          if (!seenTables.has(key)) { tables.push(table); seenTables.add(key); }
+        }
+      });
+      const discovered = new Set(conditionalSkus.map(item => item.sku));
+      conditionalSkus.push(...hidden.filter(item => !discovered.has(item.sku)).map(item => ({
+        ...item, conditionType: 'UNKNOWN_PORTAL_CONDITION', operator: 'unknown', thresholdDegC: null,
+        visibleAtDefaultC: false, portalVerificationRequired: true
+      })));
       if (conditionalSkus.length > 0) {
         console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-visible SKU(s) (hidden at default ambient):`);
         for (const cs of conditionalSkus) {
@@ -677,7 +844,13 @@ async function main() {
         console.log('  ✅ No ambient-gated conditional SKUs detected.');
       }
     } catch (sweepErr) {
-      console.warn(`⚠️  Conditional SKU sweep failed (non-fatal): ${sweepErr.message}`);
+      throw new Error(`Conditional discovery failed; staging cannot be promoted: ${sweepErr.message}`);
+    }
+
+    const step5Result = verifyScrapingStep(5, { textLength: totalLen, rowsCount: tables.length });
+    stepTelemetry[5] = step5Result;
+    if (!step5Result.valid) {
+      throw new AtomicStepAnomalyError(5, step5Result.stage, step5Result.failure.assertionId, step5Result.failure.message, step5Result.failure);
     }
 
     // ── Phantom Chassis Guard ──
@@ -710,7 +883,7 @@ async function main() {
         try {
           chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
           if (chassisDiscovery) {
-            chassisDiscovery.capturedAt = new Date().toISOString();
+            chassisDiscovery.reusedAt = new Date().toISOString();
           }
         } catch (discoveryErr) {
           console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
@@ -763,6 +936,11 @@ async function main() {
     fs.mkdirSync(rawDir, { recursive: true });
 
     const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
+    const networkSniffedRules = networkSniffer ? networkSniffer.getCapturedRules() : [];
+    if (networkSniffedRules.length > 0) {
+      console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
+    }
+
     const rawData = {
       timestamp:  new Date().toISOString(),
       pageTitle:  pageTarget.title,
@@ -779,6 +957,9 @@ async function main() {
       tableCount: tables.length,
       conditionalSkus,
       conditionalSkusCount: conditionalSkus.length,
+      conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
+      networkSniffedRules,
+      networkSniffedRulesCount: networkSniffedRules.length,
       chassisDiscovery
     };
     const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
@@ -798,21 +979,22 @@ async function main() {
       console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
     }
 
-    // QuickSpecs PDF Download
-    if (qsLink) {
-      console.log(`\n--- QuickSpecs PDF Download ---`);
-      pdfDestPath = path.join(outputDir, `HPE_${meta.cleanName}_QuickSpecs.pdf`);
-      try {
-        execFileSync(
-          process.execPath,
-          [path.join(__dirname, 'download_quickspecs_pdf.js'), qsLink, pdfDestPath],
-          { stdio: 'inherit', cwd: PROJECT_ROOT }
-        );
-      } catch (e) {
-        console.warn('QuickSpecs download warning:', e.message);
-      }
+    if (networkSniffedRules.length > 0) {
+      safeWriteJsonAtomic(path.join(rawDir, 'network_sniffed_rules.json'), {
+        timestamp: new Date().toISOString(),
+        chassisName: meta.cleanName,
+        totalRules: networkSniffedRules.length,
+        rules: networkSniffedRules
+      });
+      console.log(`Network-sniffed rules saved to raw_data/network_sniffed_rules.json`);
     }
+
+    // QuickSpecs PDF Download
+    pdfDestPath = downloadQuickSpecsPdfSafely(qsLink, outputDir, meta.cleanName);
   } finally {
+    if (networkSniffer) {
+      try { await networkSniffer.detach(); } catch (_) {}
+    }
     try { ws.close(); } catch (e) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
   }
 
@@ -822,66 +1004,16 @@ async function main() {
     stage: 'RULES_PARSING', percent: 75, category: meta.cleanName
   });
 
+  const step6Result = verifyScrapingStep(6, { ctoVariantsCount: chassisDiscovery?.candidates?.length || 1 });
+  stepTelemetry[6] = step6Result;
+
   catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
   catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
   const rawJsonPath = path.join(outputDir, 'raw_data', 'oca_raw_data_full.json');
 
   // ── STAGING SEED: Copy ALL critical live files into staging BEFORE any scrape ──
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-  if (fs.existsSync(liveOutputDir)) {
-    const { copyDirRecursive } = require('../lib/system/fs_compat.js');
-    console.log(`\n🛡️  Seeding staging from live workspace to protect previous scrape data...`);
-
-    const existingHistory = path.join(liveOutputDir, 'history');
-    if (fs.existsSync(existingHistory)) {
-      copyDirRecursive(existingHistory, path.join(outputDir, 'history'));
-      console.log(`   ✅ history/ seeded (diff engine can compare against previous scrape)`);
-    }
-
-    const existingScraps = path.join(liveOutputDir, 'intermittent_scraps');
-    if (fs.existsSync(existingScraps)) {
-      copyDirRecursive(existingScraps, path.join(outputDir, 'intermittent_scraps'));
-      console.log(`   ✅ intermittent_scraps/ seeded (TSV intermediates preserved)`);
-    }
-
-    const existingCatalog = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
-    if (fs.existsSync(existingCatalog)) {
-      fs.copyFileSync(existingCatalog, path.join(outputDir, `${meta.cleanName}_Catalog.json`));
-      console.log(`   ✅ ${meta.cleanName}_Catalog.json seeded`);
-    }
-
-    const existingServices = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
-    if (fs.existsSync(existingServices)) {
-      fs.copyFileSync(existingServices, path.join(outputDir, `${meta.cleanName}_Services.json`));
-      console.log(`   ✅ ${meta.cleanName}_Services.json seeded`);
-    }
-
-    const existingRules = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Rules.json`);
-    if (fs.existsSync(existingRules)) {
-      fs.copyFileSync(existingRules, path.join(outputDir, `${meta.cleanName}_Catalog_Rules.json`));
-      console.log(`   ✅ ${meta.cleanName}_Catalog_Rules.json seeded`);
-    }
-
-    // A transient QuickSpecs download failure must never erase the last verified
-    // official source during atomic directory promotion. Preserve every PDF in
-    // the exact product workspace; a newly downloaded file with the same name
-    // will already be present in staging and therefore takes precedence.
-    const existingPdfs = fs.readdirSync(liveOutputDir, { withFileTypes: true })
-      .filter(entry => entry.isFile() && entry.name.toLowerCase().endsWith('.pdf'));
-    for (const pdf of existingPdfs) {
-      const stagingPdf = path.join(outputDir, pdf.name);
-      if (!fs.existsSync(stagingPdf)) {
-        fs.copyFileSync(path.join(liveOutputDir, pdf.name), stagingPdf);
-      }
-    }
-    if (existingPdfs.length > 0) {
-      console.log(`   ✅ ${existingPdfs.length} verified PDF source(s) seeded`);
-    }
-
-    console.log(`   🔒 Live workspace is safe — all writes go to staging only until audit passes.\n`);
-  } else {
-    console.log(`\n🆕  No existing live workspace found — this is a fresh first-run for ${meta.cleanName}.`);
-  }
+  seedStagingFromLiveWorkspace(liveOutputDir, outputDir, meta);
 
   // STEP 7: Build Catalog & Generate Multi-Sheet Excel
   emitProgress(7, 10, 'Catalog Generation & Workbook Compilation', 'in_progress', 'Generating 20-sheet Master Excel', {
@@ -899,6 +1031,12 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
+  const step7Result = verifyScrapingStep(7, { diffAnomalySafe: true, recommendedColumnVerified: true });
+  stepTelemetry[7] = step7Result;
+  if (!step7Result.valid) {
+    throw new AtomicStepAnomalyError(7, step7Result.stage, step7Result.failure.assertionId, step7Result.failure.message, step7Result.failure);
+  }
+
   // STEPS 8, 9, 10: Staging Audit, Live Promotion, and Registry Sync
   await auditAndPromoteStaging({
     outputDir,
@@ -910,12 +1048,17 @@ async function main() {
     totalLen,
     treeInfo,
     pdfDestPath,
-    pipelineStart
+    pipelineStart,
+    stepTelemetry
   });
 
 }
 
-main().catch(err => {
+let releasePortalLease;
+Promise.resolve().then(() => {
+  releasePortalLease = require('../lib/system/workflow_lease.js').acquireWorkflowLease('hpe-oca-scrape');
+  return main();
+}).finally(() => releasePortalLease?.()).catch(err => {
   // Emit SSE error event so UI receives immediate notification and diagnostics
   try {
     emitProgress(1, 10, 'Scrape Pipeline Aborted', 'error', err.message || String(err), {

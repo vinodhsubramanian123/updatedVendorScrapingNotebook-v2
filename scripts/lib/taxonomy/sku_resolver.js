@@ -11,6 +11,7 @@
 
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
+const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 
 /**
  * Standard Chassis Physical Parameters Vector (\theta_{chassis})
@@ -60,10 +61,19 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
   const subcat = String(skuData.subCategory || skuData['Subcategory'] || '').toLowerCase();
   const itemRole = (skuData['Component Role'] || classifyComponentRole(parentCat, desc)).toLowerCase();
 
-  // 1. Lifecycle filter: reject obsolete/discontinued unless explicitly allowed
+  // 1. Lifecycle filter: reject obsolete/discontinued or near-retirement (<90 days) unless explicitly allowed
   const lifecycle = String(skuData['Lifecycle Status'] || skuData.lifecycleStatus || '').toLowerCase();
-  if (!allowObsolete && (lifecycle.includes('obsolete') || lifecycle.includes('discontinued') || skuData['Diff Status'] === 'REMOVED')) {
-    return { eligible: false, score: 0 };
+  if (!allowObsolete) {
+    if (lifecycle.includes('obsolete') || lifecycle.includes('discontinued') || skuData['Diff Status'] === 'REMOVED') {
+      return { eligible: false, score: 0 };
+    }
+    const discDate = skuData['Discontinued Date'] || skuData['Discontinuation Date'] || skuData.discontinuedDate || skuData.discontinuationDate;
+    if (discDate) {
+      const retirement = analyzeRetirementDate(discDate, { warningDays: 90 });
+      if (retirement.isPast || (retirement.known && retirement.daysRemaining < 90)) {
+        return { eligible: false, score: 0 };
+      }
+    }
   }
 
   // 2. Role and Category compatibility filter
@@ -146,6 +156,15 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
   if (specs.speedGb) score += 15;
   if (specs.wattage) score += 15;
   if (lifecycle === 'active') score += 5;
+  const isRecommended = String(skuData['HPE Recommended'] || skuData.recommended || '').toLowerCase();
+  if (isRecommended === 'yes' || isRecommended === 'true') score += 5;
+  const scoreDiscDate = skuData['Discontinued Date'] || skuData['Discontinuation Date'] || skuData.discontinuedDate || skuData.discontinuationDate;
+  if (scoreDiscDate) {
+    const retirement = analyzeRetirementDate(scoreDiscDate, { warningDays: 90 });
+    if (retirement.known && !retirement.isPast && retirement.daysRemaining >= 180) {
+      score += 5; // Long active horizon
+    }
+  }
 
   return { eligible: true, score };
 }

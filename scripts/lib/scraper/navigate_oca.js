@@ -377,7 +377,26 @@ function buildSelectAndClickExpression(selected) {
 /**
  * Searches for chassis query on OCA catalog landing page and navigates into configuration.
  */
-async function searchAndConfigureChassis(ws, query, ocaTarget) {
+/**
+ * Run candidate discovery on OCA Product Search page without clicking into configuration.
+ * @param {WebSocket} ws
+ * @param {string} query
+ * @returns {Promise<{ candidates: Array, eligibleCandidates: Array }>}
+ */
+async function discoverChassisCandidates(ws, query) {
+  const navExpr = buildDiscoveryExpression(query);
+  const discoveryRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: navExpr,
+    awaitPromise: true,
+    returnByValue: true
+  }, 120000);
+  const discovery = discoveryRes?.result?.value || {};
+  const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
+  const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
+  return { candidates, eligibleCandidates };
+}
+
+async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
   await sendCommand(ws, 'Page.bringToFront');
   console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
   const navExpr = buildDiscoveryExpression(query);
@@ -411,7 +430,19 @@ async function searchAndConfigureChassis(ws, query, ocaTarget) {
 
   console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} eligible standard CTO base(s)).`);
 
-  const selected = eligibleCandidates[0];
+  let selected = null;
+  if (options.targetSku) {
+    selected = eligibleCandidates.find(c => String(c.sku || '').toUpperCase() === String(options.targetSku).toUpperCase());
+    if (selected) console.log(`🎯 Matched requested target SKU: ${selected.sku} - "${selected.text}"`);
+  } else if (options.variantFilter) {
+    const vRe = new RegExp(options.variantFilter, 'i');
+    selected = eligibleCandidates.find(c => vRe.test(c.text || '') || vRe.test(c.sku || ''));
+    if (selected) console.log(`🎯 Matched requested variant filter "${options.variantFilter}": ${selected.sku} - "${selected.text}"`);
+  }
+  if (!selected) {
+    selected = eligibleCandidates[0];
+  }
+
   if (!selected) {
     ws.close();
     const error = new Error(
@@ -947,7 +978,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
         }
         return menuCheck.result;
       }
-      return await searchAndConfigureChassis(menuCheck.ws, query, ocaTarget);
+      return await searchAndConfigureChassis(menuCheck.ws, query, ocaTarget, options);
     } catch (ocaErr) {
       if (['OCA_PRODUCT_NOT_FOUND', 'OCA_SELECTION_FAILED'].includes(ocaErr.code)) throw ocaErr;
       console.warn(`⚠️ [RECOVERY] OCA interaction error: ${ocaErr.message}. Re-establishing session via Partner Portal...`);
@@ -1075,6 +1106,8 @@ if (require.main === module) {
 module.exports = {
   navigateToOCAChassis,
   recoverAndLaunchFreshOCA,
+  searchAndConfigureChassis,
+  discoverChassisCandidates,
   normalizeProductText,
   extractModelGeneration,
   isExactProductCandidate,

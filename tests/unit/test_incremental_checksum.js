@@ -56,7 +56,7 @@ const diffResult = computeIncrementalDifferential(newScrape, existingCatalog);
 assert.strictEqual(diffResult.stats.unchangedSkusCount, 1, 'Should find 1 unchanged SKU');
 assert.strictEqual(diffResult.stats.modifiedSkusCount, 1, 'Should find 1 modified SKU');
 assert.strictEqual(diffResult.stats.addedSkusCount, 1, 'Should find 1 added SKU');
-assert(diffResult.stats.estimatedTokensSaved > 0, 'Should estimate token savings');
+assert.strictEqual(diffResult.stats.estimatedTokensSaved, 0, 'Post-classification diff must not claim unmeasured LLM savings');
 
 console.log(`✅ PASS: Incremental Hash Diff (Saved ~${diffResult.stats.estimatedTokensSaved} tokens)`);
 

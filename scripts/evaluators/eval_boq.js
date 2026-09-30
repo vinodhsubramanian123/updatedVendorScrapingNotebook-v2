@@ -306,6 +306,15 @@ async function ingestAndConsolidateBoq(options) {
 
   // Pre-Flight Scraped-Catalog Gate (INV-96)
   const isExplicitTestPath = /(?:^|[\\/])tests[\\/]fixtures|(?:^|[\\/])outputs[\\/]temp[\\/]test_payloads/i.test(chassisDir) || process.env.NODE_ENV === 'test';
+  if (!isExplicitTestPath && !options.OFFLINE_MODE && !process.env.CI) {
+    const { buildRefreshPlan, executeRefreshPlan } = require('../lib/catalog/catalog_refresh_plan.js');
+    const plan = buildRefreshPlan({ products: [detectedChassisName] });
+    const refresh = executeRefreshPlan(plan);
+    if (!refresh.success) throw new Error(`ERR_CATALOG_REFRESH: ${JSON.stringify(refresh.results)}`);
+    const refreshed = require('../lib/catalog/product_metadata_manager.js').getProductGenerationMetadata(detectedChassisName);
+    chassisDir = refreshed.outputDir;
+    chassisDetection.chassisDir = chassisDir;
+  }
   if (!isExplicitTestPath && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
     const certCheck = isCatalogCertified(detectedChassisName);
     if (!certCheck.certified) {

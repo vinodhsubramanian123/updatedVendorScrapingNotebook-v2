@@ -30,6 +30,7 @@ console.log('🧪 Starting test_knowledge_governance_and_kit_routing...');
       DL380_Gen12: {
         notebookId: '1d190853-4e9c-48df-aa70-eae66c6f2c1f',
         cloudSyncState: 'VERIFIED',
+        lastSyncedAt: '2026-09-10T11:45:52.601Z',
         queryEnabled: true
       },
       Alletra_Storage_System: {
@@ -91,7 +92,7 @@ console.log('🧪 Starting test_knowledge_governance_and_kit_routing...');
     assert.strictEqual(isFresh, true);
   }
   const nonExistent = isCatalogFresh('/invalid/nonexistent/dir', 72);
-  assert.strictEqual(nonExistent, true, 'Non-existent catalog fails open to true');
+  assert.strictEqual(nonExistent, false, 'Non-existent catalog must return false (Zero Default Success)');
   console.log('  ✅ Test 4 Passed: isCatalogFresh validates catalog directory timestamps');
 }
 
