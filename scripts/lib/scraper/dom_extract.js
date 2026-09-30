@@ -370,4 +370,16 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   return conditionalSkus;
 }
 
-module.exports = { deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders, extractHiddenElements, probeConditionalSkuVisibility };
+const { extractUnavailableDomRules, parseUnavailableDomRules } = require('./dom_unavailable_rules.js');
+
+module.exports = {
+  deriveTextFromTables,
+  extractChunkedText,
+  extractTablesAsRows,
+  extractSectionHeaders,
+  extractHiddenElements,
+  probeConditionalSkuVisibility,
+  extractUnavailableDomRules,
+  parseUnavailableDomRules
+};
+

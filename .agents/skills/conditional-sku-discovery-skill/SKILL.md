@@ -47,11 +47,13 @@ Missing from capture does not mean unsupported. Hidden does not mean orderable, 
 
 ## Persistence and compilation
 
-- Raw scrape observations: `outputs/{Family}/{Gen}/{Model}/raw_data/conditional_skus.json`; current writer uses `skus` (array), timestamp and chassisName.
+- Raw scrape observations: `outputs/{Family}/{Gen}/{Model}/raw_data/conditional_skus.json` and `raw_data/unavailable_rules.json`.
+- Universal DOM unavailable tables: `extractUnavailableDomRules(ws, sendCommand)` parses `table.UavailableTable`, `tr.uavailableTable_tr`, `.choice_header1[style*="red"]`, and row IDs `choice_column_titles_<choiceId>-<reason>` across all product categories.
+- Classification engine: categorizes reasoning into machine-readable rule types: `AMBIENT_GATE`, `CHASSIS_GATE`, `MEMORY_MIXING`, `SLOT_COLLISION`, `PAIRED_KIT_REQUIRED`, `SUPPLY_RESTRICTED`, `MUTUAL_EXCLUSION`, and `BTO_DISALLOWED`.
+- Catalog compilation: `applyUnavailableDomRulesAndSkus()` merges unavailable SKUs into `hardwareEntries` as `PORTAL_CONDITIONAL` with `isSelectable: false` and their explicit `ineligibilityReason`, while emitting compiled rules to `<Product>_Catalog_Rules.json` and `<Product>_Unavailable_Rules.tsv`.
+- Workbook generation: `generate_xlsx.js` renders a dedicated `Unavailable Rules & Gates` sheet.
+- NotebookLM sync payload: `sync_payload_builder.js` formats categorized semantic Markdown sections (`Thermal & Ambient Gates`, `Memory Mixing`, `Chassis Gating`, `Slot Collisions`, `Paired Kits`, `Supply Constraints`) for deep grounded RAG reasoning.
 - Runtime BOQ plan: report-side `evidence/<report>_runtime_discovery_plan.json`.
-- Compiled rules: `<Product>_Catalog_Rules.json` via `applyConditionalDiscovery(entries, observations)` in `scripts/lib/catalog/conditional_discovery.js`.
-- Current compiled fields: `ruleType: CONDITIONAL_VISIBILITY`, `affectedSkus`, `conditionKey`, `conditionOperator`, `thresholdValue`, `portalVerificationRequired`. Ambient operators are `lte`/`gte`; unresolved gates remain unknown. These are visibility observations, not `MANDATORY_IF` rules.
-- Preserve exact base, owner, selector state and evidence time when available. Do not merge different bases or trigger combinations by SKU alone. A SKU missing in one unvisited state is not a removal.
 - Narrative API: `generateEvaluationNarrative()` in `scripts/lib/boq/eval_output_serializer.js`; use the full evaluation result. Runtime probes apply to all proposed ranks, not only Rank 1L.
 
 ## Completion gate

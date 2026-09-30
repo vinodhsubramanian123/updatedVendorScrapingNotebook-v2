@@ -10,7 +10,7 @@ const { execFileSync } = require('child_process');
 const {
   sendCommand, getOCATarget, connectWS, setupDialogAutoHandler,
   expandSections, deriveTextFromTables, extractChunkedText, extractTablesAsRows, extractSectionHeaders,
-  extractHiddenElements, probeConditionalSkuVisibility,
+  extractHiddenElements, probeConditionalSkuVisibility, extractUnavailableDomRules,
   sleep
 } = require('../lib/scraper/cdp.js');
 const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
@@ -488,6 +488,20 @@ function seedStagingFromLiveWorkspace(liveOutputDir, outputDir, meta) {
   }
 }
 
+async function sweepUnavailableDomRules(ws, sendCommand) {
+  console.log('\nExtracting explicit portal unavailable tables and reasoning rules (all categories)...');
+  try {
+    const res = await extractUnavailableDomRules(ws, sendCommand);
+    const rules = res.unavailableRules || [];
+    const skus = res.unavailableSkus || [];
+    console.log(`  🔍 Extracted ${rules.length} explicit portal rule(s) & ${skus.length} conditional SKU(s) from DOM unavailable tables.`);
+    return { unavailableRules: rules, unavailableSkus: skus };
+  } catch (err) {
+    console.warn(`  ⚠️ Could not extract unavailable DOM rules: ${err.message}`);
+    return { unavailableRules: [], unavailableSkus: [] };
+  }
+}
+
 async function main() {
   const pipelineStart = Date.now();
   const logger = require('../lib/system/pipeline_logger.js');
@@ -847,6 +861,8 @@ async function main() {
       throw new Error(`Conditional discovery failed; staging cannot be promoted: ${sweepErr.message}`);
     }
 
+    const { unavailableRules = [], unavailableSkus = [] } = await sweepUnavailableDomRules(ws, sendCommand);
+
     const step5Result = verifyScrapingStep(5, { textLength: totalLen, rowsCount: tables.length });
     stepTelemetry[5] = step5Result;
     if (!step5Result.valid) {
@@ -959,6 +975,10 @@ async function main() {
       conditionalSkus,
       conditionalSkusCount: conditionalSkus.length,
       conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
+      unavailableRules,
+      unavailableRulesCount: unavailableRules.length,
+      unavailableSkus,
+      unavailableSkusCount: unavailableSkus.length,
       networkSniffedRules,
       networkSniffedRulesCount: networkSniffedRules.length,
       networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
@@ -979,6 +999,18 @@ async function main() {
         skus: conditionalSkus
       });
       console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
+    }
+
+    if (unavailableRules.length > 0 || unavailableSkus.length > 0) {
+      safeWriteJsonAtomic(path.join(rawDir, 'unavailable_rules.json'), {
+        timestamp: new Date().toISOString(),
+        chassisName: meta.cleanName,
+        totalUnavailableRules: unavailableRules.length,
+        totalUnavailableSkus: unavailableSkus.length,
+        rules: unavailableRules,
+        skus: unavailableSkus
+      });
+      console.log(`Unavailable rules & conditional SKUs saved to raw_data/unavailable_rules.json`);
     }
 
     if (networkSniffedRules.length > 0) {

@@ -84,6 +84,7 @@ const skuData      = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.t
 const rulesData    = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`));
 const summaryData  = parseTSV(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`));
 const servicesData = parseTSV(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`), { required: false });
+const unavailableRulesData = parseTSV(path.join(scrapsDir, `${filePrefix}_Unavailable_Rules.tsv`), { required: false });
 
 // ── Build workbook ────────────────────────────────────────────────────────────
 const wb = XLSX.utils.book_new();
@@ -362,6 +363,20 @@ const rulesWS = createStyledSheet(rulesData.data, [
 ]);
 XLSX.utils.book_append_sheet(wb, rulesWS, 'Rules & Constraints');
 
+// Sheet 3b: Unavailable Rules & Gates
+if (unavailableRulesData.data.length > 0) {
+  const unavailWS = createStyledSheet(unavailableRulesData.data, [
+    { wch: 15 }, // Rule ID
+    { wch: 25 }, // Rule Type
+    { wch: 30 }, // Section
+    { wch: 90 }, // Constraint / Reason
+    { wch: 20 }, // Affected SKU Count
+    { wch: 60 }  // Affected SKUs
+  ]);
+  XLSX.utils.book_append_sheet(wb, unavailWS, 'Unavailable Rules & Gates');
+  console.log(`  ✅ Sheet 'Unavailable Rules & Gates' — ${unavailableRulesData.data.length} explicit portal gating rules.`);
+}
+
 // Sheet 4a: Hardware Accessories, Software & Licenses, and Support Services (Routing by Category)
 const isSoftwareRow = (r) => {
   const cat = (r['Main Category'] || '').toLowerCase();
@@ -577,6 +592,7 @@ const metaData = [
   { Field: 'Total Combined SKUs',        Value: String(allCombinedData.length) },
   { Field: 'Chassis Variant Options',    Value: String(skuData.data.filter(r => r['Main Category'] === 'Chassis').length) },
   { Field: 'Total Rules',                Value: String(rulesData.data.length) },
+  { Field: 'Unavailable DOM Rules',      Value: String(unavailableRulesData.data.length) },
   { Field: 'Total Tables',               Value: String(catalogMeta.totalTables || '') },
   { Field: 'Diff Added SKUs',            Value: String(diffCounts.added) },
   { Field: 'Diff Removed SKUs',          Value: String(diffCounts.removed) },

@@ -206,6 +206,45 @@ function _buildAttributeHistorySection(attributeHistory = []) {
   return md;
 }
 
+function _buildUnavailableDomGatingRulesSection(unavailableRules = []) {
+  let md = `## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)\n\n`;
+  if (!unavailableRules || unavailableRules.length === 0) {
+    return md + `*No portal-conditional gating rules detected in default DOM state.*\n\n`;
+  }
+
+  const groups = {
+    'AMBIENT_GATE': { title: 'Thermal & Ambient Temperature Gates', rules: [] },
+    'MEMORY_MIXING': { title: 'Memory Technology & Density Mixing Constraints', rules: [] },
+    'CHASSIS_GATE': { title: 'Base Chassis & Form Factor Compatibility Gates', rules: [] },
+    'SLOT_COLLISION': { title: 'PCIe Riser & OCP Slot Contention Constraints', rules: [] },
+    'PAIRED_KIT_REQUIRED': { title: 'Mandatory Paired Enablement Kits & Interconnects', rules: [] },
+    'SUPPLY_RESTRICTED': { title: 'Customer Specific & Constrained Supply Gates', rules: [] },
+    'MUTUAL_EXCLUSION': { title: 'Component Mutual Exclusion Rules', rules: [] },
+    'BTO_DISALLOWED': { title: 'CTO vs BTO Factory Integration Rules', rules: [] }
+  };
+
+  for (const r of unavailableRules) {
+    const type = r.ruleType || 'MUTUAL_EXCLUSION';
+    if (!groups[type]) {
+      groups[type] = { title: `${type.replace(/_/g, ' ')} Rules`, rules: [] };
+    }
+    groups[type].rules.push(r);
+  }
+
+  for (const group of Object.values(groups)) {
+    if (group.rules.length === 0) continue;
+    md += `### ${group.title}\n\n`;
+    group.rules.forEach((r, idx) => {
+      const skusFormatted = (r.affectedSkus || []).map(s => `\`${s}\``).join(', ');
+      md += `${idx + 1}. **[${r.section || 'General'}]**: ${r.reason}\n`;
+      md += `   - **Gated Rule Type**: \`${r.ruleType}\`\n`;
+      md += `   - **Affected SKUs (${r.affectedSkusCount || (r.affectedSkus || []).length})**: ${skusFormatted || 'None'}\n\n`;
+    });
+  }
+
+  return md;
+}
+
 function _buildSameProductVariantSection(chassisName, targetIdentity) {
   let md = `## 🧩 6. Same-Product CTO Variant Matrix\n\n`;
   const { getChassisMap } = require('../conflict/conflict_graph.js');
@@ -327,9 +366,19 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const totalRules = scopedRegistry.totalLearnedRules || 0;
   const targetIdentity = scopedRegistry.target || { vendor: 'HPE', pillar: 'UNKNOWN', family: 'UNKNOWN', generation: 'UNKNOWN' };
 
+  let unavailableRules = [];
+  const unavailRulesPath = path.join(targetDir, 'raw_data', 'unavailable_rules.json');
+  if (fs.existsSync(unavailRulesPath)) {
+    try {
+      const parsedUnavail = JSON.parse(fs.readFileSync(unavailRulesPath, 'utf8'));
+      unavailableRules = parsedUnavail.rules || [];
+    } catch (_) {}
+  }
+
   let md = _buildHeaderAndSummarySection(targetIdentity, chassisName, totalActiveHwSKUs, totalActiveSrvSKUs, totalRules, hwDiff, srvDiff);
   md += _buildUniversalAndFamilyRulesSection(targetIdentity, scopedRegistry.universalRules, scopedRegistry.familyGenRules);
   md += _buildChassisSpecificRulesSection(chassisName, scopedRegistry.chassisSpecificRules, targetIdentity);
+  md += _buildUnavailableDomGatingRulesSection(unavailableRules);
   md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg);
   md += _buildAttributeHistorySection(attributeHistory);
   md += _buildSameProductVariantSection(chassisName, targetIdentity);

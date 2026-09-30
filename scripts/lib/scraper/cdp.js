@@ -545,7 +545,10 @@ module.exports = {
   deriveTextFromTables: domExtract.deriveTextFromTables,
   extractHiddenElements: domExtract.extractHiddenElements,
   probeConditionalSkuVisibility: domExtract.probeConditionalSkuVisibility,
+  extractUnavailableDomRules: (ws) => domExtract.extractUnavailableDomRules(ws, sendCommand),
+  parseUnavailableDomRules: domExtract.parseUnavailableDomRules,
   extractChunkedText: (ws, chunkSize) => domExtract.extractChunkedText(ws, sendCommand, chunkSize),
   extractTablesAsRows: (ws, scopeSelector) => domExtract.extractTablesAsRows(ws, sendCommand, scopeSelector),
   extractSectionHeaders: (ws) => domExtract.extractSectionHeaders(ws, sendCommand)
 };
+

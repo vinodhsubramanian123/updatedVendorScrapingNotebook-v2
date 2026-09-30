@@ -1657,7 +1657,7 @@ async function exportCatalogArtifacts(ctx) {
 
   const allCombinedEntries = [...(enrichedCatalog.entries || []), ...(enrichedServicesCatalog.entries || [])];
   const mainTSV    = generateMainSheet(enrichedCatalog.entries, chassisRoot, profile);
-  const rulesTSV   = generateRulesSheet(allCombinedEntries, subcatList, fullText, existingLearnedRules);
+  const rulesTSV   = generateRulesSheet(allCombinedEntries, subcatList, fullText, [...existingLearnedRules, ...(ctx.unavailableRules || [])]);
   const summaryTSV = generateSummarySheet(allCombinedEntries, subcatList);
   const servicesTSV = generateMainSheet(enrichedServicesCatalog.entries, chassisRoot, profile);
 
@@ -1665,6 +1665,16 @@ async function exportCatalogArtifacts(ctx) {
   fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`),    mainTSV);
   fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`),   rulesTSV);
   fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`), summaryTSV);
+  if (ctx.unavailableRules && ctx.unavailableRules.length > 0) {
+    const unavailHeaders = ['Rule ID', 'Rule Type', 'Section', 'Constraint / Reason', 'Affected SKU Count', 'Affected SKUs'];
+    const unavailRows = [unavailHeaders.join('\t')];
+    ctx.unavailableRules.forEach((r, idx) => {
+      const id = r.ruleId || `RULE_${idx + 1}`;
+      const skus = (r.affectedSkus || []).join(', ');
+      unavailRows.push([id, r.ruleType || 'MUTUAL_EXCLUSION', r.parentCategory || 'General', r.ineligibilityReason || r.rule || '', (r.affectedSkus || []).length, skus].join('\t'));
+    });
+    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Unavailable_Rules.tsv`), unavailRows.join('\n'));
+  }
   if (servicesTSV && servicesTSV.trim()) {
     fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`), servicesTSV);
   }
@@ -1680,7 +1690,7 @@ async function exportCatalogArtifacts(ctx) {
   })));
 
   const dedupeMap = new Map();
-  [...(ctx.networkRules || []), ...(ctx.conditionalRules || []), ...combinedRules, ...existingLearnedRules].forEach(r => {
+  [...(ctx.networkRules || []), ...(ctx.conditionalRules || []), ...(ctx.unavailableRules || []), ...combinedRules, ...existingLearnedRules].forEach(r => {
     const ruleText = r.rule || r.description || '';
     if (!ruleText || ruleText.length < 5) return;
     const key = `${r.parentCategory}|${r.subCategory}|${ruleText.trim()}`;
@@ -1764,6 +1774,23 @@ async function exportCatalogArtifacts(ctx) {
   }
 }
 
+function resolveUnavailableRawData(rawData, rawInputPath) {
+  const rules = [...(rawData?.unavailableRules || [])];
+  const skus = [...(rawData?.unavailableSkus || [])];
+  if (rules.length === 0 && rawInputPath) {
+    try {
+      const rawDir = path.dirname(rawInputPath);
+      const unavailPath = path.join(rawDir, 'unavailable_rules.json');
+      if (fs.existsSync(unavailPath)) {
+        const parsed = JSON.parse(fs.readFileSync(unavailPath, 'utf8'));
+        rules.push(...(parsed.rules || []));
+        skus.push(...(parsed.skus || []));
+      }
+    } catch (_) {}
+  }
+  return { rules, skus };
+}
+
 // ============================================================
 // Main Orchestrator
 // ============================================================
@@ -1776,8 +1803,12 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   const { hardwareEntries, cleanServicesEntries } = synthesizeCatalogEntries(
     ctx.tables, ctx.fullText, subcatList, ctx.historyPriceMap, ctx.diagnostics, ctx.profile, ctx.IS_VERBOSE
   );
-  ctx.conditionalRules = require('../lib/catalog/conditional_discovery.js').applyConditionalDiscovery(
+  const { applyConditionalDiscovery, applyUnavailableDomRulesAndSkus } = require('../lib/catalog/conditional_discovery.js');
+  ctx.conditionalRules = applyConditionalDiscovery(
     [...hardwareEntries, ...cleanServicesEntries], ctx.rawData.conditionalSkus || []);
+  const unavail = resolveUnavailableRawData(ctx.rawData, rawInputPath);
+  ctx.unavailableRules = applyUnavailableDomRulesAndSkus(
+    hardwareEntries, cleanServicesEntries, unavail.rules, unavail.skus);
   // Unclassified backend messages remain raw evidence, not executable rules.
   ctx.networkRules = (ctx.rawData.networkSniffedRules || []).filter(r =>
     ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION'].includes(r.ruleType)
