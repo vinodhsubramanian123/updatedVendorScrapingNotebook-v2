@@ -17,7 +17,7 @@
 - **Continuous Knowledge Grounding**: Live OCA scraped master catalogs and QuickSpecs are dynamically queried via NotebookLM MCP tools (`notebook_query`, `cross_notebook_query`).
 
 ## 3. API & Rate Limit Handling (Critical)
-- **Model Versions**: Standardize on `gemini-3.6-flash` (or `gemini-3.5-flash-lite` / `gemini-3.7-flash`).
+- **Model Versions**: Standardize on `gemini-3.6-flash` (or latest `gemini-3.8-flash` / `gemini-3.7-flash` / `gemini-3.5-flash-lite`). Model fallback automatically handles retirements or 404s via `guardrail_transport.js`.
 - **Smart FIFO Key Rotation & Quota Management**: `gemini_rotator.js` manages all configured keys in a deterministic FIFO queue. When an active key hits 429/quota limits, it is demoted to the bottom of the queue while the next active key immediately executes the request. Keys automatically restore on UTC day rollover.
 - **Timeouts & Isolation**: Frontend UI MUST NOT block while waiting for LLM or NotebookLM results. Background processing is mandated.
 

@@ -314,7 +314,7 @@ async function runAgenticGuardrail(items, chassisDir) {
     currentApiKey: activeKeyInfo.apiKey,
     activeKeyInfo,
     model: MODEL_NAME,
-    models: [...new Set([MODEL_NAME, ...(process.env.GUARDRAIL_FALLBACK_MODELS ?? 'gemini-3.7-flash,gemini-3.5-flash-lite').split(',').map(value => value.trim()).filter(Boolean)])],
+    models: [...new Set([MODEL_NAME, ...(process.env.GUARDRAIL_FALLBACK_MODELS ?? 'gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash-lite').split(',').map(value => value.trim()).filter(Boolean)])],
     apiTimeoutMs: API_TIMEOUT_MS,
     recoveryEvents: [],
     requiredTool: 'simulate_build',
