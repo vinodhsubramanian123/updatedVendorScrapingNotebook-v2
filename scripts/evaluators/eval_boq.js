@@ -1159,6 +1159,42 @@ async function runEvaluationPipelineWithinTrace(options) {
     evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
   }
 
+  // Pre-Presentation Acceptance Verification (INV-106 / F-02)
+  const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
+  const { issueDeliveryAuthorization } = require('../lib/contracts/workflow_contract.js');
+  const acceptance = verifyPrePresentationAcceptance(evalResults, 'BOQ_EVALUATION', {
+    ...options,
+    ...ingestCtx,
+    catalogData: options.catalogData
+  });
+  evalResults.acceptanceGate = acceptance;
+
+  if (acceptance.isValid) {
+    const rawFingerprint = evalResults.manifestFingerprint || evalResults.conflictGraph?.manifestSha256 || crypto.createHash('sha256').update(JSON.stringify(evalResults.items || [])).digest('hex');
+    try {
+      evalResults.deliveryAuthorization = issueDeliveryAuthorization({
+        manifestFingerprint: rawFingerprint,
+        chassisKey: ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : 'PROLIANT_SERVER',
+        acceptanceDecision: {
+          isApproved: true,
+          profile: 'BOQ_EVALUATION',
+          evaluatedChecksCount: acceptance.totalChecks,
+          passedChecks: acceptance.checks.filter(c => c.passed).map(c => c.id),
+          failedChecks: acceptance.blockers.map(b => b.id),
+          blockingErrors: acceptance.blockers.map(b => b.detail),
+          warnings: acceptance.warnings.map(w => w.detail)
+        }
+      });
+      evalResults.customerDisposition = 'PRESENTATION_READY';
+    } catch (_authErr) {
+      evalResults.customerDisposition = 'VALIDATION_REQUIRED';
+    }
+  } else {
+    evalResults.customerDisposition = evalResults.isMathClean === false
+      ? 'DELIVERY_BLOCKED_UNBUILDABLE'
+      : 'VALIDATION_REQUIRED';
+  }
+
   await serializeAndExportResults({
     ...options,
     ...ingestCtx,

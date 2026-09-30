@@ -89,7 +89,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 
 ## 5. Technical Invariants & Epistemic Rules Reference
 To conserve context tokens, detailed specifications and negative-path implementations are modularized:
-- **Complete Invariant Catalog (INV-1 through INV-117)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
+- **Complete Invariant Catalog (INV-1 through INV-131)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
 - **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 14)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
 - **Consolidated Documentation**:
   - [`docs/DIRECTORY_STRUCTURE.md`](file:///docs/DIRECTORY_STRUCTURE.md): Canonical repository directory mapping.
@@ -112,7 +112,22 @@ For current completion state, pending work and the final check-in record, read `
 ### Conditional SKU Discovery, Domain-Based Testing & Anti-Hallucination Narratives (2026-09-27)
 
 Read `docs/audits/2026-09-27-conditional-sku-and-test-domain-remediation.md` before scraping or modifying evaluation workflows:
-1. **Scraping-Time Conditional Discovery (INV-118)**: Never assume default rendered DOM is exhaustive. Always walk full DOM trees via `extractHiddenElements()` and sweep macro selectors (ambient $\le 27^\circ\text{C}$, 1 vs 2 CPU, backplane, power). Persist trigger gates in `raw_data/conditional_skus.json` and compile into `Catalog_Rules.json` with machine-parseable `thresholdValue`, `conditionOperator`, and `conditionKey`.
-2. **Evaluation Narrative & Anti-Hallucination Audit (INV-119)**: Every customer deliverable must emit the 5-step numbered reasoning narrative (`generateEvaluationNarrative()`). Gated SKUs (e.g. H200 GPU) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L.
-3. **Domain-Segregated Test Matrix (INV-120)**: Run targeted test domains (`npm run test:smoke`, `npm run test:domain:aspects`, `npm run test:domain:boq`, etc.) to conserve tokens and CPU. Never blindly execute the full 168-suite matrix for targeted subsystem changes.
+1. **Scraping-Time Conditional Discovery (INV-125)**: Never assume default rendered DOM is exhaustive. Always walk full DOM trees via `extractHiddenElements()` and sweep macro selectors (ambient $\le 27^\circ\text{C}$, 1 vs 2 CPU, backplane, power). Persist trigger gates in `raw_data/conditional_skus.json` and compile into `Catalog_Rules.json` with machine-parseable `thresholdValue`, `conditionOperator`, and `conditionKey`.
+2. **Evaluation Narrative & Anti-Hallucination Audit (INV-126)**: Every customer deliverable must emit the 5-step numbered reasoning narrative (`generateEvaluationNarrative()`). Gated SKUs (e.g. H200 GPU) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L.
+3. **Domain-Segregated Test Matrix (INV-127)**: Run targeted test domains (`npm run test:smoke`, `npm run test:domain:aspects`, `npm run test:domain:boq`, etc.) to conserve tokens and CPU. Never blindly execute the full matrix for targeted subsystem changes.
 4. **Knowledge Governance & Degraded Mode**: Degraded notebooks (`cloudSyncState: FAILED`) must disclose `DEGRADED_UNGROUNDED` status via `assertNotebookHealth()`; catalogs older than 72 hours trigger `staleCatalogWarning`.
+
+### Core Architecture Hardening, Pre-Presentation Delivery Gate & Non-Empty Matrix (2026-09-30)
+
+Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before modifying core evaluation orchestration or test runner logic:
+1. **Pre-Presentation Cryptographic Delivery Authorization Gate (INV-128)**: Customer deliverables (standardized Excel workbooks, serialized outputs, and Drive sync uploads) require an issued `DeliveryAuthorization` certificate. If pre-presentation acceptance fails, deliverable export is strictly blocked with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
+2. **Non-Empty Test Discovery & Silent Pass Prevention (INV-129)**: `run_test_matrix.js` exits with code 1 if suite discovery returns 0 suites unless `--allow-empty` is passed; suites reporting 0 tests under `node:test` are failed as silent passes. E2E live tests require live environments or explicit `ALLOW_E2E_SKIP=true`.
+3. **Factual Grounding of Single-File Quote Audits (INV-130)**: Quotes without a second baseline must be routed as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`), preserving honest discrepancy metrics without fake missing items.
+4. **Terminal Ledger Status & Corrupted File Quarantine (INV-131)**: Evidence ledger phases never default to `PASSED`. File managers encountering corrupt JSON quarantine the file before re-initializing defaults.
+5. **Certified Matrix Benchmark**: Full isolated test suite count is certified at **188 suites** (117 unit, 41 chaos, 27 integration, 3 E2E).
+
+
+
+### Runtime conditional discovery contract (2026-09-30)
+
+Read [the shared catalog and BOQ runtime procedure](docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.

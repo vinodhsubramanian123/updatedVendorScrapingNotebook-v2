@@ -1,0 +1,58 @@
+[
+  {
+    "id": "5a817819-e4ed-4d2a-a1f0-3745e01aa3ab",
+    "title": "ComputeScale-DL380-Gen12-Bare-Min-Validation-Learnings-v2.md",
+    "type": "generated_text",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+    "title": "DL380_Gen12 Canonical Knowledge",
+    "type": "word_doc",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+    "title": "HPE AI Studio — Master Running Knowledge & Learnings Charter",
+    "type": "google_docs",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "6eb52606-9295-4f0b-af65-89454b2d443a",
+    "title": "HPE ProLiant Compute DL380 Gen12 QuickSpecs-a00073551enw.pdf",
+    "type": "pdf",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "25c3f5b4-35c5-4c3c-b09e-cfb5ab918f48",
+    "title": "Intel Xeon 5 and 6 Series Processors",
+    "type": "unknown",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "9907453f-d04c-4cb8-a14a-10d6513b6ee1",
+    "title": "hpe-dl380-gen12-comprehensive-validation-learnings.md",
+    "type": "generated_text",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "30c02acf-b92d-4348-8335-ee0ee5799319",
+    "title": "master_universal_knowledge_charter.md",
+    "type": "generated_text",
+    "url": null,
+    "status": 2
+  },
+  {
+    "id": "db72a668-a271-42ab-bedc-0a82abc1d609",
+    "title": "notebook_sync_payload_DL380_Gen12.md",
+    "type": "generated_text",
+    "url": null,
+    "status": 2
+  }
+]

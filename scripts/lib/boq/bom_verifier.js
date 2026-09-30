@@ -163,6 +163,16 @@ function validateUniversalCriteria(output, context = {}) {
       : makeCheck('U5', 'Honest Uncertainty', 'BLOCK', 'FAILED', 'Output has unresolved ambiguities that were not explicitly reported to the user.', { isAmbiguous })
   );
 
+  // A complete catalog is not evidence that this exact option combination was checked.
+  const runtimePlan = require('./runtime_discovery_plan').buildRuntimeDiscoveryPlan(output || {}, {
+    catalogData, targetDir: context.catalogDir || context.targetDir || output?.catalogDir,
+    productId: context.chassisName || chassis
+  });
+  if (runtimePlan.configurations.some(config => config.probes.length || config.blockers.length)) {
+    checks.push(makeCheck('U6', 'BOQ-scoped Conditional Discovery', 'BLOCK', 'UNKNOWN',
+      'Investigate absent/conditional SKUs in the exact live configuration; a catalog miss is not proof of incompatibility. Runtime plan is not vendor acceptance.',
+      { runtimeDiscoveryPlan: runtimePlan }));
+  }
   return checks;
 }
 

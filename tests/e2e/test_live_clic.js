@@ -21,9 +21,13 @@ async function main() {
     }
 
     if (!target) {
-      console.log(`❌ No active browser page targets found on port 9222.`);
-      console.log(`   Please ensure Chrome is launched with: --remote-debugging-port=9222`);
-      process.exit(0);
+      console.error(`❌ Live CLIC test requires an active browser target on port 9222.`);
+      console.error(`   Please ensure Chrome is launched with: --remote-debugging-port=9222`);
+      if (process.env.ALLOW_E2E_SKIP === 'true') {
+        console.log(`⚠️ ALLOW_E2E_SKIP enabled: skipping live browser check.`);
+        process.exit(0);
+      }
+      process.exit(1);
     }
 
     console.log(`✅ Connected to Browser Page Target: ${target.title} (${target.url})`);
@@ -43,7 +47,12 @@ async function main() {
     console.log(`🎉 LIVE CDP TEST COMPLETED SUCCESSFULLY (Zero Popups)`);
     console.log(`================================================================\n`);
   } catch (err) {
-    console.log(`ℹ️ CDP Connection note: ${err.message}`);
+    console.error(`❌ Live CDP Connection error: ${err.message}`);
+    if (process.env.ALLOW_E2E_SKIP === 'true') {
+      console.log(`⚠️ ALLOW_E2E_SKIP enabled: ignoring connection failure.`);
+      process.exit(0);
+    }
+    process.exit(1);
   }
 }
 

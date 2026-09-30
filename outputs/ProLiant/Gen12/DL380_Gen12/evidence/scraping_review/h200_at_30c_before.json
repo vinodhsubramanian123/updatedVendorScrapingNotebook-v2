@@ -1,0 +1,91 @@
+{
+  "capturedAt": "2026-09-30T16:33:59.774Z",
+  "base": "P73282-B21",
+  "selectedRows": [
+    {
+      "sku": "P74568-B21",
+      "qty": "2",
+      "id": "item_tr_P74568-B21_ProcessorSection_ProcessorChoice"
+    },
+    {
+      "sku": "P74792-B21",
+      "qty": "2",
+      "id": "item_tr_P74792-B21_ProcessorSection_HeatsinkKitChoice"
+    },
+    {
+      "sku": "P69727-F21",
+      "qty": "2",
+      "id": "item_tr_P69727-F21_memory_memorySlotsChoice"
+    },
+    {
+      "sku": "standardDL380Gen12Riser",
+      "qty": "1",
+      "id": "item_tr_standardDL380Gen12Riser_smartChassis_riserCards"
+    },
+    {
+      "sku": "P79552-B21",
+      "qty": "1",
+      "id": "item_tr_P79552-B21_temperatureSection_ambientTemperature"
+    },
+    {
+      "sku": "P51181-B21",
+      "qty": "1",
+      "id": "item_tr_P51181-B21_networkController_EthernetOCPChoice"
+    },
+    {
+      "sku": "P72203-B21",
+      "qty": "1",
+      "id": "item_tr_P72203-B21_networkController_OCPUpgradesChoice"
+    },
+    {
+      "sku": "P73325-B21",
+      "qty": "1",
+      "id": "item_tr_P73325-B21_powerCordsRemoval_powerCordsRemoval"
+    },
+    {
+      "sku": "P52341-B21",
+      "qty": "1",
+      "id": "item_tr_P52341-B21_RackingSection_RailKitsChoice"
+    },
+    {
+      "sku": "P03178-B21",
+      "qty": "2",
+      "id": "item_tr_P03178-B21_power_powerSlots"
+    },
+    {
+      "sku": "P48820-B21",
+      "qty": "1",
+      "id": "item_tr_P48820-B21_power_coolingOp"
+    },
+    {
+      "sku": "P78145-B21",
+      "qty": "2",
+      "id": "item_tr_P78145-B21_power_powerCords"
+    },
+    {
+      "sku": "R7A12AAE",
+      "qty": "1",
+      "id": "item_tr_R7A12AAE_HPEGreenLakeforComputeOpsMng_HPEGreenLakeforComputeOpsMngChoiceID"
+    },
+    {
+      "sku": "S1A05A",
+      "qty": "1",
+      "id": "item_tr_S1A05A_HPEGreenLakeforComputeOpsMng_HPEGreenLakeforComputeOpsMngChoiceID"
+    },
+    {
+      "sku": "BD505A",
+      "qty": "1",
+      "id": "item_tr_BD505A_ServerMmgtSoftwareSection_IntegratedLightsOut"
+    }
+  ],
+  "h200": [
+    {
+      "html": "<tr class=\"item_tr unavailable extended\" id=\"item_tr_S3U30C_graphicsOptionsSection_graphicsChoice\" item=\"S3U30C_graphicsOptionsSection_graphicsChoice\" data-rowindex=\"0\" data-elementid=\"graphicsOptionsSection_graphicsChoice\" style=\"display: none;\">\n  \n               \n\n        <td style=\"width:12%\" class=\"item_prod\"> \n                    \n\t\n        \t<span class=\"td_prod_empty\" title=\"\"></span>\n        \n        <span class=\"td_prod_empty\" title=\"\"></span>\n\t\t<span class=\"_pid\" \"=\"\">S3U30C</span>\n\n        </td>\n\n        <td class=\"item_desc\" style=\"width:45%\">\n        NVIDIA H200 NVL 141GB PCIe Accelerator for HPE\n        \n             </td>\n\n    <td class=\"item_qty \">\n    \t<div class=\"item_qty_div\">0</div></td>\n\n\n\n\n        <!-- The show prices are replaced by the JS -->\n        <td class=\"text_right item_price price_column\">112,579.00</td>\n        \n\n        <td class=\"text_right item_price_extendedPrice price_column\">NA</td>\n\n\n        \n\n\n    \n    \n        <td> <span class=\"hpe_recommended \"></span> </td>\n    \n\n\t\n\n\n\n\n        \n\n        <!-- taleroangel: Carbon footprint column -->\n        \n\n\n        <td class=\"item_start_date\">02/03/2025<!--<td-->\n        </td><td class=\"item_end_date\">12/31/2027<!--<td-->\n\n\n\n\n\n       \n\n\n\n    </td></tr>",
+      "unavailable": true,
+      "visible": false
+    }
+  ],
+  "rule": [
+    "RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together."
+  ]
+}

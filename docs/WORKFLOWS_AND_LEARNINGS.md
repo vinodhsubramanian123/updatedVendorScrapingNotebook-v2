@@ -1779,3 +1779,31 @@ Read the [session index](audits/2026-09-19-session-index.md) before continuing t
    - **Dedicated Skill**: Codified in [`.agents/skills/boq-remarks-reconciliation-skill/SKILL.md`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md).
 6. **Automated Bidirectional Parity Assertion**:
    - Every export must programmatically verify: `(Tender == Configured) XOR (Structured Action-First Remark Exists)`. Zero unremarked variances or untagged remarks are permitted to slip past quality gates.
+
+---
+
+## 2026-09-30 — Core Logic Architecture & Test Quality Remediation (`INV-128` through `INV-131`)
+
+Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before changing core evaluation orchestration or test runner logic.
+
+### 1. Root Causes & Durable Lessons Learned
+1. **Unified Pipeline Boundary Invariant**:
+   - *Past Blindspot*: Calling `evaluateBOQMultiAspect()` directly on in-memory item arrays bypassed Phase 1–9 execution, evidence ledger tracking, RAG grounding, and output validation.
+   - *Durable Rule*: Entry points may adapt input shapes, but they MUST route through `runEvaluationPipeline()` so all evaluation runs enforce uniform pre-flight math, grounding, validation, and serialization.
+2. **Pre-Presentation Cryptographic Delivery Gate (`INV-128`)**:
+   - *Past Blindspot*: Exporters generated Excel files and synced to Google Drive before pre-presentation acceptance completed. Unbuildable BOMs could leak into customer-facing deliverables.
+   - *Durable Rule*: `eval_boq.js`, `generate_boq_xlsx.js`, and `eval_output_serializer.js` verify `verifyDeliveryAuthorization()`. If unbuildable, generation halts with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
+3. **Runner Non-Empty Discovery & Zero-Test Silent Pass Prevention (`INV-129`)**:
+   - *Past Blindspot*: Regex filters matching 0 suites exited cleanly with code 0. Suites with 0 tests executed under `node:test` appeared green.
+   - *Durable Rule*: `run_test_matrix.js` enforces non-empty discovery unless `--allow-empty` is passed; `# tests 0` is flagged as a fatal silent pass.
+4. **Factual Grounding of Single-File Quote Audits (`INV-130`)**:
+   - *Past Blindspot*: Single-file quotes ingested into reconciliation flows generated fake discrepancies by treating uncataloged SKUs as missing items.
+   - *Durable Rule*: Single quotes without a second baseline are classified as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`). Uncataloged items are reported in `discrepancies.uncatalogedSkus` without inflating reconciliation metrics.
+5. **Ledger Explicit Terminal Status & Corrupt File Quarantine (`INV-131`)**:
+   - *Past Blindspot*: `completePhase()` defaulted `status = 'PASSED'` when status was omitted. Corrupt metadata JSON on disk was overwritten silently.
+   - *Durable Rule*: Ledger phases require explicit terminal statuses and mandatory `skipReason` on `SKIPPED`. File managers quarantine corrupted files (`product_generation_metadata.corrupted.<timestamp>.json`) before re-initializing.
+
+
+### Runtime conditional discovery contract (2026-09-30)
+
+Read [the shared catalog and BOQ runtime procedure](RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.

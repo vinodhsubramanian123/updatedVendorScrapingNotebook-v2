@@ -96,3 +96,8 @@ Both knowledge-sync writers must use buildMasterKnowledgeRegistry so product-sco
 
 
 Retain exported evidence beside the product report in its `evidence/` directory; shared history paths may be ignored by Git and must not be the only linked copy. Learn topology coverage gaps and scoped service parent/suffix evidence, not unsupported generic vendor rules.
+
+
+### Runtime conditional discovery contract (2026-09-30)
+
+Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.

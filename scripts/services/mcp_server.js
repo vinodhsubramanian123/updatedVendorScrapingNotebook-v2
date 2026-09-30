@@ -232,7 +232,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       case "simulate_build": {
         const result = evaluateBOQMultiAspect(items, { chassis: args.chassis_id });
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        const envelope = {
+          simulationType: 'LOCAL_PHYSICAL_MATH_SIMULATION',
+          portalValidationStatus: 'PORTAL VALIDATION PENDING',
+          ...result
+        };
+        return { content: [{ type: "text", text: JSON.stringify(envelope, null, 2) }] };
       }
       case "record_knowledge_delta": {
         const cat = listAllCatalogs().find(c => c.id === args.chassis_id);

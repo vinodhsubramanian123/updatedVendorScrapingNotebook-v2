@@ -86,7 +86,8 @@ class LifecycleEngine {
     return record;
   }
 
-  completePhase(identifier, status = 'PASSED', outputSummary = {}, checklistItems = [], warnings = [], errors = []) {
+  completePhase(identifier, status, outputSummary = {}, checklistItems = [], warnings = [], errors = []) {
+    if (!status) throw new Error(`[INV-105 ZERO_DEFAULT_SUCCESS] completePhase called without explicit status for ${identifier}.`);
     const phase = this._findPhase(identifier);
     const record = this.executedPhases.get(phase.id);
     if (!record || record.status !== 'RUNNING') throw new Error(`Phase is not running: ${phase.id}`);

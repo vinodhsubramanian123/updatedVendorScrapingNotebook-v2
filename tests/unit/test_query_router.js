@@ -78,6 +78,8 @@ test('QueryRouter — Executes BOM_RECONCILIATION with single audit file', async
   const res = await executeRoutedQuery('Reconcile this quote', { filePath, chassisName: 'DL380_Gen12' });
 
   assert.strictEqual(res.classification.intent, 'BOM_RECONCILIATION');
+  assert.strictEqual(res.result.status, 'SINGLE_FILE_AUDIT');
+  assert.strictEqual(res.result.isTwoBaselineComparison, false);
   assert.ok(res.result.auditReport);
   assert.strictEqual(typeof res.result.auditReport.is100PercentMatch, 'boolean');
 });
@@ -90,3 +92,25 @@ test('QueryRouter — Executes FREEFORM_QA for DL 380a and isolates from DL380',
   assert.ok(!res.result.answer.includes('(DL380_Gen12)'));
 });
 
+test('QueryRouter — Correctly classifies all specialized and operational presales skill tracks', () => {
+  const tracks = [
+    { query: 'Translate this Cisco UCS server quote to HPE ProLiant equivalent', expected: 'CROSS_VENDOR_TRANSFORMATION', target: 'cross-vendor-transformation-skill' },
+    { query: 'Modernize this mixed-domain tender with carrier nodes and storage', expected: 'HETEROGENEOUS_TENDER_MODERNIZATION', target: 'heterogeneous-tender-modernizer' },
+    { query: 'Ingest and extract quote image', context: { filePath: 'quote.png' }, expected: 'OCR_QUOTE_INGESTION', target: 'ocr-quote-ingestion-skill' },
+    { query: 'Analyze workload DNA for SAP HANA in-memory database', expected: 'WORKLOAD_DNA', target: 'workload-dna-skill' },
+    { query: 'Optimize this bill of materials for a $20,000 budget', expected: 'VALUE_ENGINEERING', target: 'value-engineering-skill' },
+    { query: 'Synthesize least-delta minimal mutation alternative for this BOQ', expected: 'LEAST_DELTA_SYNTHESIS', target: 'least-delta-combinator-skill' },
+    { query: 'Add commercial remarks column to tender reconciliation', expected: 'REMARKS_RECONCILIATION', target: 'boq-remarks-reconciliation-skill' },
+    { query: 'Generate Partner Portal upload Excel sheet', expected: 'WORKBOOK_GENERATION', target: 'workbook-generator-skill' },
+    { query: 'Decompose 100-node cluster into 42U rack layout and power envelope', expected: 'MULTI_CLUSTER_TENDER', target: 'multi-cluster-tender-skill' },
+    { query: 'Run adversarial red-team stress test on this BOQ configuration', expected: 'ADVERSARIAL_VALIDATION', target: 'adversarial-validation-skill' },
+    { query: 'Reflect portal feedback error and register learned rule delta', expected: 'CONTINUOUS_LEARNING', target: 'continuous-learning-skill' },
+    { query: 'Synchronize knowledge delta to NotebookLM grounding notebook', expected: 'KNOWLEDGE_SYNC', target: 'knowledge-sync-skill' }
+  ];
+
+  for (const { query, context, expected, target } of tracks) {
+    const c = classifyQueryIntent(query, context);
+    assert.strictEqual(c.intent, expected, `Query "${query}" should classify as ${expected}`);
+    assert.strictEqual(c.skillTarget, target, `Query "${query}" should target skill ${target}`);
+  }
+});

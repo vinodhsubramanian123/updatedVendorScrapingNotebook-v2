@@ -179,3 +179,8 @@ Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product 
    - `scripts/lib/scraper/vendor_portal_router.js` isolates vendor portal navigation, dispatching to `navigate_oca.js` for HPE or `navigate_dell.js` for Dell Premier / OSC, ensuring multi-vendor extensibility with zero code intermixing.
 6. **Batch Multi-Product Refresh**:
    - Run `node scripts/catalogs/ensure_catalogs.js --product DL380_Gen12,DL360_Gen11` to evaluate catalog freshness, acquire exclusive workflow leases, and execute sequential verified refreshes.
+
+
+### Runtime conditional discovery contract (2026-09-30)
+
+Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.

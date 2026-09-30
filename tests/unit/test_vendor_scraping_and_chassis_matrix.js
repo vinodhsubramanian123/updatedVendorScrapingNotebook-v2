@@ -68,7 +68,7 @@ test('HPE Recommended column is present in TSV header and populated on every row
 
   // Verify chassis row defaults to 'Yes'
   const chassisCells = lines[1].split('\t');
-  assert.equal(chassisCells[recColIdx], 'Yes', 'Base CTO chassis must evaluate to HPE Recommended: Yes');
+  assert.equal(chassisCells[recColIdx], 'Unknown', 'CTO identity does not prove vendor recommendation');
 
   // Verify option row defaults to 'No'
   const procCells = lines[2].split('\t');
@@ -143,12 +143,10 @@ test('Multi-Vendor Portal Router isolates HPE, Dell, and Cisco routing', async (
   assert.equal(inferVendor('Generic Server', 'Dell'), 'Dell');
   assert.equal(inferVendor('Generic Server', 'HPE'), 'HPE');
 
-  // Verify Dell candidate discovery returns Dell candidate schema
-  const dellCandidates = await discoverDellChassisCandidates(null, 'PowerEdge R760');
-  assert.equal(dellCandidates.length, 1);
-  assert.equal(dellCandidates[0].vendor, 'Dell');
-  assert.equal(dellCandidates[0].sku, '210-BFVR');
-  assert.equal(dellCandidates[0].eligible, true);
+  assert.throws(() => inferVendor('Generic Server'), /VENDOR_IDENTITY_REQUIRED/);
+  await assert.rejects(routeDiscoverCandidates(null, 'Cisco UCS B200 M6'), /VENDOR_ADAPTER_NOT_IMPLEMENTED/);
+  await assert.rejects(discoverDellChassisCandidates(null, 'PowerEdge R760'), /VENDOR_ADAPTER_NOT_IMPLEMENTED/);
+
 });
 
 test('getVendorCredentials provides distinct configurations for HPE, Dell, Cisco, and Lenovo', () => {

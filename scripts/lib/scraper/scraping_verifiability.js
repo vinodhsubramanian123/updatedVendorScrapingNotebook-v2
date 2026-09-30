@@ -69,7 +69,7 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
       {
         id: 'PRODUCT_FIREWALL_VERIFIED',
         description: 'Observed page does not violate strict product identity firewall (e.g. DL380 vs DL380a)',
-        verify: ctx => ctx.firewallPassed !== false,
+        verify: ctx => ctx.firewallPassed === true,
         remediation: 'Active page model conflicts with target chassis query. Abort to prevent catalog cross-contamination.'
       }
     ]
@@ -123,13 +123,13 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
       {
         id: 'DIFF_ANOMALY_SAFE',
         description: 'Incremental diff must not drop >25% of existing SKUs unexpectedly',
-        verify: ctx => ctx.diffAnomalySafe !== false,
+        verify: ctx => ctx.diffAnomalySafe === true,
         remediation: 'Diff anomaly detected (>25% dropped SKUs). Quarantined to prevent silent catalog corruption.'
       },
       {
         id: 'RECOMMENDED_COLUMN_POPULATED',
-        description: 'HPE Recommended column is present with binary values',
-        verify: ctx => ctx.recommendedColumnVerified !== false,
+        description: 'HPE Recommended column preserves observed Yes/No or explicit Unknown',
+        verify: ctx => ctx.recommendedColumnVerified === true,
         remediation: 'Ensure parseSingleTableRow populates HPE Recommended field.'
       }
     ]
@@ -141,7 +141,7 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
       {
         id: 'TALLY_AUDIT_PASSED',
         description: 'Staging Excel workbook matches TSVs and JSON metadata exactly',
-        verify: ctx => ctx.tallyAuditPassed !== false,
+        verify: ctx => ctx.tallyAuditPassed === true,
         remediation: 'Review verify_excel_tally.js report for row count or formula mismatches.'
       }
     ]
@@ -153,7 +153,7 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
       {
         id: 'CLOUD_SYNC_VERIFIED',
         description: 'Knowledge payload synchronized with Google NotebookLM',
-        verify: ctx => ctx.cloudSyncVerified !== false,
+        verify: ctx => ctx.cloudSyncVerified === true,
         remediation: 'Check nlm CLI credentials and Google Sheet Drive permissions.'
       }
     ]
@@ -165,7 +165,7 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
       {
         id: 'REGISTRY_UPDATED',
         description: 'Learned knowledge registry and charters updated on disk',
-        verify: ctx => ctx.registryUpdated !== false,
+        verify: ctx => ctx.registryUpdated === true,
         remediation: 'Verify master_knowledge_registry.json write permissions.'
       }
     ]
@@ -181,7 +181,9 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
 function verifyScrapingStep(stepNum, context = {}) {
   const stepSpec = SCRAPING_VERIFIABILITY_MATRIX[stepNum];
   if (!stepSpec) {
-    return { valid: true, stepNum, stage: 'UNKNOWN_STEP', checks: [] };
+    return { valid: false, stepNum, stage: 'UNKNOWN_STEP', checks: [], failure: {
+      assertionId: 'UNKNOWN_STEP', message: 'No verifiability contract exists for this stage'
+    } };
   }
 
   const checks = [];
@@ -194,7 +196,6 @@ function verifyScrapingStep(stepNum, context = {}) {
       passed = Boolean(assertion.verify(context));
     } catch (err) {
       passed = false;
-      assertion.error = err.message;
     }
 
     checks.push({

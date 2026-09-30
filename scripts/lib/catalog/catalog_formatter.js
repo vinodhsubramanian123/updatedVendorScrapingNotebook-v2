@@ -51,7 +51,7 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
       // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
       const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
-      const isRecommended = (entry.parentCategory === 'Chassis' || (sku['Option Type'] || sku.optionType) === 'CTO') ? 'Yes' : 'No';
+      const isRecommended = 'Unknown';
 
       const vendorAttributes = sku.vendorAttributes && typeof sku.vendorAttributes === 'object'
         ? JSON.stringify(sku.vendorAttributes)

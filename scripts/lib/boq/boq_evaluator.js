@@ -1254,6 +1254,22 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     }
   }
 
+  const hasBaseChassis = items.some(it => {
+    const clean = cleanBaseSKU(it.sku);
+    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
+  });
+
+  // Domain-Aware Dynamic Aspect Registry Integration (INV-56 / F-07)
+  let domainAspectAudit = null;
+  try {
+    const { evaluateDomainAspects } = require('../aspects/aspect_registry.js');
+    domainAspectAudit = evaluateDomainAspects(topology.domain, items, catalogData, mandatorySkus, serverCount, {
+      chassisInfo, channelWidth: memory?.channelWidth || 8, isCtoChassis: hasBaseChassis, options
+    });
+  } catch (aspectErr) {
+    console.warn('[BOQ_EVALUATOR] Dynamic aspect registry evaluation note:', aspectErr.message);
+  }
+
   const errors = [];
   const warnings = [];
   const missingDependencies = [];
@@ -1281,10 +1297,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   const psuPerServer = power.psuCount / serverCount;
   const cpusPerServer = compute.cpuCount / serverCount;
   const hasDriveCageKit = storage.hasDriveCage || items.some(it => (it.description || '').toLowerCase().includes('drive cage') || (it.description || '').toLowerCase().includes('cage kit') || (mandatorySkus?.GENERIC_CAGE?.sku && cleanBaseSKU(it.sku) === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
-  const hasBaseChassis = items.some(it => {
-    const clean = cleanBaseSKU(it.sku);
-    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
-  });
+
   
   const ctx = {
     items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
@@ -1350,21 +1363,35 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     // Flat action checklist for fast UI and API consumption (QW-1)
     needsActions: missingDependencies.map(d => d.key || d.sku),
     // Cluster Infrastructure Sizing Matrix
-    clusterSizing: {
-      serverCount,
-      totalRackUnits: formFactorRU > 0 ? serverCount * formFactorRU : null,
-      standard42uRacksRequired: formFactorRU > 0 ? Math.ceil((serverCount * formFactorRU) / 42) : null,
-      totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
-      estimatedNodeWattage: power.estimatedNodeWattage,
-      railKitCoverage: {
-        required: serverCount,
-        recommendedSku: 'P52341-B21',
-        description: 'HPE ProLiant DL380 Gen11 Easy Install Rail Kit',
-        providedCount: railKitCount || 0,
-        isCompliant: (railKitCount || 0) >= serverCount
-      },
-      needsHighLine220v: power.needsHighLine220v
-    },
+    clusterSizing: (() => {
+      let recRailSku = 'P52341-B21';
+      let recRailDesc = 'HPE ProLiant Easy Install Rail Kit';
+      if (catalogData?.entries) {
+        for (const entry of catalogData.entries) {
+          const match = entry.skus?.find(s => /Rail\s*Kit/i.test(s.Description || s.description || ''));
+          if (match) {
+            recRailSku = match.sku || match['Product #'] || recRailSku;
+            recRailDesc = match.Description || match.description || recRailDesc;
+            break;
+          }
+        }
+      }
+      return {
+        serverCount,
+        totalRackUnits: formFactorRU > 0 ? serverCount * formFactorRU : null,
+        standard42uRacksRequired: formFactorRU > 0 ? Math.ceil((serverCount * formFactorRU) / 42) : null,
+        totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
+        estimatedNodeWattage: power.estimatedNodeWattage,
+        railKitCoverage: {
+          required: serverCount,
+          recommendedSku: recRailSku,
+          description: recRailDesc,
+          providedCount: railKitCount || 0,
+          isCompliant: (railKitCount || 0) >= serverCount
+        },
+        needsHighLine220v: power.needsHighLine220v
+      };
+    })(),
     errors,
     warnings,
     mathDeductions,
@@ -1373,6 +1400,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     redundantDefaults,
     aspectChecks,
     genericDomainAudit,
+    domainAspectAudit,
     bundleComposition
   };
 
@@ -1437,6 +1465,8 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
 
   return {
     isMathClean,
+    runtimeDiscoveryPlan: require('./runtime_discovery_plan').buildRuntimeDiscoveryPlan(
+      { items, conflictGraph: conflictGraphResults }, { catalogData, targetDir, selectorsByConfiguration: options.selectorsByConfiguration }),
     solutionTopology: topology,
     isGraphClean,
     criticalViolationsCount,

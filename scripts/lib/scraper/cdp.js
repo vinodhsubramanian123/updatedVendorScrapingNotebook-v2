@@ -396,12 +396,12 @@ function extractRulesFromNetworkPayload(data, capturedRules, sourceUrl) {
 
       capturedRules.push({
         level: item.level || 'CHASSIS',
-        ruleType: item.ruleType || item.type || (ruleText.toLowerCase().includes('require') ? 'REQUIRED_DEPENDENCY' : 'MUTUAL_EXCLUSION'),
+        ruleType: item.ruleType || item.type || 'UNCLASSIFIED_OBSERVATION',
         affectedSkus,
         constraint: item.constraint || ruleText,
         rule: ruleText,
         source: 'BACKEND_NETWORK_SNIFFER',
-        sourceUrl: sourceUrl ? sourceUrl.substring(0, 150) : 'REST_API'
+        sourceUrl: sourceUrl ? sourceUrl.split(/[?#]/)[0] : 'REST_API'
       });
     }
   }
@@ -454,13 +454,33 @@ async function setupNetworkSniffer(ws, options = {}) {
 
   const capturedResponses = [];
   const capturedRules = [];
+  const responses = new Map();
+  const pending = new Set();
+  const failures = [];
+  const allowedHosts = new Set(options.allowedHosts || ['oca.ext.hpe.com']);
+  const captureBody = async (requestId, response) => {
+    try {
+      const bodyRes = await sendCommand(ws, 'Network.getResponseBody', { requestId }, 8000);
+      if (!bodyRes?.body) throw new Error('EMPTY_RESPONSE_BODY');
+      const body = bodyRes.base64Encoded ? Buffer.from(bodyRes.body, 'base64').toString('utf8') : bodyRes.body;
+      if (Buffer.byteLength(body) > 8 * 1024 * 1024) throw new Error('RESPONSE_TOO_LARGE');
+      const parsed = JSON.parse(body);
+      const url = response.url.split(/[?#]/)[0];
+      capturedResponses.push({ url, status: response.status, timestamp: new Date().toISOString() });
+      extractRulesFromNetworkPayload(parsed, capturedRules, url);
+    } catch (error) {
+      failures.push({ requestId, reason: error instanceof SyntaxError ? 'NON_JSON_RESPONSE' : error.message });
+    }
+  };
 
   const messageHandler = async (raw) => {
     try {
       const msg = JSON.parse(raw.toString());
       if (msg.method === 'Network.responseReceived') {
         const { requestId, response } = msg.params || {};
-        const url = (response?.url || '').toLowerCase();
+        const parsedUrl = new URL(response?.url || 'about:blank');
+        if (!allowedHosts.has(parsedUrl.hostname)) return;
+        const url = parsedUrl.pathname.toLowerCase();
         const mimeType = (response?.mimeType || '').toLowerCase();
 
         const isRuleEndpoint = url.includes('/configurator/') ||
@@ -473,17 +493,18 @@ async function setupNetworkSniffer(ws, options = {}) {
         const isJson = mimeType.includes('application/json') || mimeType.includes('text/x-json') || mimeType.includes('text/json');
 
         if (isRuleEndpoint || isJson) {
-          try {
-            const bodyRes = await sendCommand(ws, 'Network.getResponseBody', { requestId }, 8000);
-            if (bodyRes?.body) {
-              const parsed = JSON.parse(bodyRes.body);
-              capturedResponses.push({ url, status: response.status, data: parsed, timestamp: new Date().toISOString() });
-              extractRulesFromNetworkPayload(parsed, capturedRules, response.url);
-            }
-          } catch (_) {
-            // Stream not ready or non-json body
-          }
+          responses.set(requestId, response);
         }
+      } else if (msg.method === 'Network.loadingFinished' && responses.has(msg.params.requestId)) {
+        const requestId = msg.params.requestId;
+        const response = responses.get(requestId);
+        responses.delete(requestId);
+        const task = captureBody(requestId, response);
+        pending.add(task);
+        task.finally(() => pending.delete(task));
+      } else if (msg.method === 'Network.loadingFailed' && responses.has(msg.params.requestId)) {
+        failures.push({ requestId: msg.params.requestId, reason: 'NETWORK_LOADING_FAILED' });
+        responses.delete(msg.params.requestId);
       }
     } catch (_) {}
   };
@@ -492,6 +513,7 @@ async function setupNetworkSniffer(ws, options = {}) {
 
   const detach = async () => {
     ws.removeListener('message', messageHandler);
+    await Promise.allSettled([...pending]);
     try {
       await sendCommand(ws, 'Network.disable');
     } catch (_) {}
@@ -500,6 +522,8 @@ async function setupNetworkSniffer(ws, options = {}) {
   return {
     getCapturedPayloads: () => [...capturedResponses],
     getCapturedRules: () => [...capturedRules],
+    flush: () => Promise.allSettled([...pending]),
+    getCoverage: () => ({ capturedResponses: capturedResponses.length, pendingResponses: responses.size + pending.size, failures: [...failures], scope: 'OBSERVED_REQUESTS_ONLY' }),
     detach
   };
 }

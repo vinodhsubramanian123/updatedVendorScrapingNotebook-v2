@@ -1,4 +1,9 @@
 'use strict';
+/**
+ * @deprecated Legacy standalone agentic evaluator.
+ * Superseded by scripts/lib/rag/agentic_guardrail.js which incorporates smart FIFO
+ * key rotation, model fallback resilience, and the 9-phase evidence ledger.
+ */
 const fs = require('fs');
 const path = require('path');
 const { GoogleGenAI, Type } = require('@google/genai');

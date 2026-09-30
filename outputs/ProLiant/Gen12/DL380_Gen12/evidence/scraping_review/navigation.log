@@ -1,0 +1,80 @@
+◇ injected env (6) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+
+===============================================================
+🧭 SMART HPE OCA PORTAL AUTO-NAVIGATOR
+   Target Chassis Query: "DL380 Gen12"
+===============================================================
+
+🌐 Found active HPE Partner Portal tab at: https://partner.hpe.com/group/prp/home (title: "Home - HPE Partner Portal")
+💡 Launching One Config Advanced from Partner Portal Quick links / Tools gateway...
+🧭 Navigating directly to tools-catalog?eServiceId=187402...
+⏳ Waiting for newly created OCA tab to initialize with fresh SAML tokens...
+
+===============================================================
+🧭 SMART HPE OCA PORTAL AUTO-NAVIGATOR
+   Target Chassis Query: "DL380 Gen12"
+===============================================================
+
+✅ Found active OCA tab: [39544358DB044CD1BF24805A40FE9F95] OneConfig Advanced
+🔍 At OCA Product Search page. Entering chassis query: "DL380 Gen12"...
+Found 126 search candidate(s) (26 eligible standard CTO base(s)).
+🎯 Selected standard CTO base: P77819-B21 - "P77819-B21 - HPE OEM ProLiant Compute DL380 Gen12 8SFF NC Configure-to-order Server" (Price: $0)
+⏳ Waiting for WebLogic configuration workspace to load...
+🎉 OCA Navigation Complete: {
+  targetUrl: 'https://oca.ext.hpe.com/oca/OCAInternalLogin',
+  pageId: '39544358DB044CD1BF24805A40FE9F95',
+  baseChassisPriceUsd: 0,
+  selectedCandidate: {
+    type: 'dropdown-option',
+    cardSelector: '[data-cand-idx="0"]',
+    optionValue: 'P77819-B21',
+    text: 'P77819-B21 - HPE OEM ProLiant Compute DL380 Gen12 8SFF NC Configure-to-order Server',
+    sku: 'P77819-B21',
+    listPriceUsd: 0,
+    availability: 'Available in OCA product catalog',
+    leadTime: '',
+    deliveryLabel: '',
+    isBto: false,
+    isTaa: false,
+    isGta: false,
+    isCto: true
+  },
+  chassisDiscovery: {
+    query: 'DL380 Gen12',
+    selectedSku: 'P77819-B21',
+    source: 'HPE OCA Product Search via authenticated CDP session',
+    capturedAt: '2026-09-30T16:11:49.098Z',
+    deliveryEstimate: '',
+    candidates: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ],
+    excludedCandidates: [
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ]
+  },
+  status: 'NAVIGATED_TO_CONFIG_PAGE'
+}

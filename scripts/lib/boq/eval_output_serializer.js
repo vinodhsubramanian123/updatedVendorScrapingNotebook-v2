@@ -474,6 +474,16 @@ async function serializeAndExportResults(ctx) {
 
   const reportDir = path.dirname(outputPath);
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+  // Rebuild from final ranks so substitutions cannot retain an obsolete plan.
+  const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
+  evalResults.runtimeDiscoveryPlan = buildRuntimeDiscoveryPlan({ ...evalResults, items }, {
+    catalogData: ctx.catalogData, targetDir: chassisDir, productId: chassisPrefix,
+    selectorsByConfiguration: ctx.selectorsByConfiguration
+  });
+  const runtimePlanPath = path.join(reportDir, 'evidence', `${path.basename(outputPath, path.extname(outputPath))}_runtime_discovery_plan.json`);
+  fs.mkdirSync(path.dirname(runtimePlanPath), { recursive: true });
+  require('../system/fs_compat').safeWriteJsonAtomic(runtimePlanPath, evalResults.runtimeDiscoveryPlan);
+  evalResults.runtimeDiscoveryPlanPath = runtimePlanPath;
 
   // Post-flow sync
   try {
@@ -503,25 +513,30 @@ async function serializeAndExportResults(ctx) {
     evalResults.items = items;
   }
 
-  try {
-    const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
-    generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, targetChassisName, {
-      clusterSizing: evalResults.clusterSizing
-    });
-    generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
-      clusterSizing: evalResults.clusterSizing
-    });
-    evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
-    evalResults.multiRankCsvPath = multiRankCsvPath;
-    const proposalPath = path.join(reportDir, `${fileSuffix}_Proposal.xlsx`);
-    generateProfessionalBOQ(evalResults, proposalPath, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
-    evalResults.proposalWorkbookPath = proposalPath;
-    const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
-    generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
-    evalResults.portalWorkbookPath = portalWorkbookPath;
-  } catch (sheetErr) {
-    logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
-    evalResults.deliveryError = sheetErr.message;
+  if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
+    evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+  } else {
+    try {
+      const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
+      generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, targetChassisName, {
+        clusterSizing: evalResults.clusterSizing
+      });
+      generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
+        clusterSizing: evalResults.clusterSizing
+      });
+      evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
+      evalResults.multiRankCsvPath = multiRankCsvPath;
+      const proposalPath = path.join(reportDir, `${fileSuffix}_Proposal.xlsx`);
+      generateProfessionalBOQ(evalResults, proposalPath, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
+      evalResults.proposalWorkbookPath = proposalPath;
+      const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
+      generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
+      evalResults.portalWorkbookPath = portalWorkbookPath;
+    } catch (sheetErr) {
+      logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
+      evalResults.deliveryError = sheetErr.message;
+    }
   }
 
   evalResults.stageBreakdown = {
@@ -586,7 +601,8 @@ async function serializeAndExportResults(ctx) {
     evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
     evalResults.evidenceHealth = ledger.getHealth();
   }
-  const reportContent = generateMarkdownReport(ctx);
+  const reportContent = generateMarkdownReport(ctx) + '\n\n' +
+    require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
   if (ledger) {
     ledger.recordArtifact('ANALYSIS_REPORT', outputPath);

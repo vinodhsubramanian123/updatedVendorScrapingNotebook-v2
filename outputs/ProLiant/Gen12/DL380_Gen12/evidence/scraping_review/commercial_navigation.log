@@ -1,0 +1,82 @@
+◇ injected env (6) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+===============================================================
+🔄 [INV-89] TAB 1 STALE-SESSION SELF-HEALING RECOVERY
+   Target Chassis Query: "DL380 Gen12"
+===============================================================
+
+🧹 Closing stale/broken OCA tab: [39544358DB044CD1BF24805A40FE9F95] External OCA  | Hewlett Packard Enterprise
+🔄 Refreshing Tab 1 (Partner Portal) to regenerate fresh SAML session tokens...
+🌐 Found active HPE Partner Portal tab at: https://partner.hpe.com/group/prp (title: "Home - HPE Partner Portal")
+💡 Launching One Config Advanced from Partner Portal Quick links / Tools gateway...
+🚀 Clicked One Config Advanced link: One Config Advanced
+⏳ Waiting for newly created OCA tab to initialize with fresh SAML tokens...
+
+===============================================================
+🧭 SMART HPE OCA PORTAL AUTO-NAVIGATOR
+   Target Chassis Query: "DL380 Gen12"
+===============================================================
+
+✅ Found active OCA tab: [03CACAA6C8C99DD6C541391739728677] OneConfig Advanced
+🔍 At OCA Product Search page. Entering chassis query: "DL380 Gen12"...
+Found 126 search candidate(s) (26 matching CTO base(s), including specialized variants).
+🎯 Selected commercial CTO base: P73282-B21 - "P73282-B21 - HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server" (Price: UNVERIFIED)
+⏳ Waiting for WebLogic configuration workspace to load...
+🎉 OCA Navigation Complete: {
+  targetUrl: 'https://oca.ext.hpe.com/oca/OCAInternalLogin',
+  pageId: '03CACAA6C8C99DD6C541391739728677',
+  baseChassisPriceUsd: 0,
+  selectedCandidate: {
+    type: 'dropdown-option',
+    cardSelector: '[data-cand-idx="0"]',
+    optionValue: 'P73282-B21',
+    text: 'P73282-B21 - HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server',
+    sku: 'P73282-B21',
+    listPriceUsd: 0,
+    availability: 'Available in OCA product catalog',
+    leadTime: '',
+    deliveryLabel: '',
+    isBto: false,
+    isTaa: false,
+    isGta: false,
+    isCto: true
+  },
+  chassisDiscovery: {
+    query: 'DL380 Gen12',
+    selectedSku: 'P73282-B21',
+    source: 'HPE OCA Product Search via authenticated CDP session',
+    capturedAt: '2026-09-30T16:15:13.966Z',
+    deliveryEstimate: '',
+    candidates: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ],
+    excludedCandidates: [
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ]
+  },
+  status: 'NAVIGATED_TO_CONFIG_PAGE'
+}

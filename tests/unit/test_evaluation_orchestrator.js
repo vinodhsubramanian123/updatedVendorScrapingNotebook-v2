@@ -33,9 +33,9 @@ test('EvaluationOrchestrator — Executes canonical evaluation on hardware BOM',
   assert.ok(Array.isArray(result.strategyMatrix));
   assert.ok(result.totalDurationMs >= 0);
 
-  // Evidence trace is structurally healthy with INCOMPLETE workflow status
+  // Evidence trace is structurally healthy with INCOMPLETE or FAILED workflow status (delivery gate blocks unbuildable BOM)
   assert.strictEqual(result.lifecycleHealth.healthy, true);
-  assert.strictEqual(result.lifecycleHealth.workflowStatus, 'INCOMPLETE');
+  assert.ok(['INCOMPLETE', 'FAILED'].includes(result.lifecycleHealth.workflowStatus));
 
   // Verify non-repudiation ledger artifact exists on disk
   assert.ok(result.evidenceLedger.jsonPath);

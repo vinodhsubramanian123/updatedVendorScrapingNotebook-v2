@@ -11,7 +11,7 @@ function applyConditionalDiscovery(entries, observations = []) {
       conditionKey: ambient ? 'ambientTempC' : 'portalSelection',
       conditionOperator: ambient ? observation.operator : 'unknown',
       thresholdValue: ambient ? observation.thresholdDegC : null, portalVerificationRequired: true,
-      rule: ambient ? `${sku} conditional visibility: ambient temperature ${observation.operator === 'lte' ? '<=' : '>='} ${observation.thresholdDegC} C; PORTAL_CONDITIONAL`
+      rule: ambient ? `${sku} conditional visibility: ambient temperature ${{ lte: '<=', gte: '>=', eq: '==' }[observation.operator] || 'unknown'} ${observation.thresholdDegC} C; PORTAL_CONDITIONAL`
         : `${sku} conditional visibility: unresolved portal selector; PORTAL_CONDITIONAL` };
     for (const entry of entries) {
       const matched = (entry.skus || []).filter(row => cleanBaseSKU(row.sku || row['Product #']) === sku);

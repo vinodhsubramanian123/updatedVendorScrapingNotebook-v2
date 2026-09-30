@@ -63,6 +63,15 @@ jobs:
       - name: Run incremental checksum & diff tests
         run: node tests/unit/test_incremental_checksum.js
 
+      - name: Run catalog refresh contract tests
+        run: node tests/unit/test_catalog_refresh_contract.js
+
+      - name: Run core workflow contracts tests
+        run: node tests/unit/test_core_workflow_contracts.js
+
+      - name: Run presales query router tests
+        run: node tests/unit/test_query_router.js
+
       - name: Run edge cases & robustness tests
         run: node tests/chaos/test_edge_cases.js
 

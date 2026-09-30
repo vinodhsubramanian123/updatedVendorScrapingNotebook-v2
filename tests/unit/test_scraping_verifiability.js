@@ -164,9 +164,9 @@ test('Step 10 (REGISTRY_SYNC) verification logic', () => {
   assert.equal(fail.failure.assertionId, 'REGISTRY_UPDATED');
 });
 
-test('Unknown step returns fallback telemetry without throwing', () => {
+test('Unknown step fails closed without throwing', () => {
   const result = verifyScrapingStep(999, {});
-  assert.equal(result.valid, true);
+  assert.equal(result.valid, false);
   assert.equal(result.stage, 'UNKNOWN_STEP');
   assert.equal(result.stepNum, 999);
   assert.deepEqual(result.checks, []);
@@ -232,4 +232,8 @@ test('selfReflectOnScrapingSession writes structured reflection to disk', () => 
   try {
     fs.unlinkSync(writtenFile);
   } catch (_) {}
+});
+
+test('Missing affirmative evidence cannot pass a stage', () => {
+  for (const step of [3, 7, 8, 9, 10]) assert.equal(verifyScrapingStep(step, {}).valid, false);
 });

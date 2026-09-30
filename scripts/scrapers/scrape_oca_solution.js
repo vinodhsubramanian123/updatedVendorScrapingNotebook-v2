@@ -510,7 +510,7 @@ async function main() {
   await ensureChromeBrowserRunning(9222);
 
   const navQuery = targetChassisQuery || 'DL380 Gen12';
-  const { pageTarget, chassisDiscovery } = await resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode });
+  let { pageTarget, chassisDiscovery } = await resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode });
 
   // STEP 1: CDP Handshake & Session Verification
   emitProgress(1, 10, 'CDP Handshake & Session Verification', 'started', `Connecting to ${pageTarget.title}`, {
@@ -936,6 +936,7 @@ async function main() {
     fs.mkdirSync(rawDir, { recursive: true });
 
     const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
+    await networkSniffer?.flush?.();
     const networkSniffedRules = networkSniffer ? networkSniffer.getCapturedRules() : [];
     if (networkSniffedRules.length > 0) {
       console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
@@ -960,6 +961,7 @@ async function main() {
       conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
       networkSniffedRules,
       networkSniffedRulesCount: networkSniffedRules.length,
+      networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
       chassisDiscovery
     };
     const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
@@ -1004,8 +1006,9 @@ async function main() {
     stage: 'RULES_PARSING', percent: 75, category: meta.cleanName
   });
 
-  const step6Result = verifyScrapingStep(6, { ctoVariantsCount: chassisDiscovery?.candidates?.length || 1 });
+  const step6Result = verifyScrapingStep(6, { ctoVariantsCount: chassisDiscovery?.candidates?.length || 0 });
   stepTelemetry[6] = step6Result;
+  if (!step6Result.valid) throw new AtomicStepAnomalyError(6, step6Result.stage, step6Result.failure.assertionId, step6Result.failure.message);
 
   catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
   catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
@@ -1031,7 +1034,19 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
-  const step7Result = verifyScrapingStep(7, { diffAnomalySafe: true, recommendedColumnVerified: true });
+  const builtCatalog = JSON.parse(fs.readFileSync(catalogJson, 'utf8'));
+  const previousPath = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
+  const previousCatalog = fs.existsSync(previousPath) ? JSON.parse(fs.readFileSync(previousPath, 'utf8')) : null;
+  const activeRows = catalog => (catalog?.entries || []).flatMap(entry => entry.skus || [])
+    .filter(row => !['REMOVED', 'DISCONTINUED'].includes(String(row['Diff Status'] || '').toUpperCase()));
+  const currentRows = activeRows(builtCatalog);
+  const currentSkus = new Set(currentRows.map(row => row.sku || row['Product #']).filter(Boolean));
+  const previousSkus = new Set(activeRows(previousCatalog).map(row => row.sku || row['Product #']).filter(Boolean));
+  const removedCount = [...previousSkus].filter(sku => !currentSkus.has(sku)).length;
+  const step7Result = verifyScrapingStep(7, {
+    diffAnomalySafe: currentSkus.size > 0 && (!previousSkus.size || removedCount / previousSkus.size <= 0.25),
+    recommendedColumnVerified: currentRows.length > 0 && currentRows.every(row => ['Yes', 'No', 'Unknown'].includes(row['HPE Recommended']))
+  });
   stepTelemetry[7] = step7Result;
   if (!step7Result.valid) {
     throw new AtomicStepAnomalyError(7, step7Result.stage, step7Result.failure.assertionId, step7Result.failure.message, step7Result.failure);

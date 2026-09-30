@@ -713,14 +713,12 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     descText = `HPE ProLiant Server Option (${pn})`;
   }
   let hpeRecommended = obj['HPE Recommended'] || obj['Recommended'] || '';
-  if (/yes|true|recommended/i.test(hpeRecommended)) {
+  if (/^(?:yes|true|recommended)$/i.test(String(hpeRecommended).trim())) {
     hpeRecommended = 'Yes';
-  } else if (/no|false/i.test(hpeRecommended)) {
+  } else if (/^(?:no|false|not recommended)$/i.test(String(hpeRecommended).trim())) {
     hpeRecommended = 'No';
-  } else if (obj['Option Type'] === 'CTO' || /cto server|configure-to-order/i.test(descText)) {
-    hpeRecommended = 'Yes';
   } else {
-    hpeRecommended = 'No';
+    hpeRecommended = 'Unknown';
   }
   obj['HPE Recommended'] = hpeRecommended;
 
@@ -1172,7 +1170,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       'CLIC Status': discovered?.status || 'Active',
       'Lifecycle Status': discovered?.status || 'Active',
       lifecycleStatus: discovered?.status || 'Active',
-      'HPE Recommended': 'Yes',
+      'HPE Recommended': 'Unknown',
       Availability: discovered?.availability || 'Available in OCA product catalog',
       'Lead Time': discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '',
       'Lead Time Source': discovered?.leadTime || chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
@@ -1201,7 +1199,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
           'CLIC Status': 'Active',
           'Lifecycle Status': 'Active',
           lifecycleStatus: 'Active',
-          'HPE Recommended': 'Yes',
+          'HPE Recommended': 'Unknown',
           Availability: 'Available in active OCA configuration',
           'Lead Time': chassisDiscovery?.deliveryEstimate || '',
           'Lead Time Source': chassisDiscovery?.deliveryEstimate ? 'OCA configuration estimate' : 'Not published by OCA',
@@ -1560,7 +1558,7 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
       listPriceFormatted: `$${(parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
       optionType: r['Option Type'] || 'CTO',
       hpeRecommended: 'Yes',
-      'HPE Recommended': 'Yes',
+      'HPE Recommended': 'Unknown',
       startDate: r['Start Date'] || '',
       discontinuedDate: r['Discontinued Date'] || '',
       constraint: r['Constraint Text'] || 'max 1 — Mandatory Base Chassis Selection',
@@ -1620,7 +1618,7 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
                 listPriceFormatted: `$${(parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
                 optionType: s['Option Type'] || s.optionType || 'CTO',
                 hpeRecommended: 'Yes',
-                'HPE Recommended': 'Yes',
+                'HPE Recommended': 'Unknown',
                 startDate: s['Start Date'] || s.startDate || '',
                 discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
                 constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
@@ -1780,7 +1778,10 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   );
   ctx.conditionalRules = require('../lib/catalog/conditional_discovery.js').applyConditionalDiscovery(
     [...hardwareEntries, ...cleanServicesEntries], ctx.rawData.conditionalSkus || []);
-  ctx.networkRules = (ctx.rawData.networkSniffedRules || []).map(r => ({
+  // Unclassified backend messages remain raw evidence, not executable rules.
+  ctx.networkRules = (ctx.rawData.networkSniffedRules || []).filter(r =>
+    ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION'].includes(r.ruleType)
+  ).map(r => ({
     parentCategory: r.parentCategory || 'System Options',
     subCategory: r.subCategory || 'Configuration Rules',
     constraint: r.constraint || r.rule,

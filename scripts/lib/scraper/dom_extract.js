@@ -273,6 +273,8 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   try { selectorInfo = JSON.parse(selectorRes.result?.value || '{}'); } catch (_) {}
 
   if (!selectorInfo.found) {
+    const rowResults = await require('./ambient_row_probe').probeAmbientRows(ws, sendCommand, thresholds, captureState);
+    if (rowResults !== null) return rowResults;
     // No ambient selector found — still capture hidden elements as UNKNOWN_CONDITION
     const hiddenAtDefault = await extractHiddenElements(ws, sendCommand);
     for (const item of hiddenAtDefault) {

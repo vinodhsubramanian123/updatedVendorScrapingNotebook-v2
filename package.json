@@ -33,6 +33,7 @@
     "lint": "npx -y oxlint dashboard/src",
     "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=135",
     "test": "node scripts/maintenance/run_test_matrix.js --tier fast",
+    "test:core-contract": "node scripts/maintenance/run_test_matrix.js --domain core",
     "test:portfolio": "node tests/integration/verify_all.js",
     "scrape": "node scripts/scrapers/scrape_oca_solution.js",
     "scrape:storage": "node scripts/scrapers/scrape_oca_storage_solution.js",

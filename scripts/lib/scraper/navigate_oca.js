@@ -34,6 +34,11 @@ function extractModelGeneration(value) {
   return { model, generation };
 }
 
+// OEM CTOs are valid discoveries, but require an explicit OEM request or SKU.
+function isDefaultChassisCandidate(query, candidate) {
+  return /\boem\b/i.test(query) || !/\boem\b/i.test(candidate.text || '');
+}
+
 function isExactProductCandidate(query, candidate) {
   // Fixed SAN switches are configurable products without a server CTO label.
   // Require the explicit orderable SKU so 24/8 and 24/24 bundles cannot swap.
@@ -137,8 +142,11 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
   const pageText = typeof activeState === 'object' ? (activeState?.pageText || '') : '';
   const activeIdentity = pageText ? extractModelGeneration(pageText) : null;
   const requestedIdentity = extractModelGeneration(query);
-  const activeMatchesRequest = !activeIdentity || !activeIdentity.model || (activeIdentity.model === requestedIdentity.model &&
-    (!requestedIdentity.generation || activeIdentity.generation === requestedIdentity.generation));
+  const activeMatchesRequest = Boolean(activeIdentity?.model && requestedIdentity.model &&
+    activeIdentity.model === requestedIdentity.model &&
+    (!requestedIdentity.generation || activeIdentity.generation === requestedIdentity.generation) &&
+    isDefaultChassisCandidate(query, { text: pageText }) &&
+    (!options.targetSku || pageText.toUpperCase().includes(String(options.targetSku).toUpperCase())));
 
   if (hasMenu && activeMatchesRequest && !options.forceDiscovery) {
     console.log(`⚡ [ACTIVE SESSION] Already inside target OCA configuration page! Ready for scraping.`);
@@ -428,7 +436,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
     return 0;
   });
 
-  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} eligible standard CTO base(s)).`);
+  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} matching CTO base(s), including specialized variants).`);
 
   let selected = null;
   if (options.targetSku) {
@@ -439,8 +447,8 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
     selected = eligibleCandidates.find(c => vRe.test(c.text || '') || vRe.test(c.sku || ''));
     if (selected) console.log(`🎯 Matched requested variant filter "${options.variantFilter}": ${selected.sku} - "${selected.text}"`);
   }
-  if (!selected) {
-    selected = eligibleCandidates[0];
+  if (!selected && !options.targetSku && !options.variantFilter) {
+    selected = eligibleCandidates.find(candidate => isDefaultChassisCandidate(query, candidate));
   }
 
   if (!selected) {
@@ -454,7 +462,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
     throw error;
   }
 
-  console.log(`🎯 Selected standard CTO base: ${selected.sku} - "${selected.text}" (Price: $${selected.listPriceUsd || 0})`);
+  console.log(`🎯 Selected ${/\boem\b/i.test(selected.text || '') ? 'OEM' : 'commercial'} CTO base: ${selected.sku} - "${selected.text}" (Price: ${selected.listPriceUsd > 0 ? '$' + selected.listPriceUsd : 'UNVERIFIED'})`);
 
   const selectAndClickExpr = buildSelectAndClickExpression(selected);
 
@@ -1113,5 +1121,6 @@ module.exports = {
   normalizeProductText,
   extractModelGeneration,
   isExactProductCandidate,
+  isDefaultChassisCandidate,
   waitForDOMPredicate
 };

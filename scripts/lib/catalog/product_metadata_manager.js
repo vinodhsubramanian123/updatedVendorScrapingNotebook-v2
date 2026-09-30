@@ -242,8 +242,12 @@ function commitSuccessfulResyncMetadata(params) {
   if (fs.existsSync(MASTER_METADATA_PATH)) {
     try {
       masterRegistry = JSON.parse(fs.readFileSync(MASTER_METADATA_PATH, 'utf-8'));
-    } catch {
-      // Re-init
+    } catch (parseErr) {
+      const quarantinePath = `${MASTER_METADATA_PATH}.corrupted.${Date.now()}.json`;
+      try {
+        fs.copyFileSync(MASTER_METADATA_PATH, quarantinePath);
+      } catch (_) {}
+      console.warn(`[METADATA_QUARANTINE] Corrupt product metadata quarantined to ${quarantinePath}: ${parseErr.message}`);
     }
   }
 

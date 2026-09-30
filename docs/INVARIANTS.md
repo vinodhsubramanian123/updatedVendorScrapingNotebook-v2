@@ -670,23 +670,34 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (165+ suites), `npm run lint` (0 warnings on 110 files), and complexity gates ($CC \le 135$).
 
 ## 8. Invariants Catalog Extension (2026-09-27)
-- **INV-118: Universal Scraping-Time Conditional SKU Discovery & Macro Form Sweeping**:
+- **INV-125: Universal Scraping-Time Conditional SKU Discovery & Macro Form Sweeping**:
   - Scrapers must never assume the default rendered DOM is complete. They must traverse all CSS-hidden DOM nodes (`extractHiddenElements()`) and sweep macro form triggers (ambient temperature $\le 27^\circ\text{C}$, 1 vs 2 CPU count, backplane/chassis selection, and AC vs DC power) at scraping time.
   - Gated SKUs must be recorded in `raw_data/conditional_skus.json` and compiled into `Catalog_Rules.json` with machine-parseable rule types (`AMBIENT_GATE`, `TDP_GATE`), thresholds, and operators.
   - SHA-256 SKU hashing (`computeSkuHash()`) must include `visibilityState` and `conditionType` so visibility changes trigger catalog diffs and NLM updates.
 
-- **INV-119: Anti-Hallucination Evaluation Narrative & Transparent Evidence Trace**:
+- **INV-126: Anti-Hallucination Evaluation Narrative & Transparent Evidence Trace**:
   - All customer evaluations must generate a 5-step numbered reasoning narrative (`generateEvaluationNarrative()`), mapping every BOM component, physical aspect status, triggered catalog rule, and ranked recommendation directly to concrete evidence (QuickSpecs citations, local rules, or live receipts).
   - Any solution featuring conditionally-visible SKUs (such as an H200 GPU requiring $\le 27^\circ\text{C}$ ambient) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L. It is forbidden to output a silent PASS for conditionally gated components.
   - Mixed-domain tenders must be automatically sniffed (`sniffDomainComposition()`) and partitioned before variation clustering to prevent cross-domain rule contamination.
 
-- **INV-120: Domain-Segregated Test Matrix Architecture**:
-  - The test matrix runner (`run_test_matrix.js`) must support domain-isolated execution via `--domain` / `-D` (`aspects`, `boq`, `scraping`, `sync`, `catalog`, `conflict`, `guardrail`, `smoke`).
-  - Developers and agents must utilize domain-targeted runs (`npm run test:smoke`, `npm run test:domain <name>`) during active feature development to conserve tokens, memory, and CPU, reserving the full 168-suite matrix for final release certification.
+- **INV-127: Domain-Segregated Test Matrix Architecture**:
+  - The test matrix runner (`run_test_matrix.js`) must support domain-isolated execution via `--domain` / `-D` (`aspects`, `boq`, `scraping`, `sync`, `catalog`, `conflict`, `guardrail`, `smoke`, `core`, `router`).
+  - Developers and agents must utilize domain-targeted runs (`npm run test:smoke`, `npm run test:domain <name>`) during active feature development to conserve tokens, memory, and CPU, reserving the full 188-suite matrix for final release certification.
 
+## 9. Invariants Catalog Extension (2026-09-30) — Core Logic Architecture & Test Quality Remediation
+- **INV-128: Pre-Presentation Cryptographic Delivery Authorization Gate**:
+  - Customer deliverables (standardized Excel workbooks via `generate_boq_xlsx.js`, serialized evaluation JSONs via `eval_output_serializer.js`, and Drive sync/cloud uploads) must be strictly gated by `verifyDeliveryAuthorization()`.
+  - When pre-presentation acceptance fails (`isAcceptable === false`), deliverable creation and export must halt immediately with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`, preventing unbuildable, unvetted, or corrupted configurations from reaching customers or external storage.
 
+- **INV-129: Test Runner Non-Empty Execution & Silent Pass Prevention**:
+  - `run_test_matrix.js` must verify that test suite discovery matches at least one suite (`discoveredSuites.length > 0`) unless explicitly overridden with `--allow-empty`. An empty discovery must exit with code 1.
+  - Test suites executed via `node:test` must parse test results: if `# tests 0` is detected, the run must be marked as a fatal silent pass failure.
+  - End-to-end tests requiring external live environments (e.g. Chrome on port 9222 for live CLIC) must fail with exit code 1 when the environment is absent, unless explicitly skipped via `ALLOW_E2E_SKIP=true`.
 
+- **INV-130: Factual Grounding of Single-File Quote Audits vs. Two-Baseline Reconciliations**:
+  - When an incoming customer request contains a single quote or hardware list without a second tender baseline, `route_query.js` must classify the execution as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`).
+  - Generating fictitious missing item discrepancies or corrupting uncataloged hardware items as fake missing lines is strictly forbidden. The system must report uncataloged items distinctly in `discrepancies.uncatalogedSkus` without inflating reconciliation discrepancy metrics.
 
-
-
-
+- **INV-131: Explicit Terminal Lifecycle Ledger & Corrupt File Quarantine**:
+  - Evidence ledger phases in `evidence_ledger.js` and `lifecycle_engine.js` must never default to `status = 'PASSED'`. `completePhase()` requires an explicit terminal status and a mandatory `skipReason` whenever `SKIPPED` is passed.
+  - Core file managers (e.g. `ProductMetadataManager`) encountering corrupted JSON on disk must quarantine the corrupt file (`product_generation_metadata.corrupted.<timestamp>.json`) before re-initializing defaults, preventing silent data loss.

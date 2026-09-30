@@ -16,6 +16,9 @@ function rankReviewBadge(evaluation, candidate) {
 }
 
 function generateRankedPortalWorkbook(evaluation, exportPath) {
+  if (evaluation?.acceptanceGate && evaluation.acceptanceGate.isValid === false) {
+    throw new Error(`Cannot export portal workbook: Pre-presentation acceptance failed (${evaluation.acceptanceGate.blockersCount} blocker(s)).`);
+  }
   const workbook = XLSX.utils.book_new();
   const candidates = _getRankedSolutions(evaluation);
   const validCandidates = (candidates || []).filter(candidate => (candidate.skuPartsList || candidate.skuList || []).length > 0);

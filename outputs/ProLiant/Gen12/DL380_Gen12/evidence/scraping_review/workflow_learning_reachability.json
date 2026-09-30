@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-09-30T16:29:39.811Z",
+  "results": [
+    {
+      "deltaId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
+        "ruleType": "WORKFLOW_OEM_SELECTION_ADVISORY",
+        "affectedSku": "P77819-B21",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-09-30T16:29:39.759Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
+        "ruleType": "WORKFLOW_RUNTIME_DISCOVERY_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-09-30T16:29:39.785Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
+        "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-09-30T16:29:39.811Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "cloudSyncStatus": "NOT_PERFORMED",
+  "hardwareAcceptanceStatus": "NOT_CERTIFIED"
+}

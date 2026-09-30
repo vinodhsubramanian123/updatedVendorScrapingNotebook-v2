@@ -302,11 +302,11 @@ if (chassisVariantRows.length > 0) {
       'Form Factor':         formFactor,
       'Description':         r['Description'],
       'Option Type':         r['Option Type'],
-      'HPE Recommended':     r['HPE Recommended'] || 'Yes',
+      'HPE Recommended':     r['HPE Recommended'] || 'Unknown',
       'List Price (USD)':    r['Unit Price (USD)'],
       'Constraint':          r['Constraint Text'] || 'max 1 — Mandatory Base Chassis',
       'Start Date':          r['Start Date'],
-      'Discontinued Date':   r['Discontinued Date'] || 'Active',
+      'Discontinued Date':   r['Discontinued Date'] || 'Unknown',
       'Diff Status':         r['Diff Status'],
       'Price History Trail': r['Price History Trail'],
       'Note': 'Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection.'
@@ -323,58 +323,27 @@ if (chassisVariantRows.length > 0) {
   // Sheet 2c: Chassis Options Matrix — Side-by-side architectural capabilities across chassis variants
   const optionsMatrixRows = chassisVariantRows.map(r => {
     const desc = r['Description'] || '';
-    let formFactor = 'Unknown';
-    let driveType = 'Hybrid SFF/LFF';
-    let defaultBays = '8 Bays';
-    let maxExpandability = 'Up to 24 SFF';
-    let powerEnvelope = '800W / 1000W / 1600W';
-
-    if (desc.includes('8SFF')) {
-      formFactor = '8SFF (2.5-inch)';
-      driveType = 'SAS / SATA / NVMe U.3 / U.2 (2.5")';
-      defaultBays = '8 SFF Front Bays';
-      maxExpandability = 'Up to 24 SFF Front + 2 SFF Rear';
-      powerEnvelope = '800W / 1000W / 1600W Titanium/Platinum';
-    } else if (desc.includes('24SFF')) {
-      formFactor = '24SFF (2.5-inch)';
-      driveType = 'SAS / SATA / NVMe U.3 / U.2 (2.5")';
-      defaultBays = '24 SFF Front Bays';
-      maxExpandability = '24 SFF Front + 2 SFF Rear (Requires SAS Expander or 2nd Controller)';
-      powerEnvelope = '1000W / 1600W / 1800W High Efficiency';
-    } else if (desc.includes('12LFF')) {
-      formFactor = '12LFF (3.5-inch)';
-      driveType = 'SAS / SATA (3.5") + Optional NVMe';
-      defaultBays = '12 LFF Front Bays';
-      maxExpandability = '12 LFF Front + 4 LFF Mid-Tray + 4 LFF Rear (Total 20 LFF)';
-      powerEnvelope = '1000W / 1600W Redundant';
-    } else if (desc.includes('8LFF')) {
-      formFactor = '8LFF (3.5-inch)';
-      driveType = 'SAS / SATA (3.5")';
-      defaultBays = '8 LFF Front Bays';
-      maxExpandability = '8 LFF Front + 4 LFF Optional Cage';
-      powerEnvelope = '800W / 1000W Redundant';
-    } else if (desc.includes('EDSFF') || desc.includes('16EDSFF') || desc.includes('8EDSFF')) {
-      formFactor = 'EDSFF E3.S NVMe';
-      driveType = 'Gen5 NVMe E3.S 1T High-Density SSD';
-      defaultBays = desc.includes('16EDSFF') ? '16 EDSFF Bays' : '8 EDSFF Bays';
-      maxExpandability = 'Up to 32 EDSFF E3.S Direct NVMe';
-      powerEnvelope = '1000W / 1600W Titanium High Density';
-    }
+    // Capabilities require vendor evidence scoped to this exact base SKU.
+    const formFactor = desc.match(/\b\d*\s*(?:EDSFF|SFF|LFF)\b/i)?.[0] || 'Unknown';
+    const driveType = 'UNVERIFIED — variant-specific evidence required';
+    const defaultBays = 'UNVERIFIED — title is not a bay inventory';
+    const maxExpandability = 'UNVERIFIED — variant-specific evidence required';
+    const powerEnvelope = 'UNVERIFIED — variant-specific evidence required';
 
     return {
       'Base SKU':              r['Product #'],
       'Form Factor':           formFactor,
       'Option Type':           r['Option Type'] || 'CTO',
-      'HPE Recommended':       r['HPE Recommended'] || 'Yes',
+      'HPE Recommended':       r['HPE Recommended'] || 'Unknown',
       'List Price (USD)':      r['Unit Price (USD)'],
       'Drive Media Supported': driveType,
       'Base Drive Bays':       defaultBays,
       'Max Expandability':     maxExpandability,
       'Power Envelope':        powerEnvelope,
-      'Lifecycle Status':      r['Lifecycle Status'] || 'Active',
+      'Lifecycle Status':      r['Lifecycle Status'] || 'Unknown',
       'Start Date':            r['Start Date'] || '',
-      'Discontinued Date':     r['Discontinued Date'] || 'Active',
-      'Architectural Rules':   'Options pool is shared across server variants; drive cages, backplanes, risers and expanders apply conditionally.'
+      'Discontinued Date':     r['Discontinued Date'] || 'Unknown',
+      'Architectural Rules':   'NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence.'
     };
   });
 

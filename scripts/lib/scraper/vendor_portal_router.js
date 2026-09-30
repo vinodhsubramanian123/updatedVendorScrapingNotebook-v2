@@ -22,11 +22,12 @@ const logger = require('../system/pipeline_logger.js');
  */
 function inferVendor(productQuery = '', explicitVendor = '') {
   if (explicitVendor && typeof explicitVendor === 'string') {
-    const v = explicitVendor.toUpperCase();
-    if (v.includes('DELL')) return 'Dell';
-    if (v.includes('CISCO')) return 'Cisco';
-    if (v.includes('LENOVO')) return 'Lenovo';
-    if (v.includes('HPE') || v.includes('HP')) return 'HPE';
+    const v = explicitVendor.trim().toUpperCase();
+    if (v === 'DELL') return 'Dell';
+    if (v === 'CISCO') return 'Cisco';
+    if (v === 'LENOVO') return 'Lenovo';
+    if (['HPE', 'HP', 'HEWLETT PACKARD ENTERPRISE'].includes(v)) return 'HPE';
+    throw new Error(`UNSUPPORTED_VENDOR: ${explicitVendor}`);
   }
 
   const pq = productQuery.toLowerCase();
@@ -40,8 +41,8 @@ function inferVendor(productQuery = '', explicitVendor = '') {
     return 'Lenovo';
   }
 
-  // Default to HPE
-  return 'HPE';
+  if (/\bhpe\b|proliant|\b(?:dl|ml|rl)\s*\d{3}|synergy|alletra|storeever|\bsn\d{4}/i.test(productQuery)) return 'HPE';
+  throw new Error('VENDOR_IDENTITY_REQUIRED: No registered vendor identified');
 }
 
 /**
@@ -59,8 +60,9 @@ async function routeDiscoverCandidates(ws, query, options = {}) {
     case 'Dell':
       return discoverDellChassisCandidates(ws, query, options);
     case 'HPE':
-    default:
       return discoverHpeCandidates(ws, query, options);
+    default:
+      throw new Error(`VENDOR_ADAPTER_NOT_IMPLEMENTED: ${vendor}`);
   }
 }
 
@@ -79,8 +81,9 @@ async function routeNavigateChassis(ws, query, options = {}) {
     case 'Dell':
       return navigateToDellChassis(ws, query, options);
     case 'HPE':
+      return navigateToOCAChassis(query, options);
     default:
-      return navigateToOCAChassis(ws, query, options);
+      throw new Error(`VENDOR_ADAPTER_NOT_IMPLEMENTED: ${vendor}`);
   }
 }
 
@@ -136,4 +139,3 @@ module.exports = {
   routeDiscoverCandidates,
   routeNavigateChassis
 };
-

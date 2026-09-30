@@ -112,6 +112,20 @@ const DOMAIN_METADATA = {
     description: 'Guardrail loop, guardrail transport, rotator, prompts, telemetry, feedback queue',
     matcher: p => /guardrail|rotator|prompt|telemetry|feedback|invariants|evidence/i.test(p)
   },
+  router: {
+    id: 'router',
+    name: 'Presales Router & Skill Handlers',
+    icon: '🧭',
+    description: 'Query classification, skill boundaries, presales dispatch, OCR and tender modernization routing',
+    matcher: p => /query_router|route_query|presales_skill|skill_boundaries|presales_skills_chaos/i.test(p)
+  },
+  core: {
+    id: 'core',
+    name: 'Core Architecture & Invariants',
+    icon: '🏛️',
+    description: 'System invariants, schemas, orchestrator, BOM verifier, evidence truth, and catalog refresh contracts',
+    matcher: p => /all_system_invariants|evaluation_orchestrator|schemas|bom_verifier|evidence_workflow|catalog_refresh_contract|decision_trace/i.test(p)
+  },
   smoke: {
     id: 'smoke',
     name: 'Fast Smoke Suite',
@@ -149,6 +163,7 @@ function parseArgs(args) {
     verbose: false,
     timeoutMs: 120000,
     listOnly: false,
+    allowEmpty: false,
     help: false
   };
 
@@ -156,6 +171,8 @@ function parseArgs(args) {
     const arg = args[i];
     if (arg === '--failed-only' || arg === '-f') {
       config.failedOnly = true;
+    } else if (arg === '--allow-empty') {
+      config.allowEmpty = true;
     } else if (arg === '--isolated' || arg === '-i') {
       config.isolatedFile = args[++i];
     } else if (arg === '--pattern' || arg === '-p') {
@@ -339,12 +356,19 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     child.on('close', (code) => {
       clearTimeout(timer);
       const durationMs = Date.now() - startTime;
-      const pass = code === 0 && !timedOut;
+      let pass = code === 0 && !timedOut;
+
+      // Invariant check: If node test runner is used, ensure tests actually ran
+      if (pass && isNodeTest && /# tests 0\b/.test(stdout)) {
+        pass = false;
+      }
 
       let errorSummary = '';
       if (!pass) {
         if (timedOut) {
           errorSummary = `Execution timed out after ${timeoutMs}ms`;
+        } else if (isNodeTest && /# tests 0\b/.test(stdout)) {
+          errorSummary = 'Silent Pass Detected: node:test reported 0 tests executed (# tests 0).';
         } else {
           // Extract relevant failure lines
           const allOutput = stderr + '\n' + stdout;
@@ -496,8 +520,13 @@ NPM Script Equivalents:
   }
 
   if (targetTests.length === 0) {
-    console.log('⚠️ No matching test suites found.');
-    process.exit(0);
+    if (config.allowEmpty) {
+      console.log('⚠️ No matching test suites found (--allow-empty specified). Exiting cleanly.');
+      process.exit(0);
+    }
+    console.error('❌ Error: Selection matched 0 test suites. Empty test runs are forbidden to prevent false-green automation.');
+    console.error('   If an empty run was intentional, pass --allow-empty.');
+    process.exit(1);
   }
 
   const results = [];

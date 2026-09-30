@@ -25,19 +25,7 @@ const logger = require('../system/pipeline_logger.js');
 async function discoverDellChassisCandidates(ws, query, options = {}) {
   logger.info('DELL_NAVIGATOR', `Searching Dell Premier catalog for candidate query: "${query}"`);
 
-  // Stub candidate discovery returning standard Dell catalog format
-  return [{
-    vendor: 'Dell',
-    sku: options.targetSku || '210-BFVR', // Example PowerEdge R760 CTO Base
-    text: `Dell ${query} Configure-to-Order Server`,
-    description: `Dell ${query} Configure-to-Order Server`,
-    formFactor: query.includes('R7') ? '2U Rack' : '1U Rack',
-    isBto: false,
-    eligible: true,
-    listPriceUsd: 2850.00,
-    status: 'Active',
-    availability: 'Available in Dell Premier portal'
-  }];
+  throw new Error('VENDOR_ADAPTER_NOT_IMPLEMENTED: Dell live candidate discovery');
 }
 
 /**
@@ -51,15 +39,7 @@ async function discoverDellChassisCandidates(ws, query, options = {}) {
 async function navigateToDellChassis(ws, chassisQuery, options = {}) {
   logger.info('DELL_NAVIGATOR', `Navigating to Dell configurator for: "${chassisQuery}"`);
 
-  return {
-    success: true,
-    vendor: 'Dell',
-    chassisQuery,
-    portalUrl: 'https://premier.dell.com/portal/configurator',
-    basePrice: 2850.00,
-    optionsCount: 0,
-    status: 'DELL_NAVIGATOR_READY'
-  };
+  throw new Error('VENDOR_ADAPTER_NOT_IMPLEMENTED: Dell live navigation');
 }
 
 /**

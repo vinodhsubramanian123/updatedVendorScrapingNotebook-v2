@@ -1,17 +1,17 @@
 # Test Suite Index & Directives (`tests/`)
 
 ## 1. Overview & Test Architecture
-The test suite ensures 100% mathematical accuracy, chaos resilience, and zero regression across the entire HPE OCA catalog scraping and BOQ evaluation stack. The isolated test matrix spans **158 test suites** across 4 execution tiers:
-- **Unit Tier (92 Suites)**: Hardware aspect math, preprocessors, token rotators, schema validators, plus core Phase 7 modules (`test_least_delta_combinator.js`, `test_decision_trace_ledger.js`, `test_deal_optimizer.js`, `test_quickspecs_oca_reconciliation.js`, `test_query_router.js`).
-- **Chaos Tier (38 Suites)**: Chaos fault injection, concurrency race conditions, memory fuzzing, async task mutex, offline resilience, and circuit breaker stress tests.
-- **Integration Tier (25 Suites)**: Multi-chassis BOM audits, portfolio Excel verifications, API routes, multi-config batch eval, and the 15-scenario evaluation benchmark suite (`test_boq_eval_benchmarks.js`).
+The test suite ensures 100% mathematical accuracy, chaos resilience, and zero regression across the entire HPE OCA catalog scraping and BOQ evaluation stack. The isolated test matrix spans **188 test suites** across 4 execution tiers:
+- **Unit Tier (117 Suites)**: Hardware aspect math, preprocessors, token rotators, schema validators, core workflow contracts (`test_core_workflow_contracts.js`), least-delta combinator, decision trace ledger, deal optimizer, query router, and catalog refresh contracts.
+- **Chaos Tier (41 Suites)**: Chaos fault injection, concurrency race conditions, memory fuzzing, async task mutex, offline resilience, and circuit breaker stress tests.
+- **Integration Tier (27 Suites)**: Multi-chassis BOM audits, portfolio Excel verifications, API routes, multi-config batch eval, and the 15-scenario evaluation benchmark suite (`test_boq_eval_benchmarks.js`).
 - **End-to-End Tier (3 Suites)**: Headless browser UI automation, downloads verification, and live CLIC evaluation workflows.
 
 ```
 tests/
-├── unit/          ← 92 suites: aspect math, rotators, schemas, least-delta, decision traces, deal optimizer, query router
-├── chaos/         ← 38 suites: chaos injection, concurrency race conditions, memory fuzzing, task mutex, offline resilience
-├── integration/   ← 25 suites: multi-chassis BOM audits, portfolio Excel verifications, API routes, 15-scenario BOQ benchmarks
+├── unit/          ← 117 suites: aspect math, rotators, schemas, least-delta, decision traces, deal optimizer, query router, core contracts
+├── chaos/         ← 41 suites: chaos injection, concurrency race conditions, memory fuzzing, task mutex, offline resilience
+├── integration/   ← 27 suites: multi-chassis BOM audits, portfolio Excel verifications, API routes, 15-scenario BOQ benchmarks
 ├── e2e/           ← 3 suites: headless browser UI automation, download flows, and live CLIC verification
 ├── fixtures/      ← Fixed test data, 15 benchmark CSVs (BENCH-01 to BENCH-15), customer quotes & raw DOM snapshots
 └── README.md      ← This index file

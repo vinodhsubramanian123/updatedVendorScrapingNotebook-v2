@@ -87,6 +87,8 @@ function resolveProductIdentity(identifier, config = {}) {
 
     const candidates = Object.entries(notebooks).filter(([key]) => {
       const normKey = normalize(baseProductId(key));
+      const requestedGeneration = requestedNorm.match(/gen\d+/)?.[0];
+      if (requestedGeneration && normKey.match(/gen\d+/)?.[0] !== requestedGeneration) return false;
       if (isDl380a) return normKey.includes('380a');
       if (isDl380NonA) return normKey.includes('380') && !normKey.includes('380a');
       return normKey.startsWith(requestedNorm) || requestedNorm.startsWith(normKey);

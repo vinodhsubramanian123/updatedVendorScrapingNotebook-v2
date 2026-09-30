@@ -99,7 +99,14 @@ class EvidenceLedger {
   /**
    * Complete a named phase with results and verification checks
    */
-  completePhase(phaseNum, status = 'PASSED', outputSummary = {}, checks = [], warnings = [], errors = []) {
+  completePhase(phaseNum, status, outputSummary = {}, checks = [], warnings = [], errors = []) {
+    if (!status) {
+      throw new Error(`[INV-105 ZERO_DEFAULT_SUCCESS] completePhase(phaseNum=${phaseNum}) called without explicit status.`);
+    }
+    const VALID_STATUSES = ['PASSED', 'FAILED', 'WARNING', 'SKIPPED', 'DEGRADED', 'ACTION_REQUIRED', 'RESOLVED', 'NOT_REACHED', 'NOT_RUN'];
+    if (!VALID_STATUSES.includes(status)) {
+      throw new Error(`[INV-105] Invalid phase status "${status}". Allowed statuses: ${VALID_STATUSES.join(', ')}`);
+    }
     this.events.push({ sequence: this.events.length + 1, phaseNum, event: status, timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     if (!this.phases[key]) {

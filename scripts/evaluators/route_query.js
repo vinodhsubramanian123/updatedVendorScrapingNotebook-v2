@@ -234,7 +234,10 @@ function classifyQueryIntent(queryText = '', context = {}) {
   const isHeterogeneous =
     text.includes('heterogeneous') ||
     text.includes('mixed domain') ||
+    text.includes('mixed-domain') ||
     text.includes('carrier fleet') ||
+    text.includes('carrier node') ||
+    text.includes('carrier nodes') ||
     text.includes('ad-hoc absorption') ||
     text.includes('dummy server') ||
     text.includes('tender modernization') ||
@@ -244,6 +247,7 @@ function classifyQueryIntent(queryText = '', context = {}) {
     text.includes('spare parts absorption') ||
     Boolean(context.heterogeneous) ||
     context.intent === 'HETEROGENEOUS_TENDER_MODERNIZATION';
+
 
   if (isHeterogeneous) {
     return {
@@ -258,7 +262,7 @@ function classifyQueryIntent(queryText = '', context = {}) {
   const isCrossVendorQuestion =
     /^(?:is\s+|can\s+|what\s+|how\s+|does\s+)/i.test(text) &&
     text.includes('?') &&
-    !/\b(?:convert|transpile|transform|migrate)\b/i.test(text);
+    !/\b(?:convert|transpile|transform|migrate|translate)\b/i.test(text);
 
   const isCrossVendor = !isCrossVendorQuestion && (
     text.includes('dell to hpe') ||
@@ -267,10 +271,11 @@ function classifyQueryIntent(queryText = '', context = {}) {
     text.includes('cross vendor') ||
     text.includes('transpile') ||
     text.includes('competitor quote') ||
-    (/convert|map|transform|migrate/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text)) ||
+    (/convert|map|transform|migrate|translate/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text)) ||
     Boolean(context.crossVendor) ||
     context.intent === 'CROSS_VENDOR_TRANSFORMATION'
   );
+
 
   if (isCrossVendor) {
     return {
@@ -386,8 +391,9 @@ function classifyQueryIntent(queryText = '', context = {}) {
 
   // 2e. Professional Workbook & Portal Upload Generator keywords
   const isWorkbookGen =
-    /\b(?:generate\s*(?:an?\s*)?(?:excel|workbook|spreadsheet|\.xlsx)|create\s*(?:an?\s*)?(?:excel|workbook|spreadsheet|\.xlsx)|export\s*(?:to\s*)?(?:excel|workbook|spreadsheet|\.xlsx)|portal\s*upload\s*sheet|7[\s-]column\s*portal|standardized\s*7[\s-]column)\b/i.test(text) ||
+    /\b(?:generate.*(?:excel|workbook|spreadsheet|\.xlsx)|create.*(?:excel|workbook|spreadsheet|\.xlsx)|export.*(?:excel|workbook|spreadsheet|\.xlsx)|portal\s*upload|partner\s*portal|7[\s-]column\s*portal|standardized\s*7[\s-]column)\b/i.test(text) ||
     context.intent === 'WORKBOOK_GENERATION';
+
 
   if (isWorkbookGen && !text.includes('reconcile')) {
     return {
@@ -429,7 +435,7 @@ function classifyQueryIntent(queryText = '', context = {}) {
 
   // 2h. Continuous Learning Feedback & Quarantine keywords (GAP-29)
   const isContinuousLearning =
-    /\b(?:continuous[\s-]learning|record\s*feedback|quarantine\s*(?:delta|rule)|learning\s*reachability|feedback\s*loop)\b/i.test(text) ||
+    /\b(?:continuous[\s-]learning|record\s*feedback|reflect.*(?:feedback|error)|register\s*learned|quarantine\s*(?:delta|rule)|learning\s*reachability|feedback\s*loop)\b/i.test(text) ||
     context.intent === 'CONTINUOUS_LEARNING';
 
   if (isContinuousLearning) {
@@ -443,7 +449,7 @@ function classifyQueryIntent(queryText = '', context = {}) {
 
   // 2i. Knowledge Sync & Drift Guard keywords (GAP-32)
   const isKnowledgeSync =
-    /\b(?:knowledge[\s-]sync|sync\s*deltas?|sync\s*catalog|inspect\s*drift|knowledge\s*drift|post[\s-]flow\s*sync)\b/i.test(text) ||
+    /\b(?:knowledge[\s-]sync|synchroniz(?:e|ation)\s*knowledge|sync\s*deltas?|sync\s*catalog|inspect\s*drift|knowledge\s*drift|post[\s-]flow\s*sync)\b/i.test(text) ||
     context.intent === 'KNOWLEDGE_SYNC';
 
   if (isKnowledgeSync) {
@@ -454,6 +460,7 @@ function classifyQueryIntent(queryText = '', context = {}) {
       rationale: 'Query requests bi-directional knowledge synchronization or catalog drift inspection against Gemini NotebookLM.'
     };
   }
+
 
   // 3. Catalog Intelligence keywords
   const hasCatalogKeywords =
@@ -599,11 +606,18 @@ async function _handleBoqEvaluation(queryText, context) {
       return { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
     }
   } else if (context.items && Array.isArray(context.items)) {
-    return evaluateBOQMultiAspect(context.items, {
-      targetDir: chassisInfo.catalogDir || '',
-      catalogData: chassisInfo.catalogData,
-      productConfirmed: !chassisInfo.isAmbiguous
-    });
+    try {
+      const { runEvaluationPipeline } = require('./eval_boq.js');
+      return await runEvaluationPipeline({
+        inputItems: context.items,
+        chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
+        targetSheetName: context.targetSheet || undefined,
+        JSON_MODE: true,
+        OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
+      });
+    } catch (pipeErr) {
+      return { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
+    }
   } else {
     return {
       message: 'BOQ evaluation requested. Please upload or specify a BOQ file path or item list.',
@@ -849,54 +863,70 @@ function _handleBomReconciliation(queryText, context) {
   const vendorFile = context.vendorFilePath || context.secondaryFilePath || (context.filePath?.toLowerCase().includes('vendor') ? context.filePath : null);
   const customerFile = context.customerFilePath || (context.secondaryFilePath ? context.filePath : null);
 
+  const normalizeUncataloged = (skus = []) => {
+    return skus.map(entry => {
+      const skuCode = typeof entry === 'string' ? entry : (entry?.sku || '');
+      const valid = isValidHpeSKU(skuCode);
+      return {
+        ...(typeof entry === 'object' ? entry : {}),
+        sku: skuCode,
+        isValidFormat: valid,
+        note: valid
+          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+      };
+    });
+  };
+
   if (vendorFile && fs.existsSync(vendorFile)) {
     let proposedSolution = null;
+    let isTwoBaseline = false;
     if (customerFile && fs.existsSync(customerFile)) {
       const customerItems = readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
       proposedSolution = { rank: 1, name: 'Original customer baseline', skuList: customerItems };
+      isTwoBaseline = true;
     } else if (context.proposedSolution) {
       proposedSolution = context.proposedSolution;
+      isTwoBaseline = true;
     } else {
       proposedSolution = { rank: 1, name: 'Baseline Evaluation', skuList: [] };
     }
 
     const auditReport = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir);
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-      auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
-        sku,
-        isValidFormat: isValidHpeSKU(sku),
-        note: isValidHpeSKU(sku)
-          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
-      }));
+      auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
     }
     return {
       intent: 'BOM_RECONCILIATION',
+      status: isTwoBaseline ? 'RECONCILIATION_COMPLETE' : 'SINGLE_FILE_AUDIT',
+      isTwoBaselineComparison: isTwoBaseline,
       auditReport,
-      message: auditReport.is100PercentMatch
-        ? 'Vendor quote perfectly matches proposed configuration.'
-        : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`
+      message: isTwoBaseline
+        ? (auditReport.is100PercentMatch
+            ? 'Vendor quote perfectly matches proposed configuration.'
+            : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`)
+        : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`,
+      suggestedAction: isTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else if (context.filePath && fs.existsSync(context.filePath)) {
     const auditReport = verifyVendorBOM(path.resolve(context.filePath), { rank: 1, skuList: [] }, chassisInfo.catalogDir);
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-      auditReport.discrepancies.uncatalogedSkus = auditReport.discrepancies.uncatalogedSkus.map(sku => ({
-        sku,
-        isValidFormat: isValidHpeSKU(sku),
-        note: isValidHpeSKU(sku)
-          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
-      }));
+      auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
     }
     return {
       intent: 'BOM_RECONCILIATION',
+      status: 'SINGLE_FILE_AUDIT',
+      isTwoBaselineComparison: false,
       auditReport,
-      message: `Single-file audit completed against catalog ${chassisInfo.chassisKey}.`
+      message: `Single-file audit completed against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`,
+      suggestedAction: 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else {
     return {
       intent: 'BOM_RECONCILIATION',
-      message: 'BOM Reconciliation requires a vendor quote file (--vendor) and optional customer tender file (--customer).',
+      status: 'INPUT_REQUIRED',
+      isTwoBaselineComparison: false,
+      message: 'BOM Reconciliation requires a vendor quote file (--vendor) and customer tender file (--customer).',
       suggestedAction: 'UPLOAD_VENDOR_AND_CUSTOMER_SPREADSHEETS'
     };
   }

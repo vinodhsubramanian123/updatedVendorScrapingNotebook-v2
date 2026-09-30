@@ -4,10 +4,18 @@ const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
 const {
   extractModelGeneration,
-  isExactProductCandidate
+  isExactProductCandidate,
+  isDefaultChassisCandidate
 } = require('../../scripts/lib/scraper/navigate_oca.js');
 
 describe('OCA navigator exact standard CTO selection', () => {
+  test('retains OEM discovery but excludes OEM from generic automatic selection', () => {
+    const oem = { sku: 'P77819-B21', text: 'HPE OEM ProLiant Compute DL380 Gen12 8SFF NC Configure-to-order Server', isCto: true };
+    assert.equal(isExactProductCandidate('DL380 Gen12', oem), true);
+    assert.equal(isDefaultChassisCandidate('DL380 Gen12', oem), false);
+    assert.equal(isDefaultChassisCandidate('OEM DL380 Gen12', oem), true);
+    assert.equal(isDefaultChassisCandidate('DL380 Gen12', { text: 'HPE ProLiant DL380 Gen12 8SFF CTO Server' }), true);
+  });
   test('preserves the DL380 versus DL380a product boundary', () => {
     assert.deepEqual(extractModelGeneration('HPE ProLiant DL380a Gen12 CTO Server'), {
       model: 'dl380a', generation: 'gen12'
@@ -46,4 +54,3 @@ describe('OCA navigator exact standard CTO selection', () => {
     }), true);
   });
 });
-
