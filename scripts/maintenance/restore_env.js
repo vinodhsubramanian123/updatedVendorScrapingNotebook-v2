@@ -512,6 +512,8 @@ async function main() {
   configureMcpServers(extractedDir, sys);
   setupPlaywright(sys);
   verifyPythonCliTools(sys);
+  const { linkGraphify } = require('./link_graphify.js');
+  linkGraphify();
   await verifyGoogleDriveAccess();
   verifyDashboardBuild();
   runVerification();
