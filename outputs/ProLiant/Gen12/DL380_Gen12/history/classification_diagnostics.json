@@ -1,102 +1,337 @@
 {
   "version": "1.0.0",
   "chassis": "DL380_Gen12",
-  "generatedAt": "2026-09-13T07:26:35.837Z",
-  "executionDurationMs": 1728,
+  "generatedAt": "2026-09-30T18:45:30.006Z",
+  "executionDurationMs": 2704,
   "summary": {
-    "totalRawTables": 124,
-    "validProductTables": 105,
-    "skippedTablesCount": 16,
-    "totalExtractedSKUs": 605,
-    "totalUniqueSKUs": 605,
-    "totalRulesExtracted": 104,
+    "totalRawTables": 126,
+    "validProductTables": 115,
+    "skippedTablesCount": 63,
+    "totalExtractedSKUs": 606,
+    "totalUniqueSKUs": 603,
+    "totalRulesExtracted": 1162,
     "chassisVariantsCount": 6
   },
   "skippedTables": [
     {
-      "tableIndex": 106,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 107,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 108,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 109,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 110,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 111,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 112,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 113,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 114,
+      "tableIndex": 0,
       "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 115,
+      "tableIndex": 1,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 2,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 116,
+      "tableIndex": 3,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 117,
+      "tableIndex": 4,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 118,
+      "tableIndex": 5,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 6,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 119,
+      "tableIndex": 7,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 8,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 9,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 10,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 11,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 12,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 13,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 121,
+      "tableIndex": 14,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 15,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 16,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 17,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 122,
+      "tableIndex": 18,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 19,
       "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 20,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 21,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 22,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 23,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 24,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 25,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 26,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 27,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 28,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 134,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 135,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 136,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 137,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 138,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 139,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 140,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 141,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 142,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 143,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 144,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 145,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 146,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 147,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 148,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 149,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 150,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 151,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 152,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 153,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 154,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 155,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 156,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 157,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 158,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 159,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 160,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 161,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 162,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 164,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 165,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 166,
+      "reason": "Solution hierarchy BOM summary table",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 167,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 175,
+      "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     }
   ],
   "tableDecisions": [
     {
-      "tableIndex": 0,
+      "tableIndex": 30,
       "subCategory": "Energy Star Configuration Presets",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -108,7 +343,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 1,
+      "tableIndex": 31,
       "subCategory": "Processor",
       "parentCategory": "Processor",
       "matchedVia": "direct_taxonomy_keyword",
@@ -120,7 +355,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 2,
+      "tableIndex": 32,
       "subCategory": "Heatsink Kit",
       "parentCategory": "Cooling / Thermal",
       "matchedVia": "direct_taxonomy_keyword",
@@ -132,19 +367,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 3,
+      "tableIndex": 33,
       "subCategory": "Standard & Performance Heat Sinks",
       "parentCategory": "Cooling / Thermal",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "Cooling / Thermal",
-      "constraint": "max 6",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 6,
+      "maxQty": 1,
       "skuCount": 5,
       "rulesCount": 1
     },
     {
-      "tableIndex": 4,
+      "tableIndex": 34,
       "subCategory": "Memory",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -156,7 +391,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 5,
+      "tableIndex": 35,
       "subCategory": "Memory",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -168,19 +403,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 6,
-      "subCategory": "Memory",
-      "parentCategory": "Memory",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Memory",
-      "constraint": "max 32",
-      "minQty": 0,
-      "maxQty": 32,
-      "skuCount": 2,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 7,
+      "tableIndex": 36,
       "subCategory": "Memory",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -192,7 +415,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 8,
+      "tableIndex": 37,
       "subCategory": "Memory",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -204,7 +427,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 9,
+      "tableIndex": 38,
       "subCategory": "Memory",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -216,7 +439,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 10,
+      "tableIndex": 39,
       "subCategory": "Memory Blank Kit",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -228,11 +451,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 12,
+      "tableIndex": 41,
       "subCategory": "Drive Cage",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "PCIe Riser",
+      "detectedRole": "Drive Cage / Drive",
       "constraint": "max 9",
       "minQty": 0,
       "maxQty": 9,
@@ -240,7 +463,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 13,
+      "tableIndex": 42,
       "subCategory": "Drive Cage",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "direct_taxonomy_keyword",
@@ -252,7 +475,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 14,
+      "tableIndex": 43,
       "subCategory": "Drive Cage",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "direct_taxonomy_keyword",
@@ -264,7 +487,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 15,
+      "tableIndex": 44,
       "subCategory": "SFF Drive Cages & Enablement",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "role_classifier",
@@ -276,19 +499,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 16,
+      "tableIndex": 45,
       "subCategory": "Tertiary PCIe Risers",
-      "parentCategory": "Cables & Enablement Kits",
+      "parentCategory": "Networking",
       "matchedVia": "role_classifier",
-      "detectedRole": "Cable Kit",
+      "detectedRole": "Transceiver",
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
-      "skuCount": 15,
+      "skuCount": 13,
       "rulesCount": 1
     },
     {
-      "tableIndex": 17,
+      "tableIndex": 46,
       "subCategory": "Drive Cage",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "direct_taxonomy_keyword",
@@ -300,7 +523,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 18,
+      "tableIndex": 47,
       "subCategory": "Riser Cards",
       "parentCategory": "PCIe Risers",
       "matchedVia": "direct_taxonomy_keyword",
@@ -312,31 +535,31 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 19,
+      "tableIndex": 48,
       "subCategory": "Tertiary PCIe Risers",
       "parentCategory": "PCIe Risers",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "PCIe Riser",
-      "constraint": "max 3",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 3,
+      "maxQty": 1,
       "skuCount": 1,
       "rulesCount": 1
     },
     {
-      "tableIndex": 20,
+      "tableIndex": 49,
       "subCategory": "Primary PCIe Risers",
       "parentCategory": "PCIe Risers",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "PCIe Riser",
-      "constraint": "max 3",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 3,
+      "maxQty": 1,
       "skuCount": 2,
       "rulesCount": 1
     },
     {
-      "tableIndex": 21,
+      "tableIndex": 50,
       "subCategory": "Riser Accessories",
       "parentCategory": "PCIe Risers",
       "matchedVia": "direct_taxonomy_keyword",
@@ -348,7 +571,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 22,
+      "tableIndex": 51,
       "subCategory": "SAS Controller",
       "parentCategory": "Storage Controllers",
       "matchedVia": "direct_taxonomy_keyword",
@@ -360,19 +583,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 23,
-      "subCategory": "SAS Controller",
-      "parentCategory": "Storage Controllers",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Storage Controller",
-      "constraint": "max 5",
-      "minQty": 0,
-      "maxQty": 5,
-      "skuCount": 1,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 25,
+      "tableIndex": 53,
       "subCategory": "AmbientTemperature",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -384,11 +595,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 26,
+      "tableIndex": 54,
       "subCategory": "Smart Storage Batteries",
-      "parentCategory": "Cables & Enablement Kits",
+      "parentCategory": "Storage Controllers",
       "matchedVia": "role_classifier",
-      "detectedRole": "Cable Kit",
+      "detectedRole": "Storage Battery",
       "constraint": "max 2",
       "minQty": 0,
       "maxQty": 2,
@@ -396,11 +607,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 27,
+      "tableIndex": 55,
       "subCategory": "Internal Storage Controller Cables",
       "parentCategory": "Storage Controllers",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Processor",
+      "detectedRole": "Cable Kit",
       "constraint": "max 3",
       "minQty": 0,
       "maxQty": 3,
@@ -408,47 +619,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 28,
+      "tableIndex": 56,
       "subCategory": "Storage Controller Cable Kits",
-      "parentCategory": "Storage Controllers",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Cable Kit",
-      "constraint": "max 4",
-      "minQty": 0,
-      "maxQty": 4,
-      "skuCount": 6,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 29,
-      "subCategory": "SFF Drive Cages & Enablement",
-      "parentCategory": "Drive Enclosures / Drives",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Cable Kit",
-      "constraint": "max 24",
-      "minQty": 0,
-      "maxQty": 24,
-      "skuCount": 3,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 30,
-      "subCategory": "System Options",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
-      "constraint": "N/A",
-      "minQty": 0,
-      "maxQty": "",
-      "skuCount": 3,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 31,
-      "subCategory": "RAID Settings",
-      "parentCategory": "Storage Controllers",
-      "matchedVia": "role_classifier",
-      "detectedRole": "Storage Controller",
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
@@ -456,7 +631,43 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 32,
+      "tableIndex": 57,
+      "subCategory": "SFF Drive Cages & Enablement",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 58,
+      "subCategory": "Energy Star",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 59,
+      "subCategory": "RAID Settings",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 60,
       "subCategory": "Optical Drive",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "role_classifier",
@@ -468,7 +679,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 33,
+      "tableIndex": 61,
       "subCategory": "Optical Drive",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "role_classifier",
@@ -480,7 +691,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 34,
+      "tableIndex": 62,
       "subCategory": "Optical Drive Accessories",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -492,7 +703,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 35,
+      "tableIndex": 63,
       "subCategory": "Compute Ops Management Enablement SKUs",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -504,7 +715,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 36,
+      "tableIndex": 64,
       "subCategory": "Memory Blank Kit",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -516,7 +727,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 37,
+      "tableIndex": 65,
       "subCategory": "Chassis Infrastructure & Rail Kits",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -528,7 +739,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 38,
+      "tableIndex": 66,
       "subCategory": "Factory Configuration Settings",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -540,7 +751,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 39,
+      "tableIndex": 67,
       "subCategory": "Trusted Supply Chain",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -552,7 +763,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 40,
+      "tableIndex": 68,
       "subCategory": "Drive Configuration Settings",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "role_classifier",
@@ -564,7 +775,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 41,
+      "tableIndex": 69,
       "subCategory": "Storage Controller Cable Kits",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "role_classifier",
@@ -576,7 +787,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 42,
+      "tableIndex": 70,
       "subCategory": "Drive Cage",
       "parentCategory": "Drive Enclosures / Drives",
       "matchedVia": "direct_taxonomy_keyword",
@@ -588,7 +799,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 43,
+      "tableIndex": 71,
       "subCategory": "Logical Size Settings",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "fallback_accessories",
@@ -600,7 +811,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 44,
+      "tableIndex": 72,
       "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
@@ -612,7 +823,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 45,
+      "tableIndex": 73,
       "subCategory": "vSAN Tracking SKUs",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -624,7 +835,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 46,
+      "tableIndex": 74,
       "subCategory": "vSAN Tracking SKUs",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
@@ -636,7 +847,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 47,
+      "tableIndex": 75,
       "subCategory": "iLO Common Password",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -648,7 +859,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 48,
+      "tableIndex": 76,
       "subCategory": "Ethernet PCIe",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
@@ -660,7 +871,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 49,
+      "tableIndex": 77,
+      "subCategory": "GPU Accelerators",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "role_classifier",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 78,
       "subCategory": "InfiniBand PCIe",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
@@ -672,7 +895,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 50,
+      "tableIndex": 79,
       "subCategory": "Transceivers",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
@@ -680,23 +903,11 @@
       "constraint": "max 16",
       "minQty": 0,
       "maxQty": 16,
-      "skuCount": 18,
+      "skuCount": 19,
       "rulesCount": 1
     },
     {
-      "tableIndex": 51,
-      "subCategory": "PCIe Networking Adapters",
-      "parentCategory": "Networking",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Transceiver",
-      "constraint": "max 8",
-      "minQty": 0,
-      "maxQty": 8,
-      "skuCount": 1,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 52,
+      "tableIndex": 80,
       "subCategory": "Fibre Channel HBA",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
@@ -708,11 +919,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 53,
+      "tableIndex": 81,
       "subCategory": "OCP Ethernet",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Transceiver",
+      "detectedRole": "Network Adapter",
       "constraint": "max 2",
       "minQty": 0,
       "maxQty": 2,
@@ -720,7 +931,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 54,
+      "tableIndex": 82,
       "subCategory": "OCP3 Networking Adapters",
       "parentCategory": "Networking",
       "matchedVia": "role_classifier",
@@ -732,7 +943,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 55,
+      "tableIndex": 83,
       "subCategory": "Energy Star",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -744,7 +955,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 56,
+      "tableIndex": 84,
       "subCategory": "OCP3 Networking Adapters",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -756,7 +967,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 57,
+      "tableIndex": 85,
       "subCategory": "Networking Accessories",
       "parentCategory": "Networking",
       "matchedVia": "direct_taxonomy_keyword",
@@ -768,19 +979,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 58,
+      "tableIndex": 86,
       "subCategory": "Energy Star",
-      "parentCategory": "Accessories & Infrastructure",
+      "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
-      "detectedRole": "Chassis Infrastructure",
+      "detectedRole": "Cable Kit",
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
-      "skuCount": 1,
+      "skuCount": 2,
       "rulesCount": 1
     },
     {
-      "tableIndex": 59,
+      "tableIndex": 87,
       "subCategory": "Management Hardware",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -792,7 +1003,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 60,
+      "tableIndex": 88,
       "subCategory": "Memory Setting",
       "parentCategory": "Memory",
       "matchedVia": "direct_taxonomy_keyword",
@@ -804,7 +1015,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 61,
+      "tableIndex": 89,
       "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -816,7 +1027,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 62,
+      "tableIndex": 90,
       "subCategory": "Manufacturing Services",
       "parentCategory": "Support Services",
       "matchedVia": "direct_taxonomy_keyword",
@@ -828,7 +1039,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 63,
+      "tableIndex": 91,
       "subCategory": "Chassis Infrastructure & Rail Kits",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "role_classifier",
@@ -840,7 +1051,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 64,
+      "tableIndex": 92,
       "subCategory": "Graphics",
       "parentCategory": "Graphics & GPU",
       "matchedVia": "direct_taxonomy_keyword",
@@ -852,19 +1063,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 65,
-      "subCategory": "MS Windows Server",
-      "parentCategory": "Software & Licenses",
-      "matchedVia": "direct_taxonomy_keyword",
+      "tableIndex": 93,
+      "subCategory": "GPU Accelerators",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "role_classifier",
       "detectedRole": "GPU / Accelerator",
-      "constraint": "no max",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": -1,
+      "maxQty": 1,
       "skuCount": 3,
       "rulesCount": 1
     },
     {
-      "tableIndex": 66,
+      "tableIndex": 94,
       "subCategory": "NVIDIA GPU SW",
       "parentCategory": "Graphics & GPU",
       "matchedVia": "direct_taxonomy_keyword",
@@ -876,7 +1087,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 67,
+      "tableIndex": 95,
       "subCategory": "Graphics Accessories",
       "parentCategory": "Graphics & GPU",
       "matchedVia": "direct_taxonomy_keyword",
@@ -888,7 +1099,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 68,
+      "tableIndex": 96,
       "subCategory": "Power Supplies",
       "parentCategory": "Power Supplies",
       "matchedVia": "direct_taxonomy_keyword",
@@ -900,31 +1111,31 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 69,
-      "subCategory": "Intel Xeon Scalable Processors",
-      "parentCategory": "Processor",
-      "matchedVia": "direct_taxonomy_keyword",
+      "tableIndex": 97,
+      "subCategory": "Flex Slot Power Supplies",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "role_classifier",
       "detectedRole": "Power Supply",
-      "constraint": "min 1, max 2",
+      "constraint": "max 1",
       "minQty": 1,
-      "maxQty": 2,
+      "maxQty": 1,
       "skuCount": 3,
       "rulesCount": 1
     },
     {
-      "tableIndex": 70,
+      "tableIndex": 98,
       "subCategory": "-48VDC Power Supplies & Cable Kits",
       "parentCategory": "Power Supplies",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "Power Supply",
-      "constraint": "min 1, max 2",
+      "constraint": "max 1",
       "minQty": 1,
-      "maxQty": 2,
+      "maxQty": 1,
       "skuCount": 1,
       "rulesCount": 1
     },
     {
-      "tableIndex": 71,
+      "tableIndex": 99,
       "subCategory": "Power Cooling Options",
       "parentCategory": "Cooling / Thermal",
       "matchedVia": "direct_taxonomy_keyword",
@@ -936,19 +1147,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 72,
+      "tableIndex": 100,
       "subCategory": "-48VDC Power Supplies & Cable Kits",
-      "parentCategory": "Power Supplies",
-      "matchedVia": "direct_taxonomy_keyword",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
-      "constraint": "min 1, max 2",
-      "minQty": 1,
-      "maxQty": 2,
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
       "skuCount": 1,
       "rulesCount": 1
     },
     {
-      "tableIndex": 73,
+      "tableIndex": 101,
       "subCategory": "Power Cords",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "direct_taxonomy_keyword",
@@ -960,7 +1171,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 74,
+      "tableIndex": 102,
       "subCategory": "Power Cords & Jumper Cables",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -972,19 +1183,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 75,
+      "tableIndex": 103,
       "subCategory": "-48VDC Power Supplies & Cable Kits",
-      "parentCategory": "Power Supplies",
-      "matchedVia": "direct_taxonomy_keyword",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
       "detectedRole": "Cable Kit",
-      "constraint": "min 1, max 2",
-      "minQty": 1,
-      "maxQty": 2,
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
       "skuCount": 1,
       "rulesCount": 1
     },
     {
-      "tableIndex": 76,
+      "tableIndex": 104,
       "subCategory": "Power Cords & Jumper Cables",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -996,7 +1207,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 77,
+      "tableIndex": 105,
       "subCategory": "Proliant Software Media Kits",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1008,19 +1219,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 78,
-      "subCategory": "Power Cords",
-      "parentCategory": "Cables & Enablement Kits",
-      "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Cable Kit",
-      "constraint": "max 2",
+      "tableIndex": 106,
+      "subCategory": "GPU Accelerators",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "role_classifier",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "no max",
       "minQty": 0,
-      "maxQty": 2,
+      "maxQty": -1,
       "skuCount": 23,
       "rulesCount": 1
     },
     {
-      "tableIndex": 79,
+      "tableIndex": 107,
       "subCategory": "HPC Software Products",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1032,7 +1243,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 80,
+      "tableIndex": 108,
       "subCategory": "High Availability Computing - Cluster Software",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1040,11 +1251,11 @@
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
-      "skuCount": 19,
+      "skuCount": 26,
       "rulesCount": 1
     },
     {
-      "tableIndex": 81,
+      "tableIndex": 109,
       "subCategory": "Partner Software - Interconnect Management Array",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1056,11 +1267,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 82,
+      "tableIndex": 110,
       "subCategory": "NVIDIA GPU SW",
       "parentCategory": "Graphics & GPU",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "GPU / Accelerator",
+      "detectedRole": "Service & Support",
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
@@ -1068,7 +1279,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 83,
+      "tableIndex": 111,
       "subCategory": "Partner Software - Operating System",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1080,7 +1291,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 84,
+      "tableIndex": 112,
       "subCategory": "Compute Ops Management SKUs",
       "parentCategory": "HPE Compute Ops Management",
       "matchedVia": "portal_text_position",
@@ -1092,7 +1303,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 85,
+      "tableIndex": 113,
       "subCategory": "Compute Ops Management Enablement SKUs",
       "parentCategory": "Accessories & Infrastructure",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1104,7 +1315,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 86,
+      "tableIndex": 114,
       "subCategory": "OEM Software",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1116,7 +1327,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 87,
+      "tableIndex": 115,
       "subCategory": "Proliant Software Media Kits",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1128,8 +1339,8 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 88,
-      "subCategory": "Server Management & Operating System Licenses",
+      "tableIndex": 116,
+      "subCategory": "Red Hat (add-ons)",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Operating System / License",
@@ -1140,7 +1351,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 89,
+      "tableIndex": 117,
       "subCategory": "SUSE Add-ons",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1152,7 +1363,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 90,
+      "tableIndex": 118,
       "subCategory": "iLO",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1164,7 +1375,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 91,
+      "tableIndex": 119,
       "subCategory": "OneView Management Software",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1176,19 +1387,19 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 92,
-      "subCategory": "OneView Management Software",
+      "tableIndex": 120,
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
-      "constraint": "max 1",
+      "constraint": "no max",
       "minQty": 0,
-      "maxQty": 1,
+      "maxQty": -1,
       "skuCount": 24,
       "rulesCount": 1
     },
     {
-      "tableIndex": 93,
+      "tableIndex": 121,
       "subCategory": "INTEL VROC Products",
       "parentCategory": "Storage Controllers",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1200,7 +1411,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 94,
+      "tableIndex": 122,
       "subCategory": "Supported Operating System",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1212,11 +1423,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 95,
-      "subCategory": "Supported Operating System",
+      "tableIndex": 123,
+      "subCategory": "MS Windows Server",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Service & Support",
+      "detectedRole": "Operating System / License",
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
@@ -1224,11 +1435,11 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 96,
-      "subCategory": "Supported Operating System",
+      "tableIndex": 124,
+      "subCategory": "MS Windows Server",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
-      "detectedRole": "Service & Support",
+      "detectedRole": "Operating System / License",
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
@@ -1236,7 +1447,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 97,
+      "tableIndex": 125,
       "subCategory": "Red Hat OpenShift Platform Container",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1248,10 +1459,10 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 98,
-      "subCategory": "Red Hat OpenShift Platform Container",
+      "tableIndex": 126,
+      "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
-      "matchedVia": "direct_taxonomy_keyword",
+      "matchedVia": "role_classifier",
       "detectedRole": "Operating System / License",
       "constraint": "no max",
       "minQty": 0,
@@ -1260,7 +1471,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 99,
+      "tableIndex": 127,
       "subCategory": "SUSE containers",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1272,8 +1483,8 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 100,
-      "subCategory": "SUSE containers",
+      "tableIndex": 128,
+      "subCategory": "SUSE Linux Enterprise Server",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Service & Support",
@@ -1284,8 +1495,8 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 101,
-      "subCategory": "SUSE containers",
+      "tableIndex": 129,
+      "subCategory": "Microsoft Windows CAL Packs",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Service & Support",
@@ -1296,7 +1507,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 102,
+      "tableIndex": 130,
       "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
@@ -1308,7 +1519,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 103,
+      "tableIndex": 131,
       "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1320,31 +1531,31 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 104,
-      "subCategory": "System Options",
+      "tableIndex": 132,
+      "subCategory": "Energy Star",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
       "detectedRole": "Service & Support",
-      "constraint": "N/A",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": "",
+      "maxQty": 1,
       "skuCount": 2,
-      "rulesCount": 0
+      "rulesCount": 1
     },
     {
-      "tableIndex": 105,
-      "subCategory": "System Options",
+      "tableIndex": 133,
+      "subCategory": "Energy Star",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
       "detectedRole": "Service & Support",
-      "constraint": "N/A",
+      "constraint": "max 1",
       "minQty": 0,
-      "maxQty": "",
+      "maxQty": 1,
       "skuCount": 3,
       "rulesCount": 1
     },
     {
-      "tableIndex": 120,
+      "tableIndex": 168,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1352,24 +1563,168 @@
       "constraint": "N/A",
       "minQty": 0,
       "maxQty": "",
-      "skuCount": 2,
+      "skuCount": 10,
       "rulesCount": 0
+    },
+    {
+      "tableIndex": 169,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 7,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 170,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 171,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 172,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 173,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 174,
+      "subCategory": "Data Management Framework (SGI DMF)",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 176,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 9,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 177,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 8,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 178,
+      "subCategory": "Red Hat (add-ons)",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 180,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 6,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 181,
+      "subCategory": "VMware vCloud Products",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 183,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
     }
   ],
   "categoryDistribution": {
     "Chassis": 5,
-    "Accessories & Infrastructure": 22,
-    "Processor": 37,
+    "Accessories & Infrastructure": 21,
+    "Processor": 34,
     "Cooling / Thermal": 11,
     "Memory": 11,
-    "Drive Enclosures / Drives": 28,
-    "Cables & Enablement Kits": 72,
+    "Drive Enclosures / Drives": 25,
+    "Networking": 80,
     "PCIe Risers": 10,
-    "Storage Controllers": 53,
+    "Storage Controllers": 49,
+    "Cables & Enablement Kits": 66,
     "Software & Licenses": 272,
-    "Networking": 67,
-    "Graphics & GPU": 12,
-    "Power Supplies": 4,
+    "Graphics & GPU": 16,
+    "Power Supplies": 5,
     "HPE Compute Ops Management": 1
   },
   "chassisVariantsMatrix": {
@@ -1377,31 +1732,31 @@
       "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
       "listPrice": 5584,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73283-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (24-Bay SFF)",
       "listPrice": 5980,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73284-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (12-Bay LFF)",
       "listPrice": 6350,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73285-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
       "listPrice": 6890,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73286-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server",
       "formFactor": "eDesign SFF (16-Bay EDSFF)",
       "listPrice": 7120,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73287-B21": {
       "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",

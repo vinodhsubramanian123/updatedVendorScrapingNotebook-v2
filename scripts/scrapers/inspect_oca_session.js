@@ -37,7 +37,7 @@ async function main() {
   const infoRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const h1 = document.querySelector('h1, .page_title, #chassis_name, .product_title');
-      const clicBtn = document.querySelector('#clic_check, .btn-clic, #nav_clic, [id*="clic_check"], a[href*="clic"], button[title*="CLIC"]');
+      const clicBtn = document.querySelector('#clic-button, #clic_check, .btn-clic, #nav_clic, [id*="clic_check"], [id*="clic-button"], a[href*="clic"], button[title*="CLIC" i], button[aria-label*="CLIC" i]');
       const bodyText = document.body ? document.body.innerText.substring(0, 500) : '';
       return {
         title: h1 ? h1.innerText.trim() : document.title,

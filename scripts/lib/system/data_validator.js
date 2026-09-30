@@ -118,7 +118,7 @@ function validateCatalogData(catalogObj, options = {}) {
 
       // Check Option Type classification
       const optionType = skuRow.optionType || skuRow['Option Type'] || classifyOptionType(rawPn);
-      const validOptionTypes = ['Standard', 'CTO', 'BTO', 'FIO', 'Service'];
+      const validOptionTypes = ['Standard', 'CTO', 'BTO', 'FIO', 'Service', 'BTO/CTO'];
       if (!validOptionTypes.includes(optionType)) {
         warnings.push(`SKU [${cleanPn}]: Unknown optionType '${optionType}'. Expected one of: ${validOptionTypes.join(', ')}.`);
       }

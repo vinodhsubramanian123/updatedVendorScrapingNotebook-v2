@@ -1,0 +1,13 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	MEMORY_MIXING	Memory	Mixing of memory is not allowed.	4	P69727-F21, P69729-F21, P69730-F21, P73447-F21
+RULE_2	MUTUAL_EXCLUSION	Storage Devices	Mixing of Drive Cage not allowed.	1	P74712-B21
+RULE_3	MUTUAL_EXCLUSION	Storage Devices	This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.	1	P76700-B21
+RULE_4	MUTUAL_EXCLUSION	Storage Devices	This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.	1	P76702-B21
+RULE_5	MUTUAL_EXCLUSION	Networking	If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.	1	P74696-B21
+RULE_6	MUTUAL_EXCLUSION	Power and Cooling	Mixing of Power Supply is not allowed.	2	P67248-B21, P78196-B21
+RULE_7	BTO_DISALLOWED	Power and Cooling	BTO products are not allowed in CTO Base Model.	1	P80098-B21
+RULE_8	MUTUAL_EXCLUSION	Power and Cooling	Supports C19/ C19-C20 Power Cords only.	2	J6X00A, S4X23A
+RULE_9	MUTUAL_EXCLUSION	Accessories	Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).	1	P74726-B21
+RULE_10	MUTUAL_EXCLUSION	OS Boot Device	Private Product is not valid for current customer account	1	P75693-B21
+RULE_11	MUTUAL_EXCLUSION	Manufacturing Services	Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.	1	469774-409
+RULE_12	MUTUAL_EXCLUSION	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE

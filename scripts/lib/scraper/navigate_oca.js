@@ -53,7 +53,7 @@ function isExactProductCandidate(query, candidate) {
   const observed = extractModelGeneration(candidate.text);
   const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
     (!expected.generation || expected.generation === observed.generation));
-  const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
+  const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|smart\s+cto|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
   
   // Appliance exclusion: do not match Aruba, SimpliVity, or networking central appliances unless requested
   const isArubaQuery = /aruba|networking/i.test(query);
@@ -93,13 +93,20 @@ function safeNavigationLabel(value) {
   return String(value || '').split(/[?#]/)[0];
 }
 
-function closePageTarget(targetId) {
-  return new Promise((resolve, reject) => {
+async function closePageTarget(targetId) {
+  try {
+    const ws = await connectWS(`ws://localhost:${CDP_PORT}/devtools/page/${targetId}`);
+    await sendCommand(ws, 'Runtime.evaluate', { expression: 'window.onbeforeunload = null;' });
+    await sendCommand(ws, 'Page.enable');
+    await sendCommand(ws, 'Page.handleJavaScriptDialog', { accept: true });
+    ws.close();
+  } catch (_) {}
+  return new Promise((resolve) => {
     const req = http.get(`http://localhost:${CDP_PORT}/json/close/${encodeURIComponent(targetId)}`, res => {
       if (typeof res.resume === 'function') res.resume();
       res.on('end', () => resolve(res.statusCode >= 200 && res.statusCode < 300));
     });
-    req.on('error', reject);
+    req.on('error', () => resolve(false));
   });
 }
 
@@ -112,15 +119,21 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
     expression: `(() => {
       const pageText = (document.body?.innerText || '').slice(0, 25000);
       const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(pageText);
-      const hasException = Boolean(
-        Array.from(document.querySelectorAll('.dqe-error, .modal-error, [class*="error-dialog"]')).some(el => el.getClientRects().length) ||
-        /an unexpected error has occurred|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(pageText)
-      );
+      const visible = el => {
+        if (!el) return false;
+        const s = window.getComputedStyle(el);
+        return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
+      };
+      const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
+        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+      const hasException = Boolean(exceptionBox);
+      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\s+/g, ' ') : '';
       const hasMenu = Boolean(
         document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
-        document.querySelectorAll('table').length > 40
+        document.querySelectorAll('table').length > 20 ||
+        Array.from(document.querySelectorAll('a, button, div, span')).some(e => ['Menu', 'Components', 'Summary', 'BOM'].includes((e.innerText || '').trim()))
       );
-      return { hasMenu, isLoggedOut, hasException, pageText };
+      return { hasMenu, isLoggedOut, hasException, exceptionDetail, pageText };
     })()`,
     returnByValue: true
   });
@@ -130,7 +143,9 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
   const hasException = Boolean(activeState?.hasException);
 
   if (isLoggedOut || hasException) {
-    const reason = isLoggedOut ? 'logged out ("You are logged out successfully!")' : 'displaying an exception/error dialog';
+    const reason = isLoggedOut
+      ? 'logged out ("You are logged out successfully!")'
+      : `displaying an exception dialog: "${activeState?.exceptionDetail || 'unknown'}"`;
     console.warn(`🚨 [STALE_SESSION] OCA tab [${ocaTarget.id}] is ${reason}. As OCA cannot be reloaded in-place, closing tab immediately and recovering via Partner Portal...`);
     ws.close();
     try { await closePageTarget(ocaTarget.id); } catch (_) {}
@@ -419,8 +434,12 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
   const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
   const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
   
-  // Sort eligible candidates: prefer standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
+  // Sort eligible candidates: prefer standard CTO over Smart CTO, standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
   eligibleCandidates.sort((a, b) => {
+    const aSmart = /smart\s+cto/i.test(a.text || '') ? 1 : 0;
+    const bSmart = /smart\s+cto/i.test(b.text || '') ? 1 : 0;
+    if (aSmart !== bSmart) return aSmart - bSmart; // 0 (standard CTO) before 1 (Smart CTO)
+
     const aB21 = (a.sku || '').endsWith('-B21') ? 1 : 0;
     const bB21 = (b.sku || '').endsWith('-B21') ? 1 : 0;
     if (bB21 !== aB21) return bB21 - aB21;
@@ -543,9 +562,48 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
       returnByValue: true
     });
     deliveryEstimate = deliveryResult?.result?.value || '';
-    const ready = await waitForDOMPredicate(summaryWs, `Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table'))`, 30000, 500);
+    const ready = await waitForDOMPredicate(summaryWs, `(() => {
+      const visible = el => {
+        if (!el) return false;
+        const s = window.getComputedStyle(el);
+        return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
+      };
+      const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible);
+      if (isLoading) return false;
+
+      // Check for big modal exception dialogs
+      const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
+        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+      if (exceptionBox) {
+        window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
+      }
+
+      const hasMenuOrComp = Array.from(document.querySelectorAll('a, button, div, span')).some(e => {
+        const txt = (e.innerText || '').trim();
+        return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
+      });
+      const hasTables = document.querySelectorAll('table').length >= 10;
+      const hasLegacyMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'));
+
+      return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && (document.body?.innerText || '').includes('Config Status'));
+    })()`, 60000, 1000);
+
+    let capturedException = null;
+    try {
+      const excRes = await sendCommand(summaryWs, 'Runtime.evaluate', {
+        expression: 'window.__lastOcaException || ""',
+        returnByValue: true
+      });
+      capturedException = excRes?.result?.value || null;
+    } catch (_) {}
+
     summaryWs.close();
-    if (!ready) throw new Error('OCA_CONFIG_NOT_READY: Product was selected but no configuration menu appeared; recover through Partner Portal.');
+    if (!ready) {
+      if (capturedException) {
+        throw new Error(`OCA_CONFIG_EXCEPTION: OCA displayed a configuration exception dialog: "${capturedException}"`);
+      }
+      throw new Error('OCA_CONFIG_NOT_READY: Product was selected but configuration workspace did not finish loading within timeout; verify server load or recover through Partner Portal.');
+    }
   }
 
   eligibleCandidates.forEach(cand => {
@@ -625,21 +683,19 @@ async function performAutomatedSignIn(partnerTarget) {
             })()`
           });
 
-          const btnCoords = await sendCommand(ws, 'Runtime.evaluate', {
+          const btnResult = await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
               const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
-              if (!btn) return null;
-              const rect = btn.getBoundingClientRect();
+              if (!btn) return false;
+              btn.scrollIntoView({ block: 'center', inline: 'center' });
               btn.focus();
-              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+              btn.click();
+              return true;
             })()`,
             returnByValue: true
           });
 
-          if (btnCoords?.result?.value?.x) {
-            await sendCommand(ws, 'Runtime.evaluate', {
-              expression: `document.querySelector('#oktaSignInBtn, button.btn-sign-in')?.click()`
-            });
+          if (btnResult?.result?.value) {
             console.log('   Submitted email via Sign in button.');
             emailSubmitted = true;
             break;
@@ -678,20 +734,16 @@ async function performAutomatedSignIn(partnerTarget) {
         if (stateVal?.authenticated) break;
         if (stateVal?.needsEmail) {
           await sendCommand(ws, 'Input.insertText', { text: portalUser });
-          const retryBtn = await sendCommand(ws, 'Runtime.evaluate', {
+          await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
-              const btn = document.querySelector('#oktaSignInBtn');
-              if (!btn) return null;
-              const rect = btn.getBoundingClientRect();
-              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
-            })()`,
-            returnByValue: true
+              const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
+              if (btn) {
+                btn.scrollIntoView({ block: 'center', inline: 'center' });
+                btn.focus();
+                btn.click();
+              }
+            })()`
           });
-          if (retryBtn?.result?.value?.x) {
-            const { x, y } = retryBtn.result.value;
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
-            await sendCommand(ws, 'Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
-          }
         } else if (stateVal?.found) {
           if (portalPass) await sendCommand(ws, 'Input.insertText', { text: portalPass });
           await sendCommand(ws, 'Runtime.evaluate', {
@@ -705,21 +757,19 @@ async function performAutomatedSignIn(partnerTarget) {
             })()`
           });
 
-          const submitCoords = await sendCommand(ws, 'Runtime.evaluate', {
+          const submitResult = await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
               const btn = Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length);
-              if (!btn) return null;
-              const rect = btn.getBoundingClientRect();
+              if (!btn) return false;
+              btn.scrollIntoView({ block: 'center', inline: 'center' });
               btn.focus();
-              return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+              btn.click();
+              return true;
             })()`,
             returnByValue: true
           });
 
-          if (submitCoords?.result?.value?.x) {
-            await sendCommand(ws, 'Runtime.evaluate', {
-              expression: `Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length)?.click()`
-            });
+          if (submitResult?.result?.value) {
             console.log(`   Submitted password via onepass-submit-btn.`);
             passwordSubmitted = true;
             break;

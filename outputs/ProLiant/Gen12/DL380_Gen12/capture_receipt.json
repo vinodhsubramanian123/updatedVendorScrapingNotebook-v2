@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 1,
+  "product": "DL380_Gen12",
+  "vendor": "HPE",
+  "capturedAt": "2026-09-30T18:45:29.474Z",
+  "auditedAt": "2026-09-30T18:45:37.293Z",
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "completeness": "CAPTURED_STATES_ONLY"
+  },
+  "counts": {
+    "hardware": 603,
+    "services": 522,
+    "rules": 1162,
+    "categories": 14
+  },
+  "previousCounts": {
+    "hardware": 605,
+    "services": 417,
+    "rules": 104,
+    "categories": 14
+  },
+  "hashes": {
+    "Catalog.json": "b12654decfa52117550a89a638c51f65f7680f0530f22720772a601e75cad4cd",
+    "Services.json": "4312771ad35c8666810b92bda4203e125a8596e51893a9cc833fc68c1fc10435",
+    "Catalog_Rules.json": "d3a5b4e716d275649b152ff1a02b996fc1615212bc79244a839921530e0d2d9f",
+    "OCA_Catalog.xlsx": "f6ffcad049f4f3f1102cd918d774ef5d747fd18f902225664052e8143efdfe18"
+  },
+  "rawSha256": "71cd423f65f775de5703042eeabe84a80b21daedf35bb63a0322bb51d497d51e",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 148
+    },
+    {
+      "name": "All SKUs",
+      "rows": 607
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 6
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 6
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 1252
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 34
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 27
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 672
+    },
+    {
+      "name": "Support Services",
+      "rows": 98
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 1129
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 1129
+    },
+    {
+      "name": "Processor",
+      "rows": 35
+    },
+    {
+      "name": "Memory",
+      "rows": 12
+    },
+    {
+      "name": "Networking",
+      "rows": 81
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "name": "Chassis",
+      "rows": 6
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 22
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 12
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 26
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 11
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 50
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 67
+    },
+    {
+      "name": "Graphics & GPU",
+      "rows": 17
+    },
+    {
+      "name": "HPE Compute Ops Management",
+      "rows": 2
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 924
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P74383-B21",
+        "P97416-B21",
+        "R8W23AAE",
+        "R8W26AAE",
+        "R8W27AAE"
+      ],
+      "removed": [
+        "P69726-B21",
+        "P69726-F21",
+        "DA8SFFX2",
+        "DA8SFFX4",
+        "804398-B21",
+        "339781-B21",
+        "389692-B21"
+      ]
+    },
+    "services": {
+      "added": [
+        "339781-B21",
+        "389692-B21",
+        "R8V46AAE",
+        "S0W13AAE",
+        "S0W16AAE",
+        "S0W19AAE",
+        "S0W22AAE",
+        "S0W25AAE",
+        "S0W28AAE",
+        "HA849A1",
+        "HA851A1",
+        "ZU723A",
+        "H29BWA1",
+        "H29BXA1",
+        "HA838A1",
+        "HA839A1",
+        "HA843A1",
+        "HA846A1",
+        "HA848A1",
+        "AC068A",
+        "HB480A1",
+        "HB481A1",
+        "HB482A1",
+        "HB483A1",
+        "HB484A1",
+        "S1J77A",
+        "H0JD0A1",
+        "H0JT1A1",
+        "H36NRA4",
+        "H36NRA5",
+        "H36NSA1",
+        "H36NTA1",
+        "H42ZHA1",
+        "H42ZJA1",
+        "H42ZKA1",
+        "H0JT2A1",
+        "H29BRA1",
+        "H29BSA1",
+        "H36NLA1",
+        "H36NMA1",
+        "H36NNA1",
+        "H36NPA1",
+        "H36NQA1",
+        "H36NQA3",
+        "H36NQA4",
+        "P1F74A",
+        "R3J78A",
+        "P1F76A",
+        "P1F78A",
+        "R2D12A",
+        "R2D20A",
+        "R2D10A",
+        "R2D04A",
+        "P1F71A",
+        "P1F81A",
+        "AC123A",
+        "BQ337A",
+        "BQ335A",
+        "G1H96A1",
+        "G1H97A1",
+        "G1H98A1",
+        "G1H99A1",
+        "H0JD1A1",
+        "H0JD7A1",
+        "H30RVA1",
+        "H33XSA1",
+        "H33XTA2",
+        "H33XVA3",
+        "H33XWA4",
+        "H33XXA5",
+        "H36NVA1",
+        "H57GHA1",
+        "H57GJA1",
+        "H57GKA1",
+        "H0JD9A1",
+        "H1WU9A1",
+        "H1WV0A1",
+        "H1XF9A1",
+        "H1XG0A1",
+        "H1XG7A1",
+        "H2S79A1",
+        "H2S81A1",
+        "H29BQA1",
+        "H30SBA1",
+        "H30SCA1",
+        "H30SLA1",
+        "H30SMA1",
+        "H30SNA1",
+        "H36NRA3",
+        "H36PBA1",
+        "H36PCA1",
+        "H36PDA1",
+        "H42ZQA1",
+        "H42ZRA1",
+        "H43BCA1",
+        "H44MDA1",
+        "H44NJA1",
+        "HU7D2A1",
+        "H46SGA3",
+        "H46SGA4",
+        "H46SGA5",
+        "H46SHA3",
+        "H46SHA4",
+        "H46SHA5",
+        "H46SJA3",
+        "H46SJA4",
+        "H46SJA5",
+        "H46SKA3"
+      ],
+      "removed": [
+        "R8W23AAE",
+        "R8W26AAE",
+        "R8W27AAE"
+      ]
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 5,
+      "removed": 3,
+      "categoryMigrated": 2,
+      "priceChanged": 0,
+      "attributeChanged": 582,
+      "priceAndAttributeChanged": 16,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 18
+    },
+    "serviceChanges": {
+      "added": 108,
+      "removed": 0,
+      "categoryMigrated": 3,
+      "priceChanged": 0,
+      "attributeChanged": 408,
+      "priceAndAttributeChanged": 6,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "CLI sync unavailable (Canonical Google Sheet synchronization failed before retirement: NotebookLM indexed source does not contain the current workbook fingerprint. Old source remains active.). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen12\\DL380_Gen12\\notebook_sync_payload_DL380_Gen12.md. Upload as \"DL380_Gen12_OCA_Catalog_2026-09-30\" via gemini-notebook-mcp source_add or nlm CLI."
+  },
+  "promotedAt": "2026-09-30T18:48:54.129Z"
+}

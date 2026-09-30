@@ -1,21 +1,22 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-30T14:42:14.511Z",
-  "lastUpdated": "2026-09-30T14:42:14.511Z",
-  "totalLearnedRules": 89,
-  "totalDeduplicatedRules": 89,
+  "generatedAt": "2026-09-30T19:20:11.118Z",
+  "lastUpdated": "2026-09-30T19:20:11.118Z",
+  "totalLearnedRules": 92,
+  "totalDeduplicatedRules": 92,
   "productFamiliesSynced": [
     "DL145",
     "DL380",
     "DL380a",
+    "ProLiant",
     "Synergy",
     "SY480"
   ],
   "counts": {
     "universal": 9,
     "familyGen": 0,
-    "chassisSpecific": 80
+    "chassisSpecific": 83
   },
   "universalRules": [
     {
@@ -1819,6 +1820,64 @@
       "family": "ProLiant",
       "generation": "Gen12",
       "productId": "DL380_Gen12",
+      "solutionType": "DL380_Gen12 CTO Server"
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
+      "timestamp": "2026-09-30T16:29:39.721Z",
+      "chassis": "DL380_Gen12",
+      "ruleType": "WORKFLOW_OEM_SELECTION_ADVISORY",
+      "affectedSku": "P77819-B21",
+      "rawMessage": "OCA observed P77819-B21 as OEM DL380 Gen12 CTO. Preserve it in scoped discovery; a generic commercial DL380 Gen12 request must not automatically choose OEM. P73282-B21 was observed as commercial CTO, not certified as a permanent substitute or live-price guarantee.",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380_Gen12",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "governanceStatus": "ACTIVE",
+      "evidenceType": "WORKFLOW_REVIEW",
+      "source": "docs/audits/2026-09-30-scraping-independent-review.md",
+      "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+      "hardwareCompatibilityCertified": false,
+      "solutionType": "DL380_Gen12 CTO Server"
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
+      "timestamp": "2026-09-30T16:29:39.762Z",
+      "chassis": "DL380_Gen12",
+      "ruleType": "WORKFLOW_RUNTIME_DISCOVERY_ADVISORY",
+      "rawMessage": "Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and owning configuration, with the requested quantities and environmental state. Hidden presence establishes observation only. Revalidate each changed manifest in CLIC; a runtime plan does not establish acceptance.",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380_Gen12",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "governanceStatus": "ACTIVE",
+      "evidenceType": "WORKFLOW_REVIEW",
+      "source": "docs/audits/2026-09-30-scraping-independent-review.md",
+      "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+      "hardwareCompatibilityCertified": false,
+      "solutionType": "DL380_Gen12 CTO Server"
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
+      "timestamp": "2026-09-30T16:29:39.788Z",
+      "chassis": "DL380_Gen12",
+      "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+      "rawMessage": "Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient probes; other selector combinations and all-base coverage remain unverified. Unknown recommendation, price and variant capability stay unknown. Do not retire prior NotebookLM sources before replacement verification.",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "productId": "DL380_Gen12",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "governanceStatus": "ACTIVE",
+      "evidenceType": "WORKFLOW_REVIEW",
+      "source": "docs/audits/2026-09-30-scraping-independent-review.md",
+      "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+      "hardwareCompatibilityCertified": false,
       "solutionType": "DL380_Gen12 CTO Server"
     },
     {

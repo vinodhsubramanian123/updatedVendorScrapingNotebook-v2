@@ -66,7 +66,7 @@ async function main() {
 
       // Search for CLIC Check or Unbuildable Status link
       const selectors = [
-        '#clic_check', '.btn-clic', '#nav_clic', '[id*="clic"]',
+        '#clic-button', '#clic_check', '.btn-clic', '#nav_clic', '[id*="clic"]',
         'a[href*="clic"]', 'button[title*="CLIC"]',
         'a:contains("Unbuildable")', '.unbuildable-status', '[class*="unbuildable"]',
         '#action_required_link', '.action-required'

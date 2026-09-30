@@ -1,4 +1,5 @@
 'use strict';
+const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 /**
  * scripts/lib/scraper/dom_unavailable_rules.js — Universal DOM Extraction for Unavailable/Gated SKUs & Portal Rules
  *
@@ -106,9 +107,13 @@ function parseUnavailableDomRules(doc) {
     for (const tr of rows) {
       const pidEl = tr.querySelector('._pid, .item_prod span._pid, .item_prod, [class*="_pid"]');
       const rawSku = (pidEl ? (pidEl.innerText || pidEl.textContent || '') : '').trim();
-      // Clean embedded status prefixes like 'OB\n P45916-B21', 'CS\n P69726-B21', '90\n S3Z84AAE'
-      const sku = rawSku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
-      if (!sku || sku === 'Product #' || seenSkus.has(sku)) continue;
+      let sku = rawSku.replace(/[\r\n\t]+/g, ' ').trim();
+      // Clean embedded status prefixes like 'OB P45916-B21', 'CS P69726-B21', '90 S3Z84AAE'
+      sku = sku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+      const isPrivateSku = /\bPVT\b/i.test(sku);
+      sku = sku.replace(/\s+PVT$/i, '').trim();
+      const cleanSku = cleanBaseSKU(sku);
+      if (!cleanSku || !isValidHpeSKU(cleanSku) || cleanSku === 'Product #' || seenSkus.has(cleanSku)) continue;
 
       const descEl = tr.querySelector('.item_desc, [class*="item_desc"]');
       const desc = (descEl ? (descEl.innerText || descEl.textContent || '') : '').trim();
@@ -143,11 +148,13 @@ function parseUnavailableDomRules(doc) {
       }
       const badgeTitle = badgeEl ? (badgeEl.getAttribute('title') || '') : '';
 
-      seenSkus.add(sku);
-      affectedSkusInRule.push(sku);
+      seenSkus.add(cleanSku);
+      affectedSkusInRule.push(cleanSku);
 
       unavailableSkus.push({
-        sku,
+        sku: cleanSku,
+        rawSku,
+        isPrivateSku,
         description: desc,
         listPrice: price,
         startDate,

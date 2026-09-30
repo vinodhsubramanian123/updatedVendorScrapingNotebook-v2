@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-27T17:09:49.677Z
+**Sync Timestamp**: 2026-09-30T19:20:06.500Z
 
-**Total Verified SKUs**: `662` (`450` Hardware + `212` Services)
+**Total Verified SKUs**: `660` (`440` Hardware + `220` Services)
 
 **Total Synced KnowledgeDeltas**: `17`
 
@@ -18,21 +18,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 450 | 91 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 212 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **662** | **91** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 440 | 6 | 0 | 224 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 220 | 8 | 0 | 1 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **660** | **14** | **0** | **225** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
-1. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
-2. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
-3. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
-4. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
-5. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
-6. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
-7. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: ERROR_DIAGNOSTIC_ATTRIBUTION)*
-8. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: ICON_SUPPORT_ISOLATION)*
-9. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix. *(Type: SESSION_RECOVERY_PROTOCOL)*
+1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: ERROR_DIAGNOSTIC_ATTRIBUTION)*
+2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: ICON_SUPPORT_ISOLATION)*
+3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix. *(Type: SESSION_RECOVERY_PROTOCOL)*
+4. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
+5. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
+6. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
+7. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
+8. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
+9. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant Gen12)
 
@@ -77,10 +77,81 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - 💡 **Human Engineer Rationale**: *"Manual price drift reconciliation from phase 15 audit"*
 
 
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+### Memory Technology & Density Mixing Constraints
+
+1. **[Memory]**: Mixing of memory is not allowed.
+   - **Gated Rule Type**: `MEMORY_MIXING`
+   - **Affected SKUs (4)**: `P69727-F21`, `P69729-F21`, `P69730-F21`, `P73447-F21`
+
+### Component Mutual Exclusion Rules
+
+1. **[Storage Devices]**: Mixing of Drive Cage not allowed.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P74712-B21`
+
+2. **[Storage Devices]**: This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P76700-B21`
+
+3. **[Storage Devices]**: This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P76702-B21`
+
+4. **[Networking]**: If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P74696-B21`
+
+5. **[Power and Cooling]**: Mixing of Power Supply is not allowed.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (2)**: `P67248-B21`, `P78196-B21`
+
+6. **[Power and Cooling]**: Supports C19/ C19-C20 Power Cords only.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (2)**: `J6X00A`, `S4X23A`
+
+7. **[Accessories]**: Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P74726-B21`
+
+8. **[OS Boot Device]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P75693-B21
+
+    PVT`
+
+9. **[Manufacturing Services]**: Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `469774-409`
+
+10. **[Virtualization]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (3)**: `S4F94AAE
+
+    PVT`, `S4G00AAE
+
+    PVT`, `S4R76AAE
+
+    PVT`
+
+### CTO vs BTO Factory Integration Rules
+
+1. **[Power and Cooling]**: BTO products are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (1)**: `P80098-B21`
+
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
 | SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
 |-----|-------------|--------|-------------------|------------------|----------|-----------|
+| `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69727-B21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $13909.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69728-B21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $28532.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69729-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $47056.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69730-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $60190.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P73447-B21` | HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $133186.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC120A` | HPE Pallet Size Customization Service | **DISCONTINUED** | 2026-09-09 | $7.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC129A` | HPE Consolidation Logistic Service | **DISCONTINUED** | 2026-09-09 | $26.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P1F69A` | HPE Delivery Site Above Ground Floor Service | **DISCONTINUED** | 2026-09-09 | $289.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
@@ -95,13 +166,34 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-09-09 | $44.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-09-09 | $100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P76706-B21` | HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server | **REINSTATED** | 2026-09-09 | $21407.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S2L70C` | NVIDIA L40S 48GB PCIe Accelerator | **DISCONTINUED** | 2026-09-30 | $32212.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S6W30C` | NVIDIA RTX PRO 4500 Blackwell Server Edition 32GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $18882.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S0K89C` | NVIDIA L4 24GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $10589.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S2D86C` | NVIDIA H100 NVL 94GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $112579.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S5T74C` | NVIDIA RTX A1000 8GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $1687.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S3U30C` | NVIDIA H200 NVL 141GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $112579.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S6A73C` | NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $57002.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `S6W21C` | NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE | **DISCONTINUED** | 2026-09-30 | $37899.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-09 | `P76706-B21` | Discontinued Date | 02/29/2028 | **2026-09-09** |
-| 2026-09-10 | `P76706-B21` | Lead Time Source | OCA configuration estimate | **OCA selected configuration estimate** |
+| 2026-09-30 | `S4R45A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-30 | `S4R46A` | HPE Recommended |  | **Unknown** |
+| 2026-09-30 | `S4R46A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-30 | `S4R47A` | HPE Recommended |  | **Unknown** |
+| 2026-09-30 | `S4R47A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-30 | `S4R48A` | HPE Recommended |  | **Unknown** |
+| 2026-09-30 | `S4R48A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-30 | `389692-B21` | Description | HPE Customer Defined RAID Setting Service | **** |
+| 2026-09-30 | `389692-B21` | Option Type | Standard | **** |
+| 2026-09-30 | `389692-B21` | Start Date | 02/02/2005 | **** |
+| 2026-09-30 | `389692-B21` | Discontinued Date | 12/31/2043 | **** |
+| 2026-09-30 | `389692-B21` | Lifecycle Status | Active | **** |
+| 2026-09-30 | `389692-B21` | Availability | Available | **** |
+| 2026-09-30 | `389692-B21` | Lead Time Source | Not published by OCA | **** |
+| 2026-09-30 | `389692-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

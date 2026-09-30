@@ -38,8 +38,8 @@ function isValidHpeSKU(skuStr) {
   // MANDATORY: Valid HPE SKUs MUST NOT be pure digits (eliminates integers like 12345, quantities, or line numbers)
   if (/^\d+$/.test(clean)) return false;
 
-  // Filter out internal DOM pattern IDs, core count labels, and common words
-  if (/pat0|00300|core|recovery|simplified|rowcount|context/i.test(clean)) return false;
+  // Filter out internal DOM pattern IDs, selector controls, core count labels, and common words
+  if (/^(?:cntr\d+|da\d+|dl\d+smtch|slot\w+)/i.test(clean) || /pat0|00300|core|recovery|simplified|rowcount|context/i.test(clean)) return false;
   if (COMMON_WORDS_FILTER.test(clean)) return false;
   // Filter out server model family names (e.g. DL360, DL380, DL380a, DL145, DL580, ML350, SY480) which are not part numbers
   if (/^(?:DL|ML|SY|GX|BL|XL|RL|SL|SN|CN)\d{2,4}[A-Z]?$/i.test(clean)) return false;
@@ -84,12 +84,14 @@ function isValidHpeSKU(skuStr) {
  */
 function cleanBaseSKU(skuStr) {
   if (!skuStr) return '';
-  let str = String(skuStr).trim();
+  let str = String(skuStr).replace(/[\r\n\t]+/g, ' ').trim();
   // Strip bracketed badges like [OB], [DS], [90], [EOL] at start or end
   str = str.replace(/\s*\[(?:OB|DS|90|EOL|NA|N\/A)\]\s*$/i, '').trim();
   str = str.replace(/^\s*\[(?:OB|DS|90|EOL|NA|N\/A)\]\s*/i, '').trim();
   // Strip leading lifecycle / status badges (e.g. "OB\n P49631-B21", "DS P49632-B21", "90\n P49639-B21", "EOL P49654-B21")
   str = str.replace(/^(?:OB|DS|90|EOL|NA|N\/A|BTO|CTO|FIO)\s+/i, '').trim();
+  // Strip trailing PVT / Private badge
+  str = str.replace(/\s+PVT$/i, '').trim();
   // Strip leading DOM target element prefix 't' or 'T' if followed by valid SKU pattern starting with P, Q, R, or digit (e.g. tP69726-B21 or TP73111-B21 -> P69726-B21)
   if (/^[tT][PQR0-9][A-Z0-9]{4,6}(-[A-Z0-9]+)?$/i.test(str)) {
     str = str.substring(1);
@@ -104,10 +106,11 @@ function cleanBaseSKU(skuStr) {
 /**
  * Determine Option Type based on SKU suffix.
  * @param {string} skuStr
- * @returns {'CTO' | 'BTO' | 'FIO' | 'Standard' | 'Service'}
+ * @returns {'CTO' | 'BTO' | 'FIO' | 'Standard' | 'Service' | 'BTO/CTO'}
  */
 function classifyOptionType(skuStr) {
-  const str = String(skuStr || '').trim().toUpperCase();
+  const str = String(skuStr || '').replace(/[\r\n\t]+/g, ' ').trim().toUpperCase();
+  if (str === 'BTO/CTO' || str.endsWith('BTO/CTO')) return 'BTO/CTO';
   if (str.endsWith('CTO')) return 'CTO';
   if (str.endsWith('BTO')) return 'BTO';
   if (str.endsWith('FIO') || /\s+0D1\b/i.test(str)) return 'FIO';

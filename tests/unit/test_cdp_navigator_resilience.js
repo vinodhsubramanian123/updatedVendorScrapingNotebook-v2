@@ -1,6 +1,7 @@
 'use strict';
 
-const assert = require('assert');
+const test = require('node:test');
+const assert = require('node:assert/strict');
 const http = require('http');
 const WebSocket = require('ws');
 const { navigateToOCAChassis } = require('../../scripts/lib/scraper/navigate_oca.js');
@@ -11,73 +12,130 @@ const originalHttpGet = http.get;
 const originalSetTimeout = global.setTimeout;
 const originalFetch = global.fetch;
 
-// Mock fetch for CDP /json endpoints
-global.fetch = async function(url, options = {}) {
-  const urlStr = String(url);
-  if (urlStr.includes('9222/json')) {
-    if (urlStr.includes('/json/new?')) {
-      const targetUrl = decodeURIComponent(urlStr.split('/json/new?')[1] || '');
-      const newTarget = {
-        type: 'page',
-        id: `tab-${Date.now()}`,
-        url: targetUrl,
-        title: 'Partner Home',
-        webSocketDebuggerUrl: 'ws://localhost:18999'
-      };
-      return { ok: true, status: 200, json: async () => newTarget, text: async () => JSON.stringify(newTarget) };
-    }
-    return { ok: true, status: 200, json: async () => mockTargets, text: async () => JSON.stringify(mockTargets) };
-  }
-  if (typeof originalFetch === 'function') {
-    return originalFetch(url, options);
-  }
-  return { ok: true, status: 200 };
-};
-
-// Mock setTimeout to speed up the tests
-global.setTimeout = (fn, ms) => {
-  if (ms === 3000 || ms === 6000 || ms === 5000) {
-    return originalSetTimeout(fn, 1);
-  }
-  return originalSetTimeout(fn, ms);
-};
-
 let mockTargets = [];
 let activeConnections = [];
 
-// Mock http.get for CDP targets
-http.get = function(url, cb) {
-  if (typeof url === 'string' && url.includes('9222/json')) {
-    const res = new (require('events').EventEmitter)();
-    res.statusCode = 200;
-    res.resume = function() {};
-    const req = new (require('events').EventEmitter)();
-    req.setTimeout = function() { return req; };
-    req.destroy = function() {};
-    
-    originalSetTimeout(() => {
-      if (url.includes('/json/close/')) {
-        const parts = url.split('/json/close/');
-        const targetId = decodeURIComponent(parts[1] || '');
-        if (targetId) {
-          mockTargets = mockTargets.filter(t => t.id !== targetId);
-        }
+function setupMocks() {
+  global.fetch = async function(url, options = {}) {
+    const urlStr = String(url);
+    if (urlStr.includes('9222/json')) {
+      if (urlStr.includes('/json/new?')) {
+        const targetUrl = decodeURIComponent(urlStr.split('/json/new?')[1] || '');
+        const newTarget = {
+          type: 'page',
+          id: `tab-${Date.now()}`,
+          url: targetUrl,
+          title: 'Partner Home',
+          webSocketDebuggerUrl: 'ws://localhost:18999'
+        };
+        return { ok: true, status: 200, json: async () => newTarget, text: async () => JSON.stringify(newTarget) };
       }
-      if (cb) cb(res);
-      res.emit('data', JSON.stringify(mockTargets));
-      res.emit('end');
-    }, 1);
-    return req;
-  }
-  return originalHttpGet(url, cb);
-};
+      return { ok: true, status: 200, json: async () => mockTargets, text: async () => JSON.stringify(mockTargets) };
+    }
+    if (typeof originalFetch === 'function') {
+      return originalFetch(url, options);
+    }
+    return { ok: true, status: 200 };
+  };
 
-async function runTests() {
-  console.log('🧪 Starting CDP Navigator Resilience Tests...');
-  let wss;
-  try {
-    wss = new WebSocket.Server({ port: 18999 });
-    
+  global.setTimeout = (fn, ms) => {
+    if (ms === 3000 || ms === 6000 || ms === 5000) {
+      return originalSetTimeout(fn, 1);
+    }
+    return originalSetTimeout(fn, ms);
+  };
+
+  http.get = function(url, cb) {
+    if (typeof url === 'string' && url.includes('9222/json')) {
+      const res = new (require('events').EventEmitter)();
+      res.statusCode = 200;
+      res.resume = function() {};
+      const req = new (require('events').EventEmitter)();
+      req.setTimeout = function() { return req; };
+      req.destroy = function() {};
+
+      originalSetTimeout(() => {
+        if (url.includes('/json/close/')) {
+          const parts = url.split('/json/close/');
+          const targetId = decodeURIComponent(parts[1] || '');
+          if (targetId) {
+            mockTargets = mockTargets.filter(t => t.id !== targetId);
+          }
+        }
+        if (cb) cb(res);
+        res.emit('data', JSON.stringify(mockTargets));
+        res.emit('end');
+      }, 1);
+      return req;
+    }
+    return originalHttpGet(url, cb);
+  };
+}
+
+function restoreMocks() {
+  http.get = originalHttpGet;
+  global.setTimeout = originalSetTimeout;
+  global.fetch = originalFetch;
+}
+
+function getMockEvaluateValue(expr, query = 'DL380 Gen12') {
+  if (expr.includes('isLoggedOut')) {
+    const isStalePresent = mockTargets.some(t => t.id === 'stale-logged-out-oca');
+    return {
+      hasMenu: !isStalePresent,
+      isLoggedOut: isStalePresent,
+      hasException: false,
+      pageText: isStalePresent ? 'You are logged out successfully!' : `HPE ProLiant ${query}`
+    };
+  }
+  if (expr.includes('candidates') || expr.includes('dqe_ai_mode_trigger') || expr.includes('selectNavTreeOption')) {
+    return {
+      candidates: [
+        {
+          sku: 'P73282-B21',
+          text: `HPE ProLiant Compute ${query} SFF NC Configure-to-order Server`,
+          isCto: true,
+          isBto: false,
+          isTaa: false,
+          isGta: false,
+          type: 'card',
+          cardSelector: '.card',
+          listPriceUsd: 1200
+        }
+      ]
+    };
+  }
+  if (expr.includes('isConfigPage') || expr.includes('summary_property_summary_name')) {
+    return { isConfigPage: true };
+  }
+  if (expr.includes('oktaEmailInput') || expr.includes('password-sign-in')) {
+    return false;
+  }
+  if (expr.toLowerCase().includes('one config advanced') || expr.includes('187402') || expr.includes('ocaLink')) {
+    return { clicked: true, text: 'One Config Advanced', launched: true };
+  }
+  return true;
+}
+
+test('CDP Navigator Resilience Test Suite', async (t) => {
+  setupMocks();
+  let wss = null;
+
+  t.after(() => {
+    if (wss) {
+      activeConnections.forEach(ws => {
+        try { ws.close(); } catch (_) {}
+      });
+      try { wss.close(); } catch (_) {}
+    }
+    restoreMocks();
+  });
+
+  wss = new WebSocket.Server({ port: 18999 });
+
+  await t.test('Test 1: Testing >10s timeout recovery (Login polling)', async () => {
+    activeConnections = [];
+    wss.removeAllListeners('connection');
     wss.on('connection', ws => {
       activeConnections.push(ws);
       ws.on('message', msg => {
@@ -85,17 +143,10 @@ async function runTests() {
         if (req.method === 'Runtime.evaluate') {
           ws.send(JSON.stringify({
             id: req.id,
-            result: {
-              result: {
-                value: true
-              }
-            }
+            result: { result: { value: getMockEvaluateValue(req.params?.expression || '', 'DL380') } }
           }));
         } else {
-          ws.send(JSON.stringify({
-            id: req.id,
-            result: {}
-          }));
+          ws.send(JSON.stringify({ id: req.id, result: {} }));
         }
       });
       ws.on('close', () => {
@@ -103,9 +154,6 @@ async function runTests() {
       });
     });
 
-    // --- Test 1: Portal auto-navigation state machine when DOM elements load slowly ---
-    console.log('\n  --- Test 1: Testing >10s timeout recovery (Login polling) ---');
-    
     mockTargets = [
       {
         type: 'page',
@@ -146,14 +194,10 @@ async function runTests() {
     const res = await navigateToOCAChassis('DL380', {});
     assert.strictEqual(res.status, 'READY_AT_MENU_TAB');
     assert.ok(pollCount >= 5, 'Should have polled at least 5 times');
-    console.log('✅ Test 1 Passed: Successfully recovered from slow login/DOM state.');
-
-    // Reset for next test
     global.setTimeout = pollingSetTimeout;
+  });
 
-    // --- Test 2: WebLogic SSO popups, unexpected modal dialogs, and navigation redirects ---
-    console.log('\n  --- Test 2: Testing Partner Portal navigation to OCA tool launch ---');
-    
+  await t.test('Test 2: Testing Partner Portal navigation to OCA tool launch', async () => {
     mockTargets = [
       {
         type: 'page',
@@ -166,17 +210,17 @@ async function runTests() {
 
     let launchCalled = false;
     wss.removeAllListeners('connection');
-    
+
     wss.on('connection', ws => {
       activeConnections.push(ws);
       ws.on('message', msg => {
         const req = JSON.parse(msg);
         if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
+          const expr = req.params?.expression || '';
+          if (expr.includes('oktaEmailInput') || expr.includes('password-sign-in')) {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: false } } }));
-          } else if (req.params.expression && (req.params.expression.toLowerCase().includes('one config advanced') || req.params.expression.includes('187402') || req.params.expression.includes('ocaLink'))) {
+          } else if (expr.toLowerCase().includes('one config advanced') || expr.includes('187402') || expr.includes('ocaLink')) {
             launchCalled = true;
-            // Simulate that launching opens OCA page
             mockTargets.unshift({
               type: 'page',
               id: 'new-oca-page',
@@ -186,7 +230,10 @@ async function runTests() {
             });
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true, text: 'One Config Advanced', launched: true } } } }));
           } else {
-            ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
+            ws.send(JSON.stringify({
+              id: req.id,
+              result: { result: { value: getMockEvaluateValue(expr, 'Alletra 9000') } }
+            }));
           }
         } else {
           ws.send(JSON.stringify({ id: req.id, result: {} }));
@@ -200,30 +247,12 @@ async function runTests() {
     const res2 = await navigateToOCAChassis('Alletra 9000', {});
     assert.strictEqual(res2.status, 'READY_AT_MENU_TAB');
     assert.strictEqual(launchCalled, true, 'Launch evaluate command should have been called on Partner Portal');
-    
-    console.log('✅ Test 2 Passed: Successfully navigated WebLogic portal redirect and launched OCA.');
+  });
 
-    // --- Test 3: Graceful WebSocket reconnect when CDP port drops temporarily ---
-    console.log('\n  --- Test 3: Graceful WebSocket reconnect when CDP port drops temporarily ---');
-    
-    let connectionAttempts = 0;
-    let flackyWss;
+  await t.test('Test 3: Graceful WebSocket reconnect when CDP port drops temporarily', async () => {
+    let flackyWss = null;
     let successfulConnection = false;
-    
     try {
-      flackyWss = new WebSocket.Server({ port: 9224 });
-      flackyWss.on('connection', ws => {
-        connectionAttempts++;
-        if (connectionAttempts === 1) {
-          ws.close();
-        } else {
-          successfulConnection = true;
-          ws.send(JSON.stringify({ ok: true })); 
-        }
-      });
-
-      flackyWss.close();
-
       let mockServerStarted = false;
       originalSetTimeout(() => {
         mockServerStarted = true;
@@ -236,15 +265,15 @@ async function runTests() {
       const flackyWs = await cdp.connectWS('ws://localhost:9225', 5, 20);
       assert.strictEqual(successfulConnection, true, 'Should have reconnected successfully');
       assert.strictEqual(mockServerStarted, true, 'Server should have started after initial failures');
-      
       flackyWs.close();
-      console.log('✅ Test 3 Passed: Successfully reconnected WebSocket on retry.');
     } finally {
-      if (flackyWss) flackyWss.close();
+      if (flackyWss) {
+        try { flackyWss.close(); } catch (_) {}
+      }
     }
+  });
 
-    // --- Test 4: Stale / Logged-out / OCAInternalLogin Tab Auto-Closure & Tab 1 Recovery ---
-    console.log('\n  --- Test 4: Testing automatic closure of logged-out OCAInternalLogin tab ---');
+  await t.test('Test 4: Testing automatic closure of logged-out OCAInternalLogin tab and recovery', async () => {
     let freshTabSpawned = false;
 
     mockTargets = [
@@ -272,7 +301,8 @@ async function runTests() {
         if (req.method === 'Page.reload') {
           ws.send(JSON.stringify({ id: req.id, result: {} }));
         } else if (req.method === 'Runtime.evaluate') {
-          if (req.params.expression && req.params.expression.includes('isLoggedOut')) {
+          const expr = req.params?.expression || '';
+          if (expr.includes('isLoggedOut')) {
             const isStalePresent = mockTargets.some(t => t.id === 'stale-logged-out-oca');
             ws.send(JSON.stringify({
               id: req.id,
@@ -287,9 +317,9 @@ async function runTests() {
                 }
               }
             }));
-          } else if (req.params.expression && (req.params.expression.includes('oktaEmailInput') || req.params.expression.includes('password-sign-in'))) {
+          } else if (expr.includes('oktaEmailInput') || expr.includes('password-sign-in')) {
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: false } } }));
-          } else if (req.params.expression && (req.params.expression.toLowerCase().includes('one config advanced') || req.params.expression.includes('187402') || req.params.expression.includes('ocaLink'))) {
+          } else if (expr.toLowerCase().includes('one config advanced') || expr.includes('187402') || expr.includes('ocaLink')) {
             freshTabSpawned = true;
             mockTargets.unshift({
               type: 'page',
@@ -300,7 +330,10 @@ async function runTests() {
             });
             ws.send(JSON.stringify({ id: req.id, result: { result: { value: { clicked: true, text: 'One Config Advanced', launched: true } } } }));
           } else {
-            ws.send(JSON.stringify({ id: req.id, result: { result: { value: true } } }));
+            ws.send(JSON.stringify({
+              id: req.id,
+              result: { result: { value: getMockEvaluateValue(expr, 'DL380 Gen12') } }
+            }));
           }
         } else {
           ws.send(JSON.stringify({ id: req.id, result: {} }));
@@ -315,20 +348,5 @@ async function runTests() {
     assert.strictEqual(res4.status, 'READY_AT_MENU_TAB');
     assert.strictEqual(mockTargets.some(t => t.id === 'stale-logged-out-oca'), false, 'Logged out tab should have been closed via CDP /json/close');
     assert.strictEqual(freshTabSpawned, true, 'Fresh session should have been triggered from Tab 1 Quick Links');
-    console.log('✅ Test 4 Passed: Successfully closed logged out tab and recovered fresh session from Tab 1.');
-
-  } finally {
-    if (wss) {
-      activeConnections.forEach(ws => ws.close());
-      wss.close();
-    }
-    http.get = originalHttpGet;
-    global.setTimeout = originalSetTimeout;
-    global.fetch = originalFetch;
-  }
-}
-
-runTests().catch(err => {
-  console.error('❌ Tests failed:', err);
-  process.exit(1);
+  });
 });

@@ -186,14 +186,16 @@ async function extractSectionHeaders(ws, sendCommand) {
  */
 async function extractHiddenElements(ws, sendCommand) {
   const result = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
+    expression: String.raw`(() => {
       const hidden = [];
       const seen = new Set();
-      // All elements tagged with product ID classes — including those in hidden subtrees
-      const allPidEls = Array.from(document.querySelectorAll('._pid, [class*="_pid"], .item_prod span'));
+      // All elements tagged with product ID classes
+      const allPidEls = Array.from(document.querySelectorAll('._pid, [class*="_pid"]'));
       for (const el of allPidEls) {
-        const sku = (el.innerText || el.textContent || '').trim();
-        if (!sku || seen.has(sku)) continue;
+        let rawSku = (el.innerText || el.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
+        rawSku = rawSku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+        const sku = rawSku.replace(/\s+PVT$/i, '').trim();
+        if (!sku || sku === 'Product #' || /^(?:OB|CS|90|DS|PVT|NA|N\/A)$/i.test(sku) || /^(?:dl\d+pat|cntr\d+|da\d+|dl\d+smtch)/i.test(sku) || seen.has(sku)) continue;
         // Walk up the DOM to determine if this element or any ancestor is hidden
         let isHidden = false;
         let ancestor = el;
@@ -210,16 +212,23 @@ async function extractHiddenElements(ws, sendCommand) {
           ancestor = ancestor.parentElement;
         }
         if (isHidden) {
-          seen.add(sku);
-          // Try to extract adjacent rule text (preceding sibling table header or .td_prod badge)
           const row = el.closest('tr, .item_row, [data-item-id]');
+          const table = row?.closest('table');
+          const isUnavailableTable = Boolean(table?.closest('.UavailableTable, .uavailableTable_tr, [class*="uavailable"]'));
+          const redHeader = table?.querySelector('.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"]');
+          let ruleContext = (redHeader?.innerText || redHeader?.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
+
+          // Only treat as conditional if inside an unavailable table or with an explicit constraint header
+          if (!isUnavailableTable && !ruleContext) {
+            continue;
+          }
+
+          seen.add(sku);
           const badge = row ? (row.querySelector('.td_prod')?.innerText || '').trim() : '';
-          const tableHeader = row?.closest('table')?.previousElementSibling;
-          const ruleContext = (tableHeader?.innerText || '').trim().substring(0, 300);
           hidden.push({
             sku,
             badge,
-            ruleContext,
+            ruleContext: ruleContext || 'Gated by configuration choice',
             visibilityReason: 'HIDDEN_IN_DEFAULT_DOM_STATE',
             hiddenAncestorClass: hiddenAncestor?.className || '',
             parentClass: el.parentElement?.className || ''
@@ -275,18 +284,18 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   if (!selectorInfo.found) {
     const rowResults = await require('./ambient_row_probe').probeAmbientRows(ws, sendCommand, thresholds, captureState);
     if (rowResults !== null) return rowResults;
-    // No ambient selector found — still capture hidden elements as UNKNOWN_CONDITION
+    // No ambient selector found — still capture hidden elements as PORTAL_CONDITIONAL_VIEW
     const hiddenAtDefault = await extractHiddenElements(ws, sendCommand);
     for (const item of hiddenAtDefault) {
       if (!seen.has(item.sku)) {
         seen.add(item.sku);
         conditionalSkus.push({
           ...item,
-          conditionType: 'UNKNOWN_PORTAL_CONDITION',
-          operator: 'unknown',
+          conditionType: 'PORTAL_CONDITIONAL_VIEW',
+          operator: 'requires_selection',
           thresholdDegC: null,
           visibleAtDefaultC: false,
-          evidence: 'SKU hidden in default DOM state; no ambient selector found to probe further'
+          evidence: item.ruleContext ? `Gated/conditional: ${item.ruleContext}` : 'SKU hidden in default DOM state (requires selector activation)'
         });
       }
     }
@@ -315,14 +324,20 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
     if (!matchingOption) continue;
 
     // Set ambient to threshold
-    await sendCommand(ws, 'Runtime.evaluate', {
+    const setRes = await sendCommand(ws, 'Runtime.evaluate', {
       expression: `(() => {
-        const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
-        if (!el) throw new Error('Ambient selector disappeared');
-        el.value = ${JSON.stringify(matchingOption.value)}; el.dispatchEvent(new Event('change', { bubbles: true }));
+        const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+        if (!el) return { success: false, error: 'Ambient selector disappeared' };
+        el.value = ${JSON.stringify(matchingOption.value)};
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+        return { success: true };
       })()`,
       returnByValue: true
     });
+    if (!setRes?.result?.value?.success) {
+      console.warn('⚠️  Ambient selector could not be set to threshold:', setRes?.result?.value?.error);
+      continue;
+    }
 
     // Wait for WebLogic re-render
     await new Promise(resolve => setTimeout(resolve, 2500));
@@ -355,16 +370,22 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   }
 
   } finally {
-  // Restore even after extraction or transport failures; failure propagates.
-  await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
-      if (!el) throw new Error('Ambient selector missing during restoration');
-      el.value = ${JSON.stringify(originalValue)}; el.dispatchEvent(new Event('change', { bubbles: true }));
-    })()`,
-    returnByValue: true
-  });
-  await new Promise(resolve => setTimeout(resolve, 1500));
+    // Restore original ambient value safely
+    try {
+      await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+          if (el) {
+            el.value = ${JSON.stringify(originalValue)};
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        })()`,
+        returnByValue: true
+      });
+      await new Promise(resolve => setTimeout(resolve, 1500));
+    } catch (restoreErr) {
+      console.warn('⚠️  Could not restore ambient selector:', restoreErr.message);
+    }
   }
 
   return conditionalSkus;

@@ -1,0 +1,403 @@
+{
+  "timestamp": "2026-09-30T19:18:53.617Z",
+  "chassisName": "DL380a_Gen12",
+  "totalUnavailableRules": 12,
+  "totalUnavailableSkus": 19,
+  "rules": [
+    {
+      "ruleId": "RULE_1",
+      "ruleType": "MEMORY_MIXING",
+      "section": "Memory",
+      "reason": "Mixing of memory is not allowed.",
+      "affectedSkusCount": 4,
+      "affectedSkus": [
+        "P69727-F21",
+        "P69729-F21",
+        "P69730-F21",
+        "P73447-F21"
+      ]
+    },
+    {
+      "ruleId": "RULE_2",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Storage Devices",
+      "reason": "Mixing of Drive Cage not allowed.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P74712-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_3",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Storage Devices",
+      "reason": "This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P76700-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_4",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Storage Devices",
+      "reason": "This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P76702-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_5",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Networking",
+      "reason": "If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P74696-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_6",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Power and Cooling",
+      "reason": "Mixing of Power Supply is not allowed.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "P67248-B21",
+        "P78196-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_7",
+      "ruleType": "BTO_DISALLOWED",
+      "section": "Power and Cooling",
+      "reason": "BTO products are not allowed in CTO Base Model.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P80098-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_8",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Power and Cooling",
+      "reason": "Supports C19/ C19-C20 Power Cords only.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "J6X00A",
+        "S4X23A"
+      ]
+    },
+    {
+      "ruleId": "RULE_9",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Accessories",
+      "reason": "Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P74726-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_10",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "OS Boot Device",
+      "reason": "Private Product is not valid for current customer account",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P75693-B21\n\n    PVT"
+      ]
+    },
+    {
+      "ruleId": "RULE_11",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Manufacturing Services",
+      "reason": "Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "469774-409"
+      ]
+    },
+    {
+      "ruleId": "RULE_12",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Virtualization",
+      "reason": "Private Product is not valid for current customer account",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S4F94AAE\n\n    PVT",
+        "S4G00AAE\n\n    PVT",
+        "S4R76AAE\n\n    PVT"
+      ]
+    }
+  ],
+  "skus": [
+    {
+      "sku": "P69727-F21",
+      "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 13909,
+      "startDate": "04/06/2026",
+      "discontinuedDate": "03/31/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69729-F21",
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 47056,
+      "startDate": "04/06/2026",
+      "discontinuedDate": "03/31/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69730-F21",
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 60190,
+      "startDate": "04/06/2026",
+      "discontinuedDate": "03/31/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P73447-F21",
+      "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
+      "listPrice": 133186,
+      "startDate": "04/06/2026",
+      "discontinuedDate": "03/31/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P74712-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 4EDSFF FIO Drive Cage Kit",
+      "listPrice": 227,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "Storage Devices",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of Drive Cage not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P76700-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit",
+      "listPrice": 518,
+      "startDate": "03/03/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "Storage Devices",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P76702-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode OCP FIO Cable Kit",
+      "listPrice": 384,
+      "startDate": "03/03/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "Storage Devices",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P74696-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 OCPB Cable Kit",
+      "listPrice": 87,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "Networking",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P67248-B21",
+      "description": "HPE 3200W M-CRPS Titanium Hot Plug Power Supply Kit",
+      "listPrice": 2723,
+      "startDate": "02/24/2025",
+      "discontinuedDate": "07/31/2028",
+      "section": "Power and Cooling",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of Power Supply is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P78196-B21",
+      "description": "HPE 2800W M-CRPS 277VAC Titanium Hot Plug Power Supply Kit",
+      "listPrice": 2600,
+      "startDate": "05/04/2026",
+      "discontinuedDate": "05/31/2029",
+      "section": "Power and Cooling",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of Power Supply is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P80098-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 Upgrade Chassis Fan Module",
+      "listPrice": 0,
+      "startDate": "05/05/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "Power and Cooling",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "J6X00A",
+      "description": "HPE SAFDGRID-SAFDGRID 277V 15Amp DC 2.0m Jumper Cord",
+      "listPrice": 111,
+      "startDate": "08/18/2014",
+      "discontinuedDate": "05/31/2029",
+      "section": "Power and Cooling",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supports C19/ C19-C20 Power Cords only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4X23A",
+      "description": "HPE Cray XD670 SDG-400 - SDG-300 300V 1m Power Cord",
+      "listPrice": 92,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "07/31/2026",
+      "section": "Power and Cooling",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supports C19/ C19-C20 Power Cords only.",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P74726-B21",
+      "description": "HPE ProLiant Compute DL380a Gen12 iLO DC-SCM 2.0 FIO Management Module Kit",
+      "listPrice": 639,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "Accessories",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P75693-B21\n\n    PVT",
+      "description": "HPE NS204i-u Gen11 1.92TB Spl Boot Dev",
+      "listPrice": 7200,
+      "startDate": "07/04/2024",
+      "discontinuedDate": "10/31/2027",
+      "section": "OS Boot Device",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "469774-409",
+      "description": "HPE Remove Standard Power Cords",
+      "listPrice": 1,
+      "startDate": "12/17/2009",
+      "discontinuedDate": "12/31/2030",
+      "section": "Manufacturing Services",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4F94AAE\n\n    PVT",
+      "description": "VMware Cloud Foundation Term per Core 3-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4F94AAEProduct is obsolete: S4F94AAE",
+      "listPrice": 1568,
+      "startDate": "07/01/2024",
+      "discontinuedDate": "11/04/2025",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4G00AAE\n\n    PVT",
+      "description": "VMware Cloud Foundation Term per Core 5-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4G00AAEProduct is obsolete: S4G00AAE",
+      "listPrice": 2637,
+      "startDate": "07/01/2024",
+      "discontinuedDate": "11/04/2025",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4R76AAE\n\n    PVT",
+      "description": "VMware Cloud Foundation Term per Core 1-year 24x7 E-RTU",
+      "listPrice": 519,
+      "startDate": "08/05/2024",
+      "discontinuedDate": "09/06/2028",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    }
+  ]
+}

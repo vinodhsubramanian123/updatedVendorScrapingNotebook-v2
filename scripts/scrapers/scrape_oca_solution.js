@@ -846,16 +846,25 @@ async function main() {
       });
       const discovered = new Set(conditionalSkus.map(item => item.sku));
       conditionalSkus.push(...hidden.filter(item => !discovered.has(item.sku)).map(item => ({
-        ...item, conditionType: 'UNKNOWN_PORTAL_CONDITION', operator: 'unknown', thresholdDegC: null,
-        visibleAtDefaultC: false, portalVerificationRequired: true
+        ...item,
+        conditionType: 'PORTAL_CONDITIONAL_VIEW',
+        operator: 'requires_selection',
+        thresholdDegC: null,
+        visibleAtDefaultC: false,
+        portalVerificationRequired: true
       })));
       if (conditionalSkus.length > 0) {
-        console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-visible SKU(s) (hidden at default ambient):`);
+        console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-gated SKU(s):`);
         for (const cs of conditionalSkus) {
-          console.log(`     • ${cs.sku} — ${cs.conditionType} ${cs.operator} ${cs.thresholdDegC}°C`);
+          if (cs.conditionType === 'AMBIENT_GATE' && cs.thresholdDegC !== null) {
+            console.log(`     • ${cs.sku} — AMBIENT_GATE ${cs.operator} ${cs.thresholdDegC}°C`);
+          } else {
+            const detail = cs.ruleContext || cs.evidence || cs.operator || 'requires_selection';
+            console.log(`     • ${cs.sku} — ${cs.conditionType} [${detail}]`);
+          }
         }
       } else {
-        console.log('  ✅ No ambient-gated conditional SKUs detected.');
+        console.log('  ✅ No conditional or gated SKUs detected.');
       }
     } catch (sweepErr) {
       throw new Error(`Conditional discovery failed; staging cannot be promoted: ${sweepErr.message}`);

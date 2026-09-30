@@ -1,24 +1,28 @@
 'use strict';
-const { cleanBaseSKU } = require('./sku.js');
+const { cleanBaseSKU, isValidHpeSKU, classifyOptionType } = require('./sku.js');
 
 function applyConditionalDiscovery(entries, observations = []) {
   const rules = [];
   for (const observation of observations) {
     const sku = cleanBaseSKU(observation.sku);
-    if (!sku) continue;
+    if (!sku || !isValidHpeSKU(sku)) continue;
     const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);
+    const condType = ambient ? 'AMBIENT_GATE' : (observation.conditionType && observation.conditionType !== 'UNKNOWN_PORTAL_CONDITION' ? observation.conditionType : 'PORTAL_CONDITIONAL_VIEW');
+    const condKey = ambient ? 'ambientTempC' : 'portalSelector';
+    const condOp = ambient ? observation.operator : 'requires_selection';
+    const ruleContextDesc = observation.ruleContext ? ` (${observation.ruleContext})` : '';
     const rule = {
       level: 'CHASSIS',
       ruleType: 'CONDITIONAL_VISIBILITY',
       affectedSkus: [sku],
-      conditionType: ambient ? 'AMBIENT_GATE' : 'UNKNOWN_PORTAL_CONDITION',
-      conditionKey: ambient ? 'ambientTempC' : 'portalSelection',
-      conditionOperator: ambient ? observation.operator : 'unknown',
+      conditionType: condType,
+      conditionKey: condKey,
+      conditionOperator: condOp,
       thresholdValue: ambient ? observation.thresholdDegC : null,
       portalVerificationRequired: true,
       rule: ambient
         ? `${sku} conditional visibility: ambient temperature ${{ lte: '<=', gte: '>=', eq: '==' }[observation.operator] || 'unknown'} ${observation.thresholdDegC} C; PORTAL_CONDITIONAL`
-        : `${sku} conditional visibility: unresolved portal selector; PORTAL_CONDITIONAL`
+        : `${sku} conditional visibility: portal selector activation required${ruleContextDesc}; PORTAL_CONDITIONAL`
     };
     for (const entry of entries) {
       const matched = (entry.skus || []).filter(row => cleanBaseSKU(row.sku || row['Product #']) === sku);
@@ -98,7 +102,7 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
 
   for (const u of unavailableSkus) {
     const cleanSku = cleanBaseSKU(u.sku);
-    if (!cleanSku) continue;
+    if (!cleanSku || !isValidHpeSKU(cleanSku)) continue;
 
     if (existingSkuMap.has(cleanSku)) {
       // Enrich existing row
@@ -110,15 +114,18 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
       row.ruleType = u.ruleType || row.ruleType;
       if (u.supplyBadge) row.supplyBadge = u.supplyBadge;
       if (u.supplyTitle) row.supplyTitle = u.supplyTitle;
+      if (u.isPrivateSku) row.isPrivateSku = true;
     } else {
       // Create new conditional row
       const isDisc = u.discontinuedDate && u.discontinuedDate !== 'Active';
+      const cleanDesc = String(u.description || 'HPE Hardware Option').replace(/[\r\n\t]+/g, ' ').trim();
+      const detectedOptionType = u.optionType || (classifyOptionType(cleanSku) === 'Standard' ? 'CTO' : classifyOptionType(cleanSku));
       const newRow = {
-        'Product #': u.sku,
-        sku: u.sku,
-        'Option Type': 'BTO/CTO',
+        'Product #': cleanSku,
+        sku: cleanSku,
+        'Option Type': detectedOptionType,
         'Component Role': u.section || 'General Options',
-        Description: u.description || 'HPE Hardware Option',
+        Description: cleanDesc,
         'Current Qty': '0',
         'Unit Price (USD)': u.listPrice > 0 ? u.listPrice.toFixed(2) : '0.00',
         listPrice: u.listPrice || 0,
@@ -129,6 +136,7 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
         Availability: 'Conditionally available in OCA based on configuration gates',
         'Start Date': u.startDate || '',
         'Discontinued Date': u.discontinuedDate || '',
+        isPrivateSku: Boolean(u.isPrivateSku || /\bPVT\b/i.test(String(u.rawSku || u.sku))),
         visibilityState: 'PORTAL_CONDITIONAL',
         isSelectable: false,
         status: 'PORTAL_CONDITIONAL',

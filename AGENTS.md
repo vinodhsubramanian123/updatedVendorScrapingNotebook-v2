@@ -131,3 +131,41 @@ Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before m
 ### Runtime conditional discovery contract (2026-09-30)
 
 Read [the shared catalog and BOQ runtime procedure](docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+
+### Dual-Brain Knowledge Grounding Architecture & Excel vs. Markdown Clarity (2026-10-01)
+
+Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` before modifying the NotebookLM sync pipeline or scraper navigation logic. The following contracts are permanent and resolve past agent/human confusion:
+
+#### INV-132: Two-Tier Data Architecture — Deterministic vs. Semantic
+The scraping pipeline produces two independent, non-competing outputs:
+1. **Deterministic Physical Core** (for humans & presales engineers): Full 26-sheet master Excel `.xlsx`, master flat `.csv`, `Catalog.json`, and `Catalog_Rules.json` — archived locally and synced to Google Drive. This is the authoritative, offline-accessible record used for customer presentations, pivot tables, and financial analysis.
+2. **Semantic AI Grounding Payload** (for LLM/RAG): The curated `notebook_sync_payload_*.md` uploaded to Google NotebookLM. This is structured as semantic markdown tables + architectural rule prose that Gemini can cite word-for-word. Never replace with raw CSV or raw JSON dumps.
+
+**These two tiers serve different audiences. They are both mandatory and complementary. Never treat them as duplicates or choose one over the other.**
+
+#### INV-133: Why Google Sheets Cannot Be a NotebookLM Source
+- Google NotebookLM's `RPC_SYNC_DRIVE` only syncs `application/vnd.google-apps.document` (Google Docs). Attempting to attach or sync Google Sheets (`application/vnd.google-apps.spreadsheet`) causes backend `INVALID_ARGUMENT (code 3)`.
+- Server products (`DL380_Gen12`, `DL380a_Gen12`) MUST have `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json`. This routes knowledge sync through the fingerprint-verified Markdown payload path.
+- Setting `canonicalDriveEnabled: false` does NOT remove the Google Sheet from Drive. The sheet remains fully intact for human use. Only the NLM source attachment uses the `.md` payload route.
+
+#### INV-134: Markdown Payload is NOT Losing Data vs. Excel
+- The `.md` payload sent to NotebookLM is a lossless, structured projection of the catalog optimized for AI semantic retrieval.
+- Flat CSV cannot represent 26 heterogeneous schemas without column collisions (processor cores vs. memory ranks vs. power supply wattage are structurally incompatible in one flat table).
+- Engineering gotchas, conditional rules, and prerequisite chains (e.g. "requires 1x Cable Kit P52410-B21 when installed in Box 1-3, mutually exclusive with OCP NIC slot 1") are embedded as semantic prose that an LLM can cite; raw CSV rows cannot carry this context.
+- Bloat fix (2026-09-30): `nlm_sync_client.js` previously dumped all 26 sheets as stringified raw JSON into the `.md`, inflating it to 10.4 MB and breaching NotebookLM's 500,000-word limit. This was replaced with a high-density inventory table + SHA-256 fingerprint (`~35 KB`).
+
+#### INV-135: Canary Verification Underscore Normalization
+- `isGroundedCanary` in `nlm_sync_client.js` must normalize both `dl380_gen12` (underscore) and `dl380 gen12` (space) forms when verifying grounded LLM responses. Natural language LLM responses use spaces, never underscores. A strict underscore match causes false-negative canary failures.
+
+#### INV-136: Intelligent CTO Selection & Smart CTO Fallback (Case-Sensitive)
+- **Never grep or blindly filter search box input on CTO tokens**. OCA WebLogic search is not full-text; filtering by raw substrings in the search input breaks the chassis selection tree.
+- For HPE: search by model name (e.g. `DL380 Gen12`), then select the rendered CTO variants from the options list. The term `CTO` is case-sensitive and vendor-specific.
+- If standard `CTO` options are not directly visible in the rendered DOM, the agent must select `Smart CTO` from the available category, then disable vendor-applied defaults to expose the full DOM option tree. Only then can hidden conditional SKUs be enumerated.
+- This intelligence lives in `navigate_oca.js:searchAndConfigureChassis()` and must never be simplified to a raw text search.
+- Other vendors may use different terminology for configure-to-order; never assume `CTO` applies cross-vendor.
+
+#### Grounded Products Certified as of 2026-10-01
+| Chassis | Notebook ID | Source ID | SKUs | cloudSyncState |
+|---|---|---|---|---|
+| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `93d78ae2-e20e-4485-8750-7948369ba18b` | 26 tabs / 1.5 MB CSV | `VERIFIED` |
+| `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `d271a1ea-80dd-49bf-bff2-ea484e1ac24e` | 24 tabs / 440 HW + 220 Svc | `VERIFIED` |

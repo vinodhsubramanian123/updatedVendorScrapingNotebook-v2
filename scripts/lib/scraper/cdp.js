@@ -41,9 +41,16 @@ function sendCommand(ws, method, params = {}, timeoutMs = DEFAULT_TIMEOUT) {
 return; }
       if (msg.id !== id) return;
       cleanup();
-      if (msg.error) reject(new Error(`CDP error [${method}]: ${JSON.stringify(msg.error)}`));
-      else if (msg.result?.exceptionDetails) reject(new Error(`CDP page evaluation failed [${method}]`));
-      else resolve(msg.result);
+      if (msg.error) {
+        reject(new Error(`CDP error [${method}]: ${JSON.stringify(msg.error)}`));
+      } else if (msg.result?.exceptionDetails) {
+        const detail = msg.result.exceptionDetails.exception?.description ||
+                       msg.result.exceptionDetails.text ||
+                       JSON.stringify(msg.result.exceptionDetails);
+        reject(new Error(`CDP page evaluation failed [${method}]: ${detail}`));
+      } else {
+        resolve(msg.result);
+      }
     };
 
     const closeHandler = () => {
@@ -223,7 +230,7 @@ async function dismissDOMModals(ws) {
         const sessionBtns = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'))
           .filter(el => {
             const t = (el.innerText || el.value || '').trim().toLowerCase();
-            return t.includes('continue session') || t.includes('stay logged in') || t.includes('extend session');
+            return t.includes('continue session') || t.includes('stay logged in') || t.includes('extend session') || t.includes('resume current session') || t.includes('resume session');
           });
         sessionBtns.forEach(btn => btn.click());
 
@@ -308,12 +315,13 @@ async function triggerClicCheck(ws, level = 'root') {
   const evalRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       // Find top-right CLIC Check button
-      const clicBtn = document.querySelector('#clic_check, .btn-clic, #nav_clic, [id*="clic_check"], a[href*="clic"], button[title*="CLIC"]');
+      const clicBtn = document.querySelector('#clic-button, #clic_check, .btn-clic, #nav_clic, [id*="clic_check"], [id*="clic-button"], a[href*="clic"], button[title*="CLIC" i], button[aria-label*="CLIC" i]');
+      const checkLevel = ${JSON.stringify(level)};
       if (clicBtn) {
         clicBtn.click();
-        return { clicked: true, level };
+        return { clicked: true, level: checkLevel };
       }
-      return { clicked: false, level };
+      return { clicked: false, level: checkLevel };
     })()`,
     returnByValue: true
   });

@@ -138,7 +138,7 @@ async function main() {
     if ((pathStr.match(/>/g) || []).length >= 3) validHierarchyCount++;
 
     const optType = String(row['Option Type'] || '');
-    if (['Standard', 'CTO', 'BTO', 'FIO', 'Service'].includes(optType)) validOptionTypeCount++;
+    if (['Standard', 'CTO', 'BTO', 'FIO', 'Service', 'BTO/CTO'].includes(optType)) validOptionTypeCount++;
 
     const pn   = String(row['Product #'] || '').trim();
     const desc = String(row['Description'] || '').trim();
@@ -177,7 +177,7 @@ async function main() {
   );
   assert(
     validOptionTypeCount === allSkusSheet.length,
-    `100% of SKUs (${validOptionTypeCount}/${allSkusSheet.length}) have valid Option Type (Standard/CTO/BTO/FIO/Service, Rule #30)`
+    `100% of SKUs (${validOptionTypeCount}/${allSkusSheet.length}) have valid Option Type (Standard/CTO/BTO/FIO/Service/BTO/CTO, Rule #30)`
   );
   assert(
     taaGtaCount === 0,

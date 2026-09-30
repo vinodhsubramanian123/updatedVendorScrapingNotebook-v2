@@ -1279,6 +1279,7 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
       'CLIC Status': candidate.status || 'Active',
       'Lifecycle Status': candidate.status || 'Active',
       lifecycleStatus: candidate.status || 'Active',
+      'HPE Recommended': previous['HPE Recommended'] || 'Unknown',
       Availability: candidate.availability || 'Available in OCA product catalog',
       'Lead Time': leadTime,
       'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate') : 'Not published by OCA',

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-09-30T14:42:14.577Z
+**Sync Timestamp**: 2026-09-30T19:11:02.937Z
 
-**Total Verified SKUs**: `1022` (`605` Hardware + `417` Services)
+**Total Verified SKUs**: `1125` (`603` Hardware + `522` Services)
 
-**Total Synced KnowledgeDeltas**: `53`
+**Total Synced KnowledgeDeltas**: `56`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 605 | 133 | 0 | 29 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 417 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1022** | **133** | **0** | **29** | **0** | **ACTIVE** |
+| **Hardware Components** | 603 | 5 | 0 | 582 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 522 | 108 | 0 | 408 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1125** | **113** | **0** | **990** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -219,6 +219,182 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: undefined
    - **Affected SKU**: `P75740-B21` | **Required Dependency**: `P76453-B21`
 
+45. **[LEARN_DL380_GEN12_OEM_DEFAULT_20260930] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P77819-B21` | **Required Dependency**: `N/A`
+
+46. **[LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+47. **[LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+### Thermal & Ambient Temperature Gates
+
+1. **[Graphics Options]**: RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.
+   - **Gated Rule Type**: `AMBIENT_GATE`
+   - **Affected SKUs (3)**: `S3U30C`, `S6A73C`, `S6W21C`
+
+### Memory Technology & Density Mixing Constraints
+
+1. **[Memory]**: Mixing of x4 and x8 memory is not allowed
+   - **Gated Rule Type**: `MEMORY_MIXING`
+   - **Affected SKUs (1)**: `P69728-F21`
+
+2. **[Memory]**: 96GB Memory cannot be mixed with any other Memory.
+   - **Gated Rule Type**: `MEMORY_MIXING`
+   - **Affected SKUs (1)**: `P69729-F21`
+
+3. **[Memory]**: 128GB Memory cannot be mixed with any other Memory.
+   - **Gated Rule Type**: `MEMORY_MIXING`
+   - **Affected SKUs (1)**: `P69730-F21`
+
+4. **[Memory]**: Mixing of 3DS and non 3DS memory is not allowed.
+   - **Gated Rule Type**: `MEMORY_MIXING`
+   - **Affected SKUs (1)**: `P73447-F21`
+
+### Base Chassis & Form Factor Compatibility Gates
+
+1. **[Smart Chassis]**: Supported with EDSFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (1)**: `P74738-B21`
+
+2. **[Smart Chassis]**: Supported with 8LFF and 12LFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (4)**: `P74741-B21`, `P74746-B21`, `P75411-B21`, `P76875-B21`
+
+3. **[Smart Chassis]**: Supported with 8LFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (1)**: `P74744-B21`
+
+4. **[Smart Chassis]**: Supported with EDSFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (2)**: `P80997-B21`, `P83356-B21`
+
+5. **[Smart Chassis]**: Selected Smart Chassis Configuration is not valid
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (3)**: `dl380smtch_1-0`, `dl380smtch_1-1`, `dl380smtch_1-2`
+
+6. **[Storage Devices]**: Supported with 8LFF and 12LFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (6)**: `P76473-B21`, `P76474-B21`, `P77474-B21`, `P77475-B21`, `P77484-B21`, `P77485-B21`
+
+7. **[Storage Devices]**: Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (3)**: `P77481-B21`, `P76476-B21`, `P77480-B21`
+
+8. **[Storage Devices]**: Supported with 12EDSFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (3)**: `P83798-B21`, `P87968-B21`, `P83799-B21`
+
+9. **[Storage Devices]**: Supported with 8LFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (1)**: `P74752-B21`
+
+10. **[Factory Configuration Settings]**: Supported with 12EDSFF CTO Server only.
+   - **Gated Rule Type**: `CHASSIS_GATE`
+   - **Affected SKUs (2)**: `P87692-B21`, `P92742-B21`
+
+### PCIe Riser & OCP Slot Contention Constraints
+
+1. **[Smart Chassis]**: Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.
+   - **Gated Rule Type**: `SLOT_COLLISION`
+   - **Affected SKUs (1)**: `P74737-B21`
+
+### Mandatory Paired Enablement Kits & Interconnects
+
+1. **[Power Supplies]**: HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).
+   - **Gated Rule Type**: `PAIRED_KIT_REQUIRED`
+   - **Affected SKUs (1)**: `P36877-B21`
+
+### Component Mutual Exclusion Rules
+
+1. **[Processor]**: Mixing of Heat sink is not allowed.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (5)**: `P49145-B21`, `P74204-B21`, `P74208-B21`, `P74787-B21`, `P74794-B21`
+
+2. **[Smart Chassis]**: Define connection for 8SFF x4 Cage only needed if cage is selected.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (17)**: `cntr8sffx2`, `cntr8sffx4`, `da8sffx2`, `da8sffx4`, `P77955-B21`, `P77958-B21`, `P77931-B21`, `P78064-B21`, `P77934-B21`, `P77937-B21`, `P77940-B21`, `P77961-B21`, `P78070-B21`, `P78047-B21`, `P78058-B21`, `P78061-B21`, `P77943-B21`
+
+3. **[Networking]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P74383-B21
+
+    PVT`
+
+4. **[Networking]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P89140-B21
+
+    PVT`
+
+5. **[Networking]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (2)**: `P74606-B21
+
+    PVT`, `P97416-B21
+
+    PVT`
+
+6. **[Graphics Options]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `S7J51C
+
+    PVT`
+
+7. **[Power Supplies]**: Mixing of Power supplies are not allowed.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (3)**: `P38995-B21`, `P38997-B21`, `P44712-B21`
+
+8. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P17023-B21`
+
+9. **[Power Supplies]**: Max quantity of product limited by space available.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (25)**: `AF556A`, `AF557A`, `AF568A`, `AF570A`, `AF573A`, `P78130-B21`, `AF558A`, `AF559A`, `AF560A`, `AF561A`, `AF562A`, `AF564A`, `AF565A`, `AF566A`, `AF567A`, `AF569A`, `AF572A`, `AF591A`, `P78131-B21`, `P78144-B21`, `P78147-B21`, `P78156-B21`, `P78940-B21`, `P78941-B21`, `R1C65A`
+
+10. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P22173-B21`
+
+11. **[Private Cloud Business Edition]**: Not Supported ProStack Server Software
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `S7J52A`
+
+12. **[Virtualization]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (3)**: `S4F94AAE
+
+    PVT`, `S4G00AAE
+
+    PVT`, `S4R76AAE
+
+    PVT`
+
+### CTO vs BTO Factory Integration Rules
+
+1. **[Storage Devices]**: BTO products are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (1)**: `701498-B21`
+
+2. **[Storage Devices]**: BTO products are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (2)**: `807878-B21`, `666987-B21`
+
+3. **[Networking]**: BTO products are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (6)**: `AJ833A`, `AJ836A`, `AJ838A`, `AJ839A`, `AJ834A`, `AJ837A`
+
+4. **[Power Supplies]**: BTO products are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (2)**: `A0K02A`, `A0N33A`
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
@@ -243,6 +419,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC CTO Server | **REINSTATED** | 2026-09-09 | $6890.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73286-B21` | HPE ProLiant Compute DL380 Gen12 16EDSFF NC CTO Server | **REINSTATED** | 2026-09-09 | $7120.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **DISCONTINUED** | 2026-09-09 | $7450.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `804398-B21` | HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller | **DISCONTINUED** | 2026-09-30 | $1775.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `469774-409` | HPE Remove Standard Power Cords | **DISCONTINUED** | 2026-09-10 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit (Class: CABLE; Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | **REINSTATED** | 2026-09-10 | $99.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | **REINSTATED** | 2026-09-10 | $4.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
@@ -271,21 +450,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-13 | `P46171-A21` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77102-291` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77102-B21` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-AA1` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-AB1` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-291` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-021` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-A21` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77101-371` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-AA1` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-AB1` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-291` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-021` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-A21` | Component Role |  | **Operating System / License** |
-| 2026-09-13 | `P77100-371` | Component Role |  | **Operating System / License** |
+| 2026-09-30 | `339781-B21` | Option Type | Standard | **** |
+| 2026-09-30 | `339781-B21` | Start Date | 08/01/2008 | **** |
+| 2026-09-30 | `339781-B21` | Discontinued Date | 09/30/2043 | **** |
+| 2026-09-30 | `339781-B21` | Lifecycle Status | Active | **** |
+| 2026-09-30 | `339781-B21` | Availability | Available | **** |
+| 2026-09-30 | `339781-B21` | Lead Time Source | Not published by OCA | **** |
+| 2026-09-30 | `339781-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **** |
+| 2026-09-30 | `389692-B21` | Description | HPE Customer Defined RAID Setting Service | **** |
+| 2026-09-30 | `389692-B21` | Option Type | Standard | **** |
+| 2026-09-30 | `389692-B21` | Start Date | 02/02/2005 | **** |
+| 2026-09-30 | `389692-B21` | Discontinued Date | 12/31/2043 | **** |
+| 2026-09-30 | `389692-B21` | Lifecycle Status | Active | **** |
+| 2026-09-30 | `389692-B21` | Availability | Available | **** |
+| 2026-09-30 | `389692-B21` | Lead Time Source | Not published by OCA | **** |
+| 2026-09-30 | `389692-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -293,3 +472,34 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380_Gen12** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
 
+
+<!-- MANAGED_FULL_CATALOG -->
+Content fingerprint: 9d570a46a8fe28147a6fd22faa178318aff96b169424844c2a78da75cfb0eb0b
+
+### Certified Catalog Workbook Inventory
+- **Category Summary**: 148 rows
+- **All SKUs**: 607 rows
+- **Chassis Variants**: 6 rows
+- **Chassis Options Matrix**: 6 rows
+- **Rules & Constraints**: 1252 rows
+- **Unavailable Rules & Gates**: 34 rows
+- **Hardware Accessories**: 27 rows
+- **Software & Licenses**: 672 rows
+- **Support Services**: 98 rows
+- **Catalog Diffs**: 1129 rows
+- **Price History Timeline**: 1129 rows
+- **Processor**: 35 rows
+- **Memory**: 12 rows
+- **Networking**: 81 rows
+- **Power Supplies**: 6 rows
+- **Chassis**: 6 rows
+- **Accessories & Infrastructure**: 22 rows
+- **Cooling  Thermal**: 12 rows
+- **Drive Enclosures  Drives**: 26 rows
+- **PCIe Risers**: 11 rows
+- **Storage Controllers**: 50 rows
+- **Cables & Enablement Kits**: 67 rows
+- **Graphics & GPU**: 17 rows
+- **HPE Compute Ops Management**: 2 rows
+- **Discontinued SKUs**: 924 rows
+- **Metadata**: 22 rows

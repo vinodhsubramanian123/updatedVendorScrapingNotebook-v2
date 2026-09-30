@@ -66,12 +66,15 @@ function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
 }
 
 function isGroundedCanary(parsed, sourceId, chassisName) {
-  const answer = String(parsed?.answer || parsed?.response || parsed?.result || '');
+  const answer = String(parsed?.answer || parsed?.response || parsed?.result || '').toLowerCase();
   const citedIds = new Set([
     ...(Array.isArray(parsed?.sources_used) ? parsed.sources_used : []),
     ...Object.values(parsed?.citations || {})
   ].map(String));
-  return answer.length > 20 && answer.toLowerCase().includes(String(chassisName).toLowerCase()) &&
+  const rawTarget = String(chassisName || '').toLowerCase();
+  const spacedTarget = rawTarget.replace(/_/g, ' ');
+  const mentionsProduct = (rawTarget && answer.includes(rawTarget)) || (spacedTarget && answer.includes(spacedTarget));
+  return answer.length > 20 && mentionsProduct &&
     citedIds.has(String(sourceId)) && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(answer);
 }
 
@@ -503,8 +506,8 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       const datasets = require('./google_sheets_writer.js').buildKnowledgeWorkbookDatasets(csv, payloadPath, { chassisName });
       legacyFingerprint = datasets.fingerprints.combined;
       const baseText = fs.readFileSync(payloadPath, 'utf8').split('\n<!-- MANAGED_FULL_CATALOG -->')[0];
-      const fullCatalog = (datasets.workbookTabs || []).map(tab => `\n## ${tab.title}\n${tab.rows.map(row => JSON.stringify(row)).join('\n')}`).join('\n');
-      fs.writeFileSync(payloadPath, `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n${fullCatalog}\n`, 'utf8');
+      const summaryTabs = (datasets.workbookTabs || []).map(tab => `- **${tab.title}**: ${tab.rows.length} rows`).join('\n');
+      fs.writeFileSync(payloadPath, `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n\n### Certified Catalog Workbook Inventory\n${summaryTabs}\n`, 'utf8');
     }
 
     let newSourceId = null;

@@ -103,3 +103,26 @@ Retries preserve the pre-send conversation and completed tool results; they neve
 ### Runtime conditional discovery contract (2026-09-30)
 
 Read [the shared catalog and BOQ runtime procedure](docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+
+### Dual-Brain Knowledge Grounding Architecture & Synchronization Contracts (2026-10-01)
+
+Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` for full rationale. The key unambiguous rules are:
+
+**INV-132 — Two-Tier Separation of Concerns (Human vs. AI):**
+- Scraping produces two non-competing outputs: (1) Full 26-sheet `.xlsx` + `.csv` + `Catalog.json` for humans on disk and Google Drive; (2) Curated `notebook_sync_payload_*.md` uploaded to NotebookLM for Gemini semantic reasoning.
+- These are different audiences. Both are mandatory. Never choose one over the other.
+
+**INV-133 — Google Sheets Cannot be a NotebookLM Source:**
+- `RPC_SYNC_DRIVE` on Google Sheets returns `INVALID_ARGUMENT (code 3)`. Server products must use `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json`. This routes sync through the `.md` fingerprint-verified payload path. The Google Sheet still exists fully on Drive for human use; only the NLM attachment method changes.
+
+**INV-134 — Markdown Payload Does Not Lose Data vs. Excel:**
+- The `.md` payload is a structured semantic projection (inventory tables + rule prose), optimized for LLM citation accuracy. CSV cannot represent 26 heterogeneous schemas without column collisions. Engineering gotchas and prerequisite rules are embedded as prose Gemini can cite with source references. Full `.xlsx` and `.csv` remain on disk — zero data loss.
+- Past bloat bug (10.4 MB raw JSON dump) was fixed: payload is now ~35 KB using summary inventory + SHA-256 fingerprint.
+
+**INV-135 — Canary Underscore Normalization:**
+- LLM responses use natural-language spaces, never underscores. Match both `dl380_gen12` and `dl380 gen12` in canary verification. Strict underscore-only match is a false-negative.
+
+**INV-136 — Intelligent CTO Selection, Never Blind Search Grep:**
+- HPE OCA WebLogic search is not full-text. Filtering raw `CTO` substrings into the search box breaks chassis tree rendering.
+- Navigate by model name, select from rendered options. If standard CTO is hidden, navigate to Smart CTO, disable vendor defaults, then walk the full DOM. This logic lives in `navigate_oca.js:searchAndConfigureChassis()`.
+- `CTO` is case-sensitive and HPE-specific. Other vendors use different terminology.

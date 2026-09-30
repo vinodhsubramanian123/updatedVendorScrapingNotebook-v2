@@ -1,1 +1,66 @@
-{}
+{
+  "389692-B21": {
+    "productNumber": "389692-B21",
+    "description": "HPE Customer Defined RAID Setting Service",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R8V46AAE": {
+    "productNumber": "R8V46AAE",
+    "description": "HPE Serviceguard for Linux x86 Flex Storage Add-On 3yr Subscription 24x7 Support per Instance E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W13AAE": {
+    "productNumber": "S0W13AAE",
+    "description": "HPE Serviceguard for Linux v15 High Availability E5 2 Cores or 4 vCPUs 3yr Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W16AAE": {
+    "productNumber": "S0W16AAE",
+    "description": "HPE Serviceguard for Linux v15 HA and Disaster Recovery E7 2 Cores or 4 vCPUs 3y Sub 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W19AAE": {
+    "productNumber": "S0W19AAE",
+    "description": "HPE Serviceguard for Linux v15 SAP Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W22AAE": {
+    "productNumber": "S0W22AAE",
+    "description": "HPE Serviceguard for Linux v15 Oracle Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W25AAE": {
+    "productNumber": "S0W25AAE",
+    "description": "HPE Serviceguard for Linux v15 Microsoft SQL Server Add-on 2 Cores or 4 vCPUs 3y Sub 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W28AAE": {
+    "productNumber": "S0W28AAE",
+    "description": "HPE Serviceguard for Linux v15 NFS Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  }
+}

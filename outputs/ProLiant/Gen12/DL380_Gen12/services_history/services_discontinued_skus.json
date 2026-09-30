@@ -1,1 +1,866 @@
-{}
+{
+  "339781-B21": {
+    "productNumber": "339781-B21",
+    "description": "HPE RAID FIO Advanced Data Guarding Option",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "389692-B21": {
+    "productNumber": "389692-B21",
+    "description": "HPE Customer Defined RAID Setting Service",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R8V46AAE": {
+    "productNumber": "R8V46AAE",
+    "description": "HPE Serviceguard for Linux x86 Flex Storage Add-On 3yr Subscription 24x7 Support per Instance E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W13AAE": {
+    "productNumber": "S0W13AAE",
+    "description": "HPE Serviceguard for Linux v15 High Availability E5 2 Cores or 4 vCPUs 3yr Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W16AAE": {
+    "productNumber": "S0W16AAE",
+    "description": "HPE Serviceguard for Linux v15 HA and Disaster Recovery E7 2 Cores or 4 vCPUs 3y Sub 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W19AAE": {
+    "productNumber": "S0W19AAE",
+    "description": "HPE Serviceguard for Linux v15 SAP Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W22AAE": {
+    "productNumber": "S0W22AAE",
+    "description": "HPE Serviceguard for Linux v15 Oracle Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W25AAE": {
+    "productNumber": "S0W25AAE",
+    "description": "HPE Serviceguard for Linux v15 Microsoft SQL Server Add-on 2 Cores or 4 vCPUs 3y Sub 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S0W28AAE": {
+    "productNumber": "S0W28AAE",
+    "description": "HPE Serviceguard for Linux v15 NFS Add-on 2 Cores or 4 vCPUs 3-year Subscription 24x7 E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA849A1": {
+    "productNumber": "HA849A1",
+    "description": "HPE Product and Package Labeling Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA851A1": {
+    "productNumber": "HA851A1",
+    "description": "HPE Customer Furnished Equipment Handling Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "ZU723A": {
+    "productNumber": "ZU723A",
+    "description": "HPE Customization Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H29BWA1": {
+    "productNumber": "H29BWA1",
+    "description": "HPE FE Tamper Evident Pack Overpack SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H29BXA1": {
+    "productNumber": "H29BXA1",
+    "description": "HPE FE Tamper Evident Pack UoS SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA838A1": {
+    "productNumber": "HA838A1",
+    "description": "HPE Hardware Customization Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA839A1": {
+    "productNumber": "HA839A1",
+    "description": "HPE System Settings Customization Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA843A1": {
+    "productNumber": "HA843A1",
+    "description": "HPE Customer Supplied Image Load Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA846A1": {
+    "productNumber": "HA846A1",
+    "description": "HPE VPN Access Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HA848A1": {
+    "productNumber": "HA848A1",
+    "description": "HPE Firmware Revision Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "AC068A": {
+    "productNumber": "AC068A",
+    "description": "HPE FE Cluster Hig Den-Base HW Intg SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HB480A1": {
+    "productNumber": "HB480A1",
+    "description": "HPE ClusterPlatform 4-8 Factory SW SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HB481A1": {
+    "productNumber": "HB481A1",
+    "description": "HPE ClusterPlatform 9-17 Factory SW SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HB482A1": {
+    "productNumber": "HB482A1",
+    "description": "HPE ClusterPlatform 18-33 Factory SW SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HB483A1": {
+    "productNumber": "HB483A1",
+    "description": "HPE ClusterPlatform 34-65 Factory SW SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HB484A1": {
+    "productNumber": "HB484A1",
+    "description": "HPE ClustrPlatform 66-129 Factory SW SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "S1J77A": {
+    "productNumber": "S1J77A",
+    "description": "HPE AMS HPC FIO Rack Config Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JD0A1": {
+    "productNumber": "H0JD0A1",
+    "description": "HPE 3PAR Onl Imp QuickStartup Rmt1 Svc",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JT1A1": {
+    "productNumber": "H0JT1A1",
+    "description": "HPE NSS Improvement Unit of Service",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NRA4": {
+    "productNumber": "H36NRA4",
+    "description": "HPE Zerto Virtual TAM 4yr 8x5 Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NRA5": {
+    "productNumber": "H36NRA5",
+    "description": "HPE Zerto Virtual TAM 5yr 8x5 Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NSA1": {
+    "productNumber": "H36NSA1",
+    "description": "HPE Zerto Health Check per Site SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NTA1": {
+    "productNumber": "H36NTA1",
+    "description": "HPE Zerto Custom UoS SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H42ZHA1": {
+    "productNumber": "H42ZHA1",
+    "description": "HPE Perf Analysis Comp Option1 Rmt1 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H42ZJA1": {
+    "productNumber": "H42ZJA1",
+    "description": "HPE Perf Analysis Comp Option2 Rmt1 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H42ZKA1": {
+    "productNumber": "H42ZKA1",
+    "description": "HPE Perf Analysis Comp Option3 Rmt1 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JT2A1": {
+    "productNumber": "H0JT2A1",
+    "description": "HPE NSS Implementation Unit of Service",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H29BRA1": {
+    "productNumber": "H29BRA1",
+    "description": "HPE Cray Team Day SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H29BSA1": {
+    "productNumber": "H29BSA1",
+    "description": "HPE Storage Servers Install Hourly SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NLA1": {
+    "productNumber": "H36NLA1",
+    "description": "HPE Zerto Quick Cloud Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NMA1": {
+    "productNumber": "H36NMA1",
+    "description": "HPE Zerto Quick Start Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NNA1": {
+    "productNumber": "H36NNA1",
+    "description": "HPE Zerto Quick Migration Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NPA1": {
+    "productNumber": "H36NPA1",
+    "description": "HPE Zerto Quick Advisor Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NQA1": {
+    "productNumber": "H36NQA1",
+    "description": "HPE Zerto Strutd TAM 1yr 12x5 Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NQA3": {
+    "productNumber": "H36NQA3",
+    "description": "HPE Zerto Strutd TAM 3yr 12x5 Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NQA4": {
+    "productNumber": "H36NQA4",
+    "description": "HPE Zerto Strutd TAM 4yr 12x5 Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "P1F74A": {
+    "productNumber": "P1F74A",
+    "description": "HPE Unloading Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R3J78A": {
+    "productNumber": "R3J78A",
+    "description": "HPE VIP GPS Tracking Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "P1F76A": {
+    "productNumber": "P1F76A",
+    "description": "HPE Pre-Delivery Site Survey SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "P1F78A": {
+    "productNumber": "P1F78A",
+    "description": "HPE Delivery Any Day at 0800 Hours Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R2D12A": {
+    "productNumber": "R2D12A",
+    "description": "HPE 1200 Hours Any Day Delivery Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R2D20A": {
+    "productNumber": "R2D20A",
+    "description": "HPE 2200 Hours Any Day Delivery Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R2D10A": {
+    "productNumber": "R2D10A",
+    "description": "HPE 0700 Hours Any Day Delivery Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "R2D04A": {
+    "productNumber": "R2D04A",
+    "description": "HPE 0100 Hours Any Day Delivery Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "P1F71A": {
+    "productNumber": "P1F71A",
+    "description": "HPE Special Delivery Truck Size Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "P1F81A": {
+    "productNumber": "P1F81A",
+    "description": "HPE Delivery Any Day at 0900 Hours Service",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "AC123A": {
+    "productNumber": "AC123A",
+    "description": "HPE Special Request/ Equipment Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "BQ337A": {
+    "productNumber": "BQ337A",
+    "description": "HPE Expedite Shipment Large Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "BQ335A": {
+    "productNumber": "BQ335A",
+    "description": "HPE Expedite Shipment Small Logistic Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "G1H96A1": {
+    "productNumber": "G1H96A1",
+    "description": "HPE Account Management Support - EG 1 Svc",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "G1H97A1": {
+    "productNumber": "G1H97A1",
+    "description": "HPE Account Management Support - EG 2 Svc",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "G1H98A1": {
+    "productNumber": "G1H98A1",
+    "description": "HPE Account Management Support - EG 3",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "G1H99A1": {
+    "productNumber": "G1H99A1",
+    "description": "HPE Account Management Support - EG 4 Svc",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JD1A1": {
+    "productNumber": "H0JD1A1",
+    "description": "HPE Data Migration Readiness Assess Svc",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JD7A1": {
+    "productNumber": "H0JD7A1",
+    "description": "HPE Quickstart File Data Mig10TB SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30RVA1": {
+    "productNumber": "H30RVA1",
+    "description": "HPE Container Adopt Ph1 Redht Rem SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H33XSA1": {
+    "productNumber": "H33XSA1",
+    "description": "HPE Education - Learning Credits 1Yr SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H33XTA2": {
+    "productNumber": "H33XTA2",
+    "description": "HPE Education - Learning Credits 2Yr SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H33XVA3": {
+    "productNumber": "H33XVA3",
+    "description": "HPE Education - Learning Credits 3Yr SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H33XWA4": {
+    "productNumber": "H33XWA4",
+    "description": "HPE Education - Learning Credits 4Yr SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H33XXA5": {
+    "productNumber": "H33XXA5",
+    "description": "HPE Education - Learning Credits 5Yr SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NVA1": {
+    "productNumber": "H36NVA1",
+    "description": "HPE Zerto Quick Upgrade Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H57GHA1": {
+    "productNumber": "H57GHA1",
+    "description": "HPE Education 5 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H57GJA1": {
+    "productNumber": "H57GJA1",
+    "description": "HPE Education 5 Day Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H57GKA1": {
+    "productNumber": "H57GKA1",
+    "description": "HPE Education 1 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H0JD9A1": {
+    "productNumber": "H0JD9A1",
+    "description": "HPE File Data Migration 100TB SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H1WU9A1": {
+    "productNumber": "H1WU9A1",
+    "description": "HPE Scality Integration Basic SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H1WV0A1": {
+    "productNumber": "H1WV0A1",
+    "description": "HPE Scality Integration Advanced SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H1XF9A1": {
+    "productNumber": "H1XF9A1",
+    "description": "HPE Risk Assessment 10 Functions SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H1XG0A1": {
+    "productNumber": "H1XG0A1",
+    "description": "HPE Business Imp Anlys 15 Process SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H1XG7A1": {
+    "productNumber": "H1XG7A1",
+    "description": "HPE AI Video Analytics Assessment SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H2S79A1": {
+    "productNumber": "H2S79A1",
+    "description": "HPE Remot NW Conf and IntHr BusHrs SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H2S81A1": {
+    "productNumber": "H2S81A1",
+    "description": "HPE Onsite NW Conf and Int Bus Hrs SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H29BQA1": {
+    "productNumber": "H29BQA1",
+    "description": "HPE Cray Custom Operations SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30SBA1": {
+    "productNumber": "H30SBA1",
+    "description": "HPE Container Adopt Ph3 Redht Onsite SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30SCA1": {
+    "productNumber": "H30SCA1",
+    "description": "HPE Container Adopt Ph1 Anths Rem SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30SLA1": {
+    "productNumber": "H30SLA1",
+    "description": "HPE Container Adopt Ph1 Rnchr Onsite SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30SMA1": {
+    "productNumber": "H30SMA1",
+    "description": "HPE Container Adopt Ph2 Rnchr Rem SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H30SNA1": {
+    "productNumber": "H30SNA1",
+    "description": "HPE Container Adopt Ph2 Rnchr Onsite SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36NRA3": {
+    "productNumber": "H36NRA3",
+    "description": "HPE Zerto Virtual TAM 3yr 8x5 Remote SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36PBA1": {
+    "productNumber": "H36PBA1",
+    "description": "HPE Zerto Virtual TAM 1mo 8x5 Remote SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36PCA1": {
+    "productNumber": "H36PCA1",
+    "description": "HPE Zerto Virtual TAM 3mo 8x5 Remote SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H36PDA1": {
+    "productNumber": "H36PDA1",
+    "description": "HPE Zerto Virtual TAM 6mo 8x5 Remote SVC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H42ZQA1": {
+    "productNumber": "H42ZQA1",
+    "description": "HPE Perf Analysis SAP Option2 Rmt1 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H42ZRA1": {
+    "productNumber": "H42ZRA1",
+    "description": "HPE Perf Analysis SAP Option3 Rmt1 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H43BCA1": {
+    "productNumber": "H43BCA1",
+    "description": "HPE Priv Cloud AI Deployment SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H44MDA1": {
+    "productNumber": "H44MDA1",
+    "description": "HPE Data Sanitization HPC T1 NSH SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H44NJA1": {
+    "productNumber": "H44NJA1",
+    "description": "HPE Compute Firmware Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "HU7D2A1": {
+    "productNumber": "HU7D2A1",
+    "description": "HPE Synergy Ecosystem Health Review SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SGA3": {
+    "productNumber": "H46SGA3",
+    "description": "HPE 3Y AL STG Block Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SGA4": {
+    "productNumber": "H46SGA4",
+    "description": "HPE 4Y AL STG Block Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SGA5": {
+    "productNumber": "H46SGA5",
+    "description": "HPE 5Y AL STG Block Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SHA3": {
+    "productNumber": "H46SHA3",
+    "description": "HPE 3Y AL STG Block Pro-SAM T2 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SHA4": {
+    "productNumber": "H46SHA4",
+    "description": "HPE 4Y AL STG Block Pro-SAM T2 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SHA5": {
+    "productNumber": "H46SHA5",
+    "description": "HPE 5Y AL STG Block Pro-SAM T2 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SJA3": {
+    "productNumber": "H46SJA3",
+    "description": "HPE 3Y AL STG File/Object Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SJA4": {
+    "productNumber": "H46SJA4",
+    "description": "HPE 4Y AL STG File/Object Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SJA5": {
+    "productNumber": "H46SJA5",
+    "description": "HPE 5Y AL STG File/Object Pro-SAM T1 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  },
+  "H46SKA3": {
+    "productNumber": "H46SKA3",
+    "description": "HPE 3Y AL STG File/Object Pro-SAM T2 Service",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-09-30",
+    "status": "ACTIVE"
+  }
+}

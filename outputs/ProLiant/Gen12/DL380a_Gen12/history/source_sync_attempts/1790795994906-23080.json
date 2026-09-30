@@ -1,0 +1,26 @@
+{
+  "product": "DL380a_Gen12",
+  "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
+  "replacementSourceId": "d271a1ea-80dd-49bf-bff2-ea484e1ac24e",
+  "verifiedAt": "2026-09-30T19:19:54.906Z",
+  "contentFingerprints": {
+    "catalog": "ee7c5d00063b4777657c02ba666ec80d1cfe6ba863276a61a8f0ed38fa6cf7e6",
+    "learnings": "be0569eb00b1bc147ea9cdb3e97d5aea48572ec5ca91f39e41f566400085e25f",
+    "changes": "8d732eb963007a4a4c94d6d9fcda32d5fba69d0a931e42ea6bb536e097dd2d5d",
+    "workbook": "33db2f91a485b57c73c278591d5fd27c92215c59c10198f63f042517e10186df",
+    "combined": "68735b7db78b144bfcbe115ae0bb410fc600c61a00f9d9afa8b5fe14ba9715c4"
+  },
+  "legacyFingerprint": "b5f00d154e135a823415f07a08dda8e8c65c53e14f9138aea31664506336f265",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "cd20f359-db6d-427a-8570-b54970b2fddd",
+    "c97f8647-9a1c-4af3-a96c-eb7e711861c6"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "cd20f359-db6d-427a-8570-b54970b2fddd",
+    "c97f8647-9a1c-4af3-a96c-eb7e711861c6"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "product": "DL380a_Gen12",
+  "vendor": "HPE",
+  "capturedAt": "2026-09-30T19:18:53.569Z",
+  "auditedAt": "2026-09-30T19:18:58.067Z",
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "completeness": "CAPTURED_STATES_ONLY"
+  },
+  "counts": {
+    "hardware": 440,
+    "services": 220,
+    "rules": 420,
+    "categories": 15
+  },
+  "previousCounts": {
+    "hardware": 450,
+    "services": 216,
+    "rules": 63,
+    "categories": 15
+  },
+  "hashes": {
+    "Catalog.json": "89ac0743fa749f6352a36ab16f7becc06be0eeb7b098c4dbf1edd173133aa32d",
+    "Services.json": "93be61b0c03725208b070a3e581b1719809e75b9ec85f44aaf178d1a6c9c0dfa",
+    "Catalog_Rules.json": "9edfc3be42ef32da6c9c71cd4e6f08d92f8c8f32cb596fe19d073c69b8413938",
+    "OCA_Catalog.xlsx": "594184c2fa46498d69b61929f2d15f64ca7cc53877e86679e5c5ed4d74cd2891"
+  },
+  "rawSha256": "15c6c6e4bc08e440670bd6c11183f10a2b361d2c55be1087ec6f2375ae0168e8",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 94
+    },
+    {
+      "name": "All SKUs",
+      "rows": 456
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 484
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 13
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 11
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 423
+    },
+    {
+      "name": "Support Services",
+      "rows": 7
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 676
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 676
+    },
+    {
+      "name": "Processor",
+      "rows": 33
+    },
+    {
+      "name": "Memory",
+      "rows": 14
+    },
+    {
+      "name": "Networking",
+      "rows": 61
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 12
+    },
+    {
+      "name": "Graphics & GPU",
+      "rows": 18
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 20
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 52
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 7
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 13
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 5
+    },
+    {
+      "name": "OS Boot Device",
+      "rows": 6
+    },
+    {
+      "name": "HPE Compute Ops Management",
+      "rows": 2
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 470
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P85241-B21",
+        "P50230-B21",
+        "P63845-B21",
+        "P63849-B21",
+        "P63853-B21",
+        "R6V66A"
+      ],
+      "removed": [
+        "P69726-B21",
+        "P69726-F21",
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P73447-B21",
+        "389692-B21",
+        "S2L70C",
+        "S6W30C",
+        "S0K89C",
+        "S2D86C",
+        "S5T74C",
+        "S3U30C",
+        "S6A73C",
+        "S6W21C"
+      ]
+    },
+    "services": {
+      "added": [
+        "389692-B21",
+        "R8V46AAE",
+        "S0W13AAE",
+        "S0W16AAE",
+        "S0W19AAE",
+        "S0W22AAE",
+        "S0W25AAE",
+        "S0W28AAE"
+      ],
+      "removed": [
+        "HA113A1 5A6",
+        "HA113A15A6",
+        "HU4B2A30C4W",
+        "HU4B2A3 0C4W"
+      ]
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 6,
+      "removed": 15,
+      "categoryMigrated": 1,
+      "priceChanged": 0,
+      "attributeChanged": 224,
+      "priceAndAttributeChanged": 210,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 28
+    },
+    "serviceChanges": {
+      "added": 8,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 1,
+      "priceAndAttributeChanged": 211,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "d271a1ea-80dd-49bf-bff2-ea484e1ac24e",
+    "consolidationVerified": true,
+    "error": "Uploaded and canary-verified \"DL380a_Gen12_OCA_Catalog_2026-09-30\" in NotebookLM (b233ec88-4682-4164-a801-3ee6ca649dc1). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-09-30T19:21:37.547Z"
+}
