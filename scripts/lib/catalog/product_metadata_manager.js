@@ -17,6 +17,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { auditCatalogFreshness, normalizeCatalogMetadata } = require('./catalog_freshness_guard.js');
+const { acquireWorkflowLease } = require('../system/workflow_lease.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -60,9 +61,9 @@ function getProductNotebookMeta(productKey) {
 /**
  * Scan all outputs/ directories to discover all scraped product generations
  */
-function discoverAllProductCatalogs() {
+function discoverAllProductCatalogs(rootDir = OUTPUTS_ROOT) {
   const products = [];
-  if (!fs.existsSync(OUTPUTS_ROOT)) return products;
+  if (!fs.existsSync(rootDir)) return products;
 
   function scanDir(current) {
     let entries;
@@ -75,8 +76,10 @@ function discoverAllProductCatalogs() {
     const jsonFile = entries.find(e => e.isFile() && e.name.endsWith('_Catalog.json'));
     if (jsonFile) {
       const fullJsonPath = path.join(current, jsonFile.name);
+      const compositeKey = path.relative(rootDir, current).replace(/\\/g, '/');
       products.push({
         chassisDir: path.basename(current),
+        compositeKey,
         catalogPath: fullJsonPath,
         outputDir: current
       });
@@ -91,7 +94,7 @@ function discoverAllProductCatalogs() {
     }
   }
 
-  scanDir(OUTPUTS_ROOT);
+  scanDir(rootDir);
   return products;
 }
 
@@ -99,10 +102,12 @@ function discoverAllProductCatalogs() {
  * Inspect and extract complete unique metadata for a single product catalog
  */
 function getProductGenerationMetadata(productKeyOrDir, discovered = discoverAllProductCatalogs()) {
+  const normKey = String(productKeyOrDir || '').replace(/\\/g, '/').toLowerCase();
   const target = discovered.find(p => 
     path.resolve(p.outputDir) === path.resolve(productKeyOrDir) ||
-    p.chassisDir.toLowerCase() === productKeyOrDir.toLowerCase() ||
-    path.basename(p.catalogPath, '_Catalog.json').toLowerCase() === productKeyOrDir.toLowerCase()
+    (p.compositeKey && p.compositeKey.toLowerCase() === normKey) ||
+    p.chassisDir.toLowerCase() === normKey ||
+    path.basename(p.catalogPath, '_Catalog.json').toLowerCase() === normKey
   );
 
   if (!target || !fs.existsSync(target.catalogPath)) {
@@ -212,72 +217,88 @@ function refreshMasterProductMetadata() {
  * @param {object} params - { productKey, catalogPath, scrapeTimestamp, uniqueSKUs, stagingAuditPassed }
  * @returns {object} Updated metadata receipt
  */
-function commitSuccessfulResyncMetadata(params) {
+function commitSuccessfulResyncMetadata(params, options = {}) {
   const { productKey, catalogPath, scrapeTimestamp, uniqueSKUs, stagingAuditPassed } = params;
+  const masterPath = options.masterMetadataPath || MASTER_METADATA_PATH;
+  const locksRoot = options.locksRoot || path.join(OUTPUTS_ROOT, 'history', 'locks');
 
-  if (!stagingAuditPassed) {
-    throw new Error(`[ATOMIC_GUARD] Cannot commit metadata for ${productKey}: Staging audit did not pass!`);
+  let releaseLease;
+  try {
+    releaseLease = acquireWorkflowLease('product-metadata-registry', locksRoot);
+  } catch (leaseErr) {
+    throw new Error(`[ATOMIC_GUARD] Concurrency lock failed: ${leaseErr.message}`);
   }
 
-  if (!fs.existsSync(catalogPath)) {
-    throw new Error(`[ATOMIC_GUARD] Cannot commit metadata for ${productKey}: Promoted catalog.json not found at ${catalogPath}`);
-  }
-
-  const catalogSha256 = calculateFileSha256(catalogPath);
-  const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-  const capture = normalizeCatalogMetadata(catalog.metadata).scrapeTimestamp;
-  if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now()
-      || (scrapeTimestamp && Date.parse(scrapeTimestamp) !== Date.parse(capture))) {
-    throw new Error('[ATOMIC_GUARD] Invalid or mismatched vendor capture timestamp');
-  }
-  const actualCount = require('./catalog_capture_receipt.js').skuSet(catalog).size;
-  if (!actualCount || actualCount !== Number(catalog.metadata.totalUniqueSKUs)
-      || (uniqueSKUs !== undefined && uniqueSKUs !== actualCount)) {
-    throw new Error('[ATOMIC_GUARD] Catalog SKU count does not match promoted content');
-  }
-  const now = new Date(capture).toISOString();
-  const dateStr = now.split('T')[0];
-
-  let masterRegistry = { schemaVersion: '2.0', products: {} };
-  if (fs.existsSync(MASTER_METADATA_PATH)) {
-    try {
-      masterRegistry = JSON.parse(fs.readFileSync(MASTER_METADATA_PATH, 'utf-8'));
-    } catch (parseErr) {
-      const quarantinePath = `${MASTER_METADATA_PATH}.corrupted.${Date.now()}.json`;
-      try {
-        fs.copyFileSync(MASTER_METADATA_PATH, quarantinePath);
-      } catch (_) {}
-      console.warn(`[METADATA_QUARANTINE] Corrupt product metadata quarantined to ${quarantinePath}: ${parseErr.message}`);
+  try {
+    if (!stagingAuditPassed) {
+      throw new Error(`[ATOMIC_GUARD] Cannot commit metadata for ${productKey}: Staging audit did not pass!`);
     }
+
+    if (!fs.existsSync(catalogPath)) {
+      throw new Error(`[ATOMIC_GUARD] Cannot commit metadata for ${productKey}: Promoted catalog.json not found at ${catalogPath}`);
+    }
+
+    const catalogSha256 = calculateFileSha256(catalogPath);
+    const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+    const capture = normalizeCatalogMetadata(catalog.metadata).scrapeTimestamp;
+    if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now()
+        || (scrapeTimestamp && Date.parse(scrapeTimestamp) !== Date.parse(capture))) {
+      throw new Error('[ATOMIC_GUARD] Invalid or mismatched vendor capture timestamp');
+    }
+    const actualCount = require('./catalog_capture_receipt.js').skuSet(catalog).size;
+    if (!actualCount || actualCount !== Number(catalog.metadata.totalUniqueSKUs)
+        || (uniqueSKUs !== undefined && uniqueSKUs !== actualCount)) {
+      throw new Error('[ATOMIC_GUARD] Catalog SKU count does not match promoted content');
+    }
+    const now = new Date(capture).toISOString();
+    const dateStr = now.split('T')[0];
+
+    let masterRegistry = { schemaVersion: '2.0', products: {} };
+    if (fs.existsSync(masterPath)) {
+      try {
+        masterRegistry = JSON.parse(fs.readFileSync(masterPath, 'utf-8'));
+      } catch (parseErr) {
+        const quarantinePath = `${masterPath}.corrupted.${Date.now()}.json`;
+        try {
+          fs.copyFileSync(masterPath, quarantinePath);
+        } catch (copyErr) {
+          throw new Error(`[METADATA_QUARANTINE] Failed to quarantine corrupt metadata file before replacement: ${copyErr.message}`);
+        }
+        console.warn(`[METADATA_QUARANTINE] Corrupt product metadata quarantined to ${quarantinePath}: ${parseErr.message}`);
+      }
+    }
+
+    const discovered = options.discovered || discoverAllProductCatalogs(options.rootDir || OUTPUTS_ROOT);
+    const productMeta = getProductGenerationMetadata(productKey, discovered);
+    if (!productMeta.exists || path.resolve(productMeta.catalogPath) !== path.resolve(catalogPath)) {
+      throw new Error('[ATOMIC_GUARD] Product does not resolve to the promoted catalog');
+    }
+
+    const updatedRecord = {
+      ...productMeta,
+      productKey,
+      scrapeDate: dateStr,
+      scrapeTimestamp: now,
+      totalUniqueSKUs: actualCount,
+      catalogSha256,
+      lastPromotedAt: new Date().toISOString(),
+      promotionVerified: true
+    };
+
+    masterRegistry.products[productKey] = updatedRecord;
+    masterRegistry.lastUpdated = now;
+
+    safeWriteJsonAtomic(masterPath, masterRegistry);
+
+    return {
+      success: true,
+      productKey,
+      updatedRecord,
+      readyForNotebookSync: true
+    };
+  } finally {
+    if (releaseLease) releaseLease();
   }
-
-  const productMeta = getProductGenerationMetadata(productKey);
-  if (!productMeta.exists || path.resolve(productMeta.catalogPath) !== path.resolve(catalogPath)) {
-    throw new Error('[ATOMIC_GUARD] Product does not resolve to the promoted catalog');
-  }
-
-  const updatedRecord = {
-    ...productMeta,
-    productKey,
-    scrapeDate: dateStr,
-    scrapeTimestamp: now,
-    totalUniqueSKUs: actualCount,
-    catalogSha256,
-    lastPromotedAt: new Date().toISOString(),
-    promotionVerified: true
-  };
-
-  masterRegistry.products[productKey] = updatedRecord;
-  masterRegistry.lastUpdated = now;
-
-  safeWriteJsonAtomic(MASTER_METADATA_PATH, masterRegistry);
-
-  return {
-    success: true,
-    productKey,
-    updatedRecord,
-    readyForNotebookSync: true
-  };
 }
 
 module.exports = {

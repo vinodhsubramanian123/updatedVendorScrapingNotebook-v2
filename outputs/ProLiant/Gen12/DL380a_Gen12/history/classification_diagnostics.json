@@ -1,14 +1,14 @@
 {
   "version": "1.0.0",
   "chassis": "DL380a_Gen12",
-  "generatedAt": "2026-09-30T19:18:53.867Z",
-  "executionDurationMs": 1251,
+  "generatedAt": "2026-10-01T06:30:13.760Z",
+  "executionDurationMs": 768,
   "summary": {
     "totalRawTables": 67,
     "validProductTables": 62,
     "skippedTablesCount": 49,
     "totalExtractedSKUs": 455,
-    "totalUniqueSKUs": 440,
+    "totalUniqueSKUs": 455,
     "totalRulesExtracted": 420,
     "chassisVariantsCount": 1
   },

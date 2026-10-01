@@ -67,18 +67,21 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
 
     const ruleObj = {
       level: 'CHASSIS',
-      ruleType: r.ruleType || 'MUTUAL_EXCLUSION',
+      ruleType: 'CONDITIONAL_VISIBILITY',
+      vendorRuleClassification: r.ruleType || 'UNCLASSIFIED_OBSERVATION',
       parentCategory: r.section || 'General Options',
       subCategory: 'Configuration Rules',
       constraint: r.reason || '',
       maxQty: '',
-      rule: `[${r.ruleType || 'MUTUAL_EXCLUSION'}] ${r.reason}`,
+      rule: `[${r.ruleType || 'UNCLASSIFIED_OBSERVATION'}] ${r.reason}`,
       conditionKey: isAmbient ? 'ambientTempC' :
                     r.ruleType === 'CHASSIS_GATE' ? 'chassisModel' :
                     r.ruleType === 'MEMORY_MIXING' ? 'memoryType' :
                     r.ruleType === 'SLOT_COLLISION' ? 'slotConfiguration' : 'portalSelection',
-      conditionOperator: isAmbient ? '<=' : 'restricted_with',
-      thresholdValue: thresholdDegC,
+      // A prohibition at 30C does not establish an allowed maximum of 30C.
+      conditionOperator: 'unknown',
+      thresholdValue: null,
+      observedTemperatureC: thresholdDegC,
       affectedSkus: (r.affectedSkus || []).map(cleanBaseSKU).filter(Boolean),
       ineligibilityReason: r.reason,
       source: 'HPE_OCA_DOM_UNAVAILABLE_TABLE',
@@ -117,9 +120,9 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
       if (u.isPrivateSku) row.isPrivateSku = true;
     } else {
       // Create new conditional row
-      const isDisc = u.discontinuedDate && u.discontinuedDate !== 'Active';
+      const isDisc = u.lifecycleStatus === 'Discontinued';
       const cleanDesc = String(u.description || 'HPE Hardware Option').replace(/[\r\n\t]+/g, ' ').trim();
-      const detectedOptionType = u.optionType || (classifyOptionType(cleanSku) === 'Standard' ? 'CTO' : classifyOptionType(cleanSku));
+      const detectedOptionType = u.optionType || classifyOptionType(cleanSku);
       const newRow = {
         'Product #': cleanSku,
         sku: cleanSku,
@@ -127,12 +130,12 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
         'Component Role': u.section || 'General Options',
         Description: cleanDesc,
         'Current Qty': '0',
-        'Unit Price (USD)': u.listPrice > 0 ? u.listPrice.toFixed(2) : '0.00',
-        listPrice: u.listPrice || 0,
+        'Unit Price (USD)': Number.isFinite(u.listPrice) && u.listPrice > 0 ? u.listPrice.toFixed(2) : '',
+        listPrice: Number.isFinite(u.listPrice) && u.listPrice > 0 ? u.listPrice : null,
         'CLIC Status': 'Conditional',
-        'Lifecycle Status': isDisc ? 'Discontinued' : 'Active',
-        lifecycleStatus: isDisc ? 'Discontinued' : 'Active',
-        'HPE Recommended': 'No',
+        'Lifecycle Status': isDisc ? 'Discontinued' : (u.lifecycleStatus || 'Unknown'),
+        lifecycleStatus: isDisc ? 'Discontinued' : (u.lifecycleStatus || 'Unknown'),
+        'HPE Recommended': u['HPE Recommended'] || 'Unknown',
         Availability: 'Conditionally available in OCA based on configuration gates',
         'Start Date': u.startDate || '',
         'Discontinued Date': u.discontinuedDate || '',

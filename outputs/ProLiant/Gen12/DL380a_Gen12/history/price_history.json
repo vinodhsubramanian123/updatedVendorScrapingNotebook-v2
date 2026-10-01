@@ -438,8 +438,7 @@
     {
       "date": "2026-09-30",
       "price": 7439,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69726-F21": [
@@ -452,8 +451,7 @@
     {
       "date": "2026-09-30",
       "price": 7439,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69727-B21": [
@@ -466,8 +464,7 @@
     {
       "date": "2026-09-30",
       "price": 13909,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69728-B21": [
@@ -480,8 +477,7 @@
     {
       "date": "2026-09-30",
       "price": 28532,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69729-B21": [
@@ -494,8 +490,7 @@
     {
       "date": "2026-09-30",
       "price": 47056,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69730-B21": [
@@ -508,8 +503,7 @@
     {
       "date": "2026-09-30",
       "price": 60190,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P73447-B21": [
@@ -522,8 +516,7 @@
     {
       "date": "2026-09-30",
       "price": 133186,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69727-F21": [
@@ -1497,7 +1490,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "P08040-B21": [
@@ -5968,8 +5962,7 @@
     {
       "date": "2026-09-30",
       "price": 32212,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S6W30C": [
@@ -5982,8 +5975,7 @@
     {
       "date": "2026-09-30",
       "price": 18882,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S0K89C": [
@@ -5996,8 +5988,7 @@
     {
       "date": "2026-09-30",
       "price": 10589,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S2D86C": [
@@ -6010,8 +6001,7 @@
     {
       "date": "2026-09-30",
       "price": 112579,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S5T74C": [
@@ -6024,8 +6014,7 @@
     {
       "date": "2026-09-30",
       "price": 1687,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S3U30C": [
@@ -6038,8 +6027,7 @@
     {
       "date": "2026-09-30",
       "price": 112579,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S6A73C": [
@@ -6052,8 +6040,7 @@
     {
       "date": "2026-09-30",
       "price": 57002,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "S6W21C": [
@@ -6066,8 +6053,7 @@
     {
       "date": "2026-09-30",
       "price": 37899,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P85241-B21": [

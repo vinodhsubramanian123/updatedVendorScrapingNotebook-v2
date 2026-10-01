@@ -6,9 +6,25 @@ const crypto = require('crypto');
 const normalizeSku = value => String(value || '').trim().toUpperCase().replace(/\s+/g, '#');
 const parsePrice = value => /^\d+(?:,\d{3})*(?:\.\d+)?$/.test(String(value ?? '').trim()) ? Number(String(value).replace(/,/g, '')) : NaN;
 
-/** Read captured vendor evidence. A receipt only applies to the exact complete
- * SKU/quantity manifest; it cannot certify a later substitution or another BOM. */
-function readPortalReceipt(targetDir) {
+function serializeManifest(rows) {
+  const totals = new Map();
+  for (const row of rows) {
+    const sku = normalizeSku(row.sku || row['Product #']);
+    if (!sku) continue;
+    totals.set(sku, (totals.get(sku) || 0) + Number(row.quantity || row.qty || 1));
+  }
+  return JSON.stringify([...totals].sort(([a], [b]) => a.localeCompare(b)));
+}
+
+/**
+ * Read captured vendor evidence. A receipt only applies to the exact complete
+ * SKU/quantity manifest and bound scope; it cannot certify a later substitution or another BOM.
+ *
+ * @param {string} targetDir - Directory containing evidence folder
+ * @param {object} [options] - Optional scope binding parameters
+ * @returns {object|null}
+ */
+function readPortalReceipt(targetDir, options = {}) {
   try {
     const bomPath = path.join(targetDir, 'evidence', 'clic_corrected_bom.json');
     const checkPath = path.join(targetDir, 'evidence', 'clic_corrected_configuration.json');
@@ -40,25 +56,81 @@ function readPortalReceipt(targetDir) {
     const totalUsd = rows.reduce((sum, row) => sum + row.extendedPriceUsd, 0);
     const displayedTotal = parsePrice((bom.text || '').match(/Solution List Price\s*[⇄\s]*USD\s*([\d,.]+)/)?.[1]);
     if (!Number.isFinite(displayedTotal) || Math.abs(totalUsd - displayedTotal) > 0.01) return null;
-    return { status: 'CLIC_ACCEPTED', capturedAt: check.capturedAt, rows,
+
+    const baseRow = rows.find(r => /cto|server|chassis/i.test(r.description || ''));
+    const manifestStr = serializeManifest(rows);
+    const manifestSha256 = crypto.createHash('sha256').update(manifestStr).digest('hex');
+
+    return {
+      status: 'CLIC_ACCEPTED',
+      capturedAt: check.capturedAt,
+      chassis: options.chassis || path.basename(targetDir),
+      baseSku: baseRow ? baseRow.sku : (options.baseSku || null),
+      configurationName: rows[0].configurationName,
+      selectors: options.selectors || null,
+      rows,
       totalUsd,
-      bomPath, checkPath,
+      bomPath,
+      checkPath,
+      manifestSha256,
       bomSha256: crypto.createHash('sha256').update(bomBytes).digest('hex'),
-      checkSha256: crypto.createHash('sha256').update(checkBytes).digest('hex') };
+      checkSha256: crypto.createHash('sha256').update(checkBytes).digest('hex')
+    };
   } catch (_) { return null; }
 }
 
-function receiptMatches(receipt, items) {
-  if (!receipt) return false;
-  const manifest = rows => {
-    const totals = new Map();
-    for (const row of rows) {
-      const sku = normalizeSku(row.sku);
-      totals.set(sku, (totals.get(sku) || 0) + Number(row.quantity));
+/**
+ * Validates whether a candidate solution matches a scoped portal acceptance receipt.
+ * Enforces product model, base SKU, owning configuration, selectors, and manifest equality.
+ *
+ * @param {object} receipt - Captured portal receipt from readPortalReceipt()
+ * @param {Array|object} candidate - Candidate items array or solution object
+ * @param {object} [options] - Additional expected scope attributes
+ * @returns {boolean}
+ */
+function receiptMatches(receipt, candidate, options = {}) {
+  if (!receipt || typeof receipt !== 'object') return false;
+  if (!candidate) return false;
+
+  const items = Array.isArray(candidate) ? candidate : (candidate.skuPartsList || candidate.skuList || candidate.items || []);
+  if (!Array.isArray(items) || items.length === 0) return false;
+
+  // Scope binding 1: Chassis / Product model match
+  const candidateChassis = options.chassisKey || options.chassis || candidate.chassis || candidate.model;
+  if (candidateChassis && receipt.chassis && String(candidateChassis).trim().toLowerCase() !== String(receipt.chassis).trim().toLowerCase()) {
+    return false;
+  }
+
+  // Scope binding 2: Base SKU match
+  const candidateBase = options.baseSku || candidate.baseSku;
+  if (candidateBase && receipt.baseSku && normalizeSku(candidateBase) !== normalizeSku(receipt.baseSku)) {
+    return false;
+  }
+
+  // Scope binding 3: Owning configuration name match
+  if (receipt.configurationName && candidate.configurationName) {
+    if (String(receipt.configurationName).trim() !== String(candidate.configurationName).trim()) {
+      return false;
     }
-    return JSON.stringify([...totals].sort(([a], [b]) => a.localeCompare(b)));
-  };
-  return manifest(receipt.rows) === manifest(items);
+  }
+
+  // Scope binding 4: Selector state match
+  const expectedSelectors = options.selectors || candidate.selectors;
+  if (expectedSelectors && receipt.selectors) {
+    for (const [k, v] of Object.entries(expectedSelectors)) {
+      if (receipt.selectors[k] !== undefined && receipt.selectors[k] !== v) {
+        return false;
+      }
+    }
+  }
+
+  // Scope binding 5: Exact aggregate SKU & quantity manifest matching
+  return serializeManifest(receipt.rows) === serializeManifest(items);
 }
 
-module.exports = { readPortalReceipt, receiptMatches, normalizeSku };
+module.exports = {
+  readPortalReceipt,
+  receiptMatches,
+  normalizeSku,
+  serializeManifest
+};

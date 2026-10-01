@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-09-30T19:20:06.500Z
+**Sync Timestamp**: 2026-10-01T10:09:36.255Z
 
-**Total Verified SKUs**: `660` (`440` Hardware + `220` Services)
+**Total Verified SKUs**: `675` (`455` Hardware + `220` Services)
 
 **Total Synced KnowledgeDeltas**: `17`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 440 | 6 | 0 | 224 | 0 | **CERTIFIED** |
+| **Hardware Components** | 455 | 6 | 0 | 224 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 220 | 8 | 0 | 1 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **660** | **14** | **0** | **225** | **0** | **ACTIVE** |
+| **Total Portfolio** | **675** | **14** | **0** | **225** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -152,6 +152,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P69729-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $47056.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P69730-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $60190.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73447-B21` | HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $133186.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `389692-B21` | HPE Customer Defined RAID Setting Service | **DISCONTINUED** | 2026-09-30 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC120A` | HPE Pallet Size Customization Service | **DISCONTINUED** | 2026-09-09 | $7.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `AC129A` | HPE Consolidation Logistic Service | **DISCONTINUED** | 2026-09-09 | $26.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P1F69A` | HPE Delivery Site Above Ground Floor Service | **DISCONTINUED** | 2026-09-09 | $289.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
@@ -179,25 +180,57 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-30 | `S4R45A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
-| 2026-09-30 | `S4R46A` | HPE Recommended |  | **Unknown** |
-| 2026-09-30 | `S4R46A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
-| 2026-09-30 | `S4R47A` | HPE Recommended |  | **Unknown** |
-| 2026-09-30 | `S4R47A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
-| 2026-09-30 | `S4R48A` | HPE Recommended |  | **Unknown** |
-| 2026-09-30 | `S4R48A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
-| 2026-09-30 | `389692-B21` | Description | HPE Customer Defined RAID Setting Service | **** |
-| 2026-09-30 | `389692-B21` | Option Type | Standard | **** |
-| 2026-09-30 | `389692-B21` | Start Date | 02/02/2005 | **** |
-| 2026-09-30 | `389692-B21` | Discontinued Date | 12/31/2043 | **** |
-| 2026-09-30 | `389692-B21` | Lifecycle Status | Active | **** |
-| 2026-09-30 | `389692-B21` | Availability | Available | **** |
-| 2026-09-30 | `389692-B21` | Lead Time Source | Not published by OCA | **** |
-| 2026-09-30 | `389692-B21` | Vendor Attributes | {"Extended Price (USD)":"0"} | **** |
+| 2026-09-30 | `S4R34A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R35A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R36A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R37A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R38A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R39A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R40A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R41A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R42A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R43A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R44A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R45A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R46A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R47A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R48A` | HPE Recommended |  | **No** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
+
+## 📦 9. Solution Manifest, EDT & Commercial Baseline
+
+| Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
+|---:|---:|---:|---:|---:|
+| $1,59,340 | $33,011 | $507 | $1,220 | **$1,94,078** |
+
+### Authoritative Baseline BOM Hierarchy
+
+| Level | Product # | Description | Qty | Unit Price (USD) | Ext. Price (USD) |
+|---|---|---|---:|---:|---:|
+| (1) | `P76706-B21` | HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server | 1 | $21,407 | $21,407 |
+| (2) | `P76706-B21 B19` | HPE ProLiant Compute DL380a Gen12 8DW/16SW Configure-to-order Server | 1 | $0 | $0 |
+| (2) | `P74568-B21` | Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE | 2 | $4,242 | $8,484 |
+| (3) | `P74568-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `P69728-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | 4 | $28,532 | $1,14,128 |
+| (2) | `P74710-B21` | HPE ProLiant Compute DL380a Gen12 4SFF FIO Drive Cage Kit | 1 | $372 | $372 |
+| (2) | `P10097-B21` | Broadcom BCM57416 Ethernet 10Gb 2-port BASE-T OCP3 Adapter for HPE | 1 | $1,105 | $1,105 |
+| (3) | `P10097-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P67252-B21` | HPE 2400W M-CRPS Titanium Hot Plug Power Supply Kit | 5 | $2,509 | $12,545 |
+| (3) | `P67252-B21 0D1` | Factory Integrated | 5 | $0 | $0 |
+| (2) | `P78384-B21` | HPE C19 - C20 250V 16Amp 2.5m FIO Power Cord | 5 | $20 | $100 |
+| (2) | `BD505A` | HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features | 1 | $469 | $469 |
+| (3) | `BD505A 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `S1A05A` | HPE Compute Cloud Management Server FIO Enablement | 1 | $1 | $1 |
+| (2) | `P74694-B21` | HPE ProLiant Compute DL380a Gen12 OCPA Cable Kit | 1 | $75 | $75 |
+| (3) | `P74694-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P74702-B21` | HPE ProLiant Compute DL380a Gen12 4NVMe Direct Attach Cable Kit | 1 | $170 | $170 |
+| (3) | `P74702-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P69770-B21` | HPE ProLiant Compute DL380a Gen12 Ball Bearing Rail Kit | 1 | $950 | $950 |
+| (3) | `P69770-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+*... [7 additional baseline items omitted for brevity]*
 

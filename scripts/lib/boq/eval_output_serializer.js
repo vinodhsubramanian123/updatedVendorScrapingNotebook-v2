@@ -20,7 +20,8 @@ const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
-const { candidateReviewCurrent } = require('./solution_evidence');
+const { candidateReviewCurrent, solutionFingerprint } = require('./solution_evidence');
+const { verifyDeliveryAuthorization } = require('../contracts/workflow_contract');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
@@ -513,12 +514,21 @@ async function serializeAndExportResults(ctx) {
     evalResults.items = items;
   }
 
+  const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
+  const candidateFingerprint = evalResults.manifestFingerprint || solutionFingerprint(evalResults);
+  const isAuthValid = verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
+    chassisKey: targetChassisName,
+    profile: 'BOQ_EVALUATION'
+  });
+
   if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
     evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+  } else if (!isAuthValid) {
+    evalResults.deliveryError = 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else {
     try {
-      const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
       generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, targetChassisName, {
         clusterSizing: evalResults.clusterSizing
       });
@@ -550,7 +560,10 @@ async function serializeAndExportResults(ctx) {
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
   // Deliverable Drive Upload if requested
-  if (ctx.UPLOAD_DRIVE && !candidateReviewCurrent(evalResults)) {
+  if (ctx.UPLOAD_DRIVE && !isAuthValid) {
+    evalResults.deliveryError = 'Google Sheet publication withheld: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+  } else if (ctx.UPLOAD_DRIVE && !candidateReviewCurrent(evalResults)) {
     evalResults.deliveryError = 'Google Sheet publication withheld: the final candidate BOM has no current successful document review';
   } else if (ctx.UPLOAD_DRIVE && evalResults.multiRankWorkbookPath) {
     const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath);
@@ -588,7 +601,9 @@ async function serializeAndExportResults(ctx) {
       postFlowSync: evalResults.postFlowSync || null,
       priceDrift: evalResults.priceDriftResult || null,
       syncRequested,
-      isOffline
+      isOffline,
+      skipReason: phase9Status === 'SKIPPED' ? (isOffline ? 'Offline mode requested by user configuration' : 'Cloud sync was not requested') : undefined,
+      policyCode: phase9Status === 'SKIPPED' ? (isOffline ? 'POLICY_OFFLINE_SKIP' : 'POLICY_NO_SYNC_REQUESTED') : undefined
     });
 
   }

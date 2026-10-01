@@ -326,7 +326,7 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   diagnostics.setRawTableCount(tables.length);
 
   const meta = parseProductMeta(chassisLabel);
-  const capturedAt = rawData.timestamp || rawData.scrapeTimestamp;
+  const capturedAt = rawData.timestamp || rawData.scrapeTimestamp || rawData.metadata?.scrapeTimestamp || rawData.metadata?.timestamp;
   if (!capturedAt || !Number.isFinite(new Date(capturedAt).getTime()) || new Date(capturedAt).getTime() > Date.now()) {
     throw new Error('ERR_CAPTURE_TIMESTAMP: Raw vendor capture requires a valid, non-future timestamp; rebuilding cannot establish freshness.');
   }
@@ -2029,6 +2029,22 @@ function resolveUnavailableRawData(rawData, rawInputPath) {
   return { rules, skus };
 }
 
+function _formatNetworkSniffedRules(rawData) {
+  const rules = rawData?.networkSniffedRules || [];
+  return rules
+    .filter(r => ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION'].includes(r.ruleType))
+    .map(r => ({
+      parentCategory: r.parentCategory || 'System Options',
+      subCategory: r.subCategory || 'Configuration Rules',
+      constraint: r.constraint || r.rule,
+      maxQty: r.maxQty || '',
+      rule: r.rule,
+      ruleType: r.ruleType || 'DYNAMIC_RULE',
+      affectedSkus: r.affectedSkus || [],
+      source: 'BACKEND_NETWORK_SNIFFER'
+    }));
+}
+
 // ============================================================
 // Main Orchestrator
 // ============================================================
@@ -2049,19 +2065,7 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   const unavail = resolveUnavailableRawData(ctx.rawData, rawInputPath);
   ctx.unavailableRules = applyUnavailableDomRulesAndSkus(
     hardwareEntries, cleanServicesEntries, unavail.rules, unavail.skus);
-  // Unclassified backend messages remain raw evidence, not executable rules.
-  ctx.networkRules = (ctx.rawData.networkSniffedRules || []).filter(r =>
-    ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION'].includes(r.ruleType)
-  ).map(r => ({
-    parentCategory: r.parentCategory || 'System Options',
-    subCategory: r.subCategory || 'Configuration Rules',
-    constraint: r.constraint || r.rule,
-    maxQty: r.maxQty || '',
-    rule: r.rule,
-    ruleType: r.ruleType || 'DYNAMIC_RULE',
-    affectedSkus: r.affectedSkus || [],
-    source: 'BACKEND_NETWORK_SNIFFER'
-  }));
+  ctx.networkRules = _formatNetworkSniffedRules(ctx.rawData);
 
   const { enrichedCatalog, enrichedServicesCatalog, validationResult } = await reconcilePriceAndLifecycleHistory(
     hardwareEntries, cleanServicesEntries, subcatList, ctx.targetDir, ctx.filePrefix, ctx.meta, ctx.chassisLabel, ctx.pipelineLogger, ctx.baseSKU, ctx.tables, ctx.chassisDiscovery

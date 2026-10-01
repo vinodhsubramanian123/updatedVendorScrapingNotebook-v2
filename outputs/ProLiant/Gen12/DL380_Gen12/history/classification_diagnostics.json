@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "DL380_Gen12",
-  "generatedAt": "2026-10-01T05:32:48.114Z",
-  "executionDurationMs": 5864,
+  "generatedAt": "2026-10-01T06:24:59.449Z",
+  "executionDurationMs": 1931,
   "summary": {
     "totalRawTables": 126,
     "validProductTables": 115,

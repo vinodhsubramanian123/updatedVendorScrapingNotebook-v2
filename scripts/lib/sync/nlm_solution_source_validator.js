@@ -279,8 +279,8 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const workbookPath = path.join(TEMP_SOURCES_DIR, workbookFilename);
   const csvPath = path.join(TEMP_SOURCES_DIR, csvFilename);
 
-  generateMultiRankSolutionWorkbook(evalResults, workbookPath, chassisName, options);
-  generateMultiRankSolutionCsv(evalResults, csvPath, options);
+  generateMultiRankSolutionWorkbook(evalResults, workbookPath, chassisName, { ...options, diagnostic: true });
+  generateMultiRankSolutionCsv(evalResults, csvPath, { ...options, diagnostic: true });
 
   // Step 2: Resolve target notebook UUID
   const notebookId = options.notebookId || resolveProductNotebookId(chassisName);

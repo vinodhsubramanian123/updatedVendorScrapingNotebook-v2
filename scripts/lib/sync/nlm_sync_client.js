@@ -169,6 +169,7 @@ function uploadAndVerifyLegacyFileCandidate({
     ], {
       encoding: 'utf-8',
       timeout: 600000,
+      maxBuffer: 32 * 1024 * 1024,
       env: { ...process.env, PATH: extendedPath }
     });
     try {
@@ -197,6 +198,7 @@ function uploadAndVerifyLegacyFileCandidate({
     const canaryOutput = execFileSync('nlm', canaryArgs, {
       encoding: 'utf-8',
       timeout: canaryTimeoutMs,
+      maxBuffer: 32 * 1024 * 1024,
       env: { ...process.env, PATH: extendedPath }
     });
     const parsedCanary = JSON.parse(canaryOutput);
@@ -208,11 +210,13 @@ function uploadAndVerifyLegacyFileCandidate({
     throw new Error(`Transactional Sync Failed Canary Verification for ${canonicalSourceName}. Candidate ${newSourceId || 'ID was not returned'} was not promoted; old source remains active.`);
   }
   const indexedContent = execFileSync('nlm', ['source', 'content', newSourceId, '--json'], {
-    encoding: 'utf-8', timeout: 60000, env: { ...process.env, PATH: extendedPath }
+    encoding: 'utf-8', timeout: 60000, maxBuffer: 32 * 1024 * 1024, env: { ...process.env, PATH: extendedPath }
   });
   if (!legacyFingerprint || !String(indexedContent).includes(legacyFingerprint)) {
     throw new Error('Legacy source lacks the current complete-workbook fingerprint');
   }
+  require('./semantic_workbook_projection').verifySemanticProjectionReadback(
+    fs.readFileSync(payloadPath, 'utf8'), indexedContent);
   return { newSourceId, stdout };
 }
 
@@ -374,7 +378,8 @@ function retireStaleNotebookSources({
   try {
     const listOutput = execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
       encoding: 'utf-8',
-      timeout: 15000,
+      timeout: 30000,
+      maxBuffer: 32 * 1024 * 1024,
       env: { ...process.env, PATH: extendedPath }
     });
     const sources = JSON.parse(listOutput);
@@ -418,7 +423,7 @@ function retireStaleNotebookSources({
 
     if (allowSourceDeletion) {
       const after = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
-        encoding: 'utf-8', timeout: 30000, env: { ...process.env, PATH: extendedPath }
+        encoding: 'utf-8', timeout: 30000, maxBuffer: 32 * 1024 * 1024, env: { ...process.env, PATH: extendedPath }
       }));
       if (!Array.isArray(after) || !after.some(source => source.id === newSourceId)) {
         throw new Error('Replacement source missing from post-retirement inventory');
@@ -506,8 +511,8 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       const datasets = require('./google_sheets_writer.js').buildKnowledgeWorkbookDatasets(csv, payloadPath, { chassisName });
       legacyFingerprint = datasets.fingerprints.combined;
       const baseText = fs.readFileSync(payloadPath, 'utf8').split('\n<!-- MANAGED_FULL_CATALOG -->')[0];
-      const summaryTabs = (datasets.workbookTabs || []).map(tab => `- **${tab.title}**: ${tab.rows.length} rows`).join('\n');
-      fs.writeFileSync(payloadPath, `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n\n### Certified Catalog Workbook Inventory\n${summaryTabs}\n`, 'utf8');
+      const projection = require('./semantic_workbook_projection').projectWorkbookToMarkdown(datasets.workbookTabs);
+      fs.writeFileSync(payloadPath, `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n\n${projection.markdown}\n`, 'utf8');
     }
 
     let newSourceId = null;

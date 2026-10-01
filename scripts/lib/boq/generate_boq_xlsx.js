@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { outputQuantities } = require('./configuration_context');
 const { solutionFingerprint, candidateReviewCurrent } = require('./solution_evidence');
+const { assertDeliveryAuthorization } = require('../contracts/workflow_contract');
 
 function portalLabel(candidate) {
   return candidate?.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt ? `CLIC ACCEPTED — ${candidate.portalReceipt.capturedAt}` : 'PORTAL VALIDATION PENDING';
@@ -15,10 +16,22 @@ function rankReviewBadge(evaluation, candidate) {
   return review?.isCloudGrounded === true && review.manifestSha256 === solutionFingerprint(evaluation) && verdict ? `CANDIDATE DOCUMENT REVIEW: ${verdict.verdict}` : 'CANDIDATE DOCUMENT REVIEW: UNVERIFIED';
 }
 
-function generateRankedPortalWorkbook(evaluation, exportPath) {
-  if (evaluation?.acceptanceGate && evaluation.acceptanceGate.isValid === false) {
-    throw new Error(`Cannot export portal workbook: Pre-presentation acceptance failed (${evaluation.acceptanceGate.blockersCount} blocker(s)).`);
+function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis = '') {
+  if (options.diagnostic === true || evaluation?.isDiagnostic === true) {
+    return true;
   }
+  if (!evaluation?.acceptanceGate || evaluation.acceptanceGate.isValid !== true) {
+    throw new Error(`Cannot export deliverable: Pre-presentation acceptance failed (${evaluation?.acceptanceGate?.blockersCount || 0} blocker(s)).`);
+  }
+  const fingerprint = evaluation?.manifestFingerprint || solutionFingerprint(evaluation);
+  return assertDeliveryAuthorization(evaluation?.deliveryAuthorization, fingerprint, {
+    chassisKey: targetChassis || evaluation?.chassis || options.chassisKey,
+    profile: options.profile || 'BOQ_EVALUATION'
+  });
+}
+
+function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
+  _enforceDeliveryAuthorization(evaluation, options, options.chassisKey);
   const workbook = XLSX.utils.book_new();
   const candidates = _getRankedSolutions(evaluation);
   const validCandidates = (candidates || []).filter(candidate => (candidate.skuPartsList || candidate.skuList || []).length > 0);
@@ -57,7 +70,8 @@ function generateRankedPortalWorkbook(evaluation, exportPath) {
   return workbook;
 }
 
-function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier) {
+function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, options = {}) {
+  _enforceDeliveryAuthorization(evalResults, options, chassisId);
   const wb = XLSX.utils.book_new();
   const tier = rankTier || 1;
   const rankedSolution = _getRankedSolutions(evalResults).find(s => s.rank === tier) || null;
@@ -756,6 +770,7 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
  * @returns {object} XLSX workbook
  */
 function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassisId = '', options = {}) {
+  _enforceDeliveryAuthorization(evalResults, options, chassisId);
   const wb = XLSX.utils.book_new();
   const chassis = chassisId || evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis';
   const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
@@ -798,6 +813,7 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
  * @returns {string} CSV string content
  */
 function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}) {
+  _enforceDeliveryAuthorization(evalResults, options, options.chassisKey);
   const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
   const rankedSolutions = _getRankedSolutions(evalResults);
 

@@ -119,7 +119,8 @@ describe('Multi-Rank Solution Workbook & Deliverable Suite', () => {
 
   test('1. generateMultiRankSolutionWorkbook creates all 6 sheets with executive summary and 5 ranks', () => {
     const wb = generateMultiRankSolutionWorkbook(mockEvalResults, tempWorkbookPath, 'DL380_Gen12', {
-      clusterSizing: { serverCount: 4 }
+      clusterSizing: { serverCount: 4 },
+      diagnostic: true
     });
 
     assert.ok(fs.existsSync(tempWorkbookPath), 'Expected workbook file to be written on disk');
@@ -177,7 +178,8 @@ describe('Multi-Rank Solution Workbook & Deliverable Suite', () => {
 
   test('4. generateMultiRankSolutionCsv exports token-dense CSV matching all ranks', () => {
     const csvContent = generateMultiRankSolutionCsv(mockEvalResults, tempCsvPath, {
-      clusterSizing: { serverCount: 4 }
+      clusterSizing: { serverCount: 4 },
+      diagnostic: true
     });
 
     assert.ok(fs.existsSync(tempCsvPath), 'Expected CSV file to be written on disk');

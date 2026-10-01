@@ -1,7 +1,7 @@
 'use strict';
 
 // OCA exposes ambient tracking as selectable SKU rows, not always a <select>.
-const STATE_EXPRESSION = `(() => {
+const STATE_EXPRESSION = String.raw`(() => {
   const rows = Array.from(document.querySelectorAll('tr.item_tr'));
   const ambient = rows.filter(row => row.dataset.elementid === 'temperatureSection_ambientTemperature')
     .map(row => ({
@@ -93,12 +93,13 @@ async function probeAmbientRows(ws, sendCommand, thresholds, captureState = null
   } finally {
     try {
       const restored = await selectAmbientRow(ws, sendCommand, original, options);
+      if (!restored) throw new Error('Original ambient row is unavailable');
       if (restored && captureState) {
         await captureState({ conditionKey: 'ambientTempC', thresholdValue: original.temperature,
           selectorKind: 'OCA_TRACKING_SKU_ROW', selectedSku: original.sku, restored: true, state: restored });
       }
     } catch (restoreErr) {
-      console.warn('⚠️ Could not restore original ambient row:', restoreErr.message);
+      throw new Error(`AMBIENT_RESTORE_FAILED: ${restoreErr.message}`);
     }
   }
   return results;

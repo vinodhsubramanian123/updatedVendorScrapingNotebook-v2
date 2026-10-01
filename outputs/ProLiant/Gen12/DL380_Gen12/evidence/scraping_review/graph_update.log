@@ -4,21 +4,22 @@
 
   warning: skill at C:\Users\latha\.gemini\config\skills\graphify is from graphify 0.9.61, package is 0.9.63. Run 'graphify install --platform antigravity' to update it (a plain 'graphify install' refreshes only the detected platform).
 Re-extracting code files in . (no LLM needed)...
-[graphify watch] 88 file(s) not classified (no supported extension or shebang), skipped: .env.example, .gitattributes, .gitignore, .prettierrc, Alletra_Storage_System_Catalog_Rules.tsv, Alletra_Storage_System_Catalog_SKUs.tsv (+82 more)
-  AST extraction: 100/782 uncached files (12%) [8 workers]
-  AST extraction: 200/782 uncached files (25%) [8 workers]
-  AST extraction: 300/782 uncached files (38%) [8 workers]
-  AST extraction: 400/782 uncached files (51%) [8 workers]
-  AST extraction: 500/782 uncached files (63%) [8 workers]
-  AST extraction: 600/782 uncached files (76%) [8 workers]
-  AST extraction: 700/782 uncached files (89%) [8 workers]
-  AST extraction: 782/782 uncached files (100%) [8 workers]
-[graphify watch] community set changed since labeling (403 saved labels, 406 communities now; renamed 179 community(ies) by their hub). Run `graphify label` to refresh names with the LLM.
-[graphify] backed up curated graph (5 files) -> 2026-09-30/
-Graph has 6836 nodes (above 5000 limit). Building aggregated community view...
-graph.html written (aggregated: 406 community nodes, 1669 cross-community edges)
+[graphify watch] 93 file(s) not classified (no supported extension or shebang), skipped: .env.example, .gitattributes, .gitignore, .prettierrc, Alletra_Storage_System_Catalog_Rules.tsv, Alletra_Storage_System_Catalog_SKUs.tsv (+87 more)
+  AST extraction: 100/807 uncached files (12%) [8 workers]
+  AST extraction: 200/807 uncached files (24%) [8 workers]
+  AST extraction: 300/807 uncached files (37%) [8 workers]
+  AST extraction: 400/807 uncached files (49%) [8 workers]
+  AST extraction: 500/807 uncached files (61%) [8 workers]
+  AST extraction: 600/807 uncached files (74%) [8 workers]
+  AST extraction: 700/807 uncached files (86%) [8 workers]
+  AST extraction: 800/807 uncached files (99%) [8 workers]
+  AST extraction: 807/807 uncached files (100%) [8 workers]
+[graphify watch] community set changed since labeling (408 saved labels, 413 communities now; renamed 168 community(ies) by their hub). Run `graphify label` to refresh names with the LLM.
+[graphify] backed up curated graph (5 files) -> 2026-10-01/
+Graph has 6967 nodes (above 5000 limit). Building aggregated community view...
+graph.html written (aggregated: 413 community nodes, 1914 cross-community edges)
 Tip: run with --obsidian for full node-level detail.
-[graphify watch] Rebuilt: 6836 nodes, 12215 edges, 406 communities
+[graphify watch] Rebuilt: 6967 nodes, 12478 edges, 413 communities
 [graphify watch] graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out
 Code graph updated. For doc/paper/image changes run /graphify --update in your AI assistant.
 Tip: set GEMINI_API_KEY or GOOGLE_API_KEY to use Gemini for semantic extraction.

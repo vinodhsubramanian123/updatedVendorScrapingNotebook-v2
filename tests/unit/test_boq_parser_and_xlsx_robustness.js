@@ -94,7 +94,7 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
       budgetOptimization: { currentBomCostUsd: 0 },
       conflictGraph: { rankedSolutions: [{ rank: 1, skuList: [] }] }
     };
-    generateProfessionalBOQ(evalEmpty, TEMP_XLSX);
+    generateProfessionalBOQ(evalEmpty, TEMP_XLSX, null, 1, { diagnostic: true });
     let wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
     assert.strictEqual(wb.SheetNames.includes('Base BOM'), true);
     
@@ -108,7 +108,7 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
         }]
       }
     };
-    generateProfessionalBOQ(evalSingle, TEMP_XLSX);
+    generateProfessionalBOQ(evalSingle, TEMP_XLSX, null, 1, { diagnostic: true });
     wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
     
     let wsBaseBom = wb.Sheets['Base BOM'];
@@ -126,7 +126,7 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
       budgetOptimization: { currentBomCostUsd: 5500 },
       conflictGraph: { rankedSolutions: [{ rank: 1, skuList: hugeList }] }
     };
-    generateProfessionalBOQ(evalHuge, TEMP_XLSX);
+    generateProfessionalBOQ(evalHuge, TEMP_XLSX, null, 1, { diagnostic: true });
     wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
     wsBaseBom = wb.Sheets['Base BOM'];
     let valA551 = wsBaseBom['A551'] ? wsBaseBom['A551'].v : null;
@@ -138,7 +138,7 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
       budgetOptimization: { currentBomCostUsd: 100 },
       conflictGraph: { rankedSolutions: [{ rank: 1, skuList: [{ sku: 'P12345-B21', quantity: 1, unitPriceUsd: 100, category: 'Standard' }] }] }
     };
-    generateProfessionalBOQ(evalData, TEMP_XLSX);
+    generateProfessionalBOQ(evalData, TEMP_XLSX, null, 1, { diagnostic: true });
     const wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
     
     const expectedSheets = [

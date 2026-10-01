@@ -1,0 +1,19 @@
+{
+  "product": "DL380_Gen12",
+  "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
+  "sourceId": "6414b478-0c7b-4eeb-980c-da6d2b58f5e4",
+  "fingerprint": "b72420b16ad98907ee5a68cd2ca47ef59250cd00a675e91f2c24ba07203a692d",
+  "verifiedAt": "2026-10-01T06:13:01.449Z",
+  "status": "SCOPED_LEARNINGS_CLOUD_VERIFIED",
+  "catalogRevalidated": false,
+  "deletedSourceIds": [],
+  "previousSourceIds": [
+    "5a817819-e4ed-4d2a-a1f0-3745e01aa3ab",
+    "40a1f8ba-0c92-4770-aeb2-5430153e53f1",
+    "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
+    "6eb52606-9295-4f0b-af65-89454b2d443a",
+    "25c3f5b4-35c5-4c3c-b09e-cfb5ab918f48",
+    "9907453f-d04c-4cb8-a14a-10d6513b6ee1",
+    "30c02acf-b92d-4348-8335-ee0ee5799319"
+  ]
+}

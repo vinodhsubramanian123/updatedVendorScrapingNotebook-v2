@@ -1,5 +1,7 @@
 # Core Logic Architecture Review and Remediation Plan
 
+**Current status (2026-10-01):** See [the core remediation follow-up review](./2026-10-01-core-remediation-followup-review.md) for verified progress, partial fixes and newly identified gaps against baseline `31c98f1` plus the current working tree. The findings below describe the September 29 baseline; they are retained for traceability and are not a claim that every original defect remains unchanged.
+
 **Date:** 2026-09-29  
 **Scope:** Production customer-query logic, workflow orchestration, helpers, integrations, evidence, validation, learning, portability, and production folder structure.  
 **Explicit exclusions:** `dashboard/**`, `tests/**`, test implementation, UI behavior, and historical output certification.  

@@ -54,3 +54,8 @@ This is a bounded live investigation followed by final acceptance, not an exhaus
 ## Durable learning and reachability
 
 The versioned workflow advisory seed is `scripts/config/scraping_workflow_learnings.js`. Apply it with `node scripts/maintenance/record_scraping_workflow_learnings.js`. It uses the continuous-learning API and saves certification beside the DL380 Gen12 evidence. Re-running is idempotent by stable delta ID. Reachable means the knowledge router loads the advisory; it does not prove hardware validity, completed portal work or cloud synchronization.
+
+
+### Verified correction (2026-10-01)
+
+See [the post-check-in review](audits/2026-10-01-post-checkin-scraping-review.md). Ambient tracking may be selectable SKU rows; the row adapter is implemented and restoration failures are fatal. Distinguish collapsed layout from unavailable status: S3U30C existed at 30C but was unavailable on P73282-B21; at tested 27C the restriction disappeared. Do not infer an allowed <=30C gate or all lower temperatures. NotebookLM row counts and fingerprints do not replace content: the semantic projection now retains displayed sheet data with shared-text references and full-content readback. The four scoped advisory lessons were cloud-verified in the exact DL380 Gen12 notebook; full catalog republishing remains separate.

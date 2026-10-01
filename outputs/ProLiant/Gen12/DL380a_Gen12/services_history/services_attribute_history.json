@@ -11138,5 +11138,2125 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"0\"}",
     "newValue": "{\"Extended Price (USD)\":\"NA\"}"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9V60AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1T30AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1T31AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1T32AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1T36AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R7P98AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R8V45AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W12AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W14AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W15AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W17AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W18AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W20AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W21AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W23AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W24AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W27AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S0W29AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q37AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q38AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q39AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q40AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q42AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q44AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q46AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q47AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q48AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q49AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q51AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q52AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q53AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q63AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q67AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q68AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q72AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q73AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q77AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q79AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q81AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q93AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q94AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3Q95AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R01AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R02AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R03AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R06AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R07AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R12AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R21AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R3R27AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S16AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S17AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S18AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S19AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S20AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S21AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S22AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S23AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S24AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S25AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S27AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S28AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S29AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S30AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S31AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S32AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S33AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S34AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S36AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S37AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S38AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2S39AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7K93AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7K94AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P40AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P41AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P42AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z51AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z52AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z53AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P34AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P37AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P38AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P36AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R1P39AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z45AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z46AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2Z47AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S73AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S76AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S74AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S77AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S75AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q9S78AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R7A11AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2E10AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S5E59AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S5E60AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S5E61AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2R34AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Compute Ops Management Enablement SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S6C28AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Compute Ops Management Enablement SKUs",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J66AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J67AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J34AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J68AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J69AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J36AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J37AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A03AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A04AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A05AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A00AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A01AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R2A02AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "E5Y35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "P8B26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R7J59AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Q39AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D22AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D23AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D25AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D29AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q0D30AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W19AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W20AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W21AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W22AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W23AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W24AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W25AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q5W26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U15AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U16AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U17AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U18AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U19AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U20AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U21AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "Q8U22AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B60AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B61AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B62AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B63AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B64AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B65AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B66AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B67AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B68AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B69AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B70AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3B71AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N77AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N78AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R6J26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R6J29AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R6J33AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R6J34AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "R6J35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z84AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z85AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z86AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z87AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z88AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z89AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z90AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S3Z91AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N75AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N76AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N79AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N80AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N81AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N82AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N83AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N84AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N95AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N96AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N97AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N98AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7N99AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S7P00AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J22AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J23AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J24AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J25AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J26AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J27AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J28AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J29AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J30AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J31AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J32AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G3J33AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J62AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J63AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J64AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "G5J65AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "J8J35AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "J8J36AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2G27AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S2G28AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S4F94AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S4G00AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
+  },
+  {
+    "date": "2026-09-30",
+    "productNumber": "S4R76AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "HPE Recommended",
+    "oldValue": "",
+    "newValue": "No"
   }
 ]

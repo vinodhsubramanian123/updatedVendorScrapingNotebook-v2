@@ -12,6 +12,43 @@ const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_t
 
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 
+const REPRODUCIBLE_ADVERSARIAL_SUITES = [
+  {
+    id: 'ADV-DDR4-GEN12',
+    name: 'Incompatible DDR4 Memory on Gen12 Chassis',
+    chassis: 'DL380_Gen12',
+    expectedAspectId: 'aspect_2',
+    expectedDetectorKeywords: ['ddr4', 'memory', 'incompatible'],
+    items: [
+      { sku: 'P73282-B21', qty: 1, description: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server' },
+      { sku: 'P49610-B21', qty: 2, description: 'Intel Xeon-Gold 6430 2.1GHz 32-core 270W Processor' },
+      { sku: 'P43322-B21', qty: 8, description: 'HPE 16GB (1x16GB) Single Rank x8 DDR4-3200 CAS-22-22-22 Registered Smart Memory Kit' }
+    ]
+  },
+  {
+    id: 'ADV-HIGH-TDP-FAN',
+    name: 'High TDP Processor (>240W) Missing Mandatory Fan Kit',
+    chassis: 'DL380_Gen12',
+    expectedAspectId: 'aspect_1',
+    expectedDetectorKeywords: ['fan', 'thermal', 'cooling'],
+    items: [
+      { sku: 'P73282-B21', qty: 1, description: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server' },
+      { sku: 'P49610-B21', qty: 2, description: 'Intel Xeon-Gold 6430 2.1GHz 32-core 270W Processor' }
+    ]
+  },
+  {
+    id: 'ADV-DC-LUG-KIT',
+    name: '-48VDC Power Supply Missing Terminal Lug Kit',
+    chassis: 'DL380_Gen12',
+    expectedAspectId: 'aspect_4',
+    expectedDetectorKeywords: ['terminal', 'lug', 'power', 'dc'],
+    items: [
+      { sku: 'P73282-B21', qty: 1, description: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server' },
+      { sku: '865434-B21', qty: 2, description: 'HPE 800W FS -48VDC Power Supply Kit' }
+    ]
+  }
+];
+
 function getDefaultChassis() {
   try {
     const catalogs = listAllCatalogs();
@@ -56,13 +93,43 @@ Format each item exactly like this:
     return JSON.parse(cleanedText);
   } catch (err) {
     console.error("Adversarial agent generation failed:", err.message);
-    // Fallback adversarial BOQ for DL380 Gen12 (injects incompatible Gen11 DDR4 memory)
-    return [
-      { sku: "P73282-B21", qty: 1, description: "HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server" },
-      { sku: "P49610-B21", qty: 2, description: "Intel Xeon-Gold 6430 2.1GHz 32-core 270W Processor" },
-      { sku: "P43322-B21", qty: 8, description: "HPE 16GB (1x16GB) Single Rank x8 DDR4-3200 CAS-22-22-22 Registered Smart Memory Kit" }
-    ];
+    // Deterministic fallback using matching chassis suite if available
+    const matchedSuite = REPRODUCIBLE_ADVERSARIAL_SUITES.find(s => s.chassis.toLowerCase() === selectedChassis.toLowerCase()) || REPRODUCIBLE_ADVERSARIAL_SUITES[0];
+    return matchedSuite.items;
   }
+}
+
+function evaluateAdversarialInjection(injection, options = {}) {
+  const chassis = injection.chassis || options.chassis || getDefaultChassis();
+  const evalResult = evaluateBOQMultiAspect(injection.items, { chassis });
+  const errors = evalResult.errors || [];
+  const missing = evalResult.missingDependencies || [];
+  const aspectChecks = evalResult.aspectChecks || [];
+
+  const allIssueTexts = [
+    ...errors,
+    ...missing.map(m => `${m.rule || ''} ${m.reason || ''} ${m.sku || ''} ${m.description || ''}`),
+    ...aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'WARN').map(a => `${a.id || ''} ${a.name || ''} ${a.detail || ''}`)
+  ].join(' ').toLowerCase();
+
+  let detectorMatched = false;
+  if (injection.expectedAspectId) {
+    const failedAspect = aspectChecks.find(a => (a.id === injection.expectedAspectId || a.id === `aspect_${injection.expectedAspectId}`) && (a.status === 'FAIL' || a.status === 'WARN'));
+    if (failedAspect) detectorMatched = true;
+  }
+  if (!detectorMatched && Array.isArray(injection.expectedDetectorKeywords)) {
+    detectorMatched = injection.expectedDetectorKeywords.some(kw => allIssueTexts.includes(kw.toLowerCase()));
+  }
+
+  return {
+    suiteId: injection.id || injection.name,
+    chassis,
+    isCaught: (errors.length + missing.length) > 0,
+    detectorMatched,
+    errorsCaught: errors.length,
+    missingDependenciesCaught: missing.length,
+    aspectChecks: aspectChecks.map(a => ({ id: a.id, name: a.name, status: a.status }))
+  };
 }
 
 function updateAdversarialTelemetry(isCaught, targetChassis, issuesCount) {
@@ -169,6 +236,8 @@ if (require.main === module) {
 module.exports = {
   generateAdversarialBOQ,
   updateAdversarialTelemetry,
-  runAdversarialAgent
+  runAdversarialAgent,
+  evaluateAdversarialInjection,
+  REPRODUCIBLE_ADVERSARIAL_SUITES
 };
 

@@ -1,5 +1,7 @@
 # Core Test Quality and Guardrail Gap Analysis
 
+**Current status (2026-10-01):** See [the core remediation follow-up review](./2026-10-01-core-remediation-followup-review.md) for the latest closure assessment and remaining proof requirements. The findings below record the September 29 baseline; several runner, classification and CI checks have since improved, while execution, authorization and evidence gaps remain.
+
 **Date:** 2026-09-29  
 **Scope:** Production-core tests for customer-query classification, skill/workflow dispatch, deterministic evaluation, agentic guardrails, evidence, degraded operation, acceptance, delivery, portal receipts, catalog lifecycle, learning, synchronization, and cross-platform behavior.  
 **Excluded:** Dashboard/UI implementation and dashboard-specific tests.  

@@ -181,5 +181,6 @@ The scraping pipeline produces two independent, non-competing outputs:
 #### Grounded Products Certified as of 2026-10-01
 | Chassis | Notebook ID | Source ID | SKUs | cloudSyncState |
 |---|---|---|---|---|
-| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `40a1f8ba-0c92-4770-aeb2-5430153e53f1` | 26 tabs / 606 HW + 522 Svc | `VERIFIED` |
-| `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `d271a1ea-80dd-49bf-bff2-ea484e1ac24e` | 24 tabs / 440 HW + 220 Svc | `VERIFIED` |
+| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `20e03410-581e-498a-af46-d1f29c960549` | 26 tabs / 606 HW + 522 Svc | `VERIFIED` |
+| `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `aa51f3c8-e350-4b49-8f55-92b86a01d66d` | 27 tabs / 455 HW + 220 Svc | `VERIFIED` |
+

@@ -124,7 +124,7 @@ const DOMAIN_METADATA = {
     name: 'Core Architecture & Invariants',
     icon: '🏛️',
     description: 'System invariants, schemas, orchestrator, BOM verifier, evidence truth, and catalog refresh contracts',
-    matcher: p => /all_system_invariants|evaluation_orchestrator|schemas|bom_verifier|evidence_workflow|catalog_refresh_contract|decision_trace/i.test(p)
+    matcher: p => /all_system_invariants|evaluation_orchestrator|schemas|bom_verifier|evidence_workflow|catalog_refresh_contract|decision_trace|core_workflow_contracts|workflow_contract|product_metadata_manager|portal_receipt/i.test(p)
   },
   smoke: {
     id: 'smoke',
@@ -357,18 +357,29 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
       clearTimeout(timer);
       const durationMs = Date.now() - startTime;
       let pass = code === 0 && !timedOut;
+      let isSkipped = false;
+      let isSilentPass = false;
 
-      // Invariant check: If node test runner is used, ensure tests actually ran
-      if (pass && isNodeTest && /# tests 0\b/.test(stdout)) {
+      // Invariant check: Detect silent passes & non-certifying skips (INV-129 / R-09)
+      if (pass && isNodeTest && (/# tests 0\b|ℹ tests 0\b/.test(stdout) || (/(?:# pass 0\b|ℹ pass 0\b)/.test(stdout) && !/(?:[1-9]\d*)\s+pass/i.test(stdout)))) {
         pass = false;
+        isSilentPass = true;
+      } else if (pass && /(?:0\/0 assertions passed|0 assertions passed|0 of 0 assertions passed)\b/i.test(stdout)) {
+        pass = false;
+        isSilentPass = true;
+      } else if (code === 0 && !timedOut && /\[TEST_STATUS:\s*SKIPPED\]/i.test(stdout)) {
+        isSkipped = true;
+        pass = false; // A skipped suite does not count as a certified pass
       }
 
       let errorSummary = '';
       if (!pass) {
-        if (timedOut) {
+        if (isSkipped) {
+          errorSummary = 'Test execution was skipped due to offline or missing live environment (ALLOW_E2E_SKIP).';
+        } else if (timedOut) {
           errorSummary = `Execution timed out after ${timeoutMs}ms`;
-        } else if (isNodeTest && /# tests 0\b/.test(stdout)) {
-          errorSummary = 'Silent Pass Detected: node:test reported 0 tests executed (# tests 0).';
+        } else if (isSilentPass) {
+          errorSummary = 'Silent Pass Detected: Test runner reported 0 tests executed or 0 assertions passed.';
         } else {
           // Extract relevant failure lines
           const allOutput = stderr + '\n' + stdout;
@@ -388,6 +399,7 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
       resolve({
         testFile,
         pass,
+        isSkipped,
         exitCode: timedOut ? 124 : code,
         durationMs,
         stdout,
@@ -534,11 +546,11 @@ NPM Script Equivalents:
   const overallStart = Date.now();
 
   const tierStats = {
-    unit: { total: 0, passed: 0, failed: 0, durationMs: 0 },
-    chaos: { total: 0, passed: 0, failed: 0, durationMs: 0 },
-    integration: { total: 0, passed: 0, failed: 0, durationMs: 0 },
-    e2e: { total: 0, passed: 0, failed: 0, durationMs: 0 },
-    other: { total: 0, passed: 0, failed: 0, durationMs: 0 }
+    unit: { total: 0, passed: 0, failed: 0, skipped: 0, durationMs: 0 },
+    chaos: { total: 0, passed: 0, failed: 0, skipped: 0, durationMs: 0 },
+    integration: { total: 0, passed: 0, failed: 0, skipped: 0, durationMs: 0 },
+    e2e: { total: 0, passed: 0, failed: 0, skipped: 0, durationMs: 0 },
+    other: { total: 0, passed: 0, failed: 0, skipped: 0, durationMs: 0 }
   };
 
   let currentTier = null;
@@ -576,7 +588,10 @@ NPM Script Equivalents:
 
     const durStr = `${(result.durationMs / 1000).toFixed(2)}s`.padStart(7);
 
-    if (result.pass) {
+    if (result.isSkipped) {
+      tierStats[tier].skipped++;
+      console.log(`[${indexStr}]  ⚠️ SKIP   ${durStr}   ${testFile}`);
+    } else if (result.pass) {
       tierStats[tier].passed++;
       console.log(`[${indexStr}]  ✅ PASS   ${durStr}   ${testFile}`);
     } else {
@@ -613,6 +628,7 @@ NPM Script Equivalents:
 
   const totalDurationMs = Date.now() - overallStart;
   const passedCount = results.filter(r => r.pass).length;
+  const skippedCount = results.filter(r => r.isSkipped).length;
   const failedCount = failures.length;
 
   console.log(`\n================================================================`);
@@ -625,14 +641,18 @@ NPM Script Equivalents:
       const meta = TIER_METADATA[key];
       const rate = ((st.passed / st.total) * 100).toFixed(1);
       const timeStr = `${(st.durationMs / 1000).toFixed(2)}s`.padStart(7);
-      const icon = st.failed === 0 ? '✅' : '❌';
-      console.log(`  ${meta.icon} ${meta.name.padEnd(38)}: ${st.passed}/${st.total} PASSED (${rate}%) ${icon}  ⏱️ ${timeStr}`);
+      const icon = st.failed === 0 ? (st.skipped > 0 ? '⚠️' : '✅') : '❌';
+      const skipTag = st.skipped > 0 ? ` (${st.skipped} skipped)` : '';
+      console.log(`  ${meta.icon} ${meta.name.padEnd(38)}: ${st.passed}/${st.total} PASSED (${rate}%)${skipTag} ${icon}  ⏱️ ${timeStr}`);
     }
   }
 
   console.log(`----------------------------------------------------------------`);
   console.log(`  Total Suites:   ${results.length}`);
   console.log(`  Passed:         ${passedCount} ✅`);
+  if (skippedCount > 0) {
+    console.log(`  Skipped:        ${skippedCount} ⚠️ (non-certifying)`);
+  }
   console.log(`  Failed:         ${failedCount} ${failedCount > 0 ? '❌' : ''}`);
   console.log(`  Pass Rate:      ${((passedCount / results.length) * 100).toFixed(1)}%`);
   console.log(`  Total Time:     ${(totalDurationMs / 1000).toFixed(2)}s`);
@@ -655,6 +675,9 @@ NPM Script Equivalents:
     console.log(`================================================================\n`);
     process.exit(1);
   } else {
+    if (skippedCount > 0) {
+      console.log(`\n⚠️ Matrix completed with ${skippedCount} skipped suite(s). Skipped suites do not provide live certification.`);
+    }
     console.log(`\n✨ All test suites passed! Failure ledger is clear.`);
     console.log(`================================================================\n`);
     process.exit(0);

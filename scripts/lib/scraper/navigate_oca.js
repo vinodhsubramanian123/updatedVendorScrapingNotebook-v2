@@ -636,10 +636,8 @@ async function performAutomatedSignIn(partnerTarget) {
   let ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
   await sendCommand(ws, 'Page.bringToFront');
 
-  const { getVendorCredentials } = require('./vendor_portal_router.js');
-  const hpeCreds = getVendorCredentials('HPE');
-  const portalUser = hpeCreds.username;
-  const portalPass = hpeCreds.password;
+  const portalUser = process.env.HPE_PORTAL_USER || 'hpeconfig@swiftline-uae.com';
+  const portalPass = process.env.HPE_PORTAL_PASS || '';
 
   try {
     // 1. Fill email input & click #oktaSignInBtn

@@ -1,6 +1,20 @@
 {
-  "recordedAt": "2026-09-30T16:29:39.811Z",
+  "recordedAt": "2026-10-01T06:11:41.440Z",
   "results": [
+    {
+      "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
+        "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
+        "affectedSku": "S3U30C",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-01T06:11:41.372Z"
+      }
+    },
     {
       "deltaId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
       "persisted": true,
@@ -12,7 +26,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-09-30T16:29:39.759Z"
+        "verifiedAt": "2026-10-01T06:11:41.408Z"
       }
     },
     {
@@ -26,7 +40,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-09-30T16:29:39.785Z"
+        "verifiedAt": "2026-10-01T06:11:41.423Z"
       }
     },
     {
@@ -40,7 +54,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-09-30T16:29:39.811Z"
+        "verifiedAt": "2026-10-01T06:11:41.440Z"
       }
     }
   ],

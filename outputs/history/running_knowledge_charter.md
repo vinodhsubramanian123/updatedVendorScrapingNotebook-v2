@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-09-30T19:20:11.139Z  
-**Total Deduplicated Learned Rules:** 92  
+**Last Synchronized:** 2026-10-01T10:03:55.000Z  
+**Total Deduplicated Learned Rules:** 93  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **92**.
+Total verified rules indexed in this build: **93**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -245,6 +245,7 @@ Total verified rules indexed in this build: **92**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_OEM_SELECTION_ADVISORY` | `P77819-B21` | `—` | OCA observed P77819-B21 as OEM DL380 Gen12 CTO. Preserve it in scoped discovery; a generic commercial DL380 Gen12 reques | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_RUNTIME_DISCOVERY_ADVISORY` | `undefined` | `—` | Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient prob | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `S3U30C` | `—` | Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |

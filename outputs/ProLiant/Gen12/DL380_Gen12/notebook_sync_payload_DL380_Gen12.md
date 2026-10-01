@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-01T05:51:27.566Z
+**Sync Timestamp**: 2026-10-01T10:25:09.767Z
 
 **Total Verified SKUs**: `1128` (`606` Hardware + `522` Services)
 
-**Total Synced KnowledgeDeltas**: `56`
+**Total Synced KnowledgeDeltas**: `57`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -230,6 +230,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 47. **[LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+48. **[LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `S3U30C` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

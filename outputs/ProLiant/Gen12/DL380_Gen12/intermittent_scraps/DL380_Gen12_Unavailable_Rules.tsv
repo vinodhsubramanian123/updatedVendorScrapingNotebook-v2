@@ -1,34 +1,34 @@
 Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
-RULE_1	MUTUAL_EXCLUSION	Processor	Mixing of Heat sink is not allowed.	5	P49145-B21, P74204-B21, P74208-B21, P74787-B21, P74794-B21
-RULE_2	MEMORY_MIXING	Memory	Mixing of x4 and x8 memory is not allowed	1	P69728-F21
-RULE_3	MEMORY_MIXING	Memory	96GB Memory cannot be mixed with any other Memory.	1	P69729-F21
-RULE_4	MEMORY_MIXING	Memory	128GB Memory cannot be mixed with any other Memory.	1	P69730-F21
-RULE_5	MEMORY_MIXING	Memory	Mixing of 3DS and non 3DS memory is not allowed.	1	P73447-F21
-RULE_6	CHASSIS_GATE	Smart Chassis	Supported with EDSFF CTO Server only.	1	P74738-B21
-RULE_7	CHASSIS_GATE	Smart Chassis	Supported with 8LFF and 12LFF CTO Server only.	4	P74741-B21, P74746-B21, P75411-B21, P76875-B21
-RULE_8	CHASSIS_GATE	Smart Chassis	Supported with 8LFF CTO Server only.	1	P74744-B21
-RULE_9	MUTUAL_EXCLUSION	Smart Chassis	Define connection for 8SFF x4 Cage only needed if cage is selected.	17	cntr8sffx2, cntr8sffx4, da8sffx2, da8sffx4, P77955-B21, P77958-B21, P77931-B21, P78064-B21, P77934-B21, P77937-B21, P77940-B21, P77961-B21, P78070-B21, P78047-B21, P78058-B21, P78061-B21, P77943-B21
-RULE_10	SLOT_COLLISION	Smart Chassis	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.	1	P74737-B21
-RULE_11	CHASSIS_GATE	Smart Chassis	Supported with EDSFF CTO Server only.	2	P80997-B21, P83356-B21
-RULE_12	CHASSIS_GATE	Smart Chassis	Selected Smart Chassis Configuration is not valid	3	dl380smtch_1-0, dl380smtch_1-1, dl380smtch_1-2
-RULE_13	CHASSIS_GATE	Storage Devices	Supported with 8LFF and 12LFF CTO Server only.	6	P76473-B21, P76474-B21, P77474-B21, P77475-B21, P77484-B21, P77485-B21
-RULE_14	CHASSIS_GATE	Storage Devices	Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.	3	P77481-B21, P76476-B21, P77480-B21
-RULE_15	CHASSIS_GATE	Storage Devices	Supported with 12EDSFF CTO Server only.	3	P83798-B21, P87968-B21, P83799-B21
-RULE_16	BTO_DISALLOWED	Storage Devices	BTO products are not allowed in CTO Base Model.	1	701498-B21
-RULE_17	CHASSIS_GATE	Storage Devices	Supported with 8LFF CTO Server only.	1	P74752-B21
-RULE_18	BTO_DISALLOWED	Storage Devices	BTO products are not allowed in CTO Base Model.	2	807878-B21, 666987-B21
-RULE_19	CHASSIS_GATE	Factory Configuration Settings	Supported with 12EDSFF CTO Server only.	2	P87692-B21, P92742-B21
-RULE_20	MUTUAL_EXCLUSION	Networking	Private Product is not valid for current customer account	1	P74383-B21
-RULE_21	MUTUAL_EXCLUSION	Networking	Private Product is not valid for current customer account	1	P89140-B21
-RULE_22	BTO_DISALLOWED	Networking	BTO products are not allowed in CTO Base Model.	6	AJ833A, AJ836A, AJ838A, AJ839A, AJ834A, AJ837A
-RULE_23	MUTUAL_EXCLUSION	Networking	Private Product is not valid for current customer account	2	P74606-B21, P97416-B21
-RULE_24	AMBIENT_GATE	Graphics Options	RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.	3	S3U30C, S6A73C, S6W21C
-RULE_25	MUTUAL_EXCLUSION	Graphics Options	Private Product is not valid for current customer account	1	S7J51C
-RULE_26	MUTUAL_EXCLUSION	Power Supplies	Mixing of Power supplies are not allowed.	3	P38995-B21, P38997-B21, P44712-B21
-RULE_27	MUTUAL_EXCLUSION	Power Supplies	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	1	P17023-B21
-RULE_28	PAIRED_KIT_REQUIRED	Power Supplies	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).	1	P36877-B21
-RULE_29	MUTUAL_EXCLUSION	Power Supplies	Max quantity of product limited by space available.	25	AF556A, AF557A, AF568A, AF570A, AF573A, P78130-B21, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF569A, AF572A, AF591A, P78131-B21, P78144-B21, P78147-B21, P78156-B21, P78940-B21, P78941-B21, R1C65A
-RULE_30	MUTUAL_EXCLUSION	Power Supplies	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	1	P22173-B21
-RULE_31	BTO_DISALLOWED	Power Supplies	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A
-RULE_32	MUTUAL_EXCLUSION	Private Cloud Business Edition	Not Supported ProStack Server Software	1	S7J52A
-RULE_33	MUTUAL_EXCLUSION	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE
+RULE_1	CONDITIONAL_VISIBILITY	Processor	Mixing of Heat sink is not allowed.	5	P49145-B21, P74204-B21, P74208-B21, P74787-B21, P74794-B21
+RULE_2	CONDITIONAL_VISIBILITY	Memory	Mixing of x4 and x8 memory is not allowed	1	P69728-F21
+RULE_3	CONDITIONAL_VISIBILITY	Memory	96GB Memory cannot be mixed with any other Memory.	1	P69729-F21
+RULE_4	CONDITIONAL_VISIBILITY	Memory	128GB Memory cannot be mixed with any other Memory.	1	P69730-F21
+RULE_5	CONDITIONAL_VISIBILITY	Memory	Mixing of 3DS and non 3DS memory is not allowed.	1	P73447-F21
+RULE_6	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with EDSFF CTO Server only.	1	P74738-B21
+RULE_7	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with 8LFF and 12LFF CTO Server only.	4	P74741-B21, P74746-B21, P75411-B21, P76875-B21
+RULE_8	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with 8LFF CTO Server only.	1	P74744-B21
+RULE_9	CONDITIONAL_VISIBILITY	Smart Chassis	Define connection for 8SFF x4 Cage only needed if cage is selected.	17	cntr8sffx2, cntr8sffx4, da8sffx2, da8sffx4, P77955-B21, P77958-B21, P77931-B21, P78064-B21, P77934-B21, P77937-B21, P77940-B21, P77961-B21, P78070-B21, P78047-B21, P78058-B21, P78061-B21, P77943-B21
+RULE_10	CONDITIONAL_VISIBILITY	Smart Chassis	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.	1	P74737-B21
+RULE_11	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with EDSFF CTO Server only.	2	P80997-B21, P83356-B21
+RULE_12	CONDITIONAL_VISIBILITY	Smart Chassis	Selected Smart Chassis Configuration is not valid	3	dl380smtch_1-0, dl380smtch_1-1, dl380smtch_1-2
+RULE_13	CONDITIONAL_VISIBILITY	Storage Devices	Supported with 8LFF and 12LFF CTO Server only.	6	P76473-B21, P76474-B21, P77474-B21, P77475-B21, P77484-B21, P77485-B21
+RULE_14	CONDITIONAL_VISIBILITY	Storage Devices	Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.	3	P77481-B21, P76476-B21, P77480-B21
+RULE_15	CONDITIONAL_VISIBILITY	Storage Devices	Supported with 12EDSFF CTO Server only.	3	P83798-B21, P87968-B21, P83799-B21
+RULE_16	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	1	701498-B21
+RULE_17	CONDITIONAL_VISIBILITY	Storage Devices	Supported with 8LFF CTO Server only.	1	P74752-B21
+RULE_18	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	2	807878-B21, 666987-B21
+RULE_19	CONDITIONAL_VISIBILITY	Factory Configuration Settings	Supported with 12EDSFF CTO Server only.	2	P87692-B21, P92742-B21
+RULE_20	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	1	P74383-B21
+RULE_21	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	1	P89140-B21
+RULE_22	CONDITIONAL_VISIBILITY	Networking	BTO products are not allowed in CTO Base Model.	6	AJ833A, AJ836A, AJ838A, AJ839A, AJ834A, AJ837A
+RULE_23	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	2	P74606-B21, P97416-B21
+RULE_24	CONDITIONAL_VISIBILITY	Graphics Options	RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.	3	S3U30C, S6A73C, S6W21C
+RULE_25	CONDITIONAL_VISIBILITY	Graphics Options	Private Product is not valid for current customer account	1	S7J51C
+RULE_26	CONDITIONAL_VISIBILITY	Power Supplies	Mixing of Power supplies are not allowed.	3	P38995-B21, P38997-B21, P44712-B21
+RULE_27	CONDITIONAL_VISIBILITY	Power Supplies	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	1	P17023-B21
+RULE_28	CONDITIONAL_VISIBILITY	Power Supplies	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).	1	P36877-B21
+RULE_29	CONDITIONAL_VISIBILITY	Power Supplies	Max quantity of product limited by space available.	25	AF556A, AF557A, AF568A, AF570A, AF573A, P78130-B21, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF569A, AF572A, AF591A, P78131-B21, P78144-B21, P78147-B21, P78156-B21, P78940-B21, P78941-B21, R1C65A
+RULE_30	CONDITIONAL_VISIBILITY	Power Supplies	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	1	P22173-B21
+RULE_31	CONDITIONAL_VISIBILITY	Power Supplies	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A
+RULE_32	CONDITIONAL_VISIBILITY	Private Cloud Business Edition	Not Supported ProStack Server Software	1	S7J52A
+RULE_33	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE

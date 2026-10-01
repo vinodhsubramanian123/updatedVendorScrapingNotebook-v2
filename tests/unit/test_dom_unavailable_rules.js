@@ -187,10 +187,12 @@ test('applyUnavailableDomRulesAndSkus enriches existing SKUs and inserts new con
 
   // 1. Rules compiled
   assert.equal(rules.length, 1);
-  assert.equal(rules[0].ruleType, 'AMBIENT_GATE');
+  assert.equal(rules[0].ruleType, 'CONDITIONAL_VISIBILITY');
+  assert.equal(rules[0].vendorRuleClassification, 'AMBIENT_GATE');
   assert.equal(rules[0].conditionKey, 'ambientTempC');
-  assert.equal(rules[0].thresholdValue, 30);
-  assert.equal(rules[0].conditionOperator, '<=');
+  assert.equal(rules[0].conditionOperator, 'unknown');
+  assert.equal(rules[0].thresholdValue, null);
+  assert.equal(rules[0].observedTemperatureC, 30);
   assert.equal(rules[0].source, 'HPE_OCA_DOM_UNAVAILABLE_TABLE');
 
   // 2. Existing SKU S3Z84AAE enriched

@@ -114,13 +114,16 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
             } else {
               let cellText = (cell.innerText || cell.textContent || '').trim();
               if (!cellText) {
-                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i], img[src*="rec" i], img[title*="recommend" i], img[alt*="recommend" i]');
-                const hasCheckIcon = cell.querySelector('[class*="check" i], [class*="tick" i], [class*="recommend" i], svg');
+                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i]');
+                // An empty hpe_recommended span or arbitrary SVG is not a positive flag.
+                const hasCheckIcon = cell.querySelector('.icon-check, .fa-check, .glyphicon-ok, [data-icon="check"], [data-icon="tick"]');
                 const hasCheckedInput = cell.querySelector('input[type="checkbox"]:checked, input[type="radio"]:checked');
                 const ariaOrTitle = cell.getAttribute('aria-label') || cell.getAttribute('title') ||
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
-                if (hasCheckImg || hasCheckIcon || /recommend/i.test(ariaOrTitle)) {
+                if (/not recommended|non.recommended/i.test(ariaOrTitle)) {
+                  cellText = 'No';
+                } else if (hasCheckImg || hasCheckIcon || /recommend/i.test(ariaOrTitle)) {
                   cellText = 'Yes';
                 } else if (hasCheckedInput) {
                   cellText = 'Selected';
@@ -323,7 +326,7 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
 
   // Snapshot the default-visible SKU set
   const defaultVisibleRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).map(e => (e.innerText || '').trim()).filter(Boolean))`,
+    expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.unavailable')).map(e => (e.textContent || '').trim()).filter(Boolean))`,
     returnByValue: true
   });
   let defaultVisible = new Set();
@@ -360,7 +363,7 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
 
     // Snapshot newly visible SKUs
     const probeRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).map(e => (e.innerText || '').trim()).filter(Boolean))`,
+      expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.unavailable')).map(e => (e.textContent || '').trim()).filter(Boolean))`,
       returnByValue: true
     });
     let probeVisible = new Set();
@@ -368,16 +371,16 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
 
     // SKUs that appear at this threshold but NOT at default = conditional SKUs
     for (const sku of probeVisible) {
-      if (!defaultVisible.has(sku) && !seen.has(sku)) {
-        seen.add(sku);
+      if (!defaultVisible.has(sku) && !seen.has(`${sku}:${threshold}`)) {
+        seen.add(`${sku}:${threshold}`);
         conditionalSkus.push({
           sku,
           conditionType: 'AMBIENT_GATE',
-          operator: threshold < defaultTemp ? 'lte' : 'gte',
+          operator: 'eq',
           thresholdDegC: threshold,
           visibleAtDefaultC: false,
           visibleAt27C: threshold === 27,
-          evidence: `HPE OCA DOM — SKU became visible when ambient selector set to ≤${threshold}°C (default: ${defaultTemp}°C)`,
+          evidence: `HPE OCA DOM — SKU observed visible at tested ambient ${threshold}C (default: ${defaultTemp}C); no untested temperature range inferred`,
           portalVerificationRequired: true
         });
       }
@@ -418,4 +421,3 @@ module.exports = {
   extractUnavailableDomRules,
   parseUnavailableDomRules
 };
-

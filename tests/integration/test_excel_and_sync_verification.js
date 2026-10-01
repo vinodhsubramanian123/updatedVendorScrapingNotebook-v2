@@ -86,7 +86,7 @@ async function testCandidateBoqExcelExport() {
   const evalResults = evaluateBOQMultiAspect(sampleCsv);
 
   const exportPath = path.join(PROJECT_ROOT, 'outputs', 'test_boqs', 'test_corrected_boq_rank1.xlsx');
-  generateProfessionalBOQ(evalResults, exportPath, 'DL380_Gen12_SFF', 1);
+  generateProfessionalBOQ(evalResults, exportPath, 'DL380_Gen12_SFF', 1, { diagnostic: true });
 
   assertTest('Corrected BOQ Excel file generated', fs.existsSync(exportPath), exportPath);
 

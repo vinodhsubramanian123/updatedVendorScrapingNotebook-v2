@@ -2,12 +2,12 @@
 /**
  * tests/unit/test_core_workflow_contracts.js — Deterministic Core Workflow Contract Tests
  *
- * Validates the core contracts established in the 2026-09-30 architecture remediation:
- * 1. WorkflowResult, StageResult, EvidenceState, and DeliveryAuthorization schemas
- * 2. Mandatory non-default status and SKIPPED policy validation in EvidenceLedger
- * 3. Pre-presentation acceptance delivery gating (unapproved candidates blocked from export)
+ * Validates the core contracts established in the 2026-09-30 and 2026-10-01 architecture remediations:
+ * 1. StageResultSchema and EvidenceLedger mandatory non-default status & SKIPPED policy validation
+ * 2. Cryptographic DeliveryAuthorization HMAC-SHA256 signature and exact 64-char fingerprint matching
+ * 3. Pre-presentation acceptance delivery gating across all 4 public exporters
  * 4. Aspect registry integration for dynamic multi-domain validation
- * 5. Single-file vs two-baseline BOM reconciliation contracts
+ * 5. Single-file audit vs two-baseline BOM reconciliation contracts (quantity deltas, fail-closed catalog)
  */
 
 const test = require('node:test');
@@ -15,23 +15,31 @@ const assert = require('node:assert/strict');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const crypto = require('crypto');
 
 const {
-  EvidenceStateEnum,
-  StageExecutionStateEnum,
-  StageOutcomeEnum,
   StageResultSchema,
-  AcceptanceDecisionSchema,
   issueDeliveryAuthorization,
   verifyDeliveryAuthorization,
-  WorkflowResultSchema
+  assertDeliveryAuthorization
 } = require('../../scripts/lib/contracts/workflow_contract.js');
 
 const { createEvidenceLedger } = require('../../scripts/lib/system/evidence_ledger.js');
-const { generateRankedPortalWorkbook } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
+const {
+  generateRankedPortalWorkbook,
+  generateProfessionalBOQ,
+  generateMultiRankSolutionWorkbook,
+  generateMultiRankSolutionCsv
+} = require('../../scripts/lib/boq/generate_boq_xlsx.js');
 const { evaluateDomainAspects, getRegisteredAspectsForDomain } = require('../../scripts/lib/aspects/aspect_registry.js');
+const { verifyVendorBOM, auditSingleVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
 
-test('Core Contracts — StageResult enforces skipReason on SKIPPED state', () => {
+// Helper to generate a valid 64-character SHA-256 hex string
+function generateValidFingerprint(seed = 'test-candidate-manifest') {
+  return crypto.createHash('sha256').update(seed).digest('hex');
+}
+
+test('Core Contracts — StageResult enforces both skipReason and policyCode on SKIPPED state (INV-105)', () => {
   const validCompleted = StageResultSchema.safeParse({
     stageId: 'STAGE_1_INTAKE',
     stageName: 'BOQ Intake',
@@ -42,15 +50,36 @@ test('Core Contracts — StageResult enforces skipReason on SKIPPED state', () =
   });
   assert.equal(validCompleted.success, true, 'Completed stage should parse successfully');
 
-  const invalidSkipped = StageResultSchema.safeParse({
+  // Missing both skipReason and policyCode
+  const missingBoth = StageResultSchema.safeParse({
     stageId: 'STAGE_7_GROUNDING',
     stageName: 'Document Grounding',
     executionState: 'SKIPPED',
     outcome: 'NOT_EVALUATED'
-    // missing skipReason
   });
-  assert.equal(invalidSkipped.success, false, 'SKIPPED stage without skipReason must fail schema validation');
+  assert.equal(missingBoth.success, false, 'SKIPPED stage without skipReason & policyCode must fail');
 
+  // Has skipReason but missing policyCode
+  const missingPolicy = StageResultSchema.safeParse({
+    stageId: 'STAGE_7_GROUNDING',
+    stageName: 'Document Grounding',
+    executionState: 'SKIPPED',
+    outcome: 'NOT_EVALUATED',
+    skipReason: 'Offline evaluation requested by user'
+  });
+  assert.equal(missingPolicy.success, false, 'SKIPPED stage with skipReason but missing policyCode must fail');
+
+  // Has policyCode but missing skipReason
+  const missingReason = StageResultSchema.safeParse({
+    stageId: 'STAGE_7_GROUNDING',
+    stageName: 'Document Grounding',
+    executionState: 'SKIPPED',
+    outcome: 'NOT_EVALUATED',
+    policyCode: 'POLICY_OFFLINE_SKIP'
+  });
+  assert.equal(missingReason.success, false, 'SKIPPED stage with policyCode but missing skipReason must fail');
+
+  // Has both non-empty skipReason and policyCode
   const validSkipped = StageResultSchema.safeParse({
     stageId: 'STAGE_7_GROUNDING',
     stageName: 'Document Grounding',
@@ -59,16 +88,16 @@ test('Core Contracts — StageResult enforces skipReason on SKIPPED state', () =
     skipReason: 'Offline evaluation requested by user',
     policyCode: 'POLICY_OFFLINE_SKIP'
   });
-  assert.equal(validSkipped.success, true, 'SKIPPED stage with skipReason must pass validation');
+  assert.equal(validSkipped.success, true, 'SKIPPED stage with both skipReason and policyCode must pass');
 });
 
-test('Core Contracts — DeliveryAuthorization requires valid acceptance', () => {
-  const fakeFingerprint = 'A1B2C3D4E5F678901234567890ABCDEF';
+test('Core Contracts — DeliveryAuthorization cryptographic HMAC and 64-char fingerprint matching (INV-128 / R-01, R-02)', () => {
+  const validFingerprint = generateValidFingerprint('manifest-v1');
 
   // Attempting to issue authorization with rejected acceptance MUST throw
   assert.throws(() => {
     issueDeliveryAuthorization({
-      manifestFingerprint: fakeFingerprint,
+      manifestFingerprint: validFingerprint,
       chassisKey: 'DL380_Gen12',
       acceptanceDecision: {
         isApproved: false,
@@ -89,9 +118,21 @@ test('Core Contracts — DeliveryAuthorization requires valid acceptance', () =>
     });
   }, /fingerprint is required/i);
 
-  // Valid acceptance issues a verifiable token
+  // Attempting to issue authorization with non-64-character hex fingerprint MUST throw
+  assert.throws(() => {
+    issueDeliveryAuthorization({
+      manifestFingerprint: 'A1B2C3D4E5F67890', // 16 chars
+      chassisKey: 'DL380_Gen12',
+      acceptanceDecision: {
+        isApproved: true,
+        profile: 'BOQ_EVALUATION'
+      }
+    });
+  }, /must be a full 64-character SHA-256 hex string/i);
+
+  // Valid acceptance issues a verifiable token with full HMAC-SHA256
   const auth = issueDeliveryAuthorization({
-    manifestFingerprint: fakeFingerprint,
+    manifestFingerprint: validFingerprint,
     chassisKey: 'DL380_Gen12',
     acceptanceDecision: {
       isApproved: true,
@@ -100,17 +141,52 @@ test('Core Contracts — DeliveryAuthorization requires valid acceptance', () =>
   });
 
   assert.ok(auth.token.startsWith('DELIV-AUTH-'), 'Token prefix must be DELIV-AUTH-');
-  assert.equal(auth.manifestFingerprint, fakeFingerprint);
-  assert.equal(verifyDeliveryAuthorization(auth, fakeFingerprint), true, 'Valid token must verify');
-  assert.equal(verifyDeliveryAuthorization(auth, 'MISMATCHED_FINGERPRINT'), false, 'Mismatched fingerprint must fail');
-  assert.equal(verifyDeliveryAuthorization(null, fakeFingerprint), false, 'Null auth must fail');
+  assert.equal(auth.manifestFingerprint, validFingerprint);
+  assert.equal(auth.signature.length, 64, 'Signature must be a 64-character hex HMAC');
+  assert.equal(verifyDeliveryAuthorization(auth, validFingerprint), true, 'Valid token must verify');
+
+  // Rejects mismatched fingerprints
+  assert.equal(verifyDeliveryAuthorization(auth, generateValidFingerprint('altered-manifest')), false, 'Mismatched fingerprint must fail');
+  assert.equal(verifyDeliveryAuthorization(null, validFingerprint), false, 'Null auth must fail');
+  assert.equal(verifyDeliveryAuthorization(auth, ''), false, 'Empty fingerprint must fail');
+  assert.equal(verifyDeliveryAuthorization(auth, null), false, 'Null fingerprint must fail');
+
+  // Rejects prefix-only slices (Anti-Pattern / R-02 fix)
+  assert.equal(verifyDeliveryAuthorization(auth, validFingerprint.substring(0, 8)), false, '8-char prefix match must fail');
+  assert.equal(verifyDeliveryAuthorization(auth, validFingerprint.substring(0, 32)), false, '32-char prefix match must fail');
+
+  // Rejects tampered signature
+  const tamperedAuthSig = { ...auth, signature: auth.signature.substring(0, 63) + (auth.signature[63] === 'a' ? 'b' : 'a') };
+  tamperedAuthSig.token = `DELIV-AUTH-${tamperedAuthSig.signature}`;
+  assert.equal(verifyDeliveryAuthorization(tamperedAuthSig, validFingerprint), false, 'Tampered signature must fail verification');
+
+  // Rejects tampered scope (e.g. chassisKey swapped)
+  const tamperedChassis = { ...auth, chassisKey: 'DL385_Gen12' };
+  assert.equal(verifyDeliveryAuthorization(tamperedChassis, validFingerprint), false, 'Altered chassis scope must fail verification');
+
+  // Rejects expired authorization
+  const expiredAuth = {
+    ...auth,
+    expiresAt: new Date(Date.now() - 60000).toISOString()
+  };
+  assert.equal(verifyDeliveryAuthorization(expiredAuth, validFingerprint), false, 'Expired auth must fail verification');
+
+  // assertDeliveryAuthorization behavior
+  assert.equal(assertDeliveryAuthorization(auth, validFingerprint), true);
+  assert.equal(assertDeliveryAuthorization(null, null, { diagnostic: true }), true, 'Diagnostic bypass allowed');
+  assert.throws(() => {
+    assertDeliveryAuthorization(null, validFingerprint);
+  }, /DeliveryAuthorization is missing/i);
+  assert.throws(() => {
+    assertDeliveryAuthorization(auth, generateValidFingerprint('tampered'));
+  }, /failed cryptographic verification/i);
 });
 
-test('Core Contracts — EvidenceLedger rejects missing status (INV-105 Zero Default Success)', () => {
+test('Core Contracts — EvidenceLedger state transitions & zero default success (INV-105, INV-131)', () => {
   const ledger = createEvidenceLedger({ traceId: 'TRC-TEST-001', chassis: 'DL380_Gen12' });
-  ledger.startPhase(1, 'Intake', {});
 
   // Calling completePhase without status MUST throw
+  ledger.startPhase(1, 'Intake', {});
   assert.throws(() => {
     ledger.completePhase(1);
   }, /ZERO_DEFAULT_SUCCESS/);
@@ -120,35 +196,159 @@ test('Core Contracts — EvidenceLedger rejects missing status (INV-105 Zero Def
     ledger.completePhase(1, 'INVALID_STATUS_FOO');
   }, /Invalid phase status/);
 
+  // Calling completePhase on an unstarted phase MUST throw ILLEGAL_TRANSITION (R-05)
+  assert.throws(() => {
+    ledger.completePhase(2, 'PASSED', {});
+  }, /ILLEGAL_TRANSITION/);
+
+  // Calling completePhase as SKIPPED without skipReason and policyCode MUST throw
+  assert.throws(() => {
+    ledger.completePhase(1, 'SKIPPED', {});
+  }, /marked SKIPPED must provide both skipReason and policyCode/);
+
   // Explicit valid status succeeds
   assert.doesNotThrow(() => {
     ledger.completePhase(1, 'PASSED', { items: 10 });
   });
   assert.equal(ledger.phases.phase_1.status, 'PASSED');
+
+  // Explicit valid SKIPPED phase succeeds with reason and policy
+  ledger.startPhase(2, 'Second Phase', {});
+  assert.doesNotThrow(() => {
+    ledger.completePhase(2, 'SKIPPED', {
+      skipReason: 'No secondary steps configured',
+      policyCode: 'POLICY_OPTIONAL_SKIP'
+    });
+  });
+  assert.equal(ledger.phases.phase_2.status, 'SKIPPED');
+  assert.equal(ledger.phases.phase_2.skipReason, 'No secondary steps configured');
+  assert.equal(ledger.phases.phase_2.policyCode, 'POLICY_OPTIONAL_SKIP');
 });
 
-test('Core Contracts — Pre-Presentation Acceptance blocks portal workbook generation', () => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-auth-test-'));
-  const exportPath = path.join(tempDir, 'Test_Portal.xlsx');
+test('Core Contracts — Pre-Presentation Acceptance blocks all 4 public presentation exporters (INV-128 / R-01)', () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-auth-all-'));
+  const testFingerprint = generateValidFingerprint('candidate-export-test');
 
-  const failedEvaluation = {
+  const candidateEvaluation = {
     chassis: 'DL380_Gen12',
+    manifestFingerprint: testFingerprint,
     acceptanceGate: {
-      isValid: false,
-      status: 'FAILED',
-      blockersCount: 2,
-      blockers: [
-        { id: 'U1', name: 'Valid HPE SKUs' },
-        { id: 'B1', name: 'Physical Thermal Checks' }
-      ]
+      isValid: true,
+      status: 'PASSED',
+      blockersCount: 0,
+      blockers: []
     },
-    items: [{ sku: 'P74573-B21', quantity: 2 }]
+    items: [{ sku: 'P74573-B21', quantity: 2, unitPriceUsd: 1200 }],
+    rankedSolutions: [
+      {
+        rank: 1,
+        name: 'Rank 1: Preserved Intent',
+        skuPartsList: [{ sku: 'P74573-B21', quantity: 2, unitPriceUsd: 1200 }]
+      }
+    ]
   };
 
+  const p1 = path.join(tempDir, 'Test_Portal.xlsx');
+  const p2 = path.join(tempDir, 'Test_Proposal.xlsx');
+  const p3 = path.join(tempDir, 'Test_MultiRank.xlsx');
+  const p4 = path.join(tempDir, 'Test_MultiRank.csv');
+
   try {
+    // 1. Without deliveryAuthorization, all 4 exporters MUST throw
     assert.throws(() => {
-      generateRankedPortalWorkbook(failedEvaluation, exportPath);
-    }, /Cannot export portal workbook: Pre-presentation acceptance failed/);
+      generateRankedPortalWorkbook(candidateEvaluation, p1);
+    }, /DeliveryAuthorization is missing/i);
+
+    assert.throws(() => {
+      generateProfessionalBOQ(candidateEvaluation, p2, 'DL380_Gen12', 1);
+    }, /DeliveryAuthorization is missing/i);
+
+    assert.throws(() => {
+      generateMultiRankSolutionWorkbook(candidateEvaluation, p3, 'DL380_Gen12');
+    }, /DeliveryAuthorization is missing/i);
+
+    assert.throws(() => {
+      generateMultiRankSolutionCsv(candidateEvaluation, p4);
+    }, /DeliveryAuthorization is missing/i);
+
+    // 2. With invalid / tampered authorization, all 4 exporters MUST throw
+    const invalidAuthEval = {
+      ...candidateEvaluation,
+      deliveryAuthorization: {
+        token: 'DELIV-AUTH-fake',
+        signature: '0'.repeat(64),
+        manifestFingerprint: generateValidFingerprint('tampered-fingerprint'),
+        chassisKey: 'DL380_Gen12',
+        issuedAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        profile: 'BOQ_EVALUATION'
+      }
+    };
+
+    assert.throws(() => {
+      generateRankedPortalWorkbook(invalidAuthEval, p1);
+    }, /failed cryptographic verification/i);
+
+    assert.throws(() => {
+      generateProfessionalBOQ(invalidAuthEval, p2, 'DL380_Gen12', 1);
+    }, /failed cryptographic verification/i);
+
+    assert.throws(() => {
+      generateMultiRankSolutionWorkbook(invalidAuthEval, p3, 'DL380_Gen12');
+    }, /failed cryptographic verification/i);
+
+    assert.throws(() => {
+      generateMultiRankSolutionCsv(invalidAuthEval, p4);
+    }, /failed cryptographic verification/i);
+
+    // 3. With { diagnostic: true } option, exporters succeed without requiring authorization
+    assert.doesNotThrow(() => {
+      generateRankedPortalWorkbook(candidateEvaluation, p1, { diagnostic: true });
+    }, 'Diagnostic mode must allow portal workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateProfessionalBOQ(candidateEvaluation, p2, 'DL380_Gen12', 1, { diagnostic: true });
+    }, 'Diagnostic mode must allow proposal workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateMultiRankSolutionWorkbook(candidateEvaluation, p3, 'DL380_Gen12', { diagnostic: true });
+    }, 'Diagnostic mode must allow multi-rank workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateMultiRankSolutionCsv(candidateEvaluation, p4, { diagnostic: true });
+    }, 'Diagnostic mode must allow multi-rank CSV generation');
+
+    // 4. With valid cryptographic DeliveryAuthorization bound to candidate fingerprint, all exporters succeed
+    const validAuth = issueDeliveryAuthorization({
+      manifestFingerprint: testFingerprint,
+      chassisKey: 'DL380_Gen12',
+      acceptanceDecision: {
+        isApproved: true,
+        profile: 'BOQ_EVALUATION'
+      }
+    });
+
+    const authorizedEvaluation = {
+      ...candidateEvaluation,
+      deliveryAuthorization: validAuth
+    };
+
+    assert.doesNotThrow(() => {
+      generateRankedPortalWorkbook(authorizedEvaluation, p1);
+    }, 'Authorized evaluation must allow portal workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateProfessionalBOQ(authorizedEvaluation, p2, 'DL380_Gen12', 1);
+    }, 'Authorized evaluation must allow proposal workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateMultiRankSolutionWorkbook(authorizedEvaluation, p3, 'DL380_Gen12');
+    }, 'Authorized evaluation must allow multi-rank workbook generation');
+
+    assert.doesNotThrow(() => {
+      generateMultiRankSolutionCsv(authorizedEvaluation, p4);
+    }, 'Authorized evaluation must allow multi-rank CSV generation');
+
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
@@ -167,4 +367,73 @@ test('Core Contracts — Aspect Registry evaluates domain checkers dynamically',
   assert.equal(domainResult.domain, 'server');
   assert.ok(Array.isArray(domainResult.checks), 'Checks array must be returned');
   assert.ok(domainResult.checks.some(c => c.id === 'COMPUTE_THERMAL'), 'Thermal check must run');
+});
+
+test('Core Contracts — BOM Reconciliation detects quantity deltas and forces is100PercentMatch false (R-03)', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bom-recon-test-'));
+  const chassisDir = path.join(tmpDir, 'DL380_Gen12');
+  fs.mkdirSync(chassisDir, { recursive: true });
+  fs.writeFileSync(path.join(chassisDir, 'DL380_Gen12_Catalog.json'), JSON.stringify({
+    entries: [
+      { skus: [{ 'Product #': 'P74573-B21' }, { 'Product #': 'P48820-B21' }] }
+    ]
+  }));
+
+  try {
+    const proposedRank1 = {
+      rank: 1,
+      skuList: [
+        { sku: 'P74573-B21', quantity: 2, description: 'Intel Xeon Gold 6530 Processor', unitPriceUsd: 1200 },
+        { sku: 'P48820-B21', quantity: 1, description: 'Fan Kit', unitPriceUsd: 150 }
+      ]
+    };
+
+    // Vendor BOM has quantity discrepancy on CPU (1 instead of 2)
+    const vendorBomWithQtyMismatch = [
+      { sku: 'P74573-B21', quantity: 1, description: 'Intel Xeon Gold 6530 Processor', unitPriceUsd: 1200 },
+      { sku: 'P48820-B21', quantity: 1, description: 'Fan Kit', unitPriceUsd: 150 }
+    ];
+
+    const report = verifyVendorBOM(vendorBomWithQtyMismatch, proposedRank1, chassisDir);
+    assert.equal(report.is100PercentMatch, false, 'Quantity mismatch must force is100PercentMatch to false');
+    assert.equal(report.hasDiscrepancies, true, 'hasDiscrepancies must be true on quantity delta');
+    assert.ok(Array.isArray(report.discrepancies.quantityDeltas), 'discrepancies.quantityDeltas must be an array');
+    assert.equal(report.discrepancies.quantityDeltas.length, 1, 'Exactly 1 quantity delta should be recorded');
+    assert.equal(report.discrepancies.quantityDeltas[0].sku, 'P74573-B21');
+    assert.equal(report.discrepancies.quantityDeltas[0].vendorQty, 1);
+    assert.equal(report.discrepancies.quantityDeltas[0].proposedQty, 2);
+    assert.equal(report.discrepancies.quantityDeltas[0].qtyDiff, -1);
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+test('Core Contracts — Single-file audit does not invent vendor additions or trigger feedback quarantine (R-04)', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'single-file-test-'));
+  const chassisDir = path.join(tmpDir, 'DL380_Gen12');
+  fs.mkdirSync(chassisDir, { recursive: true });
+  fs.writeFileSync(path.join(chassisDir, 'DL380_Gen12_Catalog.json'), JSON.stringify({
+    entries: [
+      { skus: [{ 'Product #': 'P74573-B21' }, { 'Product #': 'P48820-B21' }] }
+    ]
+  }));
+
+  try {
+    const singleVendorBom = [
+      { sku: 'P74573-B21', quantity: 2, description: 'Intel Xeon Gold 6530', unitPriceUsd: 1200 },
+      { sku: 'P99999-B21', quantity: 1, description: 'Uncataloged Live Card', unitPriceUsd: 800 }
+    ];
+
+    const audit = auditSingleVendorBOM(singleVendorBom, chassisDir);
+    assert.equal(audit.isSingleFileAudit, true, 'Must be marked as single file audit');
+    assert.equal(audit.isTwoBaselineComparison, false, 'Must not be a two baseline comparison');
+    assert.deepEqual(audit.discrepancies.addedByVendor, [], 'Single-file audit must never invent addedByVendor');
+    assert.deepEqual(audit.discrepancies.removedByVendor, [], 'Single-file audit must never invent removedByVendor');
+    assert.equal(audit.quarantinedObservationCount, 0, 'Single-file audit must not quarantine feedback observations');
+    assert.equal(audit.requiresFreshScrape, true, 'Uncataloged SKU must trigger requiresFreshScrape');
+    assert.equal(audit.uncatalogedSkus.length, 1);
+    assert.equal(audit.uncatalogedSkus[0].sku, 'P99999-B21');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
 });

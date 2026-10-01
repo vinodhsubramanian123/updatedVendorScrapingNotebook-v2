@@ -1259,19 +1259,28 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
   });
 
-  // Domain-Aware Dynamic Aspect Registry Integration (INV-56 / F-07)
+  // Domain-Aware Dynamic Aspect Registry Integration (INV-56 / F-07 / R-06)
   let domainAspectAudit = null;
+  const errors = [];
+  const warnings = [];
   try {
     const { evaluateDomainAspects } = require('../aspects/aspect_registry.js');
     domainAspectAudit = evaluateDomainAspects(topology.domain, items, catalogData, mandatorySkus, serverCount, {
       chassisInfo, channelWidth: memory?.channelWidth || 8, isCtoChassis: hasBaseChassis, options
     });
+    if (domainAspectAudit) {
+      if (Array.isArray(domainAspectAudit.errors) && domainAspectAudit.errors.length > 0) {
+        errors.push(...domainAspectAudit.errors);
+      }
+      if (Array.isArray(domainAspectAudit.warnings) && domainAspectAudit.warnings.length > 0) {
+        warnings.push(...domainAspectAudit.warnings);
+      }
+    }
   } catch (aspectErr) {
-    console.warn('[BOQ_EVALUATOR] Dynamic aspect registry evaluation note:', aspectErr.message);
+    const errDetail = `Aspect Registry Evaluation Failure [${topology.domain}]: ${aspectErr.message}`;
+    console.error('[BOQ_EVALUATOR]', errDetail);
+    errors.push(errDetail);
   }
-
-  const errors = [];
-  const warnings = [];
   const missingDependencies = [];
   const mathDeductions = [];
   const { chassisDefaults, redundantDefaults } = collectChassisDefaultAdvisories(
@@ -1430,9 +1439,10 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       candidate.isMathClean = false;
     }
   }
-  // INV-105: isMathClean requires zero errors, zero topology gaps, AND all aspect checks in terminal PASS/WARN (never UNKNOWN/FAIL)
+  // INV-105: isMathClean requires zero errors, zero topology gaps, all aspect checks in terminal PASS/WARN, and clean domain registry verdict (R-06)
   const _hasUnknownOrFailAspect = !aspectChecks.length || aspectChecks.some(a => !['PASS', 'WARN', 'NOT_APPLICABLE'].includes(a.status));
-  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0 && !_hasUnknownOrFailAspect;
+  const isDomainClean = !domainAspectAudit || (domainAspectAudit.hasFailures !== true && (!domainAspectAudit.errors || domainAspectAudit.errors.length === 0));
+  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0 && !_hasUnknownOrFailAspect && isDomainClean;
   const isGraphClean = conflictGraphResults.isWholeSolutionValid;
   const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
 
@@ -1538,14 +1548,19 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
 }
 
 function evaluateBOQMultiAspect(filePathOrText, options = {}) {
-  // Catalog freshness pre-flight (Fix X-8)
+  // Typed Catalog Freshness Pre-Flight (INV-127 / R-07)
+  let catalogFreshness = null;
   try {
-    const { isCatalogFresh } = require('../catalog/catalog_freshness_guard.js');
+    const { evaluateCatalogFreshness } = require('../catalog/catalog_freshness_guard.js');
     const catalogDirForFreshness = options.targetDir || options.catalogDir || null;
-    if (catalogDirForFreshness && !isCatalogFresh(catalogDirForFreshness, 72)) {
-      console.warn(`[WARN] [FRESHNESS] Catalog at "${catalogDirForFreshness}" is older than 72 hours. Re-scrape recommended before quoting.`);
-      if (!options.context) options.context = {};
-      options.context.staleCatalogWarning = true;
+    if (catalogDirForFreshness) {
+      catalogFreshness = evaluateCatalogFreshness(catalogDirForFreshness, { maxAgeHours: 72 });
+      if (!catalogFreshness.isFresh) {
+        console.warn(`[WARN] [FRESHNESS] ${catalogFreshness.reason}`);
+        if (!options.context) options.context = {};
+        options.context.staleCatalogWarning = catalogFreshness.status === 'STALE';
+        options.context.catalogFreshness = catalogFreshness;
+      }
     }
   } catch (_freshnessErr) {
     // Non-fatal — freshness check must never abort evaluation
@@ -1581,7 +1596,7 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
   } catch (veErr) {
     // Non-blocking value engineering analysis
   }
-  return { ...result, items: result.items || items, requirementResolution, valueEngineering };
+  return { ...result, items: result.items || items, requirementResolution, valueEngineering, catalogFreshness };
 }
 
 setPhysicalMathValidator((items, catalogData, targetDir, options = {}) => {

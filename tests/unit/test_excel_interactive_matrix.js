@@ -35,7 +35,7 @@ test('Excel Interactive Matrix - Multi-Chassis & Formulas & Formatting', async (
   };
 
   await t.test('Generates Excel workbook for multi-chassis combined quote', () => {
-    const resultPath = generateProfessionalBOQ(mockEvalResults, exportPath, 'Combined-Multi-Chassis', 1);
+    const resultPath = generateProfessionalBOQ(mockEvalResults, exportPath, 'Combined-Multi-Chassis', 1, { diagnostic: true });
     assert.strictEqual(fs.existsSync(resultPath), true, 'Excel file should be created');
   });
 

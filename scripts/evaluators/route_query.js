@@ -17,7 +17,7 @@ const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
 const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
 const { cleanBaseSKU, isValidHpeSKU } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
-const { verifyVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
+const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
@@ -888,11 +888,12 @@ function _handleBomReconciliation(queryText, context) {
     } else if (context.proposedSolution) {
       proposedSolution = context.proposedSolution;
       isTwoBaseline = true;
-    } else {
-      proposedSolution = { rank: 1, name: 'Baseline Evaluation', skuList: [] };
     }
 
-    const auditReport = verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir);
+    const auditReport = isTwoBaseline
+      ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir)
+      : auditSingleVendorBOM(path.resolve(vendorFile), chassisInfo.catalogDir);
+
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
       auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
     }
@@ -905,11 +906,13 @@ function _handleBomReconciliation(queryText, context) {
         ? (auditReport.is100PercentMatch
             ? 'Vendor quote perfectly matches proposed configuration.'
             : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`)
-        : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`,
+        : (auditReport.isCatalogClean
+            ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`
+            : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). Note: Customer tender was not provided; comparison requires both files.`),
       suggestedAction: isTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else if (context.filePath && fs.existsSync(context.filePath)) {
-    const auditReport = verifyVendorBOM(path.resolve(context.filePath), { rank: 1, skuList: [] }, chassisInfo.catalogDir);
+    const auditReport = auditSingleVendorBOM(path.resolve(context.filePath), chassisInfo.catalogDir);
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
       auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
     }
@@ -918,7 +921,9 @@ function _handleBomReconciliation(queryText, context) {
       status: 'SINGLE_FILE_AUDIT',
       isTwoBaselineComparison: false,
       auditReport,
-      message: `Single-file audit completed against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`,
+      message: auditReport.isCatalogClean
+        ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`
+        : `Single-file audit completed against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). Note: Customer tender was not provided; comparison requires both files.`,
       suggestedAction: 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else {

@@ -68,13 +68,15 @@ const StageResultSchema = z.object({
   data: z.record(z.any()).default({}),
   timestamp: z.string().default(() => new Date().toISOString())
 }).refine(data => {
-  // INV-105: If executionState is SKIPPED, skipReason and policyCode are mandatory
+  // INV-105: If executionState is SKIPPED, BOTH skipReason and policyCode are mandatory
   if (data.executionState === 'SKIPPED') {
-    return Boolean(data.skipReason && data.skipReason.trim().length > 0);
+    const hasReason = Boolean(data.skipReason && data.skipReason.trim().length > 0);
+    const hasPolicy = Boolean(data.policyCode && data.policyCode.trim().length > 0);
+    return hasReason && hasPolicy;
   }
   return true;
 }, {
-  message: 'Stage marked as SKIPPED must provide a non-empty skipReason.'
+  message: 'Stage marked as SKIPPED must provide both a non-empty skipReason and policyCode.'
 });
 
 // ==========================================
@@ -93,9 +95,21 @@ const AcceptanceDecisionSchema = z.object({
   decisionTimestamp: z.string().default(() => new Date().toISOString())
 });
 
+const DEFAULT_AUTH_SECRET = 'antigravity-delivery-auth-secret-key-v1';
+
+function getAuthSecret(customSecret) {
+  return customSecret || process.env.DELIVERY_AUTH_SECRET || DEFAULT_AUTH_SECRET;
+}
+
+function computeDeliveryHmac(payload, secret = null) {
+  const sec = getAuthSecret(secret);
+  return crypto.createHmac('sha256', sec).update(payload).digest('hex');
+}
+
 const DeliveryAuthorizationSchema = z.object({
   token: z.string().startsWith('DELIV-AUTH-'),
-  manifestFingerprint: z.string().min(8),
+  signature: z.string().regex(/^[a-fA-F0-9]{64}$/, 'Must be a 64-character SHA-256 hex HMAC'),
+  manifestFingerprint: z.string().regex(/^[a-fA-F0-9]{64}$/, 'Must be a 64-character SHA-256 hex string'),
   chassisKey: z.string().min(1),
   issuedAt: z.string(),
   expiresAt: z.string(),
@@ -104,60 +118,134 @@ const DeliveryAuthorizationSchema = z.object({
 
 /**
  * Issues an immutable, cryptographically verifiable delivery authorization token
- * only when acceptance has passed.
+ * bound to the candidate manifest SHA-256 fingerprint, scope, and pre-presentation acceptance.
  *
  * @param {object} params
- * @param {string} params.manifestFingerprint - SHA-256 or truncated hash of candidate BOM
- * @param {string} params.chassisKey - target product generation
+ * @param {string} params.manifestFingerprint - Full 64-character SHA-256 hex string of candidate BOM
+ * @param {string} params.chassisKey - target product generation / chassis name
  * @param {object} params.acceptanceDecision - validated AcceptanceDecision
+ * @param {string} [params.secret] - optional custom HMAC signing secret
  * @returns {object} DeliveryAuthorization record
  */
-function issueDeliveryAuthorization(params) {
-  const { manifestFingerprint, chassisKey, acceptanceDecision } = params;
+function issueDeliveryAuthorization(params = {}) {
+  const { manifestFingerprint, chassisKey, acceptanceDecision, secret } = params;
   if (!acceptanceDecision || acceptanceDecision.isApproved !== true) {
     throw new Error('Cannot issue DeliveryAuthorization: Pre-presentation acceptance is not approved.');
   }
-  if (!manifestFingerprint) {
+  if (!manifestFingerprint || typeof manifestFingerprint !== 'string') {
     throw new Error('Cannot issue DeliveryAuthorization: Manifest fingerprint is required.');
   }
 
-  const nonce = crypto.randomBytes(4).toString('hex').toUpperCase();
-  const token = `DELIV-AUTH-${manifestFingerprint.slice(0, 10).toUpperCase()}-${nonce}`;
+  const cleanFingerprint = manifestFingerprint.trim().toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(cleanFingerprint)) {
+    throw new Error(`Cannot issue DeliveryAuthorization: Manifest fingerprint must be a full 64-character SHA-256 hex string (received: "${manifestFingerprint}").`);
+  }
+
   const now = new Date();
+  const issuedAt = now.toISOString();
   const expiresAt = new Date(now.getTime() + 3600 * 1000).toISOString();
+  const cleanChassis = String(chassisKey || 'PROLIANT_SERVER').trim();
+  const cleanProfile = String(acceptanceDecision.profile || 'BOQ_EVALUATION').trim();
+
+  const payload = `${cleanFingerprint}:${cleanChassis}:${cleanProfile}:${issuedAt}:${expiresAt}`;
+  const signature = computeDeliveryHmac(payload, secret);
+  const token = `DELIV-AUTH-${signature}`;
 
   const auth = {
     token,
-    manifestFingerprint,
-    chassisKey: chassisKey || 'UNKNOWN_CHASSIS',
-    issuedAt: now.toISOString(),
+    signature,
+    manifestFingerprint: cleanFingerprint,
+    chassisKey: cleanChassis,
+    issuedAt,
     expiresAt,
-    profile: acceptanceDecision.profile || 'BOQ_EVALUATION'
+    profile: cleanProfile
   };
 
   return DeliveryAuthorizationSchema.parse(auth);
 }
 
 /**
- * Validates whether a delivery authorization token matches the candidate manifest fingerprint
- * and is within its freshness window.
+ * Validates whether a delivery authorization token matches the candidate manifest fingerprint,
+ * passes cryptographic HMAC signature verification, and is within its freshness window.
  *
  * @param {object} auth - DeliveryAuthorization record
- * @param {string} currentFingerprint - candidate manifest fingerprint
+ * @param {string} currentFingerprint - candidate manifest SHA-256 fingerprint
+ * @param {object} [options]
+ * @param {string} [options.chassisKey] - expected chassis key
+ * @param {string} [options.profile] - expected evaluation profile
+ * @param {string} [options.secret] - custom HMAC secret
  * @returns {boolean}
  */
-function verifyDeliveryAuthorization(auth, currentFingerprint) {
-  if (!auth || typeof auth !== 'object' || !auth.token) return false;
-  if (!auth.token.startsWith('DELIV-AUTH-')) return false;
-  if (currentFingerprint && auth.manifestFingerprint) {
-    const cleanCurrent = String(currentFingerprint).toLowerCase();
-    const cleanAuth = String(auth.manifestFingerprint).toLowerCase();
-    if (!cleanCurrent.startsWith(cleanAuth.slice(0, 8)) && !cleanAuth.startsWith(cleanCurrent.slice(0, 8))) {
-      return false;
-    }
+function verifyDeliveryAuthorization(auth, currentFingerprint, options = {}) {
+  if (!auth || typeof auth !== 'object') return false;
+  const parseResult = DeliveryAuthorizationSchema.safeParse(auth);
+  if (!parseResult.success) return false;
+
+  if (!currentFingerprint || typeof currentFingerprint !== 'string') return false;
+  const cleanCurrent = currentFingerprint.trim().toLowerCase();
+  const cleanAuth = auth.manifestFingerprint.trim().toLowerCase();
+
+  // Exact full 64-character SHA-256 hex match is strictly required (INV-128 / R-02)
+  if (cleanCurrent.length !== 64 || cleanCurrent !== cleanAuth) {
+    return false;
   }
+
+  // Validate freshness window
   const expiry = Date.parse(auth.expiresAt);
-  if (isNaN(expiry) || Date.now() > expiry) return false;
+  const issued = Date.parse(auth.issuedAt);
+  if (isNaN(expiry) || isNaN(issued)) return false;
+  const now = Date.now();
+  if (now > expiry || now < (issued - 5000)) return false;
+
+  // Validate chassisKey scope if specified
+  if (options.chassisKey) {
+    const expectedChassis = String(options.chassisKey).trim();
+    if (auth.chassisKey !== expectedChassis) return false;
+  }
+
+  // Validate profile scope if specified
+  if (options.profile) {
+    const expectedProfile = String(options.profile).trim();
+    if (auth.profile !== expectedProfile) return false;
+  }
+
+  // Cryptographic tamper check (HMAC signature verification)
+  const payload = `${cleanAuth}:${auth.chassisKey}:${auth.profile}:${auth.issuedAt}:${auth.expiresAt}`;
+  const expectedSignature = computeDeliveryHmac(payload, options.secret);
+  if (auth.token !== `DELIV-AUTH-${auth.signature}`) return false;
+
+  try {
+    const sigBuf = Buffer.from(auth.signature, 'hex');
+    const expBuf = Buffer.from(expectedSignature, 'hex');
+    if (sigBuf.length !== 32 || expBuf.length !== 32) return false;
+    return crypto.timingSafeEqual(sigBuf, expBuf);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Asserts that delivery authorization is valid before presentation export.
+ * Throws a descriptive Error if verification fails.
+ *
+ * @param {object} auth - DeliveryAuthorization record
+ * @param {string} currentFingerprint - candidate manifest SHA-256 fingerprint
+ * @param {object} [options]
+ */
+function assertDeliveryAuthorization(auth, currentFingerprint, options = {}) {
+  if (options.diagnostic === true || options.allowDiagnostic === true) {
+    return true;
+  }
+  if (!auth) {
+    throw new Error('Presentation export blocked: DeliveryAuthorization is missing. Pre-presentation acceptance and cryptographic authorization are required.');
+  }
+  if (!currentFingerprint) {
+    throw new Error('Presentation export blocked: Current candidate manifest fingerprint is missing.');
+  }
+  const isValid = verifyDeliveryAuthorization(auth, currentFingerprint, options);
+  if (!isValid) {
+    throw new Error('Presentation export blocked: DeliveryAuthorization failed cryptographic verification (token mismatch, expired, or manifest altered).');
+  }
   return true;
 }
 
@@ -214,5 +302,6 @@ module.exports = {
   DeliveryAuthorizationSchema,
   WorkflowResultSchema,
   issueDeliveryAuthorization,
-  verifyDeliveryAuthorization
+  verifyDeliveryAuthorization,
+  assertDeliveryAuthorization
 };

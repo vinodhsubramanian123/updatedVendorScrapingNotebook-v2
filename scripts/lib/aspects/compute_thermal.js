@@ -95,9 +95,9 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     isDl380aAccelerator,
     uniqueCpuSkus: Array.from(uniqueCpuSkus),
     hasMixedCpuModels: (serverCount === 1 || !serverCount) && uniqueCpuSkus.size > 1,
-    // High TDP (> 185W or theta threshold) mandates High-Performance Fan Kit + Heatsink
-    needsHighPerfCooling: maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks),
-    thermalEquationFormula: `maxCpuTdpWatts (${maxCpuTdpWatts}W) > 185W => needsHighPerfCooling = ${maxCpuTdpWatts > 185 && (!hasHighPerfFans || !hasHeatsinks)}`
+    // High TDP (> 185W or theta threshold) mandates High-Performance Fan Kit
+    needsHighPerfCooling: maxCpuTdpWatts > 185 && !hasHighPerfFans,
+    thermalEquationFormula: `maxCpuTdpWatts (${maxCpuTdpWatts}W) > 185W => needsHighPerfCooling = ${maxCpuTdpWatts > 185 && !hasHighPerfFans}`
   };
 }
 

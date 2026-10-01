@@ -168,7 +168,7 @@ function checkLot9CeRemovalNeeds(tally, estimatedNodeWattage) {
   return tally.hasPlatinumPsu && !tally.hasTitaniumPsu && estimatedNodeWattage >= 500 && !tally.hasCeRemovalKit;
 }
 
-function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
+function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   const tally = {
     hasAcPowerSupply: false,
     hasDcPowerSupply: false,
@@ -242,8 +242,11 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}) {
     requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
     requiredDl380aPsuCount: dl380aPsu.requiredCount,
     hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
-    hasMixedWattagePsus: tally.psuWattages.size > 1,
-    hasMixedEfficiencyPsus: tally.hasPlatinumPsu && tally.hasTitaniumPsu,
+    hasMixedWattagePsus: (serverCount <= 1 || !serverCount) ? tally.psuWattages.size > 1 : items.filter(it => {
+      const d = (it.description || '').toLowerCase();
+      return d.includes('power supply') || d.includes('flex slot') || d.includes('platinum') || d.includes('titanium');
+    }).some(it => ((it.quantity || it.qty || 1) % 2) !== 0),
+    hasMixedEfficiencyPsus: (serverCount <= 1 || !serverCount) ? (tally.hasPlatinumPsu && tally.hasTitaniumPsu) : false,
     platinumPsuCount: tally.platinumPsuCount || 0,
     titaniumPsuCount: tally.titaniumPsuCount || 0,
     hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,

@@ -1,59 +1,51 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { randomUUID } = require('crypto');
 
 function isPidAlive(pid) {
-  if (!pid || isNaN(pid) || pid <= 0) return false;
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (err) {
-    return err.code === 'EPERM';
-  }
+  if (!Number.isSafeInteger(pid) || pid <= 0) return true;
+  try { process.kill(pid, 0); return true; }
+  catch (error) { return error.code !== 'ESRCH'; }
 }
 
-// Exclusive local-process lease, shared by agents using the canonical entrypoint.
-// Never steal a lease merely because a long scrape has exceeded a time estimate.
+// All acquisition/reclamation goes through this short exclusive transaction.
+// A stale transaction marker fails closed; never race another reclaimer.
 function acquireWorkflowLease(name, root = path.resolve(__dirname, '../../../outputs/history/locks')) {
   if (!/^[a-z0-9_-]+$/i.test(name)) throw new Error('Invalid workflow lease name');
   fs.mkdirSync(root, { recursive: true });
   const file = path.join(root, `${name}.lock`);
+  const claimFile = `${file}.claim`;
+  let claim;
+  try { claim = fs.openSync(claimFile, 'wx'); }
+  catch (error) {
+    if (error.code !== 'EEXIST') throw error;
+    throw new Error(`WORKFLOW_BUSY: ${name}; acquisition transaction at ${claimFile}`);
+  }
+  const token = `${process.pid}\n${new Date().toISOString()}\n${randomUUID()}\n`;
   let fd;
   try {
-    fd = fs.openSync(file, 'wx');
-  } catch (error) {
-    if (error.code === 'EEXIST') {
-      try {
-        const content = fs.readFileSync(file, 'utf8');
-        const lockPid = parseInt(content.split('\n')[0].trim(), 10);
-        if (lockPid && !isPidAlive(lockPid)) {
-          try { fs.unlinkSync(file); } catch (_) {}
-          try {
-            fd = fs.openSync(file, 'wx');
-          } catch (retryErr) {
-            if (retryErr.code === 'EEXIST') {
-              throw new Error(`WORKFLOW_BUSY: ${name}; existing lease at ${file}. Do not close or reuse another workflow's portal session.`);
-            }
-            throw retryErr;
-          }
-        } else {
-          throw new Error(`WORKFLOW_BUSY: ${name}; existing lease at ${file}. Do not close or reuse another workflow's portal session.`);
-        }
-      } catch (readErr) {
-        if (readErr.message && readErr.message.startsWith('WORKFLOW_BUSY')) throw readErr;
-        throw new Error(`WORKFLOW_BUSY: ${name}; existing lease at ${file}. Do not close or reuse another workflow's portal session.`);
+    if (fs.existsSync(file)) {
+      const content = fs.readFileSync(file, 'utf8');
+      const pidText = content.split('\n')[0].trim();
+      if (!/^\d+$/.test(pidText) || isPidAlive(Number(pidText))) {
+        throw new Error(`WORKFLOW_BUSY: ${name}; existing lease at ${file}. Do not reuse another workflow's portal session.`);
       }
-    } else {
-      throw error;
+      fs.unlinkSync(file);
     }
+    fd = fs.openSync(file, 'wx');
+    fs.writeFileSync(fd, token);
+  } finally {
+    fs.closeSync(claim);
+    fs.unlinkSync(claimFile);
   }
-  fs.writeFileSync(fd, `${process.pid}\n${new Date().toISOString()}\n`);
   let released = false;
   const release = () => {
     if (released) return;
     released = true;
     try { fs.closeSync(fd); } catch (_) {}
-    try { fs.unlinkSync(file); } catch (_) {}
+    // A replaced lease must never be deleted by the former owner.
+    try { if (fs.readFileSync(file, 'utf8') === token) fs.unlinkSync(file); } catch (_) {}
     process.removeListener('exit', release);
   };
   process.once('exit', release);

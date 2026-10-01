@@ -40,14 +40,14 @@ assert.equal(scopedHeader.items[1].quantity, 1, 'global scope must be applied be
 
 const candidate = { rank: 1, name: 'Closest valid solution', physicalMathClean: true, skuPartsList: context.items.filter(it => it.quantityScope !== 'global').map(it => ({ ...it, unitPriceUsd: 10 })) };
 const evaluation = applyConfigurationContext({ clusterSizing: { serverCount: 1 }, conflictGraph: { rankedSolutions: [candidate], recommendedSolutions: [candidate] } }, context);
-const csv = XLSX.read(generateMultiRankSolutionCsv(evaluation), { type: 'string' });
+const csv = XLSX.read(generateMultiRankSolutionCsv(evaluation, null, { diagnostic: true }), { type: 'string' });
 const rows = XLSX.utils.sheet_to_json(csv.Sheets[csv.SheetNames[0]], { header: 1 });
 assert.ok(rows.every(row => row.length === 14), 'CSV header and data widths agree');
 const cpu = rows.find(row => row[2] === 'P74571-B21');
 assert.deepEqual(cpu.slice(3, 6).map(Number), [2, 20, 40]);
 const service = rows.find(row => row[2] === 'HA113A1');
 assert.deepEqual(service.slice(3, 6).map(Number), [1, 1, 1]);
-const wb = generateMultiRankSolutionWorkbook(evaluation);
+const wb = generateMultiRankSolutionWorkbook(evaluation, null, null, { diagnostic: true });
 let verified = 0;
 for (const sheet of Object.values(wb.Sheets)) {
   for (const [address, cell] of Object.entries(sheet)) {
@@ -63,7 +63,7 @@ const portal = generatePartnerPortalUploadBOM(evaluation);
 const portalRows = XLSX.utils.sheet_to_json(portal.Sheets[portal.SheetNames[0]], { header: 1 });
 assert.deepEqual(portalRows.find(row => row[0] === 'P74571-B21').slice(1, 3), [2, 20]);
 assert.deepEqual(portalRows.find(row => row[0] === 'HA113A1').slice(1, 3), [1, 1]);
-const proposal = generateProfessionalBOQ(evaluation);
+const proposal = generateProfessionalBOQ(evaluation, null, null, 1, { diagnostic: true });
 const proposalRows = Object.values(proposal.Sheets).flatMap(sheet => XLSX.utils.sheet_to_json(sheet, { header: 1 }));
 assert.equal(proposalRows.find(row => row[0] === 'P74571-B21')[1], 40);
 console.log('PASS: normalization, ownership ambiguity, branch isolation, service options, idempotency, CSV, MultiRank formulas, Partner Upload and Proposal.');

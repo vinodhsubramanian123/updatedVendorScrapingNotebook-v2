@@ -120,7 +120,7 @@ function identityFromRule(rule, config) {
     pillar: rule.pillar || chassisIdentity?.pillar || '',
     family: rule.family || chassisIdentity?.family || '',
     generation: rule.gen || rule.generation || chassisIdentity?.generation || '',
-    productId: baseProductId(rule.productId || rule.chassis || chassisIdentity?.productId || '')
+    productId: baseProductId(rule.productId || chassisIdentity?.productId || rule.chassis || '')
   };
 }
 

@@ -12,7 +12,7 @@ function currentRows(catalog) {
     .filter(row => !['REMOVED', 'DISCONTINUED'].includes(String(row['Diff Status'] || '').toUpperCase()));
 }
 function skuSet(catalog) {
-  return new Set(currentRows(catalog).map(row => row.sku || row['Product #']).filter(Boolean));
+  return new Set(currentRows(catalog).map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean));
 }
 function summarizeCatalog(dir, product) {
   const catalogPath = path.join(dir, `${product}_Catalog.json`);
@@ -39,9 +39,13 @@ function createCaptureReceipt(stagingDir, liveDir, product) {
   const capture = next.catalog.metadata?.scrapeTimestamp;
   if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now()
       || Date.parse(capture) !== Date.parse(raw.timestamp)) throw new Error('Capture timestamp does not match raw vendor evidence');
-  if (!next.counts.hardware || next.counts.hardware !== Number(next.catalog.metadata.totalUniqueSKUs)) {
-    throw new Error('Hardware SKU count does not match current catalog rows');
+  const retainedHardwareCount = new Set((next.catalog.entries || []).flatMap(entry => entry.skus || [])
+    .map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean)).size;
+  if (!next.counts.hardware || retainedHardwareCount !== Number(next.catalog.metadata.totalUniqueSKUs)) {
+    throw new Error('Hardware retained SKU count does not match catalog metadata');
   }
+  next.counts.retainedHardware = retainedHardwareCount;
+  next.counts.hardwareTombstones = retainedHardwareCount - next.counts.hardware;
   const workbook = require('xlsx-js-style').readFile(path.join(stagingDir, `${product}_OCA_Catalog.xlsx`));
   const workbookRows = require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets['All SKUs']);
   const actual = skuSet({ entries: [{ skus: workbookRows }] });

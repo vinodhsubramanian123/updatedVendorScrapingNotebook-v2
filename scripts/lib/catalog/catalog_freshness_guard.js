@@ -271,9 +271,87 @@ function isCatalogFresh(catalogDir, maxAgeHours = 72) {
   }
 }
 
+/**
+ * Evaluates typed catalog freshness and evidence state.
+ * Distinguishes FRESH, STALE, MISSING, CORRUPT, and FUTURE.
+ *
+ * @param {string} catalogDir
+ * @param {object} [options]
+ * @param {number} [options.maxAgeHours=72]
+ * @returns {object} Typed freshness assessment
+ */
+function evaluateCatalogFreshness(catalogDir, options = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const maxAgeHours = Number(options.maxAgeHours ?? 72);
+  const result = {
+    catalogDir: catalogDir || null,
+    status: 'UNKNOWN',
+    isFresh: false,
+    ageHours: null,
+    thresholdHours: maxAgeHours,
+    captureTimestamp: null,
+    reason: null
+  };
+
+  if (!catalogDir || !fs.existsSync(catalogDir)) {
+    result.status = 'MISSING';
+    result.reason = 'Catalog directory does not exist or was not specified.';
+    return result;
+  }
+
+  const prefix = path.basename(catalogDir);
+  const catalogPath = path.join(catalogDir, `${prefix}_Catalog.json`);
+  if (!fs.existsSync(catalogPath)) {
+    result.status = 'MISSING';
+    result.reason = `Catalog JSON file missing at "${catalogPath}".`;
+    return result;
+  }
+
+  let catalog;
+  try {
+    catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+  } catch (err) {
+    result.status = 'CORRUPT';
+    result.reason = `Catalog JSON is corrupt or unparseable: ${err.message}`;
+    return result;
+  }
+
+  const norm = normalizeCatalogMetadata(catalog?.metadata);
+  const capture = safeDate(norm.scrapeTimestamp);
+  if (!capture) {
+    result.status = 'CORRUPT';
+    result.reason = 'Catalog metadata missing valid scrapeTimestamp.';
+    return result;
+  }
+
+  result.captureTimestamp = capture.toISOString();
+  const ageHours = (Date.now() - capture.getTime()) / 3600000;
+  result.ageHours = parseFloat(ageHours.toFixed(1));
+
+  if (ageHours < 0) {
+    result.status = 'CORRUPT';
+    result.reason = `Catalog timestamp is in the future (${result.captureTimestamp}).`;
+    return result;
+  }
+
+  if (ageHours <= maxAgeHours) {
+    result.status = 'FRESH';
+    result.isFresh = true;
+    result.reason = `Catalog is fresh (${result.ageHours} hours old, threshold: ${maxAgeHours} hours).`;
+  } else {
+    result.status = 'STALE';
+    result.isFresh = false;
+    result.reason = `Catalog is stale (${result.ageHours} hours old, threshold: ${maxAgeHours} hours).`;
+  }
+
+  return result;
+}
+
 module.exports = {
   normalizeCatalogMetadata,
   auditCatalogFreshness,
   verifyTabularIntegrity,
-  isCatalogFresh
+  isCatalogFresh,
+  evaluateCatalogFreshness
 };

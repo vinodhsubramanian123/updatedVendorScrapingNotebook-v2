@@ -59,3 +59,8 @@ Missing from capture does not mean unsupported. Hidden does not mean orderable, 
 ## Completion gate
 
 A plan, hidden list or successful catalog build cannot close this workflow. Require exact final state readback, fresh complete vendor validation and retained evidence. Unsupported selector automation stays unresolved. Source replacement follows knowledge-sync verification, never discovery alone.
+
+
+### Verified correction (2026-10-01)
+
+See [the post-check-in review](../../../docs/audits/2026-10-01-post-checkin-scraping-review.md). Ambient tracking may be selectable SKU rows; the row adapter is implemented and restoration failures are fatal. Distinguish collapsed layout from unavailable status: S3U30C existed at 30C but was unavailable on P73282-B21; at tested 27C the restriction disappeared. Do not infer an allowed <=30C gate or all lower temperatures. NotebookLM row counts and fingerprints do not replace content: the semantic projection now retains displayed sheet data with shared-text references and full-content readback. The four scoped advisory lessons were cloud-verified in the exact DL380 Gen12 notebook; full catalog republishing remains separate.

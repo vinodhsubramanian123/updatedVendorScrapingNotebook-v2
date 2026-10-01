@@ -47,8 +47,8 @@ function adapterNetworkingOcp(items, catalogData, mandatorySkus, serverCount, _c
   return evalNetworkingOcp(items, catalogData, mandatorySkus, serverCount);
 }
 
-function adapterPowerEnvironment(items, catalogData, mandatorySkus, _serverCount, _ctx) {
-  return evalPowerEnvironment(items, catalogData, mandatorySkus);
+function adapterPowerEnvironment(items, catalogData, mandatorySkus, serverCount, _ctx) {
+  return evalPowerEnvironment(items, catalogData, mandatorySkus, serverCount);
 }
 
 function adapterSupportManufacturing(items, catalogData, _mandatorySkus, serverCount, _ctx) {
@@ -223,7 +223,7 @@ function normalizeAspectResult(id, result) {
       if (result.needsHeatsink) errors.push('Missing required processor heatsink');
       if (result.hasMixedCpuModels) errors.push('Dual processor models or stepping mismatch (mixed CPU models)');
       if (result.needsDirectLiquidCooling) errors.push('Direct Liquid Cooling required for high-TDP processor');
-      if (result.needsHighPerfCooling) errors.push('High-TDP processor (>185W) requires High-Performance Fan Kit and Heatsink');
+      if (result.needsHighPerfCooling) errors.push('High-TDP processor (>185W) requires High-Performance Fan Kit');
       if (result.fanKitExceedsMax) errors.push('Fan kit quantity exceeds maximum chassis capacity (CLIC Rule 81354654: max 1 fan kit per server)');
       break;
 
@@ -246,7 +246,7 @@ function normalizeAspectResult(id, result) {
       if (result.isExceedingTotalSlots) errors.push('PCIe card count exceeds physical mechanical slot capacity');
       if (result.isExceedingActiveSlots) errors.push('PCIe card count exceeds electrically cabled active slots');
       if (result.needsPrimaryCableKit) errors.push('Primary riser cable kit required to activate Slot 1');
-      if (result.needsSecondaryCableKit) errors.push('Secondary riser cable kit required to activate secondary slots');
+      if (result.needsSecondaryCableKit) warnings.push('Secondary riser cable kit required to activate secondary slots');
       if (result.needsSecondaryRiser) errors.push('Secondary PCIe riser card required');
       if (result.needsGpuPowerCableKit) errors.push('GPU auxiliary power cable kit required');
       break;
@@ -264,7 +264,7 @@ function normalizeAspectResult(id, result) {
       if (result.hasDl380aGpuPsuShortage) errors.push('GPU configuration lacks the profile-required redundant power supplies');
       if (result.hasSynergyRedundantPowerError) errors.push('Synergy frame requires 6 Titanium PSUs for N+N redundancy');
       if (result.hasDcPowerSupply && !result.hasDcLugKit) errors.push('-48VDC Power Supply requires DC Power Cable Lug Kit');
-      if (result.needsCeRemovalKit) errors.push('EU ErP Lot 9 requires CE Mark Removal Kit for 94% Platinum PSUs');
+      if (result.needsCeRemovalKit) warnings.push('EU ErP Lot 9 requires CE Mark Removal Kit for 94% Platinum PSUs');
       break;
 
     case 'SUPPORT_MANUFACTURING':

@@ -110,9 +110,18 @@ class EvidenceLedger {
     this.events.push({ sequence: this.events.length + 1, phaseNum, event: status, timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     if (!this.phases[key]) {
-      this.startPhase(phaseNum, `Phase ${phaseNum}`, {});
+      throw new Error(`[INV-105 ILLEGAL_TRANSITION] completePhase(phaseNum=${phaseNum}) called on phase that was never started. Phases must be started via startPhase() before completion.`);
     }
     const phase = this.phases[key];
+    if (status === 'SKIPPED') {
+      const skipReason = outputSummary?.skipReason || outputSummary?.reason;
+      const policyCode = outputSummary?.policyCode || outputSummary?.policy;
+      if (!skipReason || !policyCode) {
+        throw new Error(`[INV-105 SKIPPED_STAGE_POLICY] completePhase(phaseNum=${phaseNum}) marked SKIPPED must provide both skipReason and policyCode.`);
+      }
+      phase.skipReason = skipReason;
+      phase.policyCode = policyCode;
+    }
     phase.completedAt = new Date().toISOString();
     phase.durationMs = Math.max(1, new Date(phase.completedAt) - new Date(phase.startedAt));
     phase.status = status;

@@ -31,7 +31,7 @@ const { runWithTrace } = require('../lib/system/trace_context');
 const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
-const { getNotebookDegradedMode, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
+const { getNotebookDegradedMode, assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -342,9 +342,11 @@ async function ingestAndConsolidateBoq(options) {
   // Resolve degraded mode for this notebook entry so it surfaces in the report header
   // and JSON payload rather than silently running against a disabled/stale notebook.
   let notebookDegradedMode = null;
+  let notebookHealth = null;
   try {
     const nbCfg = loadNotebookConfig();
-    notebookDegradedMode = getNotebookDegradedMode(nbCfg, detectedChassisName);
+    notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
+    notebookDegradedMode = notebookHealth.degradationMode;
   } catch (_) { /* non-fatal */ }
 
   const defaultReportsDir = path.join(chassisDir, 'reports');
@@ -430,6 +432,7 @@ async function ingestAndConsolidateBoq(options) {
     detectedChassisName,
     notebookId,
     notebookDegradedMode,
+    notebookHealth,
     outputPath,
     catalogData,
     requirementResolution,
@@ -1155,6 +1158,12 @@ async function runEvaluationPipelineWithinTrace(options) {
 
   const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
   evalResults.newLearningsCount = newLearningsCount;
+  evalResults.notebookHealth = ingestCtx.notebookHealth || null;
+  evalResults.notebookDegradedMode = ingestCtx.notebookDegradedMode || null;
+  if (ingestCtx.notebookHealth && !ingestCtx.notebookHealth.isHealthy) {
+    if (!evalResults.warnings) evalResults.warnings = [];
+    evalResults.warnings.push(`[DEGRADED_NOTEBOOK] Notebook for "${ingestCtx.detectedChassisName}" is degraded (${ingestCtx.notebookDegradedMode}). Confidence: ${ingestCtx.notebookHealth.confidenceLabel}.`);
+  }
   if (Array.isArray(options.priceDriftItems) && options.priceDriftItems.length) {
     evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
   }
@@ -1170,11 +1179,14 @@ async function runEvaluationPipelineWithinTrace(options) {
   evalResults.acceptanceGate = acceptance;
 
   if (acceptance.isValid) {
-    const rawFingerprint = evalResults.manifestFingerprint || evalResults.conflictGraph?.manifestSha256 || crypto.createHash('sha256').update(JSON.stringify(evalResults.items || [])).digest('hex');
+    const { solutionFingerprint } = require('../lib/boq/solution_evidence.js');
+    const rawFingerprint = solutionFingerprint(evalResults, options.catalogData);
+    evalResults.manifestFingerprint = rawFingerprint;
+    const targetChassis = ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : (evalResults.chassis || 'PROLIANT_SERVER');
     try {
       evalResults.deliveryAuthorization = issueDeliveryAuthorization({
         manifestFingerprint: rawFingerprint,
-        chassisKey: ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : 'PROLIANT_SERVER',
+        chassisKey: targetChassis,
         acceptanceDecision: {
           isApproved: true,
           profile: 'BOQ_EVALUATION',
